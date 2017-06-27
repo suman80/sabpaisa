@@ -1,0 +1,33 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:layout_marginTop="20dp"
+    android:background="@color/main_screen_bottom_color"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/test_bank_logo"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="Account No"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!--TODO accountNumber-->
+    <TextView
+        android:textColor="@color/black"
+        android:id="@+id/tv_accountNumber"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textSize="16dp"
+        android:gravity="center_vertical"
+        android:text="XXXXXXXX3455" />
+</LinearLayout>

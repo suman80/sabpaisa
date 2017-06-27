@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/main_screen_bottom_color"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Confirm UPI MPIN"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Confirm UPI mPIN"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    <!--TODO card_cvv_no-->
+    <LinearLayout
+        android:id="@+id/ll_card_cvv_no"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <!--TODO mdigit1-->
+        <include
+            android:id="@+id/layout_cmdigit1"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO mdigit2-->
+        <include
+            android:id="@+id/layout_cmdigit2"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO mdigit3-->
+        <include
+            android:id="@+id/layout_cmdigit3"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO mdigit4-->
+        <include
+            android:id="@+id/layout_cmdigit4"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO mdigit5-->
+        <include
+            android:id="@+id/layout_cmdigit5"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO mdigit6-->
+        <include
+            android:id="@+id/layout_cmdigit6"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp">
+            <!--TODO showHide-->
+            <TextView
+                android:id="@+id/tv_cshowHide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:text="Show"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+        android:text="Enter your 6 digit UPI MPIN"/>
+</LinearLayout>

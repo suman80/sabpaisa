@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="in.sabpaisa.droid.sabpaisa.TransactionsActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/bg_screen"
+        app:subtitleTextColor="@color/white"
+        app:titleTextColor="@color/white" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:background="@color/main_screen_bottom_color"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:layout_collapseMode="pin"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/bg_orange"
+            app:tabMode="fixed" />
+    </android.support.v4.view.ViewPager>
+</LinearLayout>

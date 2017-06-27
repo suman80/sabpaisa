@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Please wait till your mobile verification is complete"
+        android:textSize="19dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/tv_countdownTimer"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="2:00"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"/>
+    <TextView
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Mins"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:textColor="@color/colorPrimaryDark"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+</LinearLayout>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="in.sabpaisa.droid.sabpaisa.SuccessMPIN">
+
+    <LinearLayout
+        android:id="@+id/ll_goToHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true">
+        <ImageView
+            android:id="@+id/iv_homeButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_ic_home_black_24dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Go back to home"
+            android:layout_gravity="end"
+            android:layout_alignParentEnd="true"
+            android:textSize="14sp"
+            android:layout_marginRight="20dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Congratulations !!!"
+            android:textSize="25sp"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your MPIN for UPI Payment have been created"
+            android:gravity="center_horizontal"/>
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:src="@drawable/temp_congrats_image"/>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_account_info_topbar"/>
+
+    <TextView
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="ENTER LAST 6 DIGITS OF DEBIT CARD"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    <!--TODO ll_card_last_six_num-->
+    <LinearLayout
+        android:id="@+id/ll_card_last_six_num"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <!--TODO digit1-->
+        <include
+            android:id="@+id/layout_digit1"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO digit2-->
+        <include
+            android:id="@+id/layout_digit2"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO digit3-->
+        <include
+            android:id="@+id/layout_digit3"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO digit4-->
+        <include
+            android:id="@+id/layout_digit4"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO digit5-->
+        <include
+            android:id="@+id/layout_digit5"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO digit6-->
+        <include
+            android:id="@+id/layout_digit6"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="ENTER CVV NUMBER"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    <!--TODO card_cvv_no-->
+    <LinearLayout
+        android:id="@+id/ll_card_cvv_no"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <!--TODO cvv_digit1-->
+        <include
+            android:id="@+id/layout_cvv_digit1"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO cvv_digit2-->
+        <include
+            android:id="@+id/layout_cvv_digit2"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="25dp"
+            android:layout_height="35dp"
+            android:gravity="center_horizontal|bottom"
+            android:text="/"
+            android:textColor="@color/bg_orange"
+            android:textSize="25sp" />
+        <!--TODO cvv_digit3-->
+        <include
+            android:id="@+id/layout_cvv_digit3"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO cvv_digit4-->
+        <include
+            android:id="@+id/layout_cvv_digit4"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

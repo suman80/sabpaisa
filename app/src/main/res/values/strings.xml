@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SabPaisa</string>
+    <string name="hint_phone">Enter Your 10 digit mobile no</string>
+    <string name="hint_password">Enter your password</string>
+    <string name="verify_desc">We need to send an SMS from your phone to verify if your phone number is registered with your bank account</string>
+    <string name="Rs">\u20B9</string>
+    <string name="open">Open Navigation Drawer</string>
+    <string name="close">Close navigation Drawer</string>
+</resources>

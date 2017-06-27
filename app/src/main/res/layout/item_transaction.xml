@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/rl_background">
+
+    <ImageView
+        android:id="@+id/iv_transactionStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/test_payment__icon"
+        android:layout_centerVertical="true"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_transactionStatus"
+        android:layout_margin="@dimen/margin_side"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mr Gaurav Singh"
+            android:textSize="@dimen/text_size_heading"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tv_userUPI"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="gaurav@upi" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Rs"/>
+            <TextView
+                android:id="@+id/tv_txnAmount"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1000"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_transactionDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="@dimen/margin_side"
+        android:layout_marginTop="@dimen/margin_side">
+        <TextView
+            android:id="@+id/tv_txnStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Success"
+            android:textSize="@dimen/text_size_heading"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tv_txnDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12 May 17" />
+        <TextView
+            android:id="@+id/tv_txnTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:00 IST" />
+    </LinearLayout>
+
+</RelativeLayout>
