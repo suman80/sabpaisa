@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_account_ifsc">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/bg_screen"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:id="@+id/sc_account_ifsc"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="?attr/actionBarSize">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context="in.sabpaisa.droid.sabpaisa.SendAccountIFSC">
+
+
+                <include layout="@layout/layout_account_info_topbar" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_side"
+                    android:text="Kindly fill and check the beneficiary details before sending money"
+                    android:textColor="@color/bg_orange"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_side"
+                    android:text="Bank IFSC Code"
+                    android:textSize="@dimen/text_size_heading"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="0px"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_side"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_ifscBank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/margin_side"
+                        android:text="CNRB " />
+
+                    <EditText
+                        android:imeOptions="actionNext"
+                        android:maxLines="1"
+                        android:id="@+id/et_ifscBranch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_toLeftOf="@id/iv_bankLogo"
+                        android:layout_toRightOf="@id/tv_ifscBank"
+                        android:background="@drawable/background_edittext" />
+
+                    <ImageView
+                        android:id="@+id/iv_bankLogo"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/margin_side"
+                        android:src="@drawable/test_bank_logo" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_side"
+                    android:text="Beneficiary Name"
+                    android:textSize="@dimen/text_size_heading"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:imeOptions="actionNext"
+                    android:maxLines="1"
+                    android:id="@+id/et_beneficiaryName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_side"
+                    android:layout_marginRight="@dimen/margin_side"
+                    android:background="@drawable/background_edittext"
+                    android:hint="Enter Beneficiary Name" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_side"
+                    android:text="Account Number"
+                    android:textSize="@dimen/text_size_heading"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:imeOptions="actionNext"
+                    android:maxLines="1"
+                    android:id="@+id/et_AccountNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_side"
+                    android:layout_marginRight="@dimen/margin_side"
+                    android:background="@drawable/background_edittext"
+                    android:hint="XXXX XXXX XXXX XXXX"
+                    android:inputType="numberPassword" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_side"
+                    android:text="Confirm Account Number"
+                    android:textSize="@dimen/text_size_heading"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:imeOptions="actionDone"
+                    android:maxLines="1"
+                    android:id="@+id/et_cAccountNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_side"
+                    android:layout_marginRight="@dimen/margin_side"
+                    android:background="@drawable/background_edittext"
+                    android:hint="XXXX XXXX XXXX XXXX"
+                    android:inputType="number" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="112dp"></LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+        <Button
+            android:layout_marginTop="@dimen/margin_side"
+            android:id="@+id/btn_send"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/bg_orange"
+            android:text="Send"
+            android:textColor="@color/white"/>
+    </FrameLayout>
+
+</RelativeLayout>

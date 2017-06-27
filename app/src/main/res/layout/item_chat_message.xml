@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_side"
+    android:background="@color/main_screen_bottom_color">
+
+    <TextView
+        android:id="@+id/tv_chatMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Transaction Successfull"
+        android:layout_marginLeft="@dimen/margin_side"
+        android:textSize="@dimen/text_size_heading"
+        android:textStyle="bold|italic" />
+
+</LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal">
+
+        <!--TODO instituteLogo-->
+        <ImageView
+            android:id="@+id/iv_instituteLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:src="@drawable/coaicon" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:orientation="vertical">
+
+            <!--TODO instituteName-->
+            <TextView
+                android:id="@+id/tv_instituteName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Council of Architecture" />
+
+            <!--TODO instituteLocation-->
+            <TextView
+                android:id="@+id/tv_instituteLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Delhi" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--TODO institutePic-->
+    <ImageView
+        android:id="@+id/iv_institutePic"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@drawable/institude_architecture"
+        android:scaleType="centerCrop"/>
+</LinearLayout>

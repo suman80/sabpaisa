@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/main_screen_bottom_color"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Mobile Verification"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <!--TODO sendOTP-->
+        <LinearLayout
+            android:id="@+id/tv_sendOTP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="SEND OTP"
+                android:textColor="@color/black"
+                android:background="@drawable/background_edittext"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="ENTER OTP"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    <!--TODO ll_card_last_six_num-->
+    <LinearLayout
+        android:id="@+id/ll_card_last_six_num"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <!--TODO digit1-->
+        <include
+            android:id="@+id/layout_otpdigit1"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO digit2-->
+        <include
+            android:id="@+id/layout_otpdigit2"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO digit3-->
+        <include
+            android:id="@+id/layout_otpdigit3"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO digit4-->
+        <include
+            android:id="@+id/layout_otpdigit4"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <!--TODO detecting-->
+        <FrameLayout
+            android:id="@+id/ll_detecting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1">
+            <!--TODO detecting-->
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:text="Detecting SMS"
+                android:textColor="@color/black" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="SET UPI mPIN"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    <!--TODO card_cvv_no-->
+    <LinearLayout
+        android:id="@+id/ll_card_cvv_no"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <!--TODO mdigit1-->
+        <include
+            android:id="@+id/layout_mdigit1"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO mdigit2-->
+        <include
+            android:id="@+id/layout_mdigit2"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO mdigit3-->
+        <include
+            android:id="@+id/layout_mdigit3"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO mdigit4-->
+        <include
+            android:id="@+id/layout_mdigit4"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO mdigit5-->
+        <include
+            android:id="@+id/layout_mdigit5"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+        <!--TODO mdigit6-->
+        <include
+            android:id="@+id/layout_mdigit6"
+            layout="@layout/layout_passcode"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!--TODO showHide-->
+            <TextView
+                android:id="@+id/tv_showHide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:text="Show"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+        android:text="Enter your 6 digit UPI MPIN"/>
+</LinearLayout>
