@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //checking
         super.onCreate(savedInstanceState);
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
