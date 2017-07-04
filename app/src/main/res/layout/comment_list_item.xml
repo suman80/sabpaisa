@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/people_name_initial"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/default_users"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/people_name_initial"
+        android:gravity="center|left"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:text="User Name"
+                android:textColor="@color/bg_text_color"
+                android:textSize="@dimen/text_size_xsmall" />
+
+
+
+            <TextView
+                android:id="@+id/main_feed_creation_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+
+                android:text="8 Members"
+                android:textColor="@color/bg_text_color"
+                android:textSize="@dimen/text_size_xsmall" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/main_feed_group_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxLines="2"
+            android:text="Fractal landscape of Julian set of numbers by Wikimedia Commons user Gertbuschmann public domain here:"
+            android:textColor="@color/bg_text_color"
+            android:textSize="@dimen/text_size_xsmall" />
+
+    </LinearLayout>
+
+</RelativeLayout>

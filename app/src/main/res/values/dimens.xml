@@ -4,5 +4,7 @@
     <dimen name="pipe_line">2dp</dimen>
     <dimen name="text_size_normal">14sp</dimen>
     <dimen name="margin_side">20dp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_xsmall">14sp</dimen>
 
 </resources>
