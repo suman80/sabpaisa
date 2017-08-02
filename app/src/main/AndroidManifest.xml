@@ -54,6 +54,7 @@
         <activity android:name=".TransactionResult" />
         <activity android:name=".SendAccountIFSC" />
         <activity android:name=".TransactionsActivity" />
+        <activity android:name="WebViewActivity"/>
         <activity android:name=".TestScrollPager">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />

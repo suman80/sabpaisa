@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new InstitutionFragment(),"Institutions");
-        adapter.addFragment(new InstitutionFragment(),"Pay Fee");
+        adapter.addFragment(new FormFragment(),"Forms");
         adapter.addFragment(new InstitutionFragment(),"Groups");
         viewPager.setAdapter(adapter);
     }

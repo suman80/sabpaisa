@@ -50,7 +50,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Rs"
+                    android:text="@string/Rs."
                     android:textSize="@dimen/text_size_heading"/>
                 <TextView
                     android:id="@+id/tv_txnAmount"
