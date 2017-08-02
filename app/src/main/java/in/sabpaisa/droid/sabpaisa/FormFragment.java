@@ -15,7 +15,7 @@ import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
  * Created by SabPaisa on 27-07-2017.
  */
 
-public  class FormFragment  extends Fragment {
+public class FormFragment extends Fragment {
 
     ViewPager viewPager;
     TabLayout tabs;
