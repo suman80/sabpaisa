@@ -33,7 +33,7 @@ import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 
 import static android.view.View.GONE;
 
-public class SendMoneyActivity extends AppCompatActivity implements SavedUPIAdapter.UPIResponse,ContactsAdapter.UPIResponse,
+public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAdapter.UPIResponse,ContactsAdapter.UPIResponse,
         OnFragmentInteractionListener,ContactListFragment.GetDataInterface{
 
     Toolbar mtoolbar;
@@ -124,8 +124,18 @@ public class SendMoneyActivity extends AppCompatActivity implements SavedUPIAdap
     }
 
     @Override
+    public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
+
+    }
+
+    @Override
     public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
         this.contactLists = contactLists;
+    }
+
+    @Override
+    public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
+
     }
 
     @Override

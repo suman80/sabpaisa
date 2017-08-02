@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import in.sabpaisa.droid.sabpaisa.COA;
+import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.R;
 
@@ -35,6 +38,20 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
         Institution mainFeedData = institutions.get(position);
         holder.instituteName.setText(mainFeedData.getName());
         holder.instituteLocation.setText(mainFeedData.getLocation());
+        holder.instituteLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), COA.class);
+                v.getContext().startActivity(intent);
+            }
+        });
+        holder.instituteName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), COA.class);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
