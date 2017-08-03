@@ -1,6 +1,8 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,8 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by SabPaisa on 27-07-2017.
@@ -35,25 +44,79 @@ public  class PayFeeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_payfee, container, false);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_forms);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
-        formNames = new ArrayList<>();
-        LoadFormNames();
-        adapter = new PayFeeAdapter(getParentFragment().getContext(), formNames);
-        recyclerView.setAdapter(adapter);
-        return rootView;
-    }
 
-    private void LoadFormNames() {
-        formNames.add("Admission Form");
-        formNames.add("Sports Fee Form");
-        formNames.add("Medical Leave Form");
-        formNames.add("Sanctioned Leave Form");
-        formNames.add("Late Fee Form");
-        formNames.add("First Installment Fee Form");
-        formNames.add("Service Form");
+        TextView serviceTxt,stateTxt,institudeTxt;
+        Spinner serviceSpinner,stateSpinner;
+
+        serviceTxt = (TextView)rootView.findViewById(R.id.serviceLayout).findViewById(R.id.textName);
+        stateTxt = (TextView)rootView.findViewById(R.id.stateLayout).findViewById(R.id.textName);
+        institudeTxt = (TextView)rootView.findViewById(R.id.institudeLayout).findViewById(R.id.textName);
+
+        serviceSpinner = (Spinner) rootView.findViewById(R.id.serviceLayout).findViewById(R.id.spinner2);
+        stateSpinner = (Spinner)rootView.findViewById(R.id.stateLayout).findViewById(R.id.spinner2);
+
+
+        serviceTxt.setText("Service");
+        stateTxt.setText("State Name");
+        institudeTxt.setText("Institution Name");
+
+        ArrayList<String> services = new ArrayList<>();
+        ArrayList<String> states = new ArrayList<>();
+
+
+        services.add("Select Services");
+        services.add("dummy12");
+        services.add("dummy13");
+        states.add("Select State");
+        states.add("dummy21");
+        states.add("dummy21");
+        states.add("dummy22");
+        states.add("dummy23");
+
+
+        ArrayAdapter<String> serviceAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,services);
+        serviceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        serviceSpinner.setAdapter(serviceAdapter);
+
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getContext(),R.array.india_states, android.R.layout.simple_spinner_item);
+        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        stateSpinner.setAdapter(stateAdapter);
+
+        stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position!=0){
+                    final ProgressDialog pd = new ProgressDialog(getContext());
+                    pd.setMessage("Loading Institudes");
+                    pd.show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            pd.dismiss();
+                            ArrayList<String> institutions = new ArrayList<>();
+                            institutions.add("Select Institute");
+                            Random random = new Random();
+                            int i = random.nextInt(10);
+                            for (int t=0;t<i;t++){
+                                institutions.add("institude"+t);
+                            }
+                            Spinner institudeSpinner = (Spinner)rootView.findViewById(R.id.institudeLayout).findViewById(R.id.spinner2);
+                            ArrayAdapter<String> instituteAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,institutions);
+                            instituteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            institudeSpinner.setAdapter(instituteAdapter);
+                        }
+                    }, 200);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        return rootView;
     }
 }
