@@ -132,4 +132,5 @@ public class ChatDetail extends AppCompatActivity implements RapidFloatingAction
         chatModelArrayList.add(new ChatModel("My VPA is 0000000000@sabpaisa",false,1));
         chatModelArrayList.add(new ChatModel("Ok, will send you",true,1));
     }
+
 }
