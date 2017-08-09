@@ -9,6 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -17,42 +20,102 @@ import java.util.ArrayList;
  */
 
 public class BanksFragment  extends Fragment {
+
+
     View rootView;
     RecyclerView recyclerView;
-    ArrayList<BankHistory> bankHistoryArrayList;
-    BankHistoryAdapter adapter;
+    ApplicationAdapter adapter;
+    ArrayList<String> formNames;
 
     public BanksFragment() {
+        // Required empty public constructor
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_banks, container, false);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_pay_history);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
-        bankHistoryArrayList = new ArrayList<>();
-        LoadBankHistory();
-        adapter = new BankHistoryAdapter(getContext(), bankHistoryArrayList);
-        recyclerView.setAdapter(adapter);
+
+        TextView serviceTxt,stateTxt,institudeTxt;
+        Spinner serviceSpinner,stateSpinner;
+
+        serviceTxt = (TextView)rootView.findViewById(R.id.serviceLayout).findViewById(R.id.textName);
+//        stateTxt = (TextView)rootView.findViewById(R.id.stateLayout).findViewById(R.id.textName);
+        //      institudeTxt = (TextView)rootView.findViewById(R.id.institudeLayout).findViewById(R.id.textName);
+
+        serviceSpinner = (Spinner) rootView.findViewById(R.id.serviceLayout).findViewById(R.id.spinner2);
+//        stateSpinner = (Spinner)rootView.findViewById(R.id.stateLayout).findViewById(R.id.spinner2);
+
+
+        serviceTxt.setText("WhiteLabel Banks");
+        //    stateTxt.setText("State Name");
+        //  institudeTxt.setText("Institution Name");
+
+        ArrayList<String> services = new ArrayList<>();
+        //      ArrayList<String> states = new ArrayList<>();
+
+
+        services.add("Select Banks");
+        services.add("Allahabad Bank");
+        services.add("DCB Bank");
+      /*  states.add("Select State");
+        states.add("dummy21");
+        states.add("dummy21");
+        states.add("dummy22");
+        states.add("dummy23");*/
+
+
+        ArrayAdapter<String> serviceAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,services);
+        serviceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        serviceSpinner.setAdapter(serviceAdapter);
+
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getContext(),R.array.india_states, android.R.layout.simple_spinner_item);
+        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //stateSpinner.setAdapter(stateAdapter);
+
+        /*stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position!=0){
+                    final ProgressDialog pd = new ProgressDialog(getContext());
+                    pd.setMessage("Loading Institudes");
+                    pd.show();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            pd.dismiss();
+                            ArrayList<String> institutions = new ArrayList<>();
+                            institutions.add("Select Institute");
+                            Random random = new Random();
+                            int i = random.nextInt(10);
+                            for (int t=0;t<i;t++){
+                                institutions.add("institude"+t);
+                            }
+                            Spinner institudeSpinner = (Spinner)rootView.findViewById(R.id.institudeLayout).findViewById(R.id.spinner2);
+                            ArrayAdapter<String> instituteAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,institutions);
+                            instituteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            institudeSpinner.setAdapter(instituteAdapter);
+                        }
+                    }, 200);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });*/
+
+
         return rootView;
     }
-
-    private void LoadBankHistory() {
-        bankHistoryArrayList.add(new BankHistory("Admission Form", 5000));
-        bankHistoryArrayList.add(new BankHistory("ABC Form", 2000));
-        bankHistoryArrayList.add(new BankHistory("XYZ Form", 3400));
-        bankHistoryArrayList.add(new BankHistory("PQR Form", 400));
-    }
-
-
 }
+
 
