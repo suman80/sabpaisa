@@ -43,4 +43,14 @@ public class TransactionResultDialog extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent();
+        intent.putExtra("Status", true);
+        setResult(200, intent);
+        finish();
+    }
+
 }
