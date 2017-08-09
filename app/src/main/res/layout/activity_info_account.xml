@@ -117,7 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="CAN002312"
+                android:text="ALLA002312"
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
