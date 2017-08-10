@@ -30,6 +30,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
+
 
 /*implements SwipeRefreshLayout.OnRefreshListener*/
 public class FeedDetails extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{

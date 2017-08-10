@@ -36,7 +36,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 //import neeraj_sabpaisa.com.coa.Adapters.CommentAdapterDatabase;
-import in.sabpaisa.droid.sabpaisa.CommentsDB;
+import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 
 /*implements SwipeRefreshLayout.OnRefreshListener*/
 public class GroupDetails extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
