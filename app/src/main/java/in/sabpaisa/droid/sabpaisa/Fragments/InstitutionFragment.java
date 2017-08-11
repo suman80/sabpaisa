@@ -82,6 +82,7 @@ public class InstitutionFragment extends Fragment {
                 Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
                 for (int i=0;i<response.length();i++){
                     try {
+
                         JSONObject obj =response.getJSONObject(i);
                         Institution institution = new Institution();
                         institution.setOrganizationId(obj.getInt("organizationId"));
