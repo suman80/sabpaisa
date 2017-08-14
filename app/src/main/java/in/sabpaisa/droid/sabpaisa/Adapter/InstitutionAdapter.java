@@ -36,8 +36,8 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Institution mainFeedData = institutions.get(position);
-        holder.instituteName.setText(mainFeedData.getName());
-        holder.instituteLocation.setText(mainFeedData.getLocation());
+        holder.instituteName.setText(mainFeedData.getOrganization_name());
+//        holder.instituteLocation.setText(mainFeedData.getOrgDesc());
         holder.instituteLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

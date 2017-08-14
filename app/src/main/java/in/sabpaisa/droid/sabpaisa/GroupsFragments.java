@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 
 /**
  * Created by SabPaisa on 03-07-2017.
