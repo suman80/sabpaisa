@@ -16,18 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LogInActivity">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
-        <activity android:name=".VerifyMobile" />
-
-        <activity android:name=".FeedDetails"/>
-        <activity android:name=".GroupDetails"/>
-        <activity android:name=".RegisterPasscode">
-
 
             <!--
             <intent-filter>
@@ -37,12 +25,36 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".VerifyMobile" />
+        <activity android:name=".FilterActivity" />
+        <activity android:name=".FeedDetails" />
+        <activity android:name=".GroupDetails" />
+        <activity android:name=".RegisterPasscode" />
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        -->
+
+        <activity android:name=".MainActivity">
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
         </activity>
         <activity android:name=".AccountInfoActivity" />
         <activity android:name=".SetmPIN" />
@@ -55,34 +67,37 @@
         <activity android:name=".TransactionResult" />
         <activity android:name=".SendAccountIFSC" />
         <activity android:name=".TransactionsActivity" />
-        <activity android:name="WebViewActivity"/>
+        <activity android:name=".WebViewActivity" />
         <activity android:name=".TestScrollPager">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
-
-
-        <activity
-            android:name=".COA"
-            />
-
+        <activity android:name=".COA" />
         <activity android:name=".SocialPayment" />
-        <activity android:name=".ChatDetail"></activity>
-        <activity android:name=".SendMoneyDialog"
-            android:theme="@style/DialogTheme"
-            android:excludeFromRecents="true"></activity>
-        <activity android:name=".SendMoneyAcIFSCDialog"
-            android:theme="@style/DialogTheme"
-            android:excludeFromRecents="true"></activity>
-        <activity android:name=".SendConfirmUPImPINDialog"
-            android:theme="@style/DialogTheme"
-            android:excludeFromRecents="true"></activity>
-        <activity android:name=".TransactionResultDialog"
-            android:theme="@style/DialogTheme"
-            android:excludeFromRecents="true"></activity>
+        <activity android:name=".ChatDetail" />
+        <activity
+            android:name=".SendMoneyDialog"
+            android:excludeFromRecents="true"
+            android:theme="@style/DialogTheme" />
+        <activity
+            android:name=".SendMoneyAcIFSCDialog"
+            android:excludeFromRecents="true"
+            android:theme="@style/DialogTheme" />
+        <activity
+            android:name=".SendConfirmUPImPINDialog"
+            android:excludeFromRecents="true"
+            android:theme="@style/DialogTheme" />
+        <activity
+            android:name=".TransactionResultDialog"
+            android:excludeFromRecents="true"
+            android:theme="@style/DialogTheme" />
+        <activity android:name=".FilterActivity"></activity>
     </application>
 
 </manifest>

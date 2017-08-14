@@ -19,23 +19,23 @@
                 android:id="@+id/serviceLayout"
                 layout="@layout/custom_spinner_layout" />
 
-            <include
-                android:id="@+id/stateLayout"
-                layout="@layout/custom_spinner_layout" />
-
-            <include
-                android:id="@+id/institudeLayout"
-                layout="@layout/custom_spinner_layout" />
-
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="20dp"
+
                 android:background="@drawable/background_button"
                 android:text="Proceed"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
+          <!--  <include
+                android:id="@+id/stateLayout"
+                layout="@layout/custom_spinner_layout" />
+
+            <include
+                android:id="@+id/institudeLayout"
+                layout="@layout/custom_spinner_layout" />-->
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
@@ -46,13 +46,13 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="46dp">
 
-       <!-- <Button
+        <Button
             android:layout_width="match_parent"
             android:layout_height="40dp"
-
+            android:layout_gravity="bottom"
             android:background="@drawable/background_button"
             android:text="Proceed"
             android:textAllCaps="false"
-            android:textColor="@color/white" />-->
+            android:textColor="@color/white" />
     </FrameLayout>
 </FrameLayout>
