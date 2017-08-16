@@ -103,7 +103,7 @@ public class VerifyMobile extends AppCompatActivity {
 
             public void onFinish() {
                 bottomSheetDialog.cancel();  //TODO API - List Account
-                Intent intent = new Intent(VerifyMobile.this,MainActivity.class);
+                Intent intent = new Intent(VerifyMobile.this,FilterActivity.class);
                 intent.putExtra("Title","Register Passcode");
                 intent.putExtra("activity",0);
                 startActivity(intent);
