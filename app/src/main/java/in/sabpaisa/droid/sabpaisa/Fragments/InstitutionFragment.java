@@ -79,7 +79,6 @@ public class InstitutionFragment extends Fragment {
         JsonArrayRequest request = new JsonArrayRequest(urlJsonObj, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                Toast.makeText(getContext(), "Response", Toast.LENGTH_SHORT).show();
                 for (int i=0;i<response.length();i++){
                     try {
 
