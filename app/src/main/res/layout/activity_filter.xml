@@ -9,10 +9,32 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
+
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/rbPrivate"
+            style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:buttonTint="@color/bg_screen"
+            android:checked="false"
+            android:text="Continue as a Private User"
+            android:textSize="@dimen/text_size_normal" />
+
+
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/oricons" />
 
 
         <android.support.v7.widget.AppCompatCheckBox
@@ -22,7 +44,7 @@
             android:layout_height="55dp"
             android:buttonTint="@color/bg_screen"
             android:checked="false"
-            android:text="Bank User"
+            android:text="Choose your Institution / Hospital / Others "
             android:textSize="@dimen/text_size_normal" />
 
         <LinearLayout
@@ -47,19 +69,33 @@
                     android:id="@+id/spinnerClient"
                     layout="@layout/custom_spinner_layout" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/InstituteSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <include
+                    android:id="@+id/spinnerInsttitute"
+                    layout="@layout/custom_spinner_layout" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/HospitalSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <include
+                    android:id="@+id/spinnerHospital"
+                    layout="@layout/custom_spinner_layout" />
+            </LinearLayout>
+
         </LinearLayout>
-
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/rbPrivate"
-            style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:buttonTint="@color/bg_screen"
-            android:checked="false"
-            android:text="Private User"
-            android:textSize="@dimen/text_size_normal" />
-
 
         <Button
             android:id="@+id/proceed"
@@ -71,4 +107,5 @@
             android:textAllCaps="false"
             android:textColor="@color/white" />
     </LinearLayout>
+
 </RelativeLayout>
