@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     private CustomViewPager viewPager;
     private TabLayout tabLayout;
     Toolbar toolbar;
-    LinearLayout sendMoney, requestMoney,socialPayment,transaction,profile,bank,mPinInfo,mPinInfo2;
+    ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,mPinInfo,mPinInfo2;
     LinearLayout paymentButton,chatButton,memberButton;
     int isMpinSet=1;
     FloatingActionButton fab;
@@ -67,12 +68,12 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        sendMoney = (LinearLayout)findViewById(R.id.ll_send);
-        requestMoney = (LinearLayout)findViewById(R.id.ll_request);
-        socialPayment = (LinearLayout)findViewById(R.id.ll_social_payment);
-        transaction = (LinearLayout)findViewById(R.id.ll_transactions);
-        profile = (LinearLayout)findViewById(R.id.ll_profile);
-        bank = (LinearLayout)findViewById(R.id.ll_bank);
+        sendMoney = (ImageView)findViewById(R.id.ll_send);
+        requestMoney = (ImageView)findViewById(R.id.ll_request);
+        socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
+        transaction = (ImageView)findViewById(R.id.ll_transactions);
+        profile = (ImageView)findViewById(R.id.ll_profile);
+        bank = (ImageView)findViewById(R.id.ll_bank);
         paymentButton = (LinearLayout)findViewById(R.id.payment_button);
         chatButton = (LinearLayout)findViewById(R.id.chat);
         memberButton = (LinearLayout)findViewById(R.id.members);

@@ -18,8 +18,9 @@
 
             <in.sabpaisa.droid.sabpaisa.Util.CustomViewPager
                 android:id="@+id/viewpager"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="651dp"
                 android:visibility="visible"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -48,10 +49,11 @@
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbarlayout"
+
                 android:layout_width="match_parent"
-                android:layout_height="420dp"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:layout_behavior="in.sabpaisa.droid.sabpaisa.Util.FlingBehavior">
+                android:layout_height="270dp"
+                android:background="@color/white"
+                android:layout_marginBottom="10dp">
 
                 <android.support.design.widget.CollapsingToolbarLayout
                     android:id="@+id/collapsing_toolbar"
@@ -63,7 +65,7 @@
                     <RelativeLayout
                         android:id="@+id/coverLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="214dp"
                         android:layout_marginTop="?attr/actionBarSize"
                         android:background="@color/white">
 
@@ -85,12 +87,21 @@
                         </com.daimajia.slider.library.SliderLayout>
 
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="100dp"
+                            android:background="#ffffff"
+                            android:orientation="vertical">
+
+
 
                         <TextView
                             android:id="@+id/tv_dashboard_desc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/slider"
+                            android:layout_marginTop="5dp"
                             android:gravity="center_horizontal"
                             android:text="Get social with money"
                             android:textColor="@color/colorPrimaryDark"
@@ -99,14 +110,16 @@
                         <include
                             layout="@layout/layout_dashboard"
                             android:layout_width="match_parent"
-                            android:layout_height="190dp"
+                            android:layout_height="wrap_content"
                             android:layout_below="@id/tv_dashboard_desc" />
 
-                        <LinearLayout
+                       <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="3dp"
-                            android:layout_alignParentBottom="true"
+                            android:layout_height="13dp"
+                           android:layout_marginTop="10dp"
                             android:background="@color/bg_screen" />
+
+                        </LinearLayout>
                     </RelativeLayout>
 
 
@@ -139,27 +152,26 @@
 
 
         </android.support.design.widget.CoordinatorLayout>
+
         <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
-            xmlns:rfal="http://schemas.android.com/apk/res-auto"
             android:id="@+id/activity_main_rfal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            rfal:rfal_frame_color="#ffffff"
-            rfal:rfal_frame_alpha="0.7">
-            <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton
-                xmlns:rfab="http://schemas.android.com/apk/res-auto"
+            app:rfal_frame_color="#ffffff">
+
+            <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton xmlns:rfab="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/activity_main_rfab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="15dp"
+                android:layout_alignParentRight="true"
                 android:layout_marginBottom="55dp"
+                android:layout_marginRight="15dp"
                 android:padding="8dp"
-                rfab:rfab_size="normal"
-                rfab:rfab_drawable="@drawable/ic_pay_white"
                 rfab:rfab_color_normal="@color/bg_orange"
-                rfab:rfab_color_pressed="@color/bg_orange"/>
+                rfab:rfab_color_pressed="@color/bg_orange"
+                rfab:rfab_drawable="@drawable/ic_pay_white"
+                rfab:rfab_size="normal" />
         </com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout>
         <!--<android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_dashboard"
@@ -174,7 +186,7 @@
     </FrameLayout>
 
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/drawer_left_list_layout"
         android:layout_width="240dp"
         android:layout_height="match_parent"
@@ -215,5 +227,5 @@
                     android:dividerHeight="0dp" />
             </LinearLayout>
         </RelativeLayout>
-    </LinearLayout>
+    </LinearLayout>-->
 </android.support.v4.widget.DrawerLayout>

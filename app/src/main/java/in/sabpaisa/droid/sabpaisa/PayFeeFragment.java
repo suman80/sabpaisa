@@ -68,10 +68,22 @@ public  class PayFeeFragment extends Fragment {
         services.add("dummy12");
         services.add("dummy13");
         states.add("Select State");
-        states.add("dummy21");
-        states.add("dummy21");
-        states.add("dummy22");
-        states.add("dummy23");
+        /*states.add("Andaman and Nicobar Islands");
+        states.add("Andhra Pradesh");
+        states.add("Arunachal Pradesh");
+        states.add("Bihar");
+        states.add("Chandigarh");
+        states.add("Chhattisgarh");
+        states.add("Dadra and Nagar Haveli");
+        states.add("Daman and Diu");
+        states.add("Delhi");
+        states.add("Goa");
+        states.add("Gujarat");
+        states.add("Haryana");*/
+
+
+
+
 
 
         ArrayAdapter<String> serviceAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,services);
