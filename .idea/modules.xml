@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/UPI.iml" filepath="$PROJECT_DIR$/UPI.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sabpaisa_upi.iml" filepath="$PROJECT_DIR$/sabpaisa_upi.iml" />
       <module fileurl="file://$PROJECT_DIR$/sabpaisa_upi.iml" filepath="$PROJECT_DIR$/sabpaisa_upi.iml" />
     </modules>
   </component>
