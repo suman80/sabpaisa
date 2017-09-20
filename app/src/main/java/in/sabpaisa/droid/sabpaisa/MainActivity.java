@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     FloatingActionButton fab;
 // Rajdeep Testing
 // Rajdeep Testing
+// Rajdeep Testing 3
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
