@@ -44,11 +44,11 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (passwordShow.getText().toString().equals("Show")){
                     passwordShow.setText("Hide");
-                    password.setInputType(InputType.TYPE_CLASS_TEXT);
+                    //password.setInputType(InputType.TYPE_CLASS_TEXT);
                 }else
                 {
                     passwordShow.setText("Show");
-                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                   // password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
             }
         });
