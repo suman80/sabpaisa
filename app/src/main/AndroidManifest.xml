@@ -61,6 +61,7 @@
         <activity android:name=".SetmPIN" />
         <activity android:name=".SuccessMPIN" />
         <activity android:name=".SendMoneyActivity" />
+        <activity android:name=".RequestMoney" />
         <activity
             android:name=".BeneficiaryDetail"
             android:windowSoftInputMode="adjustResize" />
@@ -86,6 +87,8 @@
             android:name=".SendMoneyDialog"
             android:excludeFromRecents="true"
             android:theme="@style/DialogTheme" />
+
+
         <activity
             android:name=".SendMoneyAcIFSCDialog"
             android:excludeFromRecents="true"

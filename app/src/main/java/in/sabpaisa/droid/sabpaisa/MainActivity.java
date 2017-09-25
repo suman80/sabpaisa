@@ -124,6 +124,16 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
                 }
             }
         });
+
+        requestMoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RequestMoney.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+            }
+        });
+
         bank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
