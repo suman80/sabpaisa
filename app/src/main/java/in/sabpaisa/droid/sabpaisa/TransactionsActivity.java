@@ -38,3 +38,4 @@ public class TransactionsActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 }
+//changes done
