@@ -52,6 +52,8 @@
             android:hint="@string/hint_phone"
             android:inputType="phone" />   -->
 
+        <!--testing on master-->
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
