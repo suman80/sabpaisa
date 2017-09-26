@@ -22,7 +22,7 @@ public class TransactionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_transactions);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Transactions");
+        toolbar.setTitle("Payment Transactions");
         setSupportActionBar(toolbar);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -33,8 +33,11 @@ public class TransactionsActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new TransactionAllFragment(),"All");
-        adapter.addFragment(new TransactionPendingFragment(),"Pending");
+        adapter.addFragment(new TransactionAllFragment(),"Transfer Money");
+        adapter.addFragment(new TransactionPendingFragment(),"My Transactions");
         viewPager.setAdapter(adapter);
     }
 }
+//changes done
+//changes done
+

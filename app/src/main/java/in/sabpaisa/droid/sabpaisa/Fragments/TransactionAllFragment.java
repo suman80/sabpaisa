@@ -46,22 +46,28 @@ public class TransactionAllFragment extends Fragment {
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),10));
         recyclerView.setLayoutManager(llm);
         transactionDetails = new ArrayList<>();
+
         loadArrayList();
+
         adapter = new TransactionAdapter(getContext(),transactionDetails);
+
         recyclerView.setAdapter(adapter);
+
         return rootView;
     }
 
     private void loadArrayList() {
-        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",200,"12 May 17","12:00 IST"));
-        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",800,"12 May 17","12:00 IST"));
-        transactionDetails.add(new TransactionDetail(false,"Mr Gaurav Singh","gaurav@upi",1200,"12 May 17","12:00 IST"));
-        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",240,"12 May 17","12:00 IST"));
-        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",500,"12 May 17","12:00 IST"));
-        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",650,"12 May 17","12:00 IST"));
-        transactionDetails.add(new TransactionDetail(false,"Mr Gaurav Singh","gaurav@upi",800,"12 May 17","12:00 IST"));
-        transactionDetails.add(new TransactionDetail(false,"Mr Gaurav Singh","gaurav@upi",1000,"12 May 17","12:00 IST"));
-        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",2000,"12 May 17","12:00 IST"));
-        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",1300,"12 May 17","12:00 IST"));
+        transactionDetails.add(new TransactionDetail(true,"Mr Neeraj Shah","neeraj@upi",200,"12 May 17","12:00 IST"));
+        transactionDetails.add(new TransactionDetail(false,"Mr Neeraj Shah","neeraj@upi",4400,"12 May 17","12:00 IST"));
+        transactionDetails.add(new TransactionDetail(true,"Mr Rajdeep Singh","raj@upi",1000,"14 Sep 17","15:00 IST"));
+//        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",800,"12 May 17","12:00 IST"));
+//        transactionDetails.add(new TransactionDetail(false,"Mr Gaurav Singh","gaurav@upi",1200,"12 May 17","12:00 IST"));
+//        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",240,"12 May 17","12:00 IST"));
+//        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",500,"12 May 17","12:00 IST"));
+//        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",650,"12 May 17","12:00 IST"));
+//        transactionDetails.add(new TransactionDetail(false,"Mr Gaurav Singh","gaurav@upi",800,"12 May 17","12:00 IST"));
+//        transactionDetails.add(new TransactionDetail(false,"Mr Gaurav Singh","gaurav@upi",1000,"12 May 17","12:00 IST"));
+//        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",2000,"12 May 17","12:00 IST"));
+//        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",1300,"12 May 17","12:00 IST"));
     }
 }
