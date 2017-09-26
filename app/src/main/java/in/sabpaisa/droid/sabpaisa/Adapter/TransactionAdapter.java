@@ -42,8 +42,10 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         holder.txnAmount.setText(""+transactionDetail.getAmount());
         if (transactionDetail.isStatus()) {
             holder.txnStatus.setText("Success");
+            holder.transactionStatus.setImageResource(R.mipmap.ic_txn_success);
         }else{
             holder.txnStatus.setText("Pending");
+            holder.transactionStatus.setImageResource(R.mipmap.ic_txn_fail);
         }
         holder.txnDate.setText(transactionDetail.getDate());
         holder.txnTime.setText(transactionDetail.getTime());
