@@ -57,9 +57,10 @@ public class TransactionAllFragment extends Fragment {
     }
 
     private void loadArrayList() {
-        transactionDetails.add(new TransactionDetail(true,"Mr Neeraj Shah","neeraj@upi",200,"12 May 17","12:00 IST"));
-        transactionDetails.add(new TransactionDetail(false,"Mr Neeraj Shah","neeraj@upi",4400,"12 May 17","12:00 IST"));
-        transactionDetails.add(new TransactionDetail(true,"Mr Rajdeep Singh","raj@upi",1000,"14 Sep 17","15:00 IST"));
+        transactionDetails.add(new TransactionDetail(true,"Neeraj Shah","neeraj@upi",200,"12 May 17","12:00 IST"));
+        transactionDetails.add(new TransactionDetail(false,"Neeraj Shah","neeraj@upi",4400,"12 May 17","12:00 IST"));
+        transactionDetails.add(new TransactionDetail(true,"Rajdeep Singh","raj@upi",1000,"14 Sep 17","15:00 IST"));
+        transactionDetails.add(new TransactionDetail(false,"Rajdeep Sinhggfcfcdftgcdtfgcdtftfdtfxdtfxrfxdrfxdrfxdrfxdfxfcgh","raj@upi",1000,"14 Sep 17","15:00 IST"));
 //        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",800,"12 May 17","12:00 IST"));
 //        transactionDetails.add(new TransactionDetail(false,"Mr Gaurav Singh","gaurav@upi",1200,"12 May 17","12:00 IST"));
 //        transactionDetails.add(new TransactionDetail(true,"Mr Gaurav Singh","gaurav@upi",240,"12 May 17","12:00 IST"));

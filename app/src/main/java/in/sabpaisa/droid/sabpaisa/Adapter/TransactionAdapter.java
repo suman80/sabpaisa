@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.TransactionDetail;
 import in.sabpaisa.droid.sabpaisa.R;
+import me.grantland.widget.AutofitHelper;
 
 /**
  * Created by abc on 17-06-2017.
@@ -38,14 +39,15 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     public void onBindViewHolder(MyViewHolder holder, int position) {
         TransactionDetail transactionDetail = transactionDetails.get(position);
         holder.userName.setText(transactionDetail.getUserName());
+
         holder.userUPI.setText(transactionDetail.getUserUpi());
         holder.txnAmount.setText(""+transactionDetail.getAmount());
         if (transactionDetail.isStatus()) {
             holder.txnStatus.setText("Success");
-            holder.transactionStatus.setImageResource(R.mipmap.ic_txn_success);
+            holder.transactionStatus.setImageResource(R.drawable.ic_txn_success);
         }else{
             holder.txnStatus.setText("Pending");
-            holder.transactionStatus.setImageResource(R.mipmap.ic_txn_fail);
+            holder.transactionStatus.setImageResource(R.drawable.ic_txn_fail);
         }
         holder.txnDate.setText(transactionDetail.getDate());
         holder.txnTime.setText(transactionDetail.getTime());
@@ -65,6 +67,9 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView transactionStatus;
         TextView userName,userUPI,txnAmount,txnStatus,txnDate,txnTime;
+        ;
+
+
         RelativeLayout background;
         public MyViewHolder(View itemView) {
             super(itemView);

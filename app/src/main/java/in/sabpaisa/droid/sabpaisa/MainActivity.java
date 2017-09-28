@@ -54,11 +54,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     LinearLayout paymentButton,chatButton,memberButton;
     int isMpinSet=1;
     FloatingActionButton fab;
-// Rajdeep Testing
-// Rajdeep Testing
-// Rajdeep Testing 3
-// Rajdeep Testing 4
-    //jhiji
+
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;

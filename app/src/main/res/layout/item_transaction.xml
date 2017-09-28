@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:id="@+id/rl_background"
-    android:layout_margin="@dimen/activity_vertical_margin"
-    >
+    android:layout_margin="@dimen/activity_vertical_margin">
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="84dp"
         android:orientation="vertical"
         android:id="@+id/layout_txn1"
 
@@ -17,9 +17,9 @@
 
     <ImageView
         android:id="@+id/iv_transactionStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_txn_success"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_txn_success"
         android:layout_centerVertical="true"/>
 
 
@@ -28,29 +28,47 @@
         android:id="@+id/tv_txnStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:text="Success"
         android:textSize="@dimen/text_size_heading"
         android:textStyle="bold"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="40dp"
+
         android:layout_toRightOf="@id/layout_txn1"
-        android:layout_margin="@dimen/margin_side"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/tv_userName"
-            android:layout_width="wrap_content"
+
+<!--
+        <me.grantland.widget.AutofitLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mr Gaurav Singh"
-            android:textSize="@dimen/text_size_heading"
-            android:textStyle="bold"/>
+            >-->
+            <me.grantland.widget.AutofitTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                autofit:minTextSize="12sp"
+                android:id="@+id/tv_userName"
+                android:selectAllOnFocus="false"
+                xmlns:autofit="http://schemas.android.com/apk/res-auto"
+                android:text="Mr Gaurav Singh"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                />
+        <!--</me.grantland.widget.AutofitLayout>-->
+
+
         <TextView
             android:id="@+id/tv_userUPI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="gaurav@upi" />
+            android:text="gaurav@upi"
+
+            />
 
     </LinearLayout>
 
@@ -60,23 +78,38 @@
         android:id="@+id/ll_transactionDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:orientation="vertical"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="@dimen/margin_side"
-        android:layout_marginTop="@dimen/margin_side">
+        android:layout_marginLeft="30dp"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+
+            android:orientation="vertical"
             >
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/tv_txnDate"
+            android:maxLines="3"
+            autofit:minTextSize="12sp"
+
+            android:selectAllOnFocus="false"
+            xmlns:autofit="http://schemas.android.com/apk/res-auto"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12 May 17" />
-        <TextView
+            android:text="12 May 17"
+            />
+        <me.grantland.widget.AutofitTextView
+            android:maxLines="3"
+            android:layout_marginTop="10dp"
+            autofit:minTextSize="12sp"
+                       android:selectAllOnFocus="false"
+            xmlns:autofit="http://schemas.android.com/apk/res-auto"
+
             android:id="@+id/tv_txnTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,17 +120,30 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:layout_gravity="center"
             >
-            <TextView
+            <me.grantland.widget.AutofitTextView
+                android:maxLines="3"
+                autofit:minTextSize="12sp"
+
+                android:selectAllOnFocus="false"
+                xmlns:autofit="http://schemas.android.com/apk/res-auto"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Rs."
                 android:textStyle="bold"
                 />
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/tv_txnAmount"
+                android:maxLines="1"
+                autofit:minTextSize="12sp"
+
+                android:selectAllOnFocus="false"
+                xmlns:autofit="http://schemas.android.com/apk/res-auto"
+
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
