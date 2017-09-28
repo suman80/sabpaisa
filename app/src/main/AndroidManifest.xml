@@ -31,6 +31,7 @@
         <activity android:name=".FeedDetails" />
         <activity android:name=".GroupDetails" />
         <activity android:name=".RegisterPasscode" />
+
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
