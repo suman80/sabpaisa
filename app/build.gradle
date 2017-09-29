@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -32,7 +32,7 @@ dependencies {
     /*Image Slider*/
     /*Image Slider*/
     //    compile 'com.github.clans:fab:1.6.4'
-//    compile 'com.getbase:floatingactionbutton:1.10.1'
+    //    compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'me.grantland:autofittextview:0.2.+'
     compile 'com.android.volley:volley:1.0.0'
@@ -49,5 +49,9 @@ dependencies {
     compile 'com.github.wangjiegulu:AndroidBucket:1.0.4'
     compile 'com.layer-net:step-indicator:1.1.0'
     testCompile 'junit:junit:4.12'
+    //
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
+    compile project(':OliveUpi_dcb_V1.10')
+    compile project(':secure-component-sdk')
+    compile project(':securecomponent')
 }
