@@ -49,6 +49,7 @@ dependencies {
     compile 'com.github.wangjiegulu:AndroidBucket:1.0.4'
     compile 'com.layer-net:step-indicator:1.1.0'
     testCompile 'junit:junit:4.12'
+    //
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
     compile project(':OliveUpi_dcb_V1.10')
     compile project(':secure-component-sdk')
