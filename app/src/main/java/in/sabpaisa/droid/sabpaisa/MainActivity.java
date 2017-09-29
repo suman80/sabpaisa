@@ -259,9 +259,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
     private void setHeaderImageList() {
         for(int i=0;i<headerList.size();i++){
-            CustomSliderView textSliderView = new CustomSliderView(this);
+            CustomSliderView customSliderView = new CustomSliderView(this);
             // initialize a SliderLayout
-            textSliderView
+            customSliderView
                     .image(headerList.get(i))
                     .setScaleType(BaseSliderView.ScaleType.Fit)
                     .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
                             //TODO URL
                         }
                     });
-            mHeaderSlider.addSlider(textSliderView);
+            mHeaderSlider.addSlider(customSliderView);
         }
         mHeaderSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
         mHeaderSlider.setBackgroundColor(getResources().getColor(R.color.main_screen_bottom_color));
