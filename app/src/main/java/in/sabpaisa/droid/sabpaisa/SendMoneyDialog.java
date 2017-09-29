@@ -51,6 +51,8 @@ public class SendMoneyDialog extends AppCompatActivity {
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         DataBinding();
 
+
+
         mtoolbar.setVisibility(View.GONE);
         send.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('secure-component-sdk.jar'))
