@@ -50,7 +50,7 @@ import static in.sabpaisa.droid.sabpaisa.R.string.status;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = RegisterActivity.class.getSimpleName();
-    EditText et_phone_number,et_otp,et_Email,et_password;
+    EditText et_phone_number,et_otp,et_FullName,et_password;
     private Button btn_register;
     private ProgressDialog pDialog;
 
@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         et_phone_number = (EditText) findViewById(R.id.et_phone_number);
-        et_Email = (EditText) findViewById(R.id.et_Email);
+        et_FullName = (EditText) findViewById(R.id.et_FullName);
         et_otp =(EditText) findViewById(R.id.et_otp);
         et_password = (EditText) findViewById(R.id.et_password);
         //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -99,6 +99,8 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //      String id = emailid.getText().toString();
                 String contactNumber =  et_phone_number.getText().toString();
+                String fullName = et_FullName.getText().toString();
+
                // String dob =  et_phone_number.getText().toString();
                 String mobile =  et_phone_number.getText().toString();
                 String otp =  et_otp.getText().toString();
@@ -109,9 +111,24 @@ public class RegisterActivity extends AppCompatActivity {
 
                     et_phone_number.setError("Please make sure that You have entered 10 digit number ");
 
-                } else if(isOnline())
+                }
+             else   if (fullName.length() == 0) {
+
+                    et_FullName.setError("Please Enter your Name");
+
+                }
+
+                else   if (password.length() == 0) {
+
+                    et_password.setError("Please Enter Password");
+
+                }
+
+
+
+                else if(isOnline())
                 {
-                    registerUser(contactNumber,deviceId);
+                    registerUser(contactNumber,fullName,password,deviceId);
                     //launchAgeScreen();
 
 
@@ -177,7 +194,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-    private void registerUser(final String contactNumber, final String deviceId ) {
+    private void registerUser(final String contactNumber,final String fullName,final String password, final String deviceId ) {
 
 
         // Tag used to cancel the request
@@ -209,9 +226,11 @@ public class RegisterActivity extends AppCompatActivity {
 
                         startActivity(intent1);
 */
+                        Log.e(TAG,"123"+fullName );
                         Log.e(TAG, "status: " + status);
+                    Log.e(TAG, "paswword: " + password);
 
-                        Log.e(TAG, "response2163123: " + response);
+                    Log.e(TAG, "response2163123: " + response);
 
 
 
@@ -372,8 +391,9 @@ public class RegisterActivity extends AppCompatActivity {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("contactNumber", contactNumber);
-                
-                //params.put("email", email);
+                params.put("fullName", fullName);
+
+                params.put("password", password);
                 // params.put("password", password);
                 params.put("deviceId", deviceId);
                // params.put("dob", dob );
