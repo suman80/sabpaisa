@@ -70,7 +70,7 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                 mobileNo = et_phone_number.getText().toString();
+                mobileNo = et_phone_number.getText().toString();
                 Log.e(TAG, "response: " + mobileNo);
 
                 if ((et_phone_number.length() == 0)  ||(et_phone_number.length()<10)) {
@@ -204,83 +204,150 @@ public class LogInActivity extends AppCompatActivity {
     }
 
 
-    private void registerUser(final String mobileNo) {
+
+    private void registerUser(final String mobileNo ) {
 
 
         // Tag used to cancel the request
-        String tag_string_req = "req_login";
+        String tag_string_req = "req_register";
 
         //pDialog.setMessage("Registering ...");
         //showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_LOGIN, new Response.Listener<String>() {
+                AppConfig.URL_REGISTER, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
                 Log.d(TAG, "Register Response: " + response1.toString());
-                //hideDialog();
+//                hideDialog();
 
-                JSONObject jObj = null;
                 try {
-                    jObj = new JSONObject(response1);
+                    JSONObject jObj = new JSONObject(response1);
+                    String status = jObj.getString("status");
+                    String response = jObj.getString("response");
+                    //boolean error = jObj.getBoolean("e623+rror");
+                    status =jObj.getString("status");
+
+                    // response = jObj.getString("response");
+
+                    launchMainScreen();
+                        /*Intent intent1 = new Intent(RegisterActivity.this, MainActivity.class);
+                        //intent1.putExtra("response", response);
+
+                        startActivity(intent1);
+*/
+                    Log.e(TAG, "status: " + status);
+
+                    Log.e(TAG, "response2163123: " + response);
+
+
+
+
+
+
+
+
+///////////////////////////
+             /*       if (success) {
+                        // User successfully stored in MySQL
+                        // Now store the user in sqlite
+                        //String uid = jObj.getString("uid");
+
+                        String userId = jObj.getString("userId");
+                        String token = jObj.getString("token");
+
+                        db.addUser(token, userId);
+                        //db.addUser(userId);
+                        // sending token & userId to signup
+                        Intent intent1 = new Intent(Name.this, Gender.class);
+                        intent1.putExtra("userId", userId);
+                        intent1.putExtra("token", token);
+                        startActivity(intent1);
+                        Log.e(TAG, "token: " + token);
+                        Log.e(TAG, "userId: " + userId);
+
+                       *//* Toast toast = Toast.makeText(getApplicationContext(), "Good to know your Name.Some information need to provide better result", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();*//*
+                        //Toast.makeText(getApplicationContext(), "Good to know your Name.Some information need to provide better result", Toast.LENGTH_LONG).show();
+
+
+                    } else {
+
+                        // Error occurred in registration. Get the error
+                        // message
+                        return;
+                      *//*  String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();*//*
+                    }
+             */       ///////////////////////////////
+
+
+
+
+
+
+
+
+/*
+
+                    else if (status=="failed"){
+                        response = jObj.getString("response");
+                        if(response=="Duplicate_Mail_ID") {
+                            AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
+
+                            // Setting Dialog Title
+                            alertDialog.setTitle("Registreation Error");
+
+                            // Setting Dialog Message
+                            alertDialog.setMessage("Email Id is already registered.");
+
+                            // Setting Icon to Dialog
+                            //  alertDialog.setIcon(R.drawable.tick);
+
+                            // Setting OK Button
+                            alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Write your code here to execute after dialog closed
+                                    // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            // Showing Alert Message
+                            alertDialog.show();
+
+                        }
+                        // Error occurred in registration. Get the error
+                        // message
+                        return;
+                      *//*  String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();*//*
+                    }*/
+
+
+
+
+
+                   /* else {
+
+                        // Error occurred in registration. Get the error
+                        // message
+                        return;
+                       *//*String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();*//*
+                    }*/
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
-                boolean status = false;
-                try {
-                    status = jObj.getBoolean("status");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                //boolean error = jObj.getBoolean("e623+rror");
-                //boolean status = false;
-               /* try {
-                    status = Boolean.parseBoolean(jObj.getString("status"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
-                String response = null;
-                try {
-                    response = jObj.getString("response");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (status) {
-                    // User successfully stored in MySQL
-                    // Now store the user in sqlite
-                    //String uid = jObj.getString("uid");
-
-
-
-                   // db.addUser(token, userId);
-                    //db.addUser(userId);
-                    // sending token & userId to signup
-                    Intent intent1 = new Intent(LogInActivity.this, MainActivity.class);
-                    intent1.putExtra("response", response);
-                    //intent1.putExtra("token", token);
-                    startActivity(intent1);
-                    Log.e(TAG, "response: " + response);
-                    //Log.e(TAG, "userId: " + userId);
-
-                   /* Toast toast = Toast.makeText(getApplicationContext(), "Good to know your Name.Some information need to provide better result", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();*/
-                    //Toast.makeText(getApplicationContext(), "Good to know your Name.Some information need to provide better result", Toast.LENGTH_LONG).show();
-
-
-               }
-                else {
-
-                    // Error occurred in registration. Get the error
-                    // message
-                    return;
-                    //String errorMsg = jObj.getString("error_msg");
-                    /*Toast.makeText(getApplicationContext(),
-                            errorMsg, Toast.LENGTH_LONG).show();
-*/                    }
 
             }
+
+
         }, new Response.ErrorListener() {
 
             @Override
@@ -338,6 +405,7 @@ public class LogInActivity extends AppCompatActivity {
                 //params.put("email", email);
                 // params.put("password", password);
                 //params.put("deviceId", deviceId);
+                // params.put("dob", dob );
 
 
                 return params;
@@ -349,5 +417,9 @@ public class LogInActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
+    private void launchMainScreen() {
+        startActivity(new Intent(LogInActivity.this, MainActivity.class));
+
+    }
 
 }

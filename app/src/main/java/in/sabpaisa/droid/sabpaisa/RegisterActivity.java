@@ -372,6 +372,7 @@ public class RegisterActivity extends AppCompatActivity {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("contactNumber", contactNumber);
+                
                 //params.put("email", email);
                 // params.put("password", password);
                 params.put("deviceId", deviceId);
