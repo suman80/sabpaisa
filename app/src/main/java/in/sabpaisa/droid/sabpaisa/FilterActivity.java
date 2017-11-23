@@ -12,15 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Random;
-
-import static java.security.AccessController.getContext;
 
 public class FilterActivity extends AppCompatActivity {
 
@@ -32,10 +28,12 @@ public class FilterActivity extends AppCompatActivity {
         final AppCompatCheckBox BankUser, PrivateUser;
         final LinearLayout BankClient, ClientSpinner, InstituteSpinner,HospitalSpinner;
         Button proceed = (Button)findViewById(R.id.proceed);
+        Button skip = (Button) findViewById(R.id.skip);
+
         final Spinner bankSpinner, clientSpinner,institutespinner, hospitalspinner;
 
         BankUser =    (AppCompatCheckBox) findViewById(R.id.rb_bankuser);
-        PrivateUser = (AppCompatCheckBox) findViewById(R.id.rbPrivate);
+        //PrivateUser = (AppCompatCheckBox) findViewById(R.id.rbPrivate);
 
         BankClient =      (LinearLayout) findViewById(R.id.llBankUser);
         ClientSpinner =   (LinearLayout)findViewById(R.id.llClientSpinner);
@@ -265,7 +263,7 @@ public class FilterActivity extends AppCompatActivity {
 
         });
 
-        BankUser.setOnClickListener(new View.OnClickListener() {
+       /* BankUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (PrivateUser.isChecked()) {
@@ -273,8 +271,8 @@ public class FilterActivity extends AppCompatActivity {
                     BankUser.setChecked(true);
                 }
             }
-        });
-        PrivateUser.setOnClickListener(new View.OnClickListener() {
+        });*/
+        /*PrivateUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (BankUser.isChecked()) {
@@ -282,16 +280,30 @@ public class FilterActivity extends AppCompatActivity {
                     PrivateUser.setChecked(true);
                 }
             }
+        });*/
+
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+             startActivity(new Intent(FilterActivity.this, MainActivitySkip.class));
+            }
         });
+
+
+
+
+
+
 
         proceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(BankUser.isChecked() && bankSpinner.getSelectedItemPosition()!=0 && clientSpinner.getSelectedItemPosition()!=0){
                     startActivity(new Intent(FilterActivity.this,MainActivity.class));
-                }else if (PrivateUser.isChecked()){
+                }/*else if (PrivateUser.isChecked()){
                     startActivity(new Intent(FilterActivity.this,MainActivity.class));
-                }
+                }*/
                 else
                 {
                     Toast.makeText(FilterActivity.this, "Select any Services", Toast.LENGTH_SHORT).show();

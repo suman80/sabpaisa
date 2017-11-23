@@ -2,13 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="in.sabpaisa.droid.sabpaisa">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.Manifest.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:name=".AppController"
@@ -19,57 +23,57 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LogInActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".VerifyMobile" />
         <activity android:name=".FilterActivity">
 
-       <!-- <intent-filter>
+
+            <!--
+        <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>-->
+        </intent-filter>
+            -->
 
         </activity>
+
         <activity android:name=".FeedDetails" />
+        <activity android:name=".MainActivitySkip" />
         <activity android:name=".GroupDetails" />
         <activity android:name=".RegisterPasscode" />
-
         <activity android:name=".SplashScreen">
-           <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-
-          <!--  <intent-filter>
+        <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-
+            </intent-filter>
+        -->
 
         <activity android:name=".MainActivity">
-          <!--  <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-
+            </intent-filter>
+            -->
 
         </activity>
-
-
-
-
         <activity android:name=".AccountInfoActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".SetmPIN" />
@@ -101,8 +105,6 @@
             android:name=".SendMoneyDialog"
             android:excludeFromRecents="true"
             android:theme="@style/DialogTheme" />
-
-
         <activity
             android:name=".SendMoneyAcIFSCDialog"
             android:excludeFromRecents="true"
@@ -115,7 +117,21 @@
             android:name=".TransactionResultDialog"
             android:excludeFromRecents="true"
             android:theme="@style/DialogTheme" />
+        <activity
+            android:name=".Util.ForgotActivity"
+            android:label="@string/title_activity_forgot"
+            android:theme="@style/AppTheme" />
 
+        <receiver android:name=".Util.SmsReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".Util.MainActivitySkip"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

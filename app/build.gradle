@@ -33,12 +33,16 @@ dependencies {
     /*Image Slider*/
     //    compile 'com.github.clans:fab:1.6.4'
     //    compile 'com.getbase:floatingactionbutton:1.10.1'
+    //
+    compile project(':OliveUpi_dcb_V1.10')
+    compile project(':secure-component-sdk')
+    compile project(':securecomponent')
+    compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'me.grantland:autofittextview:0.2.+'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
-    compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -49,9 +53,5 @@ dependencies {
     compile 'com.github.wangjiegulu:AndroidBucket:1.0.4'
     compile 'com.layer-net:step-indicator:1.1.0'
     testCompile 'junit:junit:4.12'
-    //
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
-    compile project(':OliveUpi_dcb_V1.10')
-    compile project(':secure-component-sdk')
-    compile project(':securecomponent')
 }
