@@ -8,21 +8,33 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:orientation="horizontal">
 
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+
+            />
+
         <!--TODO instituteLogo-->
-        <ImageView
+        <!--<ImageView
             android:id="@+id/iv_instituteLogo"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.8"
-            android:src="@drawable/coaicon" />
+            android:src="@drawable/coaicon" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.4"
+
             android:orientation="vertical">
 
             <!--TODO instituteName-->
@@ -37,16 +49,37 @@
                 android:id="@+id/tv_instituteLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:text="New Delhi" />
         </LinearLayout>
     </LinearLayout>
 
     <!--TODO institutePic-->
-    <ImageView
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/clinetbanner"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentLeft="true"
+        android:scaleType="fitXY"
+
+        />
+
+   <!-- <ImageView
         android:id="@+id/iv_institutePic"
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:src="@drawable/institude_architecture"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"/>-->
+
+
+    <!--<com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="8dp" />-->
+
+
 </LinearLayout>

@@ -44,6 +44,10 @@ public class Institution {
         this.relationship_type = relationship_type;
     }
 
+
+
+
+
     public String getOrgLogo() {
         return orgLogo;
     }

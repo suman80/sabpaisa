@@ -31,7 +31,9 @@ import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionSkipFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientSkipFragment;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
@@ -246,8 +248,8 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new InstitutionFragment(),"Clients");
-        adapter.addFragment(new OtherClientFragment(),"Other Clients");
+        adapter.addFragment(new InstitutionSkipFragment(),"Clients");
+        adapter.addFragment(new OtherClientSkipFragment(),"Other Clients");
         //adapter.addFragment(new FormFragment(),"Forms");
         //adapter.addFragment(new InstitutionFragment(),"Groups");
         viewPager.setAdapter(adapter);

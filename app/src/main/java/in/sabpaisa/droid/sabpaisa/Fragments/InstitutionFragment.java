@@ -83,28 +83,7 @@ public class InstitutionFragment extends Fragment {
                     try {
 
 
-                      /*  organizationId: 1,
-                                organization_name: "SRS",
-                                relationship_type: null,
-                                orgLogo: null,
-                                orgWal: null,
-                                orgAddress: null,
-                                orgDesc: null,
-                                conPersonName: null,
-                                conPersonMobNO: null,
-                                conPersonEmail: null,
-                                createdDate: 1511354799086
-                    },*/
-
-
-
-
-
-
-
-
-
-                        JSONObject obj =response.getJSONObject(i);
+                       JSONObject obj =response.getJSONObject(i);
                         Institution institution = new Institution();
                         institution.setOrganizationId(obj.getInt("organizationId"));
                         institution.setOrganization_name(obj.getString("organization_name"));

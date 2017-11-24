@@ -37,6 +37,7 @@ dependencies {
     compile project(':OliveUpi_dcb_V1.10')
     compile project(':secure-component-sdk')
     compile project(':securecomponent')
+    compile 'com.github.sharish:ShimmerRecyclerView:v1.0.1'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'me.grantland:autofittextview:0.2.+'

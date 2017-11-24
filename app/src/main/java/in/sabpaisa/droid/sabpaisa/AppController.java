@@ -5,12 +5,15 @@ import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+
+import in.sabpaisa.droid.sabpaisa.Util.LruBitmapCache;
 
 public class AppController extends Application {
 
     public static final String TAG = AppController.class.getSimpleName();
-
+    private ImageLoader mImageLoader;
     private RequestQueue mRequestQueue;
 
     private static AppController mInstance;
@@ -41,6 +44,15 @@ public class AppController extends Application {
     public <T> void addToRequestQueue(Request<T> req) {
         req.setTag(TAG);
         getRequestQueue().add(req);
+    }
+
+    public ImageLoader getImageLoader() {
+        getRequestQueue();
+        if (mImageLoader == null) {
+            mImageLoader = new ImageLoader(this.mRequestQueue,
+                    new LruBitmapCache());
+        }
+        return this.mImageLoader;
     }
 
     public void cancelPendingRequests(Object tag) {
