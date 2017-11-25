@@ -57,7 +57,7 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-        password = (EditText)findViewById(R.id.et_password);
+       // password = (EditText)findViewById(R.id.et_password);
         passwordShow = (TextView)findViewById(R.id.tv_password_show);
         forgotPassword = (TextView)findViewById(R.id.tv_forgot_password);
         et_phone_number = (EditText)findViewById(R.id.et_phone_number);
@@ -166,7 +166,7 @@ public class LogInActivity extends AppCompatActivity {
 
         //tv_register
 
-        passwordShow.setOnClickListener(new View.OnClickListener() {
+        /*passwordShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (passwordShow.getText().toString().equals("Show")){
@@ -178,7 +178,7 @@ public class LogInActivity extends AppCompatActivity {
                     password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
             }
-        });
+        });*/
     }
 
 
@@ -196,7 +196,7 @@ public class LogInActivity extends AppCompatActivity {
     }
     private void DataBinding() {
         //phoneNumber = (EditText)findViewById(R.id.et_phone_number);
-        password = (EditText)findViewById(R.id.et_password);
+        //password = (EditText)findViewById(R.id.et_password);
         passwordShow = (TextView)findViewById(R.id.tv_password_show);
         forgotPassword = (TextView)findViewById(R.id.tv_forgot_password);
         register = (TextView)findViewById(R.id.tv_register);

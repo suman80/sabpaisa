@@ -70,7 +70,7 @@
             android:inputType="phone"
             />
 
-
+<!--
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -101,7 +101,7 @@
                 android:drawableLeft="@drawable/ic_lock_black_24dp"
                 android:drawablePadding="10dp"
                 android:hint="@string/hint_password" />
-        </FrameLayout>
+        </FrameLayout>-->
 
         <TextView
             android:id="@+id/tv_forgot_password"

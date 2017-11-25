@@ -17,8 +17,6 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
@@ -28,20 +26,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
+import in.sabpaisa.droid.sabpaisa.Adapter.SkipMainClientsAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
-import in.sabpaisa.droid.sabpaisa.LogInActivity;
-import in.sabpaisa.droid.sabpaisa.Model.Institution;
+import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 
 
 public class InstitutionSkipFragment extends Fragment {
     private static final String TAG = InstitutionSkipFragment.class.getSimpleName();
     View rootView;
     RecyclerView recyclerViewInstitutions;
-    InstitutionAdapter institutionAdapter;
-    ArrayList<Institution> institutions;
+
+    SkipMainClientsAdapter skipMainClientsAdapter;
+    //InstitutionAdapter institutionAdapter;
+    ArrayList<SkipClientData> institutions;
 
     public InstitutionSkipFragment() {
 
@@ -62,16 +61,18 @@ public class InstitutionSkipFragment extends Fragment {
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),10));
         recyclerViewInstitutions.setLayoutManager(llm);
         institutions = new ArrayList<>();
-        institutionAdapter = new InstitutionAdapter(institutions);
-        recyclerViewInstitutions.setAdapter(institutionAdapter);
+        skipMainClientsAdapter =new SkipMainClientsAdapter(institutions);
+        //institutionAdapter = new InstitutionAdapter(institutions);
+        //recyclerViewInstitutions.setAdapter(institutionAdapter);
+        recyclerViewInstitutions.setAdapter(skipMainClientsAdapter);
 
         getClientsList();
-        /*Institution institution = new Institution("COA", "New Delhi");
+        /*SkipClientData institution = new SkipClientData("COA", "New Delhi");
         institutions.add(institution);
-        institutions.add(new Institution("COA", "New Delhi"));
-        institutions.add(new Institution("COA", "New Delhi"));
-        institutions.add(new Institution("COA", "New Delhi"));
-        institutions.add(new Institution("COA", "New Delhi"));*/
+        institutions.add(new SkipClientData("COA", "New Delhi"));
+        institutions.add(new SkipClientData("COA", "New Delhi"));
+        institutions.add(new SkipClientData("COA", "New Delhi"));
+        institutions.add(new SkipClientData("COA", "New Delhi"));*/
 
         return rootView;
     }
@@ -128,7 +129,7 @@ public class InstitutionSkipFragment extends Fragment {
                         //status = jObj.getString("status");
 
 
-                        Institution institution = new Institution();
+                        SkipClientData institution = new SkipClientData();
 
                         //institution.setOrganizationId(Integer.parseInt(jarr1.getString(Integer.parseInt("id"))));
                         institution.setOrganization_name(jsonObject.getString("clientName"));
@@ -139,7 +140,8 @@ public class InstitutionSkipFragment extends Fragment {
 
 
                         institutions.add(institution);
-                        institutionAdapter.notifyDataSetChanged();
+                        skipMainClientsAdapter.notifyDataSetChanged();
+                        //institutionAdapter.notifyDataSetChanged();
 
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -6,8 +6,16 @@ package in.sabpaisa.droid.sabpaisa.Model;
 
 
 
-public class Institution {
 
+
+
+
+
+/**
+ * Created by abc on 15-06-2017.
+ */
+
+public class InstitutionSkip {
     int organizationId;
     String organization_name;
     String relationship_type;
@@ -20,7 +28,7 @@ public class Institution {
     String conPersonEmail;
     Long createdDate;
 
-    public Institution() {
+    public InstitutionSkip() {
     }
 
     public int getOrganizationId() {
@@ -46,6 +54,10 @@ public class Institution {
     public void setRelationship_type(String relationship_type) {
         this.relationship_type = relationship_type;
     }
+
+
+
+
 
     public String getOrgLogo() {
         return orgLogo;

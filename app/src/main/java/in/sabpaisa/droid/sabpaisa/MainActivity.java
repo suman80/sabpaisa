@@ -1,5 +1,8 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.SharedPreferences;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +41,8 @@ import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
+import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 
@@ -59,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
+    Bundle bundle;
+    String stateName,serviceName;
+    public  static  String MYSHAREDPREF="mySharedPref";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +111,21 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
         mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
+
+        stateName=getIntent().getStringExtra("STATENAME");
+        serviceName=getIntent().getStringExtra("SERVICENAME");
+
+        Log.d("stateName11111"," "+stateName);
+        Log.d("serviceName1111"," "+serviceName);
+
+        SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREF,MODE_PRIVATE).edit();
+        editor.putString("STATENAME",stateName);
+        editor.putString("SERVICENAME",serviceName);
+        editor.commit();
+
+//        bundle.putString("STATENAME",stateName);
+//        bundle.putString("SERVICENAME",serviceName);
+
 
         LoadHeaderImageList();
 
@@ -166,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         /*fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
             }
         });*/
     }
@@ -251,11 +275,24 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
 
     private void setupViewPager(ViewPager viewPager) {
+
+
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new InstitutionFragment(),"Institutions");
-        adapter.addFragment(new FormFragment(),"Forms");
-        adapter.addFragment(new InstitutionFragment(),"Groups");
+        adapter.addFragment(new ProceedInstitiutionFragment(),"Clients");
+        adapter.addFragment(new FormFragment(),"Other Clients");
+        //adapter.addFragment(new InstitutionFragment(),"Groups");
         viewPager.setAdapter(adapter);
+        stateName=getIntent().getStringExtra("STATENAME");
+        serviceName=getIntent().getStringExtra("SERVICENAME");
+
+        FragmentManager in=getSupportFragmentManager();
+        Fragment instituteFragment=new InstitutionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("stateName", stateName);
+        bundle.putString("serviceName",serviceName);
+        instituteFragment.setArguments(bundle);
+        //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
+
     }
 
     private void setHeaderImageList() {

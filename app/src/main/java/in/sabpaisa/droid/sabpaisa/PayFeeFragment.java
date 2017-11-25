@@ -58,7 +58,7 @@ public  class PayFeeFragment extends Fragment {
 
         serviceTxt.setText("Service");
         stateTxt.setText("State Name");
-        institudeTxt.setText("Institution Name");
+        institudeTxt.setText("SkipClientData Name");
 
         ArrayList<String> services = new ArrayList<>();
         ArrayList<String> states = new ArrayList<>();

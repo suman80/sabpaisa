@@ -34,6 +34,7 @@ dependencies {
     //    compile 'com.github.clans:fab:1.6.4'
     //    compile 'com.getbase:floatingactionbutton:1.10.1'
     //
+    compile 'com.github.chrisbanes:PhotoView:2.1.2'
     compile project(':OliveUpi_dcb_V1.10')
     compile project(':secure-component-sdk')
     compile project(':securecomponent')

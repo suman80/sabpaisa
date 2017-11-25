@@ -50,9 +50,9 @@ public class FormFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new PayFeeFragment(), "Pay Fee");
-        adapter.addFragment(new ApplicationNoFragment(), "Application No.");
-        adapter.addFragment(new BanksFragment(),"Banks");
+        //adapter.addFragment(new PayFeeFragment(), "Pay Fee");
+        //adapter.addFragment(new ApplicationNoFragment(), "Application No.");
+        //adapter.addFragment(new BanksFragment(),"Banks");
         viewPager.setAdapter(adapter);
     }
 

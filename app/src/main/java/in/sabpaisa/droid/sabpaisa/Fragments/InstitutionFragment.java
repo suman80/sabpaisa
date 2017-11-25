@@ -39,9 +39,15 @@ public class InstitutionFragment extends Fragment {
     InstitutionAdapter institutionAdapter;
     ArrayList<Institution> institutions;
 
+
+
+    String stateName,serviceName;
+
     public InstitutionFragment() {
 
     }
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +67,14 @@ public class InstitutionFragment extends Fragment {
         institutionAdapter = new InstitutionAdapter(institutions);
         recyclerViewInstitutions.setAdapter(institutionAdapter);
 
+        /*stateName=getArguments().getString("STATE_NAME");
+        serviceName=getArguments().getString("SERVICE_NAME");
+
+        Log.d("stateName"," "+stateName);
+        Log.d("serviceName"," "+serviceName);*/
+
+
+
         getClientsList();
         /*Institution institution = new Institution("COA", "New Delhi");
         institutions.add(institution);
@@ -68,7 +82,15 @@ public class InstitutionFragment extends Fragment {
         institutions.add(new Institution("COA", "New Delhi"));
         institutions.add(new Institution("COA", "New Delhi"));
         institutions.add(new Institution("COA", "New Delhi"));*/
+        Bundle arguments = getArguments();
+        if(arguments==null)
+        {
 
+        }
+        else {
+            stateName = getArguments().getString("stateName");
+            serviceName = getArguments().getString("serviceName");
+        }
         return rootView;
     }
 
@@ -83,7 +105,7 @@ public class InstitutionFragment extends Fragment {
                     try {
 
 
-                       JSONObject obj =response.getJSONObject(i);
+                        JSONObject obj =response.getJSONObject(i);
                         Institution institution = new Institution();
                         institution.setOrganizationId(obj.getInt("organizationId"));
                         institution.setOrganization_name(obj.getString("organization_name"));

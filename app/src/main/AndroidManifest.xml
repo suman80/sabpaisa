@@ -42,7 +42,7 @@
             -->
 
         </activity>
-
+        <activity android:name=".Util.SkipClientDetailsScreen" />
         <activity android:name=".FeedDetails" />
         <activity android:name=".MainActivitySkip" />
         <activity android:name=".GroupDetails" />

@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.SavedUPIAdapter;
-import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.SavedUPI;
 import in.sabpaisa.droid.sabpaisa.R;
 

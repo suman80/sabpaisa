@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_behavior="neeraj_sabpaisa.com.coa.util.FlingBehavior">
+        app:layout_behavior="in.sabpaisa.droid.sabpaisa.Util.FlingBehavior">
 
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -35,18 +35,32 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <com.android.volley.toolbox.NetworkImageView
+                        android:id="@+id/iv_feedImage"
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:scaleType="fitXY"
+
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+
+
+                        />
+
+
+<!--
+                    <ImageVie
                         android:layout_width="100dp"
                         android:layout_height="46dp"
-                        android:background="@drawable/coaicon" />
+                        android:background="@drawable/coaicon" />-->
 
-                    <TextView
+                  <!--  <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="Council of Architecture"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_small" />
+                        android:textSize="@dimen/text_size_small" />-->
                 </LinearLayout>
 
                 <LinearLayout
@@ -63,13 +77,27 @@
                         android:textColor="@color/bg_title"
                         android:textSize="@dimen/text_size_small" />
 
-                    <TextView
+                    <com.android.volley.toolbox.NetworkImageView
+                        android:id="@+id/group_created_date_details"
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:scaleType="fitXY"
+
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+
+
+                        />
+
+
+
+                  <!--  <TextView
                         android:id="@+id/group_created_date_details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="7th June"
                         android:textColor="@color/bg_text_color"
-                        android:textSize="@dimen/text_size_xsmall" />
+                        android:textSize="@dimen/text_size_xsmall" />-->
                 </LinearLayout>
 
                 <LinearLayout
@@ -86,13 +114,26 @@
                         android:textColor="@color/bg_text_color"
                         android:textSize="@dimen/text_size_xsmall" />
 
-                    <ImageView
+                  <!--  <ImageView
                         android:id="@+id/iv_feedImage"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:scaleType="fitXY"
 
-                        android:src="@drawable/default1" />
+                        android:src="@drawable/default1" />-->
+<!--
+                    <com.android.volley.toolbox.NetworkImageView
+                        android:id="@+id/iv_feedImage"
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:scaleType="fitXY"
+
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+
+
+                        />-->
+
                 </LinearLayout>
             </LinearLayout>
 

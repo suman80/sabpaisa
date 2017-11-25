@@ -1,9 +1,11 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -27,24 +29,33 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.CommentAdapter;
 import in.sabpaisa.droid.sabpaisa.CommentData;
 import in.sabpaisa.droid.sabpaisa.FeedDetails;
+import in.sabpaisa.droid.sabpaisa.Model.*;
+import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.R;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.CommentAdapterDatabase;
@@ -53,7 +64,9 @@ import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 
 /*implements SwipeRefreshLayout.OnRefreshListener*/
 public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
-    String FeedId,FeedName,FeedDesc,FeedTime,FeedImage;
+    ArrayList<SkipClientData> institutions;
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+    String FeedId,FeedName,FeedDesc,FeedTime,FeedImage,clientName,state,clientImagePath,clientLogoPath;
     TextView feedDeatilsTextView, feedNameTextView,feedTime;
     ImageView feedImage;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -88,26 +101,38 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
         mCollapsingToolbarLayout.setTitleEnabled(false);
         Intent intent = getIntent();
 
-        FeedId = intent.getStringExtra("FeedId");
-        FeedName = intent.getStringExtra("FeedName");
-        FeedDesc = intent.getStringExtra("FeedDeatils");
-        FeedTime = intent.getStringExtra("FeedTime");
-        FeedImage = intent.getStringExtra("FeedImage");
 
-        feedNameTextView = (TextView) findViewById(R.id.group_name_details);
 
-        feedDeatilsTextView = (TextView) findViewById(R.id.group_description_details);
-        feedTime = (TextView)findViewById(R.id.group_created_date_details);
-        feedImage = (ImageView)findViewById(R.id.iv_feedImage);
+
+        clientName = intent.getStringExtra("clientName");
+        state = intent.getStringExtra("state");
+        //FeedDesc = intent.getStringExtra("FeedDeatils");
+        clientImagePath= getIntent().getStringExtra("clientImagePath");
+        clientLogoPath = getIntent().getStringExtra("clientLogoPath");
+
+
+         TextView clientNameTextView = (TextView) findViewById(R.id.group_name_details);
+
+        TextView stateTextView = (TextView) findViewById(R.id.group_description_details);
+
+         NetworkImageView clientImagePath = (NetworkImageView)findViewById(R.id.iv_feedImage);
+        ImageView clientLogoPath  = (ImageView)findViewById(R.id.group_created_date_details);
+
+
+
 
 //       callFeedDeatilsByFeedId();
-        feedNameTextView.setText(FeedName);
-        feedDeatilsTextView.setText(FeedDesc);
-        feedTime.setText(FeedTime);
+        clientNameTextView.setText( clientName);
+        stateTextView.setText(state);
+        clientImagePath.setImageUrl(String.valueOf(clientImagePath), imageLoader);
 
-        byte[] imgData = Base64.decode(FeedImage,Base64.DEFAULT);
+
+//        feedTime.setText(FeedTime);
+        //clientImagePath.setImageResource(R.drawable.group);
+        //clientLogoPath.setImageUrl(R.id.);
+       /* byte[] imgData = Base64.decode(FeedImage,Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(imgData, 0, imgData.length);
-        feedImage.setImageBitmap(bmp);
+        feedImage.setImageBitmap(bmp);*/
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -134,10 +159,13 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
                 .setLoadingListItemCreator(new CustomLoadingListItemCreator())
                 .build();*/
         currentPage=1;
-        loadComments(0);
+        //loadComments();
     }
-    private void loadComments(final int i) {
-        String urlJsonObj = AppConfiguration.MAIN_URL + "/getFeedsComments/" + FeedId + "/"+i + "/0";
+
+
+
+    private void loadComments(final String feed_id,final  String userAccessToken, final String comment_text) {
+        String urlJsonObj = AppConfig.SAb_Api + "/getFeedsComments/" + "feed_id=1";
         final JsonArrayRequest request = new JsonArrayRequest(urlJsonObj, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -146,9 +174,9 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
                     swipeRefreshLayout.setRefreshing(false);
                     progressBar.setVisibility(View.GONE);
                     final ArrayList<CommentData> commentArrayList = new ArrayList<CommentData>();
-                    if (i!=0) {
+                    /*if (i!=0) {
                         ca.removeLoadingFooter();
-                    }
+                    }*/
                     for (int i = 0; i < response.length(); i++) {
                         totalComments++;
                         JSONObject colorObj = response.getJSONObject(i);
@@ -167,20 +195,20 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
                         commentArrayList.add(groupData);
 
                     }
-//                    loadCommentListView(commentArrayList);
+                    loadCommentListView(commentArrayList);
                     ca.addAll(commentArrayList);
                     if (commentArrayList.size() == 10)
                         ca.addLoadingFooter();
-                    else {
+                    /*else {
                         isLastPage = true;
                         int j;
                         for (j=0;j<commentArrayList.size();j++){
                         }
                         lastCommentId= commentArrayList.get(j-1).getCommentId();
 //                        ca.removeLoadingFooter();
-                    }
+                    }*/
 
-                    nestedScroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                   /* nestedScroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
                         @Override
                         public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                             if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
@@ -192,12 +220,12 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
                                     }
                                     int lastId = commentArrayList.get(i-1).getCommentId();
 //                                    currentPage += 1;
-                                    loadComments(lastId);
+                                    loadComments(String.valueOf(1));
 //                                    loadNextPage(getCommentList(dbHelper, currentPage));
                                 }
                             }
                         }
-                    });
+                    });*/
                 }
                 // Try and catch are included to handle any errors due to JSON
                 catch (JSONException e) {
@@ -210,7 +238,25 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
             public void onErrorResponse(VolleyError error) {
 
             }
-        });
+        }) {
+
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("feed_id", feed_id);
+                params.put("userAccessToken", userAccessToken);
+                params.put("comment_text",comment_text);
+
+
+                return params;
+            }
+
+
+        };
+
+
         AppController.getInstance().addToRequestQueue(request);
     }
 
@@ -229,9 +275,9 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
         }
     }
 
-    public void callGetCommentList(final int lastSeqId) {
+    public void callGetCommentList(final String feed_id) {
 
-        String urlJsonObj = AppConfiguration.MAIN_URL + "/getFeedsComments/" + FeedId + "/"+lastSeqId;
+        String urlJsonObj = AppConfig.SAb_Api + "/getFeedsComments/" + "feed_id=1";
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
         // Creating the JsonArrayRequest class called arrayreq, passing the required parameters
         //JsonURL is the URL to be fetched from
@@ -243,12 +289,12 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
                     // Takes the response from the JSON request
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.wtf("FeedResponse",response.toString());
+                        Log.wtf("FeedResponse", response.toString());
                         try {
                             swipeRefreshLayout.setRefreshing(false);
 
-                            if (response.length()<10){
-                                loadMore=false;
+                            if (response.length() < 10) {
+                                loadMore = false;
                             }
                             int i;
                             for (i = 0; i < response.length(); i++) {
@@ -262,8 +308,8 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
                                 commentArrayList.add(groupData);
                                 lastSeq = colorObj.getInt("commentId");
                             }
-                            ca.notifyItemChanged(commentArrayList.size()-1);
-                            rv.scrollToPosition(commentArrayList.size()-1);
+                            ca.notifyItemChanged(commentArrayList.size() - 1);
+                            rv.scrollToPosition(commentArrayList.size() - 1);
                             totalComments++;
 //                            loadCommentListView(commentArrayList);
 
@@ -285,12 +331,29 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
 //                        callGroupDataList(listClick, GropuName);
                         Log.e("CommentData ", "CommentData Error");
                     }
-                }
-        );
+
+                })
+
+
+        {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("feed_id", feed_id);
+
+
+                return params;
+            }
+
+
+        };
+
 //        // Adds the JSON array request "arrayreq" to the request queue
         AppController.getInstance().addToRequestQueue(arrayreq);
 
-    }
+        }
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
@@ -312,10 +375,10 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
     }
 
     private void callCommentService(final String commentText) {
-        String urlJsonObj = AppConfiguration.MAIN_URL + "/addCommentsToFeedByUser/" +
-                FeedId + "/" + 23 + "/" + commentText;
+        String urlJsonObj = AppConfig.SAb_Api + "/addFeedsComments/" +
+                "feed_id=1" + "/" + "userAccessToken=47DCC2AB8F1FEE94182E4426522C85D127A37404BE91FF13979B5DED7934EB49"+ "/" + "commentText=hi";
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -361,7 +424,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
 
     private void loadlatestComment() {
         ca.cleanUpAdapter();
-        loadComments(0);
+        //loadComments(String.valueOf(1));
     }
 
     private void hidepDialog() {
@@ -382,7 +445,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
     @Override
     public void onRefresh() {
         ca.cleanUpAdapter();
-        loadComments(0);
+//        loadComments(String.valueOf(1));
     }
     /*End onRefresh() for SwipeRefreshLayout*/
 }

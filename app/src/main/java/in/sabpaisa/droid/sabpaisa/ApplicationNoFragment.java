@@ -56,7 +56,7 @@ public class ApplicationNoFragment extends Fragment {
 
         serviceTxt.setText("Client");
     //    stateTxt.setText("State Name");
-      //  institudeTxt.setText("Institution Name");
+      //  institudeTxt.setText("SkipClientData Name");
 
         ArrayList<String> services = new ArrayList<>();
   //      ArrayList<String> states = new ArrayList<>();

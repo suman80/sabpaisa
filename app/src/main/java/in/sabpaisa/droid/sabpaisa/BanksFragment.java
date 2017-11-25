@@ -55,7 +55,7 @@ public class BanksFragment  extends Fragment {
 
         serviceTxt.setText("WhiteLabel Banks");
         //    stateTxt.setText("State Name");
-        //  institudeTxt.setText("Institution Name");
+        //  institudeTxt.setText("SkipClientData Name");
 
         ArrayList<String> services = new ArrayList<>();
         //      ArrayList<String> states = new ArrayList<>();
