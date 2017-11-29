@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -34,6 +35,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,19 +63,24 @@ import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Adapter.CommentAdapterDatabase;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 
+//This Activity has rolled back
 
 /*implements SwipeRefreshLayout.OnRefreshListener*/
+
 public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
     ArrayList<SkipClientData> institutions;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-    String FeedId,FeedName,FeedDesc,FeedTime,FeedImage,clientName,state,clientImagePath,clientLogoPath;
+    String FeedId,FeedName,FeedDesc,FeedTime,FeedImage,clientName,state;
+    public static String clientImageURLPath=null;
+    public static String clientLogoURLPath=null;
     TextView feedDeatilsTextView, feedNameTextView,feedTime;
-    ImageView feedImage;
+    ImageView feedImage,clientImagePath,clientLogoPath;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     SwipeRefreshLayout swipeRefreshLayout;
     EditText commentadd = null;
     ProgressDialog loading = null;
     ArrayList<CommentData> commentArrayList;
+    /////////////////////////
     int lastSeq=0;
     boolean loadMore=true;
     ShimmerRecyclerView rv;
@@ -87,7 +94,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
     // If current page is the last page (Pagination will stop after this page load)
     private boolean isLastPage = false;
     private int currentPage = 1;
-///////testRajDeep///////////
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,16 +114,18 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
         clientName = intent.getStringExtra("clientName");
         state = intent.getStringExtra("state");
         //FeedDesc = intent.getStringExtra("FeedDeatils");
-        clientImagePath= getIntent().getStringExtra("clientImagePath");
-        clientLogoPath = getIntent().getStringExtra("clientLogoPath");
+        clientImageURLPath= getIntent().getStringExtra("clientImagePath");
+        clientLogoURLPath = getIntent().getStringExtra("clientLogoPath");
 
+        Log.d("clientImagePath",""+clientImageURLPath);
+        Log.d("clientLogoPath",""+clientLogoURLPath);
 
-         TextView clientNameTextView = (TextView) findViewById(R.id.group_name_details);
+        TextView clientNameTextView = (TextView) findViewById(R.id.particular_client_name);
 
-        TextView stateTextView = (TextView) findViewById(R.id.group_description_details);
+        TextView stateTextView = (TextView) findViewById(R.id.particular_client_address);
 
-         NetworkImageView clientImagePath = (NetworkImageView)findViewById(R.id.iv_feedImage);
-        ImageView clientLogoPath  = (ImageView)findViewById(R.id.group_created_date_details);
+        clientImagePath = (ImageView)findViewById(R.id.particular_client_image);
+        clientLogoPath  = (ImageView)findViewById(R.id.particular_client_logo);
 
 
 
@@ -124,8 +133,10 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
 //       callFeedDeatilsByFeedId();
         clientNameTextView.setText( clientName);
         stateTextView.setText(state);
-        clientImagePath.setImageUrl(String.valueOf(clientImagePath), imageLoader);
+        new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
 
+        /*clientImagePath.setImageUrl(""+(clientImagePath), imageLoader);
+        clientLogoPath.setImageUrl(""+(clientImagePath),imageLoader);*/
 
 //        feedTime.setText(FeedTime);
         //clientImagePath.setImageResource(R.drawable.group);
@@ -160,6 +171,41 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
                 .build();*/
         currentPage=1;
         //loadComments();
+    }
+
+
+    //Code for fetching image from server
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            loading.show();
+        }
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            //loading.dismiss();
+        }
+
     }
 
 
@@ -353,7 +399,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
 //        // Adds the JSON array request "arrayreq" to the request queue
         AppController.getInstance().addToRequestQueue(arrayreq);
 
-        }
+    }
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);

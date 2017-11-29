@@ -1,3 +1,4 @@
+<!--XML has rolled back-->
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,41 +28,6 @@
                 android:background="@color/white"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/coa_campush_img"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/iv_feedImage"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
-                        android:scaleType="fitXY"
-
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-
-
-                        />
-
-
-<!--
-                    <ImageVie
-                        android:layout_width="100dp"
-                        android:layout_height="46dp"
-                        android:background="@drawable/coaicon" />-->
-
-                  <!--  <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Council of Architecture"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_small" />-->
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -70,71 +36,47 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/group_name_details"
+                        android:id="@+id/particular_client_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Feed Name"
                         android:textColor="@color/bg_title"
                         android:textSize="@dimen/text_size_small" />
 
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/group_created_date_details"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
-                        android:scaleType="fitXY"
-
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-
-
-                        />
 
 
 
-                  <!--  <TextView
-                        android:id="@+id/group_created_date_details"
+
+                    <TextView
+                        android:id="@+id/particular_client_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="7th June"
                         android:textColor="@color/bg_text_color"
-                        android:textSize="@dimen/text_size_xsmall" />-->
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/group_description_details"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="@string/message"
-                        android:textColor="@color/bg_text_color"
                         android:textSize="@dimen/text_size_xsmall" />
 
-                  <!--  <ImageView
-                        android:id="@+id/iv_feedImage"
+
+                    <ImageView
+                        android:id="@+id/particular_client_logo"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_height="match_parent"
                         android:scaleType="fitXY"
+                        />
 
-                        android:src="@drawable/default1" />-->
-<!--
-                    <com.android.volley.toolbox.NetworkImageView
-                        android:id="@+id/iv_feedImage"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
+
+
+                    <ImageView
+                        android:id="@+id/particular_client_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
                         android:scaleType="fitXY"
-
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        />
 
 
-                        />-->
 
                 </LinearLayout>
+
+
             </LinearLayout>
 
 
@@ -177,15 +119,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/comment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:gravity="center"
-                    android:text="Comments"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_normal" />
+                <!-- <TextView
+                     android:id="@+id/comment"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_margin="5dp"
+                     android:gravity="center"
+                     android:text="Comments"
+                     android:textColor="@color/black"
+                     android:textSize="@dimen/text_size_normal" />-->
 
 
                 <!--<com.dinuscxj.refresh.RecyclerRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
