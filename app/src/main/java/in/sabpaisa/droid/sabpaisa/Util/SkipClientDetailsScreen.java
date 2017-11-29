@@ -87,7 +87,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
     // If current page is the last page (Pagination will stop after this page load)
     private boolean isLastPage = false;
     private int currentPage = 1;
-///////testRajDeep
+///////testRajDeep///////////
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
