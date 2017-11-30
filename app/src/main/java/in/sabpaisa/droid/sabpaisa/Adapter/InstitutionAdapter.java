@@ -19,6 +19,7 @@ import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.COA;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 import static android.graphics.drawable.Icon.createWithContentUri;
 
@@ -48,7 +49,7 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
 
 
 
-        Institution mainFeedData = institutions.get(position);
+        final Institution mainFeedData = institutions.get(position);
         holder.instituteName.setText(mainFeedData.getOrganization_name());
         holder.instituteLocation.setText(mainFeedData.getOrgAddress());
         //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
@@ -59,22 +60,52 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), COA.class);
+                Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
+                intent.putExtra("clientName", mainFeedData.getOrganization_name());
+                intent.putExtra("state", mainFeedData.getOrgAddress());
+                intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
+                intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
+                //intent.putExtra("FeedImage",mainFeedData.getFeedImage());
                 v.getContext().startActivity(intent);
             }
         });
         holder.instituteLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), COA.class);
+                Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
                 v.getContext().startActivity(intent);
+                intent.putExtra("clientName", mainFeedData.getOrganization_name());
+                intent.putExtra("state", mainFeedData.getOrgAddress());
+                intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
+                intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
+                //intent.putExtra("FeedImage",mainFeedData.getFeedImage());
             }
         });
         holder.instituteName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), COA.class);
+                Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
+                intent.putExtra("clientName", mainFeedData.getOrganization_name());
+                intent.putExtra("state", mainFeedData.getOrgAddress());
+                intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
+                intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
+                //intent.putExtra("FeedImage",mainFeedData.getFeedImage());
+
                 v.getContext().startActivity(intent);
+            }
+        });
+        holder.clinetbanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
+                intent.putExtra("clientName", mainFeedData.getOrganization_name());
+                intent.putExtra("state", mainFeedData.getOrgAddress());
+                intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
+                intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
+                //intent.putExtra("FeedImage",mainFeedData.getFeedImage());
+
+                v.getContext().startActivity(intent);
+
             }
         });
     }
