@@ -134,6 +134,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
         clientNameTextView.setText( clientName);
         stateTextView.setText(state);
         new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
+        //new DownloadLogoTask(clientLogoPath).execute(clientLogoURLPath);
 
         /*clientImagePath.setImageUrl(""+(clientImagePath), imageLoader);
         clientLogoPath.setImageUrl(""+(clientImagePath),imageLoader);*/
@@ -185,6 +186,40 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
         }
 
         public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            //loading.dismiss();
+        }
+
+    }
+
+    //Code for fetching image from server
+    private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            loading.show();
+        }
+
+        public DownloadLogoTask(ImageView bmImage) {
             this.bmImage = bmImage;
         }
 
