@@ -87,7 +87,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        callFeedDataList();
+       // callFeedDataList();
         return rootView;
     }
 
@@ -127,7 +127,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
                         catch (JSONException e) {
                             // If an error occurs, this prints the error to the log
                             e.printStackTrace();
-                            callFeedDataList();
+                            //callFeedDataList();
                         }
                     }
                 },
@@ -138,7 +138,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        callFeedDataList();
+                        //callFeedDataList();
                         Log.e("Feed", "FeedError");
                     }
                 }
@@ -177,7 +177,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
     /*START onRefresh() for SwipeRefreshLayout*/
     @Override
     public void onRefresh() {
-        callFeedDataList();
+        //callFeedDataList();
     }
 
     public interface GetDataInterface {

@@ -19,7 +19,7 @@
 
 
             <in.sabpaisa.droid.sabpaisa.Util.CustomViewPager
-                android:id="@+id/viewpager"
+                android:id="@+id/viewpagerproceed"
                 android:layout_marginTop="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="651dp"

@@ -14,18 +14,24 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
+import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FeedsFragments;
 import in.sabpaisa.droid.sabpaisa.FormFragment;
+//import in.sabpaisa.droid.sabpaisa.Fragments.FeedFragments1;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
+import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.GroupsFragments;
+import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.PayFeeFragment;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.R;
 
-public class FullViewOfClientsProceed extends AppCompatActivity {
+public class FullViewOfClientsProceed extends AppCompatActivity implements OnFragmentInteractionListener{
     ImageView clientImagePath;
     String clientName,state;
     public static String clientImageURLPath=null;
@@ -39,14 +45,13 @@ public class FullViewOfClientsProceed extends AppCompatActivity {
         setContentView(R.layout.activity_full_view_of_clients_proceed2);
 
 
-/*
 
-        viewPager = (CustomViewPager) findViewById(R.id.viewpager);
+
+        viewPager = (CustomViewPager) findViewById(R.id.viewpagerproceed);
         setupViewPager(viewPager);
         viewPager.disableScroll(true);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-*/
 
         Intent intent = getIntent();
 
@@ -71,6 +76,22 @@ public class FullViewOfClientsProceed extends AppCompatActivity {
         startActivity(a);
 
     }
+
+    @Override
+    public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
+
+    }
+
+    @Override
+    public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
+
+    }
+
+    @Override
+    public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
+
+    }
+
     //Code for fetching image from server
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -100,28 +121,25 @@ public class FullViewOfClientsProceed extends AppCompatActivity {
 
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
+
             //loading.dismiss();
         }
 
     }
 
-   /* private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager) {
 
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FeedsFragments(),"Feeds");
-        adapter.addFragment(new GroupsFragments(),"Groups");
-        adapter.addFragment(new PayFragments(),"Make Payment");
-        //adapter.addFragment(new InstitutionFragment(),"Groups");
+      //  adapter.addFragment(new FeedFragments1(),"Feeds");
+        //adapter.addFragment(new GroupsFragments(),"Groups");
+        //adapter.addFragment(new PayFragments(),"Make Payment");
         viewPager.setAdapter(adapter);
 
 
-        ;
-
-      ;
         //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
 
     }
-*/
+
 
 }
