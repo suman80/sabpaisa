@@ -28,8 +28,10 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
-            android:background="@android:color/transparent"
+            android:background="@android:color/black"
             android:gravity="center"
+            android:textColor="#FF0000"
+
             android:spinnerMode="dropdown" />
 
         <ImageView
