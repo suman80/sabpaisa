@@ -13,6 +13,8 @@ import android.provider.Settings;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -113,6 +115,28 @@ public class RegisterActivity extends AppCompatActivity {
         //pDialog = new ProgressDialog(this);
         //pDialog.setCancelable(false);
 
+//Code Added for visible and invisible of send_Otp
+        et_phone_number.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (s.toString().trim().length()<9){
+                    send_Otp.setVisibility(View.INVISIBLE);
+                }else {
+                    send_Otp.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
 
         send_Otp.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +190,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //      String id = emailid.getText().toString();
+
                 String contactNumber =  et_phone_number.getText().toString();
                 String fullName = et_FullName.getText().toString();
 
@@ -174,7 +199,7 @@ public class RegisterActivity extends AppCompatActivity {
                // String otp =  et_otp.getText().toString();
                 String password =   et_password.getText().toString();
 
-                if ((contactNumber.length() == 0) ||(contactNumber.length()<10) ){
+                if ((contactNumber.length() == 0) ||(contactNumber.length()<10)){
 
                     et_phone_number.setError("Please make sure that You have entered 10 digit number ");
 
@@ -198,8 +223,6 @@ public class RegisterActivity extends AppCompatActivity {
                 {
                     registerUser(contactNumber,fullName,password,deviceId);
                     //launchAgeScreen();
-
-
 
                 }
 
@@ -250,7 +273,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-    private void veryfiOTP(String number, String otp) {
+    private void veryfiOTP(final String number, String otp) {
         String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/verifyOtp?otp="+otp+"&mobile_no="+ number;
 
         //   progressBarShow();
@@ -273,7 +296,7 @@ public class RegisterActivity extends AppCompatActivity {
                         //launchAgeScreen();
                         //callUINVarificationScreen();
                         //Toast.makeText(OTPVarify.this, "OTP Verified ", Toast.LENGTH_LONG).show();
-                        loading.cancel();
+
 
                     } else if (status.equals("failure")) {
                         // Toast.makeText(OTPVarify.this, "Unable To send OTP varify", Toast.LENGTH_LONG).show();
