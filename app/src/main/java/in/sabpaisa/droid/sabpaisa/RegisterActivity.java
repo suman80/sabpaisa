@@ -13,6 +13,8 @@ import android.provider.Settings;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -113,6 +115,28 @@ public class RegisterActivity extends AppCompatActivity {
         //pDialog = new ProgressDialog(this);
         //pDialog.setCancelable(false);
 
+//Code Added for visible and invisible of send_Otp
+        et_phone_number.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (s.toString().trim().length()<9){
+                    send_Otp.setVisibility(View.INVISIBLE);
+                }else {
+                    send_Otp.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
 
         send_Otp.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +190,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //      String id = emailid.getText().toString();
+
                 String contactNumber =  et_phone_number.getText().toString();
                 String fullName = et_FullName.getText().toString();
 
@@ -174,13 +199,13 @@ public class RegisterActivity extends AppCompatActivity {
                // String otp =  et_otp.getText().toString();
                 String password =   et_password.getText().toString();
 
-
-                if ((contactNumber.length() == 0) ||(contactNumber.length()<10)) {
+                if ((contactNumber.length() == 0) ||(contactNumber.length()<10)){
 
                     et_phone_number.setError("Please make sure that You have entered 10 digit number ");
 
                 }
-             else   if (fullName.length() == 0) {
+
+                else   if (fullName.length() == 0) {
 
                     et_FullName.setError("Please Enter your Name");
 
@@ -192,12 +217,12 @@ public class RegisterActivity extends AppCompatActivity {
 
                 }
 
+
+
                 else if(isOnline())
                 {
                     registerUser(contactNumber,fullName,password,deviceId);
                     //launchAgeScreen();
-
-
 
                 }
 
@@ -248,8 +273,8 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-    private void veryfiOTP(String number, String otp) {
-        String urlJsonObj = "http://192.168.0.49:8089/sabPaisaApp/verifyOtp?otp="+otp+"&mobile_no="+ number;
+    private void veryfiOTP(final String number, String otp) {
+        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/verifyOtp?otp="+otp+"&mobile_no="+ number;
 
         //   progressBarShow();
 
@@ -268,9 +293,11 @@ public class RegisterActivity extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("success")) {
                         //SharedPref.putBoolean(RegisterActivity.this, AppConfiguration.OPT_VARIFICATION, true);
-                        launchAgeScreen();
+                        //launchAgeScreen();
                         //callUINVarificationScreen();
                         //Toast.makeText(OTPVarify.this, "OTP Verified ", Toast.LENGTH_LONG).show();
+
+
                     } else if (status.equals("failure")) {
                         // Toast.makeText(OTPVarify.this, "Unable To send OTP varify", Toast.LENGTH_LONG).show();
                         // Error occurred in registration. Get the error
@@ -369,12 +396,12 @@ public class RegisterActivity extends AppCompatActivity {
     private void sendOTP(View v, final String number) {
 
 
-        String urlJsonObj = "http://192.168.0.49:8089/sabPaisaApp/SendOTP/" +"?mobile_no="+ number;
+        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/SendOTP/" +"?mobile_no="+ number;
 //        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/SendOTP/" +"?mobile_no="+ number;
 
         showpDialog(v);
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -385,6 +412,7 @@ public class RegisterActivity extends AppCompatActivity {
                     // Parsing json object response
                     // response will be a json object
                     JSONObject jObj = new JSONObject(String.valueOf(response));
+
                     String status = response.getString("status");
                     if (status.equals("success")) {
                         Show_Dialog(getApplicationContext(), number);
@@ -404,9 +432,9 @@ public class RegisterActivity extends AppCompatActivity {
                                         @Override
                                         public void run() {
 
-                                            if (countDownTimer != null) {
+                                            /*if (countDownTimer != null) {
                                                 countDownTimer.cancel();
-                                            }
+                                            }*/
 
                                             veryfiOTP(number, optSplit[1]);
 
@@ -419,9 +447,9 @@ public class RegisterActivity extends AppCompatActivity {
 
                         if (!optEditText.getText().toString().equals("")) {
                             String optText = optEditText.getText().toString();
-                           /* if (countDownTimer != null) {
+                            if (countDownTimer != null) {
                                 countDownTimer.cancel();
-                            }*/
+                            }
 
                             veryfiOTP(number, optText);
 
@@ -455,13 +483,8 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                         });
 
-                        // Showing Alert Message
                         alertDialog.show();
-                        // Error occurred in registration. Get the error
-                        // message
-                       /* String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();*/
+
                     }
 
                 } catch (JSONException e) {
@@ -554,124 +577,68 @@ public class RegisterActivity extends AppCompatActivity {
 
                 try {
                     JSONObject jObj = new JSONObject(response1);
-                    String status = jObj.getString("status");
                     String response = jObj.getString("response");
-                    //boolean error = jObj.getBoolean("e623+rror");
-                    status =jObj.getString("status");
+                    String status =jObj.getString("status");
 
-                       // response = jObj.getString("response");
+                       if (status!=null && status.equals("success")) {
 
-                        launchAgeScreen();
-                        /*Intent intent1 = new Intent(RegisterActivity.this, MainActivity.class);
-                        //intent1.putExtra("response", response);
+                           launchAgeScreen();
 
-                        startActivity(intent1);
-*/
-                        Log.e(TAG,"123"+fullName );
-                        Log.e(TAG, "status: " + status);
-                    Log.e(TAG, "paswword: " + password);
+                           Log.e(TAG, "123" + fullName);
+                           Log.e(TAG, "status: " + status);
+                           Log.e(TAG, "paswword: " + password);
 
-                    Log.e(TAG, "response2163123: " + response);
+                           Log.e(TAG, "response2163123: " + response);
 
+                       }else if (status!=null && status.equals("failed") && response.equals("Duplicate_Phone_No")){
 
+                           AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
+                           // Setting Dialog Title
+                           alertDialog.setTitle("Registration Error");
 
+                           // Setting Dialog Message
+                           alertDialog.setMessage("You have already registered with this number. Please click Okay to Login");
 
+                           alertDialog.setCanceledOnTouchOutside(false);
 
+                           // Setting OK Button
+                           alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                               public void onClick(DialogInterface dialog, int which) {
+                                   // Write your code here to execute after dialog closed
+                                   Intent intent = new Intent(RegisterActivity.this,LogInActivity.class);
+                                   startActivity(intent);
+                               }
+                           });
 
-
-
-///////////////////////////
-             /*       if (success) {
-                        // User successfully stored in MySQL
-                        // Now store the user in sqlite
-                        //String uid = jObj.getString("uid");
-
-+96                        String userId = jObj.getString("userId");
-                        String token = jObj.getString("token");
-
-                        db.addUser(token, userId);
-                        //db.addUser(userId);
-                        // sending token & userId to signup
-                        Intent intent1 = new Intent(Name.this, Gender.class);
-                        intent1.putExtra("userId", userId);
-                        intent1.putExtra("token", token);
-                        startActivity(intent1);
-                        Log.e(TAG, "token: " + token);
-                        Log.e(TAG, "userId: " + userId);
-
-                       *//* Toast toast = Toast.makeText(getApplicationContext(), "Good to know your Name.Some information need to provide better result", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();*//*
-                        //Toast.makeText(getApplicationContext(), "Good to know your Name.Some information need to provide better result", Toast.LENGTH_LONG).show();
+                           // Showing Alert Message
+                           alertDialog.show();
 
 
-                    } else {
+                       }else if (status!=null && status.equals("failed") && response.equals("Duplicate_Mail_ID")){
 
-                        // Error occurred in registration. Get the error
-                        // message
-                        return;
-                      *//*  String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();*//*
+                           AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
+                           // Setting Dialog Title
+                           alertDialog.setTitle("Registration Error");
+
+                           // Setting Dialog Message
+                           alertDialog.setMessage("You have already registered with this Email. Please click Okay to Login");
+
+                           alertDialog.setCanceledOnTouchOutside(false);
+
+                           // Setting OK Button
+                           alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                               public void onClick(DialogInterface dialog, int which) {
+                                   // Write your code here to execute after dialog closed
+                                   Intent intent = new Intent(RegisterActivity.this,LogInActivity.class);
+                                   startActivity(intent);
+                               }
+                           });
+
+                           // Showing Alert Message
+                           alertDialog.show();
+
                     }
-             */       ///////////////////////////////
 
-
-
-
-
-
-
-
-/*
-
-                    else if (status=="failed"){
-                        response = jObj.getString("response");
-                        if(response=="Duplicate_Mail_ID") {
-                            AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
-
-                            // Setting Dialog Title
-                            alertDialog.setTitle("Registreation Error");
-
-                            // Setting Dialog Message
-                            alertDialog.setMessage("Email Id is already registered.");
-
-                            // Setting Icon to Dialog
-                            //  alertDialog.setIcon(R.drawable.tick);
-
-                            // Setting OK Button
-                            alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Write your code here to execute after dialog closed
-                                    // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                            // Showing Alert Message
-                            alertDialog.show();
-
-                        }
-                        // Error occurred in registration. Get the error
-                        // message
-                        return;
-                      *//*  String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();*//*
-                    }*/
-
-
-
-
-
-                   /* else {
-
-                        // Error occurred in registration. Get the error
-                        // message
-                        return;
-                       *//*String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();*//*
-                    }*/
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
