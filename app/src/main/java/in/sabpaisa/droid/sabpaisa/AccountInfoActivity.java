@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class AccountInfoActivity extends AppCompatActivity {
-
+/////////////////////
     Toolbar toolbar;
     ImageView bankLogo;
     TextView accountNumber,accountType,accountIFSC,changeMPIN,resetMPIN,requestBalance;
