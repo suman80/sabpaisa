@@ -131,18 +131,6 @@ public class LogInActivity extends AppCompatActivity {
                     alertDialog.show();
                     Log.v("Home", "############################You are not online!!!!");
                 }
-                //launchAgeScreen();
-
-
-
-       /*     }
-
-        });
-*/
-
-
-
-
 
 
                 //LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
@@ -243,29 +231,35 @@ public class LogInActivity extends AppCompatActivity {
 
                 try {
                     JSONObject jObj = new JSONObject(response1);
-                    String status = jObj.getString("status");
+
                     String response = jObj.getString("response");
-                    //boolean error = jObj.getBoolean("e623+rror");
-                    status =jObj.getString("status");
 
-                    // response = jObj.getString("response");
+                    String status =jObj.getString("status");
 
-                    launchMainScreen();
-                        /*Intent intent1 = new Intent(RegisterActivity.this, MainActivity.class);
-                        //intent1.putExtra("response", response);
+                    if (status!=null && status.equals("success")){
+                        launchMainScreen();
+                    }else {
 
-                        startActivity(intent1);
-*/
-                    Log.e(TAG, "status: " + status);
+                        final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Sign Error");
 
-                    Log.e(TAG, "response2163123: " + response);
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Please Check Your Credentials");
 
+                        alertDialog.setCanceledOnTouchOutside(false);
 
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                            }
+                        });
 
+                        // Showing Alert Message
+                        alertDialog.show();
 
-
-
-
+                    }
 
 
                 } catch (JSONException e) {
