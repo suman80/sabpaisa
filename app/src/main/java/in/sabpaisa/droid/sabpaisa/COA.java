@@ -262,12 +262,12 @@ public class COA extends AppCompatActivity implements OnFragmentInteractionListe
 
         ArrayList<FeedData> filteredList = new ArrayList<>();
         filteredList.clear();
-        for (FeedData item : mList) {
+        /*for (FeedData item : mList) {
             if (item.feed_Name.toLowerCase().contains(query) || item.feedId.toLowerCase().contains(query)
                     || item.feedText.toLowerCase().contains(query) || item.feed_date.toLowerCase().contains(query)) {
                 filteredList.add(item);
             }
-        }
+        }*/
 
         return filteredList;
     }

@@ -24,24 +24,22 @@
         android:theme="@style/AppTheme">
         <activity android:name=".LogInActivity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".VerifyMobile" />
-        <activity android:name=".FilterActivity">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
+        <activity android:name=".VerifyMobile" />
+        <activity android:name=".FilterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Util.SkipClientDetailsScreen" />
-
         <activity android:name=".Util.FullViewOfClientsProceed" />
-
         <activity android:name=".FeedDetails" />
         <activity android:name=".MainActivitySkip" />
         <activity android:name=".GroupDetails" />

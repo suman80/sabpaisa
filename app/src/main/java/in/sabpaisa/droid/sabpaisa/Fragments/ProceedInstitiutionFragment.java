@@ -25,6 +25,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +51,7 @@ public class ProceedInstitiutionFragment extends Fragment {
     InstitutionAdapter institutionAdapter;
     //ArrayList<Institution> institutions;
     ArrayList<Institution> clientArrayList ;
+    ShimmerRecyclerView shimmerRecyclerView;
 
 
     String stateName,serviceName;
@@ -69,19 +71,23 @@ public class ProceedInstitiutionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_institutions, container, false);
-        recyclerViewInstitutions = (RecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
+       shimmerRecyclerView=(ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_institutions); recyclerViewInstitutions = (RecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),10));
         recyclerViewInstitutions.setLayoutManager(llm);
-        /*institutions = new ArrayList<>();
-        institutionAdapter = new InstitutionAdapter(institutions);
-        recyclerViewInstitutions.setAdapter(institutionAdapter);*/
+
         clientArrayList=new ArrayList<Institution>();
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(MainActivity.MYSHAREDPREF, Context.MODE_PRIVATE);
         stateName=sharedPreferences.getString("STATENAME","123");
         serviceName=sharedPreferences.getString("SERVICENAME","123");
+        recyclerViewInstitutions.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        },1000);
 
         Log.d("stateName2222"," "+stateName);
         Log.d("serviceName2222"," "+serviceName);
@@ -94,21 +100,7 @@ public class ProceedInstitiutionFragment extends Fragment {
 
 
         getClientsList();
-        /*Institution institution = new Institution("COA", "New Delhi");
-        institutions.add(institution);
-        institutions.add(new Institution("COA", "New Delhi"));
-        institutions.add(new Institution("COA", "New Delhi"));
-        institutions.add(new Institution("COA", "New Delhi"));
-        institutions.add(new Institution("COA", "New Delhi"));*/
-       /* Bundle arguments = getArguments();
-        if(arguments==null)
-        {
 
-        }
-        else {
-            stateName = getArguments().getString("stateName");
-            serviceName = getArguments().getString("serviceName");
-        }*/
         return rootView;
     }
 
@@ -139,36 +131,11 @@ public class ProceedInstitiutionFragment extends Fragment {
                         JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                         Institution institution = new Institution();
 
-                        /*institution.setOrganizationId(jsonObject1.getInt("organizationId"));
-                        institution.setOrganization_name(jsonObject1.getString("clientName"));
-                        institution.setRelationship_type(jsonObject1.getString("relationship_type"));
-                        institution.setOrgLogo(jsonObject1.getString("clientImage"));
-                        institution.setOrgWal(jsonObject1.getString("clientLogo"));
-                        institution.setOrgAddress(jsonObject1.getString("state"));
-                        institution.setOrgDesc(jsonObject1.getString("orgDesc"));
-*/
-
-                        //institution.set(jsonObject1.getInt("id"));
-                        //institution.(jsonObject1.getString("clientId"));
                        institution.setOrganization_name(jsonObject1.getString("clientName"));
-                       /* institution.setClientCode(jsonObject1.getString("clientCode"));
-                        institution.setClientContact(jsonObject1.getString("clientContact"));
-                        institution.setClientEmail(jsonObject1.getString("clientEmail"));*/
                         institution.setOrgLogo(jsonObject1.getString("clientLogoPath"));
                         institution.setOrgWal(jsonObject1.getString("clientImagePath"));
 
-                       /* institution.setClientLink(jsonObject1.getString("clientLink"));
-                        institution.setClientAuthenticationType(jsonObject1.getString("clientAuthenticationType"));
-                        institution.setPaymentMode(jsonObject1.getString("paymentMode"));
-                        institution.setBid(jsonObject1.getString("bid"));
-                        institution.setState(jsonObject1.getString("state"));*/
                         institution.setOrgAddress(jsonObject1.getString("state"));
-                    /*    institution.setProductName(jsonObject1.getString("productName"));
-                        institution.setService(jsonObject1.getString("service"));
-                        institution.setSuccessUrl(jsonObject1.getString("successUrl"));
-                        institution.setFailedUrl(jsonObject1.getString("failedUrl"));
-                        institution.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
-                        institution.setLandingPage(jsonObject1.getString("landingPage"));*/
 
                         clientArrayList.add(institution);
                     }
@@ -235,65 +202,5 @@ public class ProceedInstitiutionFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(request,tag_string_req);
 
 
-     /*   String urlJsonObj = AppConfiguration.MAIN_URL + "/getAllClientDetails/0" ;
-        urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
-
-        JsonArrayRequest request = new JsonArrayRequest(urlJsonObj, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                for (int i=0;i<response.length();i++){
-                    try {
-
-
-                      *//*  organizationId: 1,
-                                organization_name: "SRS",
-                                relationship_type: null,
-                                orgLogo: null,
-                                orgWal: null,
-                                orgAddress: null,
-                                orgDesc: null,
-                                conPersonName: null,
-                                conPersonMobNO: null,
-                                conPersonEmail: null,
-                                createdDate: 1511354799086
-                    },*//*
-
-
-
-
-
-
-
-
-
-                        JSONObject obj =response.getJSONObject(i);
-                        Institution institution = new Institution();
-                        institution.setOrganizationId(obj.getInt("organizationId"));
-                        institution.setOrganization_name(obj.getString("organization_name"));
-                        institution.setRelationship_type(obj.getString("relationship_type"));
-                        institution.setOrgLogo(obj.getString("orgLogo"));
-                        institution.setOrgWal(obj.getString("orgWal"));
-                        institution.setOrgAddress(obj.getString("orgAddress"));
-                        institution.setOrgDesc(obj.getString("orgDesc"));
-                        institution.setConPersonName(obj.getString("conPersonName"));
-//                        institution.setConPersonMobNO(obj.getLong("conPersonMobNO"));
-                        institution.setConPersonEmail(obj.getString("conPersonEmail"));
-                        institution.setCreatedDate(obj.getLong("createdDate"));
-
-                        institutions.add(institution);
-                        institutionAdapter.notifyDataSetChanged();
-                    }catch (JSONException e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
-            }
-        });
-        AppController.getInstance().addToRequestQueue(request);
-    }*/
     }
 }

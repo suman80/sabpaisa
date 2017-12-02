@@ -64,7 +64,13 @@ public class InstitutionSkipFragment extends Fragment {
         skipMainClientsAdapter =new SkipMainClientsAdapter(institutions);
         //institutionAdapter = new InstitutionAdapter(institutions);
         //recyclerViewInstitutions.setAdapter(institutionAdapter);
-        recyclerViewInstitutions.setAdapter(skipMainClientsAdapter);
+        recyclerViewInstitutions.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recyclerViewInstitutions.setAdapter(skipMainClientsAdapter);
+
+            }
+        },1000);
 
         getClientsList();
         /*SkipClientData institution = new SkipClientData("COA", "New Delhi");

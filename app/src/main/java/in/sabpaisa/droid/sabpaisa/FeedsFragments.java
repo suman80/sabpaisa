@@ -39,7 +39,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
     SwipeRefreshLayout swipeRefreshLayout;
     String tag_string_req = "req_register";
     ArrayList<FeedData> feedArrayList = new ArrayList<FeedData>();
-    MainFeedAdapter ca;/*Globally Declared Adapter*/
+    MainFeedAdapter mainFeedAdapter;/*Globally Declared Adapter*/
 
     /*START Interface for getting data from activity*/
     GetDataInterface sGetDataInterface;
@@ -61,8 +61,8 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
     public void getDataFromActivity() {
         if(sGetDataInterface != null){
             this.feedArrayList = sGetDataInterface.getFeedDataList();
-            ca.setItems(this.feedArrayList);
-            ca.notifyDataSetChanged();
+            mainFeedAdapter.setItems(this.feedArrayList);
+            mainFeedAdapter.notifyDataSetChanged();
         }
     }
     /*END Interface for getting data from activity*/
@@ -93,6 +93,8 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
        // swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         //swipeRefreshLayout.setOnRefreshListener(this);
 
+        Log.d("feedArrayList"," "+feedArrayList);
+
         callFeedDataList(Id);
         return rootView;
     }
@@ -119,26 +121,35 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
                     public void onResponse(String response) {
                         try {
 
-                            JSONObject jObj = new JSONObject(response);
-                            String status = jObj.getString("status");
-                            response = jObj.getString("response");
+//                            JSONObject jObj = new JSONObject(response);
+//                            String status = jObj.getString("status");
+//                            response = jObj.getString("response");
                             //boolean error = jObj.getBoolean("e623+rror");
-                            Log.e(TAG, "profeed: " + status);
+                            //Log.d(TAG, "profeed: " + status);
 
-                            Log.e(TAG, "profeed1: " + response);
-
+                            Log.d(TAG, "profeed1: " + response);
                             //swipeRefreshLayout.setRefreshing(false);
-                            //feedArrayList = new ArrayList<FeedData>();
-                            //for (int i = 0; i < response.length(); i++) {
-                                //JSONObject colorObj = response.getJSONObject(i);
-                               // FeedData feedData = new FeedData();
-                                //feedData.setFeedText(jObj.getString("feedText"));
-                                //feedData.setFeed_Name(jObj.getString("feed_Name"));
-                                //feedData.setFeed_date(jObj.getString("feed_date"));
-                                //feedData.setFeedId(.getString("feedId"));
-                                //feedArrayList.add(feedData);
+                            feedArrayList = new ArrayList<FeedData>();
 
-                            //}
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+
+                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                FeedData feedData = new FeedData();
+                                feedData.setClientId(jsonObject1.getInt("clientId"));
+                                feedData.setFeedId(jsonObject1.getInt("feedId"));
+                                feedData.setFeedName(jsonObject1.getString("feedName"));
+                                feedData.setFeedText(jsonObject1.getString("feedText"));
+                                feedData.setCreatedDate(jsonObject1.getString("createdDate"));
+                                feedData.setImagePath(jsonObject1.getString("imagePath"));
+                                feedData.setLogoPath(jsonObject1.getString("logoPath"));
+                                feedArrayList.add(feedData);
+
+                            }
+                            Log.d("feedArrayListAfterParse"," "+feedArrayList.get(0).getFeedName());
                             /*START listener for sending data to activity*/
                             OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                             listener.onFragmentSetFeeds(feedArrayList);
@@ -171,17 +182,17 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
 
     private void loadFeedListView(ArrayList<FeedData> arrayList, RecyclerView recyclerView) {
 
-        ca = new MainFeedAdapter(arrayList);
-        recyclerView.setAdapter(ca);
+        mainFeedAdapter = new MainFeedAdapter(arrayList);
+        recyclerView.setAdapter(mainFeedAdapter);
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(( getContext()), FeedDetails.class);
-                        //intent.putExtra("FeedId", feedArrayList.get(position).getFeedId());
-                        intent.putExtra("FeedName", feedArrayList.get(position).getFeed_Name());
+                       /* intent.putExtra("FeedId", feedArrayList.get(position).getFeedId());
+                        intent.putExtra("FeedName", feedArrayList.get(position).getFeedName());
                         intent.putExtra("FeedDeatils", feedArrayList.get(position).getFeedText());
-                        startActivity(intent);
+                        startActivity(intent);*/
                     }
 
                     @Override

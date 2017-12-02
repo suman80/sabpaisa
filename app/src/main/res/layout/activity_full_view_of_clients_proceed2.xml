@@ -20,11 +20,11 @@
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpagerproceed"
-                android:layout_marginTop="2dp"
                 android:layout_width="match_parent"
-                android:layout_height="651dp"
+                android:layout_height="match_parent"
                 android:visibility="visible"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                fab:layout_editor_absoluteY="323dp">
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tabs"
@@ -52,9 +52,9 @@
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbarlayout"
                 android:layout_width="match_parent"
-                android:layout_height="405dp"
-                android:background="@color/white"
-                android:layout_marginBottom="20dp">
+                android:layout_height="308dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/white">
 
                 <android.support.design.widget.CollapsingToolbarLayout
                     android:id="@+id/collapsing_toolbar"
@@ -66,62 +66,16 @@
                     <RelativeLayout
                         android:id="@+id/coverLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="350dp"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="?attr/actionBarSize"
                         android:background="@color/white">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="250dp"
-                            android:src="@color/black"
-                            android:id="@+id/ClientImagePRoceed"/>
+                            android:id="@+id/ClientImagePRoceed"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:src="@color/black" />
 
-                       <!-- <com.daimajia.slider.library.SliderLayout
-                            android:id="@+id/slider"
-                            android:layout_width="match_parent"
-                            android:layout_height="250dp">
-                            <com.daimajia.slider.library.Indicators.PagerIndicator
-                                android:id="@+id/custom_indicator"
-                                android:layout_width="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_below="@id/slider"
-                                android:layout_alignParentBottom="true"
-                                android:layout_marginBottom="10dp"
-                                app:selected_color="@color/bg_orange"
-                                app:unselected_color="@color/white"
-                                android:layout_height="wrap_content" />
-                        </com.daimajia.slider.library.SliderLayout>
-
--->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="250dp"
-                            android:background="#ffffff"
-                            android:orientation="vertical">
-
-
-<!--
-                            <TextView
-                                android:id="@+id/tv_dashboard_desc"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/ClientImagePRoceed"
-                                android:layout_marginTop="5dp"
-                                android:gravity="center_horizontal"
-                                android:text="Get social with money"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textStyle="bold" />-->
-
-                            <!--<include
-                                layout="@layout/layout_dashboard"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/tv_dashboard_desc" />-->
-
-
-
-                        </LinearLayout>
                     </RelativeLayout>
 
 
@@ -139,12 +93,6 @@
                             app:subtitleTextColor="@color/white"
                             app:titleTextColor="@color/white" />
 
-                        <!--<com.miguelcatalan.materialsearchview.MaterialSearchView
-                            android:id="@+id/search_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            app:layout_collapseMode="pin" />-->
                     </FrameLayout>
 
 
@@ -161,7 +109,8 @@
             android:layout_height="match_parent"
             app:rfal_frame_color="#ffff">
 
-            <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton xmlns:rfab="http://schemas.android.com/apk/res-auto"
+            <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton
+                xmlns:rfab="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/activity_main_rfab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -175,59 +124,7 @@
                 rfab:rfab_drawable="@drawable/ic_pay_white"
                 rfab:rfab_size="normal" />
         </com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout>
-        <!--<android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_dashboard"
-            android:elevation="25dp"
-            android:src="@drawable/ic_pay_white"
-            app:fabSize="normal"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="50dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />-->
 
     </FrameLayout>
 
-
-    <!--<LinearLayout
-        android:id="@+id/drawer_left_list_layout"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@color/white"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/side_menu_user_image_view"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/test_payment__icon" />
-
-            <TextView
-                android:id="@+id/right_side_profile_name_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/side_menu_user_image_view"
-                android:layout_centerHorizontal="true"
-                android:text="User Name" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/right_side_profile_name_textview"
-                android:orientation="vertical">
-
-                <ListView
-                    android:id="@+id/drawer_list"
-                    android:layout_width="240dp"
-                    android:layout_height="match_parent"
-                    android:divider="@color/black"
-                    android:dividerHeight="0dp" />
-            </LinearLayout>
-        </RelativeLayout>
-    </LinearLayout>-->
 </android.support.v4.widget.DrawerLayout>
