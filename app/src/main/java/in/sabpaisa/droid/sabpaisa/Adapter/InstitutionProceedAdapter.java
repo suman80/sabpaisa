@@ -97,12 +97,6 @@ public class InstitutionProceedAdapter extends RecyclerView.Adapter<InstitutionP
         }
     }
 
-
-
-
-
-
-
     @Override
     public int getItemCount() {
         return institutions.size();

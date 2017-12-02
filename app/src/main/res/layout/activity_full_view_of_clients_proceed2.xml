@@ -18,7 +18,7 @@
             android:layout_height="match_parent">
 
 
-            <in.sabpaisa.droid.sabpaisa.Util.CustomViewPager
+            <android.support.v4.view.ViewPager
                 android:id="@+id/viewpagerproceed"
                 android:layout_marginTop="2dp"
                 android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                     app:tabGravity="fill"
                     app:tabIndicatorColor="@color/bg_orange"
                     app:tabMode="fixed" />
-            </in.sabpaisa.droid.sabpaisa.Util.CustomViewPager>
+            </android.support.v4.view.ViewPager>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -101,7 +101,7 @@
                             android:orientation="vertical">
 
 
-
+<!--
                             <TextView
                                 android:id="@+id/tv_dashboard_desc"
                                 android:layout_width="match_parent"
@@ -111,13 +111,13 @@
                                 android:gravity="center_horizontal"
                                 android:text="Get social with money"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textStyle="bold" />
+                                android:textStyle="bold" />-->
 
-                            <include
+                            <!--<include
                                 layout="@layout/layout_dashboard"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/tv_dashboard_desc" />
+                                android:layout_below="@id/tv_dashboard_desc" />-->
 
 
 
@@ -159,7 +159,7 @@
             android:id="@+id/activity_main_rfal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:rfal_frame_color="#ffffff">
+            app:rfal_frame_color="#ffff">
 
             <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton xmlns:rfab="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/activity_main_rfab"

@@ -235,40 +235,6 @@ public class ProceedInstitiutionFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(request,tag_string_req);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
      /*   String urlJsonObj = AppConfiguration.MAIN_URL + "/getAllClientDetails/0" ;
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
 

@@ -37,7 +37,7 @@ public class ChatDetail extends AppCompatActivity implements RapidFloatingAction
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_detail);
 
-        rfaLayout = (RapidFloatingActionLayout)findViewById(R.id.activity_main_rfal);
+        //rfaLayout = (RapidFloatingActionLayout)findViewById(R.id.activity_main_rfal);
         rfaBtn = (RapidFloatingActionButton)findViewById(R.id.activity_main_rfab);
         FabButtonCreate();
 

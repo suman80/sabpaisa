@@ -35,7 +35,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
     ImageView clientImagePath;
     String clientName,state;
     public static String clientImageURLPath=null;
-    private CustomViewPager viewPager;
+    private ViewPager viewPager;
     private TabLayout tabLayout;
 
 
@@ -47,9 +47,12 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
 
 
 
-        viewPager = (CustomViewPager) findViewById(R.id.viewpagerproceed);
+        viewPager = (ViewPager) findViewById(R.id.viewpagerproceed);
         setupViewPager(viewPager);
-        viewPager.disableScroll(true);
+
+        viewPager.setOffscreenPageLimit(3);
+        setupViewPager(viewPager);
+
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -131,7 +134,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
 
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-      //  adapter.addFragment(new FeedFragments1(),"Feeds");
+        adapter.addFragment(new FeedsFragments(),"Feeds");
         //adapter.addFragment(new GroupsFragments(),"Groups");
         //adapter.addFragment(new PayFragments(),"Make Payment");
         viewPager.setAdapter(adapter);
