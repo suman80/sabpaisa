@@ -1,11 +1,20 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +25,7 @@ import java.util.Date;
 public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyViewHolder> {
 
     private ArrayList<FeedData> mainFeedDataList;
+    ImageLoader imageLoader;
 
     public MainFeedAdapter(ArrayList<FeedData> countryList) {
         this.mainFeedDataList = countryList;
@@ -29,24 +39,21 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         FeedData mainFeedData = mainFeedDataList.get(position);
-
-        try {
-            holder.main_feed_group_name.setText(mainFeedData.getFeed_Name());
-            holder.main_feed_group_description.setText(mainFeedData.getFeedText());
-            holder.main_feed_group_time.setText(getDataFormate(mainFeedData.getFeed_date()));
-        } catch (ParseException e)
-        {
-            e.printStackTrace();
-        }
+        holder.main_feed_name.setText(mainFeedData.getFeedName());
+        holder.main_feed_description.setText(mainFeedData.getFeedText());
+        //holder.main_feed_creation_time.setText(mainFeedData.getCreatedDate());
+        Log.d("client_Image123456",""+mainFeedData.getImagePath());
+        new DownloadImageTask(holder.client_Image).execute(mainFeedData.getImagePath());
+        new DownloadLogoTask(holder.cilent_Logo).execute(mainFeedData.getLogoPath());
     }
     /*END Method to change data when put query in searchBar*/
 
-    private String getDataFormate(String dateText) throws ParseException {
+    /*private String getDataFormate(String dateText) throws ParseException {
         DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat outputFormat = new SimpleDateFormat("dd MMM");
         Date date = inputFormat.parse(dateText);
         return outputFormat.format(date);
-    }
+    }*/
 
     @Override
     public int getItemCount() {
@@ -63,13 +70,86 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
      * View holder class
      */
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView main_feed_group_description, main_feed_group_name, main_feed_group_time;
-
+        public TextView main_feed_description, main_feed_name, main_feed_creation_time;
+                ImageView client_Image,cilent_Logo;
         public MyViewHolder(View view) {
             super(view);
-            main_feed_group_description = (TextView) view.findViewById(R.id.main_feed_group_description);
-            main_feed_group_name = (TextView) view.findViewById(R.id.main_feed_group_name);
-            main_feed_group_time = (TextView) view.findViewById(R.id.main_feed_creation_time);
+            main_feed_description = (TextView) view.findViewById(R.id.main_feed_description);
+            main_feed_name = (TextView) view.findViewById(R.id.main_feed_name);
+            main_feed_creation_time = (TextView) view.findViewById(R.id.main_feed_creation_time);
+            client_Image = (ImageView) view.findViewById(R.id.client_Image);
+            cilent_Logo = (ImageView) view.findViewById(R.id.client_Logo);
         }
     }
+
+
+    //Code for fetching image from server
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            loading.show();
+        }
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            //loading.dismiss();
+        }
+
+    }
+
+    //Code for fetching image from server
+    private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            loading.show();
+        }
+
+        public DownloadLogoTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            //loading.dismiss();
+        }
+
+    }
+
+
 }

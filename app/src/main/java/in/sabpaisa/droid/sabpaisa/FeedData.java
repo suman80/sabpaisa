@@ -5,12 +5,36 @@ package in.sabpaisa.droid.sabpaisa;
  */
 
 public class FeedData {
-    public String getFeed_Name() {
-        return feed_Name;
+    int feedId,clientId;
+    String feedText,feedName,createdDate,imagePath,logoPath;
+
+    public FeedData() {
     }
 
-    public void setFeed_Name(String feed_Name) {
-        this.feed_Name = feed_Name;
+    public FeedData(int feedId, int clientId, String feedText, String feedName, String createdDate, String imagePath, String logoPath) {
+        this.feedId = feedId;
+        this.clientId = clientId;
+        this.feedText = feedText;
+        this.feedName = feedName;
+        this.createdDate = createdDate;
+        this.imagePath = imagePath;
+        this.logoPath = logoPath;
+    }
+
+    public int getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(int feedId) {
+        this.feedId = feedId;
+    }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 
     public String getFeedText() {
@@ -21,26 +45,35 @@ public class FeedData {
         this.feedText = feedText;
     }
 
-    String feed_Name;
-    String feedText;
-
-    public String getFeed_date() {
-        return feed_date;
+    public String getFeedName() {
+        return feedName;
     }
 
-    public void setFeed_date(String feed_date) {
-        this.feed_date = feed_date;
+    public void setFeedName(String feedName) {
+        this.feedName = feedName;
     }
 
-    String feed_date;
-
-    public String getFeedId() {
-        return feedId;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
-    public void setFeedId(String feedId) {
-        this.feedId = feedId;
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 
-    String feedId;
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getLogoPath() {
+        return logoPath;
+    }
+
+    public void setLogoPath(String logoPath) {
+        this.logoPath = logoPath;
+    }
 }
