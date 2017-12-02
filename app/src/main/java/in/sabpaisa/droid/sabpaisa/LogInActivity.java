@@ -58,7 +58,7 @@ public class LogInActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
        // password = (EditText)findViewById(R.id.et_password);
-        passwordShow = (TextView)findViewById(R.id.tv_password_show);
+        //passwordShow = (TextView)findViewById(R.id.tv_password_show);
         forgotPassword = (TextView)findViewById(R.id.tv_forgot_password);
         et_phone_number = (EditText)findViewById(R.id.et_phone_number);
         register = (TextView)findViewById(R.id.tv_register);
@@ -185,7 +185,7 @@ public class LogInActivity extends AppCompatActivity {
     private void DataBinding() {
         //phoneNumber = (EditText)findViewById(R.id.et_phone_number);
         //password = (EditText)findViewById(R.id.et_password);
-        passwordShow = (TextView)findViewById(R.id.tv_password_show);
+        //passwordShow = (TextView)findViewById(R.id.tv_password_show);
         forgotPassword = (TextView)findViewById(R.id.tv_forgot_password);
         register = (TextView)findViewById(R.id.tv_register);
         login = (Button)findViewById(R.id.btn_login);
