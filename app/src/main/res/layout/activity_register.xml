@@ -84,7 +84,7 @@
             android:background="@drawable/background_edittext"
             android:drawableLeft="@drawable/ic_phone_black_24dp"
             android:drawablePadding="10dp"
-            android:hint="@string/hint_phone"
+            android:hint="Enter Your Mobile Number"
             android:inputType="phone"
             />
 
