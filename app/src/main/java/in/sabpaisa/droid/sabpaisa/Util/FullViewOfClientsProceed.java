@@ -135,7 +135,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FeedsFragments(),"Feeds");
-        //adapter.addFragment(new GroupsFragments(),"Groups");
+        adapter.addFragment(new GroupsFragments(),"Groups");
         //adapter.addFragment(new PayFragments(),"Make Payment");
         viewPager.setAdapter(adapter);
 

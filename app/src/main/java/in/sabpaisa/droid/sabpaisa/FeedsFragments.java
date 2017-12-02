@@ -34,7 +34,7 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
  */
 /*implements SwipeRefreshLayout.OnRefreshListener*/
 public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private static final String TAG = LogInActivity.class.getSimpleName();
+    private static final String TAG = FeedsFragments.class.getSimpleName();
     View rootView;
     SwipeRefreshLayout swipeRefreshLayout;
     String tag_string_req = "req_register";

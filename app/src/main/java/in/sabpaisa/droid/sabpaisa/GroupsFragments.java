@@ -12,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +33,9 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 
 public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     View rootView = null;
+    private static final String TAG = GroupsFragments.class.getSimpleName();
+    int Id=1;
+    String tag_string_req = "req_register";
     SwipeRefreshLayout swipeRefreshLayout;
     ArrayList<GroupListData> groupArrayList = new ArrayList<GroupListData>();
     MainGroupAdapter1 ca;/*Globally Declared Adapter*/
@@ -46,11 +51,11 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try {
+        /*try {
             sGetDataInterface= (GetDataInterface) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
-        }
+        }*/
     }
 
     public void getDataFromActivity() {
@@ -75,52 +80,57 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        callGroupDataList();
+        callGroupDataList(Id);
 
         return rootView;
     }
 
-    public void callGroupDataList() {
-        String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsBasedonOrg/SRS";
-        urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
-        // Creating the JsonArrayRequest class called arrayreq, passing the required parameters
-        //JsonURL is the URL to be fetched from
-        JsonArrayRequest arrayreq = new JsonArrayRequest(urlJsonObj,
+    public void callGroupDataList(final int Id ) {
+        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/getParticularClientsGroups"+"?client_Id="+ Id;
+        StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
+                urlJsonObj, new Response.Listener<String>(){
+
+            //AppConfiguration.MAIN_URL + "/getFeedsDetailsBasedOnOrganizations/SRS";
+            // urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
+            // Creating the JsonArrayRequest class called arrayreq, passing the required parameters
+            //JsonURL is the URL to be fetched from
+      /*  JsonArrayRequest arrayreq = new JsonArrayRequest(urlJsonObj,
                 // The second parameter Listener overrides the method onResponse() and passes
                 //JSONArray as a parameter
-                new Response.Listener<JSONArray>() {
+                new Response.Listener<JSONArray>() {*/
 
-                    // Takes the response from the JSON request
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            swipeRefreshLayout.setRefreshing(false);
-                            groupArrayList.clear();
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject colorObj = response.getJSONObject(i);
-//                              JSONObject colorObjBean = colorObj.getJSONObject("grpBean");
-                                GroupListData groupData = new GroupListData();
-                                groupData.setGroupId(colorObj.getString("groupId"));
-                                groupData.setGroupName(colorObj.getString("groupName"));
-                                groupData.setGroupDescription(colorObj.getString("groupDescription"));
-                                groupData.setGroupCount(colorObj.getString("group_count"));
-                                //groupData.setJoin(colorObj.getString("join"));
-                                //groupData.setGroupCount(colorObj.getString("group_count"));
-                                groupArrayList.add(groupData);
+            // Takes the response from the JSON request
+            @Override
+            public void onResponse(String response) {
+                try {
 
-                            }
-                            /*START listener for sending data to activity*/
-                            OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
-                            listener.onFragmentSetGroups(groupArrayList);
+                    JSONObject jObj = new JSONObject(response);
+                    String status = jObj.getString("status");
+                    response = jObj.getString("response");
+                    //boolean error = jObj.getBoolean("e623+rror");
+                    Log.e(TAG, "profeed: " + status);
+
+                    Log.e(TAG, "profeed1: " + response);
+
+                    //groupData.setJoin(colorObj.getString("join"));
+                    //groupData.setGroupCount(colorObj.getString("group_count"));
+                    //groupArrayList.add(groupData);
+
+
+
+                       /*START listener for sending data to activity*/
+                    OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                    listener.onFragmentSetGroups(groupArrayList);
                             /*END listener for sending data to activity*/
-                            loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
-                        }
-                        // Try and catch are included to handle any errors due to JSON
-                        catch (JSONException e) {
-                            // If an error occurs, this prints the error to the log
-                            e.printStackTrace();
-                            callGroupDataList();
-                        }
+                    loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
+                }
+                // Try and catch are included to handle any errors due to JSON
+                catch (JSONException e) {
+                    // If an error occurs, this prints the error to the log
+                    e.printStackTrace();
+                    callGroupDataList(Id);
+                }
+
                     }
                 },
                 // The final parameter overrides the method onErrorResponse() and passes VolleyError
@@ -130,13 +140,13 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        callGroupDataList();
+                        callGroupDataList(Id);
                         Log.e("Group fragments", "Group fragments Error");
                     }
                 }
         );
         // Adds the JSON arra   y request "arrayreq" to the request queue
-        AppController.getInstance().addToRequestQueue(arrayreq);
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
 
     private void loadGroupListView(ArrayList<GroupListData> arrayList, RecyclerView rv) {
@@ -171,7 +181,7 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
     /*START onRefresh() for SwipeRefreshLayout*/
     @Override
     public void onRefresh() {
-        callGroupDataList();
+        callGroupDataList( Id);
     }
 
     public interface GetDataInterface {

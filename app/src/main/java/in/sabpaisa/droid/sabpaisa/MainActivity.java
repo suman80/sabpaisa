@@ -1,6 +1,8 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.annotation.TargetApi;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
@@ -249,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         rfabHelper.toggleContent();
     }
 
+    @TargetApi(Build.VERSION_CODES.ECLAIR)
     @Override
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
         if (position==2){
