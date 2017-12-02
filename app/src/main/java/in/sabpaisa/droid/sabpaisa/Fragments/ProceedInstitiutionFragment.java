@@ -25,6 +25,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +51,7 @@ public class ProceedInstitiutionFragment extends Fragment {
     InstitutionAdapter institutionAdapter;
     //ArrayList<Institution> institutions;
     ArrayList<Institution> clientArrayList ;
+    ShimmerRecyclerView shimmerRecyclerView;
 
 
     String stateName,serviceName;
@@ -69,7 +71,7 @@ public class ProceedInstitiutionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_institutions, container, false);
-        recyclerViewInstitutions = (RecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
+       shimmerRecyclerView=(ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_institutions); recyclerViewInstitutions = (RecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),10));
@@ -80,6 +82,12 @@ public class ProceedInstitiutionFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(MainActivity.MYSHAREDPREF, Context.MODE_PRIVATE);
         stateName=sharedPreferences.getString("STATENAME","123");
         serviceName=sharedPreferences.getString("SERVICENAME","123");
+        recyclerViewInstitutions.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        },1000);
 
         Log.d("stateName2222"," "+stateName);
         Log.d("serviceName2222"," "+serviceName);
