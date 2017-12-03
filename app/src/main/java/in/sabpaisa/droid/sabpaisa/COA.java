@@ -279,12 +279,12 @@ public class COA extends AppCompatActivity implements OnFragmentInteractionListe
 
         ArrayList<GroupListData> filteredList = new ArrayList<>();
         filteredList.clear();
-        for (GroupListData item : mList) {
+       /* for (GroupListData item : mList) {
             if (item.groupName.toLowerCase().contains(query) || item.groupDescription.toLowerCase().contains(query)
-                    || item.groupId.toLowerCase().contains(query)/*||item.group_count.toLowerCase().contains(query)*/) {
+                    || item.groupId.toLowerCase().contains(query)*//*||item.group_count.toLowerCase().contains(query)*//*) {
                 filteredList.add(item);
             }
-        }
+        }*/
 
         return filteredList;
     }

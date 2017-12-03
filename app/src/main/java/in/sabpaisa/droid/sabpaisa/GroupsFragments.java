@@ -37,8 +37,8 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
     int Id=1;
     String tag_string_req = "req_register";
     SwipeRefreshLayout swipeRefreshLayout;
-    ArrayList<GroupListData> groupArrayList = new ArrayList<GroupListData>();
-    MainGroupAdapter1 ca;/*Globally Declared Adapter*/
+    ArrayList<GroupListData> groupArrayList;
+    MainGroupAdapter1 mainGroupAdapter1;/*Globally Declared Adapter*/
     /*START Interface for getting data from activity*/
     GetDataInterface sGetDataInterface;
 
@@ -61,8 +61,8 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
     public void getDataFromActivity() {
         if(sGetDataInterface != null){
             this.groupArrayList = sGetDataInterface.getGroupDataList();
-            ca.setItems(this.groupArrayList);
-            ca.notifyDataSetChanged();
+            mainGroupAdapter1.setItems(this.groupArrayList);
+            mainGroupAdapter1.notifyDataSetChanged();
         }
     }
 
@@ -103,21 +103,25 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
             @Override
             public void onResponse(String response) {
                 try {
+                    groupArrayList = new ArrayList<GroupListData>();
+                    JSONObject jsonObject = new JSONObject(response);
 
-                    JSONObject jObj = new JSONObject(response);
-                    String status = jObj.getString("status");
-                    response = jObj.getString("response");
-                    //boolean error = jObj.getBoolean("e623+rror");
-                    Log.e(TAG, "profeed: " + status);
+                    JSONArray jsonArray = jsonObject.getJSONArray("response");
 
-                    Log.e(TAG, "profeed1: " + response);
+                    for (int i = 0; i < jsonArray.length(); i++) {
 
-                    //groupData.setJoin(colorObj.getString("join"));
-                    //groupData.setGroupCount(colorObj.getString("group_count"));
-                    //groupArrayList.add(groupData);
-
-
-
+                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                        GroupListData groupListData = new GroupListData();
+                        groupListData.setClientId(jsonObject1.getInt("clientId"));
+                        groupListData.setGroupId(jsonObject1.getInt("groupId"));
+                        groupListData.setGroupName(jsonObject1.getString("groupName"));
+                        groupListData.setGroupText(jsonObject1.getString("groupText"));
+                        groupListData.setCreatedDate(jsonObject1.getString("createdDate"));
+                        groupListData.setImagePath(jsonObject1.getString("imagePath"));
+                        groupListData.setLogoPath(jsonObject1.getString("logoPath"));
+                        groupArrayList.add(groupListData);
+                    }
+                    Log.d("groupArrayList1212"," "+groupArrayList.get(0).getGroupName());
                        /*START listener for sending data to activity*/
                     OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                     listener.onFragmentSetGroups(groupArrayList);
@@ -150,20 +154,19 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     private void loadGroupListView(ArrayList<GroupListData> arrayList, RecyclerView rv) {
-        ca = new MainGroupAdapter1(arrayList);
-        rv.setAdapter(ca);
+        mainGroupAdapter1 = new MainGroupAdapter1(arrayList);
+        rv.setAdapter(mainGroupAdapter1);
         rv.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), rv, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        GroupListData groupListData = groupArrayList.get(position);
+                        /*GroupListData groupListData = groupArrayList.get(position);
                         Intent intent = new Intent(((COA)getContext()), GroupDetails.class);
                         intent.putExtra("GroupId", groupListData.getGroupId());
                         intent.putExtra("GroupName", groupListData.getGroupName());
                         intent.putExtra("group_count",groupListData.getGroupCount());
                         intent.putExtra("GroupDescription", groupListData.getGroupDescription());
-
-                        startActivity(intent);
+                        startActivity(intent);*/
                     }
 
                     @Override

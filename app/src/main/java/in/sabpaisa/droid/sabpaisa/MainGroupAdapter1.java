@@ -1,17 +1,22 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.InputStream;
 import java.util.List;
 
 
-public class MainGroupAdapter1 extends
-        RecyclerView.Adapter<MainGroupAdapter1.MyViewHolder> {
+public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.MyViewHolder> {
     Context mContext;
     private List<GroupListData> countryList;
 
@@ -28,14 +33,12 @@ public class MainGroupAdapter1 extends
     public void onBindViewHolder(MyViewHolder holder, int position) {
         //     TextView text =holder.join;
 
-        GroupListData c = countryList.get(position);
-        holder.groupName.setText(c.getGroupName());
-        holder.groupDescription.setText(c.getGroupDescription());
-        holder.group_Count.setText(c.getGroupCount());
-        //TextView text =holder.join;
+        GroupListData groupListData  = countryList.get(position);
+        holder.Group_name.setText(groupListData.getGroupName());
+        holder.Group_description.setText(groupListData.getGroupText());
+        new DownloadImageTask(holder.Group_Image).execute(groupListData.getImagePath());
+        new DownloadLogoTask(holder.Group_Logo).execute(groupListData.getLogoPath());
 
-
-        // holder.join.setText(c.getJoin());
     }
     /*END Method to change data when put query in searchBar*/
 
@@ -55,50 +58,92 @@ public class MainGroupAdapter1 extends
      * View holder class
      */
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView groupName;
-        public TextView groupDescription;
-        public TextView group_Count;
-
+        public TextView Group_name;
+        public TextView Group_description;
+        public ImageView Group_Logo;
+        public ImageView Group_Image;
 
 
 
         public MyViewHolder(View view) {
             super(view);
-            groupName = (TextView) view.findViewById(R.id.main_group_name);
-            groupDescription = (TextView) view.findViewById(R.id.main_group_group_description);
+            Group_name = (TextView) view.findViewById(R.id.Group_name);
+            Group_description = (TextView) view.findViewById(R.id.Group_description);
+            Group_Logo = (ImageView) view.findViewById(R.id.Group_Logo);
+            Group_Image = (ImageView) view.findViewById(R.id.Group_Image);
 
-            group_Count =(TextView)view.findViewById(R.id.main_feed_creation_time);
-            /*join.setOnClickListener(new View.OnClickListener() {
-
-
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder builder;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-                    } else {
-                        builder = new AlertDialog.Builder(context);
-                    }
-                    builder.setTitle("Delete entry")
-                            .setMessage("Are you sure you want to delete this entry?")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // continue with delete
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do nothing
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
-
-                    //Toast.makeText(, "You clicked on OK", Toast.LENGTH_SHORT).show();
-
-                }
-            });*/
 
         }
     }
+
+
+    //Code for fetching image from server
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            loading.show();
+        }
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            //loading.dismiss();
+        }
+
+    }
+
+    //Code for fetching image from server
+    private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            loading.show();
+        }
+
+        public DownloadLogoTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            //loading.dismiss();
+        }
+
+    }
+
+
 }
