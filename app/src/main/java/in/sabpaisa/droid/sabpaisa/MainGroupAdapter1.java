@@ -1,10 +1,12 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +32,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
         this.countryList = groupDatas;
     }
 
+    @TargetApi(Build.VERSION_CODES.CUPCAKE)
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         //     TextView text =holder.join;
@@ -109,6 +112,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
 
     //Code for fetching image from server
+    @TargetApi(Build.VERSION_CODES.CUPCAKE)
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 

@@ -65,6 +65,7 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
                 intent.putExtra("clientName", mainFeedData.getOrganization_name());
+
                 intent.putExtra("state", mainFeedData.getOrgAddress());
                 intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
                 intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
