@@ -87,7 +87,7 @@ public class ProceedInstitiutionFragment extends Fragment {
             public void run() {
 
             }
-        },1000);
+        },2000);
 
         Log.d("stateName2222"," "+stateName);
         Log.d("serviceName2222"," "+serviceName);

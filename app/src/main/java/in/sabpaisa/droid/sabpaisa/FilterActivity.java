@@ -97,7 +97,6 @@ public class FilterActivity extends AppCompatActivity {
                     clientTxt = (TextView) findViewById(R.id.spinnerClient).findViewById(R.id.textName);
                     institute = (TextView) findViewById(R.id.InstituteSpinner).findViewById(R.id.textName);
 
-
                     // FOr State Name
                     bankTxt.setText("State Name");
                     // For Services
@@ -106,64 +105,6 @@ public class FilterActivity extends AppCompatActivity {
                     institute.setText("Select Institute");  //Do change here
 
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
-                                                        /*ArrayList<String> banks = new ArrayList<>();
-                                                        final ArrayList<String> clients = new ArrayList<>();
-                                                        final ArrayList<String> institute1 = new ArrayList<>();
-                                                        final ArrayList<String> institute2 =new ArrayList<>();*/
-                                                        /*banks.add("Select State");
-                    *//*banks.add("Allahabad Bank");
-                    banks.add("DCB Bank");*//*
-                                                        banks.add("Andaman and Nicobar Islands");
-                                                        banks.add("Andhra Pradesh");
-                                                        banks.add("Arunachal Pradesh");
-                                                        banks.add("Assam");
-                                                        banks.add("Bihar");
-                                                        banks.add("Chandigarh");
-                                                        banks.add("Chhattisgarh");
-                                                        banks.add("Dadra and Nagar Haveli");
-                                                        banks.add("Daman and Diu");
-                                                        banks.add("Delhi");
-                                                        banks.add("Goa");
-                                                        banks.add("Gujarat");
-                                                        banks.add("Haryana");
-                                                        banks.add("Himachal Pradesh");
-                                                        banks.add("Jammu and Kashmir");
-                                                        banks.add("Jharkhand");
-                                                        banks.add("Karnataka");
-                                                        banks.add("Kerala");
-                                                        banks.add("Lakshadweep");
-                                                        banks.add("Madhya Pradesh");
-                                                        banks.add("Maharashtra");
-                                                        banks.add("Manipur");
-                                                        banks.add("Meghalaya");
-                                                        banks.add("Mizoram");
-                                                        banks.add("Nagaland");
-                                                        banks.add("Orissa");
-                                                        banks.add("Pondicherry");
-                                                        banks.add("Punjab");
-                                                        banks.add("Rajasthan");
-                                                        banks.add("Sikkim");
-                                                        banks.add("Tamil Nadu");
-                                                        banks.add("Telangana");
-                                                        banks.add("Tripura");
-                                                        banks.add("Uttaranchal");
-                                                        banks.add("Uttar Pradesh");
-                                                        banks.add("West Bengal");
-*/
-
-                                                       /* //banks.add("")
-                                                        clients.add("Select Services");
-                                                        clients.add("Institute");
-                                                        clients.add("Hospital");
-                                                        clients.add("Others");
-                                                        //clients.add("IES");
-
-
-                                                        institute1.add("Select Institute");
-                                                        institute1.add("BSEB ,Patna");
-
-                                                        institute2.add("Select Hospital");
-                                                        institute2.add("E-Health,KGMU");*/
 
                     ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_spinner_item, stateArrayList);
                     bankAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -603,8 +544,8 @@ public class FilterActivity extends AppCompatActivity {
                         clientData.setFailedUrl(jsonObject1.getString("failedUrl"));
                         clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
                         clientData.setLandingPage(jsonObject1.getString("landingPage"));
-                        if(i==0)
-                            clientNameArrayList.add("Select");
+                        if(i==0){
+                            clientNameArrayList.add("Select");}
                         else
                             clientNameArrayList.add(clientArrayList.get(i-1).getClientName());
                         clientArrayList.add(clientData);
@@ -614,10 +555,7 @@ public class FilterActivity extends AppCompatActivity {
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item, clientNameArrayList);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    clientsSpinner.setPrompt("Select");
-                    clientsSpinner.setSelection(0);
                     clientsSpinner.setAdapter(adapter);
-
                     clientsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

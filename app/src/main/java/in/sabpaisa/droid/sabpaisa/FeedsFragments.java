@@ -180,10 +180,17 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
 
-    private void loadFeedListView(ArrayList<FeedData> arrayList, RecyclerView recyclerView) {
+    private void loadFeedListView(ArrayList<FeedData> arrayList, final RecyclerView recyclerView) {
 
         mainFeedAdapter = new MainFeedAdapter(arrayList);
-        recyclerView.setAdapter(mainFeedAdapter);
+       // recyclerView.setAdapter(mainFeedAdapter);
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.setAdapter(mainFeedAdapter);
+
+            }
+        },1000);
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -210,7 +217,8 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
     /*START onRefresh() for SwipeRefreshLayout*/
     @Override
     public void onRefresh() {
-        //callFeedDataList(Id);
+        //callFeedDa
+        // taList(Id);
     }
 
     public interface GetDataInterface {
