@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -34,18 +35,18 @@ import in.sabpaisa.droid.sabpaisa.R;
 public class FullViewOfClientsProceed extends AppCompatActivity implements OnFragmentInteractionListener{
     ImageView clientImagePath;
     String clientName,state;
+    public static String ClientId;
     public static String clientImageURLPath=null;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+
+    public static String MySharedPrefForId="mySharedPrefForId";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_view_of_clients_proceed2);
-
-
-
 
         viewPager = (ViewPager) findViewById(R.id.viewpagerproceed);
         setupViewPager(viewPager);
@@ -62,8 +63,15 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
         clientName = intent.getStringExtra("clientName");
         state = intent.getStringExtra("state");
         clientImageURLPath= getIntent().getStringExtra("clientImagePath");
+        ClientId=getIntent().getStringExtra("clientId");
+        Log.d("ClientId_ FullView"," "+ClientId);
+
+        SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefForId,MODE_PRIVATE).edit();
+        editor.putString("ClientId",ClientId);
+        editor.commit();
 
         clientImagePath = (ImageView)findViewById(R.id.ClientImagePRoceed);
+
         new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
 
 

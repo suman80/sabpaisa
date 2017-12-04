@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 /**
  * Created by SabPaisa on 03-07-2017.
@@ -34,7 +37,9 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     View rootView = null;
     private static final String TAG = GroupsFragments.class.getSimpleName();
-    int Id=1;
+
+    public static String ClientId;
+
     String tag_string_req = "req_register";
     SwipeRefreshLayout swipeRefreshLayout;
     ArrayList<GroupListData> groupArrayList;
@@ -74,68 +79,77 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefForId, Context.MODE_PRIVATE);
+
+        ClientId=sharedPreferences.getString("ClientId","123");
+
+        Log.d("ClientId_GroupFrag"," "+ClientId);
+
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragments_groups, container, false);
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        callGroupDataList(Id);
+        callGroupDataList(Integer.parseInt(ClientId));
 
         return rootView;
     }
 
     public void callGroupDataList(final int Id ) {
-        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/getParticularClientsGroups"+"?client_Id="+ Id;
+        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/getParticularClientsGroups"+"?client_Id="+ ClientId;
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
                 urlJsonObj, new Response.Listener<String>(){
 
-            //AppConfiguration.MAIN_URL + "/getFeedsDetailsBasedOnOrganizations/SRS";
-            // urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
-            // Creating the JsonArrayRequest class called arrayreq, passing the required parameters
-            //JsonURL is the URL to be fetched from
-      /*  JsonArrayRequest arrayreq = new JsonArrayRequest(urlJsonObj,
-                // The second parameter Listener overrides the method onResponse() and passes
-                //JSONArray as a parameter
-                new Response.Listener<JSONArray>() {*/
-
-            // Takes the response from the JSON request
             @Override
             public void onResponse(String response) {
                 try {
                     groupArrayList = new ArrayList<GroupListData>();
                     JSONObject jsonObject = new JSONObject(response);
 
-                    JSONArray jsonArray = jsonObject.getJSONArray("response");
+                    String status = jsonObject.getString("status");
 
-                    for (int i = 0; i < jsonArray.length(); i++) {
+                    String response1 = jsonObject.getString("response");
 
-                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                        GroupListData groupListData = new GroupListData();
-                        groupListData.setClientId(jsonObject1.getInt("clientId"));
-                        groupListData.setGroupId(jsonObject1.getInt("groupId"));
-                        groupListData.setGroupName(jsonObject1.getString("groupName"));
-                        groupListData.setGroupText(jsonObject1.getString("groupText"));
-                        groupListData.setCreatedDate(jsonObject1.getString("createdDate"));
-                        groupListData.setImagePath(jsonObject1.getString("imagePath"));
-                        groupListData.setLogoPath(jsonObject1.getString("logoPath"));
-                        groupArrayList.add(groupListData);
+                    if (status.equals("success")&&response1.equals("No_Record_Found")) {
+
+                        Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
+
                     }
-                    Log.d("groupArrayList1212"," "+groupArrayList.get(0).getGroupName());
+                    else {
+                        JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            GroupListData groupListData = new GroupListData();
+                            groupListData.setClientId(jsonObject1.getInt("clientId"));
+                            groupListData.setGroupId(jsonObject1.getInt("groupId"));
+                            groupListData.setGroupName(jsonObject1.getString("groupName"));
+                            groupListData.setGroupText(jsonObject1.getString("groupText"));
+                            groupListData.setCreatedDate(jsonObject1.getString("createdDate"));
+                            groupListData.setImagePath(jsonObject1.getString("imagePath"));
+                            groupListData.setLogoPath(jsonObject1.getString("logoPath"));
+                            groupArrayList.add(groupListData);
+                        }
+                        Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
                        /*START listener for sending data to activity*/
-                    OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
-                    listener.onFragmentSetGroups(groupArrayList);
+                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                        listener.onFragmentSetGroups(groupArrayList);
                             /*END listener for sending data to activity*/
-                    loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
+                        loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
+                    }
                 }
-                // Try and catch are included to handle any errors due to JSON
-                catch (JSONException e) {
-                    // If an error occurs, this prints the error to the log
-                    e.printStackTrace();
-                    callGroupDataList(Id);
+                    // Try and catch are included to handle any errors due to JSON
+                catch(JSONException e){
+                        // If an error occurs, this prints the error to the log
+                        e.printStackTrace();
+                        callGroupDataList(Id);
+                    }
+
                 }
 
-                    }
                 },
                 // The final parameter overrides the method onErrorResponse() and passes VolleyError
                 //as a parameter
@@ -184,7 +198,7 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
     /*START onRefresh() for SwipeRefreshLayout*/
     @Override
     public void onRefresh() {
-        callGroupDataList( Id);
+        callGroupDataList( Integer.parseInt(ClientId));
     }
 
     public interface GetDataInterface {

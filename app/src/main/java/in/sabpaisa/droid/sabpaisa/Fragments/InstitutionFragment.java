@@ -107,7 +107,7 @@ public class InstitutionFragment extends Fragment {
 
                         JSONObject obj =response.getJSONObject(i);
                         Institution institution = new Institution();
-                        institution.setOrganizationId(obj.getInt("organizationId"));
+                        institution.setOrganizationId(obj.getString("organizationId"));
                         institution.setOrganization_name(obj.getString("organization_name"));
                         institution.setRelationship_type(obj.getString("relationship_type"));
                         institution.setOrgLogo(obj.getString("orgLogo"));

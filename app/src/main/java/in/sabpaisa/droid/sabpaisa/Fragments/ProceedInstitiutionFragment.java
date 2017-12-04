@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.MainActivity;
+import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.R;
@@ -131,6 +132,8 @@ public class ProceedInstitiutionFragment extends Fragment {
                         JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                         Institution institution = new Institution();
 
+                        institution.setOrganizationId(jsonObject1.getString("clientId"));
+                        //Log.d("ClientId","-->"+ institution);
                        institution.setOrganization_name(jsonObject1.getString("clientName"));
                         institution.setOrgLogo(jsonObject1.getString("clientLogoPath"));
                         institution.setOrgWal(jsonObject1.getString("clientImagePath"));
@@ -140,10 +143,12 @@ public class ProceedInstitiutionFragment extends Fragment {
                         clientArrayList.add(institution);
                     }
 
+
                     institutionAdapter = new InstitutionAdapter(clientArrayList);
                     recyclerViewInstitutions.setAdapter(institutionAdapter);
 
                     Log.d("clientArrayList2222"," "+clientArrayList.get(0).getOrganization_name());
+                    Log.d("clientArrayList2222"," "+clientArrayList.get(0).getOrganizationId());
 
 
                 }

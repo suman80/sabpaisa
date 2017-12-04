@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -33,10 +34,40 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
     public void onBindViewHolder(MyViewHolder holder, int position) {
         //     TextView text =holder.join;
 
-        GroupListData groupListData  = countryList.get(position);
+        final GroupListData groupListData  = countryList.get(position);
         holder.Group_name.setText(groupListData.getGroupName());
+        holder.Group_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
+                intent.putExtra("groupName",groupListData.getGroupName());
+                intent.putExtra("groupText",groupListData.getGroupText());
+                intent.putExtra("groupImage",groupListData.getImagePath());
+                v.getContext().startActivity(intent);
+            }
+        });
         holder.Group_description.setText(groupListData.getGroupText());
+        holder.Group_description.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
+                intent.putExtra("groupName",groupListData.getGroupName());
+                intent.putExtra("groupText",groupListData.getGroupText());
+                intent.putExtra("groupImage",groupListData.getImagePath());
+                v.getContext().startActivity(intent);
+            }
+        });
         new DownloadImageTask(holder.Group_Image).execute(groupListData.getImagePath());
+        holder.Group_Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
+                intent.putExtra("groupName",groupListData.getGroupName());
+                intent.putExtra("groupText",groupListData.getGroupText());
+                intent.putExtra("groupImage",groupListData.getImagePath());
+                v.getContext().startActivity(intent);
+            }
+        });
         new DownloadLogoTask(holder.Group_Logo).execute(groupListData.getLogoPath());
 
     }

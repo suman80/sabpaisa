@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -38,12 +39,44 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        FeedData mainFeedData = mainFeedDataList.get(position);
+        final FeedData mainFeedData = mainFeedDataList.get(position);
         holder.main_feed_name.setText(mainFeedData.getFeedName());
+        holder.main_feed_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedName",mainFeedData.getFeedName());
+                intent.putExtra("feedText",mainFeedData.getFeedText());
+                intent.putExtra("feedImage",mainFeedData.getImagePath());
+                intent.putExtra("feedLogo",mainFeedData.getLogoPath());
+                v.getContext().startActivity(intent);
+            }
+        });
         holder.main_feed_description.setText(mainFeedData.getFeedText());
-        //holder.main_feed_creation_time.setText(mainFeedData.getCreatedDate());
+        holder.main_feed_description.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedName",mainFeedData.getFeedName());
+                intent.putExtra("feedText",mainFeedData.getFeedText());
+                intent.putExtra("feedImage",mainFeedData.getImagePath());
+                intent.putExtra("feedLogo",mainFeedData.getLogoPath());
+                v.getContext().startActivity(intent);
+            }
+        });
         Log.d("client_Image123456",""+mainFeedData.getImagePath());
         new DownloadImageTask(holder.client_Image).execute(mainFeedData.getImagePath());
+        holder.client_Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedName",mainFeedData.getFeedName());
+                intent.putExtra("feedText",mainFeedData.getFeedText());
+                intent.putExtra("feedImage",mainFeedData.getImagePath());
+                intent.putExtra("feedLogo",mainFeedData.getLogoPath());
+                v.getContext().startActivity(intent);
+            }
+        });
         new DownloadLogoTask(holder.cilent_Logo).execute(mainFeedData.getLogoPath());
     }
     /*END Method to change data when put query in searchBar*/
