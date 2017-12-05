@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/spinnerInsttitute"
                     android:layout_marginTop="30dp"
-
+//Archana
                     android:textAlignment="center"
                     android:layout_marginLeft="20dp"
                     android:spinnerMode="dropdown"
