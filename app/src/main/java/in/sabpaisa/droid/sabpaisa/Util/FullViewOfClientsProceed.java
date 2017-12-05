@@ -78,7 +78,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
 
     }
 
-    @Override
+ /*   @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent a = new Intent(Intent.ACTION_MAIN);
@@ -86,7 +86,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
 
-    }
+    }*/
 
     @Override
     public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
