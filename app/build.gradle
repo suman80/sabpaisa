@@ -37,6 +37,8 @@ dependencies {
     compile 'com.github.chrisbanes:PhotoView:2.1.2'
     compile project(':OliveUpi_dcb_V1.10')
     compile project(':secure-component-sdk')
+
+    compile 'com.weiwangcn.betterspinner:library:1.1.0'
     compile project(':securecomponent')
     compile 'com.github.sharish:ShimmerRecyclerView:v1.0.1'
     compile 'com.nineoldandroids:library:2.4.0'

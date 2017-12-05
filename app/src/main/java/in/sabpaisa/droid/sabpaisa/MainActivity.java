@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+        
+
         sendMoney = (ImageView)findViewById(R.id.ll_send);
         requestMoney = (ImageView)findViewById(R.id.ll_request);
         socialPayment = (ImageView)findViewById(R.id.ll_social_payment);

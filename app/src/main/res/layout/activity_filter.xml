@@ -83,7 +83,7 @@
             </LinearLayout>
 
 
-            <LinearLayout
+         <!--   <LinearLayout
                 android:id="@+id/HospitalSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                     android:id="@+id/spinnerHospital"
                     layout="@layout/custom_spinner_layout" />
             </LinearLayout>
-
+-->
         </LinearLayout>
 
         <Button

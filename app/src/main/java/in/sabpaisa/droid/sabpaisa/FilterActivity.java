@@ -76,7 +76,7 @@ public class FilterActivity extends AppCompatActivity {
         BankClient =      (LinearLayout) findViewById(R.id.llBankUser);
         ClientSpinner =   (LinearLayout)findViewById(R.id.llClientSpinner);
         InstituteSpinner =(LinearLayout)findViewById(R.id.InstituteSpinner);
-        HospitalSpinner = (LinearLayout) findViewById(R.id.HospitalSpinner);
+        //HospitalSpinner = (LinearLayout) findViewById(R.id.HospitalSpinner);
 
         stateSpinner =      (Spinner) findViewById(R.id.spinnerBank).findViewById(R.id.spinner2);
         serviceSpinner =    (Spinner) findViewById(R.id.spinnerClient).findViewById(R.id.spinner2);
@@ -91,21 +91,9 @@ public class FilterActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+     /*               clientNameArrayList = new ArrayList<>();
+clientArrayList=new ArrayList<>();*/
                     BankClient.setVisibility(View.VISIBLE);
-                    TextView bankTxt, clientTxt, institute;
-                    bankTxt = (TextView) findViewById(R.id.spinnerBank).findViewById(R.id.textName);
-                    clientTxt = (TextView) findViewById(R.id.spinnerClient).findViewById(R.id.textName);
-                    institute = (TextView) findViewById(R.id.InstituteSpinner).findViewById(R.id.textName);
-
-                    // FOr State Name
-                    bankTxt.setText("State Name");
-                    // For Services
-                    clientTxt.setText("Select Services");
-                    // For Institute
-                    institute.setText("Select Institute");  //Do change here
-
-/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
-
                     ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_spinner_item, stateArrayList);
                     bankAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     stateSpinner.setAdapter(bankAdapter);
@@ -114,7 +102,7 @@ public class FilterActivity extends AppCompatActivity {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                            state_position=parent.getItemAtPosition(position).toString();
+                            state_position = parent.getItemAtPosition(position).toString();
 
                             getServiceData(state_position);
 
@@ -152,7 +140,7 @@ public class FilterActivity extends AppCompatActivity {
 
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             // getting data from volley
-                            getClientData(serviceSpinner.getSelectedItem().toString(),stateSpinner.getSelectedItem().toString());
+                            getClientData(serviceSpinner.getSelectedItem().toString(), stateSpinner.getSelectedItem().toString());
 
                             if (position != 0) {
                                 final ProgressDialog pd = new ProgressDialog(FilterActivity.this);
@@ -163,6 +151,7 @@ public class FilterActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         pd.dismiss();
+
                                         InstituteSpinner.setVisibility(View.VISIBLE);
                                                                             /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,clientArrayList );
                                                                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -178,10 +167,8 @@ public class FilterActivity extends AppCompatActivity {
                         public void onNothingSelected(AdapterView<?> parent) {
 
                         }
+
                     });
-
-
-
 
 
                 } else {
@@ -191,12 +178,6 @@ public class FilterActivity extends AppCompatActivity {
                 }
 
             }
-
-
-
-/////////////////////////////////////// 14 /09/2017
-
-
 
 
             /////////////////////////////////////////////////////////////////////////////
@@ -514,6 +495,7 @@ public class FilterActivity extends AppCompatActivity {
                 JSONObject jsonObject = null;
 
                 try {
+clientNameArrayList=new ArrayList<>();
                     jsonObject = new JSONObject(response1);
                     JSONArray jsonArray = jsonObject.getJSONArray("response");
 
