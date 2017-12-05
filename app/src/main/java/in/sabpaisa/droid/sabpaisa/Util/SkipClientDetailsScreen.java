@@ -10,6 +10,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -52,27 +54,37 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.CommentAdapter;
 import in.sabpaisa.droid.sabpaisa.CommentData;
+import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FeedDetails;
+import in.sabpaisa.droid.sabpaisa.FeedsFragments;
+import in.sabpaisa.droid.sabpaisa.GroupListData;
+import in.sabpaisa.droid.sabpaisa.GroupsFragments;
+import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.*;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
+import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.R;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.CommentAdapterDatabase;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 
+import static android.support.v4.widget.SwipeRefreshLayout.*;
+
 //This Activity has rolled back
 
 /*implements SwipeRefreshLayout.OnRefreshListener*/
 
-public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class SkipClientDetailsScreen extends AppCompatActivity implements OnFragmentInteractionListener,OnRefreshListener{
     ArrayList<SkipClientData> institutions;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     String FeedId,FeedName,FeedDesc,FeedTime,FeedImage,clientName,state;
     public static String clientImageURLPath=null;
     public static String clientLogoURLPath=null;
+    private ViewPager viewPager;
     TextView feedDeatilsTextView, feedNameTextView,feedTime;
     ImageView feedImage,clientImagePath,clientLogoPath;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -91,6 +103,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
     int totalComments = 0;
     // Indicates if footer ProgressBar is shown (i.e. next page is loading)
     private boolean isLoading = false;
+    private TabLayout tabLayout;
     // If current page is the last page (Pagination will stop after this page load)
     private boolean isLastPage = false;
     private int currentPage = 1;
@@ -101,11 +114,18 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
         setContentView(R.layout.skip_clientdetails);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        viewPager = (ViewPager) findViewById(R.id.viewpagerSkip);
+        setupViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(3);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
         //getSupportActionBar().setTitle("Feed Details");
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
-        mCollapsingToolbarLayout.setTitleEnabled(false);
+        //mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+        //mCollapsingToolbarLayout.setTitleEnabled(false);
         Intent intent = getIntent();
 
 
@@ -125,7 +145,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
         TextView stateTextView = (TextView) findViewById(R.id.particular_client_address);
 
         clientImagePath = (ImageView)findViewById(R.id.particular_client_image);
-        clientLogoPath  = (ImageView)findViewById(R.id.particular_client_logo);
+        //clientLogoPath  = (ImageView)findViewById(R.id.particular_client_logo);
 
 
 
@@ -146,25 +166,25 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
         Bitmap bmp = BitmapFactory.decodeByteArray(imgData, 0, imgData.length);
         feedImage.setImageBitmap(bmp);*/
 
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        swipeRefreshLayout.setOnRefreshListener(this);
+        //swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        //swipeRefreshLayout.setOnRefreshListener(this);
 
-        progressBar = (ProgressBar) findViewById(R.id.main_progress);
+       // progressBar = (ProgressBar) findViewById(R.id.main_progress);
         nestedScroll = (NestedScrollView) findViewById(R.id.nestedScroll);
 
         rv = (ShimmerRecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
 //        rv.showShimmerAdapter();
 
         commentArrayList = new ArrayList<CommentData>();
-        ca = new CommentAdapterDatabase(this);
-        rv.setAdapter(ca);
+        //ca = new CommentAdapterDatabase(this);
+        //rv.setAdapter(ca);
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
+       /* LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
         rv.setLayoutManager(llm);
         rv.setNestedScrollingEnabled(false);
-
+*/
         /*Paginate.with(rv, callbacks)
                 .setLoadingTriggerThreshold(1)
                 .addLoadingListItem(loadMore?true:false)
@@ -172,6 +192,21 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
                 .build();*/
         currentPage=1;
         //loadComments();
+    }
+
+    @Override
+    public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
+
+    }
+
+    @Override
+    public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
+
+    }
+
+    @Override
+    public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
+
     }
 
 
@@ -208,6 +243,24 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements SwipeR
         }
 
     }
+
+    private void setupViewPager(ViewPager viewPager) {
+
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new FeedsFragments(),"Feeds");
+        adapter.addFragment(new GroupsFragments(),"Groups");
+        adapter.addFragment(new PayFragments(),"Make Payment");
+        //adapter.addFragment(new GroupsFragments(),"Groups");
+        //adapter.addFragment(new PayFragments(),"Make Payment");
+        viewPager.setAdapter(adapter);
+
+
+        //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
+
+    }
+
+
 
     //Code for fetching image from server
     private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {

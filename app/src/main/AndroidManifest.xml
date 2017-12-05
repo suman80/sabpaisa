@@ -24,11 +24,13 @@
         android:theme="@style/AppTheme">
         <activity android:name=".LogInActivity">
 
-            <!--<intent-filter>
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity android:name=".VerifyMobile" />
         <activity android:name=".FilterActivity">
@@ -45,11 +47,14 @@
         <activity android:name=".GroupDetails" />
         <activity android:name=".RegisterPasscode" />
         <activity android:name=".SplashScreen">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
 
         <!--
@@ -125,11 +130,15 @@
             </intent-filter>
         </receiver>
 
-        <!--<activity
+        <!--
+        <activity
             android:name=".Util.MainActivitySkip"
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Util.FullViewOfClientsProceed"></activity>-->
+        <activity android:name=".Util.FullViewOfClientsProceed"></activity>
+        -->
+        <activity android:name=".Proceed_Feed_FullScreen" />
+        <activity android:name=".Proceed_Group_FullScreen"></activity>
     </application>
 
 </manifest>

@@ -8,7 +8,7 @@ package in.sabpaisa.droid.sabpaisa.Model;
 
 public class Institution {
 
-    int organizationId;
+    String organizationId;
     String organization_name;
     String relationship_type;
     String orgLogo;
@@ -23,11 +23,11 @@ public class Institution {
     public Institution() {
     }
 
-    public int getOrganizationId() {
+    public String getOrganizationId() {
         return organizationId;
     }
 
-    public void setOrganizationId(int organizationId) {
+    public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
     }
 
