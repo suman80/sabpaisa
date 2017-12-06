@@ -23,6 +23,8 @@ import in.sabpaisa.droid.sabpaisa.FeedsFragments;
 import in.sabpaisa.droid.sabpaisa.FormFragment;
 //import in.sabpaisa.droid.sabpaisa.Fragments.FeedFragments1;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragments;
+import in.sabpaisa.droid.sabpaisa.Fragments.ProceedGroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.GroupsFragments;
@@ -40,7 +42,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
-    public static String MySharedPrefForId="mySharedPrefForId";
+    public static String MySharedPrefOnFullViewOfClientProceed="mySharedPrefForId";
 
 
     @Override
@@ -64,10 +66,10 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
         state = intent.getStringExtra("state");
         clientImageURLPath= getIntent().getStringExtra("clientImagePath");
         ClientId=getIntent().getStringExtra("clientId");
-        Log.d("ClientId_ FullView"," "+ClientId);
+        Log.d("ClientId_FVOCL"," "+ClientId);
 
-        SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefForId,MODE_PRIVATE).edit();
-        editor.putString("ClientId",ClientId);
+        SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefOnFullViewOfClientProceed,MODE_PRIVATE).edit();
+        editor.putString("clientId",ClientId);
         editor.commit();
 
         clientImagePath = (ImageView)findViewById(R.id.ClientImagePRoceed);
@@ -142,8 +144,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
 
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FeedsFragments(),"Feeds");
-        adapter.addFragment(new GroupsFragments(),"Groups");
+        adapter.addFragment(new ProceedFeedsFragments(),"Feeds"); //changing here creating different frags
+        adapter.addFragment(new ProceedGroupsFragments(),"Groups");//changing here creating different frags
         adapter.addFragment(new PayFragments(),"Make Payment");
         viewPager.setAdapter(adapter);
 

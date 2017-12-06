@@ -80,16 +80,11 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragments_groups, container, false);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreen, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");
         Log.d("clientId_GF",""+clientId);
-
-        // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragments_groups, container, false);
-
-      //  swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
-      //  swipeRefreshLayout.setOnRefreshListener(this);
 
         callGroupDataList(clientId);
 
