@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa.Util;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -84,6 +85,8 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     String FeedId,FeedName,FeedDesc,FeedTime,FeedImage,clientName,state;
     public static String clientImageURLPath=null;
     public static String clientLogoURLPath=null;
+    public static String clientId;
+    public  static  String MySharedPrefOnSkipClientDetailsScreen="mySharedPref";
     private ViewPager viewPager;
     TextView feedDeatilsTextView, feedNameTextView,feedTime;
     ImageView feedImage,clientImagePath,clientLogoPath;
@@ -92,7 +95,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     EditText commentadd = null;
     ProgressDialog loading = null;
     ArrayList<CommentData> commentArrayList;
-    /////////////////////////
+
     int lastSeq=0;
     boolean loadMore=true;
     ShimmerRecyclerView rv;
@@ -123,22 +126,21 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        //getSupportActionBar().setTitle("Feed Details");
-        //mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
-        //mCollapsingToolbarLayout.setTitleEnabled(false);
+
         Intent intent = getIntent();
-
-
-
 
         clientName = intent.getStringExtra("clientName");
         state = intent.getStringExtra("state");
-        //FeedDesc = intent.getStringExtra("FeedDeatils");
+        clientId = intent.getStringExtra("clientId");
         clientImageURLPath= getIntent().getStringExtra("clientImagePath");
         clientLogoURLPath = getIntent().getStringExtra("clientLogoPath");
-
+        Log.d("clientIdSCDS",""+clientId);
         Log.d("clientImagePath",""+clientImageURLPath);
         Log.d("clientLogoPath",""+clientLogoURLPath);
+
+        SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefOnSkipClientDetailsScreen,MODE_PRIVATE).edit();
+        editor.putString("clientId",clientId);
+        editor.commit();
 
         TextView clientNameTextView = (TextView) findViewById(R.id.particular_client_name);
 
@@ -156,40 +158,13 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
         //new DownloadLogoTask(clientLogoPath).execute(clientLogoURLPath);
 
-        /*clientImagePath.setImageUrl(""+(clientImagePath), imageLoader);
-        clientLogoPath.setImageUrl(""+(clientImagePath),imageLoader);*/
-
-//        feedTime.setText(FeedTime);
-        //clientImagePath.setImageResource(R.drawable.group);
-        //clientLogoPath.setImageUrl(R.id.);
-       /* byte[] imgData = Base64.decode(FeedImage,Base64.DEFAULT);
-        Bitmap bmp = BitmapFactory.decodeByteArray(imgData, 0, imgData.length);
-        feedImage.setImageBitmap(bmp);*/
-
-        //swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        //swipeRefreshLayout.setOnRefreshListener(this);
-
-       // progressBar = (ProgressBar) findViewById(R.id.main_progress);
         nestedScroll = (NestedScrollView) findViewById(R.id.nestedScroll);
 
         rv = (ShimmerRecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
 //        rv.showShimmerAdapter();
 
         commentArrayList = new ArrayList<CommentData>();
-        //ca = new CommentAdapterDatabase(this);
-        //rv.setAdapter(ca);
 
-       /* LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rv.addItemDecoration(new SimpleDividerItemDecoration(this));
-        rv.setLayoutManager(llm);
-        rv.setNestedScrollingEnabled(false);
-*/
-        /*Paginate.with(rv, callbacks)
-                .setLoadingTriggerThreshold(1)
-                .addLoadingListItem(loadMore?true:false)
-                .setLoadingListItemCreator(new CustomLoadingListItemCreator())
-                .build();*/
         currentPage=1;
         //loadComments();
     }

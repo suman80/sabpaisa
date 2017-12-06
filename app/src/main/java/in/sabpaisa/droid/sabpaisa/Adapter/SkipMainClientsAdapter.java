@@ -44,40 +44,13 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-          //final SkipClientData mainFeedData = mainClientDataList.get(position);
 
-        //try {
             final SkipClientData mainFeedData = institutions.get(position);
             holder.instituteName.setText(mainFeedData.getOrganization_name());
             holder.instituteLocation.setText(mainFeedData.getOrgAddress());
             //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
             holder.thumbnail.setImageUrl(mainFeedData.getOrgLogo(), imageLoader);
             holder.clinetbanner.setImageUrl(mainFeedData.getOrgWal(),imageLoader);
-
-           /* holder.main_feed_group_name.setText(mainFeedData.getFeed_Name());
-            holder.main_feed_group_description.setText(mainFeedData.getFeedText());
-            holder.main_feed_group_time.setText(getDataFormate(mainFeedData.getFeed_date()));
-
-            byte[] imgData = Base64.decode(mainFeedData.getFeedImage(),Base64.DEFAULT);
-            Bitmap bmp = BitmapFactory.decodeByteArray(imgData, 0, imgData.length);
-            holder.main_feed_image.setImageBitmap(bmp);
-            holder.main_feed_image.setVisibility(View.VISIBLE);*/
-           /* holder.viewMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Toast.makeText(v.getContext(), "kjfsnfslk", Toast.LENGTH_SHORT).show();
-                    if (holder.viewMore.getText().equals("View More")){
-                        holder.viewMore.setText("View Less");
-                        holder.main_feed_image.setVisibility(View.VISIBLE);
-                    }else {
-                        holder.viewMore.setText("View More");
-                        holder.main_feed_image.setVisibility(View.GONE);
-                    }
-                }
-            });*/
-
-
-
 
            holder.clinetbanner.setOnClickListener(new View.OnClickListener() {
                @Override
@@ -87,7 +60,7 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
                    intent.putExtra("state", mainFeedData.getOrgAddress());
                    intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
                    intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
-                   //intent.putExtra("FeedImage",mainFeedData.getFeedImage());
+                   intent.putExtra("clientId",mainFeedData.getOrganizationId());
                    v.getContext().startActivity(intent);
                }
            });
@@ -101,15 +74,11 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
                     intent.putExtra("state", mainFeedData.getOrgAddress());
                     intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
                     intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
-                    //intent.putExtra("FeedImage",mainFeedData.getFeedImage());
+                    intent.putExtra("clientId",mainFeedData.getOrganizationId());
                     v.getContext().startActivity(intent);
                 }
             });
 
-       /* } catch (ParseException e)
-        {
-            e.printStackTrace();
-        }*/
     }
     /*END Method to change data when put query in searchBar*/
 
@@ -151,29 +120,4 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
         return new MyViewHolder(v);
     }
 
-    /**
-     * View holder class
-     */
-   /* public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView main_feed_group_description, main_feed_group_name, main_feed_group_time,viewMore;
-        NetworkImageView thumbnail,clinetbanner;
-        TextView instituteName,instituteLocation;
-        public PhotoView main_feed_image;
-        public RelativeLayout relativeLayout;
-        public LinearLayout linerar1;
-
-
-        public MyViewHolder(View view) {
-            super(view);
-            main_feed_group_description = (TextView) view.findViewById(R.id.main_feed_group_description);
-            main_feed_group_name = (TextView) view.findViewById(R.id.main_feed_group_name);
-            main_feed_group_time = (TextView) view.findViewById(R.id.main_feed_creation_time);
-            main_feed_image = (PhotoView) view.findViewById(R.id.iv_feedImage);
-           // viewMore = (TextView)view.findViewById(R.id.tv_viewMore);
-            relativeLayout = (RelativeLayout)view.findViewById(R.id.rl_view);
-            linerar1 =(LinearLayout)view.findViewById(R.id.linerar1);
-           // com.elyeproj.loaderviewlibrary.
-             //       LoaderImageView.resetLoader();
-        }
-    }*/
 }

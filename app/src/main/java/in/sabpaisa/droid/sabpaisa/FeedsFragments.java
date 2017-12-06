@@ -31,6 +31,7 @@ import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
 /**
  * Created by SabPaisa on 03-07-2017.
@@ -44,7 +45,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
     ArrayList<FeedData> feedArrayList = new ArrayList<FeedData>();
     MainFeedAdapter mainFeedAdapter;/*Globally Declared Adapter*/
 
-    public static String ClientId;
+    public static String clientId;
 
     /*START Interface for getting data from activity*/
     GetDataInterface sGetDataInterface;
@@ -56,11 +57,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-       /* try {
-            sGetDataInterface= (GetDataInterface) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
-        }*/
+
     }
 
     public void getDataFromActivity() {
@@ -82,36 +79,15 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragments_feeds, container, false);
-
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefForId, Context.MODE_PRIVATE);
-
-        ClientId=sharedPreferences.getString("ClientId","123");
-
-        Log.d("ClientId_FeedsFrag"," "+ClientId);
-
-        /*final FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.dummyfrag_bg);
-        frameLayout.setBackgroundColor();
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.dummyfrag_scrollableview);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setHasFixedSize(true);
-
-        DessertAdapter adapter = new DessertAdapter(getContext());
-        recyclerView.setAdapter(adapter);*/
-
-       // swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
-        //swipeRefreshLayout.setOnRefreshListener(this);
-
-        Log.d("feedArrayList"," "+feedArrayList);
-
-        callFeedDataList(Integer.parseInt(ClientId));
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreen, Context.MODE_PRIVATE);
+        clientId=sharedPreferences.getString("clientId","abc");
+        Log.d("clientId_FF",""+clientId);
+        callFeedDataList(clientId);
         return rootView;
     }
 
-    public void callFeedDataList(final int Id) {
-        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/getParticularClientsFeeds/"+"?client_Id="+ ClientId;
+    public void callFeedDataList(final String clientId) {
+        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/getParticularClientsFeeds/"+"?client_Id="+clientId;;
 
 
 
@@ -167,7 +143,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
                         catch (JSONException e) {
                             // If an error occurs, this prints the error to the log
                             e.printStackTrace();
-                            callFeedDataList(Id);
+                            callFeedDataList(clientId);
                         }
                     }
                 },
@@ -178,7 +154,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        callFeedDataList(Id);
+                        callFeedDataList(clientId);
                         Log.e("Feed", "FeedError");
                     }
                 }

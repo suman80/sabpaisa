@@ -73,12 +73,6 @@ public class InstitutionSkipFragment extends Fragment {
         },1000);
 
         getClientsList();
-        /*SkipClientData institution = new SkipClientData("COA", "New Delhi");
-        institutions.add(institution);
-        institutions.add(new SkipClientData("COA", "New Delhi"));
-        institutions.add(new SkipClientData("COA", "New Delhi"));
-        institutions.add(new SkipClientData("COA", "New Delhi"));
-        institutions.add(new SkipClientData("COA", "New Delhi"));*/
 
         return rootView;
     }
@@ -90,8 +84,7 @@ public class InstitutionSkipFragment extends Fragment {
 
 
 
-        StringRequest strReq = new StringRequest(Request.Method.GET,
-                AppConfig.url_clientsall, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.url_clientsall, new Response.Listener<String>() {
 
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -137,9 +130,8 @@ public class InstitutionSkipFragment extends Fragment {
 
                         SkipClientData institution = new SkipClientData();
 
-                        //institution.setOrganizationId(Integer.parseInt(jarr1.getString(Integer.parseInt("id"))));
+                        institution.setOrganizationId(jsonObject.getString("clientId"));
                         institution.setOrganization_name(jsonObject.getString("clientName"));
-                       // institution.setRelationship_type(jsonObject.getString("clientName"));
                         institution.setOrgLogo(jsonObject.getString("clientLogoPath"));
                         institution.setOrgAddress(jsonObject.getString("state"));
                         institution.setOrgWal(jsonObject.getString("clientImagePath"));

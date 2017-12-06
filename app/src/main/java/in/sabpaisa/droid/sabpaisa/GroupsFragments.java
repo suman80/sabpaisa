@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
 /**
  * Created by SabPaisa on 03-07-2017.
@@ -38,7 +39,7 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
     View rootView = null;
     private static final String TAG = GroupsFragments.class.getSimpleName();
 
-    public static String ClientId;
+    public static String clientId;
 
     String tag_string_req = "req_register";
     SwipeRefreshLayout swipeRefreshLayout;
@@ -80,11 +81,9 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefForId, Context.MODE_PRIVATE);
-
-        ClientId=sharedPreferences.getString("ClientId","123");
-
-        Log.d("ClientId_GroupFrag"," "+ClientId);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreen, Context.MODE_PRIVATE);
+        clientId=sharedPreferences.getString("clientId","abc");
+        Log.d("clientId_GF",""+clientId);
 
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragments_groups, container, false);
@@ -92,13 +91,13 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
       //  swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
       //  swipeRefreshLayout.setOnRefreshListener(this);
 
-        callGroupDataList(Integer.parseInt(ClientId));
+        callGroupDataList(clientId);
 
         return rootView;
     }
 
-    public void callGroupDataList(final int Id ) {
-        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/getParticularClientsGroups"+"?client_Id="+ ClientId;
+    public void callGroupDataList(final String clientId ) {
+        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/getParticularClientsGroups"+"?client_Id="+ clientId;
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
                 urlJsonObj, new Response.Listener<String>(){
 
@@ -145,7 +144,7 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
                 catch(JSONException e){
                         // If an error occurs, this prints the error to the log
                         e.printStackTrace();
-                        callGroupDataList(Id);
+                        callGroupDataList(clientId);
                     }
 
                 }
@@ -158,7 +157,7 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        callGroupDataList(Id);
+                        callGroupDataList(clientId);
                         Log.e("Group fragments", "Group fragments Error");
                     }
                 }
@@ -205,7 +204,7 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
     /*START onRefresh() for SwipeRefreshLayout*/
     @Override
     public void onRefresh() {
-        callGroupDataList( Integer.parseInt(ClientId));
+        callGroupDataList(clientId);
     }
 
     public interface GetDataInterface {
