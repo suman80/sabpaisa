@@ -41,7 +41,7 @@ import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Model.StateGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
-public class FilterActivity extends AppCompatActivity {
+public class FilterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = FilterActivity.class.getSimpleName();
 
@@ -70,7 +70,7 @@ public class FilterActivity extends AppCompatActivity {
 
 
 
-        BankUser =    (AppCompatCheckBox) findViewById(R.id.rb_bankuser);
+       // BankUser =    (AppCompatCheckBox) findViewById(R.id.rb_bankuser);
         //PrivateUser = (AppCompatCheckBox) findViewById(R.id.rbPrivate);
 
         BankClient =      (LinearLayout) findViewById(R.id.llBankUser);
@@ -87,14 +87,21 @@ public class FilterActivity extends AppCompatActivity {
         clientNameArrayList = new ArrayList<>();
         getStateData();
 
-        BankUser.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-     /*               clientNameArrayList = new ArrayList<>();
-clientArrayList=new ArrayList<>();*/
-                    BankClient.setVisibility(View.VISIBLE);
-                    ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_spinner_item, stateArrayList);
+
+                    TextView bankTxt, clientTxt, institute;
+                    bankTxt = (TextView) findViewById(R.id.spinnerBank).findViewById(R.id.textName);
+                    clientTxt = (TextView) findViewById(R.id.spinnerClient).findViewById(R.id.textName);
+                    institute = (TextView) findViewById(R.id.InstituteSpinner).findViewById(R.id.textName);
+
+
+                    // FOr State Name
+                    bankTxt.setText("State Name");
+                    // For Services
+                    clientTxt.setText("Select Services");
+                    // For Institute
+                    institute.setText("Select Institute");  //Do change here
+
+                   /* ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_spinner_item, stateArrayList);
                     bankAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     stateSpinner.setAdapter(bankAdapter);
 
@@ -131,10 +138,10 @@ clientArrayList=new ArrayList<>();*/
                         }
                     });
 
-                                                       /* ArrayAdapter<String> clientadapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, serviceArrayList);
+                                                       *//* ArrayAdapter<String> clientadapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, serviceArrayList);
                                                         clientadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                                         serviceSpinner.setAdapter(clientadapter);
-*/
+*//*
                     serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
 
@@ -153,9 +160,9 @@ clientArrayList=new ArrayList<>();*/
                                         pd.dismiss();
 
                                         InstituteSpinner.setVisibility(View.VISIBLE);
-                                                                            /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,clientArrayList );
+                                                                            *//*ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,clientArrayList );
                                                                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                                            clientsSpinner.setAdapter(adapter);*/
+                                                                            clientsSpinner.setAdapter(adapter);*//*
 
 
                                     }
@@ -171,76 +178,18 @@ clientArrayList=new ArrayList<>();*/
                     });
 
 
-                } else {
-                    ClientSpinner.setVisibility(View.GONE);
-                    BankClient.setVisibility(View.GONE);
-                    InstituteSpinner.setVisibility(View.GONE);
                 }
 
             }
 
 
-            /////////////////////////////////////////////////////////////////////////////
-
-               /* clientSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if (position != 0) {
-                            final ProgressDialog pd = new ProgressDialog(FilterActivity.this);
-                            pd.setMessage("Loading Clients");
-                            pd.show();
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    pd.dismiss();
-                                    InstituteSpinner.setVisibility(View.VISIBLE);
-
-                                    ArrayAdapter<String> instituteAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_spinner_item,    );
-                                    instituteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                    institutespinner.setAdapter(instituteAdapter);
-                                }
-                            }, 200);
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-            }
-                *//*else
-
-            {
-                ClientSpinner.setVisibility(View.GONE);
-                BankClient.setVisibility(View.GONE);
-            }*/
 
 
-
-        });
-
-       /* BankUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (PrivateUser.isChecked()) {
-                    PrivateUser.setChecked(false);
-                    BankUser.setChecked(true);
-                }
-            }
-        });*/
-        /*PrivateUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (BankUser.isChecked()) {
-                    BankUser.setChecked(false);
-                    PrivateUser.setChecked(true);
-                }
-            }
         });*/
 
-        skip.setOnClickListener(new View.OnClickListener() {
+
+
+       skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
@@ -252,7 +201,7 @@ clientArrayList=new ArrayList<>();*/
         proceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(BankUser.isChecked() && stateSpinner.getSelectedItemPosition()!=0 && serviceSpinner.getSelectedItemPosition()!=0){
+                if( stateSpinner.getSelectedItemPosition()!=0 && serviceSpinner.getSelectedItemPosition()!=0){
 
                     String serviceName=serviceSpinner.getSelectedItem().toString();
                     Log.d("serviceName"," "+serviceName);
@@ -263,12 +212,12 @@ clientArrayList=new ArrayList<>();*/
                     intent.putExtra("STATENAME",stateName);
                     intent.putExtra("SERVICENAME",serviceName);
                     startActivity(intent);
-                }/*else if (PrivateUser.isChecked()){
+                }else if (PrivateUser.isChecked()){
                     startActivity(new Intent(FilterActivity.this,MainActivity.class));
-                }*/
+                }
                 else
                 {
-                    Toast.makeText(FilterActivity.this, "Select any Services", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(FilterActivity.this, "Select any Services", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -306,14 +255,17 @@ clientArrayList=new ArrayList<>();*/
                         getterSetter.setStateCode(jsonObject1.getString("stateCode").toString());
                         getterSetter.setStateName(jsonObject1.getString("stateName").toString());
 
-                        if(i==0)
-                        {
+                        if (i == 0) {
                             stateArrayList.add("Select State");
                         }
                         stateArrayList.add(getterSetter.getStateName().toString());
+                        ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_spinner_item, stateArrayList);
+                        bankAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        stateSpinner.setAdapter(bankAdapter);
+
+                        stateSpinner.setOnItemSelectedListener(FilterActivity.this);
 
                     }
-
                 }catch(JSONException e){
                     e.printStackTrace();
                 }
@@ -393,7 +345,8 @@ clientArrayList=new ArrayList<>();*/
                 JSONObject jsonObject = null;
 
                 if (response1==null){
-                    Toast.makeText(FilterActivity.this,"No Data Found",Toast.LENGTH_SHORT).show();
+                   //
+                    // Toast.makeText(FilterActivity.this,"No Data Found",Toast.LENGTH_SHORT).show();
 
                 }else {
 
@@ -415,9 +368,22 @@ clientArrayList=new ArrayList<>();*/
 
                         Log.d("serviceArrayList", "" + serviceArrayList);
 
-                        ArrayAdapter<String> clientadapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, serviceArrayList);
+                        ArrayAdapter<String> clientadapter = new ArrayAdapter<String>(FilterActivity.this, R.layout.support_simple_spinner_dropdown_item, serviceArrayList);
                         clientadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         serviceSpinner.setAdapter(clientadapter);
+                        serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                            public void onItemSelected(AdapterView<?> parentView,
+                                                       View selectedItemView, int position, long id) {
+
+                                getClientData(serviceSpinner.getSelectedItem().toString(),stateSpinner.getSelectedItem().toString());
+
+                            }
+
+                            public void onNothingSelected(AdapterView<?> arg0) {// do nothing
+                            }
+
+                        });
 
 
                     } catch (JSONException e) {
@@ -509,6 +475,8 @@ clientNameArrayList=new ArrayList<>();
                         ClientData clientData = new ClientData();
                         clientData.setId(jsonObject1.getInt("id"));
                         clientData.setClientId(jsonObject1.getString("clientId"));
+
+
                         clientData.setClientName(jsonObject1.getString("clientName"));
                         clientData.setClientCode(jsonObject1.getString("clientCode"));
                         clientData.setClientContact(jsonObject1.getString("clientContact"));
@@ -532,15 +500,18 @@ clientNameArrayList=new ArrayList<>();
                             clientNameArrayList.add(clientArrayList.get(i-1).getClientName());
                         clientArrayList.add(clientData);
                     }
-                    clientNameArrayList.add(clientArrayList.get(clientArrayList.size()-1).getClientName());
+/*
+                    clientNameArrayList.add(jsonObject1.getString("clientName").toString());
+*/
+
+                  clientNameArrayList.add(clientArrayList.get(clientArrayList.size()-1).getClientName());
                     Log.d("clientArrayList",""+clientArrayList.get(0).getClientName());
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item, clientNameArrayList);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     clientsSpinner.setAdapter(adapter);
-                    clientsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    clientsSpinner.setOnItemSelectedListener(FilterActivity.this);
+                       /* public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                             String selectedItem=parent.getItemAtPosition(position).toString();
                             Log.d("selectedItem","-->"+selectedItem);
@@ -553,9 +524,9 @@ clientNameArrayList=new ArrayList<>();
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
 
-                        }
+                        }*//*
                     });
-
+*/
 
                 }
                 catch(JSONException e){
@@ -615,5 +586,15 @@ clientNameArrayList=new ArrayList<>();
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selected=parent.getItemAtPosition(position).toString();
+      //  Toast.makeText(this,selected,Toast.LENGTH_SHORT).show();
+        getServiceData(selected);
+    }
 
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
