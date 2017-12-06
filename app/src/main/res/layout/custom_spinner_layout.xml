@@ -4,12 +4,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+
     <TextView
         android:id="@+id/textName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_horizontal_margin"
-        android:text="Service"
+        android:text="Select your Choice"
         android:textSize="@dimen/text_size_heading"
         android:textStyle="bold" />
 

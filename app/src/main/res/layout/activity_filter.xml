@@ -10,6 +10,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:text="Choose your Institution / Hospital  "
+android:layout_marginTop="30dp"
+        android:layout_marginLeft="20sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/bg_orange"
+        android:layout_height="wrap_content"
+        />
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
@@ -36,7 +57,7 @@
             android:layout_marginBottom="10dp"
             android:src="@drawable/oricons" />-->
 
-
+<!--
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/rb_bankuser"
             style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
@@ -45,25 +66,27 @@
             android:buttonTint="@color/bg_screen"
             android:checked="false"
             android:text="Choose your Institution / Hospital / Others "
-            android:textSize="@dimen/text_size_normal" />
+            android:textSize="@dimen/text_size_normal" />-->
 
         <LinearLayout
             android:id="@+id/llBankUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <include
                 android:id="@+id/spinnerBank"
-                layout="@layout/custom_spinner_layout" />
+                layout="@layout/custom_spinner_layout"
+                />
 
             <LinearLayout
                 android:id="@+id/llClientSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+
+                android:visibility="visible">
 
                 <include
                     android:id="@+id/spinnerClient"
@@ -76,7 +99,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
 
-                android:visibility="gone">
+                android:visibility="visible">
 <!--
                 <TextView
                     android:layout_width="wrap_content"
@@ -99,7 +122,9 @@
                     ></Spinner>-->
                 <include
                     android:id="@+id/spinnerInsttitute"
-                    layout="@layout/custom_spinner_layout" />
+
+                    layout="@layout/custom_spinner_layout"
+                    />
             </LinearLayout>
 
 
@@ -108,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <include
                     android:id="@+id/spinnerHospital"
@@ -117,24 +142,26 @@
 -->
         </LinearLayout>
 
-        <Button
-            android:id="@+id/proceed"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/background_button"
-            android:text="Proceed"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
-    </LinearLayout>
 
+    </LinearLayout>
+    <Button
+        android:id="@+id/proceed"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="400dp"
+        android:background="@drawable/background_button"
+        android:text="Proceed"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/skip"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginBottom="60dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="40dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/background_button"
