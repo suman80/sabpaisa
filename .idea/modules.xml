@@ -3,11 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OliveUpi_dcbV1.11/OliveUpi_dcbV1.11.iml" filepath="$PROJECT_DIR$/OliveUpi_dcbV1.11/OliveUpi_dcbV1.11.iml" />
-      <module fileurl="file://$PROJECT_DIR$/OliveUpi_dcbV1.11/OliveUpi_dcbV1.11.iml" filepath="$PROJECT_DIR$/OliveUpi_dcbV1.11/OliveUpi_dcbV1.11.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/sabpaisa_android_app.iml" filepath="$PROJECT_DIR$/sabpaisa_android_app.iml" />
-      <module fileurl="file://C:\SabPaisa\SabPaisa_App\sabpaisa_android_app\sabpaisaapp.iml" filepath="C:\SabPaisa\SabPaisa_App\sabpaisa_android_app\sabpaisaapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/sabpaisaapp.iml" filepath="$PROJECT_DIR$/sabpaisaapp.iml" />
+      <module fileurl="file://C:\SabPaisa\SabPaisa_App\sabpaisa_android_app\sabpaisaapp.iml" filepath="C:\SabPaisa\SabPaisa_App\sabpaisa_android_app\sabpaisaapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/secure-component-sdk/secure-component-sdk.iml" filepath="$PROJECT_DIR$/secure-component-sdk/secure-component-sdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/securecomponent/securecomponent.iml" filepath="$PROJECT_DIR$/securecomponent/securecomponent.iml" />
     </modules>
