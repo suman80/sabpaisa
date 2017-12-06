@@ -2,8 +2,11 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -99,7 +102,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                     // For Services
                     clientTxt.setText("Select Services");
                     // For Institute
-                    institute.setText("Select Institute");  //Do change here
+                    institute.setText("Select Client");  //Do change here
 
                    /* ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_spinner_item, stateArrayList);
                     bankAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -495,7 +498,7 @@ clientNameArrayList=new ArrayList<>();
                         clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
                         clientData.setLandingPage(jsonObject1.getString("landingPage"));
                         if(i==0){
-                            clientNameArrayList.add("Select");}
+                            clientNameArrayList.add("Select Client");}
                         else
                             clientNameArrayList.add(clientArrayList.get(i-1).getClientName());
                         clientArrayList.add(clientData);
@@ -597,4 +600,35 @@ clientNameArrayList=new ArrayList<>();
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+    public void checkNetworkConnection(){
+        AlertDialog.Builder builder =new AlertDialog.Builder(this);
+        builder.setTitle("No internet Connection");
+        builder.setMessage("Please turn on internet connection to continue");
+        builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+   /* public boolean isNetworkConnectionAvailable(){
+        ConnectivityManager cm =
+                (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnected();
+        if(isConnected) {
+            Log.d("Network", "Connected");
+            return true;
+        }
+        else{
+            checkNetworkConnection();
+            Log.d("Network","Not Connected");
+            return false;
+        }
+    }*/
 }

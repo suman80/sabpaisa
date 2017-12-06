@@ -47,6 +47,9 @@
                     layout="@layout/layout_bottombar"
                     android:layout_width="match_parent"
                     android:layout_height="46dp" />
+
+
+
             </FrameLayout>
 
             <android.support.design.widget.AppBarLayout
@@ -73,9 +76,52 @@
                             android:id="@+id/ClientImagePRoceed"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
+                            android:scaleType="fitXY"
+
                             />
 
                     </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:id="@+id/particular_client_name_proceed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Feed Name"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:background="#80000000"
+                            android:textColor="#fff"
+                            android:textSize="20dp"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/particular_client_address_proceed"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="7th June"
+                            android:gravity="right"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_toRightOf="@id/particular_client_name_proceed"
+                            android:background="#80000000"
+                            android:textColor="#fff"
+                            android:textSize="20dp"
+
+                            />
+
+
+
+
+                    </RelativeLayout>
+
 
 
                     <FrameLayout

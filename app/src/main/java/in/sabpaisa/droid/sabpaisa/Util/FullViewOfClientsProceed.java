@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -72,8 +73,14 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
         editor.putString("clientId",ClientId);
         editor.commit();
 
-        clientImagePath = (ImageView)findViewById(R.id.ClientImagePRoceed);
+        TextView clientNameTextView = (TextView) findViewById(R.id.particular_client_name_proceed);
 
+        TextView stateTextView = (TextView) findViewById(R.id.particular_client_address_proceed);
+
+
+        clientImagePath = (ImageView)findViewById(R.id.ClientImagePRoceed);
+        clientNameTextView.setText( clientName);
+        stateTextView.setText(state);
         new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
 
 
