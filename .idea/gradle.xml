@@ -8,7 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/OliveUpi_dcb_V1.10" />
+            <option value="$PROJECT_DIR$/OliveUpi_dcbV1.11" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/secure-component-sdk" />
             <option value="$PROJECT_DIR$/securecomponent" />

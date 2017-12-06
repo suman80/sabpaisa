@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('OliveUpi_dcbV1.11.aar'))

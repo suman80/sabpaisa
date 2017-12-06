@@ -1,1 +1,1 @@
-include ':app', ':OliveUpi_dcb_V1.10', ':securecomponent', ':secure-component-sdk'
+include ':app', ':securecomponent', ':secure-component-sdk', ':OliveUpi_dcbV1.11'
