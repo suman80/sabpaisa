@@ -89,8 +89,8 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragments_groups, container, false);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
-        swipeRefreshLayout.setOnRefreshListener(this);
+      //  swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+      //  swipeRefreshLayout.setOnRefreshListener(this);
 
         callGroupDataList(Integer.parseInt(ClientId));
 
@@ -167,9 +167,16 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
 
-    private void loadGroupListView(ArrayList<GroupListData> arrayList, RecyclerView rv) {
+    private void loadGroupListView(ArrayList<GroupListData> arrayList,final RecyclerView rv) {
         mainGroupAdapter1 = new MainGroupAdapter1(arrayList);
-        rv.setAdapter(mainGroupAdapter1);
+
+        rv.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                rv.setAdapter(mainGroupAdapter1);
+
+            }
+        },2000);
         rv.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), rv, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
