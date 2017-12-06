@@ -25,7 +25,7 @@ public class WebViewActivity extends AppCompatActivity {
 
         webView = (WebView) findViewById(R.id.myWebView);
         progressBar =(ProgressBar) findViewById(R.id.progressBar);
-        webView.loadUrl("http://43.252.89.223:9191/QwikCollect/Start.jsp?bid=28&cid=175");
+        webView.loadUrl("http://43.252.89.223:9191/QwikCollect/Canarabank.jsp");
 
         progressBar.getProgressDrawable().setColorFilter(Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
 

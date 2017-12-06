@@ -120,8 +120,8 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
 
                                     JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                     FeedData feedData = new FeedData();
-                                    feedData.setClientId(jsonObject1.getInt("clientId"));
-                                    feedData.setFeedId(jsonObject1.getInt("feedId"));
+                                    feedData.setClientId(jsonObject1.getString("clientId"));
+                                    feedData.setFeedId(jsonObject1.getString("feedId"));
                                     feedData.setFeedName(jsonObject1.getString("feedName"));
                                     feedData.setFeedText(jsonObject1.getString("feedText"));
                                     feedData.setCreatedDate(jsonObject1.getString("createdDate"));

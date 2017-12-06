@@ -5,13 +5,13 @@ package in.sabpaisa.droid.sabpaisa;
  */
 
 public class FeedData {
-    int feedId,clientId;
+    String feedId,clientId;
     String feedText,feedName,createdDate,imagePath,logoPath;
 
     public FeedData() {
     }
 
-    public FeedData(int feedId, int clientId, String feedText, String feedName, String createdDate, String imagePath, String logoPath) {
+    public FeedData(String feedId, String clientId, String feedText, String feedName, String createdDate, String imagePath, String logoPath) {
         this.feedId = feedId;
         this.clientId = clientId;
         this.feedText = feedText;
@@ -21,19 +21,19 @@ public class FeedData {
         this.logoPath = logoPath;
     }
 
-    public int getFeedId() {
+    public String getFeedId() {
         return feedId;
     }
 
-    public void setFeedId(int feedId) {
+    public void setFeedId(String feedId) {
         this.feedId = feedId;
     }
 
-    public int getClientId() {
+    public String getClientId() {
         return clientId;
     }
 
-    public void setClientId(int clientId) {
+    public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 

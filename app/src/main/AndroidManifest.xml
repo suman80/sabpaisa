@@ -34,11 +34,11 @@
         </activity>
         <activity android:name=".VerifyMobile" />
         <activity android:name=".FilterActivity">
-            <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".Util.SkipClientDetailsScreen" />
         <activity android:name=".Util.FullViewOfClientsProceed" />
@@ -48,13 +48,12 @@
         <activity android:name=".RegisterPasscode" />
         <activity android:name=".SplashScreen">
 
-            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
+
         </activity>
 
         <!--

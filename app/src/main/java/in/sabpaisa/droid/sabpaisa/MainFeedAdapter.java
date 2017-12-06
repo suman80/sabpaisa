@@ -49,6 +49,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 intent.putExtra("feedText",mainFeedData.getFeedText());
                 intent.putExtra("feedImage",mainFeedData.getImagePath());
                 intent.putExtra("feedLogo",mainFeedData.getLogoPath());
+                intent.putExtra("feedId",mainFeedData.getFeedId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -61,6 +62,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 intent.putExtra("feedText",mainFeedData.getFeedText());
                 intent.putExtra("feedImage",mainFeedData.getImagePath());
                 intent.putExtra("feedLogo",mainFeedData.getLogoPath());
+                intent.putExtra("feedId",mainFeedData.getFeedId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -74,6 +76,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 intent.putExtra("feedText",mainFeedData.getFeedText());
                 intent.putExtra("feedImage",mainFeedData.getImagePath());
                 intent.putExtra("feedLogo",mainFeedData.getLogoPath());
+                intent.putExtra("feedId",mainFeedData.getFeedId());
                 v.getContext().startActivity(intent);
             }
         });

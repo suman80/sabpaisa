@@ -167,7 +167,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         });*/
     }
 
-    @Override
+/*    @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent a = new Intent(Intent.ACTION_MAIN);
@@ -175,7 +175,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
 
-    }
+    }*/
 
     private void FabButtonCreate() {
         RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(this);

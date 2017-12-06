@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +51,7 @@ public class LogInActivity extends AppCompatActivity {
     EditText password;
     TextView forgotPassword,register,passwordShow;
     Button login;
+    public static String MySharedPrefLogin="mySharedPrefForlogin";
 
 
     @Override
@@ -57,7 +59,7 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-       // password = (EditText)findViewById(R.id.et_password);
+        // password = (EditText)findViewById(R.id.et_password);
         //passwordShow = (TextView)findViewById(R.id.tv_password_show);
         forgotPassword = (TextView)findViewById(R.id.tv_forgot_password);
         et_phone_number = (EditText)findViewById(R.id.et_phone_number);
@@ -137,7 +139,7 @@ public class LogInActivity extends AppCompatActivity {
             }
 
 
-});
+        });
 
 
         register.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +148,7 @@ public class LogInActivity extends AppCompatActivity {
                 Intent intent = new Intent(LogInActivity.this,RegisterActivity.class);
                 startActivity(intent);
 
-               // LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
+                // LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
             }
         });
 
@@ -233,6 +235,12 @@ public class LogInActivity extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response1);
 
                     String response = jObj.getString("response");
+                    Log.d(TAG, "Register Response1: " + response);
+
+                    SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefLogin,MODE_PRIVATE).edit();
+                    editor.putString("response",response);
+                    editor.commit();
+
 
                     String status =jObj.getString("status");
 
