@@ -224,6 +224,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
                             CommentData groupData = new CommentData();
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                             groupData.setCommentText(jsonObject1.getString("commentText"));
+                            groupData.setCommentName(jsonObject1.getString("commentByName"));
+
                             String dataTime = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
                             Log.d("dataTimePFF"," "+dataTime);
                             groupData.setComment_date(getDate(Long.parseLong(dataTime)));
