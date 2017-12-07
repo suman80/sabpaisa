@@ -6,10 +6,12 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +35,9 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -42,9 +47,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
 
     TextView feedsName, feed_description_details;
     ImageView feedImage;
-
+    CommentsDB dbHelper;
+    private int TOTAL_PAGES = 3;
+    ArrayList<CommentData> arrayList;
     String FeedsNm, feedsDiscription, feedImg, response, feed_id, userAccessToken;
-
+    SwipeRefreshLayout swipeRefreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +65,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
 
         Log.d("AccessToken", " " + userAccessToken);
 
-        Log.d("ClientId_FeedsFrag", " " + response);
+        Log.d("ClientId_FFResponse", " " + response);
 
         feedsName = (TextView) findViewById(R.id.feedsName);
         feed_description_details = (TextView) findViewById(R.id.feed_description_details);
@@ -68,7 +75,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
         feedsDiscription = getIntent().getStringExtra("feedText");
         feedImg = getIntent().getStringExtra("feedImage");
         feed_id = getIntent().getStringExtra("feedId");
-        Log.d("FeedsNmPFF", "" + feed_id);
+        Log.d("FeedsID", "" + feed_id);
         Log.d("FeedsNmPFF", "" + FeedsNm);
         Log.d("feedsDiscriptionPFF", "" + feedsDiscription);
         Log.d("feedImgPFF", "" + feedImg);
@@ -77,7 +84,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
         feed_description_details.setText(feedsDiscription);
         new DownloadImageTask(feedImage).execute(feedImg);
         callGetCommentList(feed_id);
+        arrayList = new ArrayList<>();
 
+        //new LoadDBfromAPI().execute(response);
     }
 
     //Code for fetching image from server
@@ -114,7 +123,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
 
     }
 
-
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_group_details_comment);
         CommentAdapter ca = new CommentAdapter(arrayList);
@@ -126,6 +134,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
         rv.setLayoutManager(llm);
         rv.setNestedScrollingEnabled(false);
     }
+
+    //EditText group_details_text_view = null;
 
     EditText group_details_text_view = null;
 
@@ -142,7 +152,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
         // String urlJsonObj = AppConfiguration.FeedAddComent + "/aaddFeedsComments/" +"?feed_id="+ feed_id+ "/" + 1 + "/" + commentText;
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -188,7 +198,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
     public void callGetCommentList(final String feed_id) {
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";
-        String urlJsonObj = AppConfiguration.FeedAddComent + "/getFeedsComments/" + feed_id;
+        String urlJsonObj = AppConfiguration.FeedAddComent + "/getFeedsComments?feed_id=" + feed_id;
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
                 urlJsonObj, new Response.Listener<String>(){
@@ -208,14 +218,18 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
 
                         JSONArray jsonArray = jsonObject.getJSONArray("response");
 
+                   // new LoadDBfromAPI().execute(response);
+
                         for (int i = 0; i < jsonArray.length(); i++) {
                             CommentData groupData = new CommentData();
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                            groupData.setCommentText(jsonObject1.getString("comment_text"));
-                            String dataTime = jsonObject1.getString("comment_date");//.split(" ")[1].replace(".0", "");
-                            groupData.setComment_date(dataTime);
-
+                            groupData.setCommentText(jsonObject1.getString("commentText"));
+                            String dataTime = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
+                            Log.d("dataTimePFF"," "+dataTime);
+                            groupData.setComment_date(getDate(Long.parseLong(dataTime)));
+                            commentArrayList.add(groupData);
                         }
+                        loadCommentListView(commentArrayList);
 
 
                 }
@@ -243,6 +257,60 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
 
+    public class LoadDBfromAPI extends AsyncTask<JSONArray, Void, Void> {
+
+        @Override
+        protected Void doInBackground(JSONArray... params) {
+            try {
+                dbHelper = new CommentsDB(getApplicationContext());
+                dbHelper.refreshTable();
+
+                for (int i = 0; i < params[0].length(); i++) {
+                    JSONObject colorObj = params[0].getJSONObject(i);
+                    CommentData groupData = new CommentData();
+                   // "commentDate": 1511248345000, "commentText": "test2"
+
+
+                    groupData.setCommentText(colorObj.getString("commentText"));
+                    String dataTime = colorObj.getString("commentDate");//.split(" ")[1].replace(".0", "");
+                    groupData.setComment_date(dataTime);
+// groupData.setPage(Integer.valueOf(String.valueOf(i/10+1)));
+
+                    dbHelper.insertComment(colorObj.getString("commentId"), colorObj.getString("comment_text"), colorObj.getString("comment_date"), colorObj.getString("comment_by"), colorObj.getString("group_id"), Integer.valueOf(String.valueOf(i / 10 + 1)));
+                    TOTAL_PAGES = Integer.valueOf(String.valueOf(i / 10 + 1));
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            swipeRefreshLayout.setRefreshing(false);
+            loadCommentListView(arrayList);
+        }
+
+
     }
+    private String getDate(long time) {
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(time);
+        String date = DateFormat.format("HH:mm", cal).toString();
+        return date;
+    }
+
+
+
+
+
+}
 
 

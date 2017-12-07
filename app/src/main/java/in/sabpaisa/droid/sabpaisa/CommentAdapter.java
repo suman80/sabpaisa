@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ public class CommentAdapter extends
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         CommentData commentData = commentList.get(position);
+        Log.d("commentData"," "+commentData.getCommentName());
+        Log.d("commentData"," "+commentData.getCommentText());
         holder.main_feed_creation_time.setText(commentData.getComment_date());
         holder.main_feed_group_description.setText(commentData.getCommentText());
     }

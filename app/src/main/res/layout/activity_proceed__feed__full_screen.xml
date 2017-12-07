@@ -118,7 +118,7 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -133,38 +133,39 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_normal" />
 
-
-                <!--<com.dinuscxj.refresh.RecyclerRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/refresh_layout"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">-->
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
-                    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-                        android:id="@+id/recycler_view_feed_details_comment"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/comment"
-                        android:layout_marginBottom="50dp"
-                        android:scrollbars="vertical" />
+                        android:layout_height="match_parent">
 
-                    <ProgressBar
-                        android:id="@+id/main_progress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view_group_details_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/comment"
+                            android:layout_marginBottom="50dp"
+                            android:scrollbars="vertical" />
 
-                </FrameLayout>
-                <!--</com.dinuscxj.refresh.RecyclerRefreshLayout>-->
+                        <!--<ProgressBar
+                            android:id="@+id/main_progress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center" />-->
 
-            </RelativeLayout>
+                    </FrameLayout>
 
-        </android.support.v4.widget.NestedScrollView>
 
+                </RelativeLayout>
+            </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
+
+
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -176,6 +177,8 @@
             android:layout_height="45dp"
             android:layout_gravity="bottom" />
     </FrameLayout>
+
+
 
 
 </android.support.design.widget.CoordinatorLayout>
