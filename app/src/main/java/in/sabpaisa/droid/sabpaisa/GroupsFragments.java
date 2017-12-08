@@ -118,8 +118,8 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
 
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                             GroupListData groupListData = new GroupListData();
-                            groupListData.setClientId(jsonObject1.getInt("clientId"));
-                            groupListData.setGroupId(jsonObject1.getInt("groupId"));
+                            groupListData.setClientId(jsonObject1.getString("clientId"));
+                            groupListData.setGroupId(jsonObject1.getString("groupId"));
                             groupListData.setGroupName(jsonObject1.getString("groupName"));
                             groupListData.setGroupText(jsonObject1.getString("groupText"));
                             groupListData.setCreatedDate(jsonObject1.getString("createdDate"));
@@ -127,7 +127,7 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
                             groupListData.setLogoPath(jsonObject1.getString("logoPath"));
                             groupArrayList.add(groupListData);
                         }
-                        Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
+                        Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupId());
                        /*START listener for sending data to activity*/
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetGroups(groupArrayList);

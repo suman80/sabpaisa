@@ -127,8 +127,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                             GroupListData groupListData = new GroupListData();
-                            groupListData.setClientId(jsonObject1.getInt("clientId"));
-                            groupListData.setGroupId(jsonObject1.getInt("groupId"));
+                            groupListData.setClientId(jsonObject1.getString("clientId"));
+                            groupListData.setGroupId(jsonObject1.getString("groupId"));
                             groupListData.setGroupName(jsonObject1.getString("groupName"));
                             groupListData.setGroupText(jsonObject1.getString("groupText"));
                             groupListData.setCreatedDate(jsonObject1.getString("createdDate"));

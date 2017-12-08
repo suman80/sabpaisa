@@ -65,7 +65,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
 
         Log.d("AccessToken", " " + userAccessToken);
 
-        Log.d("ClientId_FFResponse", " " + response);
+        Log.d("FFResponse", " " + response);
 
         feedsName = (TextView) findViewById(R.id.feedsName);
         feed_description_details = (TextView) findViewById(R.id.feed_description_details);

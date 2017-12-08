@@ -12,6 +12,7 @@ public class AppConfiguration {
     public static String Pending = "Pending";
     public static String AllTransactions = "AllTransactions";
     public static String FeedAddComent="http://205.147.103.27:6060/SabPaisaAppApi";
+    public static String GroupAddComment="http://205.147.103.27:6060/SabPaisaAppApi";
     public static String MAIN_URL = "http://205.147.103.27:6060/SabPaisaPay";
 
 

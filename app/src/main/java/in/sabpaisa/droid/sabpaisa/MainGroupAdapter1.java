@@ -46,6 +46,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 intent.putExtra("groupName",groupListData.getGroupName());
                 intent.putExtra("groupText",groupListData.getGroupText());
                 intent.putExtra("groupImage",groupListData.getImagePath());
+                intent.putExtra("groupId",groupListData.getGroupId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -57,6 +58,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 intent.putExtra("groupName",groupListData.getGroupName());
                 intent.putExtra("groupText",groupListData.getGroupText());
                 intent.putExtra("groupImage",groupListData.getImagePath());
+                intent.putExtra("groupId",groupListData.getGroupId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -68,6 +70,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 intent.putExtra("groupName",groupListData.getGroupName());
                 intent.putExtra("groupText",groupListData.getGroupText());
                 intent.putExtra("groupImage",groupListData.getImagePath());
+                intent.putExtra("groupId",groupListData.getGroupId());
                 v.getContext().startActivity(intent);
             }
         });

@@ -134,6 +134,8 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
 
                                 }
                                 Log.d("feedArrayListAfterParse", " " + feedArrayList.get(0).getFeedName());
+                                Log.d("feedClintId", " " + feedArrayList.get(0).getClientId());
+                                Log.d("feedClintId", " " + feedArrayList.get(0).getFeedId());
                             /*START listener for sending data to activity*/
                                 OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                                 listener.onFragmentSetFeeds(feedArrayList);

@@ -5,13 +5,13 @@ package in.sabpaisa.droid.sabpaisa;
  */
 
 public class GroupListData {
-    int clientId,groupId;
+    String clientId,groupId;
     String groupName,groupText,createdDate,imagePath,logoPath;
 
     public GroupListData() {
     }
 
-    public GroupListData(int clientId, int groupId, String groupName, String groupText, String createdDate, String imagePath, String logoPath) {
+    public GroupListData(String clientId, String groupId, String groupName, String groupText, String createdDate, String imagePath, String logoPath) {
         this.clientId = clientId;
         this.groupId = groupId;
         this.groupName = groupName;
@@ -22,19 +22,19 @@ public class GroupListData {
     }
 
 
-    public int getClientId() {
+    public String getClientId() {
         return clientId;
     }
 
-    public void setClientId(int clientId) {
+    public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 
-    public int getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(int groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
