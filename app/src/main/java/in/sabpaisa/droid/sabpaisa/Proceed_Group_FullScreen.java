@@ -40,7 +40,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
 
     TextView groupsName,group_description_details;
     ImageView groupImage;
-
+    CommentsDB dbHelper;
+    private int TOTAL_PAGES = 3;
     String GroupsNm,GroupsDiscription,GroupsImg,GroupId,userAccessToken,response;
 
     ArrayList<CommentData> arrayList;
@@ -48,7 +49,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_proceed__group__full_screen);
+        setContentView(R.layout.activity_proceed_group_full_screen);
 
         groupsName=(TextView)findViewById(R.id.groupsName);
         group_description_details=(TextView)findViewById(R.id.group_description_details);
@@ -121,7 +122,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
 
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
-        RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_group_details_comment);
+        RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
         CommentAdapter ca = new CommentAdapter(arrayList);
         rv.setAdapter(ca);
 
@@ -256,7 +257,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
 
-    /*public class LoadDBfromAPI extends AsyncTask<JSONArray, Void, Void> {
+    public class LoadDBfromAPI extends AsyncTask<JSONArray, Void, Void> {
 
         @Override
         protected Void doInBackground(JSONArray... params) {
@@ -298,7 +299,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
         }
 
 
-    }*/
+    }
+
+
     private String getDate(long time) {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(time);

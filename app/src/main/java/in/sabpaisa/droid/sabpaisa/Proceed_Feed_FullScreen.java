@@ -158,14 +158,13 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("Group Details", response.toString());
-
                 try {
                     // Parsing json object response
                     // response will be a json object
                     String status = response.getString("status");
                     if (status.equals("success")) {
                         group_details_text_view.setText("");
-                        Toast.makeText(Proceed_Feed_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(Proceed_Feed_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
                         callGetCommentList(feed_id);
 
                     }
@@ -232,8 +231,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
                             commentArrayList.add(groupData);
                         }
                         loadCommentListView(commentArrayList);
-
-
                 }
                 // Try and catch are included to handle any errors due to JSON
                 catch (JSONException e) {

@@ -9,9 +9,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        >
-
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
@@ -36,10 +34,6 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <!--<ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="46dp"
-                        android:background="@drawable/coaicon" -->/>
 
                     <TextView
                         android:id="@+id/groupsName"
@@ -77,7 +71,7 @@
                         android:id="@+id/groupImage"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:scaleType="fitXY"
+                       android:scaleType="fitXY"
 
                         android:src="@drawable/default1" />
                 </LinearLayout>
@@ -118,7 +112,8 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <RelativeLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -134,16 +129,19 @@
                     android:textSize="@dimen/text_size_normal" />
 
 
-                <!--<com.dinuscxj.refresh.RecyclerRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/refresh_layout"
+
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">-->
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+                    <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_view_feed_details_comment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -151,16 +149,13 @@
                         android:layout_marginBottom="50dp"
                         android:scrollbars="vertical" />
 
-                    <ProgressBar
-                        android:id="@+id/main_progress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
+
 
                 </FrameLayout>
-                <!--</com.dinuscxj.refresh.RecyclerRefreshLayout>-->
 
-            </RelativeLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
