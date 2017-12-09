@@ -326,6 +326,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
 
                     if (status!=null && status.equals("success")){
                         sdkHandShake();
+
                         //launchMainScreen();
                     }else {
 
@@ -464,7 +465,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
             @Override
             public void onResponse(JSONObject response) {
 
-                Toast.makeText(LogInActivity.this, "Response-->" + response.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LogInActivity.this, "Response-->" + response.toString(), Toast.LENGTH_SHORT).show();
 
                 try {
 

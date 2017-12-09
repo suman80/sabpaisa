@@ -57,10 +57,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity android:name=".UpiSdkHandshake" />
-
 
         <!--
             <intent-filter>
@@ -144,6 +141,7 @@
         -->
         <activity android:name=".Proceed_Feed_FullScreen" />
         <activity android:name=".Proceed_Group_FullScreen" />
+        <activity android:name=".UPIBankList"></activity>
     </application>
 
 </manifest>

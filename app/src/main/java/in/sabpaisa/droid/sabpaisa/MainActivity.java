@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     private CustomViewPager viewPager;
     private TabLayout tabLayout;
     Toolbar toolbar;
-    ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,mPinInfo,mPinInfo2;
+    ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,UpibankList,mPinInfo,mPinInfo2;
     LinearLayout paymentButton,chatButton,memberButton;
     int isMpinSet=1;
     FloatingActionButton fab;
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         transaction = (ImageView)findViewById(R.id.ll_transactions);
         profile = (ImageView)findViewById(R.id.ll_profile);
         bank = (ImageView)findViewById(R.id.ll_bank);
+        UpibankList = (ImageView)findViewById(R.id.ll_Upibank);
         paymentButton = (LinearLayout)findViewById(R.id.payment_button);
         chatButton = (LinearLayout)findViewById(R.id.chat);
         memberButton = (LinearLayout)findViewById(R.id.members);
@@ -167,6 +168,17 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
+
+        UpibankList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UPIBankList.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+            }
+        });
+
+
         transaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
