@@ -48,6 +48,9 @@ public class SplashScreen extends AppCompatActivity {
                Intent i = new Intent(SplashScreen.this, LogInActivity.class);
                 startActivity(i);
 
+                /*Intent i = new Intent(SplashScreen.this, UpiSdkHandshake.class);
+                startActivity(i);*/
+
                 // close this activity
                 finish();
             }

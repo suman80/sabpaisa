@@ -280,41 +280,8 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(FilterActivity.this, R.style.MyDialogTheme).create();
-
-                    // Setting Dialog Title
-                    alertDialog.setTitle("Network/Connection Error");
-
-                    // Setting Dialog Message
-                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
-
-                    // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
-
-                    // Setting OK Button
-                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-
-                    // Showing Alert Message
-                    alertDialog.show();
-                    Log.e(TAG, "Registration Error: " + error.getMessage());
-
-                } else if (error instanceof AuthFailureError) {
-
-                    //TODO
-                } else if (error instanceof ServerError) {
-
-                    //TODO
-                } else if (error instanceof NetworkError) {
-
-                    //TODO
-                } else if (error instanceof ParseError) {
-
-                    //TODO
+                if (error instanceof NetworkError) {
+                    checkNetworkConnection();
                 }
 
 
@@ -399,42 +366,10 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(FilterActivity.this, R.style.MyDialogTheme).create();
-
-                    // Setting Dialog Title
-                    alertDialog.setTitle("Network/Connection Error");
-
-                    // Setting Dialog Message
-                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
-
-                    // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
-
-                    // Setting OK Button
-                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-
-                    // Showing Alert Message
-                    alertDialog.show();
-                    Log.e(TAG, "Registration Error: " + error.getMessage());
-
-                } else if (error instanceof AuthFailureError) {
-
-                    //TODO
-                } else if (error instanceof ServerError) {
-
-                    //TODO
-                } else if (error instanceof NetworkError) {
-
-                    //TODO
-                } else if (error instanceof ParseError) {
-
-                    //TODO
+                if (error instanceof NetworkError) {
+                    checkNetworkConnection();
                 }
+
 
 
 
@@ -541,42 +476,10 @@ clientNameArrayList=new ArrayList<>();
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(FilterActivity.this, R.style.MyDialogTheme).create();
 
-                    // Setting Dialog Title
-                    alertDialog.setTitle("Network/Connection Error");
-
-                    // Setting Dialog Message
-                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
-
-                    // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
-
-                    // Setting OK Button
-                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-
-                    // Showing Alert Message
-                    alertDialog.show();
-                    Log.e(TAG, "Registration Error: " + error.getMessage());
-
-                } else if (error instanceof AuthFailureError) {
-
-                    //TODO
-                } else if (error instanceof ServerError) {
-
-                    //TODO
-                } else if (error instanceof NetworkError) {
-
-                    //TODO
-                } else if (error instanceof ParseError) {
-
-                    //TODO
-                }
+                 if (error instanceof NetworkError) {
+                     checkNetworkConnection();
+                 }
 
 
             }
@@ -614,21 +517,4 @@ clientNameArrayList=new ArrayList<>();
         alertDialog.show();
     }
 
-   /* public boolean isNetworkConnectionAvailable(){
-        ConnectivityManager cm =
-                (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnected();
-        if(isConnected) {
-            Log.d("Network", "Connected");
-            return true;
-        }
-        else{
-            checkNetworkConnection();
-            Log.d("Network","Not Connected");
-            return false;
-        }
-    }*/
 }
