@@ -27,6 +27,7 @@ public class UPIBankList extends AppCompatActivity implements OliveUpiEventListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upibank_list);
 
+        OliveUpiManager.getInstance(UPIBankList.this).setListener(this);
         OliveUpiManager.getInstance(UPIBankList.this).fetchListBanks();
 
         bankList = (ListView)findViewById(R.id.bankList);
