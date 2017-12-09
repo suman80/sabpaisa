@@ -47,6 +47,7 @@ dependencies {
     compile 'me.grantland:autofittextview:0.2.+'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    compile 'com.uncopt:android.justified:1.0'
     compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
