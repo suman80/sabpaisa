@@ -474,9 +474,21 @@ startActivity(intent);
 
 
         } else if (id == R.id.nav_share) {
-            Intent intent=new Intent(MainActivity.this, ShareActivity.class);
+            /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
 
-            startActivity(intent);
+            startActivity(intent);*/
+            try {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_SUBJECT, "Sabpaisa App");
+                String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
+                sAux = sAux + "https://play.google.com/store/apps/details?id=Orion.Soft \n\n";
+                i.putExtra(Intent.EXTRA_TEXT, sAux);
+                startActivity(Intent.createChooser(i, "Complete action using "));
+            } catch (Exception e) {
+                //e.toString();
+            }
+
 
         } else if (id == R.id.nav_rate) {
             Intent intent=new Intent(MainActivity.this, RateActivity.class);
