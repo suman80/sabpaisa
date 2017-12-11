@@ -12,7 +12,7 @@
         android:icon="@drawable/search_top"
         android:title="search"
          app:showAsAction="always"/>
-        <item android:icon="@drawable/notification"
+        <item android:icon="@drawable/bell"
             android:title="Notification"
             app:showAsAction="always"
             />

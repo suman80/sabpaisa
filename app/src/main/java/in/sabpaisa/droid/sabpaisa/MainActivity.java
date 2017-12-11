@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.annotation.TargetApi;
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -435,6 +436,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        android.app.Fragment newFragment = null;
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -480,7 +483,22 @@ startActivity(intent);
 
             startActivity(intent);
 
+/*
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.tt, newFragment)
+                    .commit();*/
+            /*newFragment = new Ratefragment();
+            transaction.replace(R.id.tt, newFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();*/
+
+            /*Fragment fragment = new Fragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.tt, fragment, fragment.getTag()).commit();
+        */
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
