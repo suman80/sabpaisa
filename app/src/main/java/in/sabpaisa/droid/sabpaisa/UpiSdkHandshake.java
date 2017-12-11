@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 public class UpiSdkHandshake extends AppCompatActivity implements OliveUpiEventListener {
 
 
@@ -79,7 +81,9 @@ Button HandShake_Btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_upi_sdk_handshake);
+
         OliveUpiManager.getInstance(UpiSdkHandshake.this).setListener(this);
         getResponse();
 

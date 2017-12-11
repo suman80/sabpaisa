@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 
 /*implements SwipeRefreshLayout.OnRefreshListener*/
@@ -45,6 +46,7 @@ public class FeedDetails extends AppCompatActivity implements SwipeRefreshLayout
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.coa_feed_details_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

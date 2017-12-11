@@ -21,6 +21,7 @@ import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ChatAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.ChatModel;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class ChatDetail extends AppCompatActivity implements RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
 
@@ -35,7 +36,10 @@ public class ChatDetail extends AppCompatActivity implements RapidFloatingAction
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_chat_detail);
+
+
 
         //rfaLayout = (RapidFloatingActionLayout)findViewById(R.id.activity_main_rfal);
         rfaBtn = (RapidFloatingActionButton)findViewById(R.id.activity_main_rfab);

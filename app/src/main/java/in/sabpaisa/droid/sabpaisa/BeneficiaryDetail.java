@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 public class BeneficiaryDetail extends AppCompatActivity {
 
     Toolbar mtoolbar;
@@ -36,6 +38,7 @@ public class BeneficiaryDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_beneficiary_detail);
         upiString = getIntent().getStringExtra("UPI");
 

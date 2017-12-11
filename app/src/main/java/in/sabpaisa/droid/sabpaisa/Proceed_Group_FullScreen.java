@@ -35,6 +35,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class Proceed_Group_FullScreen extends AppCompatActivity {
 
@@ -49,6 +50,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_proceed_group_full_screen);
 
         groupsName=(TextView)findViewById(R.id.groupsName);

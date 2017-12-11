@@ -14,6 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 /**
  * Created by abc on 21-06-2017.
  */
@@ -29,9 +31,10 @@ public class SendMoneyAcIFSCDialog extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        CommonUtils.setFullScreen(this);
+        /*supportRequestWindowFeature(Window.FEATURE_NO_TITLE);*/
         setContentView(R.layout.item_send_account_ifcs);
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        /*etWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);*/
 
         ifscBank = (TextView)findViewById(R.id.tv_ifscBank);
         ifscBranch = (EditText) findViewById(R.id.et_ifscBranch);

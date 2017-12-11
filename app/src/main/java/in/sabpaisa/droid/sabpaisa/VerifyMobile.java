@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 public class VerifyMobile extends AppCompatActivity {
 
     LinearLayout layoutSim1,layoutSim2;
@@ -24,6 +26,7 @@ public class VerifyMobile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_verify_mobile);
 
         String optName1 = getIntent().getStringExtra("SIM1");

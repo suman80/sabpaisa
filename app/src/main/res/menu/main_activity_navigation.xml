@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group>
+        <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never"
+            android:icon="@color/white"/>
+    <item android:id="@+id/action_search_MAinActivity"
+        android:icon="@drawable/search_top"
+        android:title="search"
+         app:showAsAction="always"/>
+        <item android:icon="@drawable/notification"
+            android:title="Notification"
+            app:showAsAction="always"
+            />
+    </group>
+</menu>

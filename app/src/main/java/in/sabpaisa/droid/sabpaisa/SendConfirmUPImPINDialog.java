@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 /**
  * Created by abc on 21-06-2017.
  */
@@ -36,6 +38,7 @@ public class SendConfirmUPImPINDialog extends AppCompatActivity implements View.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.item_send_confirm_upi_mpin);
         this.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

@@ -49,7 +49,9 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_full_view_of_clients_proceed2);
+
 
         viewPager = (ViewPager) findViewById(R.id.viewpagerproceed);
         setupViewPager(viewPager);

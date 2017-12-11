@@ -37,6 +37,7 @@ import java.util.ArrayList;
 
 //import neeraj_sabpaisa.com.coa.Adapters.CommentAdapterDatabase;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 /*implements SwipeRefreshLayout.OnRefreshListener*/
 public class GroupDetails extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -73,7 +74,10 @@ public class GroupDetails extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.coa_group_details_screen);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

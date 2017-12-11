@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 
 public class SplashScreen extends AppCompatActivity {
@@ -26,7 +27,9 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_splash);
+
 
 /*TextView   text =(TextView) findViewById(R.id.text);
         text.setOnClickListener(new View.OnClickListener() {

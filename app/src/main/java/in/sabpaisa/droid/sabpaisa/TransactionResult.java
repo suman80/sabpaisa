@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 public class TransactionResult extends AppCompatActivity {
 
     Toolbar toolbar;
@@ -16,6 +18,7 @@ public class TransactionResult extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_transaction_result);
 
         String name = getIntent().getStringExtra("Name");

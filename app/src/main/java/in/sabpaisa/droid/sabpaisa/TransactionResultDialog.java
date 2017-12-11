@@ -9,6 +9,8 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 /**
  * Created by abc on 21-06-2017.
  */
@@ -19,7 +21,8 @@ public class TransactionResultDialog extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        CommonUtils.setFullScreen(this);
+       // supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.list_transaction_result);
 
         String name = getIntent().getStringExtra("Name");

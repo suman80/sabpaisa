@@ -30,6 +30,7 @@ import in.sabpaisa.droid.sabpaisa.Fragments.ContactListFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.SavedUPIFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 import static android.view.View.GONE;
 
@@ -49,6 +50,7 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_send_money);
 
         mtoolbar = (Toolbar)findViewById(R.id.toolbar);

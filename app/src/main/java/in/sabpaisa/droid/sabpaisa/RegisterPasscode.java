@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 public class RegisterPasscode extends AppCompatActivity implements View.OnClickListener {
 
     TextView title;
@@ -20,7 +22,9 @@ public class RegisterPasscode extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_register_passcode);
+
 
         DataBinding();
 

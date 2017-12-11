@@ -16,6 +16,8 @@ import com.olive.upi.transport.model.Bank;
 
 import java.util.ArrayList;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 public class UPIBankList extends AppCompatActivity implements OliveUpiEventListener {
 
     ListView bankList;
@@ -25,6 +27,7 @@ public class UPIBankList extends AppCompatActivity implements OliveUpiEventListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_upibank_list);
 
         OliveUpiManager.getInstance(UPIBankList.this).setListener(this);

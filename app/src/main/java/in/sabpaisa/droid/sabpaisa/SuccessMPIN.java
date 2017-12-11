@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 public class SuccessMPIN extends AppCompatActivity {
 
     LinearLayout goToHome;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_success_mpin);
 
         goToHome = (LinearLayout)findViewById(R.id.ll_goToHome);

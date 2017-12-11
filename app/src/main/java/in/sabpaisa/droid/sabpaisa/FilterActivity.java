@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -43,6 +45,7 @@ import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Model.StateGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class FilterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -66,7 +69,8 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filter);
+        CommonUtils.setFullScreen(this);
+               setContentView(R.layout.activity_filter);
 
         proceed = (Button)findViewById(R.id.proceed);
         skip = (Button) findViewById(R.id.skip);

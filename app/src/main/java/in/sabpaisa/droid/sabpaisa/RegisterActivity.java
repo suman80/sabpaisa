@@ -44,6 +44,7 @@ import java.util.UUID;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.OtpDialog;
 import in.sabpaisa.droid.sabpaisa.Util.SharedPref;
 import in.sabpaisa.droid.sabpaisa.Util.SmsListener;
@@ -84,6 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_register);
 
         btn_register = (Button) findViewById(R.id.btn_register);

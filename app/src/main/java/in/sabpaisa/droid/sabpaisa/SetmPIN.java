@@ -13,6 +13,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 public class SetmPIN extends AppCompatActivity implements View.OnClickListener {
 
     SeekBar stepSlider;
@@ -28,6 +30,7 @@ public class SetmPIN extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_set_mpin);
 
         DataBinding();
