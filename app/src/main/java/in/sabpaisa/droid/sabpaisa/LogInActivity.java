@@ -56,7 +56,7 @@ import static in.sabpaisa.droid.sabpaisa.Util.TelephonyInfo.getOutput;
 @RuntimePermissions
 public class LogInActivity extends AppCompatActivity implements OliveUpiEventListener {
     private static final String TAG = LogInActivity.class.getSimpleName();
-    String mobileNo;
+    public static String mobileNo;
     EditText et_phone_number;
     EditText password;
     TextView forgotPassword,register,passwordShow;
@@ -100,7 +100,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
         setContentView(R.layout.activity_login);
 
         OliveUpiManager.getInstance(LogInActivity.this).setListener(this);
-        getResponse();
+        //getResponse();
 
 
         // password = (EditText)findViewById(R.id.et_password);
@@ -134,7 +134,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
             @Override
             public void onClick(View v) {
 
-                mobileNo = et_phone_number.getText().toString();
+                 mobileNo = et_phone_number.getText().toString();
                 Log.e(TAG, "response: " + mobileNo);
 
                 if ((et_phone_number.length() == 0)  ||(et_phone_number.length()<10)) {
@@ -237,7 +237,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
         sdkHandshake.setMerchanttoken(responseMerchantauthtoken);
         sdkHandshake.setMerchChanId(merchChanId);
         sdkHandshake.setMerchId(merchId);
-        sdkHandshake.setMobileNumber(mobilenumber);
+        sdkHandshake.setMobileNumber(mobileNo);
         sdkHandshake.setOrderid("SabPaisa");                    //Not done or test value
         sdkHandshake.setSubmerchantid(submerchantid);
         sdkHandshake.setUnqCustId("918096449293");                  //Not done or test value
@@ -325,8 +325,8 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
                     String status =jObj.getString("status");
 
                     if (status!=null && status.equals("success")){
-                        sdkHandShake();
-
+                        //sdkHandShake();
+                        getResponse();
                         //launchMainScreen();
                     }else {
 
@@ -440,7 +440,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
         try {
             jsonObject.put("mcccode", mcccode);
 
-            jsonObject.put("mobilenumber", mobilenumber);
+            jsonObject.put("mobilenumber", mobileNo);
 
             jsonObject.put("unqCustId", unqCustId);
 
@@ -476,7 +476,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
                     if (code.equals("00")) {
                         //extracting merchantauthtoken from json response
                         responseMerchantauthtoken = (jObj.getJSONObject("data").get("merchantauthtoken").toString());
-
+                        sdkHandShake();
                     }else if (code.equals("OM01")){
                         Toast.makeText(getApplicationContext(),"MERCHANT ID NOT AVAILABLE",Toast.LENGTH_SHORT).show();
                     }else if (code.equals("OM02")){
