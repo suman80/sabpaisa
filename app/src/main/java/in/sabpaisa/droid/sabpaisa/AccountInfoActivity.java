@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 public class AccountInfoActivity extends AppCompatActivity {
 /////////////////////
     Toolbar toolbar;
@@ -21,6 +23,7 @@ public class AccountInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_info_account);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

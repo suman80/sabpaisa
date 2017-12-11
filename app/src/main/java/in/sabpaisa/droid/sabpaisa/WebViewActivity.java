@@ -10,6 +10,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 /**
  * Created by SabPaisa on 27-07-2017.
  */
@@ -21,6 +23,7 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_web_view);
 
         webView = (WebView) findViewById(R.id.myWebView);

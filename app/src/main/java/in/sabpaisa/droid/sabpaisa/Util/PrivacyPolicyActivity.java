@@ -12,6 +12,8 @@ public class PrivacyPolicyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
+
         setContentView(R.layout.activity_privacy_policy);
     }
 }

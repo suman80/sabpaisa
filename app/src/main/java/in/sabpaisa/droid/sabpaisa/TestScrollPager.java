@@ -7,12 +7,14 @@ import android.os.Bundle;
 import com.layer_net.stepindicator.StepIndicator;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.TestAdapter;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class TestScrollPager extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_test_scroll_pager);
 
         ViewPager pager = (ViewPager)findViewById(R.id.viewpager);

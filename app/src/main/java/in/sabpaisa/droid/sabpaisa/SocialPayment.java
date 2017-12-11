@@ -15,6 +15,7 @@ import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.TransactionAllFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.TransactionPendingFragment;
 import in.sabpaisa.droid.sabpaisa.Model.ChatHistory;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class SocialPayment extends AppCompatActivity {
     Toolbar toolbar;
@@ -24,6 +25,7 @@ public class SocialPayment extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_social_payment);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

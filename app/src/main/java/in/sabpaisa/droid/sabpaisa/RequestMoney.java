@@ -26,6 +26,7 @@ import in.sabpaisa.droid.sabpaisa.Fragments.TransactionAllFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.TransactionPendingFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 /**
  * Created by SabPaisa on 21-09-2017.
@@ -47,6 +48,7 @@ public class RequestMoney extends AppCompatActivity implements SavedUPIAdapter.U
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_request_money);
 
         mtoolbar = (Toolbar)findViewById(R.id.toolbar);

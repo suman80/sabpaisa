@@ -10,6 +10,7 @@ import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.TransactionAllFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.TransactionPendingFragment;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class TransactionsActivity extends AppCompatActivity {
 
@@ -19,6 +20,7 @@ public class TransactionsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_transactions);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

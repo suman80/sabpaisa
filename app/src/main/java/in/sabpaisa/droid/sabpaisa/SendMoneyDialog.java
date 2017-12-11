@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 /**
  * Created by abc on 21-06-2017.
@@ -46,9 +47,10 @@ public class SendMoneyDialog extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        CommonUtils.setFullScreen(this);
+        //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_beneficiary_detail);
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         DataBinding();
 
 

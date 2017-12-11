@@ -35,6 +35,7 @@ import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionSkipFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientSkipFragment;
 import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 
@@ -63,7 +64,9 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_main2);
+
 
         sendMoney = (ImageView)findViewById(R.id.ll_send);
         requestMoney = (ImageView)findViewById(R.id.ll_request);

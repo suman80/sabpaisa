@@ -50,6 +50,7 @@ import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     LinearLayout paymentButton,chatButton,memberButton;
     int isMpinSet=1;
     FloatingActionButton fab;
+    ActionBarDrawerToggle toggle;
+
 
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
@@ -86,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     protected void onCreate(Bundle savedInstanceState) {
         //checking
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
+
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -95,8 +100,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -137,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
+
         mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
 
         stateName=getIntent().getStringExtra("STATENAME");
@@ -149,13 +156,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         editor.putString("STATENAME",stateName);
         editor.putString("SERVICENAME",serviceName);
         editor.commit();
-
-//        bundle.putString("STATENAME",stateName);
-//        bundle.putString("SERVICENAME",serviceName);
-
-
         LoadHeaderImageList();
-
         setHeaderImageList();
 
         sendMoney.setOnClickListener(new View.OnClickListener() {
@@ -312,10 +313,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         rfabHelper.toggleContent();
     }
 
-
     private void setupViewPager(ViewPager viewPager) {
-
-
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new ProceedInstitiutionFragment(),"Clients");
         adapter.addFragment(new FormFragment(),"Other Clients");
@@ -413,7 +411,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_activity_navigation, menu);
+        getMenuInflater().inflate(R.menu.coa_menu, menu);
         return true;
     }
 
@@ -423,11 +421,13 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
+        //noinspection SimplifiableIfStatement
+        /* if (id == R.id.action_settings) {
+            return true;
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

@@ -46,6 +46,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.TelephonyInfo;
 import permissions.dispatcher.NeedsPermission;
@@ -97,6 +98,8 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
+
         setContentView(R.layout.activity_login);
 
         OliveUpiManager.getInstance(LogInActivity.this).setListener(this);

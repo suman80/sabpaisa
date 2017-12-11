@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
 public class SendConfirmUPImPIN extends AppCompatActivity implements View.OnClickListener {
 
     TextView mdigit1,mdigit2,mdigit3,mdigit4,mdigit5,mdigit6;
@@ -25,6 +27,7 @@ public class SendConfirmUPImPIN extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_send_confirm_upi_mpin);
 
         String name = getIntent().getStringExtra("Name");

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import in.sabpaisa.droid.sabpaisa.Model.Bank;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class SendAccountIFSC extends AppCompatActivity {
 
@@ -32,7 +33,9 @@ public class SendAccountIFSC extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_send_account_ifsc);
+
 
         String ifsc = getIntent().getStringExtra("IFSC");
         Bundle extras = getIntent().getExtras();

@@ -44,6 +44,7 @@ public class ForgotActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_forgot);
         final EditText et_phone_number = (EditText)findViewById(R.id.et_phone_number);
         final EditText password = (EditText)findViewById(R.id.et_password);
