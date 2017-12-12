@@ -69,5 +69,6 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.0'
     compile 'commons-codec:commons-codec:1.9'
 
+    compile 'de.hdodenhof:circleimageview:1.2.1'
 
 }
