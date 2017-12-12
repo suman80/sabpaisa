@@ -26,13 +26,12 @@
         <Spinner
             android:id="@+id/spinner2"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-
-
+            android:layout_height="40dp"
             android:background="@color/bg_orange"
             android:textColor="#ffffff"
-
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:overlapAnchor="false"
+            />
 
         <ImageView
             android:layout_width="wrap_content"

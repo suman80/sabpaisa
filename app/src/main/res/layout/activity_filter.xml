@@ -1,172 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
         android:text="Choose your Institution / Hospital  "
-android:layout_marginTop="30dp"
-        android:layout_marginLeft="20sp"
+        android:layout_marginTop="30dp"
+        android:layout_margin="20sp"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/bg_orange"
         android:layout_height="wrap_content"
         />
-    </LinearLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:orientation="vertical">
-
-
-       <!-- <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/rbPrivate"
-            style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:buttonTint="@color/bg_screen"
-            android:checked="false"
-            android:text="Continue as a Private User"
-            android:textSize="@dimen/text_size_normal" />-->
-
-
-<!--
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/oricons" />-->
-
-<!--
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/rb_bankuser"
-            style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:buttonTint="@color/bg_screen"
-            android:checked="false"
-            android:text="Choose your Institution / Hospital / Others "
-            android:textSize="@dimen/text_size_normal" />-->
-
-        <LinearLayout
-            android:id="@+id/llBankUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <include
-                android:id="@+id/spinnerBank"
-                layout="@layout/custom_spinner_layout"
-                />
-
-            <LinearLayout
-                android:id="@+id/llClientSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-
-                android:visibility="visible">
-
-                <include
-                    android:id="@+id/spinnerClient"
-                    layout="@layout/custom_spinner_layout" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/InstituteSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-
-                android:visibility="visible">
-<!--
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Select Institute"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="5dp"/>
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/spinnerInsttitute"
-                    android:layout_marginTop="30dp"
-//Archana
-                    android:textAlignment="center"
-                    android:layout_marginLeft="20dp"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/bg_orange"
-                    ></Spinner>-->
-                <include
-                    android:id="@+id/spinnerInsttitute"
-
-                    layout="@layout/custom_spinner_layout"
-                    />
-            </LinearLayout>
-
-
-         <!--   <LinearLayout
-                android:id="@+id/HospitalSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <include
-                    android:id="@+id/spinnerHospital"
-                    layout="@layout/custom_spinner_layout" />
-            </LinearLayout>
--->
-        </LinearLayout>
-
-
-    </LinearLayout>
-    <Button
-        android:id="@+id/proceed"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="400dp"
-        android:background="@drawable/background_button"
-        android:text="Proceed"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/skip"
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginBottom="70dp"
-        android:layout_marginRight="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/background_button"
-        android:text="Skip"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
+        android:layout_height="wrap_content"
+        android:text="Select State"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"/>
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+
+        android:background="@drawable/background_spinner"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/StateSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="@color/bg_orange"
+            android:textColor="#ffffff"
+            android:spinnerMode="dropdown"
+            android:overlapAnchor="false"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:src="@mipmap/drop"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Service"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"/>
+
+    <RelativeLayout
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@drawable/background_spinner"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/ServiceSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="@color/bg_orange"
+            android:textColor="#ffffff"
+            android:spinnerMode="dropdown"
+            android:overlapAnchor="false"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:src="@mipmap/drop"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Client"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"/>
+
+    <RelativeLayout
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/background_spinner"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/ClientSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_orange"
+            android:textColor="#000"
+            android:spinnerMode="dropdown"
+            android:overlapAnchor="false"
+            android:gravity="center"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:src="@mipmap/drop"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/proceed"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/background_button"
+            android:text="Proceed"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/skip"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignEnd="@+id/proceed"
+            android:layout_below="@+id/proceed"
+            android:layout_marginEnd="36dp"
+            android:layout_marginTop="42dp"
+            android:background="@drawable/background_button"
+            android:text="Skip"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>
