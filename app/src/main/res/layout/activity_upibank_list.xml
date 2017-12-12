@@ -7,14 +7,16 @@
     tools:context="in.sabpaisa.droid.sabpaisa.UPIBankList">
 
 
-    <ListView
+    <GridView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/bankList"
-        android:background="@color/bg_orange"
+        android:columnWidth="100dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
         >
 
-    </ListView>
+    </GridView>
 
 
 </LinearLayout>

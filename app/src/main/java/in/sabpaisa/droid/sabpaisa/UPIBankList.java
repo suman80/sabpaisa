@@ -1,10 +1,12 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,13 +18,16 @@ import com.olive.upi.transport.model.Bank;
 
 import java.util.ArrayList;
 
+import in.sabpaisa.droid.sabpaisa.Adapter.BankListAdapter;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class UPIBankList extends AppCompatActivity implements OliveUpiEventListener {
 
-    ListView bankList;
+    GridView bankList;
 
     ArrayList<Bank> bankListArrayList;
+
+    BankListAdapter bankListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +37,15 @@ public class UPIBankList extends AppCompatActivity implements OliveUpiEventListe
 
         OliveUpiManager.getInstance(UPIBankList.this).setListener(this);
         OliveUpiManager.getInstance(UPIBankList.this).fetchListBanks();
-
-        bankList = (ListView)findViewById(R.id.bankList);
         bankListArrayList=new ArrayList<>();
+        bankList = (GridView) findViewById(R.id.bankList);
 
-        ArrayAdapter<Bank> itemsAdapter = new ArrayAdapter<Bank>(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,bankListArrayList );
 
-        bankList.setAdapter(itemsAdapter);
+/*
+        bankListAdapter = new BankListAdapter(UPIBankList.this,R.layout.custom_upibanklist,bankListArrayList);
 
+        bankList.setAdapter(bankListAdapter);
+*/
 
     }
 
@@ -61,6 +67,11 @@ public class UPIBankList extends AppCompatActivity implements OliveUpiEventListe
                     bank.getName();
                     bankListArrayList.add(bank);
                 }
+
+                bankListAdapter = new BankListAdapter(UPIBankList.this,R.layout.custom_upibanklist,bankListArrayList);
+
+                bankList.setAdapter(bankListAdapter);
+
 
                 //bankListArrayList.add(banklist.toString());
 
