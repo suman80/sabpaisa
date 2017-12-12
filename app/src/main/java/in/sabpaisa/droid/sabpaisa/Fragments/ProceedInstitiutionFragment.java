@@ -1,6 +1,5 @@
 package in.sabpaisa.droid.sabpaisa.Fragments;
 
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,9 +36,12 @@ import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
+import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.R;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by abc on 14-06-2017.
@@ -48,12 +50,13 @@ import in.sabpaisa.droid.sabpaisa.R;
 public class ProceedInstitiutionFragment extends Fragment {
 
     View rootView;
+    public  static  String MYSHAREDPREFProceed="mySharedPref11";
     RecyclerView recyclerViewInstitutions;
     InstitutionAdapter institutionAdapter;
     //ArrayList<Institution> institutions;
     ArrayList<Institution> clientArrayList ;
     ShimmerRecyclerView shimmerRecyclerView;
-
+    String landing_page;
 
     String stateName,serviceName;
 
@@ -72,7 +75,8 @@ public class ProceedInstitiutionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_institutions, container, false);
-       shimmerRecyclerView=(ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_institutions); recyclerViewInstitutions = (RecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
+        shimmerRecyclerView=(ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
+        recyclerViewInstitutions = (RecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),10));
@@ -80,7 +84,7 @@ public class ProceedInstitiutionFragment extends Fragment {
 
         clientArrayList=new ArrayList<Institution>();
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(MainActivity.MYSHAREDPREF, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(MainActivity.MYSHAREDPREF, MODE_PRIVATE);
         stateName=sharedPreferences.getString("STATENAME","123");
         serviceName=sharedPreferences.getString("SERVICENAME","123");
         recyclerViewInstitutions.postDelayed(new Runnable() {
@@ -92,6 +96,7 @@ public class ProceedInstitiutionFragment extends Fragment {
 
         Log.d("stateName2222"," "+stateName);
         Log.d("serviceName2222"," "+serviceName);
+
         /*stateName=getArguments().getString("STATE_NAME");
         serviceName=getArguments().getString("SERVICE_NAME");
 
@@ -139,6 +144,7 @@ public class ProceedInstitiutionFragment extends Fragment {
                         institution.setOrgWal(jsonObject1.getString("clientImagePath"));
 
                         institution.setOrgAddress(jsonObject1.getString("state"));
+                        institution.setOrgDesc(jsonObject1.getString("landingPage"));
 
                         clientArrayList.add(institution);
                     }
@@ -149,7 +155,38 @@ public class ProceedInstitiutionFragment extends Fragment {
 
                     Log.d("clientArrayList2222"," "+clientArrayList.get(0).getOrganization_name());
                     Log.d("clientArrayList2222"," "+clientArrayList.get(0).getOrganizationId());
+                    Log.d("clientArrayList3333"," "+clientArrayList.get(0).getOrgDesc());
 
+                    landing_page =clientArrayList.get(0).getOrgDesc();
+
+                    Log.d("xyz",""+landing_page);
+
+                    SharedPreferences.Editor editor1 = getContext().getSharedPreferences(MYSHAREDPREFProceed,MODE_PRIVATE).edit();
+                    editor1.putString("landing_page",landing_page);
+                    //editor.putString("SERVICENAME",serviceName);
+                    editor1.commit();
+
+
+                    PayFragments ldf =new PayFragments();
+                    Bundle args =new Bundle();
+                    args.putString("landing_page","landing_page");
+                    ldf.setArguments(args);
+
+
+
+
+                 /*   PayFragments ldf = new PayFragments();
+                    Bundle args = new Bundle();
+                    args.putString("landing_page", "landing_page");
+                    ldf.setArguments(args);
+*///Inflate the fragment
+                    //getFragmentManager().beginTransaction().add(R.id.container, ldf).commit();
+
+                   /* MakePa ldf = new YourNewFragment ();
+                    Bundle args = new Bundle();
+                    args.putString("landing_page", "landing_page");
+                    ldf.setArguments(args);
+*/
 
                 }
                 catch(JSONException e){

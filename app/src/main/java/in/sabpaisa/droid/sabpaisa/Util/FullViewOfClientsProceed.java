@@ -37,7 +37,7 @@ import in.sabpaisa.droid.sabpaisa.R;
 
 public class FullViewOfClientsProceed extends AppCompatActivity implements OnFragmentInteractionListener{
     ImageView clientImagePath;
-    String clientName,state;
+    String clientName,state,landingPage;
     public static String ClientId;
     public static String clientImageURLPath=null;
     private ViewPager viewPager;
@@ -64,6 +64,14 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
 
         Intent intent = getIntent();
 
+        landingPage =getIntent().getStringExtra("landingPage");
+        Log.d("page",""+landingPage);
+
+        /*Bundle bundle = new Bundle();
+        bundle.putString("landingPage", "From Activity");
+// set Fragmentclass Arguments
+        PayFragments fragobj = new PayFragments();
+        fragobj.setArguments(bundle);*/
 
         clientName = intent.getStringExtra("clientName");
         state = intent.getStringExtra("state");

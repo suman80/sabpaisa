@@ -1,8 +1,10 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -10,7 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 
 /**
  * Created by SabPaisa on 27-07-2017.
@@ -19,16 +21,21 @@ import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 public class WebViewActivity extends AppCompatActivity {
     ProgressBar progressBar;
     WebView webView;
+    String url,landing_page;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_web_view);
 
         webView = (WebView) findViewById(R.id.myWebView);
         progressBar =(ProgressBar) findViewById(R.id.progressBar);
-        webView.loadUrl("http://43.252.89.223:9191/QwikCollect/Canarabank.jsp");
+
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(ProceedInstitiutionFragment.MYSHAREDPREFProceed, MODE_PRIVATE);
+        landing_page=sharedPreferences.getString("landing_page","123");
+        Log.d("WebView",""+landing_page);
+        url=landing_page;
+        webView.loadUrl(url);
 
         progressBar.getProgressDrawable().setColorFilter(Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
 

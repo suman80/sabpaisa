@@ -48,9 +48,6 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-
-
-
         final Institution mainFeedData = institutions.get(position);
 
         holder.instituteName.setText(mainFeedData.getOrganization_name());
@@ -70,7 +67,10 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
                 intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
                 intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
                 intent.putExtra("clientId",mainFeedData.getOrganizationId());
+                intent.putExtra("landing_page",mainFeedData.getOrgDesc());
+
                 Log.d("clientId_thumbnail",""+mainFeedData.getOrganizationId());
+                Log.d("land",""+mainFeedData.getOrgDesc());
 
                 v.getContext().startActivity(intent);
             }
@@ -85,6 +85,7 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
                 intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
                 intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
                 intent.putExtra("clientId",mainFeedData.getOrganizationId());
+                intent.putExtra("landing_page",mainFeedData.getOrgDesc());
                 Log.d("clientId_location",""+mainFeedData.getOrganizationId());
             }
         });
@@ -97,6 +98,8 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
                 intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
                 intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
                 Log.d("clientId_instituteNm",""+mainFeedData.getOrganizationId());
+                intent.putExtra("landing_page",mainFeedData.getOrgDesc());
+                Log.d("urllll",""+mainFeedData.getOrgDesc());
                 intent.putExtra("clientId",mainFeedData.getOrganizationId());
 
                 v.getContext().startActivity(intent);
@@ -112,6 +115,7 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
                 intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
                 Log.d("clientId_banner",""+mainFeedData.getOrganizationId());
                 intent.putExtra("clientId",mainFeedData.getOrganizationId());
+                intent.putExtra("landing_page",mainFeedData.getOrgDesc());
                 v.getContext().startActivity(intent);
 
             }
@@ -136,12 +140,6 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
             instituteLocation = (TextView)itemView.findViewById(R.id.tv_instituteLocation);
         }
     }
-
-
-
-
-
-
 
     @Override
     public int getItemCount() {
