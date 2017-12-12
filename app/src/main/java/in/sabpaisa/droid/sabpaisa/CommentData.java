@@ -2,7 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 
 
-public class CommentData extends in.sabpaisa.droid.sabpaisa.Util.CommentData {
+public class  CommentData extends in.sabpaisa.droid.sabpaisa.Util.CommentData {
 
     public CommentData(String commentText) {
         this.commentText = commentText;
