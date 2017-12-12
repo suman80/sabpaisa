@@ -40,7 +40,7 @@
             android:layout_width="0px"
             android:layout_height="0px"/>
         <EditText
-            android:id="@+id/et_uniqueId"
+            android:id="@+id/et_vpa"
             android:hint="Mobile/Payment Address/Aadhaar"
             android:textSize="@dimen/text_size_heading"
             android:layout_marginLeft="@dimen/margin_side"
@@ -52,11 +52,11 @@
             android:background="@drawable/background_edittext_empty"
             android:layout_centerVertical="true"/>
         <TextView
-            android:id="@+id/tv_idVerify"
+            android:id="@+id/tv_Send"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Verify"
+            android:text="Send"
             android:layout_marginRight="@dimen/margin_side"
             android:textSize="@dimen/text_size_heading"
             android:textStyle="bold"

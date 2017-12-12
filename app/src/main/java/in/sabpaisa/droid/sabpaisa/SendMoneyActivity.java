@@ -13,12 +13,17 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.olive.upi.transport.OliveUpiEventListener;
+import com.olive.upi.transport.api.Result;
+import com.olive.upi.transport.api.UpiService;
 
 import java.util.ArrayList;
 
@@ -38,8 +43,8 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
         OnFragmentInteractionListener,ContactListFragment.GetDataInterface{
 
     Toolbar mtoolbar;
-    EditText uniqueId;
-    TextView idVerify;
+    EditText vpa;
+    TextView Send;
     ViewPager viewPager;
     TabLayout tabs;
     LinearLayout parent;
@@ -54,8 +59,8 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
         setContentView(R.layout.activity_send_money);
 
         mtoolbar = (Toolbar)findViewById(R.id.toolbar);
-        uniqueId = (EditText)findViewById(R.id.et_uniqueId);
-        idVerify = (TextView)findViewById(R.id.tv_idVerify);
+        vpa = (EditText)findViewById(R.id.et_vpa);
+        Send = (TextView)findViewById(R.id.tv_Send);
         viewPager = (ViewPager)findViewById(R.id.viewpager);
         parent = (LinearLayout)findViewById(R.id.ll_send_money);
         ll_space = (LinearLayout)findViewById(R.id.ll_space);
@@ -66,10 +71,10 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
         setSupportActionBar(mtoolbar);
 
 
-        idVerify.setOnClickListener(new View.OnClickListener() {
+        Send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (uniqueId.getText().toString().isEmpty()){
+                if (vpa.getText().toString().isEmpty()){
                     Snackbar snackbar = Snackbar
                             .make(parent, "Please enter a UPI address", Snackbar.LENGTH_LONG);
                     snackbar.getView().setBackgroundColor(getResources().getColor(R.color.bg_orange));
@@ -86,7 +91,7 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
                         public void run() {
                             bottomSheetDialog.cancel();
                             Intent intent = new Intent(SendMoneyActivity.this, BeneficiaryDetail.class);
-                            intent.putExtra("UPI", uniqueId.getText().toString());
+                            intent.putExtra("UPI", vpa.getText().toString());
                             startActivity(intent);
                         }
                     }, 5000);
@@ -122,7 +127,7 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
 
     @Override
     public void onUpiSelect(String upi) {
-        uniqueId.setText(upi);
+        vpa.setText(upi);
     }
 
     @Override
@@ -144,4 +149,6 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
     public ArrayList<ContactList> getFeedDataList() {
         return filteredContactList;
     }
+
+
 }

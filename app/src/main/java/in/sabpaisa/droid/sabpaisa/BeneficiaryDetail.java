@@ -21,31 +21,48 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.olive.upi.OliveUpiManager;
+import com.olive.upi.transport.OliveUpiEventListener;
+import com.olive.upi.transport.api.Result;
+import com.olive.upi.transport.api.UpiService;
+import com.olive.upi.transport.model.Account;
+import com.olive.upi.transport.model.BeneVpa;
+import com.olive.upi.transport.model.CustomerBankAccounts;
+
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
-public class BeneficiaryDetail extends AppCompatActivity {
+public class BeneficiaryDetail extends AppCompatActivity implements OliveUpiEventListener{
 
     Toolbar mtoolbar;
-    String upiString;
+    String vpaString;
     TextView upiName,upi;
     EditText amount,remark;
     CheckBox save;
     Button send;
     LinearLayout beneficiayDetail;
     ScrollView svBeneficiary;
+    Account account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_beneficiary_detail);
-        upiString = getIntent().getStringExtra("UPI");
+
+        OliveUpiManager.getInstance(BeneficiaryDetail.this).setListener(this);
+
+        OliveUpiManager.getInstance(BeneficiaryDetail.this).fetchMyAccounts();
+
+
+        vpaString = getIntent().getStringExtra("UPI");
 
         DataBinding();
 
         boolean isDialog = getIntent().getBooleanExtra("Dialog",false);
-        upi.setText(upiString);
+        upi.setText(vpaString);
         mtoolbar.setTitle("Beneficiary Account");
         setSupportActionBar(mtoolbar);
 
@@ -59,11 +76,36 @@ public class BeneficiaryDetail extends AppCompatActivity {
                     snackbar.show();
                 }
                 else if (Integer.parseInt(amount.getText().toString())<=10000) {
-                    Intent intent = new Intent(BeneficiaryDetail.this, SendConfirmUPImPIN.class);
+                    /*Intent intent = new Intent(BeneficiaryDetail.this, SendConfirmUPImPIN.class);
                     intent.putExtra("Name", upiName.getText().toString());
                     intent.putExtra("Amount", amount.getText().toString());
                     intent.putExtra("UPI", upi.getText().toString());
-                    startActivity(intent);
+                    startActivity(intent);*/
+
+
+                    if (account == null) {
+                        Toast.makeText(BeneficiaryDetail.this, "No account selected.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    else
+
+                    {
+                        BeneVpa vpa = new BeneVpa();
+                        vpa.setName("Aditya");
+                        vpa.setVpa("cde@dcb");//Given by aditya dcb
+                        vpa.setNickname("Nikki");
+                        String merchantvpa = "onkar@dcb";
+                        String merchantid = "131";
+                        String submerchantid = "550";
+                        String merchantchannelid = "121";
+                        String trantype = "P2P";
+
+                        OliveUpiManager.getInstance(BeneficiaryDetail.this).initiatePay(account, vpa, amount.getText().toString(), "test", merchantvpa, merchantid, submerchantid, merchantchannelid, trantype);
+
+                    }
+
+
+
                 }else {
                     Snackbar snackbar = Snackbar
                             .make(beneficiayDetail, "Please enter a amount less than or equal to 10,000", Snackbar.LENGTH_LONG);
@@ -134,4 +176,63 @@ public class BeneficiaryDetail extends AppCompatActivity {
         beneficiayDetail = (LinearLayout)findViewById(R.id.ll_beneficiary_detail);
         svBeneficiary = (ScrollView)findViewById(R.id.sv_beneficiary);
     }
+
+
+    @Override
+    public void onSuccessResponse(int reqType, Object data) {
+        Log.d("Main", "onSuccessResponse: reqType "+reqType+" data "+data);
+
+        //Fetch All Linked Accounts(5)
+        if(reqType == UpiService.REQUEST_ALL_ACCOUNTS) {
+            ArrayList<CustomerBankAccounts> bankAccounts = (ArrayList<CustomerBankAccounts>) data;
+            Log.d("REQUEST_ALL_ACCOUNTS","--->"+bankAccounts.get(0).getBankName());
+            Log.d("REQUEST_ALL_ACCOUNTS","--->"+bankAccounts.get(0).getBankCode());
+            Log.d("REQUEST_ALL_ACCOUNTS","--->"+bankAccounts.get(0).getAccounts());
+            Log.d("REQUEST_ALL_ACCOUNTS","--->"+bankAccounts.get(0).getInput());
+            if (bankAccounts != null && bankAccounts.size() > 0) {
+                account=(Account)bankAccounts.get(0).getAccounts().get(0);
+
+                Log.d("Val_Acc","-->"+account.toString());
+
+
+            }
+        }
+
+
+
+
+          /*
+This API is used to transfer fund from payer account to payee account. Fund transfer
+        is processed based on the VPA/ account details of the both parties.(6)
+*/
+         if(reqType==UpiService.REQUEST_PAY){
+
+            Result<String> PayDataArrayList = (Result<String>) data;
+            Log.d("PayDataArrayList1","-->"+PayDataArrayList);
+            if(PayDataArrayList.getCode().equals("00")){
+
+                Toast.makeText(this,"Pay Success",Toast.LENGTH_SHORT).show();
+
+                Log.d("PayDataArrayList2","-->"+PayDataArrayList);
+
+            }
+
+
+        }
+
+
+        else{
+            Toast.makeText(this,"Pay Not Success",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onFailureResponse(int reqType, Object data) {
+        Toast.makeText(BeneficiaryDetail.this,"Fail" , Toast.LENGTH_SHORT).show();
+    }
+
+
+
+
+
 }

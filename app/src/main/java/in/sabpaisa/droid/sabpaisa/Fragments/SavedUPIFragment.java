@@ -51,7 +51,7 @@ public class SavedUPIFragment extends Fragment {
     }
 
     private void loadArrayList() {
-        savedUPIs.add(new SavedUPI("gaurav@upi"));
+        /*savedUPIs.add(new SavedUPI("gaurav@upi"));
         savedUPIs.add(new SavedUPI("manish@upi"));
         savedUPIs.add(new SavedUPI("9818849948@upi"));
         savedUPIs.add(new SavedUPI("mukesh@icici"));
@@ -62,6 +62,9 @@ public class SavedUPIFragment extends Fragment {
         savedUPIs.add(new SavedUPI("faltu@upi"));
         savedUPIs.add(new SavedUPI("adarsh@upi"));
         savedUPIs.add(new SavedUPI("vinayak@upi"));
-        savedUPIs.add(new SavedUPI("vishal@icici"));
+        savedUPIs.add(new SavedUPI("vishal@icici"));*/
+
+        savedUPIs.add(new SavedUPI("cde@dcb"));
+
     }
 }
