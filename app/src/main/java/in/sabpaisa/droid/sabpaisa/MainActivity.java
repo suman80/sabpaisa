@@ -1,5 +1,4 @@
 package in.sabpaisa.droid.sabpaisa;
-
 import android.annotation.TargetApi;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
@@ -62,7 +61,6 @@ import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ShareActivity;
 
 import static android.view.View.GONE;
-
 public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener{
 
     private SliderLayout mHeaderSlider;

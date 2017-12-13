@@ -1,7 +1,9 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -23,6 +25,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -62,16 +65,20 @@ import in.sabpaisa.droid.sabpaisa.CommentData;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FeedDetails;
 import in.sabpaisa.droid.sabpaisa.FeedsFragments;
+import in.sabpaisa.droid.sabpaisa.FilterActivity;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.Model.*;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.R;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.CommentAdapterDatabase;
+import in.sabpaisa.droid.sabpaisa.RegisterActivity;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
+import in.sabpaisa.droid.sabpaisa.SocialPayment;
 
 import static android.support.v4.widget.SwipeRefreshLayout.*;
 
@@ -88,6 +95,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     public static String clientId;
     public  static  String MySharedPrefOnSkipClientDetailsScreen="mySharedPref";
     private ViewPager viewPager;
+    private Button btn_pay,btn_request;
     TextView feedDeatilsTextView, feedNameTextView,feedTime;
     ImageView feedImage,clientImagePath,clientLogoPath;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -120,14 +128,14 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         setSupportActionBar(toolbar);
        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setDisplayShowHomeEnabled(true);
-        viewPager = (ViewPager) findViewById(R.id.viewpagerSkip);
+       /* viewPager = (ViewPager) findViewById(R.id.viewpagerSkip);
         setupViewPager(viewPager);
         viewPager.setOffscreenPageLimit(3);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
+*/
         Intent intent = getIntent();
 
         clientName = intent.getStringExtra("clientName");
@@ -145,13 +153,61 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
         TextView clientNameTextView = (TextView) findViewById(R.id.particular_client_name);
 
+        btn_request = (Button) findViewById(R.id.btn_request);
+        btn_pay =(Button) findViewById(R.id.btn_pay);
+
         TextView stateTextView = (TextView) findViewById(R.id.particular_client_address);
 
         clientImagePath = (ImageView)findViewById(R.id.particular_client_image);
         //clientLogoPath  = (ImageView)findViewById(R.id.particular_client_logo);
 
 
+btn_pay.setOnClickListener(new OnClickListener() {
+    @Override
+    public void onClick(View v) {
 
+
+        AlertDialog alertDialog = new AlertDialog.Builder(SkipClientDetailsScreen.this, R.style.MyDialogTheme).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Pay");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("For Payment,Click on the Request Join Button ");
+
+        // Setting Icon to Dialog
+        //  alertDialog.setIcon(R.drawable.tick);
+
+        // Setting OK Button
+        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Write your code here to execute after dialog closed
+                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+        Log.v("Home", "Payment");
+
+
+        /*Intent intent = new Intent(SkipClientDetailsScreen.this,SocialPayment.class);
+        startActivity(intent);*/
+
+
+    }
+});
+
+
+        btn_request.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(SkipClientDetailsScreen.this,FilterActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
 //       callFeedDeatilsByFeedId();
         clientNameTextView.setText( clientName);
@@ -170,6 +226,9 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         //loadComments();
     }
 
+
+
+
     @Override
     public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
 
@@ -184,6 +243,9 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
 
     }
+
+
+
 
 
     //Code for fetching image from server
