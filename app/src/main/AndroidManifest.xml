@@ -36,11 +36,13 @@
         <activity android:name=".VerifyMobile" />
         <activity android:name=".FilterActivity">
 
-            <!--<intent-filter>
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
 
         </activity>
         <activity android:name=".UPIBankList" />
@@ -49,23 +51,20 @@
         <activity android:name=".FeedDetails" />
         <activity android:name=".MainActivitySkip" />
         <activity android:name=".GroupDetails" />
-        <activity android:name=".Util.PrivacyPolicyActivity"/>
-        <activity android:name=".Util.ProfileNavigationActivity"/>
-        <activity android:name=".Util.RateActivity"/>
-        <activity android:name=".Util.SettingsNavigationActivity"/>
-        <activity android:name=".Util.ShareActivity"/>
+        <activity android:name=".Util.PrivacyPolicyActivity" />
+        <activity android:name=".Util.ProfileNavigationActivity" />
+        <activity android:name=".Util.RateActivity" />
+        <activity android:name=".Util.SettingsNavigationActivity" />
+        <activity android:name=".Util.ShareActivity" />
         <activity android:name=".RegisterPasscode" />
         <activity android:name=".SplashScreen">
-          <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity android:name=".UpiSdkHandshake" />
-
 
         <!--
             <intent-filter>
@@ -94,6 +93,9 @@
         <activity android:name=".RequestMoney" />
         <activity
             android:name=".BeneficiaryDetail"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".BeneficiaryRequestMoney"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".SendConfirmUPImPIN" />
         <activity android:name=".TransactionResult" />
@@ -149,6 +151,7 @@
         -->
         <activity android:name=".Proceed_Feed_FullScreen" />
         <activity android:name=".Proceed_Group_FullScreen" />
+        <activity android:name=".UPI_UserAccounts"></activity>
     </application>
 
 </manifest>

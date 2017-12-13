@@ -40,7 +40,7 @@
             android:layout_width="0px"
             android:layout_height="0px"/>
         <EditText
-            android:id="@+id/et_uniqueId"
+            android:id="@+id/et_vpa"
             android:hint="Mobile/Aadhaar/UPI ID"
             android:textSize="@dimen/text_size_heading"
             android:layout_marginLeft="@dimen/margin_side"

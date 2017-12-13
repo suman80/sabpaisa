@@ -64,7 +64,7 @@ public class SavedUPIFragment extends Fragment {
         savedUPIs.add(new SavedUPI("vinayak@upi"));
         savedUPIs.add(new SavedUPI("vishal@icici"));*/
 
-        savedUPIs.add(new SavedUPI("cde@dcb"));
+        savedUPIs.add(new SavedUPI("aditya@dcb"));
 
     }
 }

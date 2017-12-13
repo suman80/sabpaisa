@@ -21,9 +21,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.olive.upi.OliveUpiManager;
 import com.olive.upi.transport.OliveUpiEventListener;
 import com.olive.upi.transport.api.Result;
 import com.olive.upi.transport.api.UpiService;
+import com.olive.upi.transport.model.Account;
+import com.olive.upi.transport.model.CustomerBankAccounts;
 
 import java.util.ArrayList;
 
@@ -40,11 +43,11 @@ import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import static android.view.View.GONE;
 
 public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAdapter.UPIResponse,ContactsAdapter.UPIResponse,
-        OnFragmentInteractionListener,ContactListFragment.GetDataInterface{
+        OnFragmentInteractionListener,ContactListFragment.GetDataInterface,OliveUpiEventListener{
 
     Toolbar mtoolbar;
     EditText vpa;
-    TextView Send;
+    TextView Send,tv_accountNumber;
     ViewPager viewPager;
     TabLayout tabs;
     LinearLayout parent;
@@ -52,13 +55,19 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
     ArrayList<ContactList> filteredContactList;
     ContactListFragment contactListFragment;
     LinearLayout ll_space;
+    Account account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_send_money);
 
+        OliveUpiManager.getInstance(SendMoneyActivity.this).setListener(this);
+
+        OliveUpiManager.getInstance(SendMoneyActivity.this).fetchMyAccounts();
+
         mtoolbar = (Toolbar)findViewById(R.id.toolbar);
+        tv_accountNumber= (TextView)findViewById(R.id.tv_accountNumber);
         vpa = (EditText)findViewById(R.id.et_vpa);
         Send = (TextView)findViewById(R.id.tv_Send);
         viewPager = (ViewPager)findViewById(R.id.viewpager);
@@ -90,9 +99,9 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
                         @Override
                         public void run() {
                             bottomSheetDialog.cancel();
-                            Intent intent = new Intent(SendMoneyActivity.this, BeneficiaryDetail.class);
-                            intent.putExtra("UPI", vpa.getText().toString());
-                            startActivity(intent);
+
+                            OliveUpiManager.getInstance(SendMoneyActivity.this). checkvpa(vpa.getText().toString());
+
                         }
                     }, 5000);
                 }
@@ -150,5 +159,54 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
         return filteredContactList;
     }
 
+    @Override
+    public void onSuccessResponse(int reqType, Object data) {
+        Log.d("Main", "onSuccessResponse: reqType "+reqType+" data "+data);
+
+        //Fetch All Linked Accounts(5)
+        if(reqType == UpiService.REQUEST_ALL_ACCOUNTS) {
+            ArrayList<CustomerBankAccounts> bankAccounts = (ArrayList<CustomerBankAccounts>) data;
+            Log.d("REQUEST_ALL_ACCOUNTS","--->"+bankAccounts.get(0).getBankName());
+            Log.d("REQUEST_ALL_ACCOUNTS","--->"+bankAccounts.get(0).getBankCode());
+            Log.d("REQUEST_ALL_ACCOUNTS","--->"+bankAccounts.get(0).getAccounts());
+            Log.d("REQUEST_ALL_ACCOUNTS","--->"+bankAccounts.get(0).getInput());
+            if (bankAccounts != null && bankAccounts.size() > 0) {
+                account=(Account)bankAccounts.get(0).getAccounts().get(0);
+                tv_accountNumber.setText(account.getMaskedAccnumber());
+                Log.d("Val_Acc","-->"+account.toString());
+
+
+            }
+
+            //This API is used to verify the virtual Payment Address is valid or not.
+        }else if (reqType== UpiService.REQUEST_VERIFY_VPA){
+            Result<String> verifyVPA = (Result<String>) data;
+
+            if (verifyVPA.getCode().equals("00")){
+                Log.d("accountRemove","--->"+verifyVPA);
+                Toast.makeText(SendMoneyActivity.this,"VPA Verified" , Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SendMoneyActivity.this, BeneficiaryDetail.class);
+                intent.putExtra("VPA", vpa.getText().toString());
+                startActivity(intent);
+            }else{
+                Toast.makeText(this,"Invalid VPA",Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        else{
+            Toast.makeText(this,"Not Success",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onFailureResponse(int reqType, Object data) {
+        Toast.makeText(SendMoneyActivity.this,"Fail" , Toast.LENGTH_SHORT).show();
+    }
+
+
+
+
 
 }
+
+

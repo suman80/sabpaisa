@@ -182,6 +182,15 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
             }
         });
 
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UPI_UserAccounts.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+            }
+        });
+
         bank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

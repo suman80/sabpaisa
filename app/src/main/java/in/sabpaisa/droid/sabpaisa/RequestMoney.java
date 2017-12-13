@@ -9,10 +9,19 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.olive.upi.OliveUpiManager;
+import com.olive.upi.transport.OliveUpiEventListener;
+import com.olive.upi.transport.api.Result;
+import com.olive.upi.transport.api.UpiService;
+import com.olive.upi.transport.model.Account;
+import com.olive.upi.transport.model.CustomerBankAccounts;
 
 import java.util.ArrayList;
 
@@ -33,10 +42,10 @@ import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
  */
 
 public class RequestMoney extends AppCompatActivity implements SavedUPIAdapter.UPIResponse,ContactsAdapter.UPIResponse,
-        OnFragmentInteractionListener,ContactListFragment.GetDataInterface{
+        OnFragmentInteractionListener,ContactListFragment.GetDataInterface,OliveUpiEventListener {
 
     Toolbar mtoolbar;
-    EditText uniqueId;
+    EditText vpa;
     TextView idVerify;
     ViewPager viewPager;
     TabLayout tabs;
@@ -45,14 +54,21 @@ public class RequestMoney extends AppCompatActivity implements SavedUPIAdapter.U
     ArrayList<ContactList> filteredContactList;
     ContactListFragment contactListFragment;
     LinearLayout ll_space;
+
+    Account account;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_request_money);
 
+        OliveUpiManager.getInstance(RequestMoney.this).setListener(this);
+
+        OliveUpiManager.getInstance(RequestMoney.this).fetchMyAccounts();
+
         mtoolbar = (Toolbar)findViewById(R.id.toolbar);
-        uniqueId = (EditText)findViewById(R.id.et_uniqueId);
+        vpa = (EditText)findViewById(R.id.et_vpa);
         idVerify = (TextView)findViewById(R.id.tv_idVerify);
         viewPager = (ViewPager)findViewById(R.id.viewpager);
         parent = (LinearLayout)findViewById(R.id.ll_send_money);
@@ -67,7 +83,7 @@ public class RequestMoney extends AppCompatActivity implements SavedUPIAdapter.U
         idVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (uniqueId.getText().toString().isEmpty()){
+                if (vpa.getText().toString().isEmpty()){
                     Snackbar snackbar = Snackbar
                             .make(parent, "Please enter a UPI address", Snackbar.LENGTH_LONG);
                     snackbar.getView().setBackgroundColor(getResources().getColor(R.color.bg_orange));
@@ -83,9 +99,7 @@ public class RequestMoney extends AppCompatActivity implements SavedUPIAdapter.U
                         @Override
                         public void run() {
                             bottomSheetDialog.cancel();
-                            Intent intent = new Intent(RequestMoney.this, BeneficiaryDetail.class);
-                            intent.putExtra("UPI", uniqueId.getText().toString());
-                            startActivity(intent);
+                            OliveUpiManager.getInstance(RequestMoney.this). checkvpa(vpa.getText().toString());
                         }
                     }, 5000);
                 }
@@ -120,7 +134,7 @@ public class RequestMoney extends AppCompatActivity implements SavedUPIAdapter.U
 
     @Override
     public void onUpiSelect(String upi) {
-        uniqueId.setText(upi);
+        vpa.setText(upi);
     }
 
     @Override
@@ -142,4 +156,54 @@ public class RequestMoney extends AppCompatActivity implements SavedUPIAdapter.U
     public ArrayList<ContactList> getFeedDataList() {
         return filteredContactList;
     }
+
+
+    @Override
+    public void onSuccessResponse(int reqType, Object data) {
+        Log.d("Main", "onSuccessResponse: reqType "+reqType+" data "+data);
+
+        //Fetch All Linked Accounts(5)
+        if(reqType == UpiService.REQUEST_ALL_ACCOUNTS) {
+            ArrayList<CustomerBankAccounts> bankAccounts = (ArrayList<CustomerBankAccounts>) data;
+            Log.d("REQUEST_ALL_ACCOUNTS","--->"+bankAccounts.get(0).getBankName());
+            Log.d("REQUEST_ALL_ACCOUNTS","--->"+bankAccounts.get(0).getBankCode());
+            Log.d("REQUEST_ALL_ACCOUNTS","--->"+bankAccounts.get(0).getAccounts());
+            Log.d("REQUEST_ALL_ACCOUNTS","--->"+bankAccounts.get(0).getInput());
+            if (bankAccounts != null && bankAccounts.size() > 0) {
+                account=(Account)bankAccounts.get(0).getAccounts().get(0);
+                //tv_accountNumber.setText(account.getMaskedAccnumber());
+                Log.d("Val_Acc","-->"+account.toString());
+
+
+            }
+
+            //This API is used to verify the virtual Payment Address is valid or not.
+        }else if (reqType== UpiService.REQUEST_VERIFY_VPA){
+            Result<String> verifyVPA = (Result<String>) data;
+
+            if (verifyVPA.getCode().equals("00")){
+                Log.d("accountRemove","--->"+verifyVPA);
+                Toast.makeText(RequestMoney.this,"VPA Verified" , Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(RequestMoney.this, BeneficiaryRequestMoney.class);
+                intent.putExtra("VPA", vpa.getText().toString());
+                startActivity(intent);
+            }else{
+                Toast.makeText(this,"Invalid VPA",Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        else{
+            Toast.makeText(this,"Not Success",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onFailureResponse(int reqType, Object data) {
+        Toast.makeText(RequestMoney.this,"Fail" , Toast.LENGTH_SHORT).show();
+    }
+
+
+
+
+
 }
