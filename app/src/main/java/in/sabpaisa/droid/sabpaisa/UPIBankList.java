@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
@@ -71,6 +73,21 @@ public class UPIBankList extends AppCompatActivity implements OliveUpiEventListe
                 bankListAdapter = new BankListAdapter(UPIBankList.this,R.layout.custom_upibanklist,bankListArrayList);
 
                 bankList.setAdapter(bankListAdapter);
+
+                bankList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String bankpos = String.valueOf(bankListArrayList.get(position));
+                        String requiredIin = bankpos.substring(bankpos.lastIndexOf(" ")+ 1 , bankpos.length());
+                        Log.d("REQUIRED_IIN-->","REQUIRED_IIN"+requiredIin);
+                        Toast.makeText(getApplicationContext(),"Bank"+bankpos+" "+requiredIin,Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(UPIBankList.this,FetchAccBasedOnIIN.class);
+                        intent.putExtra("IIN",requiredIin);
+                        startActivity(intent);
+
+                    }
+                });
 
 
                 //bankListArrayList.add(banklist.toString());

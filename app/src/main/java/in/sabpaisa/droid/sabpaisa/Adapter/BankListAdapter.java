@@ -6,8 +6,10 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -25,7 +27,7 @@ import in.sabpaisa.droid.sabpaisa.R;
  * Created by rajdeeps on 12/12/17.
  */
 
-public class BankListAdapter extends ArrayAdapter<Bank> {
+public class BankListAdapter extends ArrayAdapter<Bank> implements AdapterView.OnItemClickListener{
 
     ArrayList<Bank> arrayList;
     LayoutInflater vi;
@@ -59,7 +61,13 @@ public class BankListAdapter extends ArrayAdapter<Bank> {
         holder.BankName.setText(arrayList.get(position).getName());
 
 
+
         return v;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 
 
