@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25"
     defaultConfig {
         applicationId "in.sabpaisa.droid.sabpaisa"
         minSdkVersion 17
-        targetSdkVersion 27
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -19,6 +19,7 @@ android {
         }
     }
 }
+/*
 
 
 allprojects {
@@ -26,6 +27,7 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
 }
+*/
 
 
 dependencies {
@@ -46,9 +48,9 @@ dependencies {
     compile project(':secure-component-sdk')
 
     compile 'com.weiwangcn.betterspinner:library:1.1.0'
-    compile 'com.github.santalu:respinner:1.0.1'
+   // compile 'com.github.santalu:respinner:1.0.1'
 
-    compile 'com.jaredrummler:material-spinner:1.2.2'
+    compile 'com.jaredrummler:material-spinner:1.2.3'
     compile 'com.codesgood:justifiedtextview:1.0.2'
     compile project(':securecomponent')
     compile 'com.github.sharish:ShimmerRecyclerView:v1.0.1'
@@ -60,11 +62,11 @@ dependencies {
     compile 'com.uncopt:android.justified:1.0'
     compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
     //noinspection GradleCompatible
-    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.github.sujithkanna:smileyrating:1.6.8'
-    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:design:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.android.support:support-v4:25.3.'
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.daimajia.slider:library:1.1.5@aar'
     compile 'com.github.wangjiegulu:RapidFloatingActionButton:1.0.3'
