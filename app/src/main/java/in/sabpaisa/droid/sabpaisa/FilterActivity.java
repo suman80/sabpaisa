@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,11 +12,14 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
+import com.santalu.respinner.ReSpinner;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.autofill.AutofillValue;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -52,7 +56,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
 
     private static final String TAG = FilterActivity.class.getSimpleName();
 
-    Spinner stateSpinner, serviceSpinner,clientsSpinner;;
+    ReSpinner  stateSpinner, serviceSpinner,clientsSpinner;;
 
 
 
@@ -73,9 +77,9 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
         proceed = (Button)findViewById(R.id.proceed);
         skip = (Button) findViewById(R.id.skip);
 
-        stateSpinner =      (Spinner) findViewById(R.id.StateSpinner);
-        serviceSpinner =    (Spinner) findViewById(R.id.ServiceSpinner);
-        clientsSpinner = (Spinner) findViewById(R.id.ClientSpinner);
+        stateSpinner =      (  ReSpinner ) findViewById(R.id.StateSpinner);
+        serviceSpinner =    (  ReSpinner ) findViewById(R.id.ServiceSpinner);
+        clientsSpinner = (  ReSpinner ) findViewById(R.id.ClientSpinner);
 
         stateArrayList = new ArrayList<>();
 
@@ -152,7 +156,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                         stateArrayList.add(getterSetter.getStateName().toString());
                         ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_spinner_item, stateArrayList);
                         bankAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        stateSpinner.setPrompt("Select");
+                       // stateSpinner.setPrompt("Select");
                         stateSpinner.setAdapter(bankAdapter);
                         stateSpinner.setOnItemSelectedListener(FilterActivity.this);
 
@@ -231,8 +235,18 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                         serviceSpinner.setAdapter(clientadapter);
                         serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
+                            @SuppressLint("ResourceAsColor")
                             public void onItemSelected(AdapterView<?> parentView,
                                                        View selectedItemView, int position, long id) {
+
+                                ((TextView) selectedItemView).setTextColor(R.color.tw__blue_default);
+                               // ((TextView) selectedItemView).setAllCaps(true);
+                                ((TextView) selectedItemView).getGravity();
+                                ((TextView) selectedItemView).getText();
+
+
+
+
 
                                 getClientData(serviceSpinner.getSelectedItem().toString(),stateSpinner.getSelectedItem().toString());
 
@@ -335,7 +349,21 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                     clientsSpinner.setPrompt("Select");
                     clientsSpinner.setSelection(0);
                     clientsSpinner.setAdapter(adapter);
-                    clientsSpinner.setOnItemSelectedListener(FilterActivity.this);
+                    clientsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @SuppressLint("ResourceAsColor")
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            ((TextView) view).setTextColor(R.color.tw__blue_default);
+                            /*((TextView) view).setAllCaps(true);
+                            ((TextView) view).getGravity();*/
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
 
 
                 }
@@ -364,9 +392,11 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     }
 
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String selected=parent.getItemAtPosition(position).toString();
+        ((TextView) view).setTextColor(R.color.tw__blue_default);
       //  Toast.makeText(this,selected,Toast.LENGTH_SHORT).show();
         getServiceData(selected);
     }

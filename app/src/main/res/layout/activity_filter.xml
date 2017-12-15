@@ -5,132 +5,128 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
-        android:text="Choose your Institution / Hospital  "
+        android:text="Choose your State/Services/Client"
         android:layout_marginTop="30dp"
         android:layout_margin="20sp"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:textColor="@color/bg_orange"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         />
-
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select State"
+        android:textSize="18sp"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="5dp"/>
-
-    <RelativeLayout
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:textStyle="bold"
+       />
 
-        android:background="@drawable/background_spinner"
-        android:orientation="horizontal">
 
-        <Spinner
+
+        <com.santalu.respinner.ReSpinner
             android:id="@+id/StateSpinner"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
-            android:background="@color/bg_orange"
-            android:textColor="#ffffff"
+
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:spinnerMode="dropdown"
             android:overlapAnchor="false"
             />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:src="@mipmap/drop"/>
 
-    </RelativeLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select Service"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="5dp"/>
+        android:textStyle="bold"
+        android:textSize="18sp"
 
-    <RelativeLayout
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:background="@drawable/background_spinner"
-        android:orientation="horizontal">
+     />
 
-        <Spinner
+
+
+        <com.santalu.respinner.ReSpinner
             android:id="@+id/ServiceSpinner"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
-            android:background="@color/bg_orange"
-            android:textColor="#ffffff"
+            android:textSize="10dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:spinnerMode="dropdown"
             android:overlapAnchor="false"
             />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:src="@mipmap/drop"/>
+   <!-- <LinearLayout
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
 
-    </RelativeLayout>
+
+        android:orientation="vertical">-->
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select Client"
+
+        android:textAlignment="viewStart"
+        android:textSize="18sp"
+
+        android:textStyle="bold"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="5dp"/>
+        />
 
-    <RelativeLayout
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
+
+
+    <com.santalu.respinner.ReSpinner
+        android:id="@+id/ClientSpinner"
+        android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:background="@drawable/background_spinner"
-        android:orientation="horizontal">
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:textSize="10dp"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:spinnerMode="dropdown"
+        android:overlapAnchor="false"
+        />
 
-        <Spinner
-            android:id="@+id/ClientSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/bg_orange"
-            android:textColor="#000"
-            android:spinnerMode="dropdown"
-            android:overlapAnchor="false"
-            android:gravity="center"
-            />
 
-        <ImageView
+    <!--
+        </LinearLayout>-->
+        <!--<ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:src="@mipmap/drop"/>
+            android:src="@mipmap/drop"/>-->
 
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:orientation="horizontal">
 
         <Button
             android:id="@+id/proceed"
@@ -138,9 +134,10 @@
             android:layout_height="40dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/background_button"
             android:text="Proceed"
+
             android:textAllCaps="false"
             android:textColor="@color/white" />
 
@@ -148,16 +145,18 @@
             android:id="@+id/skip"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_alignEnd="@+id/proceed"
             android:layout_below="@+id/proceed"
-            android:layout_marginEnd="36dp"
             android:layout_marginTop="42dp"
             android:background="@drawable/background_button"
             android:text="Skip"
+            android:layout_marginLeft="245dp"
             android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:layout_marginRight="10dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="60dp"
+            />
 
 
-    </RelativeLayout>
 
+</LinearLayout>
 </LinearLayout>
