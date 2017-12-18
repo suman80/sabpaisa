@@ -35,6 +35,7 @@ import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.wangjie.androidbucket.utils.ABTextUtil;
 import com.wangjie.androidbucket.utils.imageprocess.ABShape;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -44,6 +45,7 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
@@ -61,7 +63,7 @@ import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ShareActivity;
 
 import static android.view.View.GONE;
-public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
 
     private SliderLayout mHeaderSlider;
     ArrayList<Integer> headerList = new ArrayList<>();
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     FloatingActionButton fab;
     ActionBarDrawerToggle toggle;
 
-
+HashMap<String,String> Hash_file_maps;
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
@@ -108,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
 
         sendMoney = (ImageView)findViewById(R.id.ll_send);
         requestMoney = (ImageView)findViewById(R.id.ll_request);
@@ -366,41 +369,35 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
 
 
-        headerList.add(R.drawable.test_header600240);
+        Hash_file_maps = new HashMap<String, String>();
+
+
+        Hash_file_maps.put("Sabpaisa", "http://205.147.103.27:6060/Docs/Images/HomeImage/sabpaisa.png");
+        Hash_file_maps.put("Sabpaisa.", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_2.png");
+        Hash_file_maps.put("Sabpaisa..", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_image.jpg");
+        Hash_file_maps.put("Sabpaisa...", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_1.svg.png");
+        for(String name : Hash_file_maps .keySet())
+        {
+            TextSliderView textSliderView = new TextSliderView(this);
+            // initialize a SliderLayout
+            textSliderView
+                    .description(name)
+                    .image(Hash_file_maps.get(name))
+                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .setOnSliderClickListener(this);
+
+            //add your extra information
+            textSliderView.bundle(new Bundle());
+            textSliderView.getBundle()
+                    .putString("extra",name);
+
+            mHeaderSlider.addSlider(textSliderView);
+        }
+ /*       headerList.add(R.drawable.test_header600240);
         headerList.add(R.drawable.test_header600241);
         headerList.add(R.drawable.test_header600242);
-        headerList.add(R.drawable.test_header600243);
+        headerList.add(R.drawable.test_header600243);*/
     }
-
-
-        /*url_maps.put("Hannibal", "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
-        url_maps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
-        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
-        url_maps.put("Game of Thrones", "http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
-
-
-
-
-
-
-        for(String name :  url_maps.keySet()){
-        TextSliderView textSliderView = new TextSliderView(this);
-        // initialize a SliderLayout
-        textSliderView
-                .description(name)
-                .image(file_maps.get(name))
-                .setScaleType(BaseSliderView.ScaleType.Fit)
-                .setOnSliderClickListener(this);
-
-        //add your extra information
-        textSliderView.bundle(new Bundle());
-        textSliderView.getBundle()
-                .putString("extra",name);
-
-        mDemoSlider.addSlider(textSliderView);
-    }
-
-*/
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -522,5 +519,25 @@ startActivity(intent);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onSliderClick(BaseSliderView slider) {
+
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

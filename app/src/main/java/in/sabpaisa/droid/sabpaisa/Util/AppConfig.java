@@ -13,6 +13,7 @@ public class AppConfig {
 	public static String URL_ClientBasedOnState ="http://205.147.103.27:6060/SabPaisaAppApi/client-based-on-state?state=";
 	public static String URL_ServiceBasedOnState ="http://205.147.103.27:6060/SabPaisaAppApi/client-based-on-state-and-service?state=";
 
+	public static String URL_ClientBasedOnClientId ="http://205.147.103.27:6060/SabPaisaAppApi/client-based-on-clientId?clientId=";
 
 
 	public static String SAb_Api ="http://205.147.103.27:6060/SabPaisaAppApi";

@@ -70,9 +70,8 @@
             android:inputType="phone"
             />
 
-<!--
 
-        <FrameLayout
+ <!--       <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -100,7 +99,8 @@
                 android:background="@drawable/background_edittext"
                 android:drawableLeft="@drawable/ic_lock_black_24dp"
                 android:drawablePadding="10dp"
-                android:hint="@string/hint_password" />
+                android:hint="@string/hint_password"
+                android:visibility="gone"/>
         </FrameLayout>-->
 
         <TextView
