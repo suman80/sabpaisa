@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="in.sabpaisa.droid.sabpaisa.UPIActivationActivity">
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Please enter your six digit card number"
+    />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_cardNo"
+        android:background="@drawable/background_edittext"
+        android:maxLength="6"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please enter your Exp date"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_ExpNo"
+        android:background="@drawable/background_edittext"
+        android:maxLength="4"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnAcctivate"
+        android:text="Activate"
+        android:textColor="#fff"
+        android:background="@color/bg_orange"
+        android:layout_marginTop="20dp"
+        />
+
+</LinearLayout>

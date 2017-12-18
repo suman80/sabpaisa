@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,6 +8,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="in.sabpaisa.droid.sabpaisa.FetchAccBasedOnIIN">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -146,11 +157,41 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/editVPA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="Edit/ADD VPA"
+                android:textColor="@color/bg_orange"
+                />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:id="@+id/llAddVpa"
+            android:visibility="gone"
+            >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_VPA"
+                android:background="@drawable/background_edittext"
+
+                />
+
+
+        </LinearLayout>
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_marginTop="100dp"
     >
 
@@ -160,10 +201,25 @@
         android:id="@+id/btn_LinkVpa"
         android:text="Link VPA"
         android:textColor="#fff"
+        android:layout_weight="0.5"
+        android:background="@color/bg_orange"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_AccActivation"
+        android:text="Activate Account"
+        android:textColor="#fff"
+        android:layout_weight="0.5"
         android:background="@color/bg_orange"
         />
 
 </LinearLayout>
 
     </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 </LinearLayout>
