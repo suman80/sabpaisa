@@ -184,7 +184,7 @@ public class ProceedInstitiutionFragment extends Fragment {
                     args.putString("landing_page", "landing_page");
                     ldf.setArguments(args);
 */
-
+//
                 }
                 catch(JSONException e){
                     e.printStackTrace();
