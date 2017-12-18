@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -58,7 +59,7 @@ public class ProceedInstitiutionFragment extends Fragment {
     ShimmerRecyclerView shimmerRecyclerView;
     String landing_page;
 
-    String stateName,serviceName;
+    String stateName,serviceName,clientId;
 
     public ProceedInstitiutionFragment() {
 
@@ -85,8 +86,10 @@ public class ProceedInstitiutionFragment extends Fragment {
         clientArrayList=new ArrayList<Institution>();
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(MainActivity.MYSHAREDPREF, MODE_PRIVATE);
-        stateName=sharedPreferences.getString("STATENAME","123");
-        serviceName=sharedPreferences.getString("SERVICENAME","123");
+        //stateName=sharedPreferences.getString("STATENAME","123");
+        //serviceName=sharedPreferences.getString("SERVICENAME","123");
+        clientId=sharedPreferences.getString("clientId","abc");
+        Log.d("PIF_ClientId","-->"+clientId);
         recyclerViewInstitutions.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -94,61 +97,55 @@ public class ProceedInstitiutionFragment extends Fragment {
             }
         },2000);
 
-        Log.d("stateName2222"," "+stateName);
-        Log.d("serviceName2222"," "+serviceName);
-
-        /*stateName=getArguments().getString("STATE_NAME");
-        serviceName=getArguments().getString("SERVICE_NAME");
-
-        Log.d("stateName"," "+stateName);
-        Log.d("serviceName"," "+serviceName);*/
-
-
-
-        getClientsList();
+        getClientsList(clientId.toString());
 
         return rootView;
     }
 
-    private void getClientsList() {
+    private void getClientsList(final  String clientId) {
 
         String  tag_string_req = "req_clients";
 
-        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_ServiceBasedOnState+stateName+"&service="+serviceName, new Response.Listener<String>(){
+        StringRequest request=new StringRequest(Request.Method.POST, AppConfig.URL_ClientBasedOnClientId+clientId, new Response.Listener<String>(){
 
             @Override
             public void onResponse(String response1)
             {
-                //Toast.makeText(MainActivity.this,String.valueOf(response1), Toast.LENGTH_SHORT).show();
 
-                Log.d("Service_LIST","-->"+response1);
+                Log.d("Particularclient","-->"+response1);
                 //parsing Json
                 JSONObject jsonObject = null;
 
                 try {
-                    jsonObject = new JSONObject(response1);
-                    JSONArray jsonArray = jsonObject.getJSONArray("response");
 
-                    Log.d("JSONARRAY","-->"+jsonArray);
+                     jsonObject = new JSONObject(response1.toString());
+                    String response = jsonObject.getString("response");
+
+                    //Adding data to new jsonobject////////////////////////
+
+                    JSONObject jsonObject1 = new JSONObject(response);
+
+                    Institution institution = new Institution();
+
+                    institution.setOrganizationId(jsonObject1.getString("clientId"));
+                    Log.d("ClientIdjijiji","-->"+ institution.getOrganizationId());
+                    institution.setOrganization_name(jsonObject1.getString("clientName"));
+                    Log.d("Clientnamejijiji","-->"+ institution.getOrganization_name());
+
+                    institution.setOrgLogo(jsonObject1.getString("clientLogoPath"));
+                    Log.d("Clientlogojijiji","-->"+ institution.getOrgLogo());
 
 
-                    for (int i = 0; i < jsonArray.length(); i++) {
+                    institution.setOrgWal(jsonObject1.getString("clientImagePath"));
 
-                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                        Institution institution = new Institution();
+                    institution.setOrgAddress(jsonObject1.getString("state"));
+                    institution.setOrgDesc(jsonObject1.getString("landingPage"));
 
-                        institution.setOrganizationId(jsonObject1.getString("clientId"));
-                        //Log.d("ClientId","-->"+ institution);
-                       institution.setOrganization_name(jsonObject1.getString("clientName"));
-                        institution.setOrgLogo(jsonObject1.getString("clientLogoPath"));
-                        institution.setOrgWal(jsonObject1.getString("clientImagePath"));
+                    Log.d("JSONobjectResp","-->"+response);
 
-                        institution.setOrgAddress(jsonObject1.getString("state"));
-                        institution.setOrgDesc(jsonObject1.getString("landingPage"));
+                    Log.d("JSONobjectttt","-->"+jsonObject);
 
                         clientArrayList.add(institution);
-                    }
-
 
                     institutionAdapter = new InstitutionAdapter(clientArrayList);
                     recyclerViewInstitutions.setAdapter(institutionAdapter);

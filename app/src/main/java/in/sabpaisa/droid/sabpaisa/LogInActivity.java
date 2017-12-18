@@ -495,6 +495,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
                     }else if (code.equals("OM07")){
                         Toast.makeText(getApplicationContext(),"INVALID MERCHANT IP",Toast.LENGTH_SHORT).show();
                     }else if (code.equals("OM08")){
+
                         Toast.makeText(getApplicationContext(),"CHECKSUM NOT AVAILABLE",Toast.LENGTH_SHORT).show();
                     }else if (code.equals("OM09")){
                         Toast.makeText(getApplicationContext(),"INVALID MERCHANT DATA",Toast.LENGTH_SHORT).show();

@@ -41,7 +41,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     LinearLayout BankClient, ClientSpinner, InstituteSpinner,HospitalSpinner;
     Button proceed,skip;
 
-    String state_position,clientId;
+     public static  String state_position,clientId;
 
     //Declaring Arraylists
     ArrayList<String> stateArrayList;
@@ -195,19 +195,14 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
             public void onClick(View v) {
                 if (stateSpinner.getSelectedItemPosition() != 0 && serviceSpinner.getSelectedItemPosition() != 0) {
 
-                    Log.d("clientId", clientId);
+                    Log.d("FA_clientId123435423412","---->"+clientId );
                     // getParticularClientdata(clientId);
 
                     if (stateSpinner.getSelectedItemPosition() != 0 && serviceSpinner.getSelectedItemPosition() != 0 &&clientsSpinner.getSelectedItemPosition()!=0) {
 
-                        String serviceName = serviceSpinner.getSelectedItem().toString();
-                        Log.d("serviceName", " " + serviceName);
-                        String stateName = stateSpinner.getSelectedItem().toString();
-                        Log.d("stateName", " " + stateName);
-//String clientId=serviceSpinner.getSelectedItem().toString();
+
+                        //String clientId=serviceSpinner.getSelectedItem().toString();
                         Intent intent = new Intent(FilterActivity.this, MainActivity.class);
-                        intent.putExtra("STATENAME", stateName);
-                        intent.putExtra("SERVICENAME", serviceName);
                         intent.putExtra("clientId", clientId);
                         startActivity(intent);
                     } else {
@@ -426,8 +421,8 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
 
                         }
                         clientId=clientData.getClientId().toString();
-                        Intent intent = new Intent(FilterActivity.this,MainActivity.class);
-                        intent.putExtra("clientId",clientId);
+                        Log.d("FA_ClientId",""+clientId);
+
                         clientArrayList.add(clientData.getClientName().toString());
                         clientIdArrayList.add(clientData.getClientId().toString());
                     }

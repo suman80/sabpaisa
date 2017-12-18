@@ -83,7 +83,7 @@ HashMap<String,String> Hash_file_maps;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
     Bundle bundle;
-    String stateName,serviceName;
+    String stateName,serviceName,ClientId;
     public  static  String MYSHAREDPREF="mySharedPref";
 
     @Override
@@ -148,15 +148,19 @@ HashMap<String,String> Hash_file_maps;
 
         mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
 
-        stateName=getIntent().getStringExtra("STATENAME");
-        serviceName=getIntent().getStringExtra("SERVICENAME");
+        /*stateName=getIntent().getStringExtra("STATENAME");
+        serviceName=getIntent().getStringExtra("SERVICENAME");*/
+        ClientId=getIntent().getStringExtra("clientId");
 
-        Log.d("stateName11111"," "+stateName);
-        Log.d("serviceName1111"," "+serviceName);
+        /*Log.d("stateName11111"," "+stateName);
+        Log.d("serviceName1111"," "+serviceName);*/
+
+        Log.d("CLIENTID(MainActivity)","-->"+ClientId);
 
         SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREF,MODE_PRIVATE).edit();
-        editor.putString("STATENAME",stateName);
-        editor.putString("SERVICENAME",serviceName);
+        //editor.putString("STATENAME",stateName);
+        //editor.putString("SERVICENAME",serviceName);
+        editor.putString("clientId",ClientId);
         editor.commit();
         LoadHeaderImageList();
         setHeaderImageList();
