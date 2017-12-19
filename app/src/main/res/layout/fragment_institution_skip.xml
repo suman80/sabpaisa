@@ -4,15 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/institutions_tab_fragments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.cooltechworks.views.shimmer.ShimmerRecyclerView            android:id="@+id/recycler_view_institutions"
+        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+            android:id="@+id/recycler_view_institutions"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="530dp"
             android:scrollbars="vertical" />
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
