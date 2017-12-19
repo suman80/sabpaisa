@@ -71,7 +71,7 @@
             />
 
 
- <!--       <FrameLayout
+       <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -100,8 +100,8 @@
                 android:drawableLeft="@drawable/ic_lock_black_24dp"
                 android:drawablePadding="10dp"
                 android:hint="@string/hint_password"
-                android:visibility="gone"/>
-        </FrameLayout>-->
+                />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_forgot_password"

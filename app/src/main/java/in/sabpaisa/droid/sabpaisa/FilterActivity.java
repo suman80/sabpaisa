@@ -206,7 +206,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                         intent.putExtra("clientId", clientId);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(FilterActivity.this, "Select any Services", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FilterActivity.this, "Select One Client", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

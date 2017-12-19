@@ -57,9 +57,9 @@ import static in.sabpaisa.droid.sabpaisa.Util.TelephonyInfo.getOutput;
 @RuntimePermissions
 public class LogInActivity extends AppCompatActivity implements OliveUpiEventListener {
     private static final String TAG = LogInActivity.class.getSimpleName();
-    public static String mobileNo;
-    EditText et_phone_number;
-    EditText password;
+    public static String mobileNo,password;
+    EditText et_phone_number,et_password;
+
     TextView forgotPassword,register,passwordShow;
     Button login;
     public static String MySharedPrefLogin="mySharedPrefForlogin";
@@ -110,6 +110,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
         //passwordShow = (TextView)findViewById(R.id.tv_password_show);
         forgotPassword = (TextView)findViewById(R.id.tv_forgot_password);
         et_phone_number = (EditText)findViewById(R.id.et_phone_number);
+        et_password = (EditText)findViewById(R.id.et_password);
         register = (TextView)findViewById(R.id.tv_register);
         login = (Button)findViewById(R.id.btn_login);
         //DataBinding();
@@ -129,28 +130,53 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
 
 
 
-
-
-
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                  mobileNo = et_phone_number.getText().toString();
+                 password = et_password.getText().toString();
                 Log.e(TAG, "response: " + mobileNo);
 
                 if ((et_phone_number.length() == 0)  ||(et_phone_number.length()<10)) {
 
                     et_phone_number.setError("Please make sure that You have entered 10 digit number");
 
-                } else if(isOnline())
+                } else if((et_password.length()==0)) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Incorrect password");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Enter your password. Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog closed
+                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+
+                }
+
+                 else
+
+                     if((et_phone_number.length()==10) &&( et_password!=null)&& isOnline())
+
                 {
                     //Intent intent21 = new Intent(Name.this, Gender.class);
 
                     //startActivity(intent21);
                     //launchAgeScreen();
-                    registerUser(mobileNo);
+                    registerUser(mobileNo,password);
                     //sdkHandShake();
 
                 }
@@ -297,7 +323,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
 
 
 
-    private void registerUser(final String mobileNo ) {
+    private void registerUser(final String mobileNo , final String password) {
 
 
         // Tag used to cancel the request
@@ -415,6 +441,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("mobileNo", mobileNo);
+                params.put("password", password);
 
 
 
