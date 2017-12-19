@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,11 +24,11 @@ import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class UPIActivationActivity extends AppCompatActivity implements OliveUpiEventListener{
 
-    EditText et_cardNo,et_ExpNo;
+    EditText et_cardNo,et_ExpNoMM,et_ExpNoYY;
     Button btnAcctivate;
     public static Account account;
     ArrayList<Account> accountArrayList;
-
+     String expiryDateNo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,8 @@ public class UPIActivationActivity extends AppCompatActivity implements OliveUpi
         setContentView(R.layout.activity_upiactivation);
         OliveUpiManager.getInstance(UPIActivationActivity.this).setListener(this);
         et_cardNo = (EditText)findViewById(R.id.et_cardNo);
-        et_ExpNo = (EditText)findViewById(R.id.et_ExpNo);
+        et_ExpNoMM = (EditText)findViewById(R.id.et_ExpNoMM);
+        et_ExpNoYY = (EditText)findViewById(R.id.et_ExpNoYY);
         btnAcctivate = (Button)findViewById(R.id.btnAcctivate);
         Gson gson = new Gson();
         SharedPreferences sharedPreferences = getSharedPreferences(FetchAccBasedOnIIN.MYSHAREDPREFFORACCOUNT, MODE_PRIVATE);
@@ -44,26 +46,29 @@ public class UPIActivationActivity extends AppCompatActivity implements OliveUpi
 
         Log.d("VALUE_ACC",""+account);
 
-        /*if (getIntent()!=null) {
-            accountArrayList = (ArrayList<Account>) getIntent().getSerializableExtra("accountData");
-            account = accountArrayList.get(0);
-        }else {
-            Toast.makeText(getApplicationContext(),"No Value passed",Toast.LENGTH_SHORT).show();
-        }*/
-        Log.d("accountArrayList"," "+accountArrayList);
+
         Log.d("account"," "+account);
 
         btnAcctivate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String cardNo = et_cardNo.getText().toString();
-                String ExpNo = et_ExpNo.getText().toString();
 
-                if (accountArrayList == null) {
+
+                if (Integer.parseInt(et_ExpNoMM.getText().toString())<=12){
+                    expiryDateNo=et_ExpNoMM.getText().toString().concat(et_ExpNoYY.getText().toString());
+                    Log.d("expiryDateNo",""+expiryDateNo);
+                }else {
+                    Toast.makeText(getApplicationContext(),"Invalid",Toast.LENGTH_SHORT).show();
+                }
+
+
+
+                if (account == null) {
                     Toast.makeText(UPIActivationActivity.this, "No account selected.", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    OliveUpiManager.getInstance(UPIActivationActivity.this).activateAccount(account.getIin(), account, cardNo, ExpNo);
+                    OliveUpiManager.getInstance(UPIActivationActivity.this).activateAccount(account.getIin(), account, cardNo, expiryDateNo);
                 }
 
             }

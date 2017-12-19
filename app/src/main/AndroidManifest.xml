@@ -37,12 +37,12 @@
         <activity android:name=".FilterActivity">
 
 
-      <intent-filter>
+         <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+-->
 
         </activity>
         <activity android:name=".UPIBankList" />
@@ -58,7 +58,7 @@
         <activity android:name=".Util.ShareActivity" />
         <activity android:name=".RegisterPasscode" />
         <activity android:name=".SplashScreen">
-        <!--   <intent-filter>
+           <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -152,7 +152,17 @@
         <activity android:name=".Proceed_Feed_FullScreen" />
         <activity android:name=".Proceed_Group_FullScreen" />
         <activity android:name=".UPI_UserAccounts" />
-        <activity android:name=".FetchAccBasedOnIIN"></activity>
+        <activity android:name=".FetchAccBasedOnIIN"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <activity android:name=".UPIActivationActivity" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

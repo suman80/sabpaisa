@@ -36,7 +36,7 @@ public class FetchAccBasedOnIIN extends AppCompatActivity implements OliveUpiEve
     TextView editVPA;
     EditText text_VPA;
     LinearLayout llAddVpa;
-    public static  String vpa;
+
 
     ArrayList<Account> accountArrayList;
 
@@ -61,22 +61,15 @@ public class FetchAccBasedOnIIN extends AppCompatActivity implements OliveUpiEve
         mtoolbar = (Toolbar) findViewById(R.id.toolbar);
         accountName = (TextView)findViewById(R.id.accountName);
         accountNumber = (TextView)findViewById(R.id.accountNumber);
-        //accountStatus = (TextView)itemView.findViewById(R.id.accountStatus);
+
         accountType = (TextView)findViewById(R.id.accountType);
         accountVPA = (TextView)findViewById(R.id.accountVPA);
         btn_LinkVpa = (Button) findViewById(R.id.btn_LinkVpa);
-        btn_AccActivation = (Button) findViewById(R.id.btn_AccActivation);
-        editVPA = (TextView)findViewById(R.id.editVPA);
+
         llAddVpa = (LinearLayout)findViewById(R.id.llAddVpa);
         text_VPA = (EditText) findViewById(R.id.text_VPA);
 
-        editVPA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                llAddVpa.setVisibility(View.VISIBLE);
-                 vpa = text_VPA.getText().toString();
-            }
-        });
+
 
         btn_LinkVpa.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +78,7 @@ public class FetchAccBasedOnIIN extends AppCompatActivity implements OliveUpiEve
 
                     Toast.makeText(FetchAccBasedOnIIN.this, "No account selected.", Toast.LENGTH_SHORT).show();
                 } else {
-
+                     final String vpa = text_VPA.getText().toString();
                     OliveUpiManager.getInstance(FetchAccBasedOnIIN.this).updateVPA(vpa, account);//srs is the vpa
 
                 }
@@ -93,13 +86,6 @@ public class FetchAccBasedOnIIN extends AppCompatActivity implements OliveUpiEve
         });
 
 
-        btn_AccActivation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(FetchAccBasedOnIIN.this,UPIActivationActivity.class);
-                startActivity(intent1);
-            }
-        });
 
         mtoolbar.setTitle("User Account");
         setSupportActionBar(mtoolbar);
@@ -156,7 +142,8 @@ public class FetchAccBasedOnIIN extends AppCompatActivity implements OliveUpiEve
                  Log.d("LINK_VPA","-->"+linkVPA.getResult());
                  Log.d("LINK_VPA","-->"+linkVPA.getData());
 
-
+                Intent intent1 = new Intent(FetchAccBasedOnIIN.this,UPIActivationActivity.class);
+                startActivity(intent1);
 
              }
 

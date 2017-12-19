@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,15 +13,7 @@
     android:orientation="vertical"
     tools:context="in.sabpaisa.droid.sabpaisa.FetchAccBasedOnIIN">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -135,54 +131,33 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="VPA :"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-            <!--TODO accountIFSC-->
-            <TextView
-                android:id="@+id/accountVPA"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/editVPA"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="18sp"
-                android:text="Edit/ADD VPA"
-                android:textColor="@color/bg_orange"
-                />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             android:id="@+id/llAddVpa"
-            android:visibility="gone"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
             >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter VPA :"
+                android:layout_weight="0.5"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/text_VPA"
                 android:background="@drawable/background_edittext"
-
+                android:layout_weight="0.5"
+                android:digits="abcdefghijklmnopqrstuvwxyz0123456789"
                 />
 
 
@@ -192,7 +167,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_marginTop="100dp"
+    android:layout_marginTop="35dp"
     >
 
     <Button
@@ -205,15 +180,6 @@
         android:background="@color/bg_orange"
         />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_AccActivation"
-        android:text="Activate Account"
-        android:textColor="#fff"
-        android:layout_weight="0.5"
-        android:background="@color/bg_orange"
-        />
 
 </LinearLayout>
 
@@ -222,4 +188,3 @@
         </LinearLayout>
 
     </ScrollView>
-</LinearLayout>
