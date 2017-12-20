@@ -37,19 +37,12 @@
         <activity android:name=".FilterActivity">
 
 
-<!--
-         <intent-filter>
+         <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-
-      <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-
+            </intent-filter>
+-->
 
         </activity>
         <activity android:name=".UPIBankList" />
@@ -65,24 +58,15 @@
         <activity android:name=".Util.ShareActivity" />
         <activity android:name=".RegisterPasscode" />
         <activity android:name=".SplashScreen">
-            <intent-filter>
+           <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-           <!--<intent-filter>
-=======
-      <intent-filter>
->>>>>>> Stashed changes
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
         <activity android:name=".UpiSdkHandshake" />
 
-
+        <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -170,14 +154,8 @@
         <activity android:name=".UPI_UserAccounts" />
         <activity android:name=".FetchAccBasedOnIIN"
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
-        <activity android:name=".UPIActivationActivity" >
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
+        <activity
+            android:name=".UPIActivationActivity" >
         </activity>
     </application>
 

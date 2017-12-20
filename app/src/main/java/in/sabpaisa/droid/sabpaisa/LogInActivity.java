@@ -200,11 +200,11 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
                         //startActivity(intent21);
                         //launchAgeScreen();
                         registerUser(mobileNo, password);
-
+/*
                         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString("logged", "logged");
-                        editor.commit();
+                        editor.commit();*/
                    /* SharedPreferences.Editor editor = sharedpreferences.edit();
 
                     editor.putString("MobileNumber",mobileNo);

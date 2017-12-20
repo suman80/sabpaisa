@@ -498,7 +498,7 @@ startActivity(intent);
 
         else if (id == R.id.nav_logout) {
 
-            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
+          /*  AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
             builder.setMessage("Do you want to Logout?");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -522,11 +522,11 @@ startActivity(intent);
             });
 
             AlertDialog alert=builder.create();
-            alert.show();
+            alert.show();*/
 
-        /*    Intent intent = new Intent(MainActivity.this, LogoutNavigationActivity.class);
+            Intent intent = new Intent(MainActivity.this, SettingsNavigationActivity.class);
 
-            startActivity(intent);*/
+            startActivity(intent);
 
 
         }else if (id == R.id.nav_share) {

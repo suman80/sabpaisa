@@ -21,6 +21,7 @@ import com.olive.upi.transport.api.Result;
 import com.olive.upi.transport.api.UpiService;
 import com.olive.upi.transport.model.Account;
 import com.olive.upi.transport.model.Bank;
+import com.olive.upi.transport.model.CustomerBankAccounts;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,7 @@ public class FetchAccBasedOnIIN extends AppCompatActivity implements OliveUpiEve
     LinearLayout llAddVpa;
 
 
-    ArrayList<Account> accountArrayList;
+    ArrayList<CustomerBankAccounts> accountArrayList;
 
     public  static  String MYSHAREDPREFFORACCOUNT="mySharedPref";
 
@@ -54,8 +55,17 @@ public class FetchAccBasedOnIIN extends AppCompatActivity implements OliveUpiEve
 
         OliveUpiManager.getInstance(FetchAccBasedOnIIN.this).setListener(this);
 
-        OliveUpiManager.getInstance(FetchAccBasedOnIIN.this).FetchAccountonIIN(iin);//Pass here bank IIN
+       // OliveUpiManager.getInstance(FetchAccBasedOnIIN.this).FetchAccountonIIN(iin);//Pass here bank IIN
 
+        if (account == null)
+        {
+            OliveUpiManager.getInstance(FetchAccBasedOnIIN.this).fetchMyAccounts();
+        }
+
+        else
+        {
+            OliveUpiManager.getInstance(FetchAccBasedOnIIN.this).FetchAccountonIIN(iin);
+        }
 
 
         mtoolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -63,7 +73,7 @@ public class FetchAccBasedOnIIN extends AppCompatActivity implements OliveUpiEve
         accountNumber = (TextView)findViewById(R.id.accountNumber);
 
         accountType = (TextView)findViewById(R.id.accountType);
-        accountVPA = (TextView)findViewById(R.id.accountVPA);
+        //accountVPA = (TextView)findViewById(R.id.accountVPA);
         btn_LinkVpa = (Button) findViewById(R.id.btn_LinkVpa);
 
         llAddVpa = (LinearLayout)findViewById(R.id.llAddVpa);
@@ -80,7 +90,8 @@ public class FetchAccBasedOnIIN extends AppCompatActivity implements OliveUpiEve
                 } else {
                      final String vpa = text_VPA.getText().toString();
                     OliveUpiManager.getInstance(FetchAccBasedOnIIN.this).updateVPA(vpa, account);//srs is the vpa
-
+                    Intent intent1 = new Intent(FetchAccBasedOnIIN.this, UPIActivationActivity.class);
+                    startActivity(intent1);
                 }
             }
         });
@@ -97,60 +108,95 @@ public class FetchAccBasedOnIIN extends AppCompatActivity implements OliveUpiEve
     @Override
     public void onSuccessResponse(int reqType, Object data) {
 
-        Log.d("reqTypeForBank",""+reqType);
+        Log.d("reqTypeForBank", "" + reqType);
 
         //This API is used to add bank accounts based on the customer Id and Bank IIN.(2)
-         if (reqType == UpiService. REQUEST_FETCH_ACCOUNT){
+        if (reqType == UpiService.REQUEST_FETCH_ACCOUNT) {
 
             Result<ArrayList<Account>> fetchAccountList = (Result<ArrayList<Account>>) data;
-            Log.d("FETCH_ACCOUNT_ON_IIN_1","---->"+fetchAccountList);
+            Log.d("FETCH_ACCOUNT_ON_IIN_1", "---->" + fetchAccountList);
 
-            if (fetchAccountList.getCode().equals("00") && fetchAccountList!=null && fetchAccountList.getData().size()>0){
+            if (fetchAccountList.getCode().equals("00") && fetchAccountList != null && fetchAccountList.getData().size() > 0) {
+                Toast.makeText(getApplicationContext(), "Fetch Account Success", Toast.LENGTH_SHORT).show();
+                account = (Account) fetchAccountList.getData().get(0);
+                Log.d("FETCH_ACCOUNT_ON_IIN_2", "---->" + account.toString());
 
-                account= (Account)fetchAccountList.getData().get(0);
-                Log.d("FETCH_ACCOUNT_ON_IIN_2","---->"+account.toString());
-
-                SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFFORACCOUNT,MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFFORACCOUNT, MODE_PRIVATE).edit();
                 Gson gson = new Gson();
-                String accountdata=gson.toJson(account);
+                String accountdata = gson.toJson(account);
                 editor.putString("ACCOUNT", accountdata);
                 editor.commit();
 
                 accountName.setText(account.getName());
                 accountNumber.setText(account.getMaskedAccnumber());
                 accountType.setText(account.getType());
-                accountVPA.setText(account.getVpa());
 
-                /*accountArrayList = new ArrayList<>();
 
-                accountArrayList.add(account);
-*/
+            } else {
+                Toast.makeText(getApplicationContext(), "Fetch Account Details Failed", Toast.LENGTH_SHORT).show();
+            }
+        } else if (reqType == UpiService.REQUEST_SAVE_VPA) {
 
-            }else {
-                Toast.makeText(getApplicationContext(),"Not Success",Toast.LENGTH_SHORT).show();
+            Result<String> linkVPA = (Result<String>) data;
+            Log.d("LINK_VPA1111", "-->" + linkVPA);
+
+            if (linkVPA.getCode().equals("00"))
+
+            {
+                Toast.makeText(this, linkVPA.getData().toString(), Toast.LENGTH_SHORT).show();
+                Log.d("LINK_VPA", "-->" + linkVPA.getCode());
+                Log.d("LINK_VPA", "-->" + linkVPA.getResult());
+                Log.d("LINK_VPA", "-->" + linkVPA.getData());
+                Toast.makeText(this, "VPA Linked Success", Toast.LENGTH_SHORT).show();
+
+
+
+            } else {
+                Toast.makeText(getApplicationContext(), "VPA Linked Failed", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+
+        //Fetch All Linked Accounts(5)
+        else if (reqType == UpiService.REQUEST_ALL_ACCOUNTS) {
+            Toast.makeText(getApplicationContext(), "Fetch Account Success", Toast.LENGTH_SHORT).show();
+            accountArrayList = new ArrayList<>();
+            accountArrayList = (ArrayList<CustomerBankAccounts>) data;
+            Log.d("REQUEST_ALL_ACCOUNTS", "--->" + accountArrayList.get(0).getBankName());
+            Log.d("REQUEST_ALL_ACCOUNTS", "--->" + accountArrayList.get(0).getBankCode());
+            Log.d("REQUEST_ALL_ACCOUNTS", "--->" + accountArrayList.get(0).getAccounts());
+            Log.d("REQUEST_ALL_ACCOUNTS", "--->" + accountArrayList.get(0).getInput());
+            if (accountArrayList != null && accountArrayList.size() > 0) {
+
+                account = (Account) accountArrayList.get(0).getAccounts().get(0);
+
+                accountName.setText(account.getName());
+                accountNumber.setText(account.getMaskedAccnumber());
+                accountType.setText(account.getType());
+
+                SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFFORACCOUNT, MODE_PRIVATE).edit();
+                Gson gson = new Gson();
+                String accountdata = gson.toJson(account);
+                editor.putString("ACCOUNT", accountdata);
+                editor.commit();
+
+                Log.d("Val_Acc", "-->" + account.toString());
+
+
             }
         }
 
-         else if (reqType == UpiService. REQUEST_SAVE_VPA){
+        else
+            {
 
-             Result<String> linkVPA = (Result<String>) data;
-
-
-             if (linkVPA.getCode().equals("00")){
-                 Toast.makeText(this,linkVPA.getData().toString(),Toast.LENGTH_SHORT).show();
-                 Log.d("LINK_VPA","-->"+linkVPA.getCode());
-                 Log.d("LINK_VPA","-->"+linkVPA.getResult());
-                 Log.d("LINK_VPA","-->"+linkVPA.getData());
-
-                Intent intent1 = new Intent(FetchAccBasedOnIIN.this,UPIActivationActivity.class);
-                startActivity(intent1);
-
-             }
+                Toast.makeText(getApplicationContext(), "Fetch Account Details Failed", Toast.LENGTH_SHORT).show();
+            }
 
 
-         }
 
     }
+
 
     @Override
     public void onFailureResponse(int reqType, Object data) {

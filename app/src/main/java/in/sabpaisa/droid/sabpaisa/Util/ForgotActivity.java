@@ -169,12 +169,16 @@ public class ForgotActivity extends AppCompatActivity {
 
                     // response = jObj.getString("response");
 
-                    launchMainScreen();
+                    //launchMainScreen();
                         /*Intent intent1 = new Intent(RegisterActivity.this, MainActivity.class);
                         //intent1.putExtra("response", response);
 
                         startActivity(intent1);
 */
+
+
+                        Intent intent = new Intent(ForgotActivity.this,LogInActivity.class);
+                        startActivity(intent);
                     Log.e(TAG, "status: " + status);
 
                     //Log.e(TAG, "response2163123: " + userId);

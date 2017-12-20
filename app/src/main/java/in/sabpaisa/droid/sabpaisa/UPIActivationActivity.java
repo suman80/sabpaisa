@@ -53,7 +53,7 @@ public class UPIActivationActivity extends AppCompatActivity implements OliveUpi
             @Override
             public void onClick(View v) {
                 String cardNo = et_cardNo.getText().toString();
-
+                Log.d("cardNo",""+cardNo);
 
                 if (Integer.parseInt(et_ExpNoMM.getText().toString())<=12){
                     expiryDateNo=et_ExpNoMM.getText().toString().concat(et_ExpNoYY.getText().toString());
@@ -98,6 +98,8 @@ public class UPIActivationActivity extends AppCompatActivity implements OliveUpi
                 Log.d("ACCOUNT_MOBILE_REG","-->"+accountMoblieReg.getData());
                 Log.d("ACCOUNT_MOBILE_REG","-->"+accountMoblieReg.getResult());
                 Toast.makeText(getApplicationContext(),"Activation Success",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UPIActivationActivity.this,MainActivity.class);
+                startActivity(intent);
             }
 
         }else {
