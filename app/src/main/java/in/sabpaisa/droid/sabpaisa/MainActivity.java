@@ -1,7 +1,11 @@
 package in.sabpaisa.droid.sabpaisa;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.media.tv.TvContract;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,6 +19,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -56,6 +61,7 @@ import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
+import in.sabpaisa.droid.sabpaisa.Util.LogoutNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
@@ -86,6 +92,8 @@ HashMap<String,String> Hash_file_maps;
     String stateName,serviceName,ClientId;
     public  static  String MYSHAREDPREF="mySharedPref";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //checking
@@ -100,12 +108,17 @@ HashMap<String,String> Hash_file_maps;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //getSupportActionBar().setTitle("Sabpaisa");
 
         //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_drawer,
+                getApplicationContext().getTheme());
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
          toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
+        toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -128,7 +141,7 @@ HashMap<String,String> Hash_file_maps;
         //fab = (FloatingActionButton)findViewById(R.id.fab_dashboard);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("HOME");
+        toolbar.setTitle("Sabpaisa");
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
@@ -474,14 +487,49 @@ startActivity(intent);
 
             startActivity(intent);
         }
-        else if (id == R.id.nav_manage) {
+        else if (id == R.id.nav_Settings) {
             Intent intent=new Intent(MainActivity.this, SettingsNavigationActivity.class);
 
             startActivity(intent);
 
 
 
-        } else if (id == R.id.nav_share) {
+        }
+
+        else if (id == R.id.nav_logout) {
+
+            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
+            builder.setMessage("Do you want to Logout?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+
+                    finish();
+                    Intent i=new Intent();
+                    i.putExtra("finish", true);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
+                    //startActivity(i);
+                    finish();
+
+                }
+            });
+
+            builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alert=builder.create();
+            alert.show();
+
+        /*    Intent intent = new Intent(MainActivity.this, LogoutNavigationActivity.class);
+
+            startActivity(intent);*/
+
+
+        }else if (id == R.id.nav_share) {
             /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
 
             startActivity(intent);*/
@@ -543,5 +591,23 @@ startActivity(intent);
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    public void initToolBar(String title) {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(title);
+
+        setSupportActionBar(toolbar);
+
+        toolbar.setNavigationIcon(R.drawable.threelines);
+        toolbar.setNavigationOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+        );
     }
 }

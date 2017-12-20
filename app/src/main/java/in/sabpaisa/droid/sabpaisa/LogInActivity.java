@@ -66,7 +66,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
     /////////////////////////////////////////////////////////////////////
     private String deviceId;
     SDKHandshake sdkHandshake;
-
+    public static final String PREFS_NAME = "LoginPrefs";
     /*STEP:1
  These variables or parameters are used for Merchant server API to get token
 */
@@ -101,132 +101,164 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
         CommonUtils.setFullScreen(this);
 
         setContentView(R.layout.activity_login);
+         /*
+         * Check if we successfully logged in before.
+         * If we did, redirect to home page
+         */
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        if (settings.getString("logged", "").toString().equals("logged")) {
+            Intent intent = new Intent(LogInActivity.this, FilterActivity.class);
+            startActivity(intent);
 
-        OliveUpiManager.getInstance(LogInActivity.this).setListener(this);
-        //getResponse();
+        }
+            OliveUpiManager.getInstance(LogInActivity.this).setListener(this);
+            //getResponse();
 
 
-        // password = (EditText)findViewById(R.id.et_password);
-        //passwordShow = (TextView)findViewById(R.id.tv_password_show);
-        forgotPassword = (TextView)findViewById(R.id.tv_forgot_password);
-        et_phone_number = (EditText)findViewById(R.id.et_phone_number);
-        et_password = (EditText)findViewById(R.id.et_password);
-        register = (TextView)findViewById(R.id.tv_register);
-        login = (Button)findViewById(R.id.btn_login);
-        //DataBinding();
+            // password = (EditText)findViewById(R.id.et_password);
+            //passwordShow = (TextView)findViewById(R.id.tv_password_show);
+            forgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
+            et_phone_number = (EditText) findViewById(R.id.et_phone_number);
+            et_password = (EditText) findViewById(R.id.et_password);
+            register = (TextView) findViewById(R.id.tv_register);
+            login = (Button) findViewById(R.id.btn_login);
+            //DataBinding();
 //        password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
 
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            forgotPassword.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                startActivity(new Intent(LogInActivity.this, ForgotActivity.class));
-
-            }
-        });
-
-
-
-
-
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                 mobileNo = et_phone_number.getText().toString();
-                 password = et_password.getText().toString();
-                Log.e(TAG, "response: " + mobileNo);
-
-                if ((et_phone_number.length() == 0)  ||(et_phone_number.length()<10)) {
-
-                    et_phone_number.setError("Please make sure that You have entered 10 digit number");
-
-                } else if((et_password.length()==0)) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
-
-                    // Setting Dialog Title
-                    alertDialog.setTitle("Incorrect password");
-
-                    // Setting Dialog Message
-                    alertDialog.setMessage("Enter your password. Thank you.");
-
-                    // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
-
-                    // Setting OK Button
-                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Write your code here to execute after dialog closed
-                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    // Showing Alert Message
-                    alertDialog.show();
+                    startActivity(new Intent(LogInActivity.this, ForgotActivity.class));
 
                 }
+            });
 
-                 else
 
-                     if((et_phone_number.length()==10) &&( et_password!=null)&& isOnline())
+            final SharedPreferences sharedpreferences = getSharedPreferences("LoginData", Context.MODE_PRIVATE);
 
-                {
-                    //Intent intent21 = new Intent(Name.this, Gender.class);
+            login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                    //startActivity(intent21);
-                    //launchAgeScreen();
-                    registerUser(mobileNo,password);
-                    //sdkHandShake();
+                    mobileNo = et_phone_number.getText().toString();
+                    password = et_password.getText().toString();
+                    Log.e(TAG, "response: " + mobileNo);
 
+
+                    if ((et_phone_number.length() == 0) || (et_phone_number.length() < 10)) {
+
+//                        et_phone_number.setError("Please make sure that You have entered 10 digit number");
+                        final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Sign In Error");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Please Check Your Credentials");
+
+                        alertDialog.setCanceledOnTouchOutside(false);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+                    } else if ((et_password.length() == 0)) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Missing Information");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Please enter your Correct Information to proceed further.");
+
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+                    } else if ((et_phone_number.length() == 10) && (et_password != null) && isOnline())
+
+                    {
+                        //Intent intent21 = new Intent(Name.this, Gender.class);
+
+                        //startActivity(intent21);
+                        //launchAgeScreen();
+                        registerUser(mobileNo, password);
+
+                        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("logged", "logged");
+                        editor.commit();
+                   /* SharedPreferences.Editor editor = sharedpreferences.edit();
+
+                    editor.putString("MobileNumber",mobileNo);
+                    editor.putString("Password", password);
+                    editor.commit();*/
+                        //sdkHandShake();
+
+                    } else {
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("No Internet Connection");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Please check internet connection and try again. Thank you.");
+
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+                        Log.v("Home", "############################You are not online!!!!");
+                    }
+
+
+                    //LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
                 }
-                else {
 
-                    AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
 
-                    // Setting Dialog Title
-                    alertDialog.setTitle("No Internet Connection");
+            });
 
-                    // Setting Dialog Message
-                    alertDialog.setMessage("Please check internet connection and try again. Thank you.");
 
-                    // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
 
-                    // Setting OK Button
-                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Write your code here to execute after dialog closed
-                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(LogInActivity.this, RegisterActivity.class);
+                    startActivity(intent);
 
-                    // Showing Alert Message
-                    alertDialog.show();
-                    Log.v("Home", "############################You are not online!!!!");
+                    // LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
                 }
+            });
 
 
-                //LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
-            }
-
-
-        });
-
-
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LogInActivity.this,RegisterActivity.class);
-                startActivity(intent);
-
-                // LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
-            }
-        });
-
-
-
-        //tv_register
+            //tv_register
 
         /*passwordShow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -241,7 +273,8 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
                 }
             }
         });*/
-    }
+        }
+
 
 
     public void sdkHandShake(){
@@ -361,7 +394,7 @@ public class LogInActivity extends AppCompatActivity implements OliveUpiEventLis
 
                         final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
                         // Setting Dialog Title
-                        alertDialog.setTitle("Sign Error");
+                        alertDialog.setTitle("Sign in Error");
 
                         // Setting Dialog Message
                         alertDialog.setMessage("Please Check Your Credentials");

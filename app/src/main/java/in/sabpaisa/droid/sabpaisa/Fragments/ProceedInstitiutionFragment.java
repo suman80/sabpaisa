@@ -76,6 +76,7 @@ public class ProceedInstitiutionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_institutions, container, false);
+       // ((MainActivity) getActivity()).initToolBar(clientId);
         shimmerRecyclerView=(ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
         recyclerViewInstitutions = (RecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());

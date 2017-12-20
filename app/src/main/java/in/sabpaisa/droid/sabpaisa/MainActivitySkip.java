@@ -1,7 +1,10 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -50,12 +53,14 @@ import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
+import in.sabpaisa.droid.sabpaisa.Util.LogoutNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
 import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 
 import static android.view.View.GONE;
+import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
 
@@ -75,7 +80,7 @@ HashMap<String,String> Hash_file_maps;
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
-
+    private View view;
 
 
     @Override
@@ -198,8 +203,8 @@ HashMap<String,String> Hash_file_maps;
             }
         });*/
     }
-
-/*    @Override
+/*
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent a = new Intent(Intent.ACTION_MAIN);
@@ -417,10 +422,57 @@ HashMap<String,String> Hash_file_maps;
 
             startActivity(intent);
         }
-        else if (id == R.id.nav_manage) {
-            Intent intent=new Intent(MainActivitySkip.this, SettingsNavigationActivity.class);
+        else if (id == R.id.nav_logout) {
 
-            startActivity(intent);
+
+            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivitySkip.this); //Home is name of the activity
+            builder.setMessage("Do you want to Logout?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove("logged");
+                    editor.commit();
+                    finish();
+                    Intent intent=new Intent(MainActivitySkip.this, LogInActivity.class);
+
+                    startActivity(intent);
+
+                }
+            });
+
+            builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alert=builder.create();
+            alert.show();
+
+
+
+           // onLogoutClick(view);
+            /*SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+            SharedPreferences.Editor e=sp.edit();
+            e.clear();
+            e.commit();
+
+            startActivity(new Intent(Home.this,MainActivity.class));
+            finish();   //f
+
+            SharedPreferences settings = getSharedPreferences("your_preference_name", 0);
+            boolean isLoggedIn = settings.getBoolean("LoggedIn", false);
+
+            if(isLoggedIn )
+            {
+                //Go directly to Homescreen.
+            }
+           */
+
 
 
 
@@ -487,6 +539,13 @@ HashMap<String,String> Hash_file_maps;
     public void onPageScrollStateChanged(int state) {
 
     }
+    public void onLogoutClick(final View view) {
+        Intent i = new Intent(this, LogInActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+        finish();
+    }
+
 }
 
 

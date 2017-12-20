@@ -206,7 +206,19 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                         intent.putExtra("clientId", clientId);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(FilterActivity.this, "Select One Client", Toast.LENGTH_SHORT).show();
+
+                        AlertDialog.Builder builder =new AlertDialog.Builder(FilterActivity.this);
+                        builder.setTitle("Select CLient");
+                        builder.setMessage("Please select one client to proceed further");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                        //Toast.makeText(FilterActivity.this, "Select One Client", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
