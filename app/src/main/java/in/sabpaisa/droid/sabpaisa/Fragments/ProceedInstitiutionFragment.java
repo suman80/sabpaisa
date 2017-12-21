@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,7 +59,7 @@ public class ProceedInstitiutionFragment extends Fragment {
     ArrayList<Institution> clientArrayList ;
     ShimmerRecyclerView shimmerRecyclerView;
     String landing_page;
-
+CollapsingToolbarLayout collapsingToolbarLayout;
     String stateName,serviceName,clientId;
 
     public ProceedInstitiutionFragment() {

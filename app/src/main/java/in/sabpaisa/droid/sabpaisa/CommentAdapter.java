@@ -18,10 +18,13 @@ public class CommentAdapter extends
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView main_feed_creation_time;
         public TextView main_feed_group_description;
+        public TextView main_feed_comment_username;
+
 
         public MyViewHolder(View view) {
             super(view);
             main_feed_creation_time = (TextView) view.findViewById(R.id.main_feed_creation_time);
+            main_feed_comment_username = (TextView) view.findViewById(R.id.username);
             main_feed_group_description = (TextView) view.findViewById(R.id.main_feed_group_description);
         }
     }
@@ -35,8 +38,10 @@ public class CommentAdapter extends
         CommentData commentData = commentList.get(position);
         Log.d("commentData"," "+commentData.getCommentName());
         Log.d("commentData"," "+commentData.getCommentText());
+        holder.main_feed_comment_username.setText(commentData.getCommentName());
         holder.main_feed_creation_time.setText(commentData.getComment_date());
         holder.main_feed_group_description.setText(commentData.getCommentText());
+
     }
 
     @Override

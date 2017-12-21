@@ -67,19 +67,16 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
+
             android:layout_height="match_parent"
             app:contentScrim="@color/bg_screen"
+
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
 
 
-                <RelativeLayout
 
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="?attr/actionBarSize"
-                    >
 
 
 
@@ -100,7 +97,7 @@
                         android:scaleType="fitXY"
                         />
 
-                </RelativeLayout>
+
 
                     <RelativeLayout
                         android:layout_width="fill_parent"
@@ -157,6 +154,7 @@
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/bg_screen"
                     app:contentInsetLeft="0dp"
+                    android:visibility="gone"
                     app:contentInsetStart="0dp"
                     app:popupTheme="@style/AppTheme.PopupOverlay"
                     app:subtitleTextColor="@color/white"

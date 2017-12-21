@@ -142,8 +142,9 @@ HashMap<String,String> Hash_file_maps;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sabpaisa");
+        toolbar.setNavigationIcon(R.drawable.ic_drawer);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
-        mCollapsingToolbarLayout.setTitleEnabled(false);
+        mCollapsingToolbarLayout.setTitleEnabled(true);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         appBarLayout.addOnOffsetChangedListener(this);
@@ -156,7 +157,7 @@ HashMap<String,String> Hash_file_maps;
 
         setSupportActionBar(toolbar);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
-        mCollapsingToolbarLayout.setTitleEnabled(false);
+        mCollapsingToolbarLayout.setTitleEnabled(true);
 
 
         mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
@@ -453,6 +454,7 @@ HashMap<String,String> Hash_file_maps;
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
