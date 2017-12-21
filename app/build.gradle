@@ -86,4 +86,6 @@ compile 'com.android.support:design:25.4.0'
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.airbnb.android:lottie:2.1.2'
     compile 'com.shitij.goyal:slide-button:1.0.0'
+
+
 }
