@@ -10,6 +10,16 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/OliveUpi_dcbV1.11" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/chat-sdk-core" />
+            <option value="$PROJECT_DIR$/chat-sdk-firebase-adapter" />
+            <option value="$PROJECT_DIR$/chat-sdk-firebase-file-storage" />
+            <option value="$PROJECT_DIR$/chat-sdk-firebase-push" />
+            <option value="$PROJECT_DIR$/chat-sdk-firebase-social-login" />
+            <option value="$PROJECT_DIR$/chat-sdk-ui" />
+            <option value="$PROJECT_DIR$/country_picker" />
+            <option value="$PROJECT_DIR$/facebook" />
+            <option value="$PROJECT_DIR$/firebase_plugin" />
+            <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/secure-component-sdk" />
             <option value="$PROJECT_DIR$/securecomponent" />
           </set>
