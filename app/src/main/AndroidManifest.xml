@@ -93,7 +93,7 @@
         <activity android:name=".RequestMoney" />
         <activity
             android:name=".BeneficiaryDetail"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".BeneficiaryRequestMoney"
             android:windowSoftInputMode="adjustResize" />
@@ -155,14 +155,18 @@
         <activity
             android:name=".FetchAccBasedOnIIN"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".UPIActivationActivity"></activity>
+        <activity android:name=".UPIActivationActivity" />
         <activity android:name=".LetsGoActivity">
-           <!-- <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
+        <activity android:name=".Collect_Approve_Reject"></activity>
     </application>
 
 </manifest>

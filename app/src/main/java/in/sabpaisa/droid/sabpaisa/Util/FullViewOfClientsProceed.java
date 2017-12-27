@@ -30,6 +30,7 @@ import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.Members;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.PayFeeFragment;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
@@ -163,7 +164,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements OnFra
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new ProceedFeedsFragments(),"Feeds"); //changing here creating different frags
         adapter.addFragment(new ProceedGroupsFragments(),"Groups");//changing here creating different frags
-        adapter.addFragment(new PayFragments(),"Make Payment");
+        adapter.addFragment(new PayFragments(),"Payment");
+        adapter.addFragment(new Members(),"Members");
         viewPager.setAdapter(adapter);
 
 
