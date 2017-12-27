@@ -266,6 +266,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
             try {
                 dbHelper = new CommentsDB(getApplicationContext());
                 dbHelper.refreshTable();
+                dbHelper.refreshTable();
 
                 for (int i = 0; i < params[0].length(); i++) {
                     JSONObject colorObj = params[0].getJSONObject(i);

@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -37,6 +39,7 @@ public class LetsGoActivity extends AppCompatActivity implements OliveUpiEventLi
 
     private String deviceId="351891083827813";
     SDKHandshake sdkHandshake;
+    ProgressDialog progressDialog;
 
     /*STEP:1
 These variables or parameters are used for Merchant server API to get token
@@ -73,12 +76,17 @@ These variables or parameters are used for Merchant server API to get token
 
         OliveUpiManager.getInstance(LetsGoActivity.this).setListener(this);
 
+        progressDialog = new ProgressDialog(getApplicationContext());
+        progressDialog.setTitle("Please wait while we are processing !");
+
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
         slide=(SwipeButton)findViewById(R.id.slide);
 
         slide.addOnSwipeCallback(new SwipeButton.Swipe() {
             @Override
             public void onButtonPress() {
-                Toast.makeText(LetsGoActivity.this, "Pressed!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LetsGoActivity.this, "Pressed!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -164,6 +172,7 @@ These variables or parameters are used for Merchant server API to get token
 
         // Make request for JSONObject
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, URL, jsonObject, new Response.Listener<JSONObject>() {
+
             @Override
             public void onResponse(JSONObject response) {
 
@@ -178,7 +187,9 @@ These variables or parameters are used for Merchant server API to get token
                     if (code.equals("00")) {
                         //extracting merchantauthtoken from json response
                         responseMerchantauthtoken = (jObj.getJSONObject("data").get("merchantauthtoken").toString());
+
                         sdkHandShake();
+
                     }else if (code.equals("OM01")){
                         Toast.makeText(getApplicationContext(),"MERCHANT ID NOT AVAILABLE",Toast.LENGTH_SHORT).show();
                     }else if (code.equals("OM02")){
