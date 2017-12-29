@@ -95,6 +95,7 @@
                 android:imeOptions="actionDone"
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
+                android:inputType="textPassword"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_edittext"
                 android:drawableLeft="@drawable/ic_lock_black_24dp"

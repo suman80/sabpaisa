@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,9 +45,6 @@ import in.sabpaisa.droid.sabpaisa.R;
 
 import static android.content.Context.MODE_PRIVATE;
 
-/**
- * Created by abc on 14-06-2017.
- */
 
 public class ProceedInstitiutionFragment extends Fragment {
 
@@ -58,7 +56,7 @@ public class ProceedInstitiutionFragment extends Fragment {
     ArrayList<Institution> clientArrayList ;
     ShimmerRecyclerView shimmerRecyclerView;
     String landing_page;
-
+CollapsingToolbarLayout collapsingToolbarLayout;
     String stateName,serviceName,clientId;
 
     public ProceedInstitiutionFragment() {
@@ -217,6 +215,8 @@ public class ProceedInstitiutionFragment extends Fragment {
 
                     // Showing Alert Message
                     alertDialog.show();
+
+
                     //Log.e(TAG, "Registration Error: " + error.getMessage());
 
                 } else if (error instanceof AuthFailureError) {

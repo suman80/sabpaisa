@@ -351,6 +351,7 @@ public class GroupDetails extends AppCompatActivity implements SwipeRefreshLayou
                 for (int i = 0; i < params[0].length(); i++) {
                     JSONObject colorObj = params[0].getJSONObject(i);
                     CommentData groupData = new CommentData();
+                    groupData.setCommentName(colorObj.getString("comment_name"));
                     groupData.setCommentText(colorObj.getString("comment_text"));
                     String dataTime = colorObj.getString("comment_date");//.split(" ")[1].replace(".0", "");
                     groupData.setComment_date(dataTime);

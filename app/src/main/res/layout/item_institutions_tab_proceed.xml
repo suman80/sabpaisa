@@ -16,6 +16,7 @@
             android:id="@+id/iv_instituteLogo"
             android:layout_width="60dp"
             android:layout_height="30dp"
+
             android:scaleType="fitXY"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
@@ -51,6 +52,7 @@
         android:layout_height="200dp"
         android:layout_alignParentLeft="true"
         android:scaleType="fitXY"
+        android:src="@drawable/sabpaisa"
 
         />
 </LinearLayout>

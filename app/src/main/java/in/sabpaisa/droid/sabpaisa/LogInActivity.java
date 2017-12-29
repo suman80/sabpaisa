@@ -80,7 +80,7 @@ public class LogInActivity extends AppCompatActivity  {
          */
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         if (settings.getString("logged", "").toString().equals("logged")) {
-            Intent intent = new Intent(LogInActivity.this, FilterActivity.class);
+            Intent intent = new Intent(LogInActivity.this, LetsGoActivity.class);
             startActivity(intent);
 
         }
@@ -89,7 +89,7 @@ public class LogInActivity extends AppCompatActivity  {
 
 
             // password = (EditText)findViewById(R.id.et_password);
-            //passwordShow = (TextView)findViewById(R.id.tv_password_show);
+            passwordShow = (TextView)findViewById(R.id.tv_password_show);
             forgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
             et_phone_number = (EditText) findViewById(R.id.et_phone_number);
             et_password = (EditText) findViewById(R.id.et_password);
@@ -173,11 +173,10 @@ public class LogInActivity extends AppCompatActivity  {
                         //startActivity(intent21);
                         //launchAgeScreen();
                         registerUser(mobileNo, password);
-/*
                         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString("logged", "logged");
-                        editor.commit();*/
+                        editor.commit();
                    /* SharedPreferences.Editor editor = sharedpreferences.edit();
 
                     editor.putString("MobileNumber",mobileNo);
@@ -233,19 +232,20 @@ public class LogInActivity extends AppCompatActivity  {
 
             //tv_register
 
-        /*passwordShow.setOnClickListener(new View.OnClickListener() {
+        passwordShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (passwordShow.getText().toString().equals("Show")){
                     passwordShow.setText("Hide");
-                    password.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                    et_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }else
                 {
                     passwordShow.setText("Show");
-                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
             }
-        });*/
+        });
         }
 
 

@@ -1,0 +1,109 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+
+
+        <ImageView
+            android:id="@+id/institutepic"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="150dp"
+
+            android:background="@drawable/sabpaisa"
+            android:orientation="vertical"/>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+
+                android:orientation="vertical"
+                >
+
+                <ImageView
+                    android:id="@+id/institutelogo"
+                    android:layout_width="100dp"
+
+                    android:layout_height="100dp"
+                    android:src="@drawable/coaicon" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:id="@+id/InstitueNAme"
+                    android:textColor="@color/bg_title"
+                    android:textSize="20sp"
+                    android:text="Client NAme"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="430dp"
+                android:id="@+id/ttl"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center|left"
+                    android:text="Enter UIN No"
+                    android:textColor="@color/bg_text_color"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_small" />
+
+                <EditText
+                    android:id="@+id/uiinnum"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/otp_edittext_border"
+                    android:hint="Enter UIN Number"
+                    android:inputType="number"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/bg_text_color"
+                    android:textSize="@dimen/text_size_normal" />
+            </LinearLayout>
+
+
+    <Button
+        android:id="@+id/verifyuin"
+
+        android:layout_below="@+id/ttl"
+        android:layout_marginTop="50dp"
+        android:onClick="onVerifyBtn"
+        android:text="Verify"
+
+        android:textSize="@dimen/text_size_normal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/background_button"
+
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+
+        android:textStyle="bold" />
+
+
+
+
+
+
+</RelativeLayout>

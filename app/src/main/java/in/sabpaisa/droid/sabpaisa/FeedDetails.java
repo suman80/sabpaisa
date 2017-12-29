@@ -148,6 +148,7 @@ public class FeedDetails extends AppCompatActivity implements SwipeRefreshLayout
                                 JSONObject colorObj = response.getJSONObject(i);
 //                                JSONObject colorObjBean = colorObj.getJSONObject("grpBean");
                                 CommentData groupData = new CommentData();
+                                groupData.setCommentName(colorObj.getString("comment_name"));
                                 groupData.setCommentText(colorObj.getString("comment_text"));
                                 String dataTime = colorObj.getString("comment_date").split(" ")[1].replace(".0", "");
                                 groupData.setComment_date(dataTime);

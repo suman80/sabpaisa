@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.provider.Contacts;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -16,9 +17,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
@@ -29,6 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
+import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.StateGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
@@ -41,6 +48,8 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     LinearLayout BankClient, ClientSpinner, InstituteSpinner,HospitalSpinner;
     Button proceed,skip;
 
+    ArrayList<Institution> client1ArrayList;
+
      public static  String state_position,clientId;
 
     //Declaring Arraylists
@@ -50,7 +59,9 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     ArrayList<String> clientNameArrayList;
     ArrayList<String> clientIdArrayList;
 
-    String getclient;
+    String clientLogoPath;
+    String clientImagePath;
+    String clientname11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,94 +104,6 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
         // For Institute
         institute.setText("Select Client");  //Do change here
 
-                   /* ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_spinner_item, stateArrayList);
-                    bankAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    stateSpinner.setAdapter(bankAdapter);
-
-                    stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                            state_position = parent.getItemAtPosition(position).toString();
-
-                            getServiceData(state_position);
-
-                            if (position != 0) {
-                                final ProgressDialog pd = new ProgressDialog(FilterActivity.this);
-                                pd.setMessage("Loading Clients");
-                                pd.show();
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        pd.dismiss();
-                                        ClientSpinner.setVisibility(View.VISIBLE);
-                                        ArrayAdapter<String> clientAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_spinner_item, serviceArrayList);
-                                        clientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                        serviceSpinner.setAdapter(clientAdapter);
-                                    }
-                                }, 200);
-                            }
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-
-                        }
-                    });
-
-                                                       *//* ArrayAdapter<String> clientadapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, serviceArrayList);
-                                                        clientadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                        serviceSpinner.setAdapter(clientadapter);
-*//*
-                    serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            // getting data from volley
-                            getClientData(serviceSpinner.getSelectedItem().toString(), stateSpinner.getSelectedItem().toString());
-
-                            if (position != 0) {
-                                final ProgressDialog pd = new ProgressDialog(FilterActivity.this);
-                                pd.setMessage("Loading Clients");
-                                pd.show();
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        pd.dismiss();
-
-                                        InstituteSpinner.setVisibility(View.VISIBLE);
-                                                                            *//*ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,clientArrayList );
-                                                                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                                            clientsSpinner.setAdapter(adapter);*//*
-
-
-                                    }
-                                }, 200);
-                            }
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
-
-                    });
-
-
-                }
-
-            }
-
-
-
-
-        });*/
-
-
-
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -193,17 +116,25 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
         proceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (stateSpinner.getSelectedItemPosition() != 0 && serviceSpinner.getSelectedItemPosition() != 0) {
+
+
+
 
                     Log.d("FA_clientId123435423412","---->"+clientId );
+                    Log.d("FA_clientId123435423412","---->"+clientImagePath );
+                    Log.d("FA_clientId123435423412","---->"+clientLogoPath );
+                    Log.d("FA_clientId123435423412","---->"+clientname11);
                     // getParticularClientdata(clientId);
 
                     if (stateSpinner.getSelectedItemPosition() != 0 && serviceSpinner.getSelectedItemPosition() != 0 &&clientsSpinner.getSelectedItemPosition()!=0) {
 
 
                         //String clientId=serviceSpinner.getSelectedItem().toString();
-                        Intent intent = new Intent(FilterActivity.this, MainActivity.class);
+                        Intent intent = new Intent(FilterActivity.this, UIN.class);
                         intent.putExtra("clientId", clientId);
+                        intent.putExtra("clientLogoPath", clientLogoPath);
+                        intent.putExtra("clientImagePath", clientImagePath);
+                        intent.putExtra("clientname", clientname11);
                         startActivity(intent);
                     } else {
 
@@ -220,7 +151,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                         alertDialog.show();
                         //Toast.makeText(FilterActivity.this, "Select One Client", Toast.LENGTH_SHORT).show();
                     }
-                }
+                
             }
         });
 
@@ -455,10 +386,14 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                             //getParticularClientdata(selected1);
                             clientId= clientIdArrayList.get(position);
 
+                            getClientsList(clientId);
+                            Log.d("ClientIDCHECKING", "" + clientId);
+
                         }
 
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
+
 
                         }
                     });
@@ -513,6 +448,100 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+    private void getClientsList(final  String clientId) {
+
+        String  tag_string_req = "req_clients";
+
+        StringRequest request=new StringRequest(Request.Method.POST, AppConfig.URL_ClientBasedOnClientId+clientId, new Response.Listener<String>(){
+
+            @Override
+            public void onResponse(String response1)
+            {
+
+                Log.d("Particularclient","-->"+response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1.toString());
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                         Log.d("responsus",""+response);
+                         Log.d("statsus",""+status);
+                    JSONObject jsonObject1 = new JSONObject(response);
+
+                       ClientData clientData=new ClientData();
+                clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
+               clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
+               clientData.setClientName(jsonObject1.getString("clientName"));
+
+                   clientLogoPath=clientData.getClientLogoPath().toString();
+                   clientImagePath=clientData.getClientImagePath().toString();
+                    clientname11=clientData.getClientName().toString();
+                   // clientname=clientData.getClientName().toString();
+                    Log.d("clientlogooooo","-->"+clientLogoPath );
+                    Log.d("clientimageooo","-->"+clientImagePath );
+                    Log.d("clientiooo","-->"+clientname11 );
+
+
+                }
+                catch(JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        }) ;
+
+        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+
+
     }
 
 }
