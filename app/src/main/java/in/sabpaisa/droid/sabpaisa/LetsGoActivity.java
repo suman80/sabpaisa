@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -39,7 +41,7 @@ public class LetsGoActivity extends AppCompatActivity implements OliveUpiEventLi
 
     private String deviceId="351891083827813";
     SDKHandshake sdkHandshake;
-    ProgressDialog progressDialog;
+    ProgressBar progressBar;
 
     /*STEP:1
 These variables or parameters are used for Merchant server API to get token
@@ -76,10 +78,7 @@ These variables or parameters are used for Merchant server API to get token
 
         OliveUpiManager.getInstance(LetsGoActivity.this).setListener(this);
 
-        progressDialog = new ProgressDialog(getApplicationContext());
-        progressDialog.setTitle("Please wait while we are processing !");
-
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         slide=(SwipeButton)findViewById(R.id.slide);
 
@@ -96,6 +95,7 @@ These variables or parameters are used for Merchant server API to get token
 
             @Override
             public void onSwipeConfirm() {
+
                 getResponse();
             }
         });
@@ -104,6 +104,7 @@ These variables or parameters are used for Merchant server API to get token
 
 
     public void sdkHandShake(){
+
         /*TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         deviceId = telephonyManager.getDeviceId();*/
 
@@ -135,7 +136,7 @@ These variables or parameters are used for Merchant server API to get token
 
         OliveUpiManager.getInstance(LetsGoActivity.this).initiateSDK(sdkHandshake);
 
-
+        progressBar.setVisibility(View.GONE);
 
     }
 
@@ -179,6 +180,8 @@ These variables or parameters are used for Merchant server API to get token
                 //Toast.makeText(LogInActivity.this, "Response-->" + response.toString(), Toast.LENGTH_SHORT).show();
 
                 try {
+
+                    progressBar.setVisibility(View.VISIBLE);
 
                     JSONObject jObj = new JSONObject(response.toString());
 
