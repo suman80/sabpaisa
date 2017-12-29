@@ -87,6 +87,7 @@ public class CommentAdapterDatabase extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void add(CommentData r) {
+
         commentList.add(r);
         notifyItemInserted(commentList.size() - 1);
     }

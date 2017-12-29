@@ -135,6 +135,17 @@
                             app:subtitleTextColor="@color/white"
                             app:titleTextColor="@color/white" />
 
+                        <com.miguelcatalan.materialsearchview.MaterialSearchView
+                            android:id="@+id/search1_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginStart="131dp"
+                            android:layout_marginTop="52dp"
+                            android:visibility="visible"
+                            app:layout_collapseMode="pin" />
+
                         <!--<com.miguelcatalan.materialsearchview.MaterialSearchView
                             android:id="@+id/search_view"
                             android:layout_width="match_parent"

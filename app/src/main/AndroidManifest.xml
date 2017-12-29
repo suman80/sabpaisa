@@ -23,28 +23,9 @@
         android:roundIcon="@drawable/appicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LogInActivity">
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-        </activity>
+        <activity android:name=".LogInActivity" />
         <activity android:name=".VerifyMobile" />
-        <activity android:name=".FilterActivity">
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-
-        </activity>
+        <activity android:name=".FilterActivity" />
         <activity android:name=".UPIBankList" />
         <activity android:name=".Util.SkipClientDetailsScreen" />
         <activity android:name=".Util.FullViewOfClientsProceed" />
@@ -65,26 +46,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".UpiSdkHandshake" />
-
-        <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        -->
-
-        <activity android:name=".MainActivity">
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-
-        </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".AccountInfoActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".SetmPIN" />
@@ -93,7 +55,7 @@
         <activity android:name=".RequestMoney" />
         <activity
             android:name=".BeneficiaryDetail"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".BeneficiaryRequestMoney"
             android:windowSoftInputMode="adjustResize" />
@@ -102,16 +64,7 @@
         <activity android:name=".SendAccountIFSC" />
         <activity android:name=".TransactionsActivity" />
         <activity android:name=".WebViewActivity" />
-        <activity android:name=".TestScrollPager">
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-        </activity>
+        <activity android:name=".TestScrollPager" />
         <activity android:name=".COA" />
         <activity android:name=".SocialPayment" />
         <activity android:name=".ChatDetail" />
@@ -156,6 +109,7 @@
             android:name=".FetchAccBasedOnIIN"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".UPIActivationActivity" />
+        <activity android:name=".UIN" />
         <activity android:name=".LetsGoActivity">
 
             <!--
@@ -165,8 +119,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             -->
+
         </activity>
-        <activity android:name=".Collect_Approve_Reject"></activity>
+        <activity android:name=".UinVerification"></activity>
     </application>
 
 </manifest>

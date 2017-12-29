@@ -7,14 +7,20 @@
     android:layout_height="match_parent"
     tools:context="in.sabpaisa.droid.sabpaisa.LetsGoActivity">
 
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="80dp"
+    android:layout_marginTop="40dp"
 
-
+    android:gravity="center"
+    android:src="@drawable/logonew"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginTop="100dp"
+
         app:lottie_fileName="motorcycle.json"
         app:lottie_loop="true"
         app:lottie_autoPlay="true"

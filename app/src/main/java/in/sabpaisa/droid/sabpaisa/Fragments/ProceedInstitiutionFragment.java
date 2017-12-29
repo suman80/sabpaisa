@@ -45,9 +45,6 @@ import in.sabpaisa.droid.sabpaisa.R;
 
 import static android.content.Context.MODE_PRIVATE;
 
-/**
- * Created by abc on 14-06-2017.
- */
 
 public class ProceedInstitiutionFragment extends Fragment {
 
@@ -218,6 +215,8 @@ CollapsingToolbarLayout collapsingToolbarLayout;
 
                     // Showing Alert Message
                     alertDialog.show();
+
+
                     //Log.e(TAG, "Registration Error: " + error.getMessage());
 
                 } else if (error instanceof AuthFailureError) {

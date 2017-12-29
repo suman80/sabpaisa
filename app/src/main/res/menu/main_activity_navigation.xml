@@ -9,6 +9,7 @@
         app:showAsAction="never"
             android:icon="@color/white"/>
     <item android:id="@+id/action_search_MAinActivity"
+        android:onClick="searchViewBar"
         android:icon="@drawable/search_top"
         android:title="search"
          app:showAsAction="always"/>

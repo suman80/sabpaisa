@@ -2,12 +2,15 @@ package in.sabpaisa.droid.sabpaisa;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.media.tv.TvContract;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,13 +24,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +47,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.wangjie.androidbucket.utils.ABTextUtil;
 import com.wangjie.androidbucket.utils.imageprocess.ABShape;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -56,6 +63,8 @@ import java.util.List;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
+import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
@@ -69,7 +78,9 @@ import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ShareActivity;
 
 import static android.view.View.GONE;
-public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
+import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
+
+public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,OnFragmentInteractionListener,FeedsFragments.GetDataInterface, GroupsFragments.GetDataInterface ,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
 
     private SliderLayout mHeaderSlider;
     ArrayList<Integer> headerList = new ArrayList<>();
@@ -83,6 +94,13 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     int isMpinSet=1;
     FloatingActionButton fab;
     ActionBarDrawerToggle toggle;
+    MaterialSearchView searchView;
+    ArrayList<FeedData> feedData;
+    ArrayList<FeedData> filteredfeedList;
+    ArrayList<GroupListData> GroupData;
+    ArrayList<GroupListData> filteredGroupList;
+    FeedsFragments feedsFragments;
+    GroupsFragments groupsFragments;
 
 HashMap<String,String> Hash_file_maps;
     private RapidFloatingActionLayout rfaLayout;
@@ -99,24 +117,18 @@ HashMap<String,String> Hash_file_maps;
         //checking
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
-
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_navigation);
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("Sabpaisa");
+        searchView = (MaterialSearchView) findViewById(R.id.action_search);
 
         //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_drawer,
                 getApplicationContext().getTheme());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-         toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+         toggle = new ActionBarDrawerToggle(this, drawer, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
@@ -161,7 +173,7 @@ HashMap<String,String> Hash_file_maps;
 
 
         mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
-
+        //searchViewBar();
         /*stateName=getIntent().getStringExtra("STATENAME");
         serviceName=getIntent().getStringExtra("SERVICENAME");*/
         ClientId=getIntent().getStringExtra("clientId");
@@ -435,7 +447,8 @@ HashMap<String,String> Hash_file_maps;
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.coa_menu, menu);
-        return true;
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -448,9 +461,7 @@ HashMap<String,String> Hash_file_maps;
             return true;
         }
         //noinspection SimplifiableIfStatement
-        /* if (id == R.id.action_settings) {
-            return true;
-        }*/
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -499,19 +510,22 @@ startActivity(intent);
         }
 
         else if (id == R.id.nav_logout) {
-
-          /*  AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
+            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
             builder.setMessage("Do you want to Logout?");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
 
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove("logged");
+                    editor.commit();
                     finish();
-                    Intent i=new Intent();
-                    i.putExtra("finish", true);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
-                    //startActivity(i);
-                    finish();
+                    Intent intent=new Intent(MainActivity.this, LogInActivity.class);
+
+                    startActivity(intent);
+
+
 
                 }
             });
@@ -524,17 +538,12 @@ startActivity(intent);
             });
 
             AlertDialog alert=builder.create();
-            alert.show();*/
+            alert.show();
 
-            Intent intent = new Intent(MainActivity.this, SettingsNavigationActivity.class);
-
-            startActivity(intent);
 
 
         }else if (id == R.id.nav_share) {
-            /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
 
-            startActivity(intent);*/
             try {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
@@ -612,4 +621,130 @@ startActivity(intent);
 
         );
     }
+
+    /*START method to enable searchBar and define its action*/
+    private void searchViewBar() { //TODO searchView
+
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+//searchViewBar();
+                return false;
+
+
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length() > 0) {
+                    filteredfeedList = filterFeed(feedData, newText);
+                    filteredGroupList = filterGroup(GroupData, newText);
+//                    filteredMemberList = filterMember(MemberData, newText);
+                    Log.wtf("FilteredList", String.valueOf(filteredfeedList));
+                    feedsFragments.getDataFromActivity();
+                    groupsFragments.getDataFromActivity();
+//                    memberFragment.getDataFromActivity();
+                }
+                return false;
+           }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            int temp;
+
+            @Override
+            public void onSearchViewShown() {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+                TypedValue tv = new TypedValue();
+                getApplicationContext().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+                int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
+                temp = params.height;
+                params.height = actionBarHeight; // COLLAPSED_HEIGHT
+
+                appBarLayout.setLayoutParams(params);
+                appBarLayout.setExpanded(true, false);
+                searchView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+                params.height = temp; // COLLAPSED_HEIGHT
+
+                appBarLayout.setLayoutParams(params);
+                appBarLayout.setExpanded(true, false);//Do some magic
+
+                filteredfeedList = feedData;
+                feedsFragments.getDataFromActivity();
+                filteredGroupList = GroupData;
+                groupsFragments.getDataFromActivity();
+//                filteredMemberList = MemberData;
+//                memberFragment.getDataFromActivity();
+            }
+        });
+    }
+    /*END method to enable searchBar and define its action*/
+
+    /*START method to search query in Feed List*/
+    private ArrayList<FeedData> filterFeed(ArrayList<FeedData> mList, String query) { //TODO searchView
+        query = query.toLowerCase();
+
+        ArrayList<FeedData> filteredList = new ArrayList<>();
+        filteredList.clear();
+        for (FeedData item : mList) {
+            if (item.feedName.toLowerCase().contains(query) || item.feedId.toLowerCase().contains(query)
+                    || item.feedText.toLowerCase().contains(query) || item.createdDate.toLowerCase().contains(query)) {
+                filteredList.add(item);
+            }
+        }
+
+        return filteredList;
+    }
+    /*END method to search query in Feed List*/
+
+    /*START method to search query in Groupu List*/
+    private ArrayList<GroupListData> filterGroup(ArrayList<GroupListData> mList, String query) { //TODO searchView
+        query = query.toLowerCase();
+
+        ArrayList<GroupListData> filteredList = new ArrayList<>();
+        filteredList.clear();
+        for (GroupListData item : mList) {
+            if (item.groupName.toLowerCase().contains(query) || item.groupText.toLowerCase().contains(query)
+                    || item.groupId.toLowerCase().contains(query)/*||item.group_count.toLowerCase().contains(query)*/) {
+                filteredList.add(item);
+            }
+        }
+
+        return filteredList;
+
+    }
+
+    /*START methods for implementations*/
+    @Override  //TODO searchView
+    public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
+        this.feedData = feedData;
+    }
+
+    @Override
+    public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
+
+    }
+
+    @Override //TODO searchView
+    public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
+        this.GroupData = groupData;
+    }
+
+    @Override //TODO searchView
+    public ArrayList<FeedData> getFeedDataList() {
+        return filteredfeedList;
+    }
+
+
+    @Override //TODO searchView
+    public ArrayList<GroupListData> getGroupDataList() {
+        return filteredGroupList;
+    }
+
 }

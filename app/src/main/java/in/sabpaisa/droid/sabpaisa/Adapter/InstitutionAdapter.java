@@ -54,6 +54,9 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
         holder.instituteLocation.setText(mainFeedData.getOrgAddress());
         //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
         holder.thumbnail.setImageUrl(mainFeedData.getOrgLogo(), imageLoader);
+
+
+
         holder.clinetbanner.setImageUrl(mainFeedData.getOrgWal(),imageLoader);
         //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
 //        holder.instituteLocation.setText(mainFeedData.getOrgDesc());

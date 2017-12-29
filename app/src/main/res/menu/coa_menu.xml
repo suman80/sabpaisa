@@ -14,9 +14,13 @@
         android:icon="@drawable/search"
         android:orderInCategory="101"
         android:title="Search"
-        app:showAsAction="collapseActionView|always" />
+        android:iconifiedByDefault="false"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        />
 
     <item
+
         android:id="@+id/three_dot_menu"
         android:icon="@drawable/menudots"
         android:orderInCategory="102"

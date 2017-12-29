@@ -9,7 +9,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_orange">
+        android:background="@drawable/border"
+        >
 
         <TextView
             android:layout_width="match_parent"
@@ -17,8 +18,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/screen_margin"
             android:gravity="center|left"
-            android:text="Error..."
-            android:textColor="#FFFFFF"
+            android:text="Error"
+            android:textColor="#000000"
             android:textSize="@dimen/text_size_xlarge" />
 
         <TextView
@@ -29,8 +30,8 @@
             android:layout_marginLeft="@dimen/screen_margin"
             android:layout_marginRight="@dimen/screen_margin"
             android:gravity="center|left"
-            android:text="UIN Number has been not currect, please enter currect number or contact to Admin!"
-            android:textColor="@color/white"
+            android:text="UIN Number is Incorrect,please enter correct UIN number or if you does not have it then press OK to send Request"
+            android:textColor="@color/black"
             android:textSize="@dimen/text_size_normal" />
 
         <LinearLayout
@@ -40,16 +41,26 @@
             android:layout_marginBottom="5dp"
             android:gravity="center"
             android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_no"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_selector"
+                android:clickable="true"
+                android:text="Cancel"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
 
             <Button
                 android:id="@+id/btn_yes"
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:background="@drawable/button_selector"
                 android:clickable="true"
                 android:text="OK"
+                android:layout_marginLeft="10dp"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="15sp" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>
