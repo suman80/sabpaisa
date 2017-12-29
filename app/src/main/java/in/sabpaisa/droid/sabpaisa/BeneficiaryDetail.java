@@ -100,37 +100,18 @@ public class BeneficiaryDetail extends AppCompatActivity implements OliveUpiEven
 
                     {
 
-                        amount.setFilters(new InputFilter[] {
-                                new DigitsKeyListener(Boolean.FALSE, Boolean.TRUE) {
-                                    int beforeDecimal = 5, afterDecimal = 2;
+                        String amount1="";
 
-                                    @Override
-                                    public CharSequence filter(CharSequence source, int start, int end,
-                                                               Spanned dest, int dstart, int dend) {
-                                        String temp = amount.getText() + source.toString();
+                        if (!amount.getText().toString().contains("."))
+                        {
+                             amount1=amount.getText().toString().concat(".00").trim();
+                        }
+                        else
+                        {
+                             amount1=amount.getText().toString().trim();
+                        }
 
-                                        if (temp.equals(".")) {
-                                            return "0.";
-                                        }
-                                        else if (temp.toString().indexOf(".") == -1) {
-                                            // no decimal point placed yet
-                                            if (temp.length() > beforeDecimal) {
-                                                return "";
-                                            }
-                                        } else {
-                                            temp = temp.substring(temp.indexOf(".") + 1);
-                                            if (temp.length() > afterDecimal) {
-                                                return "";
-                                            }
-                                        }
-
-                                        return super.filter(source, start, end, dest, dstart, dend);
-                                    }
-                                }
-                        });
-
-
-
+                        Log.d("amount1",""+amount1);
 
                         BeneVpa vpa = new BeneVpa();
                         vpa.setName("Aditya");
@@ -143,7 +124,7 @@ public class BeneficiaryDetail extends AppCompatActivity implements OliveUpiEven
                         String trantype = "P2P";
                         String remarks=remark.getText().toString();
 
-                        OliveUpiManager.getInstance(BeneficiaryDetail.this).initiatePay(account, vpa, amount.getText().toString(), remarks, merchantvpa, merchantid, submerchantid, merchantchannelid, trantype);
+                        OliveUpiManager.getInstance(BeneficiaryDetail.this).initiatePay(account, vpa, amount1, remarks, merchantvpa, merchantid, submerchantid, merchantchannelid, trantype);
 
                     }
 

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -45,10 +46,13 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
     public static String clientId;
 
+    ListView groupList;
+
     String tag_string_req = "req_register";
     SwipeRefreshLayout swipeRefreshLayout;
     ArrayList<GroupListData> groupArrayList;
-    MainGroupAdapter1 mainGroupAdapter1;/*Globally Declared Adapter*/
+    MainGroupAdapter1 mainGroupAdapter1;
+    /*Globally Declared Adapter*/
     /*START Interface for getting data from activity*/
     GroupsFragments.GetDataInterface sGetDataInterface;
 
@@ -68,13 +72,13 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         }*/
     }
 
-    public void getDataFromActivity() {
+   /* public void getDataFromActivity() {
         if(sGetDataInterface != null){
             this.groupArrayList = sGetDataInterface.getGroupDataList();
             mainGroupAdapter1.setItems(this.groupArrayList);
             mainGroupAdapter1.notifyDataSetChanged();
         }
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,15 +86,18 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        rootView = inflater.inflate(R.layout.fragments_groups, container, false);
+
+        groupList=(ListView)rootView.findViewById(R.id.groupList);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");
         Log.d("clientId_PGF",""+clientId);
 
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragments_groups, container, false);
+
 
         //  swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         //  swipeRefreshLayout.setOnRefreshListener(this);
@@ -141,7 +148,11 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetGroups(groupArrayList);
                             /*END listener for sending data to activity*/
-                        loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
+                        //loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
+
+                        MainGroupAdapter1 mainGroupAdapter1 = new MainGroupAdapter1(getContext(), R.layout.group_item_list,groupArrayList);
+                        groupList.setAdapter(mainGroupAdapter1);
+
                     }
                 }
                 // Try and catch are included to handle any errors due to JSON
@@ -170,7 +181,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
 
-    private void loadGroupListView(ArrayList<GroupListData> arrayList,final RecyclerView rv) {
+   /* private void loadGroupListView(ArrayList<GroupListData> arrayList,final RecyclerView rv) {
         mainGroupAdapter1 = new MainGroupAdapter1(arrayList);
 
         rv.postDelayed(new Runnable() {
@@ -180,17 +191,19 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
             }
         },2000);
+
+
         rv.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), rv, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        /*GroupListData groupListData = groupArrayList.get(position);
+                        *//*GroupListData groupListData = groupArrayList.get(position);
                         Intent intent = new Intent(((COA)getContext()), GroupDetails.class);
                         intent.putExtra("GroupId", groupListData.getGroupId());
                         intent.putExtra("GroupName", groupListData.getGroupName());
                         intent.putExtra("group_count",groupListData.getGroupCount());
                         intent.putExtra("GroupDescription", groupListData.getGroupDescription());
-                        startActivity(intent);*/
+                        startActivity(intent);*//*
                     }
 
                     @Override
@@ -199,11 +212,14 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                     }
                 })
         );
+
+
+
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rv.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         rv.setLayoutManager(llm);
-    }
+    }*/
 
     /*START onRefresh() for SwipeRefreshLayout*/
     @Override

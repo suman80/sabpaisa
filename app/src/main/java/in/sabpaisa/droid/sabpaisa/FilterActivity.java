@@ -423,7 +423,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                         JSONObject jsonObject1 = jsonArray.getJSONObject(i);
 
                         ClientData clientData = new ClientData();
-                        clientData.setId(jsonObject1.getInt("id"));
+                        //clientData.setId(jsonObject1.getInt("id"));
                         clientData.setClientId(jsonObject1.getString("clientId"));
                         clientData.setClientName(jsonObject1.getString("clientName"));
 

@@ -83,8 +83,22 @@ public class BeneficiaryRequestMoney extends AppCompatActivity implements OliveU
                 if (account == null) {
                     Toast.makeText(BeneficiaryRequestMoney.this, "No account selected.", Toast.LENGTH_SHORT).show();
                 } else {
+
+                    String amount="";
+
+                    if (!amount1.getText().toString().contains("."))
+                    {
+                        amount=amount1.getText().toString().concat(".00").trim();
+                    }
+                    else
+                    {
+                        amount=amount1.getText().toString().trim();
+                    }
+
+                    Log.d("amount_BFRM",""+amount);
+
+
                     String remittervpa = vpaString;
-                    String amount=amount1.getText().toString();
                     String remark=remark1.getText().toString();
                     String merchantvpa="onkar@dcb";
                     String merchantid="131";

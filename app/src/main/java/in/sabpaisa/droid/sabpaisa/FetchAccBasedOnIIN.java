@@ -55,16 +55,11 @@ public class FetchAccBasedOnIIN extends AppCompatActivity implements OliveUpiEve
 
         OliveUpiManager.getInstance(FetchAccBasedOnIIN.this).setListener(this);
 
-       // OliveUpiManager.getInstance(FetchAccBasedOnIIN.this).FetchAccountonIIN(iin);//Pass here bank IIN
+        OliveUpiManager.getInstance(FetchAccBasedOnIIN.this).FetchAccountonIIN(iin);//Pass here bank IIN
 
         if (account == null)
         {
             OliveUpiManager.getInstance(FetchAccBasedOnIIN.this).fetchMyAccounts();
-        }
-
-        else
-        {
-            OliveUpiManager.getInstance(FetchAccBasedOnIIN.this).FetchAccountonIIN(iin);
         }
 
 
