@@ -5,12 +5,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
@@ -56,7 +58,7 @@ import in.sabpaisa.droid.sabpaisa.Util.SmsReceiver;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = RegisterActivity.class.getSimpleName();
-    EditText et_phone_number,et_FullName,et_password;
+    EditText et_phone_number, et_FullName, et_password;
     private Button btn_register;
     private TextView send_Otp;
     private ProgressDialog pDialog;
@@ -71,9 +73,6 @@ public class RegisterActivity extends AppCompatActivity {
     ProgressDialog progressBar = null;
     CountDownTimer countDownTimer = null;
     BottomSheetDialog mBottomSheetDialog;
-
-
-
 
 
     /**
@@ -105,6 +104,16 @@ public class RegisterActivity extends AppCompatActivity {
         final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
 
         final String tmDevice, tmSerial, androidId;
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         tmDevice = "" + tm.getDeviceId();
         tmSerial = "" + tm.getSimSerialNumber();
         androidId = "" + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
