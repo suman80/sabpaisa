@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="chat_sdk_shadow">#CC000000</color>
+
+    <color name="chat_sdk_theme_color">#f05d33</color>
+    <color name="chat_sdk_theme_color_dark">#f05d33</color>
+    <color name="chat_sdk_theme_background">@android:color/white</color>
+
+    <color name="chat_sdk_button_login_button_color">#f05d33</color>
+    <color name="chat_sdk_button_login_button_color_pressed">#f05d33</color>
+
+    <color name="chat_sdk_button_register_button_color">#f05d33</color>
+    <color name="chat_sdk_button_register_button_color_pressed">#f05d33</color>
+
+    <color name="chat_sdk_button_anonymous_button_color">#f05d33</color>
+    <color name="chat_sdk_button_anonymous_button_color_pressed">#f05d33</color>
+    <color name="main_screen_bottom_color">#efefef</color>
+
+    <color name="bg_orange">#f05d33</color>
+
+
+
+    <color name="background_tab_pressed">#f05d33</color>
+
+</resources>
