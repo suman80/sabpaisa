@@ -37,7 +37,7 @@ public class LetsGoActivity extends AppCompatActivity implements OliveUpiEventLi
 
     SwipeButton slide;
 
-    private String deviceId="351891083827813";
+    private String deviceId = "351891083827813";
     SDKHandshake sdkHandshake;
     ProgressDialog progressDialog;
 
@@ -67,7 +67,6 @@ These variables or parameters are used for Merchant server API to get token
     private String responseMerchantauthtoken = "";  //responseMerchantauthtoken extracted from response and store here.
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +80,7 @@ These variables or parameters are used for Merchant server API to get token
 
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-        slide=(SwipeButton)findViewById(R.id.slide);
+        slide = (SwipeButton) findViewById(R.id.slide);
 
         slide.addOnSwipeCallback(new SwipeButton.Swipe() {
             @Override
@@ -103,7 +102,7 @@ These variables or parameters are used for Merchant server API to get token
     }
 
 
-    public void sdkHandShake(){
+    public void sdkHandShake() {
         /*TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         deviceId = telephonyManager.getDeviceId();*/
 
@@ -134,7 +133,6 @@ These variables or parameters are used for Merchant server API to get token
 /*------------------------------------------------------------------------------------------------------------------------*/
 
         OliveUpiManager.getInstance(LetsGoActivity.this).initiateSDK(sdkHandshake);
-
 
 
     }
@@ -182,7 +180,7 @@ These variables or parameters are used for Merchant server API to get token
 
                     JSONObject jObj = new JSONObject(response.toString());
 
-                    String code=response.getString("code");
+                    String code = response.getString("code");
 
                     if (code.equals("00")) {
                         //extracting merchantauthtoken from json response
@@ -190,27 +188,27 @@ These variables or parameters are used for Merchant server API to get token
 
                         sdkHandShake();
 
-                    }else if (code.equals("OM01")){
-                        Toast.makeText(getApplicationContext(),"MERCHANT ID NOT AVAILABLE",Toast.LENGTH_SHORT).show();
-                    }else if (code.equals("OM02")){
-                        Toast.makeText(getApplicationContext(),"MOBILE NUMBER NOT AVAILABLE",Toast.LENGTH_SHORT).show();
-                    }else if (code.equals("OM03")){
-                        Toast.makeText(getApplicationContext(),"MERCHANT NOT REGISTRED",Toast.LENGTH_SHORT).show();
-                    }else if (code.equals("OM04")){
-                        Toast.makeText(getApplicationContext(),"TECHNICAL ERROR",Toast.LENGTH_SHORT).show();
-                    }else if (code.equals("OM05")){
-                        Toast.makeText(getApplicationContext(),"MERCHANT KEY NOT AVAILABLE",Toast.LENGTH_SHORT).show();
-                    }else if (code.equals("OM06")){
-                        Toast.makeText(getApplicationContext(),"MERCHANT IP NOT AVAILABLE",Toast.LENGTH_SHORT).show();
-                    }else if (code.equals("OM07")){
-                        Toast.makeText(getApplicationContext(),"INVALID MERCHANT IP",Toast.LENGTH_SHORT).show();
-                    }else if (code.equals("OM08")){
+                    } else if (code.equals("OM01")) {
+                        Toast.makeText(getApplicationContext(), "MERCHANT ID NOT AVAILABLE", Toast.LENGTH_SHORT).show();
+                    } else if (code.equals("OM02")) {
+                        Toast.makeText(getApplicationContext(), "MOBILE NUMBER NOT AVAILABLE", Toast.LENGTH_SHORT).show();
+                    } else if (code.equals("OM03")) {
+                        Toast.makeText(getApplicationContext(), "MERCHANT NOT REGISTRED", Toast.LENGTH_SHORT).show();
+                    } else if (code.equals("OM04")) {
+                        Toast.makeText(getApplicationContext(), "TECHNICAL ERROR", Toast.LENGTH_SHORT).show();
+                    } else if (code.equals("OM05")) {
+                        Toast.makeText(getApplicationContext(), "MERCHANT KEY NOT AVAILABLE", Toast.LENGTH_SHORT).show();
+                    } else if (code.equals("OM06")) {
+                        Toast.makeText(getApplicationContext(), "MERCHANT IP NOT AVAILABLE", Toast.LENGTH_SHORT).show();
+                    } else if (code.equals("OM07")) {
+                        Toast.makeText(getApplicationContext(), "INVALID MERCHANT IP", Toast.LENGTH_SHORT).show();
+                    } else if (code.equals("OM08")) {
 
-                        Toast.makeText(getApplicationContext(),"CHECKSUM NOT AVAILABLE",Toast.LENGTH_SHORT).show();
-                    }else if (code.equals("OM09")){
-                        Toast.makeText(getApplicationContext(),"INVALID MERCHANT DATA",Toast.LENGTH_SHORT).show();
-                    }else if (code.equals("OM10")){
-                        Toast.makeText(getApplicationContext(),"MANDATORY FIELDS NOT PRESENT",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "CHECKSUM NOT AVAILABLE", Toast.LENGTH_SHORT).show();
+                    } else if (code.equals("OM09")) {
+                        Toast.makeText(getApplicationContext(), "INVALID MERCHANT DATA", Toast.LENGTH_SHORT).show();
+                    } else if (code.equals("OM10")) {
+                        Toast.makeText(getApplicationContext(), "MANDATORY FIELDS NOT PRESENT", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -245,6 +243,7 @@ These variables or parameters are used for Merchant server API to get token
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
 
     }
+
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:sss", Locale.getDefault());
         Date date = new Date();
@@ -252,16 +251,13 @@ These variables or parameters are used for Merchant server API to get token
     }
 
 
-
-
     @Override
     public void onSuccessResponse(int reqType, Object data) {
-        Log.d("Main", "onSuccessResponse: reqType "+reqType+" data "+data);
-        if(reqType == UpiService.REQUEST_GET_MOBILE) {
+        Log.d("Main", "onSuccessResponse: reqType " + reqType + " data " + data);
+        if (reqType == UpiService.REQUEST_GET_MOBILE) {
 
             Log.d("entered into", "Request Mobile");
             Result<String> result = (Result<String>) data;
-
             if (result.getCode().equals("00")) {
                 Toast.makeText(this, result.getResult(), Toast.LENGTH_SHORT).show();
                 Log.d("MOBILE NUMBER", "" + result.getData().toString());
@@ -269,22 +265,21 @@ These variables or parameters are used for Merchant server API to get token
 
 
             }
-        }
-        else if(reqType==UpiService.REQUEST_SDK_HANDSHAKE){
-            Result<String> sdkHandShake = (Result<String>) data;
-            Log.d("sdkHandShake"," --> "+sdkHandShake);
-            if (sdkHandShake.getCode().equals("00")){
-                Toast.makeText(LetsGoActivity.this,"Success" , Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LetsGoActivity.this,FilterActivity.class);
-                startActivity(intent);
-            }
 
         }
-        else{
-            Toast.makeText(this,"Not Success",Toast.LENGTH_SHORT).show();
+
+        else if (reqType == UpiService.REQUEST_SDK_HANDSHAKE) {
+            Result<String> sdkHandShake = (Result<String>) data;
+            Log.d("sdkHandShake", " --> " + sdkHandShake);
+            if (sdkHandShake.getCode().equals("00")) {
+                Toast.makeText(LetsGoActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LetsGoActivity.this, FilterActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Not Success", Toast.LENGTH_SHORT).show();
+            }
         }
     }
-
     @Override
     public void onFailureResponse(int reqType, Object data) {
         Toast.makeText(LetsGoActivity.this,"Fail" , Toast.LENGTH_SHORT).show();

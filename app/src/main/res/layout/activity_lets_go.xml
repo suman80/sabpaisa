@@ -7,13 +7,13 @@
     android:layout_height="match_parent"
     tools:context="in.sabpaisa.droid.sabpaisa.LetsGoActivity">
 
-<ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="80dp"
-    android:layout_marginTop="40dp"
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginTop="40dp"
 
-    android:gravity="center"
-    android:src="@drawable/logonew"/>
+        android:gravity="center"
+        android:src="@drawable/logonew"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
@@ -42,16 +42,12 @@
         app:button_swipe_text="Swipe!!"
         android:layout_gravity="bottom"
         android:layout_margin="20dp"
-        android:background="@color/bg_orange"
+        android:background="@drawable/button_corner"
         android:gravity="center"
         android:text="Swipe Left To Right"
         android:textColor="#FFFFFF"
         />
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+
 
 
 

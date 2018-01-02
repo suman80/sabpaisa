@@ -65,7 +65,7 @@
                             android:layout_height="80dp"
                             android:layout_gravity="center_horizontal"
                             android:src="@drawable/default_users"
-                            app:civ_border_color="#FF000000"
+
                              />
                     </LinearLayout>
 

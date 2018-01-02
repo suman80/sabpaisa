@@ -80,7 +80,7 @@ public class LogInActivity extends AppCompatActivity  {
          */
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         if (settings.getString("logged", "").toString().equals("logged")) {
-            Intent intent = new Intent(LogInActivity.this, LetsGoActivity.class);
+            Intent intent = new Intent(LogInActivity.this, FilterActivity.class);
             startActivity(intent);
 
         }
@@ -327,7 +327,8 @@ public class LogInActivity extends AppCompatActivity  {
 
                     if (status!=null && status.equals("success")){
 
-                        Intent intent = new Intent(LogInActivity.this,LetsGoActivity.class);
+                        Intent intent = new Intent(LogInActivity.this,FilterActivity.class);
+                        
                         startActivity(intent);
 
                     }else {

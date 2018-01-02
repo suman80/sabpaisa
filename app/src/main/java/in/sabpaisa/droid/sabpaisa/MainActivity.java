@@ -2,15 +2,14 @@ package in.sabpaisa.droid.sabpaisa;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.media.tv.TvContract;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,16 +23,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,12 +38,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
+import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
+import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
+import com.braunster.chatsdk.network.BNetworkManager;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.wangjie.androidbucket.utils.ABTextUtil;
 import com.wangjie.androidbucket.utils.imageprocess.ABShape;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -63,8 +62,6 @@ import java.util.List;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
-import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
-import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
@@ -78,9 +75,7 @@ import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ShareActivity;
 
 import static android.view.View.GONE;
-import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
-
-public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,OnFragmentInteractionListener,FeedsFragments.GetDataInterface, GroupsFragments.GetDataInterface ,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
+public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
 
     private SliderLayout mHeaderSlider;
     ArrayList<Integer> headerList = new ArrayList<>();
@@ -94,15 +89,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     int isMpinSet=1;
     FloatingActionButton fab;
     ActionBarDrawerToggle toggle;
-    MaterialSearchView searchView;
-    ArrayList<FeedData> feedData;
-    ArrayList<FeedData> filteredfeedList;
-    ArrayList<GroupListData> GroupData;
-    ArrayList<GroupListData> filteredGroupList;
-    FeedsFragments feedsFragments;
-    GroupsFragments groupsFragments;
 
-HashMap<String,String> Hash_file_maps;
+    HashMap<String,String> Hash_file_maps;
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
@@ -117,18 +105,66 @@ HashMap<String,String> Hash_file_maps;
         //checking
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
+
+
+
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_navigation);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("Sabpaisa");
-        searchView = (MaterialSearchView) findViewById(R.id.action_search);
+
+
+/*
+        Context context = getApplicationContext();
+
+// Create a new configuration
+        Configuration.Builder builder = new Configuration.Builder(context);
+
+// Perform any configuration steps (optional)
+        builder.firebaseRootPath("prod");
+
+// Initialize the Chat SDK
+        ChatSDK.initialize(builder.build());
+        UserInterfaceModule.activate(context);
+
+// Activate the Firebase module
+        FirebaseModule.activate();
+
+// File storage is needed for profile image upload and image messages
+        FirebaseFileStorageModule.activate();
+
+
+*/
+
+
+
+        // This is used for the app custom toast and activity transition
+        ChatSDKUiHelper.initDefault();
+
+// Init the network manager
+        BNetworkManager.init(getApplicationContext());
+
+// Create a new adapter
+        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
+
+// Set the adapter
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
+
+
+
 
         //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_drawer,
                 getApplicationContext().getTheme());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-         toggle = new ActionBarDrawerToggle(this, drawer, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
@@ -154,9 +190,8 @@ HashMap<String,String> Hash_file_maps;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sabpaisa");
-        toolbar.setNavigationIcon(R.drawable.ic_drawer);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
-        mCollapsingToolbarLayout.setTitleEnabled(true);
+        mCollapsingToolbarLayout.setTitleEnabled(false);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         appBarLayout.addOnOffsetChangedListener(this);
@@ -169,11 +204,11 @@ HashMap<String,String> Hash_file_maps;
 
         setSupportActionBar(toolbar);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
-        mCollapsingToolbarLayout.setTitleEnabled(true);
+        mCollapsingToolbarLayout.setTitleEnabled(false);
 
 
         mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
-        //searchViewBar();
+
         /*stateName=getIntent().getStringExtra("STATENAME");
         serviceName=getIntent().getStringExtra("SERVICENAME");*/
         ClientId=getIntent().getStringExtra("clientId");
@@ -259,14 +294,16 @@ HashMap<String,String> Hash_file_maps;
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
+
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,SocialPayment.class);
+                Intent intent = new Intent(MainActivity.this,ChatSDKLoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
+
         /*fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -275,14 +312,14 @@ HashMap<String,String> Hash_file_maps;
         });*/
     }
 
-   @Override
+    @Override
     public void onBackPressed() {
-       DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-       if (drawer.isDrawerOpen(GravityCompat.START)) {
-           drawer.closeDrawer(GravityCompat.START);
-       } else {
-           super.onBackPressed();
-       }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void FabButtonCreate() {
@@ -447,8 +484,7 @@ HashMap<String,String> Hash_file_maps;
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.coa_menu, menu);
-
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
@@ -461,11 +497,12 @@ HashMap<String,String> Hash_file_maps;
             return true;
         }
         //noinspection SimplifiableIfStatement
-
+        /* if (id == R.id.action_settings) {
+            return true;
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -490,9 +527,9 @@ HashMap<String,String> Hash_file_maps;
         }
         else  if(id == R.id.nav_ChangePassword)
         {
-Intent intent=new Intent(MainActivity.this, ForgotActivity.class);
+            Intent intent=new Intent(MainActivity.this, ForgotActivity.class);
 
-startActivity(intent);
+            startActivity(intent);
         }
         else  if(id == R.id.nav_Privacy_Policy)
         {
@@ -510,22 +547,19 @@ startActivity(intent);
         }
 
         else if (id == R.id.nav_logout) {
-            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
+
+          /*  AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
             builder.setMessage("Do you want to Logout?");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
 
-                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.remove("logged");
-                    editor.commit();
                     finish();
-                    Intent intent=new Intent(MainActivity.this, LogInActivity.class);
-
-                    startActivity(intent);
-
-
+                    Intent i=new Intent();
+                    i.putExtra("finish", true);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
+                    //startActivity(i);
+                    finish();
 
                 }
             });
@@ -538,12 +572,17 @@ startActivity(intent);
             });
 
             AlertDialog alert=builder.create();
-            alert.show();
+            alert.show();*/
 
+            Intent intent = new Intent(MainActivity.this, SettingsNavigationActivity.class);
+
+            startActivity(intent);
 
 
         }else if (id == R.id.nav_share) {
+            /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
 
+            startActivity(intent);*/
             try {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
@@ -621,130 +660,4 @@ startActivity(intent);
 
         );
     }
-
-    /*START method to enable searchBar and define its action*/
-    private void searchViewBar() { //TODO searchView
-
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-//searchViewBar();
-                return false;
-
-
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (newText.length() > 0) {
-                    filteredfeedList = filterFeed(feedData, newText);
-                    filteredGroupList = filterGroup(GroupData, newText);
-//                    filteredMemberList = filterMember(MemberData, newText);
-                    Log.wtf("FilteredList", String.valueOf(filteredfeedList));
-                    feedsFragments.getDataFromActivity();
-                    groupsFragments.getDataFromActivity();
-//                    memberFragment.getDataFromActivity();
-                }
-                return false;
-           }
-        });
-
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            int temp;
-
-            @Override
-            public void onSearchViewShown() {
-                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-                TypedValue tv = new TypedValue();
-                getApplicationContext().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
-                int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
-                temp = params.height;
-                params.height = actionBarHeight; // COLLAPSED_HEIGHT
-
-                appBarLayout.setLayoutParams(params);
-                appBarLayout.setExpanded(true, false);
-                searchView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-                params.height = temp; // COLLAPSED_HEIGHT
-
-                appBarLayout.setLayoutParams(params);
-                appBarLayout.setExpanded(true, false);//Do some magic
-
-                filteredfeedList = feedData;
-                feedsFragments.getDataFromActivity();
-                filteredGroupList = GroupData;
-                groupsFragments.getDataFromActivity();
-//                filteredMemberList = MemberData;
-//                memberFragment.getDataFromActivity();
-            }
-        });
-    }
-    /*END method to enable searchBar and define its action*/
-
-    /*START method to search query in Feed List*/
-    private ArrayList<FeedData> filterFeed(ArrayList<FeedData> mList, String query) { //TODO searchView
-        query = query.toLowerCase();
-
-        ArrayList<FeedData> filteredList = new ArrayList<>();
-        filteredList.clear();
-        for (FeedData item : mList) {
-            if (item.feedName.toLowerCase().contains(query) || item.feedId.toLowerCase().contains(query)
-                    || item.feedText.toLowerCase().contains(query) || item.createdDate.toLowerCase().contains(query)) {
-                filteredList.add(item);
-            }
-        }
-
-        return filteredList;
-    }
-    /*END method to search query in Feed List*/
-
-    /*START method to search query in Groupu List*/
-    private ArrayList<GroupListData> filterGroup(ArrayList<GroupListData> mList, String query) { //TODO searchView
-        query = query.toLowerCase();
-
-        ArrayList<GroupListData> filteredList = new ArrayList<>();
-        filteredList.clear();
-        for (GroupListData item : mList) {
-            if (item.groupName.toLowerCase().contains(query) || item.groupText.toLowerCase().contains(query)
-                    || item.groupId.toLowerCase().contains(query)/*||item.group_count.toLowerCase().contains(query)*/) {
-                filteredList.add(item);
-            }
-        }
-
-        return filteredList;
-
-    }
-
-    /*START methods for implementations*/
-    @Override  //TODO searchView
-    public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
-        this.feedData = feedData;
-    }
-
-    @Override
-    public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
-
-    }
-
-    @Override //TODO searchView
-    public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
-        this.GroupData = groupData;
-    }
-
-    @Override //TODO searchView
-    public ArrayList<FeedData> getFeedDataList() {
-        return filteredfeedList;
-    }
-
-
-    @Override //TODO searchView
-    public ArrayList<GroupListData> getGroupDataList() {
-        return filteredGroupList;
-    }
-
 }
