@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     public  static  String MYSHAREDPREF="mySharedPref";
 
 
-
+////Testing
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //checking
