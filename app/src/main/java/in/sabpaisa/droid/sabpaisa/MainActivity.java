@@ -75,6 +75,8 @@ import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ShareActivity;
 
 import static android.view.View.GONE;
+import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
+
 public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
 
     private SliderLayout mHeaderSlider;
@@ -548,18 +550,22 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         else if (id == R.id.nav_logout) {
 
-          /*  AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
+            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
             builder.setMessage("Do you want to Logout?");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
 
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove("logged");
+                    editor.commit();
                     finish();
-                    Intent i=new Intent();
-                    i.putExtra("finish", true);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
-                    //startActivity(i);
-                    finish();
+                    Intent intent=new Intent(MainActivity.this, LogInActivity.class);
+
+                    startActivity(intent);
+
+
 
                 }
             });
@@ -572,11 +578,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
             });
 
             AlertDialog alert=builder.create();
-            alert.show();*/
+            alert.show();
 
-            Intent intent = new Intent(MainActivity.this, SettingsNavigationActivity.class);
-
-            startActivity(intent);
 
 
         }else if (id == R.id.nav_share) {

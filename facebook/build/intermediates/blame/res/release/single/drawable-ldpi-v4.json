@@ -1,6 +1,10 @@
 [
     {
-        "merged": "C:\\sabpaisa_android_app\\facebook\\build\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\com_facebook_close.png",
-        "source": "C:\\sabpaisa_android_app\\facebook\\res\\drawable-ldpi\\com_facebook_close.png"
+        "merged": "/home/archana/sarkhapai/3jan/sabpaisa/C:\\sabpaisa_android_app\\facebook\\build\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\com_facebook_close.png",
+        "source": "/home/archana/sarkhapai/3jan/sabpaisa/C:\\sabpaisa_android_app\\facebook\\res\\drawable-ldpi\\com_facebook_close.png"
+    },
+    {
+        "merged": "/home/archana/sarkhapai/3jan/sabpaisa/facebook/build/intermediates/res/merged/release/drawable-ldpi-v4/com_facebook_close.png",
+        "source": "/home/archana/sarkhapai/3jan/sabpaisa/facebook/res/drawable-ldpi/com_facebook_close.png"
     }
 ]
