@@ -5,8 +5,13 @@ package in.sabpaisa.droid.sabpaisa;
  */
 
 public class FeedData {
-    String feedId,clientId;
-    String feedText,feedName,createdDate,imagePath,logoPath;
+    public String feedId;
+    String clientId;
+    public String feedText;
+    public String feedName;
+    public String createdDate;
+    String imagePath;
+    String logoPath;
 
     public FeedData() {
     }

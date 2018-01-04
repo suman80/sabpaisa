@@ -124,7 +124,7 @@
 
 
 
-                 <!--   <FrameLayout
+                   <FrameLayout
                         android:id="@+id/toolbar_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
                             app:subtitleTextColor="@color/white"
                             app:titleTextColor="@color/white" />
 
-                    </FrameLayout>-->
+                    </FrameLayout>
 
 
                 </android.support.design.widget.CollapsingToolbarLayout>

@@ -5,8 +5,13 @@ package in.sabpaisa.droid.sabpaisa;
  */
 
 public class GroupListData {
-    String clientId,groupId;
-    String groupName,groupText,createdDate,imagePath,logoPath;
+    String clientId;
+    public String groupId;
+    public String groupName;
+    public String groupText;
+    String createdDate;
+    String imagePath;
+    String logoPath;
 
     public GroupListData() {
     }

@@ -21,6 +21,7 @@ public class AppConfig {
 	public static String URL_Show_UserProfile ="http://205.147.103.27:6060/SabPaisaAppApi/userProfile";
 	public static String URL_Show_UserProfileImage ="http://205.147.103.27:6060/SabPaisaAppApi/fetchUserImageByUserToken";
 	public static String URL_UserProfileUpdate ="http://205.147.103.27:6060/SabPaisaAppApi/updateUser";
+	public static String URL_UserProfilephot ="http://205.147.103.27:6060/SabPaisaAppApi/fetchUserImageByUserToken?token=";
 
 
 	public static String SAb_Api ="http://205.147.103.27:6060/SabPaisaAppApi";
