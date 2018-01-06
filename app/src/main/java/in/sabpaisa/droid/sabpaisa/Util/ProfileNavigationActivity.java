@@ -132,26 +132,20 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
         showProfileData();
         showProfileImage();
-/*
-        addressEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                mailId.setFocusable(true);
-                if (addressEdit.getText().toString().equals("Edit")) {
-                    et_address.setEnabled(true);
-                    et_address.requestFocus();
-                    addressEdit.setText("Save");
-                } else {
-                    et_address.setEnabled(false);
-                    addressEdit.setText("Edit");
-                }
-            }
-        });*/
 
         addressEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateProfileData(userAccessToken,address);
+                if (addressEdit.getText().toString().equals("Edit")) {
+                    et_address.setEnabled(true);
+                    et_address.requestFocus();
+                    addressEdit.setText("Save");
+                    updateProfileData(userAccessToken,address);
+                } else {
+                    et_address.setEnabled(false);
+                    addressEdit.setText("Edit");
+                }
+
             }
         });
 
@@ -374,15 +368,9 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     }
 
 
-
-
-
-    //private void updateProfileData(final String userAccessToken,final String address,final String userImage,final String contactNumber ) {
     private void updateProfileData(final String  userAccessToken, final String address ) {
 
         String tag_string_req = "req_register";
-
-
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.URL_UserProfileUpdate, new Response.Listener<String>() {
@@ -400,17 +388,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     if (status!=null && status.equals("success")) {
 
                         ProfileModel profile =new ProfileModel();
-                        profile.setContactNumber(object.getString("contactNumber"));
-                        profile.setAddress(object.getString("address"));
-                        String imageByteCode = object.getString("userImage");
 
-                        mNumber.setText(profile.getContactNumber());
+                        profile.setAddress(object.getString("address"));
+
                         et_address.setText(profile.getAddress());
 
-                        byte[] imgData = Base64.decode(imageByteCode, Base64.DEFAULT);
-                        Bitmap bmp = BitmapFactory.decodeByteArray(imgData, 0, imgData.length);
-                        userImage.setImageBitmap(bmp);
-                        layout.setVisibility(View.VISIBLE);
 
                     }
                 } catch (JSONException e) {

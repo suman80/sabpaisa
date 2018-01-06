@@ -89,7 +89,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".AccountInfoActivity" />
-        <activity android:name=".RegisterActivity" />
+
+        <activity android:name=".RegisterActivity">
+
+        </activity>
+
         <activity android:name=".SetmPIN" />
         <activity android:name=".SuccessMPIN" />
         <activity android:name=".SendMoneyActivity" />

@@ -90,6 +90,7 @@ dependencies {
     compile 'com.shitij.goyal:slide-button:1.0.0'
     compile project(path: ':firebase_plugin')
     //compile project(path: ':chat-sdk-core')
+    compile 'gun0912.ted:tedpermission:2.1.0'
 }
 
 allprojects {

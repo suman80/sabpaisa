@@ -31,6 +31,7 @@ import in.sabpaisa.droid.sabpaisa.R;
 /*extends BottomSheetDialog instead of Dialog*/
 public class OtpDialog extends BottomSheetDialog {
 
+
     public Context context;
     public Button yes;
     String number;
@@ -41,8 +42,8 @@ public class OtpDialog extends BottomSheetDialog {
     // Button resentButton = null; /*Type is changed from TextView to Button, also name is refracted*/
     TextView waitTextView = null;
     ProgressDialog progressBar = null;
-    CountDownTimer countDownTimer = null;
-    BottomSheetDialog mBottomSheetDialog;
+    public CountDownTimer countDownTimer = null;
+    public BottomSheetDialog mBottomSheetDialog;
 
     public OtpDialog(Context context, String number) {
         super(context);
@@ -63,6 +64,7 @@ public class OtpDialog extends BottomSheetDialog {
         View sheetView = inflater.inflate(R.layout.popup_otp, null);
         mBottomSheetDialog.setContentView(sheetView);
         mBottomSheetDialog.show();
+
         /*END Initiallizing BottomSheetDialog and giving its view in sheetView*/
 
         //yes = (Button) sheetView.findViewById(R.id.btn_yes);
@@ -279,4 +281,10 @@ public class OtpDialog extends BottomSheetDialog {
         progressBar.setMax(100);
         progressBar.show();
     }
+
+
+
+
+
+
 }
