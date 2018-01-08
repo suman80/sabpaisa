@@ -61,6 +61,10 @@ public class MainGroupAdapter1 extends ArrayAdapter<GroupListData> {
 
     }
 
+    /*START Method to change data when put query in searchBar*/
+    public void setItems(ArrayList<GroupListData> groupDatas) {
+        this.arrayList = groupDatas;
+    }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         //return super.getView(position, convertView, parent);
@@ -150,6 +154,7 @@ public class MainGroupAdapter1 extends ArrayAdapter<GroupListData> {
 
         return v;
     }
+
 
 
     static class ViewHolder {
@@ -390,6 +395,7 @@ public class MainGroupAdapter1 extends ArrayAdapter<GroupListData> {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
     }
+
 
 
 

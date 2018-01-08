@@ -127,7 +127,7 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
                             groupListData.setLogoPath(jsonObject1.getString("logoPath"));
                             groupArrayList.add(groupListData);
                         }
-                        Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupId());
+                        Log.d("groupArrayList121211", " " + groupArrayList.get(0).getGroupId());
                        /*START listener for sending data to activity*/
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetGroups(groupArrayList);

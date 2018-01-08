@@ -4,25 +4,22 @@
 
     <item
         android:id="@+id/action_notification"
-        android:icon="@drawable/bell"
+        android:icon="@drawable/notification"
         android:orderInCategory="100"
         android:title="Notification"
+        app:actionLayout="@layout/custom_notification_icon"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/search"
+        android:icon="@drawable/search_top"
         android:orderInCategory="101"
         android:title="Search"
-        android:iconifiedByDefault="false"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        />
+        app:showAsAction="collapseActionView|always" />
 
     <item
-
         android:id="@+id/three_dot_menu"
-        android:icon="@drawable/menudots"
+        android:icon="@drawable/three_dot_menu"
         android:orderInCategory="102"
         android:title="Setting"
         app:showAsAction="always">

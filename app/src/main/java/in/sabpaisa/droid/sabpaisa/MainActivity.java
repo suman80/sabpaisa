@@ -5,18 +5,15 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.media.tv.TvContract;
+import android.os.AsyncTask;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -35,7 +32,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -47,18 +43,21 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
 import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.braunster.chatsdk.network.BNetworkManager;
+import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.squareup.picasso.Picasso;
 import com.wangjie.androidbucket.utils.ABTextUtil;
-import com.wangjie.androidbucket.utils.imageprocess.ABShape;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
@@ -68,6 +67,7 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloating
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,22 +75,19 @@ import java.util.List;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
-import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
-import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
-import in.sabpaisa.droid.sabpaisa.Util.LogoutNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
 import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
-import in.sabpaisa.droid.sabpaisa.Util.ShareActivity;
 
 import static android.view.View.GONE;
+import static in.sabpaisa.droid.sabpaisa.CommentAdapterDatabase.context;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
@@ -102,12 +99,15 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     private CustomViewPager viewPager;
     private TabLayout tabLayout;
     Toolbar toolbar;
+    NetworkImageView nav;
+    String userImageUrl=null;
+    String response,response1,userAccessToken;
     ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,UpibankList,mPinInfo,mPinInfo2;
     LinearLayout paymentButton,chatButton,memberButton;
     int isMpinSet=1;
     FloatingActionButton fab;
     ActionBarDrawerToggle toggle;
-String userImageUrl;
+ //public  static String userImageUrl=null;
     HashMap<String,String> Hash_file_maps;
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
@@ -116,6 +116,7 @@ String userImageUrl;
     String stateName,serviceName,ClientId;
     public  static  String MYSHAREDPREF="mySharedPref";
 
+    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
 ////Testing
     @Override
@@ -124,9 +125,10 @@ String userImageUrl;
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
 
+//nav=(NetworkImageView)findViewById(R.id.profile_image);
 
-
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestW
+// indowFeature(Window.FEATURE_NO_TITLE);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_navigation);
@@ -136,6 +138,20 @@ String userImageUrl;
         setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("Sabpaisa");
 
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+        response = sharedPreferences.getString("response", "123");
+
+        userAccessToken = response;
+
+        Log.d("AccessToken111", " " + userAccessToken);
+
+        Log.d("FFResponse11111", " " + response);
+        //getUserIm(userAccessToken);
+        //new DownloadImageTask(nav).execute(userImageUrl);
+/*
+        Picasso.with(this).load(userImageUrl).into(nav);
+*/
 
 /*
         Context context = getApplicationContext();
@@ -186,10 +202,39 @@ String userImageUrl;
         drawer.addDrawerListener(toggle);
         toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
+        ClientId=getIntent().getStringExtra("clientId");
+        userImageUrl=getIntent().getStringExtra("userImageUrl");
+
+        /*Log.d("stateName11111"," "+stateName);
+        Log.d("serviceName1111"," "+serviceName);*/
+
+        Log.d("CLIENTID(MainActivity)","-->"+ClientId);
+        Log.d("userImageUrl(MainAhjhkn","-->"+userImageUrl);
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+       //View header = navigationView.inflateHeaderView(R.layout.nav_header_main_activity_navigation);
+        //nav = (NetworkImageView) header.findViewById(R.id.profile_image);
+
+        ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+       // View header = navigationView.getHeaderView(0);
+      // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
+        Glide
+                .with(MainActivity.this)
+                .load(userImageUrl)
+                .error(R.drawable.default_users)
+                .into(niv);
+
+        //if(url.length() > 0)
+            //niv.setImageUrl(userImageUrl, imageLoader);
+       // niv.setDefaultImageResId(R.drawable.sabpaisa);
+        //niv.setErrorImageResId(R.drawable.
+        //error);
+        //nav.setImageUrl(userImageUrl);
+
+      //  new MainActivity.DownloadImageTask(niv).execute(userImageUrl);
 
         sendMoney = (ImageView)findViewById(R.id.ll_send);
         requestMoney = (ImageView)findViewById(R.id.ll_request);
@@ -226,19 +271,21 @@ String userImageUrl;
 
 
         mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
-
+        Intent intent=getIntent();
         /*stateName=getIntent().getStringExtra("STATENAME");
         serviceName=getIntent().getStringExtra("SERVICENAME");*/
-        ClientId=getIntent().getStringExtra("clientId");
+   /*     ClientId=getIntent().getStringExtra("clientId");
+        userImageUrl=getIntent().getStringExtra("userImageUrl");
 
-        /*Log.d("stateName11111"," "+stateName);
-        Log.d("serviceName1111"," "+serviceName);*/
+        *//*Log.d("stateName11111"," "+stateName);
+        Log.d("serviceName1111"," "+serviceName);*//*
 
         Log.d("CLIENTID(MainActivity)","-->"+ClientId);
+        Log.d("userImageUrl(MainAhjhkn","-->"+userImageUrl);
+*/
 
+       //new MainActivity.DownloadImageTask(nav).execute(userImageUrl);
         SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREF,MODE_PRIVATE).edit();
-        //editor.putString("STATENAME",stateName);
-        //editor.putString("SERVICENAME",serviceName);
         editor.putString("clientId",ClientId);
         editor.commit();
         LoadHeaderImageList();
@@ -258,6 +305,7 @@ String userImageUrl;
                 }
             }
         });
+
 
         requestMoney.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -680,6 +728,7 @@ String userImageUrl;
         );
     }
 
+/*
     private void getUserIm(final  String token) {
 
         String  tag_string_req = "req_clients";
@@ -690,7 +739,7 @@ String userImageUrl;
             public void onResponse(String response1)
             {
 
-                Log.d("Particularclient","-->"+response1);
+                Log.d("Particularclientimage","-->"+response1);
                 //parsing Json
                 JSONObject jsonObject = null;
 
@@ -702,11 +751,11 @@ String userImageUrl;
                     Log.d("responsus",""+response);
                     Log.d("statsus",""+status);
                     JSONObject jsonObject1 = new JSONObject(response);
-FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();
-fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
                     userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
                     Log.d("userImageUrlactivity",""+userImageUrl);
-                 /*   ClientData clientData=new ClientData();
+                 */
+/*   ClientData clientData=new ClientData();
                     clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
                     clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
                     clientData.setClientName(jsonObject1.getString("clientName"));
@@ -717,7 +766,8 @@ fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl")
                     // clientname=clientData.getClientName().toString();
                     Log.d("clientlogooooo","-->"+clientLogoPath );
                     Log.d("clientimageooo","-->"+clientImagePath );
-                    Log.d("clientiooo","-->"+clientname11 );*/
+                    Log.d("clientiooo","-->"+clientname11 );*//*
+
 
 
                 }
@@ -777,8 +827,77 @@ fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl")
 
 
     }
+*/
 
 
+
+    private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            loading.show();
+        }
+
+        public DownloadLogoTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            //loading.dismiss();
+        }
+
+    }
+
+
+    //Code for fetching image from server
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            loading.show();
+        }
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            //loading.dismiss();
+        }
+
+    }
 
 
     }

@@ -62,6 +62,7 @@ public class LogInActivity extends AppCompatActivity  {
 
     TextView forgotPassword,register,passwordShow;
     Button login;
+
     public static String MySharedPrefLogin="mySharedPrefForlogin";
 
     public static final String PREFS_NAME = "LoginPrefs";

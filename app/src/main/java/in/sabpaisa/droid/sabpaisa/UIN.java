@@ -46,6 +46,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
+import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
@@ -57,6 +58,7 @@ String clientId,userAccessToken,response;
     EditText uinnnumber;
     //TextView clientname;
     String clientname;
+    String userImageUrl;
     //TextView clientNAmeTextview;
     ImageView clientImagePath,clientlogopath;
     public  static  String MYSHAREDPREFUIN="mySharedPref11";
@@ -97,7 +99,6 @@ Log.d("clientImageURLPathuin","__>"+clientname);
         new UIN.DownloadImageTask(clientImagePath).execute(clientImageURLPath);
         new UIN.DownloadImageTask(clientlogopath).execute(clientLogoURLPath);
 
-
         //clientName.setText(R.id.InstitueNAme);
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
@@ -109,9 +110,11 @@ Log.d("clientImageURLPathuin","__>"+clientname);
         Log.d("AccessToken111", " " + userAccessToken);
 
         Log.d("FFResponse11111", " " + response);
+
+        getUserIm(userAccessToken);
+
         SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFUIN,MODE_PRIVATE).edit();
         editor.putString("clientId",clientId);
-        editor.putString("userAccessToken",userAccessToken);
         editor.commit();
 
     }
@@ -306,9 +309,11 @@ Log.d("clientImageURLPathuin","__>"+clientname);
         uniErrorPopUp.show();
     }
 
+
     private void callMainScreen() {
         Intent intent = new Intent(UIN.this,MainActivity.class);
         intent.putExtra("clientId", clientId);
+        intent.putExtra("userImageUrl", userImageUrl);
 
         startActivity(intent);
         UIN.this.finish();
@@ -398,4 +403,103 @@ Log.d("clientImageURLPathuin","__>"+clientname);
         }
 
     }
+
+    private void getUserIm(final  String token) {
+
+        String  tag_string_req = "req_clients";
+
+        StringRequest request=new StringRequest(Request.Method.GET,AppConfig.URL_UserProfilephot   +token, new Response.Listener<String>(){
+
+            @Override
+            public void onResponse(String response1)
+            {
+
+                Log.d("Particularclientimage","-->"+response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1.toString());
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("responsus",""+response);
+                    Log.d("statsus",""+status);
+                    JSONObject jsonObject1 = new JSONObject(response);
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                    userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
+
+                    Log.d("userImageUrlactivity",""+userImageUrl);
+                 /*   ClientData clientData=new ClientData();
+                    clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
+                    clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
+                    clientData.setClientName(jsonObject1.getString("clientName"));
+
+                    clientLogoPath=clientData.getClientLogoPath().toString();
+                    clientImagePath=clientData.getClientImagePath().toString();
+                    clientname11=clientData.getClientName().toString();
+                    // clientname=clientData.getClientName().toString();
+                    Log.d("clientlogooooo","-->"+clientLogoPath );
+                    Log.d("clientimageooo","-->"+clientImagePath );
+                    Log.d("clientiooo","-->"+clientname11 );*/
+
+
+                }
+                catch(JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        }) ;
+
+        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+
+
+    }
+
 }

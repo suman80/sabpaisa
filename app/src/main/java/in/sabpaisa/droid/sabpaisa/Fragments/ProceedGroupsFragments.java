@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.FeedsFragments;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
@@ -54,10 +55,9 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     MainGroupAdapter1 mainGroupAdapter1;
     /*Globally Declared Adapter*/
     /*START Interface for getting data from activity*/
-    GroupsFragments.GetDataInterface sGetDataInterface;
+    GetDataInterface sGetDataInterface;
+    /*START Interface for getting data from activity*/
 
-
-    /*END Interface for getting data from activity*/
     public ProceedGroupsFragments() {
         // Required empty public constructor
     }
@@ -65,12 +65,31 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*try {
+
+    }
+
+    public void getDataFromActivity() {
+        if(sGetDataInterface != null){
+            this.groupArrayList = sGetDataInterface.getGroupDataList();
+            mainGroupAdapter1.setItems(this.groupArrayList);
+            mainGroupAdapter1.notifyDataSetChanged();
+        }
+    }
+
+    /*END Interface for getting data from activity*/
+    public void ProceedGroupsFragments() {
+        // Required empty public constructor
+    }
+
+ /*   @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        *//*try {
             sGetDataInterface= (GetDataInterface) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
-        }*/
-    }
+        }*//*
+    }*/
 
    /* public void getDataFromActivity() {
         if(sGetDataInterface != null){

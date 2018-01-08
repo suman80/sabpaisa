@@ -41,7 +41,7 @@ import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayout.OnRefreshListener  {
     private static final String TAG = ProceedFeedsFragments.class.getSimpleName();
     View rootView;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -52,7 +52,7 @@ public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayou
     public static String clientId;
 
     /*START Interface for getting data from activity*/
-    FeedsFragments.GetDataInterface sGetDataInterface;
+    GetDataInterface sGetDataInterface;
 
     public ProceedFeedsFragments() {
         // Required empty public constructor
@@ -61,6 +61,13 @@ public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayou
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        //sGetDataInterface= (GetDataInterface) getActivity();
+
+        /*try {
+            sGetDataInterface= (GetDataInterface) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
+        }*/
 
     }
 
@@ -85,9 +92,14 @@ public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayou
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");
         Log.d("clientId_PFF",""+clientId);
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+        //swipeRefreshLayout.setOnRefreshListener(this);
+
         callFeedDataList(clientId);
         return rootView;
     }
+
+
 
     public void callFeedDataList(final String clientId) {
         String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/getParticularClientsFeeds/"+"?client_Id="+clientId;;
@@ -101,7 +113,7 @@ public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayou
             @Override
             public void onResponse(String response) {
                 try {
-
+                //    swipeRefreshLayout.setRefreshing(false);
                     Log.d(TAG, "profeed1: " + response);
                     //swipeRefreshLayout.setRefreshing(false);
                     feedArrayList = new ArrayList<FeedData>();
@@ -203,9 +215,17 @@ public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayou
     /*START onRefresh() for SwipeRefreshLayout*/
     @Override
     public void onRefresh() {
+        callFeedDataList(clientId);
         //callFeedDa
         // taList(Id);
     }
+
+   /* @Override
+    public void onResume() {
+        super.onResume();
+        AppController.getInstance().setConnectivityListener(this);
+    }*/
+
 
     public interface GetDataInterface {
         ArrayList<FeedData> getFeedDataList();
