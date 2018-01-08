@@ -224,12 +224,14 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_edittext_empty"
                         android:inputType="textEmailAddress"
-                        android:maxLines="1"
                         android:text="username@host.xyz"
                         android:textColor="@color/black_50"
                         android:textColorHint="@color/black_50"
                         android:textSize="16sp"
                         android:singleLine="true"
+                        android:lines="2"
+                        android:maxLines="5"
+                        android:minLines="2"
                         />
 
                     <Button

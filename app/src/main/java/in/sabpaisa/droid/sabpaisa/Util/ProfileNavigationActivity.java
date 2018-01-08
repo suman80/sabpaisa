@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -35,11 +36,13 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -139,9 +142,6 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             }
         });
 
-        showProfileData();
-        showProfileImage();
-
         addressEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,6 +166,8 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             }
         });
 
+        showProfileData();
+        showProfileImage();
 
 
     }
@@ -186,16 +188,17 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         try {
             // When an Image is picked
-            if (resultCode == RESULT_OK) {
-                if (requestCode == 200) {
+            if (requestCode == 200 && resultCode == RESULT_OK && data != null) {
+
 
                     //Get ImageURi and load with help of picasso
                     //Uri selectedImageURI = data.getData();
 //                    userImage.setImageDrawable(data.getData());
                     Uri selectedimg = data.getData();
                     userImage.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
-                }
+                    Bitmap userImg=MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
+                uploadBitmap(userImg);
             }
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
@@ -203,6 +206,78 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         }
 
     }
+
+
+    /*
+    * The method is taking Bitmap as an argument
+    * then it will return the byte[] array for the given bitmap
+    * and we will send this array to the server
+    * here we are using JPEG Compression with 80% quality
+    * you can give quality between 0 to 100
+    * 0 means worse quality
+    * 100 means best quality
+    * */
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+
+    private void uploadBitmap(final Bitmap bitmap) {
+
+        Log.d(TAG,"IMG_userAccessToken"+userAccessToken);
+        //our custom volley request
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, AppConfig.URL_UserProfileImageUpdate+"?token="+userAccessToken,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        Log.d(TAG,"IMG_Res"+response);
+                        try {
+                            JSONObject obj = new JSONObject(new String(response.data));
+                            Log.d(TAG,"IMG_Res"+obj);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+
+            /*
+            * If you want to add more parameters with the image
+            * you can do it here
+            * here we have only one parameter with the image
+            * which is tags
+            * */
+            /*@Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("tags", tags);
+                return params;
+            }*/
+
+            /*
+            * Here we are passing image by renaming it with a unique name
+            * */
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                String imagename = "SabPaisa_UserImage";
+                params.put("userImage", new DataPart(imagename + ".jpeg", getFileDataFromDrawable(bitmap)));
+                return params;
+            }
+        };
+
+        //adding the request to volley
+        Volley.newRequestQueue(this).add(volleyMultipartRequest);
+    }
+
+
 
 
     private void showProfileData() {
@@ -410,8 +485,6 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
                         profile.setAddress(response);
 
-
-
                         AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
@@ -426,14 +499,16 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         // Setting OK Button
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                et_address.setText(profile.getAddress());
-                                showProfileData();
+                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                startActivity(intent);
                             }
                         });
 
                         // Showing Alert Message
                         alertDialog.show();
 
+                    }else {
+                        Toast.makeText(getApplicationContext(),"Oops! Something Went Wrong",Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -519,7 +594,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     String status =object.getString("status");
 
                     if (status!=null && status.equals("success")) {
-
+                        //mailIdEdit.setText("Edit");
                         final ProfileModel profile =new ProfileModel();
 
                         profile.setAddress(response);
@@ -540,14 +615,37 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         // Setting OK Button
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                et_address.setText(profile.getAddress());
-                                showProfileData();
+                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                startActivity(intent);
                             }
                         });
 
                         // Showing Alert Message
                         alertDialog.show();
 
+                    }else if (status.equals("failure")){
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Email Update");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Your email id  is already exists!");
+
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                startActivity(intent);
+
+                            }
+                        });
+                    }else {
+                        Toast.makeText(getApplicationContext(),"Oops! Something Went Wrong",Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -665,8 +763,6 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         }
 
     }
-
-
 
 
 
