@@ -203,13 +203,15 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
         ClientId=getIntent().getStringExtra("clientId");
+
         userImageUrl=getIntent().getStringExtra("userImageUrl");
+        Log.d("userImageUrl(UIN)","-->"+userImageUrl);
 
         /*Log.d("stateName11111"," "+stateName);
         Log.d("serviceName1111"," "+serviceName);*/
 
         Log.d("CLIENTID(MainActivity)","-->"+ClientId);
-        Log.d("userImageUrl(MainAhjhkn","-->"+userImageUrl);
+
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -221,11 +223,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
        // View header = navigationView.getHeaderView(0);
       // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
-        Glide
-                .with(MainActivity.this)
-                .load(userImageUrl)
-                .error(R.drawable.default_users)
-                .into(niv);
+
+        //Loading profile image at nqavigation drawer
+        Glide.with(MainActivity.this).load(userImageUrl).error(R.drawable.default_users).into(niv);
 
         //if(url.length() > 0)
             //niv.setImageUrl(userImageUrl, imageLoader);
