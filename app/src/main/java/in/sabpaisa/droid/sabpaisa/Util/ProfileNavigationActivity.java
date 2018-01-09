@@ -49,9 +49,11 @@ import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
+import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.Model.ProfileModel;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.RegisterActivity;
+import in.sabpaisa.droid.sabpaisa.UIN;
 
 public class ProfileNavigationActivity extends AppCompatActivity {
     private static final String TAG = ProfileNavigationActivity.class.getSimpleName();
@@ -64,6 +66,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     String userAccessToken;
     String address,email;
     ProgressBar progressBar;
+    SharedPreferences sharedPreferences;
+    String clientId;
+    String userImageUrl;
+    public static String MYSHAREDPREFPNA="mySharedPrefPNA";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +97,16 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
         //layout.setVisibility(View.GONE);
 
-        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+        sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
         userAccessToken = sharedPreferences.getString("response", "123");
 
         Log.d(TAG,"userAccessToken "+userAccessToken);
+
+
+        sharedPreferences = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+        clientId=sharedPreferences.getString("clientId","abc");
+
 
         mNumber.setEnabled(false);
         mailId.setEnabled(false);
@@ -172,7 +184,15 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(ProfileNavigationActivity.this,MainActivity.class);
+        intent.putExtra("clientId", clientId);
+        intent.putExtra("userImageUrl", userImageUrl);
+        startActivity(intent);
+        ProfileNavigationActivity.this.finish();
+    }
 
     public void pickImage() {
 
@@ -234,8 +254,39 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     public void onResponse(NetworkResponse response) {
                         Log.d(TAG,"IMG_Res"+response);
                         try {
+
                             JSONObject obj = new JSONObject(new String(response.data));
                             Log.d(TAG,"IMG_Res"+obj);
+                            final String status = obj.getString("status");
+                            if (status.equals("success")) {
+
+                                AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+
+                                // Setting Dialog Title
+                                alertDialog.setTitle("User Image Update");
+
+                                // Setting Dialog Message
+                                alertDialog.setMessage("Your Image Has Been Updated successfully !");
+
+                                // Setting Icon to Dialog
+                                //  alertDialog.setIcon(R.drawable.tick);
+
+                                // Setting OK Button
+                                alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                        startActivity(intent);
+                                    }
+                                });
+
+                                // Showing Alert Message
+                                alertDialog.show();
+
+                            }else {
+                                Toast.makeText(getApplicationContext(),"Image Upload Failed !",Toast.LENGTH_SHORT).show();
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -391,8 +442,8 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
                     if (status.equals("success")) {
 
-                        String image =object.getJSONObject("response").getString("userImageUrl");
-                        new DownloadImageTask(userImage).execute(image);
+                        userImageUrl =object.getJSONObject("response").getString("userImageUrl");
+                        new DownloadImageTask(userImage).execute(userImageUrl);
 
                     }else {
                         Toast.makeText(getApplicationContext(),"Cannot able to load image!",Toast.LENGTH_SHORT).show();

@@ -78,9 +78,10 @@ String clientId,userAccessToken,response;
         //getClientsList(clientId.toString());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-         uinnnumber = (EditText) findViewById(R.id.uiinnum);
+
+        uinnnumber = (EditText) findViewById(R.id.uiinnum);
         clientImagePath=(ImageView)findViewById(R.id.institutepic);
-clientlogopath=(ImageView)findViewById(R.id.institutelogo);
+        clientlogopath=(ImageView)findViewById(R.id.institutelogo);
 
 
         clientId=getIntent().getStringExtra("clientId");
@@ -111,7 +112,7 @@ Log.d("clientImageURLPathuin","__>"+clientname);
 
         Log.d("FFResponse11111", " " + response);
 
-        getUserIm(userAccessToken);
+        getUserImage(userAccessToken);
 
         SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFUIN,MODE_PRIVATE).edit();
         editor.putString("clientId",clientId);
@@ -404,11 +405,11 @@ Log.d("clientImageURLPathuin","__>"+clientname);
 
     }
 
-    private void getUserIm(final  String token) {
+    private void getUserImage(final  String token) {
 
         String  tag_string_req = "req_clients";
 
-        StringRequest request=new StringRequest(Request.Method.GET,AppConfig.URL_UserProfilephot   +token, new Response.Listener<String>(){
+        StringRequest request=new StringRequest(Request.Method.GET,AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
 
             @Override
             public void onResponse(String response1)
@@ -426,7 +427,8 @@ Log.d("clientImageURLPathuin","__>"+clientname);
                     Log.d("responsus",""+response);
                     Log.d("statsus",""+status);
                     JSONObject jsonObject1 = new JSONObject(response);
-                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();
+                    fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
                     userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
 
                     Log.d("userImageUrlactivity",""+userImageUrl);
