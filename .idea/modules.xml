@@ -13,10 +13,10 @@
       <module fileurl="file://$PROJECT_DIR$/country_picker/country_picker.iml" filepath="$PROJECT_DIR$/country_picker/country_picker.iml" />
       <module fileurl="file://$PROJECT_DIR$/facebook/facebook.iml" filepath="$PROJECT_DIR$/facebook/facebook.iml" />
       <module fileurl="file://$PROJECT_DIR$/firebase_plugin/firebase_plugin.iml" filepath="$PROJECT_DIR$/firebase_plugin/firebase_plugin.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sabpaisa.iml" filepath="$PROJECT_DIR$/sabpaisa.iml" />
+      <module fileurl="file://C:\sabpaisa_android_app\sabpaisa.iml" filepath="C:\sabpaisa_android_app\sabpaisa.iml" />
       <module fileurl="file://$PROJECT_DIR$/sabpaisa_android_app.iml" filepath="$PROJECT_DIR$/sabpaisa_android_app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sabpaisa_upi.iml" filepath="$PROJECT_DIR$/sabpaisa_upi.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sabpaisaapp.iml" filepath="$PROJECT_DIR$/sabpaisaapp.iml" />
+      <module fileurl="file://C:\sabpaisa_android_app\sabpaisa_upi.iml" filepath="C:\sabpaisa_android_app\sabpaisa_upi.iml" />
+      <module fileurl="file://C:\sabpaisa_android_app\sabpaisaapp.iml" filepath="C:\sabpaisa_android_app\sabpaisaapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/sdk/sdk.iml" filepath="$PROJECT_DIR$/sdk/sdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/secure-component-sdk/secure-component-sdk.iml" filepath="$PROJECT_DIR$/secure-component-sdk/secure-component-sdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/securecomponent/securecomponent.iml" filepath="$PROJECT_DIR$/securecomponent/securecomponent.iml" />

@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -191,7 +192,7 @@ HashMap<String,String> Hash_file_maps;
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivitySkip.this,SocialPayment.class);
+                Intent intent = new Intent(MainActivitySkip.this,ChatSDKLoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }

@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_height="match_parent"
+
 
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
@@ -24,7 +24,7 @@
             android:textColor="@color/bg_orange"
             android:layout_height="wrap_content"
             />
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -36,37 +36,6 @@
         android:orientation="vertical">
 
 
-        <!-- <android.support.v7.widget.AppCompatCheckBox
-             android:id="@+id/rbPrivate"
-             style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginTop="10dp"
-             android:buttonTint="@color/bg_screen"
-             android:checked="false"
-             android:text="Continue as a Private User"
-             android:textSize="@dimen/text_size_normal" />-->
-
-
-        <!--
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:src="@drawable/oricons" />-->
-
-        <!--
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/rb_bankuser"
-                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="55dp"
-                    android:buttonTint="@color/bg_screen"
-                    android:checked="false"
-                    android:text="Choose your Institution / Hospital / Others "
-                    android:textSize="@dimen/text_size_normal" />-->
 
         <LinearLayout
             android:id="@+id/llBankUser"
@@ -77,8 +46,7 @@
 
             <include
                 android:id="@+id/spinnerBank"
-                layout="@layout/custom_spinner_layout"
-                />
+                layout="@layout/second_spinner_layout" />
 
             <LinearLayout
                 android:id="@+id/llClientSpinner"
@@ -90,10 +58,10 @@
 
                 <include
                     android:id="@+id/spinnerClient"
-                    layout="@layout/custom_spinner_layout" />
+                    layout="@layout/second_spinner_layout" />
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/InstituteSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -123,9 +91,9 @@
                 <include
                     android:id="@+id/spinnerInsttitute"
 
-                    layout="@layout/custom_spinner_layout"
+                    layout="@layout/third_spinner_layout"
                     />
-            </LinearLayout>
+            </RelativeLayout>
 
 
             <!--   <LinearLayout

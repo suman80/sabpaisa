@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
+import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.squareup.picasso.Picasso;
 
@@ -95,6 +97,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     public static String clientId;
     public  static  String MySharedPrefOnSkipClientDetailsScreen="mySharedPref";
     private ViewPager viewPager;
+    LinearLayout paymentButton,chatButton,memberButton;
     private Button btn_pay,btn_request;
     TextView feedDeatilsTextView, feedNameTextView,feedTime;
     ImageView feedImage,clientImagePath,clientLogoPath;
@@ -161,7 +164,14 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         clientImagePath = (ImageView)findViewById(R.id.particular_client_image);
         //clientLogoPath  = (ImageView)findViewById(R.id.particular_client_logo);
 
-
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SkipClientDetailsScreen.this,ChatSDKLoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+            }
+        });
 btn_pay.setOnClickListener(new OnClickListener() {
     @Override
     public void onClick(View v) {

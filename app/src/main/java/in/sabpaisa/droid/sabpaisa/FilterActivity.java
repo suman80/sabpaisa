@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +46,8 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
 
     Spinner stateSpinner, serviceSpinner,clientsSpinner, hospitalspinner;
     AppCompatCheckBox BankUser, PrivateUser;
-    LinearLayout BankClient, ClientSpinner, InstituteSpinner,HospitalSpinner;
+    LinearLayout BankClient, ClientSpinner;
+            RelativeLayout InstituteSpinner,HospitalSpinner;
     Button proceed,skip;
 
     ArrayList<Institution> client1ArrayList;
@@ -78,12 +80,12 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
 
         BankClient =      (LinearLayout) findViewById(R.id.llBankUser);
         ClientSpinner =   (LinearLayout)findViewById(R.id.llClientSpinner);
-        InstituteSpinner =(LinearLayout)findViewById(R.id.InstituteSpinner);
+        InstituteSpinner =(RelativeLayout)findViewById(R.id.InstituteSpinner);
         //HospitalSpinner = (LinearLayout) findViewById(R.id.HospitalSpinner);
 
         stateSpinner =      (Spinner) findViewById(R.id.spinnerBank).findViewById(R.id.spinner2);
         serviceSpinner =    (Spinner) findViewById(R.id.spinnerClient).findViewById(R.id.spinner2);
-        clientsSpinner = (Spinner) findViewById(R.id.spinnerInsttitute).findViewById(R.id.spinner2);
+        clientsSpinner =    (Spinner) findViewById(R.id.spinnerInsttitute).findViewById(R.id.spinner2);
 
         //Initializing arrayLists
         stateArrayList = new ArrayList<>();
@@ -144,7 +146,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                        dialog.dismiss();
                             }
                         });
                         AlertDialog alertDialog = builder.create();
@@ -363,6 +365,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                             clientIdArrayList.add("0");
 
                         }
+                     //   else
                         clientId=clientData.getClientId().toString();
                         Log.d("FA_ClientId",""+clientId);
 

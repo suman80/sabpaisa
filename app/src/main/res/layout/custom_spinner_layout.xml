@@ -5,16 +5,18 @@
     android:orientation="vertical">
 
 
+
     <TextView
         android:id="@+id/textName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+
         android:text="Select your Choice"
         android:textSize="@dimen/text_size_heading"
          />
 
-    <RelativeLayout
+
+    <FrameLayout
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -25,22 +27,24 @@
 
         <Spinner
             android:id="@+id/spinner2"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:background="@color/bg_orange"
-            android:textColor="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/white"
+            android:textColor="#000000"
             android:spinnerMode="dropdown"
-            android:overlapAnchor="false"
-            />
+            android:layout_marginBottom="20dp"
+
+            android:layout_marginEnd="20dp"
+            android:overlapAnchor="false" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_gravity="center"
+            android:layout_gravity="right"
             android:src="@mipmap/drop"/>
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </LinearLayout>

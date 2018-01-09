@@ -139,6 +139,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
         rv.setNestedScrollingEnabled(false);
     }
 
+
     //EditText group_details_text_view = null;
 
     EditText group_details_text_view = null;

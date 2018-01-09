@@ -32,11 +32,11 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        enableFacebookIntegration(getNetworkAdapter().facebookEnabled());
+       // enableFacebookIntegration(getNetworkAdapter().facebookEnabled());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_sdk_activty_login);
 
-        setExitOnBackPressed(true);
+        //setExitOnBackPressed(true);
 
         View view = findViewById(R.id.chat_sdk_root_view);
 

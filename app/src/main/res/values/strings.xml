@@ -3,6 +3,8 @@
     <string name="hint_phone">Enter Your 10 digit mobile no</string>
     <string name="hint_fullname">Full Name</string>
     <string name="hint_OTP">Enter OTP</string>
+    <string name="xyz">Please enable the permission to continue </string>
+
     <string name="hint_password">Enter Password</string>
     <string name="verify_desc">We need to send an SMS from your phone to verify if your phone number is registered with your bank account</string>
     <string name="Rs.">\u20B9</string>
@@ -101,5 +103,6 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_nagationfullview">Nagationfullview</string>
+
 
 </resources>
