@@ -8,13 +8,15 @@
             android:id="@+id/nav_Profile"
 
             android:title="Profile" />
-        <item
+      <!--  <item
             android:id="@+id/nav_Chat"
 
-            android:title="Chat" />
+            android:title="Chat" />-->
+<!--
         <item
             android:id="@+id/nav_Settings"
                         android:title="Settings" />
+-->
         <item
             android:id="@+id/nav_ChangePassword"
             android:title="Change Password" />

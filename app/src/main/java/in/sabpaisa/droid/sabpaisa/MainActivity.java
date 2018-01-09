@@ -588,14 +588,14 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
             startActivity(intent);
             // Handle the camera action
-        } else if (id == R.id.nav_Chat) {
+        } /*else if (id == R.id.nav_Chat) {
 
-        } else if (id == R.id.nav_Settings) {
+        } *//*else if (id == R.id.nav_Settings) {
             Intent intent=new Intent(MainActivity.this, SettingsNavigationActivity.class);
 
             startActivity(intent);
 
-        }
+        }*/
         else  if(id == R.id.nav_ChangePassword)
         {
             Intent intent=new Intent(MainActivity.this, ForgotActivity.class);
@@ -608,14 +608,14 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
             startActivity(intent);
         }
-        else if (id == R.id.nav_Settings) {
+        /*else if (id == R.id.nav_Settings) {
             Intent intent=new Intent(MainActivity.this, SettingsNavigationActivity.class);
 
             startActivity(intent);
 
 
 
-        }
+        }*/
 
         else if (id == R.id.nav_logout) {
 
