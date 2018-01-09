@@ -81,6 +81,7 @@ import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
@@ -203,15 +204,15 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
         ClientId=getIntent().getStringExtra("clientId");
-
         userImageUrl=getIntent().getStringExtra("userImageUrl");
-        Log.d("userImageUrl(UIN)","-->"+userImageUrl);
 
         /*Log.d("stateName11111"," "+stateName);
         Log.d("serviceName1111"," "+serviceName);*/
 
         Log.d("CLIENTID(MainActivity)","-->"+ClientId);
-
+        Log.d("userImageUrl(MainAhjhkn","-->"+userImageUrl);
+      /*  Intent intent=new Intent(MainActivity.this, FullViewOfClientsProceed.class);
+        intent.putExtra("userImageUrl",userImageUrl);*/
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -223,9 +224,11 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
        // View header = navigationView.getHeaderView(0);
       // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
-
-        //Loading profile image at nqavigation drawer
-        Glide.with(MainActivity.this).load(userImageUrl).error(R.drawable.default_users).into(niv);
+        Glide
+                .with(MainActivity.this)
+                .load(userImageUrl)
+                .error(R.drawable.default_users)
+                .into(niv);
 
         //if(url.length() > 0)
             //niv.setImageUrl(userImageUrl, imageLoader);
@@ -271,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
 
         mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
-        Intent intent=getIntent();
+
         /*stateName=getIntent().getStringExtra("STATENAME");
         serviceName=getIntent().getStringExtra("SERVICENAME");*/
    /*     ClientId=getIntent().getStringExtra("clientId");
@@ -287,6 +290,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
        //new MainActivity.DownloadImageTask(nav).execute(userImageUrl);
         SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREF,MODE_PRIVATE).edit();
         editor.putString("clientId",ClientId);
+        editor.putString("userImageUrl",userImageUrl);
         editor.commit();
         LoadHeaderImageList();
         setHeaderImageList();
@@ -471,6 +475,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         Bundle bundle = new Bundle();
         bundle.putString("stateName", stateName);
         bundle.putString("serviceName",serviceName);
+        //bundle.putString("userImageUrl",userImageUrl);
         instituteFragment.setArguments(bundle);
         //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
 

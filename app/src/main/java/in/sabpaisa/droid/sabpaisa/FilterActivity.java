@@ -1,8 +1,10 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.Contacts;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,6 +37,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
+import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.StateGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -47,7 +50,8 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     AppCompatCheckBox BankUser, PrivateUser;
     LinearLayout BankClient, ClientSpinner, InstituteSpinner,HospitalSpinner;
     Button proceed,skip;
-
+String userImageUrl;
+String userAccessToken,response;
     ArrayList<Institution> client1ArrayList;
 
      public static  String state_position,clientId;
@@ -91,11 +95,24 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
         getStateData();
 
 
-        TextView bankTxt, clientTxt, institute;
+        final TextView bankTxt, clientTxt, institute;
         bankTxt = (TextView) findViewById(R.id.spinnerBank).findViewById(R.id.textName);
         clientTxt = (TextView) findViewById(R.id.spinnerClient).findViewById(R.id.textName);
         institute = (TextView) findViewById(R.id.InstituteSpinner).findViewById(R.id.textName);
 
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+        response = sharedPreferences.getString("response", "123");
+
+        userAccessToken = response;
+
+
+        Log.d("AccessTokensilter", " " + userAccessToken);
+
+        Log.d("FFResfilter", " " + response);
+
+        getUserIm(userAccessToken);
+        Log.d("imagefilter", " " + userImageUrl);
 
         // FOr State Name
         bankTxt.setText("State Name");
@@ -108,7 +125,10 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
             @Override
             public void onClick(View v)
             {
-                startActivity(new Intent(FilterActivity.this, MainActivitySkip.class));
+
+                Intent intent=new Intent(FilterActivity.this, MainActivitySkip.class);
+                intent.putExtra("userImageUrl",userImageUrl);
+                startActivity(intent);
             }
         });
 
@@ -484,6 +504,103 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
                     Log.d("clientlogooooo","-->"+clientLogoPath );
                     Log.d("clientimageooo","-->"+clientImagePath );
                     Log.d("clientiooo","-->"+clientname11 );
+
+
+                }
+                catch(JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        }) ;
+
+        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+
+
+    }
+    private void getUserIm(final  String token) {
+
+        String  tag_string_req = "req_clients";
+
+        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
+
+            @Override
+            public void onResponse(String response1)
+            {
+
+                Log.d("Particularclientimage","-->"+response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1.toString());
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("responsus",""+response);
+                    Log.d("statsus",""+status);
+                    JSONObject jsonObject1 = new JSONObject(response);
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                    userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
+
+                    Log.d("userImageUrlfilter",""+userImageUrl);
+                 /*   ClientData clientData=new ClientData();
+                    clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
+                    clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
+                    clientData.setClientName(jsonObject1.getString("clientName"));
+
+                    clientLogoPath=clientData.getClientLogoPath().toString();
+                    clientImagePath=clientData.getClientImagePath().toString();
+                    clientname11=clientData.getClientName().toString();
+                    // clientname=clientData.getClientName().toString();
+                    Log.d("clientlogooooo","-->"+clientLogoPath );
+                    Log.d("clientimageooo","-->"+clientImagePath );
+                    Log.d("clientiooo","-->"+clientname11 );*/
 
 
                 }

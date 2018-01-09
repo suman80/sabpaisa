@@ -41,7 +41,7 @@ public class InstitutionFragment extends Fragment {
 
 
 
-    String stateName,serviceName;
+    String stateName,serviceName,userImageUrl;
 
     public InstitutionFragment() {
 
@@ -90,6 +90,8 @@ public class InstitutionFragment extends Fragment {
         else {
             stateName = getArguments().getString("stateName");
             serviceName = getArguments().getString("serviceName");
+            Log.d("arc","---"+serviceName);
+            userImageUrl = getArguments().getString("userImageUrl");
         }
         return rootView;
     }
