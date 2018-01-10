@@ -50,7 +50,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     Spinner stateSpinner, serviceSpinner,clientsSpinner, hospitalspinner;
     AppCompatCheckBox BankUser, PrivateUser;
     LinearLayout BankClient, ClientSpinner;
-            RelativeLayout InstituteSpinner,HospitalSpinner;
+           RelativeLayout InstituteSpinner,HospitalSpinner;
     Button proceed,skip;
 String userImageUrl;
 String userAccessToken,response;

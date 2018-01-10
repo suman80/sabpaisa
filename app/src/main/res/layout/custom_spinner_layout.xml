@@ -10,22 +10,26 @@
         android:id="@+id/textName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:text="Select your Choice"
-        android:textSize="@dimen/text_size_heading"
-         />
+        android:textSize="@dimen/text_size_heading" />
 
 
-    <FrameLayout
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
 
-        android:background="@drawable/background_spinner"
+
         android:orientation="horizontal">
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
         <Spinner
+            android:layout_weight="0.5"
             android:id="@+id/spinner2"
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -33,18 +37,22 @@
             android:textColor="#000000"
             android:spinnerMode="dropdown"
             android:layout_marginBottom="20dp"
-
             android:layout_marginEnd="20dp"
-            android:overlapAnchor="false" />
+            android:overlapAnchor="false"
+
+            />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="right"
-            android:src="@mipmap/drop"/>
+            android:src="@drawable/dropdown"/>
 
-    </FrameLayout>
+
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
