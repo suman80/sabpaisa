@@ -469,8 +469,8 @@ Intent intent=getIntent();
                     filteredGroupList = filterGroup(GroupData, newText);
 
 //                    filteredMemberList = filterMember(MemberData, newText);
-Log.wtf("FilteredList", String.valueOf(filteredfeedList));
-feedsFragments.getDataFromActivity();
+                       Log.wtf("FilteredList", String.valueOf(filteredfeedList));
+                    feedsFragments.getDataFromActivity();
                     groupsFragments.getDataFromActivity();
 //                    memberFragment.getDataFromActivity();
                 }

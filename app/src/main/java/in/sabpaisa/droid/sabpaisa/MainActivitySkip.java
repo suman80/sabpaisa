@@ -96,7 +96,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     int isMpinSet=1;
     FloatingActionButton fab;
     ActionBarDrawerToggle toggle;
-HashMap<String,String> Hash_file_maps;
+    HashMap<String,String> Hash_file_maps;
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
@@ -120,19 +120,27 @@ HashMap<String,String> Hash_file_maps;
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-Intent i=getIntent();
-userImageUrl=i.getStringExtra("userImageUrl");
-Log.d("userskip",userImageUrl);
+
+
+        // get the userPRofileimage from filter activity
+        Intent i=getIntent();
+
+        userImageUrl=i.getStringExtra("userImageUrl");
+        Log.d("userskip",userImageUrl);
+
+        //Initialise the navigation header image
         ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
-        // View header = navigationView.getHeaderView(0);
-        // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
+
+        //set the NAvigationImage header using glide
+
         Glide
                 .with(MainActivitySkip.this)
                 .load(userImageUrl)
                 .error(R.drawable.default_users)
                 .into(niv);
 
-Log.d("Skip",""+userImageUrl);
+        Log.d("Skip",""+userImageUrl);
+
         sendMoney = (ImageView)findViewById(R.id.ll_send);
         requestMoney = (ImageView)findViewById(R.id.ll_request);
         socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
