@@ -93,10 +93,10 @@ String clientId,userAccessToken,response;
 
 
         clientNAmeTextview.setText(clientname);
-Log.d("ClientIduin","__>"+clientId);
-Log.d("clientImageURLPathuin","__>"+clientImageURLPath);
-Log.d("clientImageURLPathuin","__>"+clientLogoURLPath);
-Log.d("clientImageURLPathuin","__>"+clientname);
+        Log.d("ClientIduin","__>"+clientId);
+        Log.d("clientImageURLPathuin","__>"+clientImageURLPath);
+        Log.d("clientImageURLPathuin","__>"+clientLogoURLPath);
+        Log.d("clientImageURLPathuin","__>"+clientname);
         new UIN.DownloadImageTask(clientImagePath).execute(clientImageURLPath);
         new UIN.DownloadImageTask(clientlogopath).execute(clientLogoURLPath);
 
@@ -107,6 +107,7 @@ Log.d("clientImageURLPathuin","__>"+clientname);
         response = sharedPreferences.getString("response", "123");
 
         userAccessToken = response;
+
 
         Log.d("AccessToken111", " " + userAccessToken);
 

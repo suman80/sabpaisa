@@ -57,7 +57,7 @@ public class ProceedInstitiutionFragment extends Fragment {
     ShimmerRecyclerView shimmerRecyclerView;
     String landing_page;
 CollapsingToolbarLayout collapsingToolbarLayout;
-    String stateName,serviceName,clientId;
+    String stateName,serviceName,clientId,userImageUrl;
 
     public ProceedInstitiutionFragment() {
 
@@ -88,7 +88,9 @@ CollapsingToolbarLayout collapsingToolbarLayout;
         //stateName=sharedPreferences.getString("STATENAME","123");
         //serviceName=sharedPreferences.getString("SERVICENAME","123");
         clientId=sharedPreferences.getString("clientId","abc");
+        userImageUrl=sharedPreferences.getString("userImageUrl","abc");
         Log.d("PIF_ClientId","-->"+clientId);
+        Log.d("userImageUrlFrag","-->"+userImageUrl);
         recyclerViewInstitutions.postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -142,9 +142,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@drawable/background_button"
-            android:text="SEND SMS"
-            android:textColor="@color/white"
-            android:textSize="20dp"/>
+            android:text="Send SMS" android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textAllCaps="false"/>
 
     </LinearLayout>
 </LinearLayout>

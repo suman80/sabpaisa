@@ -175,6 +175,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/btn_LinkVpa"
         android:text="Link VPA"
+        android:textAllCaps="false"
         android:textColor="#fff"
         android:layout_weight="0.5"
         android:background="@color/bg_orange"

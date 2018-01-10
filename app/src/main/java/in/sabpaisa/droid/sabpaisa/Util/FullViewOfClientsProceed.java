@@ -39,6 +39,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.InputStream;
@@ -76,7 +77,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements  Feed
     TextView mSearchText;
     ActionBarDrawerToggle toggle;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
-
+public static String userImageUrl=null;
     AppBarLayout appBarLayout;
     MaterialSearchView searchView;
     ArrayList<FeedData> feedData;
@@ -132,20 +133,33 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements  Feed
         landingPage =getIntent().getStringExtra("landingPage");
         Log.d("page",""+landingPage);
 
-
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.MYSHAREDPREF, MODE_PRIVATE);
+        userImageUrl=sharedPreferences.getString("userImageUrl","abc");
+        //Log.d("userImageUrlFrag","-->"+userImageUrl);
+        Log.d("userImageUrl_FVOCL"," "+userImageUrl);
 
         /*Bundle bundle = new Bundle();
         bundle.putString("landingPage", "From Activity");
 // set Fragmentclass Arguments
         PayFragments fragobj = new PayFragments();
         fragobj.setArguments(bundle);*/
-        Intent intent = getIntent();
-
+Intent intent=getIntent();
         clientName = intent.getStringExtra("clientName");
         state = intent.getStringExtra("state");
         clientImageURLPath= getIntent().getStringExtra("clientImagePath");
         ClientId=getIntent().getStringExtra("clientId");
+        //userImageUrl=getIntent().getStringExtra("userImageUrl");
         Log.d("ClientId_FVOCL"," "+ClientId);
+        Log.d("userImageUrl_FVOCL"," "+userImageUrl);
+
+        ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+        // View header = navigationView.getHeaderView(0);
+        // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
+        Glide
+                .with(FullViewOfClientsProceed.this)
+                .load(userImageUrl)
+                .error(R.drawable.default_users)
+                .into(niv);
 
         SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefOnFullViewOfClientProceed,MODE_PRIVATE).edit();
         editor.putString("clientId",ClientId);
@@ -227,14 +241,14 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements  Feed
 
             startActivity(intent);
             // Handle the camera action
-        } else if (id == R.id.nav_Chat) {
+        } /*else if (id == R.id.nav_Chat) {
 
-        } else if (id == R.id.nav_Settings) {
+        }*//* else if (id == R.id.nav_Settings) {
             Intent intent=new Intent(FullViewOfClientsProceed.this, SettingsNavigationActivity.class);
 
             startActivity(intent);
 
-        }
+        }*/
         else  if(id == R.id.nav_ChangePassword)
         {
             Intent intent=new Intent(FullViewOfClientsProceed.this, ForgotActivity.class);
@@ -247,14 +261,14 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements  Feed
 
             startActivity(intent);
         }
-        else if (id == R.id.nav_Settings) {
+       /* else if (id == R.id.nav_Settings) {
             Intent intent=new Intent(FullViewOfClientsProceed.this, SettingsNavigationActivity.class);
 
             startActivity(intent);
 
 
 
-        }
+        }*/
 
         else if (id == R.id.nav_logout) {
 
@@ -311,6 +325,9 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements  Feed
             Intent intent=new Intent(FullViewOfClientsProceed.this, RateActivity.class);
 
             startActivity(intent);
+
+
+
 
 /*
             getFragmentManager()
@@ -452,8 +469,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements  Feed
                     filteredGroupList = filterGroup(GroupData, newText);
 
 //                    filteredMemberList = filterMember(MemberData, newText);
-Log.wtf("FilteredList", String.valueOf(filteredfeedList));
-feedsFragments.getDataFromActivity();
+                       Log.wtf("FilteredList", String.valueOf(filteredfeedList));
+                    feedsFragments.getDataFromActivity();
                     groupsFragments.getDataFromActivity();
 //                    memberFragment.getDataFromActivity();
                 }

@@ -166,8 +166,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/bg_orange"
+            android:background="@drawable/button_corner"
             android:text="Send"
+            android:textAllCaps="false"
             android:textColor="@color/white"/>
     </FrameLayout>
 

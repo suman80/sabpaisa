@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa.Util;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,20 +29,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
-import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
+import com.android.volley.toolbox.StringRequest;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.squareup.picasso.Picasso;
 
@@ -71,6 +77,7 @@ import in.sabpaisa.droid.sabpaisa.FilterActivity;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.Model.*;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
@@ -97,7 +104,6 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     public static String clientId;
     public  static  String MySharedPrefOnSkipClientDetailsScreen="mySharedPref";
     private ViewPager viewPager;
-    LinearLayout paymentButton,chatButton,memberButton;
     private Button btn_pay,btn_request;
     TextView feedDeatilsTextView, feedNameTextView,feedTime;
     ImageView feedImage,clientImagePath,clientLogoPath;
@@ -154,6 +160,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         editor.putString("clientId",clientId);
         editor.commit();
 
+
         TextView clientNameTextView = (TextView) findViewById(R.id.particular_client_name);
 
         btn_request = (Button) findViewById(R.id.btn_request);
@@ -164,14 +171,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         clientImagePath = (ImageView)findViewById(R.id.particular_client_image);
         //clientLogoPath  = (ImageView)findViewById(R.id.particular_client_logo);
 
-        chatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SkipClientDetailsScreen.this,ChatSDKLoginActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-            }
-        });
+
 btn_pay.setOnClickListener(new OnClickListener() {
     @Override
     public void onClick(View v) {
@@ -630,4 +630,5 @@ btn_pay.setOnClickListener(new OnClickListener() {
 //        loadComments(String.valueOf(1));
     }
     /*End onRefresh() for SwipeRefreshLayout*/
+
 }

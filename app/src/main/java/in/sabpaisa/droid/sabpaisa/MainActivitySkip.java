@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +29,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -40,6 +52,9 @@ import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +64,9 @@ import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionSkipFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientSkipFragment;
+import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
@@ -72,6 +89,8 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     private CustomViewPager viewPager;
     private TabLayout tabLayout;
     Toolbar toolbar;
+    String userImageUrl=null;
+    String response,userAccessToken;
     ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,mPinInfo,mPinInfo2;
     LinearLayout paymentButton,chatButton,memberButton;
     int isMpinSet=1;
@@ -103,6 +122,23 @@ HashMap<String,String> Hash_file_maps;
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        // get the userPRofileimage from filter activity
+        Intent i=getIntent();
+
+        userImageUrl=i.getStringExtra("userImageUrl");
+
+        Log.d("userskip",userImageUrl);
+        //Initialise the navigation header image
+        ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+
+        //set the NAvigationImage header using glide
+        Glide
+                .with(MainActivitySkip.this)
+                .load(userImageUrl)
+                .error(R.drawable.default_users)
+                .into(niv);
+
+        Log.d("Skip",""+userImageUrl);
         sendMoney = (ImageView)findViewById(R.id.ll_send);
         requestMoney = (ImageView)findViewById(R.id.ll_request);
         socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
@@ -192,7 +228,7 @@ HashMap<String,String> Hash_file_maps;
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivitySkip.this,ChatSDKLoginActivity.class);
+                Intent intent = new Intent(MainActivitySkip.this,SocialPayment.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
@@ -403,14 +439,14 @@ HashMap<String,String> Hash_file_maps;
 
             startActivity(intent);
             // Handle the camera action
-        } else if (id == R.id.nav_Chat) {
+        } /*else if (id == R.id.nav_Chat) {
 
-        } else if (id == R.id.nav_Settings) {
+        }*/ /*else if (id == R.id.nav_Settings) {
             Intent intent=new Intent(MainActivitySkip.this, SettingsNavigationActivity.class);
 
             startActivity(intent);
 
-        }
+        }*/
         else  if(id == R.id.nav_ChangePassword)
         {
             Intent intent=new Intent(MainActivitySkip.this, ForgotActivity.class);

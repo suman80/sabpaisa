@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -7,21 +8,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.SparseIntArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,15 +39,20 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.facebook.LoginActivity;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
+import android.Manifest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import in.sabpaisa.droid.sabpaisa.Util.AbsRuntimePermission;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
@@ -61,28 +65,26 @@ import in.sabpaisa.droid.sabpaisa.Util.SmsReceiver;
  * Created by SabPaisa on 26-10-2017.
  */
 
-
-public  class RegisterActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
-    private static final int REQUEST_PERMISSION = 12;
-    private SparseIntArray mErrorString;
-    public int REQUEST_READ_PHONE_STATE;
+public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = RegisterActivity.class.getSimpleName();
     EditText et_phone_number, et_FullName, et_password;
     private Button btn_register;
     private TextView send_Otp;
     private ProgressDialog pDialog;
     private EditText et_otp;
+    TextView passwordShow;
     String number;
     String otpTag = "Please Use this OTP to verify your Mobile on SabPaisa App";
     Handler handler = new Handler();
     EditText optEditText = null;
-    TextView timerTextView = null;
+
     Button resentButton = null; /*Type is changed from TextView to Button, also name is refracted*/
     TextView waitTextView = null;
-    ProgressDialog progressBar = null;
-    CountDownTimer countDownTimer = null;
-    BottomSheetDialog mBottomSheetDialog;
 
+    CountDownTimer countDownTimer = null;
+    TextView timerTextView = null;
+    ProgressDialog progressBar = null;
+    BottomSheetDialog mBottomSheetDialog;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -100,42 +102,37 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
         send_Otp = (TextView) findViewById(R.id.send_Otp);
         optEditText = (EditText) findViewById(R.id.optEditText);
 
-        /*requestAppPermissions(new String[]{
-                        android.Manifest.permission.READ_PHONE_STATE},
-
-                R.string.xyz, REQUEST_PERMISSION);*/
-
         /*btn_name_next1 = (Button) findViewById(R.id.btn_name_next1);
         btn_name_next2 = (Button) findViewById(R.id.btn_name_next2);*/
         //emailid = (EditText) findViewById(R.id.emailid);
 
-
+passwordShow=(TextView)findViewById(R.id.tv_password_show1);
         et_phone_number = (EditText) findViewById(R.id.et_phone_number);
         et_FullName = (EditText) findViewById(R.id.et_FullName);
         //et_otp =(EditText) findViewById(R.id.et_otp);
+        et_FullName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         et_password = (EditText) findViewById(R.id.et_password);
         //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+         /*START Initiallizing BottomSheetDialog and giving its view in sheetView*/
+        mBottomSheetDialog = new BottomSheetDialog(RegisterActivity.this);
+        LayoutInflater inflater = (LayoutInflater)RegisterActivity.this.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+        View sheetView = inflater.inflate(R.layout.popup_otp, null);
+        mBottomSheetDialog.setContentView(sheetView);
+
+        timerTextView = (TextView) sheetView.findViewById(R.id.timer_text_view);
+        callTimerCoundown();
+////////////////////////////////////////////////////////////////////////////////////////////////////////
         final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
 
         final String tmDevice, tmSerial, androidId;
 
-        int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE);
 
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_PHONE_STATE}, REQUEST_READ_PHONE_STATE);
-        } else {
-            //TODO
-        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            //return;
+            return;
         }
         tmDevice = "" + tm.getDeviceId();
         tmSerial = "" + tm.getSimSerialNumber();
@@ -181,6 +178,7 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
                     Toast.makeText(getApplicationContext(), "Please enter Phone Number!", Toast.LENGTH_LONG).show();
                 } else if (isOnline()){
 
+                    mBottomSheetDialog.show();
                     sendOTP(v, number);
                     // Toast.makeText(OTPVarify.this, "first name field is empty", Toast.LENGTH_LONG).show();
                 }
@@ -220,6 +218,8 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
 
 
 
+
+
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,9 +228,9 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
                 String contactNumber =  et_phone_number.getText().toString();
                 String fullName = et_FullName.getText().toString();
 
-               // String dob =  et_phone_number.getText().toString();
+                // String dob =  et_phone_number.getText().toString();
                 String mobile =  et_phone_number.getText().toString();
-               // String otp =  et_otp.getText().toString();
+                // String otp =  et_otp.getText().toString();
                 String password =   et_password.getText().toString();
 
                 if ((contactNumber.length() == 0) ||(contactNumber.length()<10)){
@@ -296,6 +296,20 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
 
 
 
+        passwordShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (passwordShow.getText().toString().equals("Show")){
+                    passwordShow.setText("Hide");
+
+                    et_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                }else
+                {
+                    passwordShow.setText("Show");
+                    et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
+        });
 
 
 
@@ -331,6 +345,7 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
                         //callUINVarificationScreen();
                         //Toast.makeText(OTPVarify.this, "OTP Verified ", Toast.LENGTH_LONG).show();
 
+                    send_Otp.setVisibility(View.INVISIBLE);
 
                     } else if (status.equals("failure")) {
                         // Toast.makeText(OTPVarify.this, "Unable To send OTP varify", Toast.LENGTH_LONG).show();
@@ -366,7 +381,7 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
                     e.printStackTrace();
                     Toast.makeText(RegisterActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
-                progressBarDismiss();
+                //progressBarDismiss();
             }
         }, new Response.ErrorListener() {
 
@@ -375,7 +390,7 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
                 VolleyLog.d("OTP", "Error: " + error.getMessage());
                 Toast.makeText(RegisterActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 // hide the progress dialog
-                progressBarDismiss();
+                //progressBarDismiss();
             }
         });
 
@@ -383,84 +398,8 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    //TODO
-                }
-                break;
 
-            default:
-
-                break;
-        }
-    }
-
-    /*public abstract void onPermissionsGranted(int requestCode);
-
-    public void requestAppPermissions(final String[]requestedPermissions, final int stringId, final int requestCode) {
-        mErrorString.put(requestCode, stringId);
-
-        int permissionCheck = PackageManager.PERMISSION_GRANTED;
-        boolean showRequestPermissions = false;
-        for(String permission: requestedPermissions) {
-            permissionCheck = permissionCheck + ContextCompat.checkSelfPermission(this, permission);
-            showRequestPermissions = showRequestPermissions || ActivityCompat.shouldShowRequestPermissionRationale(this, permission);
-        }
-
-        if (permissionCheck!=PackageManager.PERMISSION_GRANTED) {
-            if(showRequestPermissions) {
-                Snackbar.make(findViewById(android.R.id.content), stringId, Snackbar.LENGTH_INDEFINITE).setAction("GRANT", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ActivityCompat.requestPermissions(RegisterActivity.this, requestedPermissions, requestCode);
-                    }
-                }).show();
-            } else {
-                ActivityCompat.requestPermissions(this, requestedPermissions, requestCode);
-            }
-        } else {
-            onPermissionsGranted(requestCode);
-        }
-    }
-
-
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        int permissionCheck = PackageManager.PERMISSION_GRANTED;
-        for(int permisson : grantResults) {
-            permissionCheck = permissionCheck + permisson;
-        }
-
-        if( (grantResults.length > 0) && PackageManager.PERMISSION_GRANTED == permissionCheck) {
-            onPermissionsGranted(requestCode);
-        } else {
-            //Display message when contain some Dangerous permisson not accept
-            Snackbar.make(findViewById(android.R.id.content), mErrorString.get(requestCode),
-                    Snackbar.LENGTH_INDEFINITE).setAction("ENABLE", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent();
-                    i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    i.setData(Uri.parse("package:" + getPackageName()));
-                    i.addCategory(Intent.CATEGORY_DEFAULT);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                    startActivity(i);
-                }
-            }).show();
-        }
-    }
-*/
-
-
-    private void progressBarDismiss() {
+   /* private void progressBarDismiss() {
         if (progressBar != null) {
             progressBar.dismiss();
         }
@@ -474,17 +413,17 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
     public void Show_Dialog(Context v, String number) {
         otpDialog = new OtpDialog(RegisterActivity.this, number);
         Bundle bundle = new Bundle();
-        otpDialog.onCreate(bundle); /*otpDialog.show(); was creating the problem with dialog, instead we called onCreate method to start bottomSheetDialog*/
+        otpDialog.onCreate(bundle); *//*otpDialog.show(); was creating the problem with dialog, instead we called onCreate method to start bottomSheetDialog*//*
         //otpDialog.show();
-    }
+    }*/
 
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (otpDialog != null) {
+       /* if (otpDialog != null) {
             otpDialog.dismiss();
-        }
+        }*/
     }
 
 
@@ -509,7 +448,7 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
         String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/SendOTP/" +"?mobile_no="+ number;
 //        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/SendOTP/" +"?mobile_no="+ number;
 
-        showpDialog(v);
+        //showpDialog(v);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
@@ -525,7 +464,7 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
 
                     String status = response.getString("status");
                     if (status.equals("success")) {
-                        Show_Dialog(getApplicationContext(), number);
+
                         //Toast.makeText(getApplicationContext(), "OTP sent", Toast.LENGTH_LONG).show();
 
 
@@ -546,16 +485,23 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
                                                 countDownTimer.cancel();
                                             }*/
 
+                                            mBottomSheetDialog.hide();
+
                                             veryfiOTP(number, optSplit[1]);
 
                                             //  callVaryfyOTP(optSplit[1]);
+                                        /*OtpDialog dialog = null;
+                                        dialog = new OtpDialog(RegisterActivity.this,number);
+                                        Bundle bundle = new Bundle();
+                                        dialog.onCreate(bundle);
+                                        dialog.dismiss();*/
                                         }
                                     }, 1000);
                                 }
                             }
                         });
 
-                        if (!optEditText.getText().toString().equals("")) {
+                       /* if (!optEditText.getText().toString().equals("")) {
                             String optText = optEditText.getText().toString();
                             if (countDownTimer != null) {
                                 countDownTimer.cancel();
@@ -564,11 +510,12 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
                             veryfiOTP(number, optText);
 
                             //callVaryfyOTP(optText);
-                        }
+                        }*/
                         //  callTimerCoundown();
 
 
-                        Show_Dialog(getApplicationContext(), number);
+
+
                         //Toast.makeText(getApplicationContext(), "OTP sent", Toast.LENGTH_LONG).show();
 
                     }
@@ -603,7 +550,7 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
                             "Error: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
-                hidepDialog();
+                //hidepDialog();
             }
         }, new Response.ErrorListener() {
 
@@ -657,7 +604,7 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
                         error.getMessage(), Toast.LENGTH_SHORT).show();*/
                 //Show_Dialog(getApplicationContext(), number);
                 // hide the progress dialog
-                hidepDialog();
+                //hidepDialog();
             }
         });
 
@@ -690,62 +637,62 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
                     String response = jObj.getString("response");
                     String status =jObj.getString("status");
 
-                       if (status!=null && status.equals("success")) {
+                    if (status!=null && status.equals("success")) {
 
-                           launchAgeScreen();
+                        launchAgeScreen();
 
-                           Log.e(TAG, "123" + fullName);
-                           Log.e(TAG, "status: " + status);
-                           Log.e(TAG, "paswword: " + password);
+                        Log.e(TAG, "123" + fullName);
+                        Log.e(TAG, "status: " + status);
+                        Log.e(TAG, "paswword: " + password);
 
-                           Log.e(TAG, "response2163123: " + response);
+                        Log.e(TAG, "response2163123: " + response);
 
-                       }else if (status!=null && status.equals("failed") && response.equals("Duplicate_Phone_No")){
+                    }else if (status!=null && status.equals("failed") && response.equals("Duplicate_Phone_No")){
 
-                           AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
-                           // Setting Dialog Title
-                           alertDialog.setTitle("Registration Error");
+                        AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Registration Error");
 
-                           // Setting Dialog Message
-                           alertDialog.setMessage("You have already registered with this number. Please click Okay to Login");
+                        // Setting Dialog Message
+                        alertDialog.setMessage("You have already registered with this number. Please click Okay to Login");
 
-                           alertDialog.setCanceledOnTouchOutside(false);
+                        alertDialog.setCanceledOnTouchOutside(false);
 
-                           // Setting OK Button
-                           alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                               public void onClick(DialogInterface dialog, int which) {
-                                   // Write your code here to execute after dialog closed
-                                   Intent intent = new Intent(RegisterActivity.this,LogInActivity.class);
-                                   startActivity(intent);
-                               }
-                           });
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                Intent intent = new Intent(RegisterActivity.this,LogInActivity.class);
+                                startActivity(intent);
+                            }
+                        });
 
-                           // Showing Alert Message
-                           alertDialog.show();
+                        // Showing Alert Message
+                        alertDialog.show();
 
 
-                       }else if (status!=null && status.equals("failed") && response.equals("Duplicate_Mail_ID")){
+                    }else if (status!=null && status.equals("failed") && response.equals("Duplicate_Mail_ID")){
 
-                           AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
-                           // Setting Dialog Title
-                           alertDialog.setTitle("Registration Error");
+                        AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Registration Error");
 
-                           // Setting Dialog Message
-                           alertDialog.setMessage("You have already registered with this Email. Please click Okay to Login");
+                        // Setting Dialog Message
+                        alertDialog.setMessage("You have already registered with this Email. Please click Okay to Login");
 
-                           alertDialog.setCanceledOnTouchOutside(false);
+                        alertDialog.setCanceledOnTouchOutside(false);
 
-                           // Setting OK Button
-                           alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                               public void onClick(DialogInterface dialog, int which) {
-                                   // Write your code here to execute after dialog closed
-                                   Intent intent = new Intent(RegisterActivity.this,LogInActivity.class);
-                                   startActivity(intent);
-                               }
-                           });
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                Intent intent = new Intent(RegisterActivity.this,LogInActivity.class);
+                                startActivity(intent);
+                            }
+                        });
 
-                           // Showing Alert Message
-                           alertDialog.show();
+                        // Showing Alert Message
+                        alertDialog.show();
 
                     }
 
@@ -814,7 +761,7 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
                 params.put("password", password);
                 // params.put("password", password);
                 params.put("deviceId", deviceId);
-               // params.put("dob", dob );
+                // params.put("dob", dob );
 
 
                 return params;
@@ -825,7 +772,7 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
-    ProgressDialog loading = null;
+    /*ProgressDialog loading = null;
 
     private void showpDialog(View v) {
         loading = new ProgressDialog(v.getContext());
@@ -834,28 +781,57 @@ public  class RegisterActivity extends AppCompatActivity implements ActivityComp
         loading.setMessage("Please wait for OTP.....");
         loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         loading.show();
-    }
+    }*/
 
 
 
-    private void hidepDialog() {
+   /* private void hidepDialog() {
         if (loading != null) {
             loading.dismiss();
         }
     }
 
-   /* private void showDialog() {
+   *//* private void showDialog() {
         if (!pDialog.isShowing())
             pDialog.show();
-    }*/
+    }*//*
 
-  /*  private void hideDialog() {
+  *//*  private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
-    }*/
-
+    }*//*
+*/
     private void launchAgeScreen() {
-        startActivity(new Intent(RegisterActivity.this, FilterActivity.class));
+        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+
+    }
+
+
+    private void callTimerCoundown() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        countDownTimer = new CountDownTimer(60000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int sec = (int) millisUntilFinished / 1000;
+                if (sec < 10) {
+                    timerTextView.setText("00:0" + sec);
+                } else
+
+                {
+                    timerTextView.setText("00:" + sec);
+                }
+//                resentButton.setClickable(false);
+//                waitTextView.setClickable(false);
+            }
+
+            public void onFinish() {
+                timerTextView.setText("00:00");
+//                resentButton.setClickable(true);
+//                waitTextView.setClickable(true);
+            }
+        }.start();
 
     }
 
