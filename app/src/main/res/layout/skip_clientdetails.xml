@@ -262,6 +262,7 @@
         android:background="@drawable/background_button"
         android:text="Request Join"
         android:textColor="@color/white"
+       android:textAllCaps="false"
         android:textSize="20dp" />
 
         <Button
@@ -275,6 +276,7 @@
             android:background="@drawable/background_button"
             android:text="Pay"
             android:textColor="@color/white"
+            android:textAllCaps="false"
             android:textSize="20dp" />
 
     </FrameLayout>

@@ -186,8 +186,9 @@
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="bottom"
                 android:layout_marginTop="@dimen/margin_side"
-                android:background="@color/bg_orange"
+                android:background="@drawable/button_corner"
                 android:text="Send"
+                android:textAllCaps="false"
                 android:textColor="@color/white" />
 
         </LinearLayout>

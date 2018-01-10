@@ -96,7 +96,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     int isMpinSet=1;
     FloatingActionButton fab;
     ActionBarDrawerToggle toggle;
-    HashMap<String,String> Hash_file_maps;
+HashMap<String,String> Hash_file_maps;
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
@@ -126,13 +126,12 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         Intent i=getIntent();
 
         userImageUrl=i.getStringExtra("userImageUrl");
-        Log.d("userskip",userImageUrl);
 
+        Log.d("userskip",userImageUrl);
         //Initialise the navigation header image
         ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
 
         //set the NAvigationImage header using glide
-
         Glide
                 .with(MainActivitySkip.this)
                 .load(userImageUrl)
@@ -140,7 +139,6 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
                 .into(niv);
 
         Log.d("Skip",""+userImageUrl);
-
         sendMoney = (ImageView)findViewById(R.id.ll_send);
         requestMoney = (ImageView)findViewById(R.id.ll_request);
         socialPayment = (ImageView)findViewById(R.id.ll_social_payment);

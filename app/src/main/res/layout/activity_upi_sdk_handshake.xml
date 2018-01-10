@@ -26,8 +26,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/HandShake_Btn"
         android:text="HandShake"
+        android:textAllCaps="false"
         android:textColor="#fff"
-        android:background="@color/bg_orange"
+        android:background="@drawable/button_corner"
         />
 </LinearLayout>
 

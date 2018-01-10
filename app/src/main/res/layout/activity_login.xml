@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:text="Welcome back !"
+            android:text="Welcome To Sabpaisa!"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
@@ -67,7 +67,7 @@
             android:drawableLeft="@drawable/ic_phone_black_24dp"
             android:drawablePadding="10dp"
             android:hint="@string/hint_phone"
-            android:inputType="phone"
+            android:inputType="number"
             />
 
 
@@ -123,7 +123,8 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/background_button"
-            android:text="LOGIN"
+            android:text="Login"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="20dp" />
 

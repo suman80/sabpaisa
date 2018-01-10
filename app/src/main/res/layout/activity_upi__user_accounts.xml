@@ -191,8 +191,9 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/accountRemove"
                             android:text="Remove Account"
-                            android:background="@color/bg_orange"
+                            android:background="@drawable/button_corner"
                             android:textColor="#fff"
+                            android:textAllCaps="false"
                             android:layout_weight="0.5"
                             />
 
@@ -201,9 +202,10 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/setUpiPin"
                             android:text="Set Upi Pin"
-                            android:background="@color/bg_orange"
+                            android:background="@drawable/button_corner"
+                            android:textAllCaps="false"
                             android:textColor="#fff"
-                            android:layout_weight="0.8"
+                            android:layout_weight="0.5"
                             />
 
 

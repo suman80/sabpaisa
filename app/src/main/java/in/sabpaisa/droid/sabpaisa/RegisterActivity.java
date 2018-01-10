@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.facebook.LoginActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -70,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView send_Otp;
     private ProgressDialog pDialog;
     private EditText et_otp;
+    TextView passwordShow;
     String number;
     String otpTag = "Please Use this OTP to verify your Mobile on SabPaisa App";
     Handler handler = new Handler();
@@ -103,10 +106,11 @@ public class RegisterActivity extends AppCompatActivity {
         btn_name_next2 = (Button) findViewById(R.id.btn_name_next2);*/
         //emailid = (EditText) findViewById(R.id.emailid);
 
-
+passwordShow=(TextView)findViewById(R.id.tv_password_show1);
         et_phone_number = (EditText) findViewById(R.id.et_phone_number);
         et_FullName = (EditText) findViewById(R.id.et_FullName);
         //et_otp =(EditText) findViewById(R.id.et_otp);
+        et_FullName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         et_password = (EditText) findViewById(R.id.et_password);
         //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
@@ -214,6 +218,8 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
+
+
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,6 +296,20 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
+        passwordShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (passwordShow.getText().toString().equals("Show")){
+                    passwordShow.setText("Hide");
+
+                    et_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                }else
+                {
+                    passwordShow.setText("Show");
+                    et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
+        });
 
 
 
@@ -782,7 +802,7 @@ public class RegisterActivity extends AppCompatActivity {
     }*//*
 */
     private void launchAgeScreen() {
-        startActivity(new Intent(RegisterActivity.this, FilterActivity.class));
+        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
 
     }
 

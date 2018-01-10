@@ -28,88 +28,135 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".LogInActivity">
 
-            <!--
+        <activity android:name=".LogInActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".VerifyMobile"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".FilterActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".UPIBankList"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UIN"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.braunster.chatsdk.activities.ChatSDKLoginActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Util.SkipClientDetailsScreen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Util.FullViewOfClientsProceed"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity android:name=".FeedDetails"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivitySkip"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".GroupDetails"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Util.PrivacyPolicyActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".Util.ProfileNavigationActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Util.RateActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Util.SettingsNavigationActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Util.ShareActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity android:name=".RegisterPasscode"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SplashScreen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
         </activity>
-        <activity android:name=".VerifyMobile" />
-        <activity android:name=".FilterActivity">
+        <activity android:name=".UpiSdkHandshake"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
-            <!--
-               <intent-filter>
-                   <action android:name="android.intent.action.MAIN" />
 
-                   <category android:name="android.intent.category.LAUNCHER" />
-               </intent-filter>
-            -->
-
-        </activity>
-        <activity android:name=".UPIBankList" />
-        <activity android:name=".UIN" />
-        <activity android:name="com.braunster.chatsdk.activities.ChatSDKLoginActivity" />
-        <activity android:name=".Util.SkipClientDetailsScreen" />
-        <activity android:name=".Util.FullViewOfClientsProceed" />
-        <activity android:name=".FeedDetails" />
-        <activity android:name=".MainActivitySkip" />
-        <activity android:name=".GroupDetails" />
-        <activity android:name=".Util.PrivacyPolicyActivity" />
-        <activity android:name=".Util.ProfileNavigationActivity" />
-        <activity android:name=".Util.RateActivity" />
-        <activity android:name=".Util.SettingsNavigationActivity" />
-        <activity android:name=".Util.ShareActivity" />
-        <activity android:name=".RegisterPasscode" />
-        <activity android:name=".SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".UpiSdkHandshake" />
-
-        <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        -->
-
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".AccountInfoActivity" />
+        <activity android:name=".AccountInfoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".RegisterActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
 
         </activity>
 
-        <activity android:name=".SetmPIN" />
-        <activity android:name=".SuccessMPIN" />
-        <activity android:name=".SendMoneyActivity" />
-        <activity android:name=".RequestMoney" />
+        <activity android:name=".SetmPIN"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SuccessMPIN"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SendMoneyActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".RequestMoney"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".BeneficiaryDetail"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".BeneficiaryRequestMoney"
-            android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".SendConfirmUPImPIN" />
-        <activity android:name=".TransactionResult" />
-        <activity android:name=".SendAccountIFSC" />
-        <activity android:name=".TransactionsActivity" />
-        <activity android:name=".WebViewActivity" />
-        <activity android:name=".TestScrollPager">
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SendConfirmUPImPIN"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TransactionResult"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SendAccountIFSC"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TransactionsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".WebViewActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TestScrollPager"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
 
             <!--
             <intent-filter>
@@ -120,12 +167,18 @@
             -->
         </activity>
         <activity android:name=".COA" />
-        <activity android:name=".SocialPayment" />
-        <activity android:name=".ChatDetail" />
+        <activity android:name=".SocialPayment"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ChatDetail"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SendMoneyDialog"
             android:excludeFromRecents="true"
-            android:theme="@style/DialogTheme" />
+            android:theme="@style/DialogTheme"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SendMoneyAcIFSCDialog"
             android:excludeFromRecents="true"
@@ -133,17 +186,25 @@
         <activity
             android:name=".SendConfirmUPImPINDialog"
             android:excludeFromRecents="true"
-            android:theme="@style/DialogTheme" />
+            android:theme="@style/DialogTheme"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".TransactionResultDialog"
             android:excludeFromRecents="true"
-            android:theme="@style/DialogTheme" />
+            android:theme="@style/DialogTheme"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Util.ForgotActivity"
             android:label="@string/title_activity_forgot"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
-        <receiver android:name=".Util.SmsReceiver">
+        <receiver android:name=".Util.SmsReceiver"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
@@ -156,17 +217,33 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".Util.FullViewOfClientsProceed"></activity>
         -->
-        <activity android:name=".Proceed_Feed_FullScreen" />
-        <activity android:name=".Proceed_Group_FullScreen" />
-        <activity android:name=".UPI_UserAccounts" />
+        <activity android:name=".Proceed_Feed_FullScreen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Proceed_Group_FullScreen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UPI_UserAccounts"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".FetchAccBasedOnIIN"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".UPIActivationActivity"></activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UPIActivationActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".Util.Nagationfullview"
             android:label="@string/title_activity_nagationfullview"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
+
+        </activity>
     </application>
 
 </manifest>

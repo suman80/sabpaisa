@@ -163,6 +163,7 @@
             android:layout_gravity="bottom"
             android:background="@drawable/background_button"
             android:text="Send"
+            android:textAllCaps="false"
             android:textColor="@color/white" />
     </FrameLayout>
 </LinearLayout>

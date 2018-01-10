@@ -161,6 +161,7 @@
                         android:layout_gravity="bottom"
                         android:background="@drawable/background_button"
                         android:text="Request"
+                        android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:layout_weight="0.5"
                         />
@@ -169,10 +170,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/btn_Approve"
-                        android:background="@color/bg_orange"
+                        android:background="@drawable/button_corner"
                         android:layout_gravity="bottom"
                         android:text="Approve"
                         android:textColor="#fff"
+                        android:textAllCaps="false"
                         android:layout_weight="0.5"
                         />
 

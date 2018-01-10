@@ -119,7 +119,8 @@
         android:id="@+id/btnAcctivate"
         android:text="Activate"
         android:textColor="#fff"
-        android:background="@color/bg_orange"
+        android:background="@drawable/button_corner"
+        android:textAllCaps="false"
         android:layout_marginTop="20dp"
         />
 
