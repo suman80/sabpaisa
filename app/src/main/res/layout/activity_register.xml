@@ -18,15 +18,7 @@
             android:layout_marginTop="35dp"
             android:text="SabPaisa"
             android:textSize="25sp" />
-<!--
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:text="Welcome back !"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp" />-->
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,73 +29,44 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
-        <!-- <in.sabpaisa.droid.sabpaisa.Util.PrefixEditText
-             android:imeOptions="actionNext"
-             android:id="@+id/et_phone_number"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginLeft="20dp"
-             android:layout_marginRight="20dp"
-             android:layout_marginTop="25dp"
-             android:maxLength="10"
-             android:background="@drawable/background_edittext"
-             android:drawableLeft="@drawable/ic_phone_black_24dp"
-             android:drawablePadding="10dp"
-             android:hint="@string/hint_phone"
-             android:inputType="phone" />   -->
-
-        <!--testing on master-->
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="25dp">
-
-            <TextView
-                android:elevation="15dp"
-                android:id="@+id/send_Otp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:text="Send OTP"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="15sp"
-                android:textStyle="bold" />
 
 
             <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionNext"
-            android:id="@+id/et_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:id="@+id/et_phone_number"
                 android:maxLength="10"
-
-            android:background="@drawable/background_edittext"
-            android:drawableLeft="@drawable/ic_phone_black_24dp"
-            android:drawablePadding="10dp"
-            android:hint="Enter Your Mobile Number"
+                android:background="@drawable/background_edittext"
+                android:drawableLeft="@drawable/ic_phone_black_24dp"
+                android:drawablePadding="10dp"
+                android:hint="Mobile Number"
+                android:inputType="number"
                 android:singleLine="true"
-            android:inputType="number"
-            />
-
-     <!--   <Button
-            android:id="@+id/btn_register1"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/background_button"
-            android:text="Register with SabPaisa"
-            android:textColor="@color/white"
-            android:textSize="20dp" />-->
+                />
+            <Button
+                android:elevation="15dp"
+                android:id="@+id/send_Otp"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:text="Send OTP"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:background="@drawable/background_button"
+                />
 
 
-</FrameLayout>
+        </FrameLayout>
+
+
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,21 +75,6 @@
 
             android:layout_marginTop="25dp">
 
-
-
-            /////////////////
-            <!--<TextView
-                android:elevation="15dp"
-                android:id="@+id/tv_password_show"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:text="Show"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="15sp"
-                android:textStyle="bold" />-->
 
             <EditText
                 android:id="@+id/optEditText"
@@ -136,26 +84,33 @@
                 android:drawableLeft="@drawable/ic_lock_black_24dp"
                 android:drawablePadding="10dp"
                 android:hint="@string/hint_OTP"
+                android:imeOptions="actionDone"
                 android:singleLine="true"
-                android:imeOptions="actionDone" />
+                />
         </FrameLayout>
 
-        <EditText
-            android:imeOptions="actionNext"
-            android:id="@+id/et_FullName"
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:maxLength="40"
-            android:layout_marginTop="25dp"
-            android:inputType="textCapSentences|textAutoCorrect"
-            android:background="@drawable/background_edittext"
-            android:drawableLeft="@drawable/ic_person_black_24dp"
-            android:drawablePadding="10dp"
-            android:hint="@string/hint_fullname"
-            android:singleLine="true"/>
 
+            android:layout_marginTop="25dp">
+
+            <EditText
+                android:imeOptions="actionNext"
+                android:id="@+id/et_FullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="40"
+                android:inputType="textCapSentences|textAutoCorrect"
+                android:background="@drawable/background_edittext"
+                android:drawableLeft="@drawable/ic_person_black_24dp"
+                android:drawablePadding="10dp"
+                android:hint="@string/hint_fullname"
+                android:singleLine="true" />
+        </FrameLayout>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -163,44 +118,37 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="25dp">
 
-        <TextView
-            android:elevation="15dp"
-            android:id="@+id/tv_password_show1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Show"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            <EditText
+                android:imeOptions="actionNext"
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:maxLength="20"
+                android:background="@drawable/background_edittext"
+                android:drawableLeft="@drawable/ic_lock_black_24dp"
+                android:drawablePadding="10dp"
+                android:singleLine="true"
+                android:hint="@string/hint_password"
+                android:layout_weight="1"
+                />
 
-        <EditText
-            android:imeOptions="actionNext"
-            android:id="@+id/et_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-android:inputType="textPassword"
+            <Button
+                android:elevation="15dp"
+                android:id="@+id/tv_password_show1"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:text="Show"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:background="@drawable/background_button"
+                />
 
-android:maxLength="20"
-            android:background="@drawable/background_edittext"
-            android:drawableLeft="@drawable/ic_lock_black_24dp"
-            android:drawablePadding="10dp"
-            android:singleLine="true"
-            android:hint="@string/hint_password" />
 
-</FrameLayout>
-      <!--  <TextView
-            android:id="@+id/tv_forgot_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="25dp"
-            android:text="Forgot Password"
-            android:textColor="@color/bg_orange"
-            android:textSize="20sp"
-            android:textStyle="bold" />-->
+        </FrameLayout>
+
 
         <Button
             android:id="@+id/btn_register"
@@ -211,39 +159,9 @@ android:maxLength="20"
             android:layout_marginTop="30dp"
             android:background="@drawable/background_button"
             android:text="Register with SabPaisa"
-            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="20dp" />
 
-        <!--Commented here-->
-       <!-- <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-&lt;!&ndash;
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="25dp"
-                android:text="Don't have a SabPaisa Account ?"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold" />&ndash;&gt;
-&lt;!&ndash;
-            <TextView
-                android:id="@+id/tv_register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="25dp"
-                android:text="Register"
-                android:textColor="@color/bg_orange"
-                android:textSize="25sp"
-                android:textStyle="bold" />&ndash;&gt;
-        </LinearLayout>-->
+
     </LinearLayout>
 </ScrollView>

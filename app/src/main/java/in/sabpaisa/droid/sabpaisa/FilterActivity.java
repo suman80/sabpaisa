@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -54,6 +55,9 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     Button proceed,skip;
 String userImageUrl;
 String userAccessToken,response;
+
+ImageView spinnerClick1,spinnerClick2,spinnerClick3;
+
     ArrayList<Institution> client1ArrayList;
 
      public static  String state_position,clientId;
@@ -90,6 +94,34 @@ String userAccessToken,response;
         stateSpinner =      (Spinner) findViewById(R.id.spinnerBank).findViewById(R.id.spinner2);
         serviceSpinner =    (Spinner) findViewById(R.id.spinnerClient).findViewById(R.id.spinner2);
         clientsSpinner =    (Spinner) findViewById(R.id.spinnerInsttitute).findViewById(R.id.spinner2);
+
+        spinnerClick1 = (ImageView) findViewById(R.id.spinnerClick1);
+
+        spinnerClick1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stateSpinner.performClick();
+            }
+        });
+
+        spinnerClick2 = (ImageView) findViewById(R.id.spinnerClick2);
+
+        spinnerClick2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                serviceSpinner.performClick();
+            }
+        });
+
+        spinnerClick3 = (ImageView) findViewById(R.id.spinnerClick3);
+
+        spinnerClick3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clientsSpinner.performClick();
+            }
+        });
+
 
         //Initializing arrayLists
         stateArrayList = new ArrayList<>();

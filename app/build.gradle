@@ -95,7 +95,7 @@ dependencies {
     compile project(path: ':firebase_plugin')
     //compile project(path: ':chat-sdk-core')
     compile 'gun0912.ted:tedpermission:2.1.0'
-
+    compile 'com.android.support:multidex:1.0.0'
 }
 
 allprojects {

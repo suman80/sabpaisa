@@ -46,7 +46,7 @@
 
             <include
                 android:id="@+id/spinnerBank"
-                layout="@layout/second_spinner_layout" />
+                layout="@layout/custom_spinner_layout" />
 
             <LinearLayout
                 android:id="@+id/llClientSpinner"

@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,12 +9,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
@@ -39,7 +42,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.facebook.LoginActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -62,17 +64,16 @@ import in.sabpaisa.droid.sabpaisa.Util.SmsListener;
 import in.sabpaisa.droid.sabpaisa.Util.SmsReceiver;
 
 /**
- * Created by SabPaisa on 26-10-2017.
+ * Created by Rajdeep Singh on 26-10-2017.
  */
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = RegisterActivity.class.getSimpleName();
     EditText et_phone_number, et_FullName, et_password;
-    private Button btn_register;
-    private TextView send_Otp;
+    private Button btn_register,sentOtpTest;
+    private Button send_Otp;
     private ProgressDialog pDialog;
     private EditText et_otp;
-    TextView passwordShow;
     String number;
     String otpTag = "Please Use this OTP to verify your Mobile on SabPaisa App";
     Handler handler = new Handler();
@@ -85,6 +86,9 @@ public class RegisterActivity extends AppCompatActivity {
     TextView timerTextView = null;
     ProgressDialog progressBar = null;
     BottomSheetDialog mBottomSheetDialog;
+    private static final int REQUEST_READ_PERMISSION = 123;
+    String deviceId;
+    Button passwordShow;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -99,41 +103,42 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         btn_register = (Button) findViewById(R.id.btn_register);
-        send_Otp = (TextView) findViewById(R.id.send_Otp);
+        send_Otp = (Button) findViewById(R.id.send_Otp);
         optEditText = (EditText) findViewById(R.id.optEditText);
 
         /*btn_name_next1 = (Button) findViewById(R.id.btn_name_next1);
         btn_name_next2 = (Button) findViewById(R.id.btn_name_next2);*/
         //emailid = (EditText) findViewById(R.id.emailid);
 
-passwordShow=(TextView)findViewById(R.id.tv_password_show1);
+
         et_phone_number = (EditText) findViewById(R.id.et_phone_number);
         et_FullName = (EditText) findViewById(R.id.et_FullName);
         //et_otp =(EditText) findViewById(R.id.et_otp);
-        et_FullName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         et_password = (EditText) findViewById(R.id.et_password);
         //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        passwordShow=(Button) findViewById(R.id.tv_password_show1);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
          /*START Initiallizing BottomSheetDialog and giving its view in sheetView*/
         mBottomSheetDialog = new BottomSheetDialog(RegisterActivity.this);
-        LayoutInflater inflater = (LayoutInflater)RegisterActivity.this.getSystemService
+        LayoutInflater inflater = (LayoutInflater) RegisterActivity.this.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
         View sheetView = inflater.inflate(R.layout.popup_otp, null);
         mBottomSheetDialog.setContentView(sheetView);
 
         timerTextView = (TextView) sheetView.findViewById(R.id.timer_text_view);
-        callTimerCoundown();
+
+
+
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-        final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+        /*final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
 
         final String tmDevice, tmSerial, androidId;
 
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-
-            return;
-        }
         tmDevice = "" + tm.getDeviceId();
         tmSerial = "" + tm.getSimSerialNumber();
         androidId = "" + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -141,7 +146,7 @@ passwordShow=(TextView)findViewById(R.id.tv_password_show1);
         UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
         final String deviceId = deviceUuid.toString();
 
-        Log.e(TAG, "Device Id: " + deviceId);
+        Log.e(TAG, "Device Id: " + deviceId);*/
         // Progress dialog
         //pDialog = new ProgressDialog(this);
         //pDialog.setCancelable(false);
@@ -150,9 +155,9 @@ passwordShow=(TextView)findViewById(R.id.tv_password_show1);
         et_phone_number.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (s.toString().trim().length()<9){
+                if (s.toString().trim().length() < 9) {
                     send_Otp.setVisibility(View.INVISIBLE);
-                }else {
+                } else {
                     send_Otp.setVisibility(View.VISIBLE);
                 }
             }
@@ -169,20 +174,19 @@ passwordShow=(TextView)findViewById(R.id.tv_password_show1);
         });
 
 
-
         send_Otp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String number = et_phone_number.getText().toString();
                 if (number.equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter Phone Number!", Toast.LENGTH_LONG).show();
-                } else if (isOnline()){
+                } else if (isOnline()) {
 
                     mBottomSheetDialog.show();
+                    callTimerCoundown();
                     sendOTP(v, number);
                     // Toast.makeText(OTPVarify.this, "first name field is empty", Toast.LENGTH_LONG).show();
-                }
-                else {
+                } else {
 
                     AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
 
@@ -212,56 +216,42 @@ passwordShow=(TextView)findViewById(R.id.tv_password_show1);
         });
 
 
-
-
-
-
-
-
-
+        if (CheckPermission(this, Manifest.permission.READ_PHONE_STATE)) {
+            deviceId();
+        } else {
+            RequestPermission(RegisterActivity.this, Manifest.permission.READ_PHONE_STATE, REQUEST_READ_PERMISSION);
+        }
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //      String id = emailid.getText().toString();
 
-                String contactNumber =  et_phone_number.getText().toString();
+                String contactNumber = et_phone_number.getText().toString();
                 String fullName = et_FullName.getText().toString();
 
                 // String dob =  et_phone_number.getText().toString();
-                String mobile =  et_phone_number.getText().toString();
-                // String otp =  et_otp.getText().toString();
-                String password =   et_password.getText().toString();
 
-                if ((contactNumber.length() == 0) ||(contactNumber.length()<10)){
+                // String otp =  et_otp.getText().toString();
+                String password = et_password.getText().toString();
+
+                if ((contactNumber.length() == 0) || (contactNumber.length() < 10)) {
 
                     et_phone_number.setError("Please make sure that You have entered 10 digit number ");
 
-                }
-
-                else   if (fullName.length() == 0) {
+                } else if (fullName.length() == 0) {
 
                     et_FullName.setError("Please Enter your Name");
 
-                }
-
-                else   if (password.length() == 0) {
+                } else if (password.length() == 0) {
 
                     et_password.setError("Please Enter Password");
 
-                }
-
-
-
-                else if(isOnline())
-                {
-                    registerUser(contactNumber,fullName,password,deviceId);
+                } else if (isOnline()) {
+                    registerUser(contactNumber, fullName, password, deviceId);
                     //launchAgeScreen();
 
-                }
-
-
-                else {
+                } else {
 
                     AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
 
@@ -289,11 +279,9 @@ passwordShow=(TextView)findViewById(R.id.tv_password_show1);
                 //launchAgeScreen();
 
 
-
             }
 
         });
-
 
 
         passwordShow.setOnClickListener(new View.OnClickListener() {
@@ -311,14 +299,80 @@ passwordShow=(TextView)findViewById(R.id.tv_password_show1);
             }
         });
 
-
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+
     }
 
 
+    private void deviceId() {
+        final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+
+        final String tmDevice, tmSerial, androidId;
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        tmDevice = "" + tm.getDeviceId();
+        tmSerial = "" + tm.getSimSerialNumber();
+        androidId = "" + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
+        deviceId = deviceUuid.toString();
+
+        Log.e(TAG, "Device Id: " + deviceId);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
+
+        switch (permsRequestCode) {
+
+            case REQUEST_READ_PERMISSION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    deviceId();
+                } else {
+                    //ShowToast(getString(R.string.permission_needed_sms));
+                }
+                return;
+            }
+        }
+    }
+
+    public void RequestPermission(Activity thisActivity, String Permission, int Code) {
+        if (ContextCompat.checkSelfPermission(thisActivity,
+                Permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity,
+                    Permission)) {
+            } else {
+                ActivityCompat.requestPermissions(thisActivity,
+                        new String[]{Permission},
+                        Code);
+            }
+        }
+    }
+
+    public boolean CheckPermission(Context context, String Permission) {
+        if (ContextCompat.checkSelfPermission(context,
+                Permission) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
     private void veryfiOTP(final String number, String otp) {
@@ -345,7 +399,7 @@ passwordShow=(TextView)findViewById(R.id.tv_password_show1);
                         //callUINVarificationScreen();
                         //Toast.makeText(OTPVarify.this, "OTP Verified ", Toast.LENGTH_LONG).show();
 
-                    send_Otp.setVisibility(View.INVISIBLE);
+                        send_Otp.setVisibility(View.INVISIBLE);
 
                     } else if (status.equals("failure")) {
                         // Toast.makeText(OTPVarify.this, "Unable To send OTP varify", Toast.LENGTH_LONG).show();
@@ -785,13 +839,13 @@ passwordShow=(TextView)findViewById(R.id.tv_password_show1);
 
 
 
-   /* private void hidepDialog() {
-        if (loading != null) {
-            loading.dismiss();
-        }
-    }
+    /* private void hidepDialog() {
+         if (loading != null) {
+             loading.dismiss();
+         }
+     }
 
-   *//* private void showDialog() {
+    *//* private void showDialog() {
         if (!pDialog.isShowing())
             pDialog.show();
     }*//*
@@ -802,7 +856,7 @@ passwordShow=(TextView)findViewById(R.id.tv_password_show1);
     }*//*
 */
     private void launchAgeScreen() {
-        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+        startActivity(new Intent(RegisterActivity.this, FilterActivity.class));
 
     }
 
@@ -834,8 +888,6 @@ passwordShow=(TextView)findViewById(R.id.tv_password_show1);
         }.start();
 
     }
-
-
 
 
 
