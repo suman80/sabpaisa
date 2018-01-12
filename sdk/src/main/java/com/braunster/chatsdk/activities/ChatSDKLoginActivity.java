@@ -37,7 +37,7 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_sdk_activty_login);
 
-        //setExitOnBackPressed(true);
+        setExitOnBackPressed(true);
 
         View view = findViewById(R.id.chat_sdk_root_view);
 
@@ -95,12 +95,12 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         });
     }
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
 
       initListeners();
-    }*/
+    }
 
     @Override
     public void onBackPressed(){

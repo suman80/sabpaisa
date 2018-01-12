@@ -389,6 +389,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            finish();
 
         }
     }
