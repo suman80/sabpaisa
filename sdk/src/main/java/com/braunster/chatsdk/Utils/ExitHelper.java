@@ -23,7 +23,7 @@ public class ExitHelper {
         this.activity = activity;
         superToast = new SuperToast(activity);
     }
-
+//;ine
     public void triggerExit() {
         switch (BDefines.Defaults.SDKExitMode) {
             case BDefines.Exit.EXIT_MODE_DIALOG:
