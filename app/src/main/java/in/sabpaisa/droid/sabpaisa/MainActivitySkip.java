@@ -39,6 +39,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
@@ -228,7 +229,7 @@ HashMap<String,String> Hash_file_maps;
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivitySkip.this,SocialPayment.class);
+                Intent intent = new Intent(MainActivitySkip.this,ChatSDKLoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }

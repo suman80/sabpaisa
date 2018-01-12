@@ -1,6 +1,7 @@
 
 package com.braunster.chatsdk.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -94,13 +95,21 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         });
     }
 
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
 
       initListeners();
-    }
+    }*/
 
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent i=new Intent(Intent.ACTION_MAIN);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        finish();
+    }
     /* Dismiss dialog and open main activity.*/
     @Override
     protected void afterLogin() {

@@ -58,6 +58,7 @@ import java.util.UUID;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+import in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference;
 import in.sabpaisa.droid.sabpaisa.Util.OtpDialog;
 import in.sabpaisa.droid.sabpaisa.Util.SharedPref;
 import in.sabpaisa.droid.sabpaisa.Util.SmsListener;
@@ -117,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
         et_password = (EditText) findViewById(R.id.et_password);
         //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         passwordShow=(Button) findViewById(R.id.tv_password_show1);
-
+        et_otp=(EditText)findViewById(R.id.optEditText);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
          /*START Initiallizing BottomSheetDialog and giving its view in sheetView*/
         mBottomSheetDialog = new BottomSheetDialog(RegisterActivity.this);
@@ -229,6 +230,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 String contactNumber = et_phone_number.getText().toString();
                 String fullName = et_FullName.getText().toString();
+                String otp=et_otp.getText().toString();
 
                 // String dob =  et_phone_number.getText().toString();
 
@@ -239,13 +241,19 @@ public class RegisterActivity extends AppCompatActivity {
 
                     et_phone_number.setError("Please make sure that You have entered 10 digit number ");
 
-                } else if (fullName.length() == 0) {
+                }
+
+                else if(et_otp.length()==0){
+
+                   et_otp.setError("Please click on the send otp");
+                }
+                else if (fullName.length() == 0) {
 
                     et_FullName.setError("Please Enter your Name");
 
                 } else if (password.length() == 0) {
 
-                    et_password.setError("Please Enter Password");
+                    et_password.setError("Please set your Password");
 
                 } else if (isOnline()) {
                     registerUser(contactNumber, fullName, password, deviceId);
@@ -475,11 +483,8 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-       /* if (otpDialog != null) {
-            otpDialog.dismiss();
-        }*/
+      finish();
     }
-
 
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -702,6 +707,23 @@ public class RegisterActivity extends AppCompatActivity {
                         Log.e(TAG, "response2163123: " + response);
 
                     }else if (status!=null && status.equals("failed") && response.equals("Duplicate_Phone_No")){
+                        AlertDialog.Builder builder =new AlertDialog.Builder(RegisterActivity.this);
+                        builder.setTitle("Registration Error");
+                        builder.setMessage("You have already registered with this number. Please click Okay to Login");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(RegisterActivity.this,LoginActivityWithoutSharedPreference.class);
+                                startActivity(intent);
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                        //Toast.makeText(RegisterActivity.this, "", Toast.LENGTH_LONG).show();
+
+
+
+                        /*
 
                         AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
                         // Setting Dialog Title
@@ -724,6 +746,7 @@ public class RegisterActivity extends AppCompatActivity {
                         // Showing Alert Message
                         alertDialog.show();
 
+*/
 
                     }else if (status!=null && status.equals("failed") && response.equals("Duplicate_Mail_ID")){
 
@@ -732,7 +755,7 @@ public class RegisterActivity extends AppCompatActivity {
                         alertDialog.setTitle("Registration Error");
 
                         // Setting Dialog Message
-                        alertDialog.setMessage("You have already registered with this Email. Please click Okay to Login");
+                        alertDialog.setMessage("222You have already registered with this Email. Please click Okay to Login");
 
                         alertDialog.setCanceledOnTouchOutside(false);
 
@@ -740,8 +763,7 @@ public class RegisterActivity extends AppCompatActivity {
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Write your code here to execute after dialog closed
-                                Intent intent = new Intent(RegisterActivity.this,LogInActivity.class);
-                                startActivity(intent);
+                             launchAgeScreen();
                             }
                         });
 
@@ -856,7 +878,7 @@ public class RegisterActivity extends AppCompatActivity {
     }*//*
 */
     private void launchAgeScreen() {
-        startActivity(new Intent(RegisterActivity.this, FilterActivity.class));
+        startActivity(new Intent(RegisterActivity.this, LoginActivityWithoutSharedPreference.class));
 
     }
 

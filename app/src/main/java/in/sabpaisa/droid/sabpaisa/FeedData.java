@@ -70,7 +70,6 @@ public class FeedData {
     public String createdDate;
     String imagePath;
     String logoPath;
-/*
     public FeedData() {
     }
 
@@ -82,7 +81,7 @@ public class FeedData {
         this.createdDate = createdDate;
         this.imagePath = imagePath;
         this.logoPath = logoPath;
-    }*/
+    }
 
 
 }
