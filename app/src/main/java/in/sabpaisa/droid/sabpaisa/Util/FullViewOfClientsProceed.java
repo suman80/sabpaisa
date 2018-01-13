@@ -68,7 +68,7 @@ import in.sabpaisa.droid.sabpaisa.R;
 
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class FullViewOfClientsProceed extends AppCompatActivity implements  FeedsFragments.GetDataInterface, GroupsFragments.GetDataInterface ,NavigationView.OnNavigationItemSelectedListener, AppBarLayout.OnOffsetChangedListener,OnFragmentInteractionListener {
+public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,OnFragmentInteractionListener,ProceedFeedsFragments.GetDataInterface,ProceedGroupsFragments.GetDataInterface {
     ImageView clientImagePath;
     String clientName,state,landingPage;
     public static String ClientId;
@@ -77,7 +77,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements  Feed
     TextView mSearchText;
     ActionBarDrawerToggle toggle;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
-public static String userImageUrl=null;
+    public static String userImageUrl=null;
     AppBarLayout appBarLayout;
     MaterialSearchView searchView;
     ArrayList<FeedData> feedData;
@@ -119,7 +119,7 @@ public static String userImageUrl=null;
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
-        appBarLayout.addOnOffsetChangedListener(this);
+       // appBarLayout.addOnOffsetChangedListener(this);
         viewPager = (ViewPager) findViewById(R.id.viewpagerproceed);
         setupViewPager(viewPager);
 
@@ -128,7 +128,7 @@ public static String userImageUrl=null;
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        searchViewBar();
+
 
         landingPage =getIntent().getStringExtra("landingPage");
         Log.d("page",""+landingPage);
@@ -143,7 +143,7 @@ public static String userImageUrl=null;
 // set Fragmentclass Arguments
         PayFragments fragobj = new PayFragments();
         fragobj.setArguments(bundle);*/
-Intent intent=getIntent();
+        Intent intent=getIntent();
         clientName = intent.getStringExtra("clientName");
         state = intent.getStringExtra("state");
         clientImageURLPath= getIntent().getStringExtra("clientImagePath");
@@ -174,10 +174,32 @@ Intent intent=getIntent();
         clientNameTextView.setText( clientName);
         stateTextView.setText(state);
         new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
-
+        searchViewBar();
 
 
     }
+
+
+    private void setupViewPager(ViewPager viewPager) {
+
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        feedsFragments = new ProceedFeedsFragments();
+        adapter.addFragment(feedsFragments,"Feeds"); //changing here creating different frags
+        groupsFragments = new ProceedGroupsFragments();
+        adapter.addFragment(groupsFragments,"Groups");//changing here creating different frags
+        adapter.addFragment(new PayFragments(),"Payment");
+        adapter.addFragment(new Members(),"Members");
+        viewPager.setAdapter(adapter);
+
+
+        //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
+
+    }
+
+
+
+
 
  /*   @Override
     public void onBackPressed() {
@@ -188,6 +210,135 @@ Intent intent=getIntent();
         startActivity(a);
 
     }*/
+
+
+    /*START method to enable searchBar and define its action*/
+    private void searchViewBar() { //TODO searchView
+        searchView = (MaterialSearchView) findViewById(R.id.search_viewSP);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (query.length()==0&& feedData!=null && GroupData!=null){
+                    filteredfeedList = feedData;
+                    filteredGroupList = GroupData;
+                    feedsFragments.getDataFromActivity();
+                    groupsFragments.getDataFromActivity();
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                }
+                if (query.length() > 0 && feedData!=null && GroupData!=null) {
+                    filteredfeedList = filterFeed(feedData, query);
+                    filteredGroupList = filterGroup(GroupData, query);
+
+//                    filteredMemberList = filterMember(MemberData, newText);
+                    Log.wtf("FilteredList", String.valueOf(filteredfeedList));
+                    feedsFragments.getDataFromActivity();
+                    groupsFragments.getDataFromActivity();
+//                    memberFragment.getDataFromActivity();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length()==0&& feedData!=null && GroupData!=null){
+                    filteredfeedList = feedData;
+                    Log.wtf("filteredfeedList ", String.valueOf(filteredfeedList));
+                    filteredGroupList = GroupData;
+                    feedsFragments.getDataFromActivity();
+                    groupsFragments.getDataFromActivity();
+                }
+                else if (newText.length() > 0 && feedData!=null && GroupData!=null) {
+                    filteredfeedList = filterFeed(feedData, newText);
+                    filteredGroupList = filterGroup(GroupData, newText);
+
+//                    filteredMemberList = filterMember(MemberData, newText);
+                    Log.wtf("FilteredList", String.valueOf(filteredfeedList));
+                    feedsFragments.getDataFromActivity();
+                    groupsFragments.getDataFromActivity();
+//                    memberFragment.getDataFromActivity();
+                }
+                return false;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            int temp;
+
+            @Override
+            public void onSearchViewShown() {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+                TypedValue tv = new TypedValue();
+                getApplicationContext().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+                int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
+                temp = params.height;
+                params.height = actionBarHeight; // COLLAPSED_HEIGHT
+
+                appBarLayout.setLayoutParams(params);
+                appBarLayout.setExpanded(true, false);
+                searchView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+                params.height = temp; // COLLAPSED_HEIGHT
+
+                appBarLayout.setLayoutParams(params);
+                appBarLayout.setExpanded(true, false);//Do some magic
+
+                filteredfeedList = feedData;
+                feedsFragments.getDataFromActivity();
+                filteredGroupList = GroupData;
+                groupsFragments.getDataFromActivity();
+//                filteredMemberList = MemberData;
+//                memberFragment.getDataFromActivity();
+            }
+        });
+    }
+    /*END method to enable searchBar and define its action*/
+
+    /*START method to search query in Feed List*/
+    private ArrayList<FeedData> filterFeed(ArrayList<FeedData> mList, String query) { //TODO searchView
+        query = query.toLowerCase();
+
+        ArrayList<FeedData> filteredList = new ArrayList<>();
+        filteredList.clear();
+        for (FeedData item : mList) {
+            if (item.feedName.toLowerCase().contains(query) || item.feedId.toLowerCase().contains(query)
+                    || item.feedText.toLowerCase().contains(query) || item.createdDate.toLowerCase().contains(query)) {
+                filteredList.add(item);
+            }
+        }
+
+        return filteredList;
+    }
+    /*END method to search query in Feed List*/
+
+    /*START method to search query in Groupu List*/
+    private ArrayList<GroupListData> filterGroup(ArrayList<GroupListData> mList, String query) { //TODO searchView
+        query = query.toLowerCase();
+
+        ArrayList<GroupListData> filteredList = new ArrayList<>();
+        filteredList.clear();
+        for (GroupListData item : mList) {
+            if (item.groupName.toLowerCase().contains(query) || item.groupText.toLowerCase().contains(query)
+                    || item.createdDate.toLowerCase().contains(query)/*||item.group_count.toLowerCase().contains(query)*/) {
+                filteredList.add(item);
+            }
+        }
+
+        return filteredList;
+    }
+    /*END method to search query in Group List*/
+
+
+
+
+
 
 
     @Override
@@ -202,15 +353,76 @@ Intent intent=getIntent();
         menu.getItem(1).setIcon(dSearch);
         searchView.setMenuItem(menu.getItem(1));  //TODO searchView
 
-
         return true;
     }
+
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    // The following callbacks are called for the SearchView.OnQueryChangeListener
+    /*public boolean onQueryTextChange(String newText) {
+        newText = newText.isEmpty() ? "" : "Query so far: " + newText;
+        mSearchText.setText(newText);
+        mSearchText.setTextColor(Color.GREEN);
+        return true;
+    }
+*/
+//Search,Notification ends
+
+    public boolean      onQueryTextSubmit      (String query) {
+        //Toast.makeText(this, "Searching for: " + query + "...", Toast.LENGTH_SHORT).show();
+        mSearchText.setText("Searching for: " + query + "...");
+        mSearchText.setTextColor(Color.RED);
+        return true;
+    }
+
     public float convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return px;
     }
+
+    private Bitmap resizeBitmapImageFn(
+            Bitmap bmpSource, int maxResolution) {
+        int iWidth = bmpSource.getWidth();
+        int iHeight = bmpSource.getHeight();
+        int newWidth = iWidth;
+        int newHeight = iHeight;
+        float rate = 0.0f;
+
+        if (iWidth > iHeight) {
+            if (maxResolution < iWidth) {
+                rate = maxResolution / (float) iWidth;
+                newHeight = (int) (iHeight * rate);
+                newWidth = maxResolution;
+            }
+        } else {
+            if (maxResolution < iHeight) {
+                rate = maxResolution / (float) iHeight;
+                newWidth = (int) (iWidth * rate);
+                newHeight = maxResolution;
+            }
+        }
+
+        return Bitmap.createScaledBitmap(
+                bmpSource, newWidth, newHeight, true);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (searchView.isSearchOpen()) {
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -221,9 +433,9 @@ Intent intent=getIntent();
             return true;
         }
         //noinspection SimplifiableIfStatement
-        /* if (id == R.id.action_settings) {
+         if (id == R.id.action_searchSP) {
             return true;
-        }*/
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -352,6 +564,8 @@ Intent intent=getIntent();
     }
 
 
+
+
     //Code for fetching image from server
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -389,239 +603,41 @@ Intent intent=getIntent();
 
 
 
-    private Bitmap resizeBitmapImageFn(
-            Bitmap bmpSource, int maxResolution) {
-        int iWidth = bmpSource.getWidth();
-        int iHeight = bmpSource.getHeight();
-        int newWidth = iWidth;
-        int newHeight = iHeight;
-        float rate = 0.0f;
 
-        if (iWidth > iHeight) {
-            if (maxResolution < iWidth) {
-                rate = maxResolution / (float) iWidth;
-                newHeight = (int) (iHeight * rate);
-                newWidth = maxResolution;
-            }
-        } else {
-            if (maxResolution < iHeight) {
-                rate = maxResolution / (float) iHeight;
-                newWidth = (int) (iWidth * rate);
-                newHeight = maxResolution;
-            }
-        }
+   /* @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
-        return Bitmap.createScaledBitmap(
-                bmpSource, newWidth, newHeight, true);
-    }
-
-
-    /*START method to enable searchBar and define its action*/
-    private void searchViewBar() { //TODO searchView
-         searchView = (MaterialSearchView) findViewById(R.id.search_view1);
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                if (query.length()==0&& feedData!=null && GroupData!=null){
-                    filteredfeedList = feedData;
-                    filteredGroupList = GroupData;
-                    feedsFragments.getDataFromActivity();
-                    groupsFragments.getDataFromActivity();
-                    Log.d("filtered",""+query);
-                    Log.d("filtered",""+filteredfeedList);
-
-
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                }
-                if (query.length() > 0 && feedData!=null && GroupData!=null) {
-                    filteredfeedList = filterFeed(feedData, query);
-                    filteredGroupList = filterGroup(GroupData, query);
-
-//                    filteredMemberList = filterMember(MemberData, newText);
-                    Log.wtf("FilteredList", String.valueOf(filteredfeedList));
-                    Log.d("filtered",""+filteredfeedList);
-
-                    feedsFragments.getDataFromActivity();
-                    groupsFragments.getDataFromActivity();
-//                    memberFragment.getDataFromActivity();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                }
-                return true;
-
-
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-
-                if (newText.length()==0&& feedData!=null && GroupData!=null){
-                    filteredfeedList = feedData;
-                    filteredGroupList = GroupData;
-                   feedsFragments.getDataFromActivity();
-                    groupsFragments.getDataFromActivity();
-                }
-                else if (newText.length() > 0 && feedData!=null && GroupData!=null) {
-                    filteredfeedList = filterFeed(feedData, newText);
-                    filteredGroupList = filterGroup(GroupData, newText);
-
-//                    filteredMemberList = filterMember(MemberData, newText);
-                       Log.wtf("FilteredList", String.valueOf(filteredfeedList));
-                    feedsFragments.getDataFromActivity();
-                    groupsFragments.getDataFromActivity();
-//                    memberFragment.getDataFromActivity();
-                }
-
-                    return false;
-            }
-        });
-
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            int temp;
-
-            @Override
-            public void onSearchViewShown() {
-                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-                TypedValue tv = new TypedValue();
-                getApplicationContext().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
-                int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
-                temp = params.height;
-                params.height = actionBarHeight; // COLLAPSED_HEIGHT
-
-                appBarLayout.setLayoutParams(params);
-                appBarLayout.setExpanded(true, false);
-                searchView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-                params.height = temp; // COLLAPSED_HEIGHT
-
-                appBarLayout.setLayoutParams(params);
-                appBarLayout.setExpanded(true, false);//Do some magic
-
-                filteredfeedList = feedData;
-//                feedsFragments.getDataFromActivity();
-                filteredGroupList = GroupData;
-//               groupsFragments.getDataFromActivity();
-//                filteredMemberList = MemberData;
-//                memberFragment.getDataFromActivity();
-            }
-        });
-    }
-    /*END method to enable searchBar and define its action*/
-
-    /*START method to search query in Feed List*/
-    private ArrayList<FeedData> filterFeed(ArrayList<FeedData> mList, String query) { //TODO searchView
-        query = query.toLowerCase();
-
-        ArrayList<FeedData> filteredList = new ArrayList<>();
-        filteredList.clear();
-        for (FeedData item : mList) {
-            if (item.feedName.toLowerCase().contains(query) || item.feedId.toLowerCase().contains(query)
-                    || item.feedText.toLowerCase().contains(query) || item.createdDate.toLowerCase().contains(query)) {
-                filteredList.add(item);
-            }
-        }
-
-        return filteredList;
-    }
-    /*END method to search query in Feed List*/
-
-    /*START method to search query in Group List*/
-    private ArrayList<GroupListData> filterGroup(ArrayList<GroupListData> mList, String query) { //TODO searchView
-        query = query.toLowerCase();
-
-        ArrayList<GroupListData> filteredList = new ArrayList<>();
-        filteredList.clear();
-        for (GroupListData item : mList) {
-            if (item.groupName.toLowerCase().contains(query) || item.groupText.toLowerCase().contains(query)
-                    || item.groupId.toLowerCase().contains(query)/*||item.group_count.toLowerCase().contains(query)*/) {
-                filteredList.add(item);
-            }
-        }
-
-        return filteredList;
-    }
-
-
-
-    private void setupViewPager(ViewPager viewPager) {
-
-
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ProceedFeedsFragments(),"Feeds"); //changing here creating different frags
-        adapter.addFragment(new ProceedGroupsFragments(),"Groups");//changing here creating different frags
-        adapter.addFragment(new PayFragments(),"Payment");
-        adapter.addFragment(new Members(),"Members");
-        viewPager.setAdapter(adapter);
-
-
-        //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
-
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    // The following callbacks are called for the SearchView.OnQueryChangeListener
-    public boolean onQueryTextChange(String newText) {
-        newText = newText.isEmpty() ? "" : "Query so far: " + newText;
-        mSearchText.setText(newText);
-        mSearchText.setTextColor(Color.GREEN);
-        return true;
-    }
-
-   /* public void onBackPressed() {  //TODO searchView
-        if (searchView.isSearchOpen()) {
-            searchView.closeSearch();
-        } else {
-            super.onBackPressed();
-        }
     }*/
-
     @Override
     public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
+        this.feedData = feedData;
     }
+
+    @Override
+    public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
+        this.GroupData = groupData;
+    }
+
+
+    @Override
+    public ArrayList<FeedData> getFeedDataList() {
+        return filteredfeedList;
+    }
+
+
+    @Override //TODO searchView
+    public ArrayList<GroupListData> getGroupDataList() {
+        return filteredGroupList;
+    }
+
 
     @Override
     public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
 
     }
 
-    @Override
-    public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
-    }
 
-    @Override
-    public ArrayList<FeedData> getFeedDataList() {
-        return null;
-    }
-
-    @Override
-    public ArrayList<GroupListData> getGroupDataList() {
-        return null;
-    }
-
-
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-
-    }
-
-
-
-
-
-
-
-    }
+}
 
 
     /*END methods for implementations*/

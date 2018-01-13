@@ -13,7 +13,6 @@ import com.android.volley.toolbox.NetworkImageView;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
-import in.sabpaisa.droid.sabpaisa.COA;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.R;
 
@@ -57,7 +56,7 @@ public class InstitutionProceedAdapter extends RecyclerView.Adapter<InstitutionP
         holder.clinetbanner.setImageUrl(mainFeedData.getOrgWal(),imageLoader);
         //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
 //        holder.instituteLocation.setText(mainFeedData.getOrgDesc());
-        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+      /*  holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), COA.class);
@@ -77,7 +76,7 @@ public class InstitutionProceedAdapter extends RecyclerView.Adapter<InstitutionP
                 Intent intent = new Intent(v.getContext(), COA.class);
                 v.getContext().startActivity(intent);
             }
-        });
+        });*/
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

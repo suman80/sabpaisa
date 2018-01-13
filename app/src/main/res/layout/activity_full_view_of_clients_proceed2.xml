@@ -116,7 +116,7 @@
                         app:subtitleTextColor="@color/white"
                         app:titleTextColor="@color/white" />
                     <com.miguelcatalan.materialsearchview.MaterialSearchView
-                        android:id="@+id/search_view1"
+                        android:id="@+id/search_viewSP"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"

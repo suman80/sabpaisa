@@ -9,7 +9,7 @@ public class GroupListData {
     public String groupId;
     public String groupName;
     public String groupText;
-    String createdDate;
+    public String createdDate;
     String imagePath;
     String logoPath;
 

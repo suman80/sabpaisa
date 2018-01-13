@@ -62,42 +62,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         // Required empty public constructor
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
 
-    }
 
-    public void getDataFromActivity() {
-        if(sGetDataInterface != null){
-            this.groupArrayList = sGetDataInterface.getGroupDataList();
-            mainGroupAdapter1.setItems(this.groupArrayList);
-            mainGroupAdapter1.notifyDataSetChanged();
-        }
-    }
-
-    /*END Interface for getting data from activity*/
-    public void ProceedGroupsFragments() {
-        // Required empty public constructor
-    }
-
- /*   @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        *//*try {
-            sGetDataInterface= (GetDataInterface) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
-        }*//*
-    }*/
-
-   /* public void getDataFromActivity() {
-        if(sGetDataInterface != null){
-            this.groupArrayList = sGetDataInterface.getGroupDataList();
-            mainGroupAdapter1.setItems(this.groupArrayList);
-            mainGroupAdapter1.notifyDataSetChanged();
-        }
-    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -143,7 +109,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
                     if (status.equals("success")&&response1.equals("No_Record_Found")) {
 
-                        Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
 
                     }
                     else {
@@ -169,7 +135,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                             /*END listener for sending data to activity*/
                         //loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
 
-                        MainGroupAdapter1 mainGroupAdapter1 = new MainGroupAdapter1(getContext(), R.layout.group_item_list,groupArrayList);
+                        mainGroupAdapter1 = new MainGroupAdapter1(getContext(), R.layout.group_item_list,groupArrayList);
                         groupList.setAdapter(mainGroupAdapter1);
 
                     }
@@ -245,6 +211,31 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     public void onRefresh() {
         callGroupDataList(clientId);
     }
+
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            sGetDataInterface= (GetDataInterface) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
+        }
+    }
+
+    public void getDataFromActivity() {
+        if(sGetDataInterface != null){
+            this.groupArrayList = sGetDataInterface.getGroupDataList();
+            mainGroupAdapter1.setItems(this.groupArrayList);
+            mainGroupAdapter1.notifyDataSetChanged();
+        }
+
+        Log.d("PGF_I&A"," "+sGetDataInterface+"&"+groupArrayList);
+    }
+
+
+
 
     public interface GetDataInterface {
         ArrayList<GroupListData> getGroupDataList();

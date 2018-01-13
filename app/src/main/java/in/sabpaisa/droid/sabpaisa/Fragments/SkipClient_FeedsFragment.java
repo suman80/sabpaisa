@@ -49,7 +49,7 @@ public class SkipClient_FeedsFragment extends Fragment implements SwipeRefreshLa
     public static String ClientId;
 
     /*START Interface for getting data from activity*/
-    FeedsFragments.GetDataInterface sGetDataInterface;
+   // FeedsFragments.GetDataInterface sGetDataInterface;
 
     public SkipClient_FeedsFragment() {
         // Required empty public constructor
@@ -65,13 +65,13 @@ public class SkipClient_FeedsFragment extends Fragment implements SwipeRefreshLa
         }*/
     }
 
-    public void getDataFromActivity() {
+    /*public void getDataFromActivity() {
         if(sGetDataInterface != null){
             this.feedArrayList = sGetDataInterface.getFeedDataList();
             mainFeedAdapter.setItems(this.feedArrayList);
             mainFeedAdapter.notifyDataSetChanged();
         }
-    }
+    }*/
     /*END Interface for getting data from activity*/
 
     @Override

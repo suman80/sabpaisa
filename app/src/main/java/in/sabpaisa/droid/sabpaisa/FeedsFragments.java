@@ -51,7 +51,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
     public static String clientId;
 
     /*START Interface for getting data from activity*/
-    GetDataInterface sGetDataInterface;
+    //GetDataInterface sGetDataInterface;
 
     public FeedsFragments() {
         // Required empty public constructor
@@ -63,13 +63,13 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
 
     }
 
-    public void getDataFromActivity() {
+   /* public void getDataFromActivity() {
         if(sGetDataInterface != null){
             this.feedArrayList = sGetDataInterface.getFeedDataList();
             mainFeedAdapter.setItems(this.feedArrayList);
             mainFeedAdapter.notifyDataSetChanged();
         }
-    }
+    }*/
     /*END Interface for getting data from activity*/
 
     @Override
@@ -209,9 +209,9 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
         // taList(Id);
     }
 
-    public interface GetDataInterface {
+   /* public interface GetDataInterface {
         ArrayList<FeedData> getFeedDataList();
-    }
+    }*/
     /*END onRefresh() for SwipeRefreshLayout*/
 
 

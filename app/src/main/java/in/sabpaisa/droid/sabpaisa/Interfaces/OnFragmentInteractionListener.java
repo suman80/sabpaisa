@@ -17,6 +17,7 @@ import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 
 public interface OnFragmentInteractionListener {
     public void onFragmentSetFeeds(ArrayList<FeedData> feedData);
-    public void onFragmentSetContacts(ArrayList<ContactList> contactLists);
     public void onFragmentSetGroups(ArrayList<GroupListData> groupData);
+    public void onFragmentSetContacts(ArrayList<ContactList> contactLists);
+
 }

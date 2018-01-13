@@ -41,7 +41,7 @@ import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayout.OnRefreshListener  {
+public class ProceedFeedsFragments extends Fragment {
     private static final String TAG = ProceedFeedsFragments.class.getSimpleName();
     View rootView;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -58,27 +58,6 @@ public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayou
         // Required empty public constructor
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        //sGetDataInterface= (GetDataInterface) getActivity();
-
-        /*try {
-            sGetDataInterface= (GetDataInterface) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
-        }*/
-
-    }
-
-    public void getDataFromActivity() {
-        if(sGetDataInterface != null){
-            this.feedArrayList = sGetDataInterface.getFeedDataList();
-            mainFeedAdapter.setItems(this.feedArrayList);
-            mainFeedAdapter.notifyDataSetChanged();
-        }
-    }
-    /*END Interface for getting data from activity*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,10 +71,13 @@ public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayou
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");
         Log.d("clientId_PFF",""+clientId);
-        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+        //swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         //swipeRefreshLayout.setOnRefreshListener(this);
 
         callFeedDataList(clientId);
+
+        Log.d("sGetDataInterface",""+sGetDataInterface);
+
         return rootView;
     }
 
@@ -113,7 +95,7 @@ public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayou
             @Override
             public void onResponse(String response) {
                 try {
-                //    swipeRefreshLayout.setRefreshing(false);
+                    //    swipeRefreshLayout.setRefreshing(false);
                     Log.d(TAG, "profeed1: " + response);
                     //swipeRefreshLayout.setRefreshing(false);
                     feedArrayList = new ArrayList<FeedData>();
@@ -124,11 +106,8 @@ public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayou
 
                     String response1 = jsonObject.getString("response");
 
-                    if (status.equals("success")&&response1.equals("No_Record_Found")) {
+                    if ( !response1.equals("[]")) {
 
-                        Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
-
-                    }else {
                         JSONArray jsonArray = jsonObject.getJSONArray("response");
 
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -149,8 +128,18 @@ public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayou
                             /*START listener for sending data to activity*/
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetFeeds(feedArrayList);
+
+
+
                             /*END listener for sending data to activity*/
                         loadFeedListView(feedArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_feeds));
+
+                    } else if ( response1.equals("No_Record_Found")) {
+                        Toast.makeText(getContext(), "No Result Fobggggggggggund", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(getContext(), "Ops Something went wrong !", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -212,13 +201,31 @@ public class ProceedFeedsFragments extends Fragment implements SwipeRefreshLayou
         recyclerView.setLayoutManager(llm);
     }
 
-    /*START onRefresh() for SwipeRefreshLayout*/
+
     @Override
-    public void onRefresh() {
-        callFeedDataList(clientId);
-        //callFeedDa
-        // taList(Id);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            sGetDataInterface= (GetDataInterface) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
+        }
     }
+
+    public void getDataFromActivity() {
+        if(sGetDataInterface != null){
+            this.feedArrayList = sGetDataInterface.getFeedDataList();
+            mainFeedAdapter.setItems(this.feedArrayList);
+            mainFeedAdapter.notifyDataSetChanged();
+        }
+
+        Log.d("PFF_I&A"," "+sGetDataInterface+"&"+feedArrayList);
+    }
+    /*END Interface for getting data from activity*/
+
+
+
 
    /* @Override
     public void onResume() {

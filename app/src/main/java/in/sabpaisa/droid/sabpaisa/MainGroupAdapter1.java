@@ -65,6 +65,8 @@ public class MainGroupAdapter1 extends ArrayAdapter<GroupListData> {
     public void setItems(ArrayList<GroupListData> groupDatas) {
         this.arrayList = groupDatas;
     }
+
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         //return super.getView(position, convertView, parent);

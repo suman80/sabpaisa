@@ -6,6 +6,33 @@ package in.sabpaisa.droid.sabpaisa;
 
 public class FeedData {
 
+
+    public String feedId;
+    String clientId;
+    public String feedText;
+    public String feedName;
+    public String createdDate;
+    String imagePath;
+    String logoPath;
+
+    
+    public FeedData() {
+    }
+
+    public FeedData(String feedId, String clientId, String feedText, String feedName, String createdDate, String imagePath, String logoPath) {
+        this.feedId = feedId;
+        this.clientId = clientId;
+        this.feedText = feedText;
+        this.feedName = feedName;
+        this.createdDate = createdDate;
+        this.imagePath = imagePath;
+        this.logoPath = logoPath;
+    }
+
+
+
+
+
     public String getFeedId() {
         return feedId;
     }
@@ -63,25 +90,6 @@ public class FeedData {
     }
 
 
-    public String feedId;
-    String clientId;
-    public String feedText;
-    public String feedName;
-    public String createdDate;
-    String imagePath;
-    String logoPath;
-    public FeedData() {
-    }
-
-    public FeedData(String feedId, String clientId, String feedText, String feedName, String createdDate, String imagePath, String logoPath) {
-        this.feedId = feedId;
-        this.clientId = clientId;
-        this.feedText = feedText;
-        this.feedName = feedName;
-        this.createdDate = createdDate;
-        this.imagePath = imagePath;
-        this.logoPath = logoPath;
-    }
 
 
 }

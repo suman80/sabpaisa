@@ -54,23 +54,23 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
         // Required empty public constructor
     }
 
-    @Override
+   /* @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*try {
+        *//*try {
             sGetDataInterface= (GetDataInterface) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
-        }*/
-    }
+        }*//*
+    }*/
 
-    public void getDataFromActivity() {
+   /* public void getDataFromActivity() {
         if(sGetDataInterface != null){
             this.groupArrayList = sGetDataInterface.getGroupDataList();
             //mainGroupAdapter1.setItems(this.groupArrayList);
             mainGroupAdapter1.notifyDataSetChanged();
         }
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,7 +108,7 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
 
                     if (status.equals("success")&&response1.equals("No_Record_Found")) {
 
-                        Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
 
                     }
                     else {

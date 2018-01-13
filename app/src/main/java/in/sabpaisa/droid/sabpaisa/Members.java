@@ -96,7 +96,7 @@ public class Members extends Fragment {
 
                     if (status.equals("failure")) {
 
-                        Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
 
                     }else {
                         JSONArray jsonArray = jsonObject.getJSONArray("response");
