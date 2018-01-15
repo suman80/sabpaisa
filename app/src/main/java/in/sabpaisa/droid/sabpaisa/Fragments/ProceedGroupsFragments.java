@@ -19,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +48,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
     public static String clientId;
 
-    ListView groupList;
+    ShimmerRecyclerView groupList;
 
     String tag_string_req = "req_register";
     SwipeRefreshLayout swipeRefreshLayout;
@@ -75,7 +76,11 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
         rootView = inflater.inflate(R.layout.fragments_groups, container, false);
 
-        groupList=(ListView)rootView.findViewById(R.id.groupList);
+        groupList=(ShimmerRecyclerView)rootView.findViewById(R.id.groupList);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        groupList.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+        groupList.setLayoutManager(llm);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");
@@ -133,9 +138,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetGroups(groupArrayList);
                             /*END listener for sending data to activity*/
-                        //loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
 
-                        mainGroupAdapter1 = new MainGroupAdapter1(getContext(), R.layout.group_item_list,groupArrayList);
+                        mainGroupAdapter1 = new MainGroupAdapter1(groupArrayList);
                         groupList.setAdapter(mainGroupAdapter1);
 
                     }
@@ -166,45 +170,6 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
 
-   /* private void loadGroupListView(ArrayList<GroupListData> arrayList,final RecyclerView rv) {
-        mainGroupAdapter1 = new MainGroupAdapter1(arrayList);
-
-        rv.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                rv.setAdapter(mainGroupAdapter1);
-
-            }
-        },2000);
-
-
-        rv.addOnItemTouchListener(
-                new RecyclerItemClickListener(getContext(), rv, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        *//*GroupListData groupListData = groupArrayList.get(position);
-                        Intent intent = new Intent(((COA)getContext()), GroupDetails.class);
-                        intent.putExtra("GroupId", groupListData.getGroupId());
-                        intent.putExtra("GroupName", groupListData.getGroupName());
-                        intent.putExtra("group_count",groupListData.getGroupCount());
-                        intent.putExtra("GroupDescription", groupListData.getGroupDescription());
-                        startActivity(intent);*//*
-                    }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        // do whatever
-                    }
-                })
-        );
-
-
-
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rv.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
-        rv.setLayoutManager(llm);
-    }*/
 
     /*START onRefresh() for SwipeRefreshLayout*/
     @Override

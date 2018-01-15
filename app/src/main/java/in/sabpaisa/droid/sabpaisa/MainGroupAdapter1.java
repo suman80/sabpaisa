@@ -13,6 +13,7 @@ import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.github.chrisbanes.photoview.PhotoView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,95 +47,73 @@ import java.util.List;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
 
-public class MainGroupAdapter1 extends ArrayAdapter<GroupListData> {
-    ArrayList<GroupListData> arrayList;
-    LayoutInflater vi;
-    int Resource;
-    ViewHolder holder;
-    String pos;
+public class MainGroupAdapter1 extends
+        RecyclerView.Adapter<MainGroupAdapter1.MyViewHolder> {
+    Context mContext;
+    private List<GroupListData> countryList;
 
-    public MainGroupAdapter1( Context context,  int resource,  ArrayList<GroupListData> objects) {
-        super(context, resource, objects);
-
-        vi = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        Resource = resource;
-        arrayList = objects;
-
+    public MainGroupAdapter1(List<GroupListData> countryList) {
+        this.countryList = countryList;
     }
 
     /*START Method to change data when put query in searchBar*/
-    public void setItems(ArrayList<GroupListData> groupDatas) {
-        this.arrayList = groupDatas;
+    public void setItems(List<GroupListData> groupDatas) {
+        this.countryList = groupDatas;
     }
 
-
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        //return super.getView(position, convertView, parent);
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
 
-        View v = convertView;
-        if (v == null) {
-            holder = new MainGroupAdapter1.ViewHolder();
-            v = vi.inflate(Resource, null);
+        final GroupListData c = countryList.get(position);
+        holder.Group_name.setText(c.getGroupName());
+        holder.Group_description.setText(c.getGroupText());
+        new DownloadLogoTask(holder.Group_Logo).execute(c.getLogoPath());
+        new DownloadImageTask(holder.Group_Image).execute(c.getImagePath());
 
-            holder.Group_name = (TextView) v.findViewById(R.id.Group_name);
-            holder.Group_description = (TextView) v.findViewById(R.id.Group_description);
-            holder.Group_Logo = (ImageView) v.findViewById(R.id.Group_Logo);
-            holder.Group_Image = (ImageView) v.findViewById(R.id.Group_Image);
-            holder.joinmember = (Button) v.findViewById(R.id.joinmember);
-
-
-            v.setTag(holder);
-        } else {
-            holder = (MainGroupAdapter1.ViewHolder) v.getTag();
-        }
-
-        holder.Group_name.setText(arrayList.get(position).getGroupName());
         holder.Group_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
-                intent.putExtra("groupName",arrayList.get(position).getGroupName());
-                intent.putExtra("groupText",arrayList.get(position).getGroupText());
-                intent.putExtra("groupImage",arrayList.get(position).getImagePath());
-                intent.putExtra("groupId",arrayList.get(position).getGroupId());
+                intent.putExtra("groupName",c.getGroupName());
+                intent.putExtra("groupText",c.getGroupText());
+                intent.putExtra("groupImage",c.getImagePath());
+                intent.putExtra("groupId",c.getGroupId());
                 v.getContext().startActivity(intent);
             }
         });
-        holder.Group_description.setText(arrayList.get(position).getGroupText());
+
         holder.Group_description.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
-                intent.putExtra("groupName",arrayList.get(position).getGroupName());
-                intent.putExtra("groupText",arrayList.get(position).getGroupText());
-                intent.putExtra("groupImage",arrayList.get(position).getImagePath());
-                intent.putExtra("groupId",arrayList.get(position).getGroupId());
+                intent.putExtra("groupName",c.getGroupName());
+                intent.putExtra("groupText",c.getGroupText());
+                intent.putExtra("groupImage",c.getImagePath());
+                intent.putExtra("groupId",c.getGroupId());
                 v.getContext().startActivity(intent);
             }
         });
-        new DownloadImageTask(holder.Group_Image).execute(arrayList.get(position).getImagePath());
+
         holder.Group_Image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
-                intent.putExtra("groupName",arrayList.get(position).getGroupName());
-                intent.putExtra("groupText",arrayList.get(position).getGroupText());
-                intent.putExtra("groupImage",arrayList.get(position).getImagePath());
-                intent.putExtra("groupId",arrayList.get(position).getGroupId());
+                intent.putExtra("groupName",c.getGroupName());
+                intent.putExtra("groupText",c.getGroupText());
+                intent.putExtra("groupImage",c.getImagePath());
+                intent.putExtra("groupId",c.getGroupId());
                 v.getContext().startActivity(intent);
             }
         });
-        new DownloadLogoTask(holder.Group_Logo).execute(arrayList.get(position).getLogoPath());
+
         holder.Group_Logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
-                intent.putExtra("groupName",arrayList.get(position).getGroupName());
-                intent.putExtra("groupText",arrayList.get(position).getGroupText());
-                intent.putExtra("groupImage",arrayList.get(position).getImagePath());
-                intent.putExtra("groupId",arrayList.get(position).getGroupId());
+                intent.putExtra("groupName",c.getGroupName());
+                intent.putExtra("groupText",c.getGroupText());
+                intent.putExtra("groupImage",c.getImagePath());
+                intent.putExtra("groupId",c.getGroupId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -140,34 +121,58 @@ public class MainGroupAdapter1 extends ArrayAdapter<GroupListData> {
         holder.joinmember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 SharedPreferences sharedPreferences = v.getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
                 String token = sharedPreferences.getString("response", "123");
 
-                String groupId = arrayList.get(position).getGroupId().toString();
+                String groupId = c.getGroupId().toString();
 
                 Log.d("tokenGRP"," "+token);
                 Log.d("groupIdGRP"," "+groupId);
 
-                addMember(token,groupId,v,arrayList.get(position));
+                addMember(token,groupId,v,c);
 
             }
         });
 
-        return v;
+
+    }
+    /*END Method to change data when put query in searchBar*/
+
+    @Override
+    public int getItemCount() {
+        return countryList.size();
     }
 
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.group_item_list, parent, false);
+        return new MyViewHolder(v);
+    }
 
-
-    static class ViewHolder {
-
+    /**
+     * View holder class
+     */
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView Group_name;
         public TextView Group_description;
-        public ImageView Group_Logo,Group_Image;
+        public ImageView Group_Logo;
+        public PhotoView Group_Image;
         public Button joinmember;
 
-    }
+        public MyViewHolder(View view) {
+            super(view);
 
+            Group_name = (TextView) view.findViewById(R.id.Group_name);
+            Group_description = (TextView) view.findViewById(R.id.Group_description);
+            joinmember = (Button) view.findViewById(R.id.joinmember);
+            Group_Logo = (ImageView) view.findViewById(R.id.Group_Logo);
+            Group_Image = (PhotoView) view.findViewById(R.id.Group_Image);
+
+        }
+    }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;

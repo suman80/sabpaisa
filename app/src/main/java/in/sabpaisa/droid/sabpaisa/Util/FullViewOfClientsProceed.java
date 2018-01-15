@@ -33,6 +33,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -86,6 +87,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     ArrayList<GroupListData> filteredGroupList;
     ProceedFeedsFragments feedsFragments;
     ProceedGroupsFragments groupsFragments;
+    Members membersFragment;
 
     private TabLayout tabLayout;
 
@@ -138,11 +140,6 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         //Log.d("userImageUrlFrag","-->"+userImageUrl);
         Log.d("userImageUrl_FVOCL"," "+userImageUrl);
 
-        /*Bundle bundle = new Bundle();
-        bundle.putString("landingPage", "From Activity");
-// set Fragmentclass Arguments
-        PayFragments fragobj = new PayFragments();
-        fragobj.setArguments(bundle);*/
         Intent intent=getIntent();
         clientName = intent.getStringExtra("clientName");
         state = intent.getStringExtra("state");
@@ -153,8 +150,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         Log.d("userImageUrl_FVOCL"," "+userImageUrl);
 
         ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
-        // View header = navigationView.getHeaderView(0);
-        // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
+
         Glide
                 .with(FullViewOfClientsProceed.this)
                 .load(userImageUrl)
@@ -184,16 +180,20 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
         feedsFragments = new ProceedFeedsFragments();
         adapter.addFragment(feedsFragments,"Feeds"); //changing here creating different frags
+
         groupsFragments = new ProceedGroupsFragments();
         adapter.addFragment(groupsFragments,"Groups");//changing here creating different frags
+
         adapter.addFragment(new PayFragments(),"Payment");
-        adapter.addFragment(new Members(),"Members");
+
+        membersFragment=new Members();
+        adapter.addFragment(membersFragment,"Members");
+
         viewPager.setAdapter(adapter);
 
-
-        //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
 
     }
 
@@ -326,7 +326,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         filteredList.clear();
         for (GroupListData item : mList) {
             if (item.groupName.toLowerCase().contains(query) || item.groupText.toLowerCase().contains(query)
-                    || item.createdDate.toLowerCase().contains(query)/*||item.group_count.toLowerCase().contains(query)*/) {
+                    || item.createdDate.toLowerCase().contains(query)||item.groupId.toLowerCase().contains(query)) {
                 filteredList.add(item);
             }
         }
@@ -345,6 +345,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.coa_menu, menu);
+
 
         //Search
         Bitmap iconSearch = BitmapFactory.decodeResource(getResources(), R.drawable.search); //Converting drawable into bitmap
@@ -540,21 +541,6 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
 
 
-
-/*
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.tt, newFragment)
-                    .commit();*/
-            /*newFragment = new Ratefragment();
-            transaction.replace(R.id.tt, newFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();*/
-
-            /*Fragment fragment = new Fragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.tt, fragment, fragment.getTag()).commit();
-        */
         }
 
 
