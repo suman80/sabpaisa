@@ -434,4 +434,14 @@ public class LogInActivity extends AppCompatActivity  {
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
+        finish();
+        moveTaskToBack(true);
+        System.exit(0);
+
+    }
 }

@@ -283,6 +283,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
 
     }
 
+
     public void getServiceData(final String state ){
 
 
@@ -695,5 +696,13 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
 
 
     }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
 
+
+        finish();
+        moveTaskToBack(true);
+        System.exit(0);
+    }
 }

@@ -10,9 +10,11 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -87,9 +89,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         //userType = (TextView) findViewById(R.id.tv_userType);
         numberEdit = (Button) findViewById(R.id.tv_numberEdit);
         mailIdEdit = (Button) findViewById(R.id.tv_mailIdEdit);
+        mailIdEdit.setInputType(InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
         mNumber = (EditText) findViewById(R.id.et_mNumber);
         mailId = (EditText) findViewById(R.id.et_mailId);
         et_address = (EditText)findViewById(R.id.et_address);
+
         addressEdit = (Button) findViewById(R.id.tv_addressEdit);
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
 
@@ -187,11 +191,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(ProfileNavigationActivity.this,MainActivity.class);
-        intent.putExtra("clientId", clientId);
-        intent.putExtra("userImageUrl", userImageUrl);
-        startActivity(intent);
-        ProfileNavigationActivity.this.finish();
+       /* Intent intent = new Intent(ProfileNavigationActivity.this,MainActivity.class);
+      *//*  intent.putExtra("clientId", clientId);
+        intent.putExtra("userImageUrl", userImageUrl);*//*
+        startActivity(intent);*/
+        this.finish();
     }
 
     public void pickImage() {
@@ -274,9 +278,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                                 // Setting OK Button
                                 alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent=new Intent();
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
 
-                                        Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
-                                        startActivity(intent);
+                                      /*  Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                        startActivity(intent);*/
                                     }
                                 });
 
@@ -552,6 +558,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
                                 startActivity(intent);
+                                finish();
                             }
                         });
 
@@ -668,6 +675,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
                                 startActivity(intent);
+                                finish();
                             }
                         });
 
@@ -692,6 +700,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
                                 startActivity(intent);
+                                finish();
 
                             }
                         });
