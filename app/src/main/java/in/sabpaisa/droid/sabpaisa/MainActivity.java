@@ -56,6 +56,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 import com.wangjie.androidbucket.utils.ABTextUtil;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -75,6 +76,7 @@ import java.util.List;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
+import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
@@ -100,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     private CustomViewPager viewPager;
     private TabLayout tabLayout;
     Toolbar toolbar;
+    private FirebaseAnalytics firebaseAnalytics;
     NetworkImageView nav;
     String userImageUrl=null;
     String response,response1,userAccessToken;
@@ -138,6 +141,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("Sabpaisa");
+
+
+
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
@@ -213,6 +219,32 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         Log.d("userImageUrl(MainAhjhkn","-->"+userImageUrl);
       /*  Intent intent=new Intent(MainActivity.this, FullViewOfClientsProceed.class);
         intent.putExtra("userImageUrl",userImageUrl);*/
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        ClientData clientData=new ClientData();
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, clientData.getClientId());
+       // bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, clientData.getClientName());
+
+        //Logs an app event.
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
+        //Sets whether analytics collection is enabled for this app on this device.
+        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+
+        //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
+        firebaseAnalytics.setMinimumSessionDuration(20000);
+
+        //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
+        firebaseAnalytics.setSessionTimeoutDuration(500);
+
+
+        //Sets the user ID property.
+        firebaseAnalytics.setUserId(String.valueOf(clientData.getClientId()));
+
+        //Sets a user property to a given value.
+        //firebaseAnalytics.setUserProperty("Client",clientData.getClientName());
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

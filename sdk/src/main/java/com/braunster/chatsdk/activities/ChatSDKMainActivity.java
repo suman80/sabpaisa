@@ -346,8 +346,14 @@ public class ChatSDKMainActivity extends ChatSDKBaseActivity {
 
     /* Exit Stuff*/
     @Override
-    public void onBackPressed() {
+  /* public void onBackPressed() {
         exitHelper.triggerExit();
+    }*/
+
+    public void onBackPressed() {
+        Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
+        startActivity(inent);
+
     }
 
     /**

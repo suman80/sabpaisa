@@ -28,12 +28,12 @@ public class ExitHelper {
         switch (BDefines.Defaults.SDKExitMode) {
             case BDefines.Exit.EXIT_MODE_DIALOG:
                 // Show alert dialog, Positive response is just dismiss the dialog, Negative will close the app.
-                DialogUtils.showAlertDialog(activity, "", activity.getResources().getString(R.string.alert_exit), activity.getResources().getString(R.string.exit),
-                        activity.getResources().getString(R.string.stay), null, new CloseApp());
+                /*DialogUtils.showAlertDialog(activity, "", activity.getResources().getString(R.string.alert_exit), activity.getResources().getString(R.string.exit),
+                        activity.getResources().getString(R.string.stay), null, new CloseApp());*/
                 break;
 
-            case BDefines.Exit.EXIT_MODE_DOUBLE_BACK:
-                if (doubleBackToExitPressedOnce) {
+            /*case BDefines.Exit.EXIT_MODE_DOUBLE_BACK:
+                *//*if (doubleBackToExitPressedOnce) {
                     try {
                         new CloseApp().call();
                     } catch (Exception e) {
@@ -48,14 +48,14 @@ public class ExitHelper {
                         doubleBackToExitPressedOnce = false;
                     }
                 }, BDefines.Exit.DOUBLE_CLICK_INTERVAL);
-
-                this.doubleBackToExitPressedOnce = true;
-                Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivity");
+*//*
+                //this.doubleBackToExitPressedOnce = true;
+                Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
                 activity.startActivity(inent);
 
                 //showAlertToast( activity.getString(R.string.exit_helper_double_tap_toast) );
-                break;
-
+                break;*/
+/*
             case BDefines.Exit.EXIT_MODE_NONE:
                 try {
                     new CloseApp().call();
@@ -63,7 +63,11 @@ public class ExitHelper {
                     e.printStackTrace();
                     return;
                 }
-                break;
+                break;*/
+
+            default :
+                Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
+                activity.startActivity(inent);
         }
     }
 
