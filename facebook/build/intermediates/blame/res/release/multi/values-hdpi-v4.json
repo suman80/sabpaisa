@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
+        "outputFile": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-hdpi-v4/values-hdpi-v4.xml",
         "map": [
             {
                 "to": {
@@ -11,31 +11,7 @@
                     "endOffset": 114
                 },
                 "from": {
-                    "file": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\values-hdpi\\dimens.xml",
-                    "position": {
-                        "startLine": 2,
-                        "startColumn": 4,
-                        "startOffset": 57,
-                        "endColumn": 63,
-                        "endOffset": 116
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "outputFile": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
-        "map": [
-            {
-                "to": {
-                    "startLine": 2,
-                    "startColumn": 4,
-                    "startOffset": 55,
-                    "endColumn": 63,
-                    "endOffset": 114
-                },
-                "from": {
-                    "file": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\values-hdpi\\dimens.xml",
+                    "file": "/home/rajdeeps/sp/sabpaisa/facebook/res/values-hdpi/dimens.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -48,7 +24,7 @@
         ]
     },
     {
-        "outputFile": "C:\\home\\archana\\AndroidStudioProjects\\NewFlooddeerr\\sabpaisa\\facebook\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
+        "outputFile": "/home/rajdeeps/sp/sabpaisa/C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
         "map": [
             {
                 "to": {
@@ -59,7 +35,55 @@
                     "endOffset": 114
                 },
                 "from": {
-                    "file": "C:\\home\\archana\\AndroidStudioProjects\\NewFlooddeerr\\sabpaisa\\facebook\\res\\values-hdpi\\dimens.xml",
+                    "file": "/home/rajdeeps/sp/sabpaisa/C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\values-hdpi\\dimens.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 57,
+                        "endColumn": 63,
+                        "endOffset": 116
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "/home/rajdeeps/sp/sabpaisa/C:\\home\\archana\\AndroidStudioProjects\\NewFlooddeerr\\sabpaisa\\facebook\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 63,
+                    "endOffset": 114
+                },
+                "from": {
+                    "file": "/home/rajdeeps/sp/sabpaisa/C:\\home\\archana\\AndroidStudioProjects\\NewFlooddeerr\\sabpaisa\\facebook\\res\\values-hdpi\\dimens.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endColumn": 63,
+                        "endOffset": 114
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "/home/rajdeeps/sp/sabpaisa/C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 63,
+                    "endOffset": 114
+                },
+                "from": {
+                    "file": "/home/rajdeeps/sp/sabpaisa/C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\values-hdpi\\dimens.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,

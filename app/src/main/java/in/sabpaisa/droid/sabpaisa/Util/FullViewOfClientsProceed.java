@@ -62,7 +62,8 @@ import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.Members;
-import in.sabpaisa.droid.sabpaisa.Model.ContactList;
+import in.sabpaisa.droid.sabpaisa.Model.*;
+import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.PayFeeFragment;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.R;
@@ -619,6 +620,11 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
     @Override
     public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
+
+    }
+
+    @Override
+    public void onFragmentSetClients(ArrayList<SkipClientData> clientData) {
 
     }
 

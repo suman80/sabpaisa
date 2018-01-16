@@ -1,17 +1,23 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -21,12 +27,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -46,6 +56,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.wangjie.androidbucket.utils.ABTextUtil;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
@@ -65,7 +76,11 @@ import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionSkipFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientSkipFragment;
+import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
+import in.sabpaisa.droid.sabpaisa.Model.Institution;
+import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
@@ -81,7 +96,8 @@ import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 import static android.view.View.GONE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
+public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener
+        ,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener,OnFragmentInteractionListener,InstitutionSkipFragment.GetDataInterface{
 
     private SliderLayout mHeaderSlider;
     ArrayList<Integer> headerList = new ArrayList<>();
@@ -97,15 +113,20 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     int isMpinSet=1;
     FloatingActionButton fab;
     ActionBarDrawerToggle toggle;
-HashMap<String,String> Hash_file_maps;
+    HashMap<String,String> Hash_file_maps;
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
     private View view;
+    TextView mSearchText;
+    MaterialSearchView searchView;
+    ArrayList<SkipClientData> clientData;
+    ArrayList<SkipClientData> filteredClientList;
 
+    InstitutionSkipFragment institutionSkipFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_main_navigation);
@@ -240,6 +261,8 @@ HashMap<String,String> Hash_file_maps;
 
             }
         });*/
+
+        searchViewBar();
     }
 /*
     @Override
@@ -323,7 +346,10 @@ HashMap<String,String> Hash_file_maps;
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new InstitutionSkipFragment(),"Clients");
+
+        institutionSkipFragment = new InstitutionSkipFragment();
+
+        adapter.addFragment(institutionSkipFragment,"Clients");
         adapter.addFragment(new OtherClientSkipFragment(),"Other Clients");
         //adapter.addFragment(new FormFragment(),"Forms");
         //adapter.addFragment(new InstitutionFragment(),"Groups");
@@ -403,12 +429,195 @@ HashMap<String,String> Hash_file_maps;
     }
 
 
+    /*START method to enable searchBar and define its action*/
+    private void searchViewBar() { //TODO searchView
+        searchView = (MaterialSearchView) findViewById(R.id.search_viewSP);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (query.length()==0&& clientData!=null /*&& GroupData!=null*/){
+                    filteredClientList = clientData;
+                    //filteredGroupList = GroupData;
+                    institutionSkipFragment.getDataFromActivity();
+                    //groupsFragments.getDataFromActivity();
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                }
+                if (query.length() > 0 && clientData!=null /*&& GroupData!=null*/) {
+                    filteredClientList = filterClient(clientData, query);
+                    //filteredGroupList = filterGroup(GroupData, query);
+
+//                    filteredMemberList = filterMember(MemberData, newText);
+                    Log.wtf("FilteredList", String.valueOf(filteredClientList));
+                    institutionSkipFragment.getDataFromActivity();
+                    //groupsFragments.getDataFromActivity();
+//                    memberFragment.getDataFromActivity();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length()==0&& clientData!=null /*&& GroupData!=null*/){
+                    filteredClientList = clientData;
+                    Log.wtf("filteredfeedList ", String.valueOf(filteredClientList));
+                    //filteredGroupList = GroupData;
+                    institutionSkipFragment.getDataFromActivity();
+                    //groupsFragments.getDataFromActivity();
+                }
+                else if (newText.length() > 0 && clientData!=null /*&& GroupData!=null*/) {
+                    filteredClientList = filterClient(clientData, newText);
+                    //filteredGroupList = filterGroup(GroupData, newText);
+
+//                    filteredMemberList = filterMember(MemberData, newText);
+                    Log.wtf("FilteredList", String.valueOf(filteredClientList));
+                    institutionSkipFragment.getDataFromActivity();
+                    //groupsFragments.getDataFromActivity();
+//                    memberFragment.getDataFromActivity();
+                }
+                return false;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            int temp;
+
+            @Override
+            public void onSearchViewShown() {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+                TypedValue tv = new TypedValue();
+                getApplicationContext().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+                int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
+                temp = params.height;
+                params.height = actionBarHeight; // COLLAPSED_HEIGHT
+
+                appBarLayout.setLayoutParams(params);
+                appBarLayout.setExpanded(true, false);
+                searchView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+                params.height = temp; // COLLAPSED_HEIGHT
+
+                appBarLayout.setLayoutParams(params);
+                appBarLayout.setExpanded(true, false);//Do some magic
+
+                filteredClientList = clientData;
+                institutionSkipFragment.getDataFromActivity();
+                //filteredGroupList = GroupData;
+                //groupsFragments.getDataFromActivity();
+//                filteredMemberList = MemberData;
+//                memberFragment.getDataFromActivity();
+            }
+        });
+    }
+    /*END method to enable searchBar and define its action*/
+
+    /*START method to search query in Feed List*/
+    private ArrayList<SkipClientData> filterClient(ArrayList<SkipClientData> mList, String query) { //TODO searchView
+        query = query.toLowerCase();
+
+        ArrayList<SkipClientData> filteredList = new ArrayList<>();
+        filteredList.clear();
+        for (SkipClientData item : mList) {
+            if (item.organization_name.toLowerCase().contains(query) || item.organizationId.toLowerCase().contains(query)
+                    || item.orgAddress.toLowerCase().contains(query) ) {
+                filteredList.add(item);
+            }
+        }
+
+        return filteredList;
+    }
+    /*END method to search query in Client List*/
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.coa_menu, menu);
+
+        //Search
+        Bitmap iconSearch = BitmapFactory.decodeResource(getResources(), R.drawable.search); //Converting drawable into bitmap
+        Bitmap newIconSearch = resizeBitmapImageFn(iconSearch, (int) convertDpToPixel(20f, this)); //resizing the bitmap
+        Drawable dSearch = new BitmapDrawable(getResources(), newIconSearch); //Converting bitmap into drawable
+        menu.getItem(1).setIcon(dSearch);
+        searchView.setMenuItem(menu.getItem(1));  //TODO searchView
+
+
+
         return true;
     }
+
+
+
+    public boolean      onQueryTextSubmit      (String query) {
+        //Toast.makeText(this, "Searching for: " + query + "...", Toast.LENGTH_SHORT).show();
+        mSearchText.setText("Searching for: " + query + "...");
+        mSearchText.setTextColor(Color.RED);
+        return true;
+    }
+
+    public float convertDpToPixel(float dp, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
+    }
+
+    private Bitmap resizeBitmapImageFn(
+            Bitmap bmpSource, int maxResolution) {
+        int iWidth = bmpSource.getWidth();
+        int iHeight = bmpSource.getHeight();
+        int newWidth = iWidth;
+        int newHeight = iHeight;
+        float rate = 0.0f;
+
+        if (iWidth > iHeight) {
+            if (maxResolution < iWidth) {
+                rate = maxResolution / (float) iWidth;
+                newHeight = (int) (iHeight * rate);
+                newWidth = maxResolution;
+            }
+        } else {
+            if (maxResolution < iHeight) {
+                rate = maxResolution / (float) iHeight;
+                newWidth = (int) (iWidth * rate);
+                newHeight = maxResolution;
+            }
+        }
+
+        return Bitmap.createScaledBitmap(
+                bmpSource, newWidth, newHeight, true);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (searchView.isSearchOpen()) {
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -423,6 +632,13 @@ HashMap<String,String> Hash_file_maps;
         /* if (id == R.id.action_settings) {
             return true;
         }*/
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_searchSP) {
+            return true;
+        }
+
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -584,6 +800,30 @@ HashMap<String,String> Hash_file_maps;
         finish();
     }
 
+    @Override
+    public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
+
+    }
+
+    @Override
+    public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
+
+    }
+
+    @Override
+    public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
+
+    }
+
+    @Override
+    public void onFragmentSetClients(ArrayList<SkipClientData> clientData) {
+        this.clientData = clientData;
+    }
+
+    @Override
+    public ArrayList<SkipClientData> getClientDataList() {
+        return filteredClientList;
+    }
 }
 
 

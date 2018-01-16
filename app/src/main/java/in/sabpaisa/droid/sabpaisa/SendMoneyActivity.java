@@ -38,6 +38,8 @@ import in.sabpaisa.droid.sabpaisa.Fragments.ContactListFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.SavedUPIFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
+import in.sabpaisa.droid.sabpaisa.Model.Institution;
+import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 import static android.view.View.GONE;
@@ -148,6 +150,12 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
     public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
         this.contactLists = contactLists;
     }
+
+    @Override
+    public void onFragmentSetClients(ArrayList<SkipClientData> clientData) {
+
+    }
+
 
     @Override
     public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {

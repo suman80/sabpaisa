@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa.Fragments;
 
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,6 +29,9 @@ import java.util.ArrayList;
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.SkipMainClientsAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.GroupListData;
+import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -41,6 +45,8 @@ public class InstitutionSkipFragment extends Fragment {
     SkipMainClientsAdapter skipMainClientsAdapter;
     //InstitutionAdapter institutionAdapter;
     ArrayList<SkipClientData> institutions;
+    /*START Interface for getting data from activity*/
+    GetDataInterface sGetDataInterface;
 
     public InstitutionSkipFragment() {
 
@@ -60,18 +66,18 @@ public class InstitutionSkipFragment extends Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),10));
         recyclerViewInstitutions.setLayoutManager(llm);
-        institutions = new ArrayList<>();
-        skipMainClientsAdapter =new SkipMainClientsAdapter(institutions);
+
+
         //institutionAdapter = new InstitutionAdapter(institutions);
         //recyclerViewInstitutions.setAdapter(institutionAdapter);
         recyclerViewInstitutions.postDelayed(new Runnable() {
             @Override
             public void run() {
-                recyclerViewInstitutions.setAdapter(skipMainClientsAdapter);
+
 
             }
         },1000);
-
+        Log.d("sGetDataInterface",""+sGetDataInterface);
         getClientsList();
 
         return rootView;
@@ -86,67 +92,56 @@ public class InstitutionSkipFragment extends Fragment {
 
         StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.url_clientsall, new Response.Listener<String>() {
 
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
-            public void onResponse(String response2) {
-
-                Log.d(TAG, "Register Response: " + response2.toString());
-//                hideDialog();
-
-                JSONObject jObj = null;
+            public void onResponse(String response) {
                 try {
-                    jObj = new JSONObject(response2);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    String status = jObj.getString("status");
+                    institutions = new ArrayList<SkipClientData>();
+                    JSONObject jsonObject = new JSONObject(response);
 
-                    //status =jObj.getString("status");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    String status = jsonObject.getString("status");
 
+                    String response1 = jsonObject.getString("response");
 
-                JSONArray    jarr1 = null;
-                try {
-                    jarr1 = jObj.getJSONArray("response");
+                    if (status.equals("success")&&response1.equals("No_Record_Found")) {
 
-                    String status =jObj.getString("status");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                        //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
 
-                for (int i = 0; i < jarr1.length(); i++) {
-                    try {
+                    }
+                    else {
+                        JSONArray jsonArray = jsonObject.getJSONArray("response");
 
-                        JSONObject jsonObject = jarr1.getJSONObject(i);
-                    //    JSONArray jarr = new JSONArray(response2);
-                        //String status = jObj.getString("status");
-                        //String response = jarr.getString("response1");
-                        //boolean error = jObj.getBoolean("e623+rror");
-                        //status = jObj.getString("status");
+                        for (int i = 0; i < jsonArray.length(); i++) {
 
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            SkipClientData institution = new SkipClientData();
 
-                        SkipClientData institution = new SkipClientData();
+                            institution.setOrganizationId(jsonObject1.getString("clientId"));
+                            institution.setOrganization_name(jsonObject1.getString("clientName"));
+                            institution.setOrgLogo(jsonObject1.getString("clientLogoPath"));
+                            institution.setOrgAddress(jsonObject1.getString("state"));
+                            institution.setOrgWal(jsonObject1.getString("clientImagePath"));
+                            institutions.add(institution);
+                        }
 
-                        institution.setOrganizationId(jsonObject.getString("clientId"));
-                        institution.setOrganization_name(jsonObject.getString("clientName"));
-                        institution.setOrgLogo(jsonObject.getString("clientLogoPath"));
-                        institution.setOrgAddress(jsonObject.getString("state"));
-                        institution.setOrgWal(jsonObject.getString("clientImagePath"));
-
-
-                        institutions.add(institution);
-                        skipMainClientsAdapter.notifyDataSetChanged();
-                        //institutionAdapter.notifyDataSetChanged();
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                       /*START listener for sending data to activity*/
+                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                        listener.onFragmentSetClients(institutions);
+                            /*END listener for sending data to activity*/
+                        //loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
+                        skipMainClientsAdapter =new SkipMainClientsAdapter(institutions);
+                        recyclerViewInstitutions.setAdapter(skipMainClientsAdapter);
                     }
                 }
+                // Try and catch are included to handle any errors due to JSON
+                catch(JSONException e){
+                    // If an error occurs, this prints the error to the log
+                    e.printStackTrace();
+
+                }
+
             }
+
+
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -155,6 +150,37 @@ public class InstitutionSkipFragment extends Fragment {
         });
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            sGetDataInterface= (GetDataInterface) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
+        }
+    }
+
+    public void getDataFromActivity() {
+        if(sGetDataInterface != null){
+            this.institutions = sGetDataInterface.getClientDataList();
+            skipMainClientsAdapter.setItems(this.institutions);
+            skipMainClientsAdapter.notifyDataSetChanged();
+        }
+
+        Log.d("Institution_I&A"," "+sGetDataInterface+"&"+institutions);
+    }
+    /*END Interface for getting data from activity*/
+
+    public interface GetDataInterface {
+        ArrayList<SkipClientData> getClientDataList();
+    }
+
+
+
+
 
 }
 

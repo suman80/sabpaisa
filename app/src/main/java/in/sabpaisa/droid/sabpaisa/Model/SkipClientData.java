@@ -5,17 +5,17 @@ package in.sabpaisa.droid.sabpaisa.Model;
  */
 
 public class SkipClientData {
-    String organizationId;
-    String organization_name;
-    String relationship_type;
-    String orgLogo;
-    String orgWal;
-    String orgAddress;
-    String orgDesc;
-    String conPersonName;
-    Long conPersonMobNO;
-    String conPersonEmail;
-    Long createdDate;
+    public String organizationId;
+    public String organization_name;
+    public String relationship_type;
+    public String orgLogo;
+    public String orgWal;
+    public String orgAddress;
+    public String orgDesc;
+    public String conPersonName;
+    public Long conPersonMobNO;
+    public String conPersonEmail;
+    public Long createdDate;
 
     public SkipClientData() {
     }

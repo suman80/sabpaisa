@@ -239,22 +239,6 @@ btn_pay.setOnClickListener(new OnClickListener() {
 
 
 
-    @Override
-    public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
-
-    }
-
-    @Override
-    public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
-
-    }
-
-    @Override
-    public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
-
-    }
-
-
 
 
 
@@ -630,5 +614,30 @@ btn_pay.setOnClickListener(new OnClickListener() {
 //        loadComments(String.valueOf(1));
     }
     /*End onRefresh() for SwipeRefreshLayout*/
+
+
+    @Override
+    public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
+
+    }
+
+    @Override
+    public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
+
+    }
+
+    @Override
+    public void onFragmentSetClients(ArrayList<SkipClientData> clientData) {
+
+    }
+
+
+    @Override
+    public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
+
+    }
+
+
+
 
 }
