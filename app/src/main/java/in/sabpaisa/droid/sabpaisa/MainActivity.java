@@ -256,11 +256,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
        // View header = navigationView.getHeaderView(0);
       // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
-        Glide
-                .with(MainActivity.this)
-                .load(userImageUrl)
-                .error(R.drawable.default_users)
-                .into(niv);
+        Glide.with(MainActivity.this).load(userImageUrl).error(R.drawable.default_users).into(niv);
 
         //if(url.length() > 0)
             //niv.setImageUrl(userImageUrl, imageLoader);
