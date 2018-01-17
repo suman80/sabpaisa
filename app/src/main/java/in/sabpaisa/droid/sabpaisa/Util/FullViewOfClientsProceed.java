@@ -70,7 +70,8 @@ import in.sabpaisa.droid.sabpaisa.R;
 
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,OnFragmentInteractionListener,ProceedFeedsFragments.GetDataInterface,ProceedGroupsFragments.GetDataInterface {
+public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        OnFragmentInteractionListener,ProceedFeedsFragments.GetDataInterface,ProceedGroupsFragments.GetDataInterface,Members.GetDataInterface {
     ImageView clientImagePath;
     String clientName,state,landingPage;
     public static String ClientId;
@@ -89,6 +90,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     ProceedFeedsFragments feedsFragments;
     ProceedGroupsFragments groupsFragments;
     Members membersFragment;
+    ArrayList<Member_GetterSetter> memberData;
+    ArrayList<Member_GetterSetter> filteredmemberData;
 
     private TabLayout tabLayout;
 
@@ -219,24 +222,25 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (query.length()==0&& feedData!=null && GroupData!=null){
+                if (query.length()==0&& feedData!=null && GroupData!=null && memberData !=null){
                     filteredfeedList = feedData;
                     filteredGroupList = GroupData;
+                    filteredmemberData= memberData;
                     feedsFragments.getDataFromActivity();
                     groupsFragments.getDataFromActivity();
+                    membersFragment.getDataFromActivity();
 
                     InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                     imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 }
-                if (query.length() > 0 && feedData!=null && GroupData!=null) {
+                if (query.length() > 0 && feedData!=null && GroupData!=null && memberData!=null) {
                     filteredfeedList = filterFeed(feedData, query);
                     filteredGroupList = filterGroup(GroupData, query);
-
-//                    filteredMemberList = filterMember(MemberData, newText);
+                    filteredmemberData = filterMember(memberData, query);
                     Log.wtf("FilteredList", String.valueOf(filteredfeedList));
                     feedsFragments.getDataFromActivity();
                     groupsFragments.getDataFromActivity();
-//                    memberFragment.getDataFromActivity();
+                    membersFragment.getDataFromActivity();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                     imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 }
@@ -245,22 +249,23 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.length()==0&& feedData!=null && GroupData!=null){
+                if (newText.length()==0&& feedData!=null && GroupData!=null && memberData != null){
                     filteredfeedList = feedData;
                     Log.wtf("filteredfeedList ", String.valueOf(filteredfeedList));
                     filteredGroupList = GroupData;
+                    filteredmemberData = memberData;
                     feedsFragments.getDataFromActivity();
                     groupsFragments.getDataFromActivity();
+                    membersFragment.getDataFromActivity();
                 }
-                else if (newText.length() > 0 && feedData!=null && GroupData!=null) {
+                else if (newText.length() > 0 && feedData!=null && GroupData!=null && memberData!=null) {
                     filteredfeedList = filterFeed(feedData, newText);
                     filteredGroupList = filterGroup(GroupData, newText);
-
-//                    filteredMemberList = filterMember(MemberData, newText);
+                    filteredmemberData = filterMember(memberData, newText);
                     Log.wtf("FilteredList", String.valueOf(filteredfeedList));
                     feedsFragments.getDataFromActivity();
                     groupsFragments.getDataFromActivity();
-//                    memberFragment.getDataFromActivity();
+                    membersFragment.getDataFromActivity();
                 }
                 return false;
             }
@@ -295,8 +300,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
                 feedsFragments.getDataFromActivity();
                 filteredGroupList = GroupData;
                 groupsFragments.getDataFromActivity();
-//                filteredMemberList = MemberData;
-//                memberFragment.getDataFromActivity();
+                filteredmemberData = memberData;
+                membersFragment.getDataFromActivity();
             }
         });
     }
@@ -336,6 +341,22 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     }
     /*END method to search query in Group List*/
 
+    /*START method to search query in member List*/
+    private ArrayList<Member_GetterSetter> filterMember(ArrayList<Member_GetterSetter> mList, String query) { //TODO searchView
+        query = query.toLowerCase();
+
+        ArrayList<Member_GetterSetter> filteredList = new ArrayList<>();
+        filteredList.clear();
+        for (Member_GetterSetter item : mList) {
+            if (item.fullName.toLowerCase().contains(query) /*|| item.phoneNumber.toLowerCase().contains(query)
+                    || item.createdDate.toLowerCase().contains(query)||item.groupId.toLowerCase().contains(query)*/) {
+                filteredList.add(item);
+            }
+        }
+
+        return filteredList;
+    }
+    /*END method to search query in Group List*/
 
 
 
@@ -552,7 +573,6 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
 
 
-
     //Code for fetching image from server
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -605,6 +625,11 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         this.GroupData = groupData;
     }
 
+    @Override
+    public void onFragmentSetMembers(ArrayList<Member_GetterSetter> memberData) {
+        this.memberData = memberData;
+    }
+
 
     @Override
     public ArrayList<FeedData> getFeedDataList() {
@@ -617,6 +642,11 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         return filteredGroupList;
     }
 
+
+    @Override
+    public ArrayList<Member_GetterSetter> getMemberDataList() {
+        return filteredmemberData;
+    }
 
     @Override
     public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {

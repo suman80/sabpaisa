@@ -637,7 +637,10 @@ btn_pay.setOnClickListener(new OnClickListener() {
 
     }
 
+    @Override
+    public void onFragmentSetMembers(ArrayList<Member_GetterSetter> memberData) {
 
+    }
 
 
 }

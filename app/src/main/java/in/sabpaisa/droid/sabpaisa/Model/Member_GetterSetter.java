@@ -5,7 +5,7 @@ package in.sabpaisa.droid.sabpaisa.Model;
  */
 
 public class Member_GetterSetter {
-    String id,userId,groupId,timestampOfJoining,status,fullName,
+   public String id,userId,groupId,timestampOfJoining,status,fullName,
             emailId,phoneNumber,deviceId,userImageUrl,uin,CONTACT_NUMBER;
 
     public Member_GetterSetter() {

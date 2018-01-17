@@ -12,9 +12,11 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
 
+import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.R;
 
@@ -38,6 +40,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
         this.memberGetterSetterArrayList = memberGetterSetterArrayList;
     }
 
+
+    /*START Method to change data when put query in searchBar*/
+    public void setItems(ArrayList<Member_GetterSetter> memberDatas) {
+        this.memberGetterSetterArrayList = memberDatas;
+    }
 
 
 

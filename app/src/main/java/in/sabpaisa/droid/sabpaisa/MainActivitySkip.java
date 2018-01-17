@@ -80,6 +80,7 @@ import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
+import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -176,7 +177,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         //fab = (FloatingActionButton)findViewById(R.id.fab_dashboard);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("HOME");
+        toolbar.setTitle("Sabpaisa");
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
@@ -807,6 +808,11 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
     @Override
     public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
+
+    }
+
+    @Override
+    public void onFragmentSetMembers(ArrayList<Member_GetterSetter> memberData) {
 
     }
 

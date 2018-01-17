@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,6 +36,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import org.json.JSONException;
@@ -45,6 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 
 public class MainGroupAdapter1 extends
@@ -52,8 +55,9 @@ public class MainGroupAdapter1 extends
     Context mContext;
     private List<GroupListData> countryList;
 
-    public MainGroupAdapter1(List<GroupListData> countryList) {
+    public MainGroupAdapter1(List<GroupListData> countryList,Context context) {
         this.countryList = countryList;
+        this.mContext = context;
     }
 
     /*START Method to change data when put query in searchBar*/
@@ -67,8 +71,17 @@ public class MainGroupAdapter1 extends
         final GroupListData c = countryList.get(position);
         holder.Group_name.setText(c.getGroupName());
         holder.Group_description.setText(c.getGroupText());
-        new DownloadLogoTask(holder.Group_Logo).execute(c.getLogoPath());
-        new DownloadImageTask(holder.Group_Image).execute(c.getImagePath());
+       /* new DownloadLogoTask(holder.Group_Logo).execute(c.getLogoPath());
+        new DownloadImageTask(holder.Group_Image).execute(c.getImagePath());*/
+        Glide.with(mContext)
+                .load(c.getLogoPath())
+                .error(R.drawable.default_users)
+                .into(holder.Group_Logo);
+
+        Glide.with(mContext)
+                .load(c.getImagePath())
+                .error(R.drawable.default_users)
+                .into(holder.Group_Image);
 
         holder.Group_name.setOnClickListener(new View.OnClickListener() {
             @Override

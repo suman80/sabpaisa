@@ -139,7 +139,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                         listener.onFragmentSetGroups(groupArrayList);
                             /*END listener for sending data to activity*/
 
-                        mainGroupAdapter1 = new MainGroupAdapter1(groupArrayList);
+                        mainGroupAdapter1 = new MainGroupAdapter1(groupArrayList,getContext());
                         groupList.setAdapter(mainGroupAdapter1);
 
                     }

@@ -1,14 +1,6 @@
 [
     {
-        "merged": "C:\\home\\archana\\AndroidStudioProjects\\NewFlooddeerr\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\com_facebook_close.png",
-        "source": "C:\\home\\archana\\AndroidStudioProjects\\NewFlooddeerr\\sabpaisa\\facebook\\res\\drawable-ldpi\\com_facebook_close.png"
-    },
-    {
-        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\com_facebook_close.png",
-        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable-ldpi\\com_facebook_close.png"
-    },
-    {
-        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\com_facebook_close.png",
-        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable-ldpi\\com_facebook_close.png"
+        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/debug/drawable-ldpi-v4/com_facebook_close.png",
+        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable-ldpi/com_facebook_close.png"
     }
 ]

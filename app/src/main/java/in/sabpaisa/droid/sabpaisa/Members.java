@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.MemberAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragments;
+import in.sabpaisa.droid.sabpaisa.Fragments.ProceedGroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -43,6 +44,10 @@ public class Members extends Fragment {
     ArrayList<Member_GetterSetter> member_getterSetterArrayList;
     MemberAdapter memberAdapter;
     ShimmerRecyclerView recycler_view_Member;
+
+    /*START Interface for getting data from activity*/
+    GetDataInterface sGetDataInterface;
+    /*START Interface for getting data from activity*/
 
     public Members() {
         // Required empty public constructor
@@ -112,7 +117,7 @@ public class Members extends Fragment {
                             member_getterSetter.setPhoneNumber(jsonObject1.getString("phoneNumber"));
                             member_getterSetter.setStatus(jsonObject1.getString("status"));
                             member_getterSetter.setTimestampOfJoining(jsonObject1.getString("timestampOfJoining"));
-                            member_getterSetter.setUin(jsonObject1.getString("uin"));
+                            //member_getterSetter.setUin(jsonObject1.getString("uin"));
                             member_getterSetter.setUserId(jsonObject1.getString("userId"));
                             member_getterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
                             member_getterSetter.setFullName(jsonObject1.getString("fullName"));
@@ -123,6 +128,10 @@ public class Members extends Fragment {
                         }
                         Log.d("ArrayListAfterParse", " " + member_getterSetterArrayList.get(0).getFullName());
 
+                        /*START listener for sending data to activity*/
+                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                        listener.onFragmentSetMembers(member_getterSetterArrayList);
+                            /*END listener for sending data to activity*/
                             memberAdapter = new MemberAdapter(member_getterSetterArrayList);
                             recycler_view_Member.setAdapter(memberAdapter);
 
@@ -152,6 +161,36 @@ public class Members extends Fragment {
         // Adds the JSON array request "arrayreq" to the request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            sGetDataInterface= (GetDataInterface) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
+        }
+    }
+
+    public void getDataFromActivity() {
+        if(sGetDataInterface != null){
+            this.member_getterSetterArrayList = sGetDataInterface.getMemberDataList();
+            memberAdapter.setItems(this.member_getterSetterArrayList);
+            memberAdapter.notifyDataSetChanged();
+        }
+
+        Log.d("PGF_I&A"," "+sGetDataInterface+"&"+member_getterSetterArrayList);
+    }
+
+
+
+
+    public interface GetDataInterface {
+        ArrayList<Member_GetterSetter> getMemberDataList();
+    }
+
+
 
 
 

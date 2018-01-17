@@ -36,6 +36,7 @@ import in.sabpaisa.droid.sabpaisa.Fragments.TransactionPendingFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
+import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
@@ -157,6 +158,11 @@ public class RequestMoney extends AppCompatActivity implements SavedUPIAdapter.U
 
     @Override
     public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
+
+    }
+
+    @Override
+    public void onFragmentSetMembers(ArrayList<Member_GetterSetter> memberData) {
 
     }
 
