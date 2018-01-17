@@ -2,8 +2,10 @@ package in.sabpaisa.droid.sabpaisa;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -18,6 +20,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -26,6 +29,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,6 +61,7 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 import com.wangjie.androidbucket.utils.ABTextUtil;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -101,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     AppBarLayout appBarLayout;
     private CustomViewPager viewPager;
     private TabLayout tabLayout;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+
     Toolbar toolbar;
     private FirebaseAnalytics firebaseAnalytics;
     NetworkImageView nav;
@@ -220,6 +227,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
       /*  Intent intent=new Intent(MainActivity.this, FullViewOfClientsProceed.class);
         intent.putExtra("userImageUrl",userImageUrl);*/
 
+
+      //Firebase Analytics
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         ClientData clientData=new ClientData();
@@ -245,6 +254,37 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         //Sets a user property to a given value.
         //firebaseAnalytics.setUserProperty("Client",clientData.getClientName());
+
+
+        // Firebase push notification
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+                    displayFirebaseRegId();
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+
+                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+
+                    //txtMessage.setText(message);
+                }
+            }
+        };
+
+        displayFirebaseRegId();
+
+
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -408,6 +448,27 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
             }
         });*/
+    }
+
+
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+
+
+        Log.d("Fbid", "Firebase reg id: " + regId);
+
+        if (!TextUtils.isEmpty(regId))
+            Toast.makeText(this, "Firebase Reg Id: " + regId, Toast.LENGTH_SHORT).show();
+
+
+            //txtRegId.setText("Firebase Reg Id: " + regId);
+        else
+
+            Toast.makeText(this, "Firebase Reg Id is not received yet!" + regId, Toast.LENGTH_SHORT).show();
+
+        //txtRegId.setText("Firebase Reg Id is not received yet!");*/
     }
 
     @Override
@@ -933,5 +994,59 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     }
 
 
+    //Firebase Notification
+
+
+    // Fetches reg id from shared preferences
+    // and displays on the screen
+    /*private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+        Log.d("Fbid", "Firebase reg id: " + regId);
+
+        *//*if (!TextUtils.isEmpty(regId))
+            //txtRegId.setText("Firebase Reg Id: " + regId);
+        else
+            //txtRegId.setText("Firebase Reg Id is not received yet!");*//*
+    }*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
+    }
+
+   /* private void subscribeUserToParse() {
+        String deviceToken = FirebaseInstanceId.getInstance().getToken();
+        if (TextUtils.isEmpty(deviceToken)) {
+            Intent intent = new Intent(this, MyFirebaseInstanceIDService.class);
+            startService(intent);
+            return;
+        }
+
+        User user = UserUtil.retrieveUserFromDB(mRealm);
+        String objectId = user.getParseObjectId();
+        if (!TextUtils.isEmpty(objectId)) {
+            ParseUtils.subscribeWithUsersObjectId(objectId, deviceToken);
+        }
+    }*/
     }
 

@@ -41,8 +41,8 @@ dependencies {
     compile 'com.weiwangcn.betterspinner:library:1.1.0'
     // compile 'com.github.santalu:respinner:1.0.1'
     //noinspection GradleCompatible
-    compile 'com.google.android.gms:play-services-maps:9.0.0'
-    compile 'com.google.android.gms:play-services-plus:9.0.0'
+    compile 'com.google.android.gms:play-services-maps:11.4.0'
+    compile 'com.google.android.gms:play-services-plus:11.4.0'
     compile 'com.jaredrummler:material-spinner:1.2.3'
     compile 'com.codesgood:justifiedtextview:1.0.2'
     compile project(':securecomponent')
@@ -54,12 +54,12 @@ dependencies {
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.uncopt:android.justified:1.0'
 
-    compile 'com.google.firebase:firebase-auth:10.0.1'
+    compile 'com.google.firebase:firebase-auth:11.4.0'
 
-    compile 'com.google.firebase:firebase-core:9.0.2'
-    compile 'com.google.firebase:firebase-messaging:9.0.2'
+    compile 'com.google.firebase:firebase-core:11.4.0'
+    compile 'com.google.firebase:firebase-messaging:11.4.0'
 
-    compile 'com.google.firebase:firebase-database:10.0.1'
+    compile 'com.google.firebase:firebase-database:11.4.0'
     compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
     //noinspection GradleCompatible
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -96,6 +96,8 @@ dependencies {
     //compile project(path: ':chat-sdk-core')
     compile 'gun0912.ted:tedpermission:2.1.0'
     compile 'com.android.support:multidex:1.0.0'
+   // compile 'com.google.firebase:firebase-messaging:9.6.0'
+   //compile 'com.google.firebase:firebase-messaging:11.8.0'
 }
 
 allprojects {

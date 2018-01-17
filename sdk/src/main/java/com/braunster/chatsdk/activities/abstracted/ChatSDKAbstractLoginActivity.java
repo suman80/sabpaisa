@@ -225,18 +225,19 @@ public class ChatSDKAbstractLoginActivity extends ChatSDKBaseActivity {
     /* Exit Stuff*/
     @Override
     public void onBackPressed() {
-        if (exitOnBackPressed) {
+     /*   if (exitOnBackPressed) {
             // Exit the app.
             // If logged out from the main activity pressing back in the LoginActivity will get me back to the Main so this have to be done.
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-           /* Intent intent = new Intent("neeraj_sabpaisa.com.coa.intent.action.launch");
+           *//* Intent intent = new Intent("neeraj_sabpaisa.com.coa.intent.action.launch");
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);*/
-        } else super.onBackPressed();
+            startActivity(intent);*//*
+        } else */super.onBackPressed();
+        finish();
 
     }
 
@@ -301,5 +302,9 @@ public class ChatSDKAbstractLoginActivity extends ChatSDKBaseActivity {
 
     protected void setExitOnBackPressed(boolean exitOnBackPressed) {
         this.exitOnBackPressed = exitOnBackPressed;
+
+
+
     }
+
 }

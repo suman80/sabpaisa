@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.braunster.chatsdk.BuildConfig;
 import com.braunster.chatsdk.R;
 import com.braunster.chatsdk.Utils.Debug;
+import com.braunster.chatsdk.Utils.ExitHelper;
 import com.braunster.chatsdk.activities.abstracted.ChatSDKAbstractLoginActivity;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.dao.core.DaoCore;
@@ -37,7 +38,7 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_sdk_activty_login);
 
-        //setExitOnBackPressed(true);
+        setExitOnBackPressed(true);
 
         View view = findViewById(R.id.chat_sdk_root_view);
 
@@ -105,10 +106,15 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
     @Override
     public void onBackPressed(){
         super.onBackPressed();
-        Intent i=new Intent(Intent.ACTION_MAIN);
+       /* Intent i=new Intent(Intent.ACTION_MAIN);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        finish();
+        moveTaskToBack(true);
+        System.exit(0);
+       /* finish()*//*;
+        ExitHelper exitHelper=new ExitHelper(this);
+        exitHelper.triggerExit();*/
+
     }
     /* Dismiss dialog and open main activity.*/
     @Override
