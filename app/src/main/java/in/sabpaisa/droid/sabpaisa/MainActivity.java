@@ -61,6 +61,7 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 import com.wangjie.androidbucket.utils.ABTextUtil;
@@ -156,11 +157,22 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         response = sharedPreferences.getString("response", "123");
 
-        userAccessToken = response;
+        if(response!=null) {
 
-        Log.d("AccessToken111", " " + userAccessToken);
+            userAccessToken = response;
+            Log.d("AccessToken111", " " + userAccessToken);
 
-        Log.d("FFResponse11111", " " + response);
+            Log.d("FFResponse11111", " " + response);
+        }else {
+            try{
+
+            }catch (NullPointerException e){
+                // [START log_and_report]
+                FirebaseCrash.logcat(Log.ERROR, "MainActivity", "NPE caught");
+                FirebaseCrash.report(e);
+            }
+        }
+
         //getUserIm(userAccessToken);
         //new DownloadImageTask(nav).execute(userImageUrl);
 /*

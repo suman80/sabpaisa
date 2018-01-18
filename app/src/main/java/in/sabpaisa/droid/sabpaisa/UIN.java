@@ -65,7 +65,7 @@ String clientId,userAccessToken,response;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     public static String clientImageURLPath=null;
     public static String clientLogoURLPath=null;
-
+    Button doNotHaveUIN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +118,8 @@ String clientId,userAccessToken,response;
         SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFUIN,MODE_PRIVATE).edit();
         editor.putString("clientId",clientId);
         editor.commit();
+
+
 
     }
 
@@ -504,5 +506,7 @@ String clientId,userAccessToken,response;
 
 
     }
+
+
 
 }

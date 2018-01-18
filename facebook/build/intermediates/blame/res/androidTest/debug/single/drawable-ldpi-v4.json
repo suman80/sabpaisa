@@ -2,5 +2,9 @@
     {
         "merged": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/res/merged/androidTest/debug/drawable-ldpi-v4/com_facebook_close.png",
         "source": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/bundles/debug/res/drawable-ldpi-v4/com_facebook_close.png"
+    },
+    {
+        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/androidTest/debug/drawable-ldpi-v4/com_facebook_close.png",
+        "source": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/bundles/debug/res/drawable-ldpi-v4/com_facebook_close.png"
     }
 ]

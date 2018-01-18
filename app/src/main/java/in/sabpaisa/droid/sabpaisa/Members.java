@@ -132,7 +132,7 @@ public class Members extends Fragment {
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetMembers(member_getterSetterArrayList);
                             /*END listener for sending data to activity*/
-                            memberAdapter = new MemberAdapter(member_getterSetterArrayList);
+                            memberAdapter = new MemberAdapter(member_getterSetterArrayList,getContext());
                             recycler_view_Member.setAdapter(memberAdapter);
 
                     }

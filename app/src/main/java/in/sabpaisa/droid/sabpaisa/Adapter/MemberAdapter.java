@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,7 @@ import in.sabpaisa.droid.sabpaisa.R;
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHolder> {
     int count;
     ArrayList<Member_GetterSetter> memberGetterSetterArrayList;
+    Context mContext;
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     @Override
@@ -36,8 +39,9 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
     }
 
 
-    public MemberAdapter(ArrayList<Member_GetterSetter> memberGetterSetterArrayList) {
+    public MemberAdapter(ArrayList<Member_GetterSetter> memberGetterSetterArrayList , Context context) {
         this.memberGetterSetterArrayList = memberGetterSetterArrayList;
+        this.mContext = context;
     }
 
 
@@ -53,8 +57,12 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
         Member_GetterSetter member_getterSetter = memberGetterSetterArrayList.get(position);
         holder.memberName.setText(member_getterSetter.getFullName());
-        holder.memberTimeStamp.setText(member_getterSetter.getTimestampOfJoining());
+        //holder.memberTimeStamp.setText(member_getterSetter.getTimestampOfJoining());
         //holder.memberImg.setImageUrl(member_getterSetter.getUserImageUrl(), imageLoader);
+        Glide.with(mContext)
+                .load(member_getterSetter.getUserImageUrl())
+                .error(R.drawable.default_users)
+                .into(holder.memberImg);
 
     }
 
@@ -68,7 +76,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
             memberImg = (ImageView) itemView .findViewById(R.id.memberImg);
             memberName = (TextView)itemView.findViewById(R.id.memberName);
-            memberTimeStamp = (TextView)itemView.findViewById(R.id.memberTimeStamp);
+            //memberTimeStamp = (TextView)itemView.findViewById(R.id.memberTimeStamp);
         }
     }
 
