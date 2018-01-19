@@ -66,7 +66,7 @@ public class SplashScreen extends AppCompatActivity {
                         finish();
                     }
                 }, SPLASH_TIME_OUT);
-                Toast.makeText(SplashScreen.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SplashScreen.this, "Permission Granted", Toast.LENGTH_SHORT).show();
             }
 
             @Override

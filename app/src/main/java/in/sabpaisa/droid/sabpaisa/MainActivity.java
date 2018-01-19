@@ -471,15 +471,15 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         Log.d("Fbid", "Firebase reg id: " + regId);
 
-        if (!TextUtils.isEmpty(regId))
-            Toast.makeText(this, "Firebase Reg Id: " + regId, Toast.LENGTH_SHORT).show();
-
+        if (!TextUtils.isEmpty(regId)) {
+            //Toast.makeText(this, "Firebase Reg Id: " + regId, Toast.LENGTH_SHORT).show();
+        }
 
             //txtRegId.setText("Firebase Reg Id: " + regId);
-        else
+        else {
 
-            Toast.makeText(this, "Firebase Reg Id is not received yet!" + regId, Toast.LENGTH_SHORT).show();
-
+            //Toast.makeText(this, "Firebase Reg Id is not received yet!" + regId, Toast.LENGTH_SHORT).show();
+        }
         //txtRegId.setText("Firebase Reg Id is not received yet!");*/
     }
 

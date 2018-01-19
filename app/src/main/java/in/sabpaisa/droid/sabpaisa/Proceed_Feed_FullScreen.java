@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
@@ -44,7 +45,7 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
-public class Proceed_Feed_FullScreen extends AppCompatActivity {
+public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     TextView feedsName, feed_description_details;
     ImageView feedImage;
@@ -53,13 +54,16 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
     ArrayList<CommentData> arrayList;
     String FeedsNm, feedsDiscription, feedImg, response, feed_id, userAccessToken;
     SwipeRefreshLayout swipeRefreshLayout;
+
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_proceed__feed__full_screen);
 
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
@@ -74,6 +78,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
         feedsName = (TextView) findViewById(R.id.feedsName);
         feed_description_details = (TextView) findViewById(R.id.feed_description_details);
         feedImage = (ImageView) findViewById(R.id.feedImage);
+        swipeRefreshLayout= (SwipeRefreshLayout)findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         FeedsNm = getIntent().getStringExtra("feedName");
         feedsDiscription = getIntent().getStringExtra("feedText");
@@ -89,9 +95,12 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
         new DownloadImageTask(feedImage).execute(feedImg);
         callGetCommentList(feed_id);
         arrayList = new ArrayList<>();
+        toolbar.setTitle(FeedsNm);
+
 
         //new LoadDBfromAPI().execute(response);
     }
+
 
     //Code for fetching image from server
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -211,7 +220,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
-
+                    swipeRefreshLayout.setRefreshing(false);
                     ArrayList<CommentData> commentArrayList = new ArrayList<CommentData>();
 
                     JSONObject jsonObject = new JSONObject(response);
@@ -311,6 +320,10 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity {
         return date;
     }
 
+    @Override
+    public void onRefresh() {
+        callGetCommentList(feed_id);
+    }
 
 
 

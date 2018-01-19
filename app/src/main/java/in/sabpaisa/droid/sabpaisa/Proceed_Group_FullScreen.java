@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +38,7 @@ import java.util.Locale;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
-public class Proceed_Group_FullScreen extends AppCompatActivity {
+public class Proceed_Group_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
     TextView groupsName,group_description_details;
     ImageView groupImage;
@@ -47,15 +48,25 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
 
     ArrayList<CommentData> arrayList;
     SwipeRefreshLayout swipeRefreshLayout;
+
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_proceed_group_full_screen);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         groupsName=(TextView)findViewById(R.id.groupsName);
         group_description_details=(TextView)findViewById(R.id.group_description_details);
         groupImage=(ImageView)findViewById(R.id.groupImage);
+
+
+        swipeRefreshLayout= (SwipeRefreshLayout)findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
@@ -84,8 +95,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
         callGetCommentList(GroupId);
         arrayList = new ArrayList<>();
 
+        toolbar.setTitle(GroupsNm);
 
     }
+
+
 
 
     //Code for fetching image from server
@@ -165,7 +179,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("success")) {
                         group_details_text_view.setText("");
-                        Toast.makeText(Proceed_Group_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Proceed_Group_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
                         callGetCommentList(GroupId);
 
                     }
@@ -207,7 +221,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
-
+                    swipeRefreshLayout.setRefreshing(false);
                     ArrayList<CommentData> commentArrayList = new ArrayList<CommentData>();
 
                     JSONObject jsonObject = new JSONObject(response);
@@ -335,7 +349,10 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
         return date;
     }
 
-
+    @Override
+    public void onRefresh() {
+        callGetCommentList(GroupId);
+    }
 
 
 

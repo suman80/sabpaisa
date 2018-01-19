@@ -71,8 +71,8 @@ public class ProceedFeedsFragments extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");
         Log.d("clientId_PFF",""+clientId);
-        //swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
-        //swipeRefreshLayout.setOnRefreshListener(this);
+        /*swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setOnRefreshListener(this);*/
 
         callFeedDataList(clientId);
 
@@ -222,6 +222,8 @@ public class ProceedFeedsFragments extends Fragment {
 
         Log.d("PFF_I&A"," "+sGetDataInterface+"&"+feedArrayList);
     }
+
+
     /*END Interface for getting data from activity*/
 
 

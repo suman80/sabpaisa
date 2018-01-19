@@ -39,6 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,6 +75,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     public static String MYSHAREDPREFPNA="mySharedPrefPNA";
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +97,8 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         et_address = (EditText)findViewById(R.id.et_address);
 
         addressEdit = (Button) findViewById(R.id.tv_addressEdit);
+
+
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
 
         toolbar.setTitle("Profile");
