@@ -215,23 +215,46 @@ public class Proceed_Group_FullScreen extends AppCompatActivity {
                     //String status = jsonObject.getString("status");
 
                     // String response1 = jsonObject.getString("response");
+                    ///////////////////////////////
+                    JSONArray jsonArray = null;
+                    Object obj = jsonObject.get("response");
 
-                    JSONArray jsonArray = jsonObject.getJSONArray("response");
+                    if(obj instanceof JSONArray){
+                        jsonArray = (JSONArray)obj;
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            CommentData groupData = new CommentData();
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            groupData.setCommentText(jsonObject1.getString("commentText"));
+                            groupData.setCommentName(jsonObject1.getString("commentByName"));
+
+                            String dataTime = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
+                            Log.d("dataTimePFF"," "+dataTime);
+                            groupData.setComment_date(getDate(Long.parseLong(dataTime)));
+                            commentArrayList.add(groupData);
+                        }
+                        loadCommentListView(commentArrayList);
+                    }
+
+                    Log.d("PGF","  "+obj.toString());
+                    ///////////////////////////////
+
+//                    JSONArray jsonArray = jsonObject.getJSONArray("response");
 
                     // new LoadDBfromAPI().execute(response);
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        CommentData groupData = new CommentData();
-                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                        groupData.setCommentText(jsonObject1.getString("commentText"));
-                        groupData.setCommentName(jsonObject1.getString("commentByName"));
-
-                        String dataTime = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
-                        Log.d("dataTimePFF"," "+dataTime);
-                        groupData.setComment_date(getDate(Long.parseLong(dataTime)));
-                        commentArrayList.add(groupData);
-                    }
-                    loadCommentListView(commentArrayList);
+//
+//                    for (int i = 0; i < jsonArray.length(); i++) {
+//                        CommentData groupData = new CommentData();
+//                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+//                        groupData.setCommentText(jsonObject1.getString("commentText"));
+//                        groupData.setCommentName(jsonObject1.getString("commentByName"));
+//
+//                        String dataTime = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
+//                        Log.d("dataTimePFF"," "+dataTime);
+//                        groupData.setComment_date(getDate(Long.parseLong(dataTime)));
+//                        commentArrayList.add(groupData);
+//                    }
+//                    loadCommentListView(commentArrayList);
 
 
                 }

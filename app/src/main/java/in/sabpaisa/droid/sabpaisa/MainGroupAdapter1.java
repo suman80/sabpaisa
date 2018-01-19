@@ -275,13 +275,13 @@ public class MainGroupAdapter1 extends
                 try {
                     JSONObject jObj = new JSONObject(response1);
 
-                    String response = jObj.getString("response");
+                    final String response = jObj.getString("response");
 
                     Log.d("MemberResponse"," "+response);
 
                     String status =jObj.getString("status");
 
-                    if (status!=null && status.equals("success")){
+                    if (status!=null && response.equals("success")){
 
                         final AlertDialog alertDialog = new AlertDialog.Builder( view.getContext(), R.style.MyDialogTheme).create();
                         // Setting Dialog Title
@@ -319,20 +319,31 @@ public class MainGroupAdapter1 extends
                         alertDialog.setTitle("Group Member");
 
                         // Setting Dialog Message
-                        alertDialog.setMessage("You are already a member of this client");
+                        alertDialog.setMessage(response);
 
                         alertDialog.setCanceledOnTouchOutside(false);
 
                         // Setting OK Button
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+
+                                ///////////////////////////////////////////////
+                                if(response.equals("User already a member of the client with Status Approved")){
+                                    Intent intent = new Intent(view.getContext(),Proceed_Group_FullScreen.class);
+                                    intent.putExtra("groupName",groupListData.getGroupName());
+                                    intent.putExtra("groupText",groupListData.getGroupText());
+                                    intent.putExtra("groupImage",groupListData.getImagePath());
+                                    intent.putExtra("groupId",groupListData.getGroupId());
+                                    view.getContext().startActivity(intent);
+                                }
+                                ///////////////////////////////////////////////
                                 // Write your code here to execute after dialog closed
-                                Intent intent = new Intent(view.getContext(),Proceed_Group_FullScreen.class);
-                                intent.putExtra("groupName",groupListData.getGroupName());
-                                intent.putExtra("groupText",groupListData.getGroupText());
-                                intent.putExtra("groupImage",groupListData.getImagePath());
-                                intent.putExtra("groupId",groupListData.getGroupId());
-                                view.getContext().startActivity(intent);
+//                                Intent intent = new Intent(view.getContext(),Proceed_Group_FullScreen.class);
+//                                intent.putExtra("groupName",groupListData.getGroupName());
+//                                intent.putExtra("groupText",groupListData.getGroupText());
+//                                intent.putExtra("groupImage",groupListData.getImagePath());
+//                                intent.putExtra("groupId",groupListData.getGroupId());
+//                                view.getContext().startActivity(intent);
                             }
                         });
 
