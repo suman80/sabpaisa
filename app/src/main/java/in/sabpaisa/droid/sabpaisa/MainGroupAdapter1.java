@@ -281,14 +281,14 @@ public class MainGroupAdapter1 extends
 
                     String status =jObj.getString("status");
 
-                    if (status!=null && response.equals("success")){
+                    if (status!=null && status.equals("success")){
 
                         final AlertDialog alertDialog = new AlertDialog.Builder( view.getContext(), R.style.MyDialogTheme).create();
                         // Setting Dialog Title
                         alertDialog.setTitle("Group Member");
 
                         // Setting Dialog Message
-                        alertDialog.setMessage("Member added successfully Click On OK ");
+                        alertDialog.setMessage("Request Sent for Approval ");
 
                         alertDialog.setCanceledOnTouchOutside(false);
 

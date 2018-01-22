@@ -195,9 +195,9 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-       /* Intent intent = new Intent(ProfileNavigationActivity.this,MainActivity.class);
-      *//*  intent.putExtra("clientId", clientId);
-        intent.putExtra("userImageUrl", userImageUrl);*//*
+        Intent intent = new Intent();
+        /*intent.putExtra("clientId", clientId);
+        intent.putExtra("userImageUrl", userImageUrl);
         startActivity(intent);*/
         this.finish();
     }
@@ -207,7 +207,9 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.putExtra("userImageUrl",userImageUrl);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), 200);
+
 
     }
 

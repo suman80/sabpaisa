@@ -5,7 +5,7 @@
 
     <group>
 
-        <item
+      <!--  <item
             android:id="@+id/three_dot_menu"
             android:icon="@drawable/ic_more_vert_white_24dp"
             android:orderInCategory="102"
@@ -32,11 +32,11 @@
                     app:showAsAction="ifRoom" />
 
             </menu>
-        </item>
+        </item>-->
 
-        <item android:icon="@drawable/bell"
+       <!-- <item android:icon="@drawable/bell"
             android:title="Notification"
-            app:showAsAction="always"
-            />
+            app:showAsAction="never"
+            />-->
     </group>
 </menu>

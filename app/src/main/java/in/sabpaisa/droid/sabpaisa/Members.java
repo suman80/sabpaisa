@@ -50,7 +50,8 @@ public class Members extends Fragment {
     /*START Interface for getting data from activity*/
 
     public Members() {
-        // Required empty public constructor
+        // Required empty public cons
+        // tructor
     }
 
 

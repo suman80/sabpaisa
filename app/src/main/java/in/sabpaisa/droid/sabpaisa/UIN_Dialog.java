@@ -57,7 +57,7 @@ public class UIN_Dialog extends Dialog  {
             @Override
             public void onClick(View v) {
 //UIN uin=new UIN();
-RequestUINNumber(clientId,userAccessToken);
+                RequestUINNumber(clientId,userAccessToken);
             }
         });
         no.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +72,7 @@ RequestUINNumber(clientId,userAccessToken);
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_RequestUin+"&client_Id="+clientId+"&aceesToken="+userAccessToken, new Response.Listener<String>()  {
+                AppConfig.URL_RequestUin+clientId+"&aceesToken="+userAccessToken, new Response.Listener<String>()  {
 
             @Override
             public void onResponse(String response) {
@@ -146,7 +146,7 @@ RequestUINNumber(clientId,userAccessToken);
                             "Error: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();*/
                 }
-              //  hidepDialog();
+                //  hidepDialog();
             }
         }, new Response.ErrorListener() {
 
@@ -190,7 +190,7 @@ RequestUINNumber(clientId,userAccessToken);
                         error.getMessage(), Toast.LENGTH_SHORT).show();*/
 
                 // hide the progress dialog
-          //      hidepDialog();
+                //      hidepDialog();
             }
         });
         // Adds the JSON array request "arrayreq" to the request queue

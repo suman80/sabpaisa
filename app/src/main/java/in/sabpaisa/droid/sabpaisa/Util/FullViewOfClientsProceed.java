@@ -38,8 +38,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.bumptech.glide.Glide;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -70,8 +72,7 @@ import in.sabpaisa.droid.sabpaisa.R;
 
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        OnFragmentInteractionListener,ProceedFeedsFragments.GetDataInterface,ProceedGroupsFragments.GetDataInterface,Members.GetDataInterface {
+public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,OnFragmentInteractionListener,ProceedFeedsFragments.GetDataInterface,ProceedGroupsFragments.GetDataInterface,Members.GetDataInterface {
     ImageView clientImagePath;
     String clientName,state,landingPage;
     public static String ClientId;
@@ -82,6 +83,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     public static String userImageUrl=null;
     AppBarLayout appBarLayout;
+    LinearLayout paymentButton,chatButton,memberButton;
     MaterialSearchView searchView;
     ArrayList<FeedData> feedData;
     ArrayList<FeedData> filteredfeedList;
@@ -107,6 +109,10 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        paymentButton = (LinearLayout)findViewById(R.id.payment_button);
+        chatButton = (LinearLayout)findViewById(R.id.chat);
+        memberButton = (LinearLayout)findViewById(R.id.members);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
@@ -125,7 +131,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
-       // appBarLayout.addOnOffsetChangedListener(this);
+        // appBarLayout.addOnOffsetChangedListener(this);
         viewPager = (ViewPager) findViewById(R.id.viewpagerproceed);
         setupViewPager(viewPager);
 
@@ -155,8 +161,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
         ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
 
-        Glide
-                .with(FullViewOfClientsProceed.this)
+        Glide.with(FullViewOfClientsProceed.this)
                 .load(userImageUrl)
                 .error(R.drawable.default_users)
                 .into(niv);
@@ -175,6 +180,16 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         stateTextView.setText(state);
         new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
         searchViewBar();
+
+
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FullViewOfClientsProceed.this,ChatSDKLoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+            }
+        });
 
 
     }
@@ -359,10 +374,6 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     /*END method to search query in Group List*/
 
 
-
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -456,7 +467,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
             return true;
         }
         //noinspection SimplifiableIfStatement
-         if (id == R.id.action_searchSP) {
+        if (id == R.id.action_searchSP) {
             return true;
         }
 
@@ -611,10 +622,10 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
 
 
-   /* @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+    /* @Override
+     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
-    }*/
+     }*/
     @Override
     public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
         this.feedData = feedData;

@@ -614,10 +614,10 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         Hash_file_maps = new HashMap<String, String>();
 
 
-        Hash_file_maps.put("Sabpaisa", "http://205.147.103.27:6060/Docs/Images/HomeImage/sabpaisa.png");
-        Hash_file_maps.put("Sabpaisa.", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_2.png");
-        Hash_file_maps.put("Sabpaisa..", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_image.jpg");
-        Hash_file_maps.put("Sabpaisa...", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_1.svg.png");
+        Hash_file_maps.put("SabPaisa", "http://205.147.103.27:6060/Docs/Images/HomeImage/sabpaisa.png");
+        Hash_file_maps.put("SabPaisa", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_2.png");
+        Hash_file_maps.put("SabPaisa", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_image.jpg");
+        Hash_file_maps.put("SabPaisa", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_1.svg.png");
         for(String name : Hash_file_maps .keySet())
         {
             TextSliderView textSliderView = new TextSliderView(this);
@@ -1055,7 +1055,12 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         }
 
         User user = UserUtil.retrieveUserFromDB(mRealm);
-        String objectId = user.getParseObjectId();
+        String objectId = use
+
+
+
+
+        r.getParseObjectId();
         if (!TextUtils.isEmpty(objectId)) {
             ParseUtils.subscribeWithUsersObjectId(objectId, deviceToken);
         }

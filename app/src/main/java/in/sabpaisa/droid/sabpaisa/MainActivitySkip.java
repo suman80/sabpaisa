@@ -49,7 +49,10 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
+import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
+import com.braunster.chatsdk.network.BNetworkManager;
 import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
@@ -150,7 +153,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
         userImageUrl=i.getStringExtra("userImageUrl");
 
-        Log.d("userskip",userImageUrl);
+//        Log.d("userskip",userImageUrl);
         //Initialise the navigation header image
         ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
 
@@ -162,6 +165,19 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
                 .into(niv);
 
         Log.d("Skip",""+userImageUrl);
+
+        //ChatSDKUiHelper.initDefault();
+
+        ChatSDKUiHelper.initDefault();
+
+        // Init the network manager
+        BNetworkManager.init(getApplicationContext());
+
+// Create a new adapter
+        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
+
+// Set the adapter
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
         sendMoney = (ImageView)findViewById(R.id.ll_send);
         requestMoney = (ImageView)findViewById(R.id.ll_request);
         socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
@@ -738,7 +754,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
             try {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_SUBJECT, "Sabpaisa App");
+                i.putExtra(Intent.EXTRA_SUBJECT, "SabPaisa App");
                 String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
                 sAux = sAux + "https://play.google.com/store/apps/details?id=Orion.Soft \n\n";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);

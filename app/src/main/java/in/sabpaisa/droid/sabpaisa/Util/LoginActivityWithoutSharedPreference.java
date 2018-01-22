@@ -240,6 +240,9 @@ public class LoginActivityWithoutSharedPreference extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+        moveTaskToBack(true);
+        System.exit(0);
+
     }
 
     public boolean isOnline() {

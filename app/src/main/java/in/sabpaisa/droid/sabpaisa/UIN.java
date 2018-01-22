@@ -54,18 +54,18 @@ import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 
 public class UIN extends AppCompatActivity {
-String clientId,userAccessToken,response;
+    String clientId,userAccessToken,response;
     EditText uinnnumber;
+    String userImageUrl;
     //TextView clientname;
     String clientname;
-    String userImageUrl;
     //TextView clientNAmeTextview;
     ImageView clientImagePath,clientlogopath;
     public  static  String MYSHAREDPREFUIN="mySharedPref11";
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     public static String clientImageURLPath=null;
     public static String clientLogoURLPath=null;
-    Button doNotHaveUIN;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +78,6 @@ String clientId,userAccessToken,response;
         //getClientsList(clientId.toString());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         uinnnumber = (EditText) findViewById(R.id.uiinnum);
         clientImagePath=(ImageView)findViewById(R.id.institutepic);
         clientlogopath=(ImageView)findViewById(R.id.institutelogo);
@@ -89,7 +88,7 @@ String clientId,userAccessToken,response;
         clientImageURLPath=getIntent().getStringExtra("clientImagePath");
         clientLogoURLPath=getIntent().getStringExtra("clientLogoPath");
 
-       TextView clientNAmeTextview=(TextView)findViewById(R.id.InstitueNAme);
+        TextView clientNAmeTextview=(TextView)findViewById(R.id.InstitueNAme);
 
 
         clientNAmeTextview.setText(clientname);
@@ -100,6 +99,7 @@ String clientId,userAccessToken,response;
         new UIN.DownloadImageTask(clientImagePath).execute(clientImageURLPath);
         new UIN.DownloadImageTask(clientlogopath).execute(clientLogoURLPath);
 
+
         //clientName.setText(R.id.InstitueNAme);
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
@@ -108,18 +108,15 @@ String clientId,userAccessToken,response;
 
         userAccessToken = response;
 
-
         Log.d("AccessToken111", " " + userAccessToken);
 
         Log.d("FFResponse11111", " " + response);
 
         getUserImage(userAccessToken);
-
         SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFUIN,MODE_PRIVATE).edit();
         editor.putString("clientId",clientId);
+        editor.putString("userAccessToken",userAccessToken);
         editor.commit();
-
-
 
     }
 
@@ -154,7 +151,7 @@ String clientId,userAccessToken,response;
 
 
         else if(uinnnumber.getText().toString().equals("")){
-             AlertDialog.Builder builder =new AlertDialog.Builder(UIN.this);
+            AlertDialog.Builder builder =new AlertDialog.Builder(UIN.this);
             builder.setTitle("Empty UIN");
             builder.setMessage("Please Enter UIN Number");
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -168,7 +165,7 @@ String clientId,userAccessToken,response;
 
         }
 
-       else if (!uinnnumber.getText().toString().equals("")) {
+        else if (!uinnnumber.getText().toString().equals("")) {
 
             showpDialog(view);
             callVerifyUINNumber(uinnnumber.getText().toString(),clientId,userAccessToken);
@@ -203,7 +200,7 @@ String clientId,userAccessToken,response;
                     //Log.d(TAG, "Register Response1: " + response);
                     String status = jObj.getString("status");
                     //String response1 = response.getString("response");
-                   // Log.i("status_UIN", "status=" + status);
+                    // Log.i("status_UIN", "status=" + status);
                     Log.i("response_UIN", "Repsomse_UIN=" + response1);
                     if (response1.equals("UIN verified")) {
                         callMainScreen();
@@ -293,7 +290,7 @@ String clientId,userAccessToken,response;
         // Adds the JSON array request "arrayreq" to the request queue
         AppController.getInstance().addToRequestQueue(strReq,tag_string_req);
 
-       // AppController.getInstance().addToRequestQueue(jsonObjReq);
+        // AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
     public boolean isOnline() {
@@ -312,7 +309,6 @@ String clientId,userAccessToken,response;
         UIN_Dialog uniErrorPopUp = new UIN_Dialog(this);
         uniErrorPopUp.show();
     }
-
 
     private void callMainScreen() {
         Intent intent = new Intent(UIN.this,MainActivity.class);
@@ -407,7 +403,6 @@ String clientId,userAccessToken,response;
         }
 
     }
-
     private void getUserImage(final  String token) {
 
         String  tag_string_req = "req_clients";
@@ -435,18 +430,18 @@ String clientId,userAccessToken,response;
                     userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
 
                     Log.d("userImageUrlactivity",""+userImageUrl);
-                 /*   ClientData clientData=new ClientData();
-                    clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
-                    clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
-                    clientData.setClientName(jsonObject1.getString("clientName"));
+             /*   ClientData clientData=new ClientData();
+                clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
+                clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
+                clientData.setClientName(jsonObject1.getString("clientName"));
 
-                    clientLogoPath=clientData.getClientLogoPath().toString();
-                    clientImagePath=clientData.getClientImagePath().toString();
-                    clientname11=clientData.getClientName().toString();
-                    // clientname=clientData.getClientName().toString();
-                    Log.d("clientlogooooo","-->"+clientLogoPath );
-                    Log.d("clientimageooo","-->"+clientImagePath );
-                    Log.d("clientiooo","-->"+clientname11 );*/
+                clientLogoPath=clientData.getClientLogoPath().toString();
+                clientImagePath=clientData.getClientImagePath().toString();
+                clientname11=clientData.getClientName().toString();
+                // clientname=clientData.getClientName().toString();
+                Log.d("clientlogooooo","-->"+clientLogoPath );
+                Log.d("clientimageooo","-->"+clientImagePath );
+                Log.d("clientiooo","-->"+clientname11 );*/
 
 
                 }
@@ -506,7 +501,5 @@ String clientId,userAccessToken,response;
 
 
     }
-
-
 
 }

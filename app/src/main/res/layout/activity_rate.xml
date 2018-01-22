@@ -50,7 +50,7 @@
         android:layout_marginBottom="112dp"
         android:gravity="center"
 
-        android:text="Like us or not??"
+        android:text="Like us??"
         android:textColor="#000000"
         android:textSize="30dp"
         android:textStyle="bold" />

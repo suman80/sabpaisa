@@ -162,6 +162,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
 
                 Intent intent=new Intent(FilterActivity.this, MainActivitySkip.class);
                 intent.putExtra("userImageUrl",userImageUrl);
+
                 startActivity(intent);
             }
         });
@@ -430,10 +431,13 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
     */
                     Log.d("clientArrayList", "" + clientArrayList.get(0));
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, clientArrayList);
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(FilterActivity.this, R.layout.spinner_item, clientArrayList);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     clientsSpinner.setPrompt("Select");
                     clientsSpinner.setSelection(0);
+                    clientsSpinner.setAdapter(adapter);
+
                     clientsSpinner.setAdapter(adapter);
                     clientsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
@@ -669,7 +673,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                     });
 
                     // Showing Alert Message
-                    alertDialog.show();
+                   // alertDialog.show();
                     //Log.e(TAG, "Registration Error: " + error.getMessage());
 
                 } else if (error instanceof AuthFailureError) {

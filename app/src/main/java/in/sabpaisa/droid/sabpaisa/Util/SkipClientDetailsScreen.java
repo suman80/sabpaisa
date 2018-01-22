@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,10 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
+import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
+import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
+import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
+import com.braunster.chatsdk.network.BNetworkManager;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.squareup.picasso.Picasso;
 
@@ -127,7 +132,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     // If current page is the last page (Pagination will stop after this page load)
     private boolean isLastPage = false;
     private int currentPage = 1;
-
+    LinearLayout chatbutton;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,7 +149,24 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+
 */
+
+
+       chatbutton = (LinearLayout)findViewById(R.id.chat);
+
+        ChatSDKUiHelper.initDefault();
+
+        // Init the network manager
+        BNetworkManager.init(getApplicationContext());
+
+// Create a new adapter
+        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
+
+// Set the adapter
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
+
         Intent intent = getIntent();
 
         clientName = intent.getStringExtra("clientName");
@@ -216,6 +238,14 @@ btn_pay.setOnClickListener(new OnClickListener() {
                 Intent intent = new Intent(SkipClientDetailsScreen.this,FilterActivity.class);
                 startActivity(intent);
 
+            }
+        });
+        chatbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SkipClientDetailsScreen.this,ChatSDKLoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
 

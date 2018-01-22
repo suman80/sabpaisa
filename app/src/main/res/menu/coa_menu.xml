@@ -38,6 +38,7 @@
         <item android:icon="@drawable/bell"
             android:title="Notification"
             app:showAsAction="always"
+
             />
 
         <item

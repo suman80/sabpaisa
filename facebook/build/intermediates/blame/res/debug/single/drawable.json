@@ -16,12 +16,12 @@
         "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_button_blue.xml"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/debug/drawable/com_facebook_profile_default_icon.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_profile_default_icon.png"
-    },
-    {
         "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/debug/drawable/com_facebook_picker_list_focused.9.png",
         "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_picker_list_focused.9.png"
+    },
+    {
+        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/debug/drawable/com_facebook_profile_default_icon.png",
+        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_profile_default_icon.png"
     },
     {
         "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/debug/drawable/com_facebook_button_check.xml",
@@ -56,12 +56,12 @@
         "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_button_grey_pressed.9.png"
     },
     {
-        "merged": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/res/merged/debug/drawable/com_facebook_profile_picture_blank_portrait.png",
-        "source": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/res/drawable/com_facebook_profile_picture_blank_portrait.png"
-    },
-    {
         "merged": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/res/merged/debug/drawable/com_facebook_button_grey_focused.9.png",
         "source": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/res/drawable/com_facebook_button_grey_focused.9.png"
+    },
+    {
+        "merged": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/res/merged/debug/drawable/com_facebook_profile_picture_blank_portrait.png",
+        "source": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/res/drawable/com_facebook_profile_picture_blank_portrait.png"
     },
     {
         "merged": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/res/merged/debug/drawable/com_facebook_picker_list_selector.xml",

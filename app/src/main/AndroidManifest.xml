@@ -37,7 +37,7 @@
         tools:replace="android:icon">
         <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
 
-            android:resource="@drawable/logonew" />
+            android:resource="@drawable/sabpaisa1234" />
 
         <activity android:name=".LogInActivity"
             android:configChanges="orientation"
@@ -113,6 +113,29 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <activity android:name=".Util.LoginActivityWithoutSharedPreference"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+
+        <activity android:name=".MainActivityWithoutSharedPrefernce"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

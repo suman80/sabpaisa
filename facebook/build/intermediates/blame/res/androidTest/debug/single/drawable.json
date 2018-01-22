@@ -28,16 +28,16 @@
         "source": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/bundles/debug/res/drawable/com_facebook_button_check_off.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/androidTest/debug/drawable/com_facebook_button_grey_pressed.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/bundles/debug/res/drawable/com_facebook_button_grey_pressed.9.png"
+        "merged": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/res/merged/androidTest/debug/drawable/com_facebook_picker_list_pressed.9.png",
+        "source": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/bundles/debug/res/drawable/com_facebook_picker_list_pressed.9.png"
     },
     {
         "merged": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/res/merged/androidTest/debug/drawable/com_facebook_profile_picture_blank_square.png",
         "source": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/bundles/debug/res/drawable/com_facebook_profile_picture_blank_square.png"
     },
     {
-        "merged": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/res/merged/androidTest/debug/drawable/com_facebook_picker_list_pressed.9.png",
-        "source": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/bundles/debug/res/drawable/com_facebook_picker_list_pressed.9.png"
+        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/androidTest/debug/drawable/com_facebook_button_grey_pressed.9.png",
+        "source": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/bundles/debug/res/drawable/com_facebook_button_grey_pressed.9.png"
     },
     {
         "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/androidTest/debug/drawable/com_facebook_close.png",

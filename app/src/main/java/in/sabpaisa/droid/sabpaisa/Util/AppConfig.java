@@ -15,7 +15,9 @@ public class AppConfig {
 
 	public static String URL_ClientBasedOnClientId ="http://205.147.103.27:6060/SabPaisaAppApi/client-based-on-clientId?clientId=";
 	public static String URL_VerifyUin ="http://205.147.103.27:6060/SabPaisaAppApi/VerifyUIN?uin_no=";
-	public static String URL_RequestUin ="http://localhost:8080/sabPaisaApp/RequestForUIN?client_Id=";
+	//public static String URL_RequestUin ="http://localhost:8080/sabPaisaApp/RequestForUIN?client_Id=";
+	public static String URL_RequestUin="http://205.147.103.27:6060/SabPaisaAppApi/RequestForUIN?client_Id=";
+
 	public static String URL_ADD_Member ="http://205.147.103.27:6060/SabPaisaAppApi/addMember?";
 	public static String URL_Show_Member ="http://205.147.103.27:6060/SabPaisaAppApi/fetchMembersOfClient?";
 	public static String URL_Show_UserProfile ="http://205.147.103.27:6060/SabPaisaAppApi/userProfile";

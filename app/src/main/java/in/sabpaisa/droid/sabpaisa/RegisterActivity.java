@@ -42,6 +42,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.facebook.LoginActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -483,7 +484,11 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-      finish();
+        Intent intent=new Intent(RegisterActivity.this,LoginActivityWithoutSharedPreference.class);
+        startActivity(intent);
+      this.finish();
+
+
     }
 
     public boolean isOnline() {
