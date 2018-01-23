@@ -668,6 +668,22 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+       /* case R.id.action_profile:
+        intent = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(intent);
+        return true;
+        case R.id.action_payment:
+        intent = new Intent(MainActivity.this, Payment.class);
+        startActivity(intent);
+        //Toast.makeText(this, "Feature Coming soon", Toast.LENGTH_SHORT).show();
+        return true;
+        case R.id.action_chat:
+        intent = new Intent(MainActivity.this, ChatSDKLoginActivity.class);
+        startActivity(intent);
+        return true;*/
+
+
         if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -765,6 +781,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "Complete action using "));
             } catch (Exception e) {
+
+
                 //e.toString();
             }
 

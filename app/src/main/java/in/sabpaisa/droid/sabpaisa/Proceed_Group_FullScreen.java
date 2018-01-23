@@ -287,12 +287,14 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     } else {
                         Log.d("PGF1111","  "+obj.toString());
                         Log.d("IN_ELSE_:111","Comments BBBB" +response);
-                        final AlertDialog alertDialog = new AlertDialog.Builder( getApplicationContext(), R.style.MyDialogTheme).create();
-                        // Setting Dialog Title
+                        AlertDialog alertDialog = new AlertDialog.Builder(Proceed_Group_FullScreen.this, R.style.MyDialogTheme).create();
+
+                        //AlertDialog alertDialog = new AlertDialog.Builder( getApplicationContext(), R.style.MyDialogTheme).create();
+                        // Setting Dialog Title)
                         alertDialog.setTitle("Comments");
 
                         // Setting Dialog Message
-                        alertDialog.setMessage(response);
+                        alertDialog.setMessage(obj.toString());
                         Log.d("IN ELSE : ","Comments BBBB" +response);
                         alertDialog.setCanceledOnTouchOutside(false);
 

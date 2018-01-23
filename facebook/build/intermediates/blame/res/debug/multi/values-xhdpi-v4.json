@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/incremental/mergeDebugResources/merged.dir/values-xhdpi-v4/values-xhdpi-v4.xml",
+        "outputFile": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-xhdpi-v4\\values-xhdpi-v4.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,55 @@
                     "endOffset": 114
                 },
                 "from": {
-                    "file": "/home/rajdeeps/sp/sabpaisa/facebook/res/values-xhdpi/dimens.xml",
+                    "file": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\values-xhdpi\\dimens.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 57,
+                        "endColumn": 63,
+                        "endOffset": 116
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-xhdpi-v4\\values-xhdpi-v4.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 63,
+                    "endOffset": 114
+                },
+                "from": {
+                    "file": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\values-xhdpi\\dimens.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endColumn": 63,
+                        "endOffset": 114
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "C:\\home\\archana\\AndroidStudioProjects\\NewFlooddeerr\\sabpaisa\\facebook\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-xhdpi-v4\\values-xhdpi-v4.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 63,
+                    "endOffset": 114
+                },
+                "from": {
+                    "file": "C:\\home\\archana\\AndroidStudioProjects\\NewFlooddeerr\\sabpaisa\\facebook\\res\\values-xhdpi\\dimens.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,

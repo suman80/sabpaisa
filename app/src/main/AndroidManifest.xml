@@ -106,6 +106,7 @@
         <activity android:name=".UpiSdkHandshake"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
+        <!--<activity android:name="in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce"/>-->
 
 
         <activity android:name=".MainActivity"
@@ -196,7 +197,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        *    </intent-filter>
             -->
         </activity>
 
