@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -47,7 +48,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     private static final String TAG = ProceedGroupsFragments.class.getSimpleName();
 
     public static String clientId;
-
+    LinearLayout linearLayoutnoDataFound;
     ShimmerRecyclerView groupList;
 
     String tag_string_req = "req_register";
@@ -75,7 +76,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragments_groups, container, false);
-
+        linearLayoutnoDataFound = (LinearLayout)rootView.findViewById(R.id.noDataFound);
         groupList=(ShimmerRecyclerView)rootView.findViewById(R.id.groupList);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -113,7 +114,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                     String response1 = jsonObject.getString("response");
 
                     if (status.equals("success")&&response1.equals("No_Record_Found")) {
-
+                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        groupList.setVisibility(View.GONE);
                         //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
 
                     }

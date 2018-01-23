@@ -40,6 +40,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.bumptech.glide.Glide;
@@ -237,25 +238,34 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (query.length()==0&& feedData!=null && GroupData!=null && memberData !=null){
-                    filteredfeedList = feedData;
-                    filteredGroupList = GroupData;
-                    filteredmemberData= memberData;
-                    feedsFragments.getDataFromActivity();
-                    groupsFragments.getDataFromActivity();
-                    membersFragment.getDataFromActivity();
+                if (query.length()==0){
+
+                    if (feedData!=null){filteredfeedList = feedData;feedsFragments.getDataFromActivity();}
+                    else {}
+
+                    if (GroupData!=null){filteredGroupList = GroupData;groupsFragments.getDataFromActivity();}
+                    else {}
+
+                    if (memberData!=null){ filteredmemberData= memberData; membersFragment.getDataFromActivity();}
+                    else {}
+
 
                     InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                     imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 }
-                if (query.length() > 0 && feedData!=null && GroupData!=null && memberData!=null) {
-                    filteredfeedList = filterFeed(feedData, query);
-                    filteredGroupList = filterGroup(GroupData, query);
-                    filteredmemberData = filterMember(memberData, query);
+                if (query.length() > 0 ) {
+
+                    if (feedData!=null){filteredfeedList = filterFeed(feedData, query);feedsFragments.getDataFromActivity();}
+                    else {}
+
+                    if (GroupData!=null){filteredGroupList = filterGroup(GroupData, query);groupsFragments.getDataFromActivity();}
+                    else {}
+
+                    if (memberData!=null){filteredmemberData = filterMember(memberData, query);membersFragment.getDataFromActivity();}
+                    else {}
+
                     Log.wtf("FilteredList", String.valueOf(filteredfeedList));
-                    feedsFragments.getDataFromActivity();
-                    groupsFragments.getDataFromActivity();
-                    membersFragment.getDataFromActivity();
+
                     InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                     imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 }
@@ -264,23 +274,34 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.length()==0&& feedData!=null && GroupData!=null && memberData != null){
-                    filteredfeedList = feedData;
+                if (newText.length()==0){
+
+                    if (feedData!=null){filteredfeedList = feedData;feedsFragments.getDataFromActivity();}
+                    else{}
+
+                    if (GroupData!=null){filteredGroupList = GroupData;groupsFragments.getDataFromActivity();}
+                    else{}
+
                     Log.wtf("filteredfeedList ", String.valueOf(filteredfeedList));
-                    filteredGroupList = GroupData;
-                    filteredmemberData = memberData;
-                    feedsFragments.getDataFromActivity();
-                    groupsFragments.getDataFromActivity();
-                    membersFragment.getDataFromActivity();
+
+                    if (memberData != null){filteredmemberData = memberData;membersFragment.getDataFromActivity();}
+                    else{}
+
+
                 }
-                else if (newText.length() > 0 && feedData!=null && GroupData!=null && memberData!=null) {
-                    filteredfeedList = filterFeed(feedData, newText);
-                    filteredGroupList = filterGroup(GroupData, newText);
-                    filteredmemberData = filterMember(memberData, newText);
+                else if (newText.length() > 0 ) {
+
+                    if (feedData!=null){filteredfeedList = filterFeed(feedData, newText);feedsFragments.getDataFromActivity();}
+                    else {}
+
+                    if (GroupData!=null){filteredGroupList = filterGroup(GroupData, newText);groupsFragments.getDataFromActivity();}
+                    else {}
+
+                    if (memberData!=null){filteredmemberData = filterMember(memberData, newText);membersFragment.getDataFromActivity();}
+                    else {}
+
                     Log.wtf("FilteredList", String.valueOf(filteredfeedList));
-                    feedsFragments.getDataFromActivity();
-                    groupsFragments.getDataFromActivity();
-                    membersFragment.getDataFromActivity();
+
                 }
                 return false;
             }
@@ -311,12 +332,15 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
                 appBarLayout.setLayoutParams(params);
                 appBarLayout.setExpanded(true, false);//Do some magic
 
-                filteredfeedList = feedData;
-                feedsFragments.getDataFromActivity();
-                filteredGroupList = GroupData;
-                groupsFragments.getDataFromActivity();
-                filteredmemberData = memberData;
-                membersFragment.getDataFromActivity();
+                if (feedData!=null){filteredfeedList = feedData;feedsFragments.getDataFromActivity();}
+                else {}
+
+                if (GroupData!=null){filteredGroupList = GroupData;groupsFragments.getDataFromActivity();}
+                else {}
+
+                if (memberData!=null){filteredmemberData = memberData;membersFragment.getDataFromActivity();}
+                else {}
+
             }
         });
     }

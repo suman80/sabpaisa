@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -44,6 +45,8 @@ import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 public class ProceedFeedsFragments extends Fragment {
     private static final String TAG = ProceedFeedsFragments.class.getSimpleName();
     View rootView;
+    LinearLayout linearLayoutnoDataFound;
+    RecyclerView  recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     String tag_string_req = "req_register";
     ArrayList<FeedData> feedArrayList = new ArrayList<FeedData>();
@@ -68,6 +71,8 @@ public class ProceedFeedsFragments extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_proceed_feeds_fragments, container, false);
+        recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view_feeds) ;
+        linearLayoutnoDataFound = (LinearLayout)rootView.findViewById(R.id.noDataFound);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");
         Log.d("clientId_PFF",""+clientId);
@@ -132,10 +137,13 @@ public class ProceedFeedsFragments extends Fragment {
 
 
                             /*END listener for sending data to activity*/
-                        loadFeedListView(feedArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_feeds));
+                        loadFeedListView(feedArrayList, recyclerView);
 
                     } else if ( response1.equals("No_Record_Found")) {
-                        Toast.makeText(getContext(), "No Result Fobggggggggggund", Toast.LENGTH_SHORT).show();
+
+                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+                        //Toast.makeText(getContext(), "No Result Fobggggggggggund", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {

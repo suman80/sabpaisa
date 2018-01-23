@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -49,6 +50,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class ProceedInstitiutionFragment extends Fragment {
 
     View rootView;
+    LinearLayout linearLayoutnoDataFound;
     public  static  String MYSHAREDPREFProceed="mySharedPref11";
     RecyclerView recyclerViewInstitutions;
     InstitutionAdapter institutionAdapter;
@@ -56,7 +58,7 @@ public class ProceedInstitiutionFragment extends Fragment {
     ArrayList<Institution> clientArrayList ;
     ShimmerRecyclerView shimmerRecyclerView;
     String landing_page;
-CollapsingToolbarLayout collapsingToolbarLayout;
+    CollapsingToolbarLayout collapsingToolbarLayout;
     String stateName,serviceName,clientId,userImageUrl;
 
     public ProceedInstitiutionFragment() {
@@ -75,6 +77,7 @@ CollapsingToolbarLayout collapsingToolbarLayout;
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_institutions, container, false);
        // ((MainActivity) getActivity()).initToolBar(clientId);
+        linearLayoutnoDataFound = (LinearLayout)rootView.findViewById(R.id.noDataFound);
         shimmerRecyclerView=(ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
         recyclerViewInstitutions = (RecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -118,60 +121,66 @@ CollapsingToolbarLayout collapsingToolbarLayout;
                 JSONObject jsonObject = null;
 
                 try {
+                    jsonObject = new JSONObject(response1.toString());
+                    String status =jsonObject.getString("status");
 
-                     jsonObject = new JSONObject(response1.toString());
-                    String response = jsonObject.getString("response");
+                    if (status.equals("success")) {
 
-                    //Adding data to new jsonobject////////////////////////
+                        String response = jsonObject.getString("response");
 
-                    JSONObject jsonObject1 = new JSONObject(response);
+                        //Adding data to new jsonobject////////////////////////
 
-                    Institution institution = new Institution();
+                        JSONObject jsonObject1 = new JSONObject(response);
 
-                    institution.setOrganizationId(jsonObject1.getString("clientId"));
-                    Log.d("ClientIdjijiji","-->"+ institution.getOrganizationId());
-                    institution.setOrganization_name(jsonObject1.getString("clientName"));
-                    Log.d("Clientnamejijiji","-->"+ institution.getOrganization_name());
+                        Institution institution = new Institution();
 
-                    institution.setOrgLogo(jsonObject1.getString("clientLogoPath"));
-                    Log.d("Clientlogojijiji","-->"+ institution.getOrgLogo());
+                        institution.setOrganizationId(jsonObject1.getString("clientId"));
+                        Log.d("ClientIdjijiji", "-->" + institution.getOrganizationId());
+                        institution.setOrganization_name(jsonObject1.getString("clientName"));
+                        Log.d("Clientnamejijiji", "-->" + institution.getOrganization_name());
+
+                        institution.setOrgLogo(jsonObject1.getString("clientLogoPath"));
+                        Log.d("Clientlogojijiji", "-->" + institution.getOrgLogo());
 
 
-                    institution.setOrgWal(jsonObject1.getString("clientImagePath"));
+                        institution.setOrgWal(jsonObject1.getString("clientImagePath"));
 
-                    institution.setOrgAddress(jsonObject1.getString("state"));
-                    institution.setOrgDesc(jsonObject1.getString("landingPage"));
+                        institution.setOrgAddress(jsonObject1.getString("state"));
+                        institution.setOrgDesc(jsonObject1.getString("landingPage"));
 
-                    Log.d("JSONobjectResp","-->"+response);
+                        Log.d("JSONobjectResp", "-->" + response);
 
-                    Log.d("JSONobjectttt","-->"+jsonObject);
+                        Log.d("JSONobjectttt", "-->" + jsonObject);
 
                         clientArrayList.add(institution);
 
-                    institutionAdapter = new InstitutionAdapter(clientArrayList);
-                    recyclerViewInstitutions.setAdapter(institutionAdapter);
+                        institutionAdapter = new InstitutionAdapter(clientArrayList);
+                        recyclerViewInstitutions.setAdapter(institutionAdapter);
 
-                    Log.d("clientArrayList2222"," "+clientArrayList.get(0).getOrganization_name());
-                    Log.d("clientArrayList2222"," "+clientArrayList.get(0).getOrganizationId());
-                    Log.d("clientArrayList3333"," "+clientArrayList.get(0).getOrgDesc());
+                        Log.d("clientArrayList2222", " " + clientArrayList.get(0).getOrganization_name());
+                        Log.d("clientArrayList2222", " " + clientArrayList.get(0).getOrganizationId());
+                        Log.d("clientArrayList3333", " " + clientArrayList.get(0).getOrgDesc());
 
-                    landing_page =clientArrayList.get(0).getOrgDesc();
+                        landing_page = clientArrayList.get(0).getOrgDesc();
 
-                    Log.d("xyz",""+landing_page);
+                        Log.d("xyz", "" + landing_page);
 
-                    SharedPreferences.Editor editor1 = getContext().getSharedPreferences(MYSHAREDPREFProceed,MODE_PRIVATE).edit();
-                    editor1.putString("landing_page",landing_page);
-                    //editor.putString("SERVICENAME",serviceName);
-                    editor1.commit();
-
-
-                    PayFragments ldf =new PayFragments();
-                    Bundle args =new Bundle();
-                    args.putString("landing_page","landing_page");
-                    ldf.setArguments(args);
+                        SharedPreferences.Editor editor1 = getContext().getSharedPreferences(MYSHAREDPREFProceed, MODE_PRIVATE).edit();
+                        editor1.putString("landing_page", landing_page);
+                        //editor.putString("SERVICENAME",serviceName);
+                        editor1.commit();
 
 
+                        PayFragments ldf = new PayFragments();
+                        Bundle args = new Bundle();
+                        args.putString("landing_page", "landing_page");
+                        ldf.setArguments(args);
 
+
+                    }else {
+                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        shimmerRecyclerView.setVisibility(View.GONE);
+                    }
 
                  /*   PayFragments ldf = new PayFragments();
                     Bundle args = new Bundle();

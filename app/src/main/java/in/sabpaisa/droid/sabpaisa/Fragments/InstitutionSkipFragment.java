@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -40,6 +41,7 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 public class InstitutionSkipFragment extends Fragment {
     private static final String TAG = InstitutionSkipFragment.class.getSimpleName();
     View rootView;
+    LinearLayout linearLayoutnoDataFound;
     RecyclerView recyclerViewInstitutions;
 
     SkipMainClientsAdapter skipMainClientsAdapter;
@@ -62,6 +64,7 @@ public class InstitutionSkipFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_institution_skip, container, false);
         recyclerViewInstitutions = (RecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
+        linearLayoutnoDataFound = (LinearLayout)rootView.findViewById(R.id.noDataFound);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),10));
@@ -106,6 +109,8 @@ public class InstitutionSkipFragment extends Fragment {
 
                         //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
 
+                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        recyclerViewInstitutions.setVisibility(View.GONE);
                     }
                     else {
                         JSONArray jsonArray = jsonObject.getJSONArray("response");

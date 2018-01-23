@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -40,6 +41,7 @@ import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 public class Members extends Fragment {
     private static final String TAG = Members.class.getSimpleName();
     View rootView;
+    LinearLayout linearLayoutnoDataFound;
     public static String clientId;
     ArrayList<Member_GetterSetter> member_getterSetterArrayList;
     MemberAdapter memberAdapter;
@@ -60,7 +62,7 @@ public class Members extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView= inflater.inflate(R.layout.fragment_members, container, false);
-
+        linearLayoutnoDataFound = (LinearLayout)rootView.findViewById(R.id.noDataFound);
         recycler_view_Member = (ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_Member);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -103,6 +105,9 @@ public class Members extends Fragment {
                     if (status.equals("failure")) {
 
                         //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
+
+                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        recycler_view_Member.setVisibility(View.GONE);
 
                     }else {
                         JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -179,9 +184,11 @@ public class Members extends Fragment {
             this.member_getterSetterArrayList = sGetDataInterface.getMemberDataList();
             memberAdapter.setItems(this.member_getterSetterArrayList);
             memberAdapter.notifyDataSetChanged();
+        }else {
+            Log.d("PGF_I&A"," "+sGetDataInterface+"&"+member_getterSetterArrayList);
         }
 
-        Log.d("PGF_I&A"," "+sGetDataInterface+"&"+member_getterSetterArrayList);
+        //Log.d("PGF_I&A"," "+sGetDataInterface+"&"+member_getterSetterArrayList);
     }
 
 

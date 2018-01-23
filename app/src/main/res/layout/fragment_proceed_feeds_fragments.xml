@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/feeds_tab_fragments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,6 +23,24 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/noDataFound"
+            android:visibility="invisible"
+            >
+            <include
+                layout="@layout/no_data_found"
+                >
+
+            </include>
+
+        </LinearLayout>
+
+
+
               <!--  </android.support.v4.widget.SwipeRefreshLayout>-->
-    </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

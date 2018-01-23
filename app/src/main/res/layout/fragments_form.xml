@@ -4,7 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/noDataFound"
+        android:visibility="visible"
+        >
+        <include
+            layout="@layout/no_data_found"
+            >
 
+        </include>
+    </LinearLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
@@ -19,5 +31,11 @@
             app:layout_collapseMode="pin"
             app:tabGravity="fill"
             app:tabMode="fixed" />
+
+
+
+
     </android.support.v4.view.ViewPager>
-</LinearLayout>
+
+
+    </LinearLayout>
