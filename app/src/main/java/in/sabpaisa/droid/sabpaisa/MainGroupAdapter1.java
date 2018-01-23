@@ -187,6 +187,7 @@ public class MainGroupAdapter1 extends
         }
     }
 
+/*
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -253,6 +254,7 @@ public class MainGroupAdapter1 extends
         }
 
     }
+*/
 
 
     public void addMember (final String token , final String groupId , final View view , final GroupListData groupListData)
@@ -297,12 +299,12 @@ public class MainGroupAdapter1 extends
                             public void onClick(DialogInterface dialog, int which) {
                                 // Write your code here to execute after dialog closed
 
-                                Intent intent = new Intent(view.getContext(),Proceed_Group_FullScreen.class);
-                                intent.putExtra("groupName",groupListData.getGroupName());
-                                intent.putExtra("groupText",groupListData.getGroupText());
-                                intent.putExtra("groupImage",groupListData.getImagePath());
-                                intent.putExtra("groupId",groupListData.getGroupId());
-                                view.getContext().startActivity(intent);
+//                                Intent intent = new Intent(view.getContext(),Proceed_Group_FullScreen.class);
+//                                intent.putExtra("groupName",groupListData.getGroupName());
+//                                intent.putExtra("groupText",groupListData.getGroupText());
+//                                intent.putExtra("groupImage",groupListData.getImagePath());
+//                                intent.putExtra("groupId",groupListData.getGroupId());
+//                                view.getContext().startActivity(intent);
 
                             }
                         });
@@ -312,7 +314,9 @@ public class MainGroupAdapter1 extends
 
 
 
-                    }else {
+                    }
+
+                    else {
 
                         final AlertDialog alertDialog = new AlertDialog.Builder( view.getContext(), R.style.MyDialogTheme).create();
                         // Setting Dialog Title

@@ -1,6 +1,9 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -178,10 +181,43 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     // response will be a json object
                     String status = response.getString("status");
                     if (status.equals("success")) {
+
+
+                        ///////////RRRRRRRRRRRRRRRRRRRR?????????????????
+                        if(response.getString("response").equals("Not A Member")){
+//                            Log.d("PGF1111","  "+obj.toString());
+                           /* Log.d("IN_ELSE_:111","Comments BBBB" +response);
+                            final AlertDialog alertDialog = new AlertDialog.Builder( getApplicationContext(), R.style.MyDialogTheme).create();
+                            // Setting Dialog Title
+                            alertDialog.setTitle("Comments");
+
+                            // Setting Dialog Message
+                            alertDialog.setMessage(response.getString("response"));
+                            Log.d("IN ELSE : ","Comments BBBB" +response);
+                            alertDialog.setCanceledOnTouchOutside(false);
+
+                            // Setting OK Button
+                            alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+
+                                }
+                            });
+
+                            // Showing Alert Message
+                            alertDialog.show();*/
+                           Toast.makeText(getApplicationContext(),"You cannot able to comment because your request is in pending status",Toast.LENGTH_SHORT).show();
+                        }
+                        /////////////RRRRRRRRRRRRR??????????????????
+
                         group_details_text_view.setText("");
                         //Toast.makeText(Proceed_Group_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
                         callGetCommentList(GroupId);
 
+                    }
+                    else if (status.equals("failed"))
+                    {
+                        Toast.makeText(getApplicationContext(),"Please Join the Group",Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -248,6 +284,30 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                             commentArrayList.add(groupData);
                         }
                         loadCommentListView(commentArrayList);
+                    } else {
+                        Log.d("PGF1111","  "+obj.toString());
+                        Log.d("IN_ELSE_:111","Comments BBBB" +response);
+                        final AlertDialog alertDialog = new AlertDialog.Builder( getApplicationContext(), R.style.MyDialogTheme).create();
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Comments");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage(response);
+                        Log.d("IN ELSE : ","Comments BBBB" +response);
+                        alertDialog.setCanceledOnTouchOutside(false);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+
                     }
 
                     Log.d("PGF","  "+obj.toString());

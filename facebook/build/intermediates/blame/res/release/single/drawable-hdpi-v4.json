@@ -4,12 +4,12 @@
         "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable-hdpi/com_facebook_tooltip_black_background.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable-hdpi-v4/com_facebook_logo.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable-hdpi/com_facebook_logo.png"
-    },
-    {
         "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable-hdpi-v4/com_facebook_tooltip_blue_topnub.png",
         "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable-hdpi/com_facebook_tooltip_blue_topnub.png"
+    },
+    {
+        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable-hdpi-v4/com_facebook_logo.png",
+        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable-hdpi/com_facebook_logo.png"
     },
     {
         "merged": "/home/archana/AndroidStudioProjects/15jan/sabpaisa/facebook/build/intermediates/res/merged/release/drawable-hdpi-v4/com_facebook_tooltip_blue_bottomnub.png",

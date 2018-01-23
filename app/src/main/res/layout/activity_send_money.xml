@@ -16,8 +16,8 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <include
-        layout="@layout/layout_account_info_topbar"/>
+   <!-- <include
+        layout="@layout/layout_account_info_topbar"/>-->
 
     <TextView
         android:layout_width="match_parent"
