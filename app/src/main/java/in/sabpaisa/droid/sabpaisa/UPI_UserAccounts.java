@@ -62,7 +62,7 @@ public class UPI_UserAccounts extends AppCompatActivity implements OliveUpiEvent
         addNewBankAccount=(FrameLayout)findViewById(R.id.addNewBankAccount);
         accountRemove = (Button)findViewById(R.id.accountRemove);
         setUpiPin = (Button)findViewById(R.id.setUpiPin);
-        mtoolbar.setTitle("User Account Details");
+        mtoolbar.setTitle("Account Details");
         setSupportActionBar(mtoolbar);
 
         requestBalance.setOnClickListener(new View.OnClickListener() {

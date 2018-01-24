@@ -9,8 +9,9 @@
         android:layout_height="45dp"
         android:layout_marginLeft="@dimen/margin_side"
         android:gravity="center_vertical"
-        android:text="UPI Enabled Banks to transfer funds"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -94,6 +95,7 @@ import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.LogoutNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
+import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
 import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 
@@ -111,6 +113,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     private TabLayout tabLayout;
     Toolbar toolbar;
     String userImageUrl=null;
+    ImageView niv;
     String response,userAccessToken;
     ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,mPinInfo,mPinInfo2;
     LinearLayout paymentButton,chatButton,memberButton;
@@ -122,6 +125,8 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
     private View view;
+    Handler mHandler;
+
     TextView mSearchText;
     MaterialSearchView searchView;
     ArrayList<SkipClientData> clientData;
@@ -133,7 +138,25 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
+
         setContentView(R.layout.activity_main_navigation);
+
+
+        this.mHandler = new Handler();
+       // m_Runnable.run();
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+        response = sharedPreferences.getString("response", "123");
+
+        userAccessToken = response;
+
+
+
+
+        Log.d("AccessTokensilter", " " + userAccessToken);
+
+        Log.d("FFResfilter", " " + response);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -148,23 +171,21 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         navigationView.setNavigationItemSelectedListener(this);
 
 
+
+
         // get the userPRofileimage from filter activity
         Intent i=getIntent();
 
-        userImageUrl=i.getStringExtra("userImageUrl");
+       // userImageUrl=i.getStringExtra("userImageUrl");
 
 //        Log.d("userskip",userImageUrl);
         //Initialise the navigation header image
-        ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+         niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
 
         //set the NAvigationImage header using glide
-        Glide
-                .with(MainActivitySkip.this)
-                .load(userImageUrl)
-                .error(R.drawable.default_users)
-                .into(niv);
 
-        Log.d("Skip",""+userImageUrl);
+
+
 
         //ChatSDKUiHelper.initDefault();
 
@@ -180,7 +201,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
         sendMoney = (ImageView)findViewById(R.id.ll_send);
         requestMoney = (ImageView)findViewById(R.id.ll_request);
-        socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
+       // socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
         transaction = (ImageView)findViewById(R.id.ll_transactions);
         profile = (ImageView)findViewById(R.id.ll_profile);
         bank = (ImageView)findViewById(R.id.ll_bank);
@@ -215,6 +236,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         LoadHeaderImageList();
 
         setHeaderImageList();
+        getUserIm(userAccessToken);
 
         sendMoney.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,14 +278,14 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
-        socialPayment.setOnClickListener(new View.OnClickListener() {
+      /*  socialPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivitySkip.this,SocialPayment.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
-        });
+        });*/
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -401,10 +423,10 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         Hash_file_maps = new HashMap<String, String>();
 
 
-        Hash_file_maps.put("Sabpaisa", "http://205.147.103.27:6060/Docs/Images/HomeImage/sabpaisa.png");
-        Hash_file_maps.put("Sabpaisa.", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_2.png");
-        Hash_file_maps.put("Sabpaisa..", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_image.jpg");
-        Hash_file_maps.put("Sabpaisa...", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_1.svg.png");
+        Hash_file_maps.put("Sabpaisa Digitizing Cash", "http://205.147.103.27:6060/Docs/Images/HomeImage/sabpaisa.png");
+        Hash_file_maps.put("Payment & Transfer", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_2.png");
+        Hash_file_maps.put("The Future Of Payments", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_image.jpg");
+        Hash_file_maps.put("UPI", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_1.svg.png");
         for(String name : Hash_file_maps .keySet())
         {
             TextSliderView textSliderView = new TextSliderView(this);
@@ -628,6 +650,11 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
             searchView.closeSearch();
         } else {
             super.onBackPressed();
+            Intent intent=new Intent(MainActivitySkip.this,FilterActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+startActivity(intent);
+            this.finish();
+
         }
     }
 
@@ -669,7 +696,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         int id = item.getItemId();
 
         if (id == R.id.nav_Profile) {
-            Intent intent=new Intent(MainActivitySkip.this, ProfileNavigationActivity.class);
+            Intent intent=new Intent(MainActivitySkip.this, ProfileNavigationActivitySkip.class);
 
             startActivity(intent);
             // Handle the camera action
@@ -846,6 +873,123 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     public ArrayList<SkipClientData> getClientDataList() {
         return filteredClientList;
     }
+
+    private void getUserIm(final  String token) {
+
+        String  tag_string_req = "req_clients";
+
+        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
+
+            @Override
+            public void onResponse(String response1)
+            {
+
+                Log.d("Particularclientimage","-->"+response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1.toString());
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("responsefilter",""+response);
+                    Log.d("statusfilter",""+status);
+                    JSONObject jsonObject1 = new JSONObject(response);
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                    userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
+
+                    Log.d("userImageUrlfilter",""+userImageUrl);
+                    Glide
+                            .with(MainActivitySkip.this)
+                            .load(userImageUrl)
+                            .error(R.drawable.default_users)
+                            .into(niv);
+
+                    Log.d("Skip",""+userImageUrl);
+                 /*   ClientData clientData=new ClientData();
+                    clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
+                    clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
+                    clientData.setClientName(jsonObject1.getString("clientName"));
+
+                    clientLogoPath=clientData.getClientLogoPath().toString();
+                    clientImagePath=clientData.getClientImagePath().toString();
+                    clientname11=clientData.getClientName().toString();
+                    // clientname=clientData.getClientName().toString();
+                    Log.d("clientlogooooo","-->"+clientLogoPath );
+                    Log.d("clientimageooo","-->"+clientImagePath );
+                    Log.d("clientiooo","-->"+clientname11 );*/
+
+
+                }
+                catch(JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    // alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        }) ;
+
+        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+
+
+    }
+    private final Runnable m_Runnable = new Runnable()
+    {
+        public void run()
+
+        {
+            Toast.makeText(MainActivitySkip.this,"in runnable",Toast.LENGTH_SHORT).show();
+
+            MainActivitySkip.this.mHandler.postDelayed(m_Runnable,1000);
+        }
+
+    };
+
 }
 
 

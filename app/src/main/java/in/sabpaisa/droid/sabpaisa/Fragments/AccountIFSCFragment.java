@@ -53,12 +53,12 @@ public class AccountIFSCFragment extends Fragment {
     }
 
     private void loadArrayList() {
-        banks.add(new Bank("Allahabad Bank",getResources().getDrawable(R.drawable.allahabad_bank_logo_only),"ALLA"));
+        /*banks.add(new Bank("Allahabad Bank",getResources().getDrawable(R.drawable.allahabad_bank_logo_only),"ALLA"));
 //        banks.add(new Bank("Canara Bank",getResources().getDrawable(R.drawable.test_bank_logo),"CNRB"));
         banks.add(new Bank("Axis Bank",getResources().getDrawable(R.drawable.axis_bank_logo_only),"UTIB"));
         banks.add(new Bank("Corporation Bank",getResources().getDrawable(R.drawable.corporation_bank_logo_only),"CORP"));
         banks.add(new Bank("DCB Bank",getResources().getDrawable(R.drawable.dcb_bank_logo_only),"DCBL"));
         banks.add(new Bank("HDFC Bank",getResources().getDrawable(R.drawable.hdfc_bank_logo_only),"HDFC"));
         banks.add(new Bank("ICICI Bank",getResources().getDrawable(R.drawable.icici_bank_logo_only),"ICIC"));
-    }
+  */  }
 }

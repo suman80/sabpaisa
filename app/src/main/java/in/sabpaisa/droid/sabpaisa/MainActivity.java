@@ -108,8 +108,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     private CustomViewPager viewPager;
     private TabLayout tabLayout;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-
+ImageView niv;
     Toolbar toolbar;
+    private static int CODE = 1; //declare as FIELD
     private FirebaseAnalytics firebaseAnalytics;
     NetworkImageView nav;
     String userImageUrl=null;
@@ -229,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
         ClientId=getIntent().getStringExtra("clientId");
-        userImageUrl=getIntent().getStringExtra("userImageUrl");
+       // userImageUrl=getIntent().getStringExtra("userImageUrl");
 
         /*Log.d("stateName11111"," "+stateName);
         Log.d("serviceName1111"," "+serviceName);*/
@@ -305,10 +306,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
        //View header = navigationView.inflateHeaderView(R.layout.nav_header_main_activity_navigation);
         //nav = (NetworkImageView) header.findViewById(R.id.profile_image);
 
-        ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+         niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
        // View header = navigationView.getHeaderView(0);
       // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
-        Glide.with(MainActivity.this).load(userImageUrl).error(R.drawable.default_users).into(niv);
 
         //if(url.length() > 0)
             //niv.setImageUrl(userImageUrl, imageLoader);
@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         sendMoney = (ImageView)findViewById(R.id.ll_send);
         requestMoney = (ImageView)findViewById(R.id.ll_request);
-        socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
+        //socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
         transaction = (ImageView)findViewById(R.id.ll_transactions);
         profile = (ImageView)findViewById(R.id.ll_profile);
         bank = (ImageView)findViewById(R.id.ll_bank);
@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
        //new MainActivity.DownloadImageTask(nav).execute(userImageUrl);
         SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREF,MODE_PRIVATE).edit();
         editor.putString("clientId",ClientId);
-        editor.putString("userImageUrl",userImageUrl);
+        //editor.putString("userImageUrl",userImageUrl);
         editor.commit();
         LoadHeaderImageList();
         setHeaderImageList();
@@ -436,19 +436,22 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
-        socialPayment.setOnClickListener(new View.OnClickListener() {
+        /*socialPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,SocialPayment.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
-        });
+        });*/
 
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,ChatSDKLoginActivity.class);
+
+               intent.putExtra("userImageUrl",userImageUrl);
+
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
@@ -460,15 +463,14 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
             }
         });*/
+
+        getUserIm(userAccessToken);
     }
 
 
     private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
-
-
-
         Log.d("Fbid", "Firebase reg id: " + regId);
 
         if (!TextUtils.isEmpty(regId)) {
@@ -490,6 +492,10 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            Intent intent=new Intent(MainActivity.this,FilterActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            startActivity(intent);
 
             finish();
 
@@ -614,10 +620,10 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         Hash_file_maps = new HashMap<String, String>();
 
 
-        Hash_file_maps.put("SabPaisa", "http://205.147.103.27:6060/Docs/Images/HomeImage/sabpaisa.png");
-        Hash_file_maps.put("SabPaisa", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_2.png");
-        Hash_file_maps.put("SabPaisa", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_image.jpg");
-        Hash_file_maps.put("SabPaisa", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_1.svg.png");
+        Hash_file_maps.put("Sabpaisa Digitizing Cash", "http://205.147.103.27:6060/Docs/Images/HomeImage/sabpaisa.png");
+        Hash_file_maps.put("Payment & Transfer", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_2.png");
+        Hash_file_maps.put("The Future Of Payments", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_image.jpg");
+        Hash_file_maps.put("UPI", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_1.svg.png");
         for(String name : Hash_file_maps .keySet())
         {
             TextSliderView textSliderView = new TextSliderView(this);
@@ -705,8 +711,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         if (id == R.id.nav_Profile) {
             Intent intent=new Intent(MainActivity.this, ProfileNavigationActivity.class);
+            startActivityForResult(intent, CODE);
 
-            startActivity(intent);
+            //startActivity(intent,CODE);
             // Handle the camera action
         } /*else if (id == R.id.nav_Chat) {
 
@@ -1083,5 +1090,115 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
             ParseUtils.subscribeWithUsersObjectId(objectId, deviceToken);
         }
     }*/
+
+
+
+    private void getUserIm(final  String token) {
+
+        String  tag_string_req = "req_clients";
+
+        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
+
+            @Override
+            public void onResponse(String response1)
+            {
+
+                Log.d("Particularclientimage","-->"+response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1.toString());
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("responsefilter",""+response);
+                    Log.d("statusfilter",""+status);
+                    JSONObject jsonObject1 = new JSONObject(response);
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                    userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
+
+                    Log.d("userImageUrlfilter",""+userImageUrl);
+                    //Glide.with(MainActivity.this).load(userImageUrl).error(R.drawable.default_users).into(niv);
+
+                    Glide
+                            .with(MainActivity.this)
+                            .load(userImageUrl)
+                            .error(R.drawable.default_users)
+                            .into(niv);
+
+                    Log.d("Skip",""+userImageUrl);
+                 /*   ClientData clientData=new ClientData();
+                    clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
+                    clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
+                    clientData.setClientName(jsonObject1.getString("clientName"));
+
+                    clientLogoPath=clientData.getClientLogoPath().toString();
+                    clientImagePath=clientData.getClientImagePath().toString();
+                    clientname11=clientData.getClientName().toString();
+                    // clientname=clientData.getClientName().toString();
+                    Log.d("clientlogooooo","-->"+clientLogoPath );
+                    Log.d("clientimageooo","-->"+clientImagePath );
+                    Log.d("clientiooo","-->"+clientname11 );*/
+
+
+                }
+                catch(JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    // alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        }) ;
+
+        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+
+
     }
+
+}
 

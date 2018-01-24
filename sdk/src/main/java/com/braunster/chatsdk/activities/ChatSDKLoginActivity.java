@@ -3,6 +3,7 @@ package com.braunster.chatsdk.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -28,7 +29,7 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
 
     private static final String TAG = ChatSDKLoginActivity.class.getSimpleName();
     private static boolean DEBUG = Debug.LoginActivity;
-
+String userImageUrl;
     private Button btnLogin, btnReg, btnAnon, btnTwitter;
     private ImageView appIconImage;
 
@@ -45,6 +46,8 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         setupTouchUIToDismissKeyboard(view);
 
         initViews();
+
+
 
         //((TextView) findViewById(R.id.chat_sdk_txt_version)).setText(String.valueOf(BuildConfig.VERSION_NAME));
     }
@@ -111,10 +114,10 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         moveTaskToBack(true);
         System.exit(0);
-       /* finish()*//*;
-        ExitHelper exitHelper=new ExitHelper(this);
-        exitHelper.triggerExit();*/
-
+       /* finish()*/
+       /* ExitHelper exitHelper=new ExitHelper(this);
+        exitHelper.triggerExit();
+*/
     }
     /* Dismiss dialog and open main activity.*/
     @Override

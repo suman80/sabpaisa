@@ -18,10 +18,12 @@ public class ExitHelper {
     private Activity activity;
     private boolean doubleBackToExitPressedOnce = false;
     private SuperToast superToast;
+    String userImageUrl;
 
     public ExitHelper(Activity activity) {
         this.activity = activity;
         superToast = new SuperToast(activity);
+
     }
 //;ine
     public void triggerExit() {
@@ -32,8 +34,8 @@ public class ExitHelper {
                         activity.getResources().getString(R.string.stay), null, new CloseApp());*/
                 break;
 
-            case BDefines.Exit.EXIT_MODE_DOUBLE_BACK:
-                if (doubleBackToExitPressedOnce) {
+            /*case BDefines.Exit.EXIT_MODE_DOUBLE_BACK:
+                *//*if (doubleBackToExitPressedOnce) {
                     try {
                         new CloseApp().call();
                     } catch (Exception e) {
@@ -48,14 +50,14 @@ public class ExitHelper {
                         doubleBackToExitPressedOnce = false;
                     }
                 }, BDefines.Exit.DOUBLE_CLICK_INTERVAL);
-
+*//*
                 //this.doubleBackToExitPressedOnce = true;
                 Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
                 activity.startActivity(inent);
 
                 //showAlertToast( activity.getString(R.string.exit_helper_double_tap_toast) );
-                break;
-
+                break;*/
+/*
             case BDefines.Exit.EXIT_MODE_NONE:
                 try {
                     new CloseApp().call();
@@ -63,11 +65,13 @@ public class ExitHelper {
                     e.printStackTrace();
                     return;
                 }
-                break;
+                break;*/
 
-           /* default :
+            default :
                 Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
-                activity.startActivity(inent);*/
+
+
+                activity.startActivity(inent);
         }
     }
 

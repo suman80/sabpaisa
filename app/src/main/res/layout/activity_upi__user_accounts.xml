@@ -23,12 +23,12 @@
             android:scrollbars="vertical" />-->
 
         <!--TODO bankLogo-->
-        <ImageView
+       <!-- <ImageView
             android:id="@+id/iv_bankLogo"
             android:layout_width="150dp"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/test_bank_logo" />
+            android:src="@drawable/test_bank_logo" />-->
 
         <TextView
             android:layout_width="match_parent"

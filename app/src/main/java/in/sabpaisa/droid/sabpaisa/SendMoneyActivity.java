@@ -214,7 +214,7 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
 
     @Override
     public void onFailureResponse(int reqType, Object data) {
-        Toast.makeText(SendMoneyActivity.this,"Fail" , Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(SendMoneyActivity.this,"Fail" , Toast.LENGTH_SHORT).show();
     }
 
 

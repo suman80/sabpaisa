@@ -58,7 +58,7 @@ public class ChatSDKMainActivity extends ChatSDKBaseActivity {
     public static final String Action_Contacts_Added = "com.braunster.androidchatsdk.action.contact_added";
     public static final String Action_clear_data = "com.braunster.androidchatsdk.action.logged_out";
     public static final String Action_Refresh_Fragment = "com.braunster.androidchatsdk.action.refresh_fragment";
-
+String userImageUrl;
     private int pageAdapterPos = -1;
 
     private OpenFromPushChecker mOpenFromPushChecker;
@@ -351,7 +351,11 @@ public class ChatSDKMainActivity extends ChatSDKBaseActivity {
     }*/
 
     public void onBackPressed() {
+
+
         Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
+
+
         startActivity(inent);
 
     }

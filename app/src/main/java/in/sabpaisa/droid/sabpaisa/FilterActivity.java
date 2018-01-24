@@ -53,8 +53,11 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     LinearLayout BankClient, ClientSpinner;
            RelativeLayout InstituteSpinner,HospitalSpinner;
     Button proceed,skip;
-String userImageUrl;
-String userAccessToken,response;
+    String userImageUrl;
+    String userAccessToken,response;
+
+    public static final String PREFS_NAME1 = "LoginPrefs";
+
 
 ImageView spinnerClick1,spinnerClick2,spinnerClick3;
 
@@ -141,12 +144,15 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         userAccessToken = response;
 
 
+
+
         Log.d("AccessTokensilter", " " + userAccessToken);
 
         Log.d("FFResfilter", " " + response);
 
         getUserIm(userAccessToken);
         Log.d("imagefilter", " " + userImageUrl);
+
 
         // FOr State Name
         bankTxt.setText("State Name");
@@ -171,9 +177,6 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         proceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
 
                     Log.d("FA_clientId123435423412","---->"+clientId );
                     Log.d("FA_clientId123435423412","---->"+clientImagePath );

@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,12 +35,9 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.crash.FirebaseCrash;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,23 +48,21 @@ import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
-import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.MainActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Model.ProfileModel;
 import in.sabpaisa.droid.sabpaisa.R;
-import in.sabpaisa.droid.sabpaisa.RegisterActivity;
 import in.sabpaisa.droid.sabpaisa.UIN;
 
-public class ProfileNavigationActivity extends AppCompatActivity {
-    private static final String TAG = ProfileNavigationActivity.class.getSimpleName();
+public class ProfileNavigationActivitySkip extends AppCompatActivity {
+    private static final String TAG = ProfileNavigationActivitySkip.class.getSimpleName();
     ImageView userImage;
-    Button  numberEdit, mailIdEdit,addressEdit,tv_NameEdit;
-    TextView userName,mNumber;
-    EditText  mailId,et_address,et_UserName;
+    Button numberEdit, mailIdEdit,addressEdit;
+    TextView userName;
+    EditText mNumber, mailId,et_address;
     Toolbar toolbar;
     LinearLayout layout;
     String userAccessToken;
-    String address,email,name;
+    String address,email;
     ProgressBar progressBar;
     SharedPreferences sharedPreferences;
     String clientId;
@@ -90,16 +84,12 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         userName = (TextView) findViewById(R.id.tv_userName);
         //uin = (TextView) findViewById(R.id.tv_uin);
         //userType = (TextView) findViewById(R.id.tv_userType);
-        //numberEdit = (Button) findViewById(R.id.tv_numberEdit);
+        numberEdit = (Button) findViewById(R.id.tv_numberEdit);
         mailIdEdit = (Button) findViewById(R.id.tv_mailIdEdit);
         mailIdEdit.setInputType(InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
-        tv_NameEdit = (Button)findViewById(R.id.tv_NameEdit);
-
-        mNumber = (TextView) findViewById(R.id.et_mNumber);
+        mNumber = (EditText) findViewById(R.id.et_mNumber);
         mailId = (EditText) findViewById(R.id.et_mailId);
         et_address = (EditText)findViewById(R.id.et_address);
-        et_UserName = (EditText)findViewById(R.id.et_UserName);
-
 
         addressEdit = (Button) findViewById(R.id.tv_addressEdit);
 
@@ -123,11 +113,8 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
         mNumber.setEnabled(false);
         mailId.setEnabled(false);
-        et_address.setEnabled(false);
-        et_UserName.setEnabled(false);
 
-
-       /* numberEdit.setOnClickListener(new View.OnClickListener() {
+        numberEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                mailId.setFocusable(true);
@@ -140,7 +127,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     numberEdit.setText("Edit");
                 }
             }
-        });*/
+        });
 
         mailIdEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +143,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     updateUserProfileEmail(userAccessToken,email);
                     mailId.setFocusable(false);
                 }
-                    else {
+                else {
                     mailId.setEnabled(false);
                     mailIdEdit.setText("Edit");
                 }
@@ -194,32 +181,6 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             }
         });
 
-
-        tv_NameEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (tv_NameEdit.getText().toString().equals("Edit")) {
-                    et_UserName.setEnabled(true);
-                    et_UserName.setText(" ");
-                    et_UserName.requestFocus();
-                    tv_NameEdit.setText("Save");
-
-                } else if(tv_NameEdit.getText().toString().equals("Save")){
-                    name=et_UserName.getText().toString();
-                    updateUserProfileName(userAccessToken,name);
-                    et_UserName.setFocusable(false);
-                }
-
-                else{
-                    et_UserName.setEnabled(false);
-                    tv_NameEdit.setText("Edit");
-                }
-
-
-            }
-        });
-
-
         showProfileData();
         showProfileImage();
 
@@ -230,17 +191,15 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(ProfileNavigationActivity.this, MainActivitySkip.class) ;
 
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+Intent intent=new Intent(ProfileNavigationActivitySkip.this, MainActivitySkip.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        finish();
         startActivity(intent);
-
         /*intent.putExtra("clientId", clientId);
         intent.putExtra("userImageUrl", userImageUrl);
         startActivity(intent);*/
-        //this.finish();
+        this.finish();
     }
 
     public void pickImage() {
@@ -262,12 +221,12 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             if (requestCode == 200 && resultCode == RESULT_OK && data != null) {
 
 
-                    //Get ImageURi and load with help of picasso
-                    //Uri selectedImageURI = data.getData();
+                //Get ImageURi and load with help of picasso
+                //Uri selectedImageURI = data.getData();
 //                    userImage.setImageDrawable(data.getData());
-                    Uri selectedimg = data.getData();
-                    userImage.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
-                    Bitmap userImg=MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+                Uri selectedimg = data.getData();
+                userImage.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
+                Bitmap userImg=MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
                 uploadBitmap(userImg);
             }
@@ -311,7 +270,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                             final String status = obj.getString("status");
                             if (status.equals("success")) {
 
-                                AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                                AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
 
                                 // Setting Dialog Title
                                 alertDialog.setTitle("User Image Update");
@@ -328,7 +287,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                                         Intent intent=new Intent();
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
 
-                                      /*  Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                      /*  Intent intent = new Intent(ProfileNavigationActivitySkip.this,ProfileNavigationActivitySkip.class);
                                         startActivity(intent);*/
                                     }
                                 });
@@ -405,7 +364,6 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
                         mailId.setText(object.getJSONObject("response").getString("emailId").toString());
                         et_address.setText(object.getJSONObject("response").getString("address").toString());
-                        et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
                         Log.d(TAG, "userName" + userName);
 
                     }else {
@@ -424,7 +382,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");
@@ -497,7 +455,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     if (status.equals("success")) {
 
                         userImageUrl =object.getJSONObject("response").getString("userImageUrl");
-                        new DownloadImageTask(userImage).execute(userImageUrl);
+                        new ProfileNavigationActivitySkip.DownloadImageTask(userImage).execute(userImageUrl);
 
                     }else {
                         Toast.makeText(getApplicationContext(),"Cannot able to load image!",Toast.LENGTH_SHORT).show();
@@ -514,7 +472,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");
@@ -567,156 +525,6 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     }
 
 
-
-
-
-    private void updateUserProfileName(final String  userAccessToken, final String name ) {
-
-        String tag_string_req = "req_register";
-
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_UserProfileUpdate+"?token="+userAccessToken+"&"+"fullName="+name, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response1) {
-                Log.d(TAG, "Register Response: " + response1.toString());
-
-                try {
-                    //progressBar.setVisibility(View.GONE);
-                    JSONObject object = new JSONObject(response1);
-                    String response = object.getString("response");
-                    String status =object.getString("status");
-
-                    if (status!=null && status.equals("success")) {
-
-                        final ProfileModel profile =new ProfileModel();
-
-                        profile.setFullName(response);
-
-                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
-
-                        // Setting Dialog Title
-                        alertDialog.setTitle("Name Update");
-
-                        // Setting Dialog Message
-                        alertDialog.setMessage("Your Name Has Been Updated");
-
-                        // Setting Icon to Dialog
-                        //  alertDialog.setIcon(R.drawable.tick);
-
-                        // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
-
-                        // Showing Alert Message
-                        alertDialog.show();
-
-                    }else if (status.equals("failure")){
-                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
-
-                        // Setting Dialog Title
-                        alertDialog.setTitle("Name Update");
-
-                        // Setting Dialog Message
-                        alertDialog.setMessage("Your Name  is already exists!");
-
-                        // Setting Icon to Dialog
-                        //  alertDialog.setIcon(R.drawable.tick);
-
-                        // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
-                                startActivity(intent);
-                                finish();
-
-                            }
-                        });
-                    }
-
-                    else {
-                        Toast.makeText(getApplicationContext(),"Oops! Something Went Wrong",Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
-
-                    // Setting Dialog Title
-                    alertDialog.setTitle("Network/Connection Error");
-
-                    // Setting Dialog Message
-                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
-
-                    // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
-
-                    // Setting OK Button
-                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Write your code here to execute after dialog closed
-                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    // Showing Alert Message
-                    alertDialog.show();
-                    Log.e(TAG, "Update Error: " + error.getMessage());
-
-                } else if (error instanceof AuthFailureError) {
-                    //TODO
-                } else if (error instanceof ServerError) {
-                    //TODO
-                } else if (error instanceof NetworkError) {
-                    //TODO
-                } else if (error instanceof ParseError) {
-                    //TODO
-                }
-
-            }
-        }) ;/*{
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("token",userAccessToken);
-                params.put("address", address);
-
-                return params;
-            }
-
-        };*/
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-
-    }
-
-
-
-
-
-
-
-
-
-
     private void updateUserProfileAddress(final String  userAccessToken, final String address ) {
 
         String tag_string_req = "req_register";
@@ -740,7 +548,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
                         profile.setAddress(response);
 
-                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
                         alertDialog.setTitle("Address Update");
@@ -754,7 +562,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         // Setting OK Button
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                Intent intent = new Intent(ProfileNavigationActivitySkip.this, ProfileNavigationActivitySkip.class);
                                 startActivity(intent);
                                 finish();
                             }
@@ -763,33 +571,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         // Showing Alert Message
                         alertDialog.show();
 
-                    }else if (status.equals("failure")){
-                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
-
-                        // Setting Dialog Title
-                        alertDialog.setTitle("Address Update");
-
-                        // Setting Dialog Message
-                        alertDialog.setMessage("Your Address  is already exists!");
-
-                        // Setting Icon to Dialog
-                        //  alertDialog.setIcon(R.drawable.tick);
-
-                        // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
-                                startActivity(intent);
-                                finish();
-
-                            }
-                        });
-                    }
-
-
-
-                    else {
+                    }else {
                         Toast.makeText(getApplicationContext(),"Oops! Something Went Wrong",Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -804,7 +586,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");
@@ -883,7 +665,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
 
 
-                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
                         alertDialog.setTitle("Email Update");
@@ -897,7 +679,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         // Setting OK Button
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                Intent intent = new Intent(ProfileNavigationActivitySkip.this, ProfileNavigationActivitySkip.class);
                                 startActivity(intent);
                                 finish();
                             }
@@ -907,7 +689,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         alertDialog.show();
 
                     }else if (status.equals("failure")){
-                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
                         alertDialog.setTitle("Email Update");
@@ -922,7 +704,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
-                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                Intent intent = new Intent(ProfileNavigationActivitySkip.this, ProfileNavigationActivitySkip.class);
                                 startActivity(intent);
                                 finish();
 
@@ -943,7 +725,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");
@@ -1051,3 +833,4 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
 
 }
+

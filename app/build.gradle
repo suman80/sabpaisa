@@ -22,6 +22,12 @@ android {
 }
 
 dependencies {
+
+// Test
+
+    compile 'com.mikepenz:materialdrawer:6.0.2'
+
+//
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -35,6 +41,8 @@ dependencies {
     //    compile 'com.github.clans:fab:1.6.4'
     //    compile 'com.getbase:floatingactionbutton:1.10.1'
     //
+
+
     compile 'com.github.chrisbanes:PhotoView:2.1.2'
     compile project(':secure-component-sdk')
     compile 'com.android.support:multidex:1.0.0'
@@ -86,6 +94,8 @@ dependencies {
     compile 'com.farbod.labelledspinner:labelledspinner:1.1.5'
     compile 'com.google.code.gson:gson:2.8.2'
 
+
+
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile project(path: ':sdk')
     compile 'com.airbnb.android:lottie:2.1.2'
@@ -96,9 +106,11 @@ dependencies {
     //compile project(path: ':chat-sdk-core')
     compile 'gun0912.ted:tedpermission:2.1.0'
     compile 'com.android.support:multidex:1.0.0'
-   // compile 'com.google.firebase:firebase-messaging:9.6.0'
-   //compile 'com.google.firebase:firebase-messaging:11.8.0'
+    // compile 'com.google.firebase:firebase-messaging:9.6.0'
+    //compile 'com.google.firebase:firebase-messaging:11.8.0'
     compile 'com.google.firebase:firebase-crash:11.4.0'
+
+
 }
 
 allprojects {
