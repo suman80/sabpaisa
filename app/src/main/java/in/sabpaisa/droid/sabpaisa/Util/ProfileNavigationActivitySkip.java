@@ -56,13 +56,13 @@ import in.sabpaisa.droid.sabpaisa.UIN;
 public class ProfileNavigationActivitySkip extends AppCompatActivity {
     private static final String TAG = ProfileNavigationActivitySkip.class.getSimpleName();
     ImageView userImage;
-    Button numberEdit, mailIdEdit,addressEdit;
-    TextView userName;
-    EditText mNumber, mailId,et_address;
+    Button  numberEdit, mailIdEdit,addressEdit,tv_NameEdit;
+    TextView userName,mNumber;
+    EditText  mailId,et_address,et_UserName;
     Toolbar toolbar;
     LinearLayout layout;
     String userAccessToken;
-    String address,email;
+    String address,email,name;
     ProgressBar progressBar;
     SharedPreferences sharedPreferences;
     String clientId;
@@ -84,12 +84,16 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
         userName = (TextView) findViewById(R.id.tv_userName);
         //uin = (TextView) findViewById(R.id.tv_uin);
         //userType = (TextView) findViewById(R.id.tv_userType);
-        numberEdit = (Button) findViewById(R.id.tv_numberEdit);
+        //numberEdit = (Button) findViewById(R.id.tv_numberEdit);
         mailIdEdit = (Button) findViewById(R.id.tv_mailIdEdit);
         mailIdEdit.setInputType(InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS);
-        mNumber = (EditText) findViewById(R.id.et_mNumber);
+        tv_NameEdit = (Button)findViewById(R.id.tv_NameEdit);
+
+        mNumber = (TextView) findViewById(R.id.et_mNumber);
         mailId = (EditText) findViewById(R.id.et_mailId);
         et_address = (EditText)findViewById(R.id.et_address);
+        et_UserName = (EditText)findViewById(R.id.et_UserName);
+
 
         addressEdit = (Button) findViewById(R.id.tv_addressEdit);
 
@@ -113,8 +117,11 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
 
         mNumber.setEnabled(false);
         mailId.setEnabled(false);
+        et_address.setEnabled(false);
+        et_UserName.setEnabled(false);
 
-        numberEdit.setOnClickListener(new View.OnClickListener() {
+
+       /* numberEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                mailId.setFocusable(true);
@@ -127,7 +134,7 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                     numberEdit.setText("Edit");
                 }
             }
-        });
+        });*/
 
         mailIdEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +188,32 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
             }
         });
 
+
+        tv_NameEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tv_NameEdit.getText().toString().equals("Edit")) {
+                    et_UserName.setEnabled(true);
+                    et_UserName.setText(" ");
+                    et_UserName.requestFocus();
+                    tv_NameEdit.setText("Save");
+
+                } else if(tv_NameEdit.getText().toString().equals("Save")){
+                    name=et_UserName.getText().toString();
+                    updateUserProfileName(userAccessToken,name);
+                    et_UserName.setFocusable(false);
+                }
+
+                else{
+                    et_UserName.setEnabled(false);
+                    tv_NameEdit.setText("Edit");
+                }
+
+
+            }
+        });
+
+
         showProfileData();
         showProfileImage();
 
@@ -191,15 +224,17 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(ProfileNavigationActivitySkip.this, MainActivitySkip.class) ;
 
-Intent intent=new Intent(ProfileNavigationActivitySkip.this, MainActivitySkip.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
 
+        finish();
         startActivity(intent);
+
         /*intent.putExtra("clientId", clientId);
         intent.putExtra("userImageUrl", userImageUrl);
         startActivity(intent);*/
-        this.finish();
+        //this.finish();
     }
 
     public void pickImage() {
@@ -364,6 +399,7 @@ Intent intent=new Intent(ProfileNavigationActivitySkip.this, MainActivitySkip.cl
                         mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
                         mailId.setText(object.getJSONObject("response").getString("emailId").toString());
                         et_address.setText(object.getJSONObject("response").getString("address").toString());
+                        et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
                         Log.d(TAG, "userName" + userName);
 
                     }else {
@@ -455,7 +491,7 @@ Intent intent=new Intent(ProfileNavigationActivitySkip.this, MainActivitySkip.cl
                     if (status.equals("success")) {
 
                         userImageUrl =object.getJSONObject("response").getString("userImageUrl");
-                        new ProfileNavigationActivitySkip.DownloadImageTask(userImage).execute(userImageUrl);
+                        new DownloadImageTask(userImage).execute(userImageUrl);
 
                     }else {
                         Toast.makeText(getApplicationContext(),"Cannot able to load image!",Toast.LENGTH_SHORT).show();
@@ -525,6 +561,156 @@ Intent intent=new Intent(ProfileNavigationActivitySkip.this, MainActivitySkip.cl
     }
 
 
+
+
+
+    private void updateUserProfileName(final String  userAccessToken, final String name ) {
+
+        String tag_string_req = "req_register";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_UserProfileUpdate+"?token="+userAccessToken+"&"+"fullName="+name, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+                Log.d(TAG, "Register Response: " + response1.toString());
+
+                try {
+                    //progressBar.setVisibility(View.GONE);
+                    JSONObject object = new JSONObject(response1);
+                    String response = object.getString("response");
+                    String status =object.getString("status");
+
+                    if (status!=null && status.equals("success")) {
+
+                        final ProfileModel profile =new ProfileModel();
+
+                        profile.setFullName(response);
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Name Update");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Your Name Has Been Updated");
+
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(ProfileNavigationActivitySkip.this,ProfileNavigationActivitySkip.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+                    }else if (status.equals("failure")){
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Name Update");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Your Name  is already exists!");
+
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Intent intent = new Intent(ProfileNavigationActivitySkip.this,ProfileNavigationActivitySkip.class);
+                                startActivity(intent);
+                                finish();
+
+                            }
+                        });
+                    }
+
+                    else {
+                        Toast.makeText(getApplicationContext(),"Oops! Something Went Wrong",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog closed
+                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    Log.e(TAG, "Update Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+                    //TODO
+                } else if (error instanceof ServerError) {
+                    //TODO
+                } else if (error instanceof NetworkError) {
+                    //TODO
+                } else if (error instanceof ParseError) {
+                    //TODO
+                }
+
+            }
+        }) ;/*{
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("token",userAccessToken);
+                params.put("address", address);
+
+                return params;
+            }
+
+        };*/
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
+
+
+
+
+
+
+
+
+
+
     private void updateUserProfileAddress(final String  userAccessToken, final String address ) {
 
         String tag_string_req = "req_register";
@@ -562,7 +748,7 @@ Intent intent=new Intent(ProfileNavigationActivitySkip.this, MainActivitySkip.cl
                         // Setting OK Button
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(ProfileNavigationActivitySkip.this, ProfileNavigationActivitySkip.class);
+                                Intent intent = new Intent(ProfileNavigationActivitySkip.this,ProfileNavigationActivitySkip.class);
                                 startActivity(intent);
                                 finish();
                             }
@@ -571,7 +757,33 @@ Intent intent=new Intent(ProfileNavigationActivitySkip.this, MainActivitySkip.cl
                         // Showing Alert Message
                         alertDialog.show();
 
-                    }else {
+                    }else if (status.equals("failure")){
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Address Update");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Your Address  is already exists!");
+
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Intent intent = new Intent(ProfileNavigationActivitySkip.this,ProfileNavigationActivitySkip.class);
+                                startActivity(intent);
+                                finish();
+
+                            }
+                        });
+                    }
+
+
+
+                    else {
                         Toast.makeText(getApplicationContext(),"Oops! Something Went Wrong",Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -679,7 +891,7 @@ Intent intent=new Intent(ProfileNavigationActivitySkip.this, MainActivitySkip.cl
                         // Setting OK Button
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(ProfileNavigationActivitySkip.this, ProfileNavigationActivitySkip.class);
+                                Intent intent = new Intent(ProfileNavigationActivitySkip.this,ProfileNavigationActivitySkip.class);
                                 startActivity(intent);
                                 finish();
                             }
@@ -704,7 +916,7 @@ Intent intent=new Intent(ProfileNavigationActivitySkip.this, MainActivitySkip.cl
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
-                                Intent intent = new Intent(ProfileNavigationActivitySkip.this, ProfileNavigationActivitySkip.class);
+                                Intent intent = new Intent(ProfileNavigationActivitySkip.this,ProfileNavigationActivitySkip.class);
                                 startActivity(intent);
                                 finish();
 
@@ -833,4 +1045,3 @@ Intent intent=new Intent(ProfileNavigationActivitySkip.this, MainActivitySkip.cl
 
 
 }
-
