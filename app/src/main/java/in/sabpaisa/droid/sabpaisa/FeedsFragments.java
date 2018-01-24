@@ -170,7 +170,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
 
     private void loadFeedListView(ArrayList<FeedData> arrayList, final RecyclerView recyclerView) {
 
-        mainFeedAdapter = new MainFeedAdapter(arrayList);
+        mainFeedAdapter = new MainFeedAdapter(arrayList,getContext());
        // recyclerView.setAdapter(mainFeedAdapter);
         recyclerView.postDelayed(new Runnable() {
             @Override

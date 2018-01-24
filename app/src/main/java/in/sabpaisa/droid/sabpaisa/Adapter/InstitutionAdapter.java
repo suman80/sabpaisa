@@ -51,11 +51,23 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
         holder.instituteName.setText(mainFeedData.getOrganization_name());
         holder.instituteLocation.setText(mainFeedData.getOrgAddress());
         //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
-        holder.thumbnail.setImageUrl(mainFeedData.getOrgLogo(), imageLoader);
+
+        if (mainFeedData.getOrgLogo()==null){
+            holder.thumbnail.setDefaultImageResId(R.drawable.image_not_found);
+        }
+        else {
+            holder.thumbnail.setImageUrl(mainFeedData.getOrgLogo(), imageLoader);
+        }
+
+        if (mainFeedData.getOrgLogo()==null){
+            holder.clinetbanner.setDefaultImageResId(R.drawable.image_not_found);
+        }
+        else {
+            holder.clinetbanner.setImageUrl(mainFeedData.getOrgWal(),imageLoader);
+        }
 
 
 
-        holder.clinetbanner.setImageUrl(mainFeedData.getOrgWal(),imageLoader);
         //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
 //        holder.instituteLocation.setText(mainFeedData.getOrgDesc());
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {

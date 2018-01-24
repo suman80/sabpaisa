@@ -191,7 +191,7 @@ public class SkipClient_FeedsFragment extends Fragment implements SwipeRefreshLa
 
     private void loadFeedListView(ArrayList<FeedData> arrayList, RecyclerView recyclerView) {
 
-        mainFeedAdapter = new MainFeedAdapter(arrayList);
+        mainFeedAdapter = new MainFeedAdapter(arrayList,getContext());
         recyclerView.setAdapter(mainFeedAdapter);
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {

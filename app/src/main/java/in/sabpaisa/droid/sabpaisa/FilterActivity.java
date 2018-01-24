@@ -304,52 +304,57 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                 //parsing Json
                 JSONObject jsonObject = null;
 
-                if (response1==null){
-                    //
-                    // Toast.makeText(FilterActivity.this,"No Data Found",Toast.LENGTH_SHORT).show();
-
-                }else {
-
                     try {
                         serviceArrayList = new ArrayList<String>();
 
                         jsonObject = new JSONObject(response1);
-                        JSONArray jsonArray = jsonObject.getJSONArray("response");
-                        for (int i = 0; i < jsonArray.length(); i++) {
+                        String status = jsonObject.getString("status");
+                        String response = jsonObject.getString("response");
 
-                            String str = jsonArray.getString(i);
-                            Log.d("1", str);
+                        if (status.equals("success")) {
+                            JSONArray jsonArray = jsonObject.getJSONArray("response");
+                            for (int i = 0; i < jsonArray.length(); i++) {
 
-                            if (i == 0) {
-                                serviceArrayList.add("Select Service");
+                                String str = jsonArray.getString(i);
+                                Log.d("1", str);
+
+                                if (i == 0) {
+                                    serviceArrayList.add("Select Service");
+                                }
+                                serviceArrayList.add(str);
                             }
-                            serviceArrayList.add(str);
+
+                            Log.d("serviceArrayList", "" + serviceArrayList);
+
+                            ArrayAdapter<String> clientadapter = new ArrayAdapter<String>(FilterActivity.this, R.layout.support_simple_spinner_dropdown_item, serviceArrayList);
+                            clientadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            serviceSpinner.setAdapter(clientadapter);
+                            serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                                public void onItemSelected(AdapterView<?> parentView,
+                                                           View selectedItemView, int position, long id) {
+                                    clientsSpinner.setAdapter(null);
+                                    getClientData(serviceSpinner.getSelectedItem().toString(), stateSpinner.getSelectedItem().toString());
+
+                                }
+
+                                public void onNothingSelected(AdapterView<?> arg0) {// do nothing
+                                }
+
+                            });
+
+                        }else if (status.equals("failure") && response.equals("No Record Found"))
+                        {//Toast.makeText(getApplicationContext(),"No Services Found!",Toast.LENGTH_SHORT).show();
+
+                            Log.d(TAG,"InElseIfPart");
+
+                        }
+                    else {Log.d(TAG,"InElsePart");}
+
+                    } catch(JSONException e){
+                            e.printStackTrace();
                         }
 
-                        Log.d("serviceArrayList", "" + serviceArrayList);
-
-                        ArrayAdapter<String> clientadapter = new ArrayAdapter<String>(FilterActivity.this, R.layout.support_simple_spinner_dropdown_item, serviceArrayList);
-                        clientadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        serviceSpinner.setAdapter(clientadapter);
-                        serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                            public void onItemSelected(AdapterView<?> parentView,
-                                                       View selectedItemView, int position, long id) {
-
-                                getClientData(serviceSpinner.getSelectedItem().toString(),stateSpinner.getSelectedItem().toString());
-
-                            }
-
-                            public void onNothingSelected(AdapterView<?> arg0) {// do nothing
-                            }
-
-                        });
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
 
             }
         }, new Response.ErrorListener() {
@@ -382,24 +387,20 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
             @Override
             public void onResponse(String response1)
             {
-                //Toast.makeText(MainActivity.this,String.valueOf(response1), Toast.LENGTH_SHORT).show();
 
                 Log.d("Service_LIST","-->"+response1);
                 //parsing Json
                 JSONObject jsonObject = null;
 
-                //try {
                 clientArrayList=new ArrayList<String>();
+
                 try {
-                    jsonObject = new JSONObject(response1);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    // if(jsonObject.get("status").equals("failure")) {
-                    // Toast.makeText(FilterActivity.this,"no no",Toast.LENGTH_SHORT).show();
-                    //  }
-                    //else {
+                   jsonObject = new JSONObject(response1);
+                    String status = jsonObject.getString("status");
+                    String response = jsonObject.getString("response");
+
+                    if (status.equals("success"))
+                    {
 
                     JSONArray jsonArray = jsonObject.getJSONArray("response");
 
@@ -461,7 +462,15 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                         }
                     });
 
-                    // }
+                    }else if (status.equals("failure")&&response.equals("Client is not refgistered with us"))
+                    {//Toast.makeText(getApplicationContext(),"Client is not refgistered with us",Toast.LENGTH_SHORT).show();
+
+                        Log.d(TAG,"InElseIfPart");
+
+                    }
+
+                    else {Log.d(TAG,"InElsePart"+response);}
+
                 } catch (JSONException e1) {
                     e1.printStackTrace();
                 }
@@ -492,6 +501,8 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String selected=parent.getItemAtPosition(position).toString();
         //  Toast.makeText(this,selected,Toast.LENGTH_SHORT).show();
+        serviceSpinner.setAdapter(null);
+        clientsSpinner.setAdapter(null);
         getServiceData(selected);
     }
 
@@ -533,22 +544,29 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                     String status = jsonObject.getString("status");
                          Log.d("responsus",""+response);
                          Log.d("statsus",""+status);
-                    JSONObject jsonObject1 = new JSONObject(response);
 
-                       ClientData clientData=new ClientData();
-                clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
-               clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
-               clientData.setClientName(jsonObject1.getString("clientName"));
+                         if (status.equals("success")) {
 
-                   clientLogoPath=clientData.getClientLogoPath().toString();
-                   clientImagePath=clientData.getClientImagePath().toString();
-                    clientname11=clientData.getClientName().toString();
-                   // clientname=clientData.getClientName().toString();
-                    Log.d("clientlogooooo","-->"+clientLogoPath );
-                    Log.d("clientimageooo","-->"+clientImagePath );
-                    Log.d("clientiooo","-->"+clientname11 );
+                             JSONObject jsonObject1 = new JSONObject(response);
 
+                             ClientData clientData = new ClientData();
+                             clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
+                             clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
+                             clientData.setClientName(jsonObject1.getString("clientName"));
 
+                             clientLogoPath = clientData.getClientLogoPath().toString();
+                             clientImagePath = clientData.getClientImagePath().toString();
+                             clientname11 = clientData.getClientName().toString();
+                             // clientname=clientData.getClientName().toString();
+                             Log.d("clientlogooooo", "-->" + clientLogoPath);
+                             Log.d("clientimageooo", "-->" + clientImagePath);
+                             Log.d("clientiooo", "-->" + clientname11);
+
+                         }else if (status.equals("failure"))
+                         {Log.d(TAG,"InElseIfPart"+response);}
+                         else {
+                             Log.d(TAG,"InElsePart"+response);
+                         }
                 }
                 catch(JSONException e){
                     e.printStackTrace();

@@ -49,8 +49,21 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
             holder.instituteName.setText(mainFeedData.getOrganization_name());
             holder.instituteLocation.setText(mainFeedData.getOrgAddress());
             //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
+
+        if (mainFeedData.getOrgLogo()==null)
+        {
+            holder.thumbnail.setDefaultImageResId(R.drawable.image_not_found);
+        }else {
             holder.thumbnail.setImageUrl(mainFeedData.getOrgLogo(), imageLoader);
+        }
+
+        if (mainFeedData.getOrgLogo()==null)
+        {
+            holder.clinetbanner.setDefaultImageResId(R.drawable.image_not_found);
+        }else {
             holder.clinetbanner.setImageUrl(mainFeedData.getOrgWal(),imageLoader);
+        }
+
 
            holder.clinetbanner.setOnClickListener(new View.OnClickListener() {
                @Override

@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
 
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -22,14 +24,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+
 
 public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyViewHolder> {
 
     private ArrayList<FeedData> mainFeedDataList;
     ImageLoader imageLoader;
+    Context context;
 
-    public MainFeedAdapter(ArrayList<FeedData> countryList) {
+    public MainFeedAdapter(ArrayList<FeedData> countryList,Context context) {
         this.mainFeedDataList = countryList;
+        this.context=context;
     }
 
     /*START Method to change data when put query in searchBar*/
@@ -67,7 +73,15 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             }
         });
         Log.d("client_Image123456",""+mainFeedData.getImagePath());
-        new DownloadImageTask(holder.client_Image).execute(mainFeedData.getImagePath());
+
+        //new DownloadImageTask(holder.client_Image).execute(mainFeedData.getImagePath());
+
+        Glide.with(context)
+                .load(mainFeedData.getImagePath())
+                .error(R.drawable.image_not_found)
+                .into(holder.client_Image);
+
+
         holder.client_Image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +94,16 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 v.getContext().startActivity(intent);
             }
         });
-        new DownloadLogoTask(holder.cilent_Logo).execute(mainFeedData.getLogoPath());
+
+
+        Glide.with(context)
+                .load(mainFeedData.getLogoPath())
+                .error(R.drawable.image_not_found)
+                .into(holder.cilent_Logo);
+
+
+
+        //new DownloadLogoTask(holder.cilent_Logo).execute(mainFeedData.getLogoPath());
     }
     /*END Method to change data when put query in searchBar*/
 

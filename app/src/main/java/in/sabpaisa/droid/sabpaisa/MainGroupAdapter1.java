@@ -75,12 +75,12 @@ public class MainGroupAdapter1 extends
         new DownloadImageTask(holder.Group_Image).execute(c.getImagePath());*/
         Glide.with(mContext)
                 .load(c.getLogoPath())
-                .error(R.drawable.default_users)
+                .error(R.drawable.image_not_found)
                 .into(holder.Group_Logo);
 
         Glide.with(mContext)
                 .load(c.getImagePath())
-                .error(R.drawable.default_users)
+                .error(R.drawable.image_not_found)
                 .into(holder.Group_Image);
 
         holder.Group_name.setOnClickListener(new View.OnClickListener() {
@@ -187,74 +187,6 @@ public class MainGroupAdapter1 extends
         }
     }
 
-/*
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
-    }
-
-    //Code for fetching image from server
-    private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadLogoTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
-    }
-*/
 
 
     public void addMember (final String token , final String groupId , final View view , final GroupListData groupListData)

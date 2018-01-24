@@ -21,26 +21,26 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(Database db, boolean ifNotExists) {
+        MessageDao.createTable(db, ifNotExists);
+        FollowerLinkDao.createTable(db, ifNotExists);
+        UserDao.createTable(db, ifNotExists);
+        ThreadDao.createTable(db, ifNotExists);
         ReadReceiptUserLinkDao.createTable(db, ifNotExists);
         LinkedAccountDao.createTable(db, ifNotExists);
-        ContactLinkDao.createTable(db, ifNotExists);
-        FollowerLinkDao.createTable(db, ifNotExists);
-        MessageDao.createTable(db, ifNotExists);
-        UserDao.createTable(db, ifNotExists);
         UserThreadLinkDao.createTable(db, ifNotExists);
-        ThreadDao.createTable(db, ifNotExists);
+        ContactLinkDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
+        MessageDao.dropTable(db, ifExists);
+        FollowerLinkDao.dropTable(db, ifExists);
+        UserDao.dropTable(db, ifExists);
+        ThreadDao.dropTable(db, ifExists);
         ReadReceiptUserLinkDao.dropTable(db, ifExists);
         LinkedAccountDao.dropTable(db, ifExists);
-        ContactLinkDao.dropTable(db, ifExists);
-        FollowerLinkDao.dropTable(db, ifExists);
-        MessageDao.dropTable(db, ifExists);
-        UserDao.dropTable(db, ifExists);
         UserThreadLinkDao.dropTable(db, ifExists);
-        ThreadDao.dropTable(db, ifExists);
+        ContactLinkDao.dropTable(db, ifExists);
     }
 
     /**
@@ -59,14 +59,14 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(Database db) {
         super(db, SCHEMA_VERSION);
+        registerDaoClass(MessageDao.class);
+        registerDaoClass(FollowerLinkDao.class);
+        registerDaoClass(UserDao.class);
+        registerDaoClass(ThreadDao.class);
         registerDaoClass(ReadReceiptUserLinkDao.class);
         registerDaoClass(LinkedAccountDao.class);
-        registerDaoClass(ContactLinkDao.class);
-        registerDaoClass(FollowerLinkDao.class);
-        registerDaoClass(MessageDao.class);
-        registerDaoClass(UserDao.class);
         registerDaoClass(UserThreadLinkDao.class);
-        registerDaoClass(ThreadDao.class);
+        registerDaoClass(ContactLinkDao.class);
     }
 
     public DaoSession newSession() {
