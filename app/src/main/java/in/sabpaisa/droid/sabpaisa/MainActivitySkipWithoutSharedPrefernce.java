@@ -1,41 +1,48 @@
 package in.sabpaisa.droid.sabpaisa;
+
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.IntentFilter;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -60,10 +67,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.squareup.picasso.Picasso;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.wangjie.androidbucket.utils.ABTextUtil;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
@@ -81,25 +85,33 @@ import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionSkipFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientSkipFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
-import in.sabpaisa.droid.sabpaisa.Model.ClientData;
+import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
+import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
+import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
-import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
+import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
-import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 
 import static android.view.View.GONE;
-import static in.sabpaisa.droid.sabpaisa.CommentAdapterDatabase.context;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
+/**
+ * Created by rajdeeps on 1/25/18.
+ */
+
+public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener
+        ,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener,OnFragmentInteractionListener,InstitutionSkipFragment.GetDataInterface{
 
     private SliderLayout mHeaderSlider;
     ArrayList<Integer> headerList = new ArrayList<>();
@@ -107,107 +119,87 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     AppBarLayout appBarLayout;
     private CustomViewPager viewPager;
     private TabLayout tabLayout;
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
-ImageView niv;
     Toolbar toolbar;
-    private static int CODE = 1; //declare as FIELD
-    private FirebaseAnalytics firebaseAnalytics;
-    NetworkImageView nav;
     String userImageUrl=null;
-    String response,response1,userAccessToken;
-    ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,UpibankList,mPinInfo,mPinInfo2;
+    ImageView niv;
+    String response,userAccessToken;
+    ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,mPinInfo,mPinInfo2;
     LinearLayout paymentButton,chatButton,memberButton;
     int isMpinSet=1;
     FloatingActionButton fab;
     ActionBarDrawerToggle toggle;
- //public  static String userImageUrl=null;
     HashMap<String,String> Hash_file_maps;
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
-    Bundle bundle;
-    String stateName,serviceName,ClientId;
-    public  static  String MYSHAREDPREF="mySharedPref";
+    private View view;
+    Handler mHandler;
 
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+    TextView mSearchText;
+    MaterialSearchView searchView;
+    ArrayList<SkipClientData> clientData;
+    ArrayList<SkipClientData> filteredClientList;
 
-////Testing
+    InstitutionSkipFragment institutionSkipFragment;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        //checking
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
 
-//nav=(NetworkImageView)findViewById(R.id.profile_image);
-
-//        requestW
-// indowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_main_navigation);
+        setContentView(R.layout.activity_main_skip_without_shared_prefernce);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        //getSupportActionBar().setTitle("Sabpaisa");
-
-
-
-
+        this.mHandler = new Handler();
+        // m_Runnable.run();
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
         response = sharedPreferences.getString("response", "123");
 
-        if(response!=null) {
-
-            userAccessToken = response;
-            Log.d("AccessToken111", " " + userAccessToken);
-
-            Log.d("FFResponse11111", " " + response);
-        }else {
-            try{
-
-            }catch (NullPointerException e){
-                // [START log_and_report]
-                FirebaseCrash.logcat(Log.ERROR, "MainActivity", "NPE caught");
-                FirebaseCrash.report(e);
-            }
-        }
-
-        //getUserIm(userAccessToken);
-        //new DownloadImageTask(nav).execute(userImageUrl);
-/*
-        Picasso.with(this).load(userImageUrl).into(nav);
-*/
-
-/*
-        Context context = getApplicationContext();
-
-// Create a new configuration
-        Configuration.Builder builder = new Configuration.Builder(context);
-
-// Perform any configuration steps (optional)
-        builder.firebaseRootPath("prod");
-
-// Initialize the Chat SDK
-        ChatSDK.initialize(builder.build());
-        UserInterfaceModule.activate(context);
-
-// Activate the Firebase module
-        FirebaseModule.activate();
-
-// File storage is needed for profile image upload and image messages
-        FirebaseFileStorageModule.activate();
-
-
-*/
+        userAccessToken = response;
 
 
 
-        // This is used for the app custom toast and activity transition
+
+        Log.d("AccessTokensilter", " " + userAccessToken);
+
+        Log.d("FFResfilter", " " + response);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+
+
+        // get the userPRofileimage from filter activity
+        Intent i=getIntent();
+
+        // userImageUrl=i.getStringExtra("userImageUrl");
+
+//        Log.d("userskip",userImageUrl);
+        //Initialise the navigation header image
+        niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+
+        //set the NAvigationImage header using glide
+
+
+
+
+        //ChatSDKUiHelper.initDefault();
+
         ChatSDKUiHelper.initDefault();
 
-// Init the network manager
+        // Init the network manager
         BNetworkManager.init(getApplicationContext());
 
 // Create a new adapter
@@ -215,117 +207,12 @@ ImageView niv;
 
 // Set the adapter
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
-
-
-
-
-        //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_drawer,
-                getApplicationContext().getTheme());
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
-        toggle.syncState();
-        ClientId=getIntent().getStringExtra("clientId");
-       // userImageUrl=getIntent().getStringExtra("userImageUrl");
-
-        /*Log.d("stateName11111"," "+stateName);
-        Log.d("serviceName1111"," "+serviceName);*/
-
-        Log.d("CLIENTID(MainActivity)","-->"+ClientId);
-        Log.d("userImageUrl(MainAhjhkn","-->"+userImageUrl);
-      /*  Intent intent=new Intent(MainActivity.this, FullViewOfClientsProceed.class);
-        intent.putExtra("userImageUrl",userImageUrl);*/
-
-
-      //Firebase Analytics
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        ClientData clientData=new ClientData();
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, clientData.getClientId());
-       // bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, clientData.getClientName());
-
-        //Logs an app event.
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-
-        //Sets whether analytics collection is enabled for this app on this device.
-        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
-
-        //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
-        firebaseAnalytics.setMinimumSessionDuration(20000);
-
-        //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
-        firebaseAnalytics.setSessionTimeoutDuration(500);
-
-
-        //Sets the user ID property.
-        firebaseAnalytics.setUserId(String.valueOf(clientData.getClientId()));
-
-        //Sets a user property to a given value.
-        //firebaseAnalytics.setUserProperty("Client",clientData.getClientName());
-
-
-        // Firebase push notification
-
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                // checking for type intent filter
-                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
-                    // gcm successfully registered
-                    // now subscribe to `global` topic to receive app wide notifications
-                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
-
-                    displayFirebaseRegId();
-
-                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
-                    // new push notification is received
-
-                    String message = intent.getStringExtra("message");
-
-                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
-
-                    //txtMessage.setText(message);
-                }
-            }
-        };
-
-        displayFirebaseRegId();
-
-
-
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-       //View header = navigationView.inflateHeaderView(R.layout.nav_header_main_activity_navigation);
-        //nav = (NetworkImageView) header.findViewById(R.id.profile_image);
-
-         niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
-       // View header = navigationView.getHeaderView(0);
-      // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
-
-        //if(url.length() > 0)
-            //niv.setImageUrl(userImageUrl, imageLoader);
-       // niv.setDefaultImageResId(R.drawable.sabpaisa);
-        //niv.setErrorImageResId(R.drawable.
-        //error);
-        //nav.setImageUrl(userImageUrl);
-
-      //  new MainActivity.DownloadImageTask(niv).execute(userImageUrl);
-
         sendMoney = (ImageView)findViewById(R.id.ll_send);
         requestMoney = (ImageView)findViewById(R.id.ll_request);
-        //socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
+        // socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
         transaction = (ImageView)findViewById(R.id.ll_transactions);
         profile = (ImageView)findViewById(R.id.ll_profile);
         bank = (ImageView)findViewById(R.id.ll_bank);
-        UpibankList = (ImageView)findViewById(R.id.ll_Upibank);
         paymentButton = (LinearLayout)findViewById(R.id.payment_button);
         chatButton = (LinearLayout)findViewById(R.id.chat);
         memberButton = (LinearLayout)findViewById(R.id.members);
@@ -352,58 +239,32 @@ ImageView niv;
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
-
         mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
 
-        /*stateName=getIntent().getStringExtra("STATENAME");
-        serviceName=getIntent().getStringExtra("SERVICENAME");*/
-   /*     ClientId=getIntent().getStringExtra("clientId");
-        userImageUrl=getIntent().getStringExtra("userImageUrl");
-
-        *//*Log.d("stateName11111"," "+stateName);
-        Log.d("serviceName1111"," "+serviceName);*//*
-
-        Log.d("CLIENTID(MainActivity)","-->"+ClientId);
-        Log.d("userImageUrl(MainAhjhkn","-->"+userImageUrl);
-*/
-
-       //new MainActivity.DownloadImageTask(nav).execute(userImageUrl);
-        SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREF,MODE_PRIVATE).edit();
-        editor.putString("clientId",ClientId);
-        //editor.putString("userImageUrl",userImageUrl);
-        editor.commit();
         LoadHeaderImageList();
+
         setHeaderImageList();
+        getUserIm(userAccessToken);
 
         sendMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isMpinSet==0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
-                    Intent intent = new Intent(MainActivity.this, AccountInfoActivity.class);
+                    Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this, AccountInfoActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
                 }else {
-                    Intent intent = new Intent(MainActivity.this, SendMoneyActivity.class);
+                    Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this, SendMoneyActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
                 }
             }
         });
 
-
         requestMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RequestMoney.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-            }
-        });
-
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, UPI_UserAccounts.class);
+                Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this, RequestMoney.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
@@ -412,54 +273,35 @@ ImageView niv;
         bank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AccountInfoActivity.class);
+                Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this, AccountInfoActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
-
-        UpibankList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, UPIBankList.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-            }
-        });
-
-
         transaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TransactionsActivity.class);
+                Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this, TransactionsActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
-        /*socialPayment.setOnClickListener(new View.OnClickListener() {
+      /*  socialPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,SocialPayment.class);
+                Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this,SocialPayment.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });*/
-
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value=1;
-
-                Intent intent = new Intent(MainActivity.this,ChatSDKLoginActivity.class);
-
-                intent.putExtra("userImageUrl",userImageUrl);
-                intent.putExtra("VALUE",value);
-
+                Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this,ChatSDKLoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
-
         /*fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -467,43 +309,18 @@ ImageView niv;
             }
         });*/
 
-        getUserIm(userAccessToken);
+        searchViewBar();
     }
-
-
-    private void displayFirebaseRegId() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
-        String regId = pref.getString("regId", null);
-        Log.d("Fbid", "Firebase reg id: " + regId);
-
-        if (!TextUtils.isEmpty(regId)) {
-            //Toast.makeText(this, "Firebase Reg Id: " + regId, Toast.LENGTH_SHORT).show();
-        }
-
-            //txtRegId.setText("Firebase Reg Id: " + regId);
-        else {
-
-            //Toast.makeText(this, "Firebase Reg Id is not received yet!" + regId, Toast.LENGTH_SHORT).show();
-        }
-        //txtRegId.setText("Firebase Reg Id is not received yet!");*/
-    }
-
+/*
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-            Intent intent=new Intent(MainActivity.this,FilterActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        super.onBackPressed();
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
 
-            startActivity(intent);
-
-            finish();
-
-        }
-    }
+    }*/
 
     private void FabButtonCreate() {
         RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(this);
@@ -549,17 +366,16 @@ ImageView niv;
         rfabHelper.toggleContent();
     }
 
-    @TargetApi(Build.VERSION_CODES.ECLAIR)
     @Override
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
         if (position==2){
             Toast.makeText(this, "Send Clicked", Toast.LENGTH_SHORT).show();
             if (isMpinSet==0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
-                Intent intent = new Intent(MainActivity.this, AccountInfoActivity.class);
+                Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this, AccountInfoActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }else {
-                Intent intent = new Intent(MainActivity.this, SendMoneyActivity.class);
+                Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this, SendMoneyActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
@@ -567,31 +383,24 @@ ImageView niv;
             Toast.makeText(this, "Request Clicked", Toast.LENGTH_SHORT).show();
         }else if (position==0){
             Toast.makeText(this, "Transactions Clicked", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this, TransactionsActivity.class);
+            Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this, TransactionsActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
         }
         rfabHelper.toggleContent();
     }
 
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ProceedInstitiutionFragment(),"Clients");
-        adapter.addFragment(new FormFragment(),"Other Clients");
+
+        institutionSkipFragment = new InstitutionSkipFragment();
+
+        adapter.addFragment(institutionSkipFragment,"Clients");
+        adapter.addFragment(new OtherClientSkipFragment(),"Other Clients");
+        //adapter.addFragment(new FormFragment(),"Forms");
         //adapter.addFragment(new InstitutionFragment(),"Groups");
         viewPager.setAdapter(adapter);
-        stateName=getIntent().getStringExtra("STATENAME");
-        serviceName=getIntent().getStringExtra("SERVICENAME");
-
-        FragmentManager in=getSupportFragmentManager();
-        Fragment instituteFragment=new InstitutionFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("stateName", stateName);
-        bundle.putString("serviceName",serviceName);
-        //bundle.putString("userImageUrl",userImageUrl);
-        instituteFragment.setArguments(bundle);
-        //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
-
     }
 
     private void setHeaderImageList() {
@@ -619,7 +428,6 @@ ImageView niv;
     private void LoadHeaderImageList() {
 
 
-
         Hash_file_maps = new HashMap<String, String>();
 
 
@@ -644,11 +452,14 @@ ImageView niv;
 
             mHeaderSlider.addSlider(textSliderView);
         }
- /*       headerList.add(R.drawable.test_header600240);
+        /*headerList.add(R.drawable.test_header600240);
         headerList.add(R.drawable.test_header600241);
         headerList.add(R.drawable.test_header600242);
         headerList.add(R.drawable.test_header600243);*/
     }
+
+
+
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -664,12 +475,201 @@ ImageView niv;
         }
     }
 
+
+    /*START method to enable searchBar and define its action*/
+    private void searchViewBar() { //TODO searchView
+        searchView = (MaterialSearchView) findViewById(R.id.search_viewSP);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (query.length()==0&& clientData!=null /*&& GroupData!=null*/){
+                    filteredClientList = clientData;
+                    //filteredGroupList = GroupData;
+                    institutionSkipFragment.getDataFromActivity();
+                    //groupsFragments.getDataFromActivity();
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                }
+                if (query.length() > 0 && clientData!=null /*&& GroupData!=null*/) {
+                    filteredClientList = filterClient(clientData, query);
+                    //filteredGroupList = filterGroup(GroupData, query);
+
+//                    filteredMemberList = filterMember(MemberData, newText);
+                    Log.wtf("FilteredList", String.valueOf(filteredClientList));
+                    institutionSkipFragment.getDataFromActivity();
+                    //groupsFragments.getDataFromActivity();
+//                    memberFragment.getDataFromActivity();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length()==0&& clientData!=null /*&& GroupData!=null*/){
+                    filteredClientList = clientData;
+                    Log.wtf("filteredfeedList ", String.valueOf(filteredClientList));
+                    //filteredGroupList = GroupData;
+                    institutionSkipFragment.getDataFromActivity();
+                    //groupsFragments.getDataFromActivity();
+                }
+                else if (newText.length() > 0 && clientData!=null /*&& GroupData!=null*/) {
+                    filteredClientList = filterClient(clientData, newText);
+                    //filteredGroupList = filterGroup(GroupData, newText);
+
+//                    filteredMemberList = filterMember(MemberData, newText);
+                    Log.wtf("FilteredList", String.valueOf(filteredClientList));
+                    institutionSkipFragment.getDataFromActivity();
+                    //groupsFragments.getDataFromActivity();
+//                    memberFragment.getDataFromActivity();
+                }
+                return false;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            int temp;
+
+            @Override
+            public void onSearchViewShown() {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+                TypedValue tv = new TypedValue();
+                getApplicationContext().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+                int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
+                temp = params.height;
+                params.height = actionBarHeight; // COLLAPSED_HEIGHT
+
+                appBarLayout.setLayoutParams(params);
+                appBarLayout.setExpanded(true, false);
+                searchView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+                params.height = temp; // COLLAPSED_HEIGHT
+
+                appBarLayout.setLayoutParams(params);
+                appBarLayout.setExpanded(true, false);//Do some magic
+
+                filteredClientList = clientData;
+                institutionSkipFragment.getDataFromActivity();
+                //filteredGroupList = GroupData;
+                //groupsFragments.getDataFromActivity();
+//                filteredMemberList = MemberData;
+//                memberFragment.getDataFromActivity();
+            }
+        });
+    }
+    /*END method to enable searchBar and define its action*/
+
+    /*START method to search query in Feed List*/
+    private ArrayList<SkipClientData> filterClient(ArrayList<SkipClientData> mList, String query) { //TODO searchView
+        query = query.toLowerCase();
+
+        ArrayList<SkipClientData> filteredList = new ArrayList<>();
+        filteredList.clear();
+        for (SkipClientData item : mList) {
+            if (item.organization_name.toLowerCase().contains(query) || item.organizationId.toLowerCase().contains(query)
+                    || item.orgAddress.toLowerCase().contains(query) ) {
+                filteredList.add(item);
+            }
+        }
+
+        return filteredList;
+    }
+    /*END method to search query in Client List*/
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_activity_navigation, menu);
+        getMenuInflater().inflate(R.menu.coa_menu, menu);
+
+        //Search
+        Bitmap iconSearch = BitmapFactory.decodeResource(getResources(), R.drawable.search); //Converting drawable into bitmap
+        Bitmap newIconSearch = resizeBitmapImageFn(iconSearch, (int) convertDpToPixel(20f, this)); //resizing the bitmap
+        Drawable dSearch = new BitmapDrawable(getResources(), newIconSearch); //Converting bitmap into drawable
+        menu.getItem(1).setIcon(dSearch);
+        searchView.setMenuItem(menu.getItem(1));  //TODO searchView
+
+
+
         return true;
     }
+
+
+
+    public boolean      onQueryTextSubmit      (String query) {
+        //Toast.makeText(this, "Searching for: " + query + "...", Toast.LENGTH_SHORT).show();
+        mSearchText.setText("Searching for: " + query + "...");
+        mSearchText.setTextColor(Color.RED);
+        return true;
+    }
+
+    public float convertDpToPixel(float dp, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
+    }
+
+    private Bitmap resizeBitmapImageFn(
+            Bitmap bmpSource, int maxResolution) {
+        int iWidth = bmpSource.getWidth();
+        int iHeight = bmpSource.getHeight();
+        int newWidth = iWidth;
+        int newHeight = iHeight;
+        float rate = 0.0f;
+
+        if (iWidth > iHeight) {
+            if (maxResolution < iWidth) {
+                rate = maxResolution / (float) iWidth;
+                newHeight = (int) (iHeight * rate);
+                newWidth = maxResolution;
+            }
+        } else {
+            if (maxResolution < iHeight) {
+                rate = maxResolution / (float) iHeight;
+                newWidth = (int) (iWidth * rate);
+                newHeight = maxResolution;
+            }
+        }
+
+        return Bitmap.createScaledBitmap(
+                bmpSource, newWidth, newHeight, true);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (searchView.isSearchOpen()) {
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
+            Intent intent=new Intent(MainActivitySkipWithoutSharedPrefernce.this,FilterActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            this.finish();
+
+        }
+    }
+
+
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -677,22 +677,6 @@ ImageView niv;
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-       /* case R.id.action_profile:
-        intent = new Intent(MainActivity.this, ProfileActivity.class);
-        startActivity(intent);
-        return true;
-        case R.id.action_payment:
-        intent = new Intent(MainActivity.this, Payment.class);
-        startActivity(intent);
-        //Toast.makeText(this, "Feature Coming soon", Toast.LENGTH_SHORT).show();
-        return true;
-        case R.id.action_chat:
-        intent = new Intent(MainActivity.this, ChatSDKLoginActivity.class);
-        startActivity(intent);
-        return true;*/
-
-
         if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -700,6 +684,13 @@ ImageView niv;
         /* if (id == R.id.action_settings) {
             return true;
         }*/
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_searchSP) {
+            return true;
+        }
+
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -713,43 +704,34 @@ ImageView niv;
         int id = item.getItemId();
 
         if (id == R.id.nav_Profile) {
-            Intent intent=new Intent(MainActivity.this, ProfileNavigationActivity.class);
-            startActivityForResult(intent, CODE);
+            Intent intent=new Intent(MainActivitySkipWithoutSharedPrefernce.this, ProfileNavigationActivitySkip.class);
 
-            //startActivity(intent,CODE);
+            startActivity(intent);
             // Handle the camera action
         } /*else if (id == R.id.nav_Chat) {
 
-        } *//*else if (id == R.id.nav_Settings) {
-            Intent intent=new Intent(MainActivity.this, SettingsNavigationActivity.class);
+        }*/ /*else if (id == R.id.nav_Settings) {
+            Intent intent=new Intent(MainActivitySkipWithoutSharedPrefernce.this, SettingsNavigationActivity.class);
 
             startActivity(intent);
 
         }*/
         else  if(id == R.id.nav_ChangePassword)
         {
-            Intent intent=new Intent(MainActivity.this, ForgotActivity.class);
+            Intent intent=new Intent(MainActivitySkipWithoutSharedPrefernce.this, ForgotActivity.class);
 
             startActivity(intent);
         }
         else  if(id == R.id.nav_Privacy_Policy)
         {
-            Intent intent=new Intent(MainActivity.this, PrivacyPolicyActivity.class);
+            Intent intent=new Intent(MainActivitySkipWithoutSharedPrefernce.this, PrivacyPolicyActivity.class);
 
             startActivity(intent);
         }
-        /*else if (id == R.id.nav_Settings) {
-            Intent intent=new Intent(MainActivity.this, SettingsNavigationActivity.class);
-
-            startActivity(intent);
-
-
-
-        }*/
-
         else if (id == R.id.nav_logout) {
 
-            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
+
+            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivitySkipWithoutSharedPrefernce.this); //Home is name of the activity
             builder.setMessage("Do you want to Logout?");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -760,11 +742,9 @@ ImageView niv;
                     editor.remove("logged");
                     editor.commit();
                     finish();
-                    Intent intent=new Intent(MainActivity.this, LogInActivity.class);
+                    Intent intent=new Intent(MainActivitySkipWithoutSharedPrefernce.this, LogInActivity.class);
 
                     startActivity(intent);
-
-
 
                 }
             });
@@ -781,24 +761,46 @@ ImageView niv;
 
 
 
-        }else if (id == R.id.nav_share) {
+            // onLogoutClick(view);
+            /*SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+            SharedPreferences.Editor e=sp.edit();
+            e.clear();
+            e.commit();
+
+            startActivity(new Intent(Home.this,MainActivity.class));
+            finish();   //f
+
+            SharedPreferences settings = getSharedPreferences("your_preference_name", 0);
+            boolean isLoggedIn = settings.getBoolean("LoggedIn", false);
+
+            if(isLoggedIn )
+            {
+                //Go directly to Homescreen.
+            }
+           */
+
+
+
+
+        } else if (id == R.id.nav_share) {
+            /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
+
+            startActivity(intent);*/
             try {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_SUBJECT, "Sabpaisa App");
+                i.putExtra(Intent.EXTRA_SUBJECT, "SabPaisa App");
                 String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
-                sAux = sAux + "https://www.sabpaisa.in/QwikCollect/sabpaisa \n\n";
+                sAux = sAux + "https://play.google.com/store/apps/details?id=Orion.Soft \n\n";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "Complete action using "));
             } catch (Exception e) {
-
-
                 //e.toString();
             }
 
 
         } else if (id == R.id.nav_rate) {
-            Intent intent=new Intent(MainActivity.this, RateActivity.class);
+            Intent intent=new Intent(MainActivitySkipWithoutSharedPrefernce.this, RateActivity.class);
 
             startActivity(intent);
 
@@ -843,258 +845,42 @@ ImageView niv;
     public void onPageScrollStateChanged(int state) {
 
     }
-
-    public void initToolBar(String title) {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(title);
-
-        setSupportActionBar(toolbar);
-
-        toolbar.setNavigationIcon(R.drawable.threelines);
-        toolbar.setNavigationOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-        );
-    }
-
-/*
-    private void getUserIm(final  String token) {
-
-        String  tag_string_req = "req_clients";
-
-        StringRequest request=new StringRequest(Request.Method.GET,AppConfig.URL_UserProfilephot   +token, new Response.Listener<String>(){
-
-            @Override
-            public void onResponse(String response1)
-            {
-
-                Log.d("Particularclientimage","-->"+response1);
-                //parsing Json
-                JSONObject jsonObject = null;
-
-                try {
-
-                    jsonObject = new JSONObject(response1.toString());
-                    String response = jsonObject.getString("response");
-                    String status = jsonObject.getString("status");
-                    Log.d("responsus",""+response);
-                    Log.d("statsus",""+status);
-                    JSONObject jsonObject1 = new JSONObject(response);
-                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
-                    userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
-                    Log.d("userImageUrlactivity",""+userImageUrl);
-                 */
-/*   ClientData clientData=new ClientData();
-                    clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
-                    clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
-                    clientData.setClientName(jsonObject1.getString("clientName"));
-
-                    clientLogoPath=clientData.getClientLogoPath().toString();
-                    clientImagePath=clientData.getClientImagePath().toString();
-                    clientname11=clientData.getClientName().toString();
-                    // clientname=clientData.getClientName().toString();
-                    Log.d("clientlogooooo","-->"+clientLogoPath );
-                    Log.d("clientimageooo","-->"+clientImagePath );
-                    Log.d("clientiooo","-->"+clientname11 );*//*
-
-
-
-                }
-                catch(JSONException e){
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
-
-                    // Setting Dialog Title
-                    alertDialog.setTitle("Network/Connection Error");
-
-                    // Setting Dialog Message
-                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
-
-                    // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
-
-                    // Setting OK Button
-                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-
-                    // Showing Alert Message
-                    alertDialog.show();
-                    //Log.e(TAG, "Registration Error: " + error.getMessage());
-
-                } else if (error instanceof AuthFailureError) {
-
-                    //TODO
-                } else if (error instanceof ServerError) {
-
-                    //TODO
-                } else if (error instanceof NetworkError) {
-
-                    //TODO
-                } else if (error instanceof ParseError) {
-
-                    //TODO
-                }
-
-
-            }
-
-
-        }) ;
-
-        AppController.getInstance().addToRequestQueue(request,tag_string_req);
-
-
-    }
-*/
-
-
-
-    private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadLogoTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
-    }
-
-
-    //Code for fetching image from server
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
-    }
-
-
-    //Firebase Notification
-
-
-    // Fetches reg id from shared preferences
-    // and displays on the screen
-    /*private void displayFirebaseRegId() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
-        String regId = pref.getString("regId", null);
-
-        Log.d("Fbid", "Firebase reg id: " + regId);
-
-        *//*if (!TextUtils.isEmpty(regId))
-            //txtRegId.setText("Firebase Reg Id: " + regId);
-        else
-            //txtRegId.setText("Firebase Reg Id is not received yet!");*//*
-    }*/
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // register GCM registration complete receiver
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Config.REGISTRATION_COMPLETE));
-
-        // register new push message receiver
-        // by doing this, the activity will be notified each time a new message arrives
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Config.PUSH_NOTIFICATION));
-
-        // clear the notification area when the app is opened
-        NotificationUtils.clearNotifications(getApplicationContext());
+    public void onLogoutClick(final View view) {
+        Intent i = new Intent(this, LogInActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+        finish();
     }
 
     @Override
-    protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
-        super.onPause();
+    public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
+
     }
 
-   /* private void subscribeUserToParse() {
-        String deviceToken = FirebaseInstanceId.getInstance().getToken();
-        if (TextUtils.isEmpty(deviceToken)) {
-            Intent intent = new Intent(this, MyFirebaseInstanceIDService.class);
-            startService(intent);
-            return;
-        }
+    @Override
+    public void onFragmentSetGroups(ArrayList<GroupListData> groupData) {
 
-        User user = UserUtil.retrieveUserFromDB(mRealm);
-        String objectId = use
+    }
 
+    @Override
+    public void onFragmentSetMembers(ArrayList<Member_GetterSetter> memberData) {
 
+    }
 
+    @Override
+    public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
 
-        r.getParseObjectId();
-        if (!TextUtils.isEmpty(objectId)) {
-            ParseUtils.subscribeWithUsersObjectId(objectId, deviceToken);
-        }
-    }*/
+    }
 
+    @Override
+    public void onFragmentSetClients(ArrayList<SkipClientData> clientData) {
+        this.clientData = clientData;
+    }
 
+    @Override
+    public ArrayList<SkipClientData> getClientDataList() {
+        return filteredClientList;
+    }
 
     private void getUserIm(final  String token) {
 
@@ -1122,10 +908,8 @@ ImageView niv;
                     userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
 
                     Log.d("userImageUrlfilter",""+userImageUrl);
-                    //Glide.with(MainActivity.this).load(userImageUrl).error(R.drawable.default_users).into(niv);
-
                     Glide
-                            .with(MainActivity.this)
+                            .with(MainActivitySkipWithoutSharedPrefernce.this)
                             .load(userImageUrl)
                             .error(R.drawable.default_users)
                             .into(niv);
@@ -1202,6 +986,20 @@ ImageView niv;
 
 
     }
+    private final Runnable m_Runnable = new Runnable()
+    {
+        public void run()
+
+        {
+            Toast.makeText(MainActivitySkipWithoutSharedPrefernce.this,"in runnable",Toast.LENGTH_SHORT).show();
+
+            MainActivitySkipWithoutSharedPrefernce.this.mHandler.postDelayed(m_Runnable,1000);
+        }
+
+    };
 
 }
+
+
+
 

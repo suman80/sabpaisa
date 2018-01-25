@@ -134,6 +134,10 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
     InstitutionSkipFragment institutionSkipFragment;
 
+
+    public static String MY_PREFS_NAME_FOR_CHAT = "chatPref";
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -289,7 +293,10 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                 int value=2;
                 Intent intent = new Intent(MainActivitySkip.this,ChatSDKLoginActivity.class);
+                intent.putExtra("VALUE",value);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
@@ -652,7 +659,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
             super.onBackPressed();
             Intent intent=new Intent(MainActivitySkip.this,FilterActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-startActivity(intent);
+            startActivity(intent);
             this.finish();
 
         }

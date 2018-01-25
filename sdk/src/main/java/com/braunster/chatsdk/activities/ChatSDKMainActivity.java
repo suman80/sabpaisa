@@ -11,12 +11,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -38,6 +41,7 @@ import com.braunster.chatsdk.network.BNetworkManager;
 import com.braunster.chatsdk.network.events.AppEventListener;
 import com.braunster.chatsdk.object.ChatSDKThreadPool;
 import com.braunster.chatsdk.object.UIUpdater;
+
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -62,6 +66,9 @@ String userImageUrl;
     private int pageAdapterPos = -1;
 
     private OpenFromPushChecker mOpenFromPushChecker;
+
+    Context con;
+    int value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +99,16 @@ String userImageUrl;
             startChatActivityForID(getIntent().getExtras().getLong(ChatSDKAbstractChatActivity.THREAD_ID));
             return;
         }
+
+
+        SharedPreferences prefs = getSharedPreferences(ChatSDKLoginActivity.MY_PREFS_NAME_FOR_CHAT, MODE_PRIVATE);
+        value = prefs.getInt("KEY", 0);
+
+        Log.d("CSDKMA","value"+value);
+
+
+
+
 
     }
 
@@ -353,10 +370,26 @@ String userImageUrl;
     public void onBackPressed() {
 
 
-        Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
+
+        if(value==1)
+        {
+            Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
+            Log.d("CSDKMA","Fire_MAWSP");
+            startActivity(inent);
 
 
-        startActivity(inent);
+        }else if (value==2){
+
+            Intent intent1 = new Intent("in.sabpaisa.droid.sabpaisa.MainActivitySkipWithoutSharedPrefernce");
+            Log.d("CSDKMA","Fire_MASWSP");
+            startActivity(intent1);
+
+
+        }else {
+            Log.d("CSDKMA","InIfPart");
+        }
+
+
 
     }
 

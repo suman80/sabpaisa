@@ -2,6 +2,7 @@
 package com.braunster.chatsdk.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -29,10 +30,11 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
 
     private static final String TAG = ChatSDKLoginActivity.class.getSimpleName();
     private static boolean DEBUG = Debug.LoginActivity;
-String userImageUrl;
+    String userImageUrl;
     private Button btnLogin, btnReg, btnAnon, btnTwitter;
     private ImageView appIconImage;
-
+    int pkgValue;
+    public static String MY_PREFS_NAME_FOR_CHAT = "chatPref";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
        // enableFacebookIntegration(getNetworkAdapter().facebookEnabled());
@@ -47,6 +49,14 @@ String userImageUrl;
 
         initViews();
 
+
+        pkgValue=getIntent().getIntExtra("VALUE",0);
+        Log.d("pkgValueCSDKLA","pkgValue"+pkgValue);
+
+
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME_FOR_CHAT, MODE_PRIVATE).edit();
+        editor.putInt("KEY", pkgValue);
+        editor.apply();
 
 
         //((TextView) findViewById(R.id.chat_sdk_txt_version)).setText(String.valueOf(BuildConfig.VERSION_NAME));

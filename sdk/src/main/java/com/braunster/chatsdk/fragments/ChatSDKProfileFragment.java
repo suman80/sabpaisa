@@ -143,7 +143,7 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
         // Logout and return to the login activity.
        /* Intent intent = new Intent(context,MainActivity.class);
         startActivity(intent);*/
-        Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivity");
+        Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
         startActivity(inent);
 
 

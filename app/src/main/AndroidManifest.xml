@@ -41,7 +41,7 @@
         <activity
             android:name=".LogInActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".VerifyMobile"
             android:configChanges="orientation"
@@ -49,7 +49,7 @@
         <activity
             android:name=".FilterActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UPIBankList"
             android:configChanges="orientation"
@@ -157,7 +157,7 @@
         <activity
             android:name=".RegisterActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SetmPIN"
             android:configChanges="orientation"
@@ -290,13 +290,13 @@
         <activity
             android:name=".UPIActivationActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Util.Nagationfullview"
             android:configChanges="orientation"
             android:label="@string/title_activity_nagationfullview"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
 
         <!-- Firebase Notifications -->
         <service android:name=".MyFirebaseMessagingService">
@@ -310,7 +310,18 @@
             </intent-filter>
         </service>
         <!-- ./Firebase Notifications -->
-        <activity android:name=".Util.ProfileNavigationActivitySkip"></activity>
+        <activity android:name=".Util.ProfileNavigationActivitySkip" />
+        <activity android:name=".MainActivitySkipWithoutSharedPrefernce">
+
+
+             <intent-filter>
+                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivitySkipWithoutSharedPrefernce" />
+
+                 <category android:name="android.intent.category.DEFAULT" />
+             </intent-filter>
+
+
+        </activity>
     </application>
 
 </manifest>
