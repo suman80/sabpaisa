@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <group>
 
-        <item
+
+     <!--   <item
             android:id="@+id/three_dot_menu"
             android:icon="@drawable/ic_more_vert_white_24dp"
             android:orderInCategory="102"
@@ -33,13 +33,13 @@
                     app:showAsAction="ifRoom" />
 
             </menu>
-        </item>
+        </item>-->
 
-        <item android:icon="@drawable/bell"
+    <!--    <item android:icon="@drawable/bell"
             android:title="Notification"
             app:showAsAction="always"
 
-            />
+            />-->
 
         <item
             android:id="@+id/action_searchSP"
@@ -49,5 +49,5 @@
             app:showAsAction="collapseActionView|always" />
 
 
-    </group>
+
 </menu>

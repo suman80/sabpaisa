@@ -42,14 +42,31 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
+import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
+import com.braunster.chatsdk.network.BNetworkManager;
 import com.bumptech.glide.Glide;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
+import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FeedsFragments;
 import in.sabpaisa.droid.sabpaisa.FilterActivity;
@@ -64,6 +81,7 @@ import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MainActivity;
+import in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce;
 import in.sabpaisa.droid.sabpaisa.Members;
 import in.sabpaisa.droid.sabpaisa.Model.*;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
@@ -87,6 +105,9 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     LinearLayout paymentButton,chatButton,memberButton;
     MaterialSearchView searchView;
     ArrayList<FeedData> feedData;
+    NavigationView navigationView;
+    String i,useracesstoken,response;
+    ImageView niv;
     ArrayList<FeedData> filteredfeedList;
     ArrayList<GroupListData> GroupData;
     ArrayList<GroupListData> filteredGroupList;
@@ -115,6 +136,20 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         memberButton = (LinearLayout)findViewById(R.id.members);
 
 
+        //ChatSDKUiHelper.initDefault();
+
+        ChatSDKUiHelper.initDefault();
+
+        // Init the network manager
+        BNetworkManager.init(getApplicationContext());
+
+// Create a new adapter
+        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
+
+// Set the adapter
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -122,7 +157,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -145,11 +180,11 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
         landingPage =getIntent().getStringExtra("landingPage");
         Log.d("page",""+landingPage);
-
+/*
         SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.MYSHAREDPREF, MODE_PRIVATE);
         userImageUrl=sharedPreferences.getString("userImageUrl","abc");
         //Log.d("userImageUrlFrag","-->"+userImageUrl);
-        Log.d("userImageUrl_FVOCL"," "+userImageUrl);
+        Log.d("userImageUrl_FVOCL"," "+userImageUrl);*/
 
         Intent intent=getIntent();
         clientName = intent.getStringExtra("clientName");
@@ -159,13 +194,23 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         //userImageUrl=getIntent().getStringExtra("userImageUrl");
         Log.d("ClientId_FVOCL"," "+ClientId);
         Log.d("userImageUrl_FVOCL"," "+userImageUrl);
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
-        ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+        response = sharedPreferences.getString("response", "123");
 
+        useracesstoken = response;
+
+        Log.d("FFResfilter", " " + response);
+
+
+        niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+getUserIm(useracesstoken);
+/*
         Glide.with(FullViewOfClientsProceed.this)
                 .load(userImageUrl)
                 .error(R.drawable.default_users)
                 .into(niv);
+*/
 
         SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefOnFullViewOfClientProceed,MODE_PRIVATE).edit();
         editor.putString("clientId",ClientId);
@@ -408,8 +453,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         Bitmap iconSearch = BitmapFactory.decodeResource(getResources(), R.drawable.search); //Converting drawable into bitmap
         Bitmap newIconSearch = resizeBitmapImageFn(iconSearch, (int) convertDpToPixel(20f, this)); //resizing the bitmap
         Drawable dSearch = new BitmapDrawable(getResources(), newIconSearch); //Converting bitmap into drawable
-        menu.getItem(1).setIcon(dSearch);
-        searchView.setMenuItem(menu.getItem(1));  //TODO searchView
+       // menu.getItem(1).setIcon(dSearch);
+        searchView.setMenuItem(menu.getItem(0));  //TODO searchView
 
         return true;
     }
@@ -691,6 +736,110 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     @Override
     public void onFragmentSetClients(ArrayList<SkipClientData> clientData) {
 
+    }
+    private String getUserIm(final  String token) {
+
+        String  tag_string_req = "req_clients";
+
+        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
+
+            @Override
+            public void onResponse(String response1)
+            {
+
+                Log.d("Particularclientimage","-->"+response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1.toString());
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("responsefilter",""+response);
+                    Log.d("statusfilter",""+status);
+                    JSONObject jsonObject1 = new JSONObject(response);
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                    userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
+                    i= userImageUrl;
+                    Log.d("check123",""+i);
+                    ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+
+                    Glide.with( FullViewOfClientsProceed.this)
+                            .load(i)
+                            .error(R.drawable.default_users)
+                            .into(niv);
+                 /*   ClientData clientData=new ClientData();
+                    clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
+                    clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
+                    clientData.setClientName(jsonObject1.getString("clientName"));
+
+                    clientLogoPath=clientData.getClientLogoPath().toString();
+                    clientImagePath=clientData.getClientImagePath().toString();
+                    clientname11=clientData.getClientName().toString();
+                    // clientname=clientData.getClientName().toString();
+                    Log.d("clientlogooooo","-->"+clientLogoPath );
+                    Log.d("clientimageooo","-->"+clientImagePath );
+                    Log.d("clientiooo","-->"+clientname11 );*/
+
+
+                }
+                catch(JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    // alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        }) ;
+
+        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+
+
+        return tag_string_req;
     }
 
 

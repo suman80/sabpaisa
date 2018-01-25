@@ -230,7 +230,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(ProfileNavigationActivity.this, MainActivitySkip.class) ;
+        Intent intent = new Intent(ProfileNavigationActivity.this, MainActivity.class) ;
 
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
 

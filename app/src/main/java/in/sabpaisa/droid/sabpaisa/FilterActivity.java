@@ -197,7 +197,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                     } else {
 
                         AlertDialog.Builder builder =new AlertDialog.Builder(FilterActivity.this);
-                        builder.setTitle("Select CLient");
+                        builder.setTitle("Select Client");
                         builder.setMessage("Please select one client to proceed further");
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override

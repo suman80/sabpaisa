@@ -593,8 +593,8 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         Bitmap iconSearch = BitmapFactory.decodeResource(getResources(), R.drawable.search); //Converting drawable into bitmap
         Bitmap newIconSearch = resizeBitmapImageFn(iconSearch, (int) convertDpToPixel(20f, this)); //resizing the bitmap
         Drawable dSearch = new BitmapDrawable(getResources(), newIconSearch); //Converting bitmap into drawable
-        menu.getItem(1).setIcon(dSearch);
-        searchView.setMenuItem(menu.getItem(1));  //TODO searchView
+//        menu.getItem(1).setIcon(dSearch);
+        searchView.setMenuItem(menu.getItem(0));  //TODO searchView
 
 
 
