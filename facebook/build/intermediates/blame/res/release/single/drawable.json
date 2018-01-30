@@ -1,126 +1,250 @@
 [
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_button_check_on.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_button_check_on.png"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_usersettingsfragment_background_gradient.xml",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_usersettingsfragment_background_gradient.xml"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_picker_item_background.xml",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_picker_item_background.xml"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_usersettingsfragment_background_gradient.xml",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_usersettingsfragment_background_gradient.xml"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_list_section_header_background.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_list_section_header_background.9.png"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_list_focused.9.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_list_focused.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_button_blue.xml",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_button_blue.xml"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_profile_picture_blank_square.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_profile_picture_blank_square.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_picker_top_button.xml",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_picker_top_button.xml"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_close.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_close.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_picker_list_selector.xml",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_picker_list_selector.xml"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_close.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_close.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_button_grey_normal.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_button_grey_normal.9.png"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_grey_pressed.9.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_grey_pressed.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_profile_picture_blank_square.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_profile_picture_blank_square.png"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_list_focused.9.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_list_focused.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_picker_list_pressed.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_picker_list_pressed.9.png"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_check_on.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_check_on.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_button_check.xml",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_button_check.xml"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_top_button.xml",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_top_button.xml"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_place_default_icon.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_place_default_icon.png"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_list_selector_background_transition.xml",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_list_selector_background_transition.xml"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_top_background.xml",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_top_background.xml"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_item_background.xml",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_item_background.xml"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_close.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_close.png"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_grey_focused.9.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_grey_focused.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_button_grey_focused.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_button_grey_focused.9.png"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_check_on.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_check_on.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_button_grey_pressed.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_button_grey_pressed.9.png"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_list_divider.9.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_list_divider.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_logo.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_logo.png"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_logo.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_logo.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_button_blue_normal.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_button_blue_normal.9.png"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_blue_focused.9.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_blue_focused.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_list_divider.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_list_divider.9.png"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_profile_default_icon.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_profile_default_icon.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_picker_list_selector_background_transition.xml",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_picker_list_selector_background_transition.xml"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_profile_picture_blank_square.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_profile_picture_blank_square.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_button_check_off.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_button_check_off.png"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_list_section_header_background.9.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_list_section_header_background.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_picker_list_focused.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_picker_list_focused.9.png"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_top_background.xml",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_top_background.xml"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_usersettingsfragment_background_gradient.xml",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_usersettingsfragment_background_gradient.xml"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_check_off.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_check_off.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_loginbutton_silver.xml",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_loginbutton_silver.xml"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_blue.xml",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_blue.xml"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_top_button.xml",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_top_button.xml"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_list_section_header_background.9.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_list_section_header_background.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_button_blue_pressed.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_button_blue_pressed.9.png"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_grey_pressed.9.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_grey_pressed.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_inverse_icon.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_inverse_icon.png"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_list_longpressed.9.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_list_longpressed.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_profile_picture_blank_portrait.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_profile_picture_blank_portrait.png"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_list_selector_disabled.9.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_list_selector_disabled.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_picker_list_longpressed.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_picker_list_longpressed.9.png"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_top_button.xml",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_top_button.xml"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_button_blue_focused.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_button_blue_focused.9.png"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_place_default_icon.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_place_default_icon.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_picker_list_selector_disabled.9.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_picker_list_selector_disabled.9.png"
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_blue_pressed.9.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_blue_pressed.9.png"
     },
     {
-        "merged": "/home/rajdeeps/sp/sabpaisa/facebook/build/intermediates/res/merged/release/drawable/com_facebook_profile_default_icon.png",
-        "source": "/home/rajdeeps/sp/sabpaisa/facebook/res/drawable/com_facebook_profile_default_icon.png"
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_loginbutton_silver.xml",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_loginbutton_silver.xml"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_list_selector_disabled.9.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_list_selector_disabled.9.png"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_blue_normal.9.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_blue_normal.9.png"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_list_pressed.9.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_list_pressed.9.png"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_list_divider.9.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_list_divider.9.png"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_list_selector.xml",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_list_selector.xml"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_place_default_icon.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_place_default_icon.png"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_blue_normal.9.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_blue_normal.9.png"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_check.xml",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_check.xml"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_blue.xml",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_blue.xml"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_list_longpressed.9.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_list_longpressed.9.png"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_check.xml",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_check.xml"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_list_pressed.9.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_list_pressed.9.png"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_loginbutton_silver.xml",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_loginbutton_silver.xml"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_blue_pressed.9.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_blue_pressed.9.png"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_profile_picture_blank_portrait.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_profile_picture_blank_portrait.png"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_profile_picture_blank_portrait.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_profile_picture_blank_portrait.png"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_list_selector_background_transition.xml",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_list_selector_background_transition.xml"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_top_button.xml",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_top_button.xml"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_grey_normal.9.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_grey_normal.9.png"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_grey_focused.9.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_grey_focused.9.png"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_inverse_icon.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_inverse_icon.png"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_grey_normal.9.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_grey_normal.9.png"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_list_selector.xml",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_list_selector.xml"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_check_off.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_check_off.png"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_button_blue_focused.9.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_button_blue_focused.9.png"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_inverse_icon.png",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_inverse_icon.png"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_item_background.xml",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_item_background.xml"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_top_background.xml",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_top_background.xml"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_logo.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_logo.png"
+    },
+    {
+        "merged": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_profile_default_icon.png",
+        "source": "C:\\SabPaisa15Jan\\sabpaisa\\facebook\\res\\drawable\\com_facebook_profile_default_icon.png"
+    },
+    {
+        "merged": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\build\\intermediates\\res\\merged\\release\\drawable\\com_facebook_picker_top_button.xml",
+        "source": "C:\\home\\rajdeeps\\sp\\sabpaisa\\facebook\\res\\drawable\\com_facebook_picker_top_button.xml"
     }
 ]
