@@ -67,8 +67,9 @@ String userImageUrl;
 
     private OpenFromPushChecker mOpenFromPushChecker;
 
-
+    Context con;
     int value;
+    String ClientId,clientName,state,clientImageURLPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,10 @@ String userImageUrl;
         }
 
 
+        /*SharedPreferences prefs = getSharedPreferences(ChatSDKLoginActivity.MY_PREFS_NAME_FOR_CHAT, MODE_PRIVATE);
+        value = prefs.getInt("KEY", 0);
 
+        Log.d("CSDKMA_VAL","value"+value);*/
 
 
 
@@ -366,27 +370,52 @@ String userImageUrl;
 
     public void onBackPressed() {
 
-        Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
-        startActivity(inent);
+        SharedPreferences prefs = getSharedPreferences(ChatSDKLoginActivity.MY_PREFS_NAME_FOR_CHAT, MODE_PRIVATE);
+        value = prefs.getInt("KEY", 0);
+        Log.d("CSDKMA_VAL","value"+value);
+        ClientId = prefs.getString("CLIENTID","abc");
+        Log.d("CSDKMA_ClientID","clientId"+ClientId);
+        clientName = prefs.getString("CLIENTNAME","abc");
+        Log.d("CSDKMA_ClientName","clientName"+clientName);
+        state = prefs.getString("STATE","abc");
+        Log.d("CSDKMA_State","State"+state);
+        clientImageURLPath = prefs.getString("CLIENTIMG","abc");
+        Log.d("CSDKMA_Image","Image"+clientImageURLPath);
 
-       /* if(value==1)
+
+        if(value==1)//in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce  2.in.sabpaisa.droid.sabpaisa.MainActivity
         {
             Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
             Log.d("CSDKMA","Fire_MAWSP");
+            prefs.edit().clear();
             startActivity(inent);
 
 
-        }else if (value==2){
+        }else if (value==2){//in.sabpaisa.droid.sabpaisa.MainActivitySkipWithoutSharedPrefernce 2.in.sabpaisa.droid.sabpaisa.MainActivitySkip
 
             Intent intent1 = new Intent("in.sabpaisa.droid.sabpaisa.MainActivitySkipWithoutSharedPrefernce");
             Log.d("CSDKMA","Fire_MASWSP");
+            prefs.edit().clear();
             startActivity(intent1);
 
 
-        }else {
+        }else if (value==3){
+
+            Intent intent2 = new Intent("in.sabpaisa.droid.sabpaisa.FullViewOfClientsProceed");
+            intent2.putExtra("clientId",ClientId);
+            intent2.putExtra("clientName",clientName);
+            intent2.putExtra("state",state);
+            intent2.putExtra("clientImagePath",clientImageURLPath);
+            Log.d("CSDKMA","Fire_FVOCP");
+            Log.d("CSDKMA","FVOCP+ClientId");
+            prefs.edit().clear();
+            startActivity(intent2);
+
+        }
+        else {
             Log.d("CSDKMA","InIfPart");
         }
-*/
+
 
 
     }
