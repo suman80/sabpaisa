@@ -113,7 +113,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
                     String response1 = jsonObject.getString("response");
 
-                    if (status.equals("success")&&response1.equals("No_Record_Found")) {
+                    if (status.equals("success") && response1.equals("No_Record_Found")) {
                         linearLayoutnoDataFound.setVisibility(View.VISIBLE);
                         groupList.setVisibility(View.GONE);
                         //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();

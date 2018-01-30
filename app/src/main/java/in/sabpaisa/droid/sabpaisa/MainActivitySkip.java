@@ -135,7 +135,6 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     InstitutionSkipFragment institutionSkipFragment;
 
 
-    public static String MY_PREFS_NAME_FOR_CHAT = "chatPref";
 
 
     @Override
@@ -169,6 +168,8 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
+        toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
+
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -266,6 +267,15 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
             }
         });
 
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivitySkip.this, UPI_UserAccounts.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+            }
+        });
+
         bank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -294,9 +304,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
             @Override
             public void onClick(View v) {
 
-                 int value=2;
                 Intent intent = new Intent(MainActivitySkip.this,ChatSDKLoginActivity.class);
-                intent.putExtra("VALUE",value);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
@@ -580,14 +588,6 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         return filteredList;
     }
     /*END method to search query in Client List*/
-
-
-
-
-
-
-
-
 
 
 

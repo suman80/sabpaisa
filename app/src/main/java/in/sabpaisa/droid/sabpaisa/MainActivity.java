@@ -151,6 +151,7 @@ ImageView niv;
         setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("Sabpaisa");
 
+       // toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
 
 
 
@@ -325,7 +326,7 @@ ImageView niv;
         transaction = (ImageView)findViewById(R.id.ll_transactions);
         profile = (ImageView)findViewById(R.id.ll_profile);
         bank = (ImageView)findViewById(R.id.ll_bank);
-        UpibankList = (ImageView)findViewById(R.id.ll_Upibank);
+        //UpibankList = (ImageView)findViewById(R.id.ll_Upibank);
         paymentButton = (LinearLayout)findViewById(R.id.payment_button);
         chatButton = (LinearLayout)findViewById(R.id.chat);
         memberButton = (LinearLayout)findViewById(R.id.members);
@@ -336,6 +337,7 @@ ImageView niv;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sabpaisa");
+
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
@@ -418,7 +420,7 @@ ImageView niv;
             }
         });
 
-        UpibankList.setOnClickListener(new View.OnClickListener() {
+      /*  UpibankList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, UPIBankList.class);
@@ -426,7 +428,7 @@ ImageView niv;
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
-
+*/
 
         transaction.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -448,12 +450,11 @@ ImageView niv;
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value=1;
+
 
                 Intent intent = new Intent(MainActivity.this,ChatSDKLoginActivity.class);
 
                 intent.putExtra("userImageUrl",userImageUrl);
-                intent.putExtra("VALUE",value);
 
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
@@ -714,7 +715,8 @@ ImageView niv;
 
         if (id == R.id.nav_Profile) {
             Intent intent=new Intent(MainActivity.this, ProfileNavigationActivity.class);
-            startActivityForResult(intent, CODE);
+
+                     intent.putExtra("ClientId",ClientId);   startActivity(intent);
 
             //startActivity(intent,CODE);
             // Handle the camera action

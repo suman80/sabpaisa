@@ -281,7 +281,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                 transaction = (ImageView)findViewById(R.id.ll_transactions);
                 profile = (ImageView)findViewById(R.id.ll_profile);
                 bank = (ImageView)findViewById(R.id.ll_bank);
-                UpibankList = (ImageView)findViewById(R.id.ll_Upibank);
+               // UpibankList = (ImageView)findViewById(R.id.ll_Upibank);
                 paymentButton = (LinearLayout)findViewById(R.id.payment_button);
                 chatButton = (LinearLayout)findViewById(R.id.chat);
                 memberButton = (LinearLayout)findViewById(R.id.members);
@@ -374,14 +374,14 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                     }
                 });
 
-                UpibankList.setOnClickListener(new View.OnClickListener() {
+                /*UpibankList.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, UPIBankList.class);
                         startActivity(intent);
                         overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
                     }
-                });
+                });*/
 
 
                 transaction.setOnClickListener(new View.OnClickListener() {
@@ -595,7 +595,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
             @Override
             public boolean onCreateOptionsMenu(Menu menu) {
                 // Inflate the menu; this adds items to the action bar if it is present.
-                getMenuInflater().inflate(R.menu.coa_menu, menu);
+                getMenuInflater().inflate(R.menu.coa_menu1, menu);
                 return true;
             }
 

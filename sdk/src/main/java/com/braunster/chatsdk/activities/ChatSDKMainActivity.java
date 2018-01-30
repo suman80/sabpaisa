@@ -67,7 +67,7 @@ String userImageUrl;
 
     private OpenFromPushChecker mOpenFromPushChecker;
 
-    Context con;
+
     int value;
 
     @Override
@@ -101,10 +101,7 @@ String userImageUrl;
         }
 
 
-        SharedPreferences prefs = getSharedPreferences(ChatSDKLoginActivity.MY_PREFS_NAME_FOR_CHAT, MODE_PRIVATE);
-        value = prefs.getInt("KEY", 0);
 
-        Log.d("CSDKMA","value"+value);
 
 
 
@@ -369,9 +366,10 @@ String userImageUrl;
 
     public void onBackPressed() {
 
+        Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
+        startActivity(inent);
 
-
-        if(value==1)
+       /* if(value==1)
         {
             Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
             Log.d("CSDKMA","Fire_MAWSP");
@@ -388,7 +386,7 @@ String userImageUrl;
         }else {
             Log.d("CSDKMA","InIfPart");
         }
-
+*/
 
 
     }

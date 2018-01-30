@@ -119,6 +119,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
         sharedPreferences = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");
+        Log.d("clintidprofile","---"+clientId);
 
 
         mNumber.setEnabled(false);
@@ -156,7 +157,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     updateUserProfileEmail(userAccessToken,email);
                     mailId.setFocusable(false);
                 }
-                    else {
+                else {
                     mailId.setEnabled(false);
                     mailIdEdit.setText("Edit");
                 }
@@ -231,8 +232,8 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(ProfileNavigationActivity.this, MainActivity.class) ;
-
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.putExtra("clientId", clientId);
+       // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
 
         finish();
         startActivity(intent);
@@ -262,12 +263,12 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             if (requestCode == 200 && resultCode == RESULT_OK && data != null) {
 
 
-                    //Get ImageURi and load with help of picasso
-                    //Uri selectedImageURI = data.getData();
+                //Get ImageURi and load with help of picasso
+                //Uri selectedImageURI = data.getData();
 //                    userImage.setImageDrawable(data.getData());
-                    Uri selectedimg = data.getData();
-                    userImage.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
-                    Bitmap userImg=MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+                Uri selectedimg = data.getData();
+                userImage.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
+                Bitmap userImg=MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
                 uploadBitmap(userImg);
             }
@@ -1051,3 +1052,4 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
 
 }
+

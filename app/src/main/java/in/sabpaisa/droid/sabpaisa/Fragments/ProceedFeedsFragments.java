@@ -139,7 +139,7 @@ public class ProceedFeedsFragments extends Fragment {
                             /*END listener for sending data to activity*/
                         loadFeedListView(feedArrayList, recyclerView);
 
-                    } else if ( response1.equals("No_Record_Found")) {
+                    } else if (status.equals("success")&& response1.equals("No_Record_Found")) {
 
                         linearLayoutnoDataFound.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);

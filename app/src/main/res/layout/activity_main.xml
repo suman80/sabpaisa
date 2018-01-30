@@ -173,6 +173,7 @@
                 android:layout_marginBottom="55dp"
                 android:layout_marginRight="15dp"
                 android:padding="8dp"
+                android:visibility="gone"
                 rfab:rfab_color_normal="@color/bg_orange"
                 rfab:rfab_color_pressed="@color/bg_orange"
                 rfab:rfab_drawable="@drawable/ic_pay_white"

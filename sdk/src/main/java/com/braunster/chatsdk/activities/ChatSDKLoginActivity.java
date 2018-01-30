@@ -2,7 +2,6 @@
 package com.braunster.chatsdk.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -50,13 +49,6 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         initViews();
 
 
-        pkgValue=getIntent().getIntExtra("VALUE",0);
-        Log.d("pkgValueCSDKLA","pkgValue"+pkgValue);
-
-
-        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME_FOR_CHAT, MODE_PRIVATE).edit();
-        editor.putInt("KEY", pkgValue);
-        editor.apply();
 
 
         //((TextView) findViewById(R.id.chat_sdk_txt_version)).setText(String.valueOf(BuildConfig.VERSION_NAME));

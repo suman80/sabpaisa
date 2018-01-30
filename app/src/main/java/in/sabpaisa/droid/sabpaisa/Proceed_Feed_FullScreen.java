@@ -29,6 +29,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,10 +93,28 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         feedsName.setText(FeedsNm);
         feed_description_details.setText(feedsDiscription);
-        new DownloadImageTask(feedImage).execute(feedImg);
+        //new DownloadImageTask(feedImage).execute(feedImg);
+
+        Glide.with(getApplicationContext())
+                .load(feedImg)
+                .error(R.drawable.image_not_found)
+                .into(feedImage);
+
         callGetCommentList(feed_id);
         arrayList = new ArrayList<>();
+        toolbar.setNavigationIcon(R.drawable.previousmoresmall);
+
         toolbar.setTitle(FeedsNm);
+        toolbar.setNavigationOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                        //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+        );
 
 
         //new LoadDBfromAPI().execute(response);

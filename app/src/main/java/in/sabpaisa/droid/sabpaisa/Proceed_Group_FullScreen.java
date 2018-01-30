@@ -97,8 +97,20 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
         callGetCommentList(GroupId);
         arrayList = new ArrayList<>();
+        toolbar.setNavigationIcon(R.drawable.previousmoresmall);
 
         toolbar.setTitle(GroupsNm);
+        toolbar.setTitleMargin(11,11,11,11);
+        toolbar.setNavigationOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                        //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+        );
 
     }
 

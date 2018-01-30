@@ -160,7 +160,8 @@
                 <include
                     layout="@layout/layout_bottombar"
                     android:layout_width="match_parent"
-                    android:layout_height="46dp" />
+                    android:layout_height="46dp"
+                    android:visibility="gone"/>
 
 
 
@@ -281,6 +282,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="55dp"
                 android:layout_marginRight="15dp"
+                android:visibility="gone"
                 android:padding="8dp"
                 rfab:rfab_color_normal="@color/bg_orange"
                 rfab:rfab_color_pressed="@color/bg_orange"
