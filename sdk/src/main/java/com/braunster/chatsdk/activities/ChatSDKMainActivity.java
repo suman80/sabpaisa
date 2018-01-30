@@ -369,7 +369,7 @@ String userImageUrl;
     }*/
 
     public void onBackPressed() {
-
+//
         SharedPreferences prefs = getSharedPreferences(ChatSDKLoginActivity.MY_PREFS_NAME_FOR_CHAT, MODE_PRIVATE);
         value = prefs.getInt("KEY", 0);
         Log.d("CSDKMA_VAL","value"+value);

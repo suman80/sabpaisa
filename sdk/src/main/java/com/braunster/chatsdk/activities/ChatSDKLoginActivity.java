@@ -50,7 +50,7 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
 
         initViews();
 
-
+//
         pkgValue=getIntent().getIntExtra("VALUE",0);
         Log.d("pkgValueCSDKLA","pkgValue"+pkgValue);
 
