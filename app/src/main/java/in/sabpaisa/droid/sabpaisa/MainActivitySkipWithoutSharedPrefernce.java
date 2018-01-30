@@ -297,9 +297,19 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+              /*  Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this,ChatSDKLoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);*/
+
+
+                int value=2;
                 Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this,ChatSDKLoginActivity.class);
+                intent.putExtra("VALUE",value);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+
+
+
             }
         });
         /*fab.setOnClickListener(new View.OnClickListener() {
@@ -601,8 +611,8 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
         Bitmap iconSearch = BitmapFactory.decodeResource(getResources(), R.drawable.search); //Converting drawable into bitmap
         Bitmap newIconSearch = resizeBitmapImageFn(iconSearch, (int) convertDpToPixel(20f, this)); //resizing the bitmap
         Drawable dSearch = new BitmapDrawable(getResources(), newIconSearch); //Converting bitmap into drawable
-        menu.getItem(1).setIcon(dSearch);
-        searchView.setMenuItem(menu.getItem(1));  //TODO searchView
+       // menu.getItem(1).setIcon(dSearch);
+        searchView.setMenuItem(menu.getItem(0));  //TODO searchView
 
 
 

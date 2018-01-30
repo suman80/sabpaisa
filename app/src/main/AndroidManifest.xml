@@ -66,10 +66,20 @@
             android:name=".Util.SkipClientDetailsScreen"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".Util.FullViewOfClientsProceed"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+
+        <intent-filter>
+            <action android:name="in.sabpaisa.droid.sabpaisa.FullViewOfClientsProceed" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+
+        </activity>
+
         <activity
             android:name=".FeedDetails"
             android:configChanges="orientation"
@@ -77,7 +87,15 @@
         <activity
             android:name=".MainActivitySkip"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+
+        <intent-filter>
+            <action android:name="in.sabpaisa.droid.sabpaisa.MainActivitySkip" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+
+        </activity>
         <activity
             android:name=".GroupDetails"
             android:configChanges="orientation"

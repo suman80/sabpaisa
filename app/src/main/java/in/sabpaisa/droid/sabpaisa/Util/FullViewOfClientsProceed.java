@@ -204,7 +204,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
 
         niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
-getUserIm(useracesstoken);
+        getUserIm(useracesstoken);
 /*
         Glide.with(FullViewOfClientsProceed.this)
                 .load(userImageUrl)
@@ -224,14 +224,24 @@ getUserIm(useracesstoken);
         clientImagePath = (ImageView)findViewById(R.id.ClientImagePRoceed);
         clientNameTextView.setText( clientName);
         stateTextView.setText(state);
-        new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
+        //new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
+        Glide.with(FullViewOfClientsProceed.this)
+                .load(clientImageURLPath)
+                .error(R.drawable.default_users)
+                .into(clientImagePath);
         searchViewBar();
 
 
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int value=3;
                 Intent intent = new Intent(FullViewOfClientsProceed.this,ChatSDKLoginActivity.class);
+                intent.putExtra("VALUE",value);
+                intent.putExtra("CLIENTID",ClientId);
+                intent.putExtra("CLIENTNAME",clientName);
+                intent.putExtra("STATE",state);
+                intent.putExtra("CLIENTIMG",clientImageURLPath);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
@@ -523,6 +533,13 @@ getUserIm(useracesstoken);
             searchView.closeSearch();
         } else {
             super.onBackPressed();
+
+            Intent intent=new Intent(FullViewOfClientsProceed.this,MainActivity.class);
+            intent.putExtra("clientId",ClientId);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+
         }
     }
 

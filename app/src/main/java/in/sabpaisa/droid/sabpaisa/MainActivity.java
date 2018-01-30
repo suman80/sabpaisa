@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     private CustomViewPager viewPager;
     private TabLayout tabLayout;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-ImageView niv;
+    ImageView niv;
     Toolbar toolbar;
     private static int CODE = 1; //declare as FIELD
     private FirebaseAnalytics firebaseAnalytics;

@@ -111,9 +111,10 @@ public class ProceedFeedsFragments extends Fragment {
 
                     String response1 = jsonObject.getString("response");
 
-                    if ( !response1.equals("[]")) {
-
-                        JSONArray jsonArray = jsonObject.getJSONArray("response");
+                    JSONArray jsonArray = null;
+                    Object obj = jsonObject.get("response");
+                    if(obj instanceof JSONArray){
+                        jsonArray = (JSONArray)obj;
 
                         for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -130,24 +131,20 @@ public class ProceedFeedsFragments extends Fragment {
 
                         }
                         Log.d("feedArrayListAfterParse", " " + feedArrayList.get(0).getFeedName());
-                            /*START listener for sending data to activity*/
+                            //*START listener for sending data to activity*//*
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetFeeds(feedArrayList);
 
 
 
-                            /*END listener for sending data to activity*/
+                            //*END listener for sending data to activity*//*
                         loadFeedListView(feedArrayList, recyclerView);
 
-                    } else if (status.equals("success")&& response1.equals("No_Record_Found")) {
-
-                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.GONE);
-                        //Toast.makeText(getContext(), "No Result Fobggggggggggund", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
-                        Toast.makeText(getContext(), "Ops Something went wrong !", Toast.LENGTH_SHORT).show();
+                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
                     }
 
                 }

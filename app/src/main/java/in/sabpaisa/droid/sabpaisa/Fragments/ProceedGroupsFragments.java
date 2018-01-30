@@ -113,14 +113,10 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
                     String response1 = jsonObject.getString("response");
 
-                    if (status.equals("success") && response1.equals("No_Record_Found")) {
-                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
-                        groupList.setVisibility(View.GONE);
-                        //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
-
-                    }
-                    else {
-                        JSONArray jsonArray = jsonObject.getJSONArray("response");
+                    JSONArray jsonArray = null;
+                    Object obj = jsonObject.get("response");
+                    if(obj instanceof JSONArray){
+                        jsonArray = (JSONArray)obj;
 
                         for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -144,6 +140,9 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                         mainGroupAdapter1 = new MainGroupAdapter1(groupArrayList,getContext());
                         groupList.setAdapter(mainGroupAdapter1);
 
+                    }else {
+                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        groupList.setVisibility(View.GONE);
                     }
                 }
                 // Try and catch are included to handle any errors due to JSON
