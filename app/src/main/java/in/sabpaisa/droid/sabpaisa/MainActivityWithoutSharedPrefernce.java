@@ -334,7 +334,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         sendMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isMpinSet==0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
+                /*if (isMpinSet==0) {             *//*TODO check if mpin is set or not, for now i am hardcoding it*//*
                     Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, AccountInfoActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
@@ -342,7 +342,8 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                     Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, SendMoneyActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-                }
+                }*/
+                Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -350,27 +351,30 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         requestMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, RequestMoney.class);
+                /*Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, RequestMoney.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);*/
+                Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();
             }
         });
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, UPI_UserAccounts.class);
+                /*Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, UPI_UserAccounts.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);*/
+                Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();
             }
         });
 
         bank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, AccountInfoActivity.class);
+                /*Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, AccountInfoActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);*/
+                Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -387,9 +391,10 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         transaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, TransactionsActivity.class);
+                /*Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, TransactionsActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);*/
+                Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();
             }
         });
                /* socialPayment.setOnClickListener(new View.OnClickListener() {

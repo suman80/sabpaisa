@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_drawer,
-                getApplicationContext().getTheme());
+        getApplicationContext().getTheme());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
@@ -380,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         sendMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isMpinSet==0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
+                /*if (isMpinSet==0) {             *//*TODO check if mpin is set or not, for now i am hardcoding it*//*
                     Intent intent = new Intent(MainActivity.this, AccountInfoActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
@@ -388,7 +388,10 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
                     Intent intent = new Intent(MainActivity.this, SendMoneyActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-                }
+                }*/
+
+                Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -396,27 +399,32 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         requestMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RequestMoney.class);
+               /* Intent intent = new Intent(MainActivity.this, RequestMoney.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);*/
+
+                Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();
+
             }
         });
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, UPI_UserAccounts.class);
+                /*Intent intent = new Intent(MainActivity.this, UPI_UserAccounts.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);*/
+                Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();
             }
         });
 
         bank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AccountInfoActivity.class);
+                /*Intent intent = new Intent(MainActivity.this, AccountInfoActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);*/
+                Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -433,9 +441,10 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         transaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TransactionsActivity.class);
+                /*Intent intent = new Intent(MainActivity.this, TransactionsActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);*/
+                Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();
             }
         });
         /*socialPayment.setOnClickListener(new View.OnClickListener() {

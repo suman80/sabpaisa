@@ -49,6 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:visibility="gone"
         app:layout_behavior="in.sabpaisa.droid.sabpaisa.Util.BottomNavigationBehavior">
 
         <include
@@ -67,10 +68,8 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-
             android:layout_height="match_parent"
             app:contentScrim="@color/bg_screen"
-
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 

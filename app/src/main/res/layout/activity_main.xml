@@ -16,7 +16,8 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/collapsingLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|enterAlways">
 
 
             <in.sabpaisa.droid.sabpaisa.Util.CustomViewPager
@@ -25,6 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="651dp"
                 android:visibility="visible"
+                app:layout_scrollFlags="scroll|enterAlways"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <android.support.design.widget.TabLayout
@@ -34,6 +36,7 @@
                     android:background="@color/main_screen_bottom_color"
                     app:layout_collapseMode="pin"
                     app:tabGravity="fill"
+                    app:layout_scrollFlags="scroll|enterAlways"
                     app:tabIndicatorColor="@color/bg_orange"
                     app:tabMode="fixed" />
             </in.sabpaisa.droid.sabpaisa.Util.CustomViewPager>
@@ -55,13 +58,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="405dp"
                 android:background="@color/white"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="20dp"
+                app:layout_scrollFlags="scroll|enterAlways"
+                >
 
                 <android.support.design.widget.CollapsingToolbarLayout
                     android:id="@+id/collapsing_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    >
 
 
                     <RelativeLayout
@@ -69,13 +75,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="350dp"
                         android:layout_marginTop="?attr/actionBarSize"
-                        android:background="@color/white">
+                        android:background="@color/white"
+                        app:layout_scrollFlags="scroll|enterAlways"
+                        >
 
 
                         <com.daimajia.slider.library.SliderLayout
                             android:id="@+id/slider"
                             android:layout_width="match_parent"
-                            android:layout_height="250dp">
+                            android:layout_height="250dp"
+                            app:layout_scrollFlags="scroll|enterAlways"
+                            >
                             <com.daimajia.slider.library.Indicators.PagerIndicator
                                 android:id="@+id/custom_indicator"
                                 android:layout_width="wrap_content"
@@ -94,7 +104,9 @@
                             android:layout_height="wrap_content"
                            android:layout_marginTop="250dp"
                             android:background="#ffffff"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                                app:layout_scrollFlags="scroll|enterAlways"
+                                >
 
 
 
@@ -113,7 +125,9 @@
                             layout="@layout/layout_dashboard"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/tv_dashboard_desc" />
+                            android:layout_below="@id/tv_dashboard_desc"
+                            app:layout_scrollFlags="scroll|enterAlways"
+                            />
 
 
 
@@ -125,7 +139,9 @@
                         android:id="@+id/toolbar_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_collapseMode="pin">
+                        app:layout_collapseMode="pin"
+                        app:layout_scrollFlags="scroll|enterAlways"
+                        >
 
                         <android.support.v7.widget.Toolbar
                             android:id="@+id/toolbar"
@@ -133,14 +149,18 @@
                             android:layout_height="?attr/actionBarSize"
                             android:background="@color/bg_screen"
                             app:subtitleTextColor="@color/white"
-                            app:titleTextColor="@color/white" />
+                            app:titleTextColor="@color/white"
+                            app:layout_scrollFlags="scroll|enterAlways"
+                            />
 
                         <com.miguelcatalan.materialsearchview.MaterialSearchView
                             android:id="@+id/search_viewSP"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:visibility="gone"
-                            app:layout_collapseMode="pin" />
+                            app:layout_collapseMode="pin"
+                            app:layout_scrollFlags="scroll|enterAlways"
+                            />
 
                         <!--<com.miguelcatalan.materialsearchview.MaterialSearchView
                             android:id="@+id/search_view"
