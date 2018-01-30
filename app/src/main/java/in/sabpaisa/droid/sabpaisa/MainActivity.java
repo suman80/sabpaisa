@@ -451,10 +451,12 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
             @Override
             public void onClick(View v) {
 
+                int value=1;
 
                 Intent intent = new Intent(MainActivity.this,ChatSDKLoginActivity.class);
 
                 intent.putExtra("userImageUrl",userImageUrl);
+                intent.putExtra("VALUE",value);
 
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);

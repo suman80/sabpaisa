@@ -383,6 +383,8 @@ String userImageUrl;
         Log.d("CSDKMA_Image","Image"+clientImageURLPath);
 
 
+
+
         if(value==1)//in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce  2.in.sabpaisa.droid.sabpaisa.MainActivity
         {
             Intent inent = new Intent("in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce");
@@ -401,6 +403,8 @@ String userImageUrl;
 
         }else if (value==3){
 
+
+
             Intent intent2 = new Intent("in.sabpaisa.droid.sabpaisa.FullViewOfClientsProceed");
             intent2.putExtra("clientId",ClientId);
             intent2.putExtra("clientName",clientName);
@@ -413,7 +417,7 @@ String userImageUrl;
 
         }
         else {
-            Log.d("CSDKMA","InIfPart");
+            Log.d("CSDKMA","InElsePart");
         }
 
 

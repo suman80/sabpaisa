@@ -72,11 +72,11 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" >
 
-        <intent-filter>
-            <action android:name="in.sabpaisa.droid.sabpaisa.FullViewOfClientsProceed" />
+            <intent-filter>
+                <action android:name="in.sabpaisa.droid.sabpaisa.FullViewOfClientsProceed" />
 
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
 
         </activity>
 
@@ -89,11 +89,11 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait">
 
-        <intent-filter>
-            <action android:name="in.sabpaisa.droid.sabpaisa.MainActivitySkip" />
+            <intent-filter>
+                <action android:name="in.sabpaisa.droid.sabpaisa.MainActivitySkip" />
 
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
 
         </activity>
         <activity
@@ -332,11 +332,11 @@
         <activity android:name=".MainActivitySkipWithoutSharedPrefernce">
 
 
-             <intent-filter>
-                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivitySkipWithoutSharedPrefernce" />
+            <intent-filter>
+                <action android:name="in.sabpaisa.droid.sabpaisa.MainActivitySkipWithoutSharedPrefernce" />
 
-                 <category android:name="android.intent.category.DEFAULT" />
-             </intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
 
 
         </activity>

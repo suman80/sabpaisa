@@ -161,7 +161,7 @@
                     layout="@layout/layout_bottombar"
                     android:layout_width="match_parent"
                     android:layout_height="46dp"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
 
 
 

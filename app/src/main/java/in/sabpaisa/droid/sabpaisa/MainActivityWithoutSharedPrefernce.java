@@ -127,12 +127,12 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
 
 
-                setContentView(R.layout.activity_main_navigation);
+        setContentView(R.layout.activity_main_navigation);
 
 
-                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-                setSupportActionBar(toolbar);
-                //getSupportActionBar().setTitle("Sabpaisa");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //getSupportActionBar().setTitle("Sabpaisa");
 
                /* SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
@@ -143,8 +143,8 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                 Log.d("AccessToken111", " " + userAccessToken);
 
                 Log.d("FFResponse11111", " " + response);*/
-                //getUserIm(userAccessToken);
-                //new DownloadImageTask(nav).execute(userImageUrl);
+        //getUserIm(userAccessToken);
+        //new DownloadImageTask(nav).execute(userImageUrl);
 /*
         Picasso.with(this).load(userImageUrl).into(nav);
 */
@@ -174,17 +174,17 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
 
 
-                // This is used for the app custom toast and activity transition
-                ChatSDKUiHelper.initDefault();
+        // This is used for the app custom toast and activity transition
+        ChatSDKUiHelper.initDefault();
 
 // Init the network manager
-                BNetworkManager.init(getApplicationContext());
+        BNetworkManager.init(getApplicationContext());
 
 // Create a new adapter
-                BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
+        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
 
 // Set the adapter
-                BNetworkManager.sharedManager().setNetworkAdapter(adapter);
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
         response = sharedPreferences.getString("response", "123");
@@ -201,44 +201,44 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
 
         getUserIm(userAccessToken);
-         String userImageUrl1=getIntent().getStringExtra("userImageUrl");
+        String userImageUrl1=getIntent().getStringExtra("userImageUrl");
 
         Log.d("ujhuolvbluhkl","-->"+userImageUrl1);
 
 
         //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
-                Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_drawer,
-                        getApplicationContext().getTheme());
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_drawer,
+                getApplicationContext().getTheme());
 
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                toggle = new ActionBarDrawerToggle(
-                        this, drawer, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-                drawer.addDrawerListener(toggle);
-                toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
-                toggle.syncState();
-                ClientId=getIntent().getStringExtra("clientId");
-               // userImageUrl=getIntent().getStringExtra("userImageUrl");
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
+        toggle.syncState();
+        ClientId=getIntent().getStringExtra("clientId");
+        // userImageUrl=getIntent().getStringExtra("userImageUrl");
        /* SharedPreferences sharedPreferences = getApplication().getSharedPreferences(FilterActivity.PREFS_NAME1, Context.MODE_PRIVATE);
 
         userImageUrl = sharedPreferences.getString("imageusrl", "123");
 */
-       // userImageUrl = response;
+        // userImageUrl = response;
         /*Log.d("stateName11111"," "+stateName);
         Log.d("serviceName1111"," "+serviceName);*/
 
-                Log.d("Test","-->"+ClientId);
+        Log.d("Test","-->"+ClientId);
       /*  Intent intent=new Intent(MainActivity.this, FullViewOfClientsProceed.class);
         intent.putExtra("userImageUrl",userImageUrl);*/
 
 
-                 navigationView = (NavigationView) findViewById(R.id.nav_view);
-                navigationView.setNavigationItemSelectedListener(this);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
-                //View header = navigationView.inflateHeaderView(R.layout.nav_header_main_activity_navigation);
-                //nav = (NetworkImageView) header.findViewById(R.id.profile_image);
+        //View header = navigationView.inflateHeaderView(R.layout.nav_header_main_activity_navigation);
+        //nav = (NetworkImageView) header.findViewById(R.id.profile_image);
 
-                // View header = navigationView.getHeaderView(0);
-                // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
+        // View header = navigationView.getHeaderView(0);
+        // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
 
 /*
         //initialize and create the image loader logic
@@ -267,49 +267,49 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         });
 
       */          //if(url.length() > 0)
-                //niv.setImageUrl(userImageUrl, imageLoader);
-                // niv.setDefaultImageResId(R.drawable.sabpaisa);
-                //niv.setErrorImageResId(R.drawable.
-                //error);
-                //nav.setImageUrl(userImageUrl);
+        //niv.setImageUrl(userImageUrl, imageLoader);
+        // niv.setDefaultImageResId(R.drawable.sabpaisa);
+        //niv.setErrorImageResId(R.drawable.
+        //error);
+        //nav.setImageUrl(userImageUrl);
 
-                //  new MainActivity.DownloadImageTask(niv).execute(userImageUrl);
+        //  new MainActivity.DownloadImageTask(niv).execute(userImageUrl);
 
-                sendMoney = (ImageView)findViewById(R.id.ll_send);
-                requestMoney = (ImageView)findViewById(R.id.ll_request);
-                //socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
-                transaction = (ImageView)findViewById(R.id.ll_transactions);
-                profile = (ImageView)findViewById(R.id.ll_profile);
-                bank = (ImageView)findViewById(R.id.ll_bank);
-                UpibankList = (ImageView)findViewById(R.id.ll_Upibank);
-                paymentButton = (LinearLayout)findViewById(R.id.payment_button);
-                chatButton = (LinearLayout)findViewById(R.id.chat);
-                memberButton = (LinearLayout)findViewById(R.id.members);
-                rfaLayout = (RapidFloatingActionLayout)findViewById(R.id.activity_main_rfal);
-                rfaBtn = (RapidFloatingActionButton)findViewById(R.id.activity_main_rfab);
-                FabButtonCreate();
-                //fab = (FloatingActionButton)findViewById(R.id.fab_dashboard);
+        sendMoney = (ImageView)findViewById(R.id.ll_send);
+        requestMoney = (ImageView)findViewById(R.id.ll_request);
+        //socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
+        transaction = (ImageView)findViewById(R.id.ll_transactions);
+        profile = (ImageView)findViewById(R.id.ll_profile);
+        bank = (ImageView)findViewById(R.id.ll_bank);
+        //UpibankList = (ImageView)findViewById(R.id.ll_Upibank);
+        paymentButton = (LinearLayout)findViewById(R.id.payment_button);
+        chatButton = (LinearLayout)findViewById(R.id.chat);
+        memberButton = (LinearLayout)findViewById(R.id.members);
+        rfaLayout = (RapidFloatingActionLayout)findViewById(R.id.activity_main_rfal);
+        rfaBtn = (RapidFloatingActionButton)findViewById(R.id.activity_main_rfab);
+        FabButtonCreate();
+        //fab = (FloatingActionButton)findViewById(R.id.fab_dashboard);
 
-                toolbar = (Toolbar) findViewById(R.id.toolbar);
-                toolbar.setTitle("Sabpaisa");
-                mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
-                mCollapsingToolbarLayout.setTitleEnabled(false);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Sabpaisa");
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbarLayout.setTitleEnabled(false);
 
-                appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
-                appBarLayout.addOnOffsetChangedListener(this);
+        appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
+        appBarLayout.addOnOffsetChangedListener(this);
 
-                viewPager = (CustomViewPager) findViewById(R.id.viewpager);
-                setupViewPager(viewPager);
-                viewPager.disableScroll(true);
-                tabLayout = (TabLayout) findViewById(R.id.tabs);
-                tabLayout.setupWithViewPager(viewPager);
+        viewPager = (CustomViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+        viewPager.disableScroll(true);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
-                setSupportActionBar(toolbar);
-                mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
-                mCollapsingToolbarLayout.setTitleEnabled(false);
+        setSupportActionBar(toolbar);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbarLayout.setTitleEnabled(false);
 
 
-                mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
+        mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
 
         /*stateName=getIntent().getStringExtra("STATENAME");
         serviceName=getIntent().getStringExtra("SERVICENAME");*/
@@ -328,70 +328,70 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                 editor.putString("clientId",ClientId);
                 editor.putString("userImageUrl",userImageUrl);
                 editor.commit();*/
-                LoadHeaderImageList();
-                setHeaderImageList();
+        LoadHeaderImageList();
+        setHeaderImageList();
 
-                sendMoney.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (isMpinSet==0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
-                            Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, AccountInfoActivity.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-                        }else {
-                            Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, SendMoneyActivity.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-                        }
-                    }
-                });
-
-
-                requestMoney.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, RequestMoney.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-                    }
-                });
-
-                profile.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, UPI_UserAccounts.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-                    }
-                });
-
-                bank.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, AccountInfoActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-                    }
-                });
-
-                UpibankList.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, UPIBankList.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-                    }
-                });
+        sendMoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isMpinSet==0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
+                    Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, AccountInfoActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+                }else {
+                    Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, SendMoneyActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+                }
+            }
+        });
 
 
-                transaction.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, TransactionsActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-                    }
-                });
+        requestMoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, RequestMoney.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, UPI_UserAccounts.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+            }
+        });
+
+        bank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, AccountInfoActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+            }
+        });
+
+       /* UpibankList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, UPIBankList.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+            }
+        });*/
+
+
+        transaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, TransactionsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+            }
+        });
                /* socialPayment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -401,28 +401,28 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                     }
                 });*/
 
-                chatButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                         /*Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this,ChatSDKLoginActivity.class);
                         startActivity(intent);
                         overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);*/
 
 
-                        int value=1;
+                int value=1;
 
-                        Intent intent = new Intent(MainActivityWithoutSharedPrefernce.this,ChatSDKLoginActivity.class);
+                Intent intent = new Intent(MainActivityWithoutSharedPrefernce.this,ChatSDKLoginActivity.class);
 
-                        intent.putExtra("userImageUrl",userImageUrl);
-                        intent.putExtra("VALUE",value);
+                intent.putExtra("userImageUrl",userImageUrl);
+                intent.putExtra("VALUE",value);
 
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
 
 
 
-                    }
-                });
+            }
+        });
 
         /*fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -430,10 +430,10 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
             }
         });*/
-            }
+    }
 
-            @Override
-            public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
                 /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 if (drawer.isDrawerOpen(GravityCompat.START)) {
                     drawer.closeDrawer(GravityCompat.START);
@@ -442,212 +442,212 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                     finish();
 
                 }*/
-                Intent intent =new Intent(MainActivityWithoutSharedPrefernce.this, FilterActivity.class);
-                startActivity(intent);
-                this.finish();
+        Intent intent =new Intent(MainActivityWithoutSharedPrefernce.this, FilterActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 
-            private void FabButtonCreate() {
-                RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(this);
-                rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
+    private void FabButtonCreate() {
+        RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(this);
+        rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
 //        rfaContent.setOnRapidFloatingActionContentListener(this);
-                List<RFACLabelItem> items = new ArrayList<>();
-                Bitmap send = BitmapFactory.decodeResource(getResources(),
-                        R.drawable.send_icon);
-                items.add(new RFACLabelItem<Integer>()
-                        .setResId(R.mipmap.ic_transactions_icon)
-                        .setIconNormalColor(getResources().getColor(R.color.bg_orange))
-                        .setIconPressedColor(getResources().getColor(R.color.bg_orange))
-                        .setWrapper(1)
-                );
-                items.add(new RFACLabelItem<Integer>()
-                        .setResId(R.mipmap.ic_request_icon)
-                        .setIconNormalColor(getResources().getColor(R.color.bg_orange))
-                        .setIconPressedColor(getResources().getColor(R.color.bg_orange))
-                        .setWrapper(2)
-                );
-                items.add(new RFACLabelItem<Integer>()
-                        .setResId(R.mipmap.ic_send_icon)
-                        .setIconNormalColor(getResources().getColor(R.color.bg_orange))
-                        .setIconPressedColor(getResources().getColor(R.color.bg_orange))
-                        .setWrapper(3)
-                );
+        List<RFACLabelItem> items = new ArrayList<>();
+        Bitmap send = BitmapFactory.decodeResource(getResources(),
+                R.drawable.send_icon);
+        items.add(new RFACLabelItem<Integer>()
+                .setResId(R.mipmap.ic_transactions_icon)
+                .setIconNormalColor(getResources().getColor(R.color.bg_orange))
+                .setIconPressedColor(getResources().getColor(R.color.bg_orange))
+                .setWrapper(1)
+        );
+        items.add(new RFACLabelItem<Integer>()
+                .setResId(R.mipmap.ic_request_icon)
+                .setIconNormalColor(getResources().getColor(R.color.bg_orange))
+                .setIconPressedColor(getResources().getColor(R.color.bg_orange))
+                .setWrapper(2)
+        );
+        items.add(new RFACLabelItem<Integer>()
+                .setResId(R.mipmap.ic_send_icon)
+                .setIconNormalColor(getResources().getColor(R.color.bg_orange))
+                .setIconPressedColor(getResources().getColor(R.color.bg_orange))
+                .setWrapper(3)
+        );
+        rfaContent
+                .setItems(items)
+                .setIconShadowRadius(ABTextUtil.dip2px(this, 5))
+                .setIconShadowColor(0xff888888)
+                .setIconShadowDy(ABTextUtil.dip2px(this, 5))
+        ;
+        rfabHelper = new RapidFloatingActionHelper(
+                this,
+                rfaLayout,
+                rfaBtn,
                 rfaContent
-                        .setItems(items)
-                        .setIconShadowRadius(ABTextUtil.dip2px(this, 5))
-                        .setIconShadowColor(0xff888888)
-                        .setIconShadowDy(ABTextUtil.dip2px(this, 5))
-                ;
-                rfabHelper = new RapidFloatingActionHelper(
-                        this,
-                        rfaLayout,
-                        rfaBtn,
-                        rfaContent
-                ).build();
+        ).build();
+    }
+    @Override
+    public void onRFACItemLabelClick(int position, RFACLabelItem item) {
+        Toast.makeText(this, "clicked label: " + position, Toast.LENGTH_SHORT).show();
+        rfabHelper.toggleContent();
+    }
+
+    @TargetApi(Build.VERSION_CODES.ECLAIR)
+    @Override
+    public void onRFACItemIconClick(int position, RFACLabelItem item) {
+        if (position==2){
+            Toast.makeText(this, "Send Clicked", Toast.LENGTH_SHORT).show();
+            if (isMpinSet==0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
+                Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, AccountInfoActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+            }else {
+                Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, SendMoneyActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
-            @Override
-            public void onRFACItemLabelClick(int position, RFACLabelItem item) {
-                Toast.makeText(this, "clicked label: " + position, Toast.LENGTH_SHORT).show();
-                rfabHelper.toggleContent();
-            }
+        }else if (position==1){
+            Toast.makeText(this, "Request Clicked", Toast.LENGTH_SHORT).show();
+        }else if (position==0){
+            Toast.makeText(this, "Transactions Clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, TransactionsActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+        }
+        rfabHelper.toggleContent();
+    }
 
-            @TargetApi(Build.VERSION_CODES.ECLAIR)
-            @Override
-            public void onRFACItemIconClick(int position, RFACLabelItem item) {
-                if (position==2){
-                    Toast.makeText(this, "Send Clicked", Toast.LENGTH_SHORT).show();
-                    if (isMpinSet==0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
-                        Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, AccountInfoActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-                    }else {
-                        Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, SendMoneyActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-                    }
-                }else if (position==1){
-                    Toast.makeText(this, "Request Clicked", Toast.LENGTH_SHORT).show();
-                }else if (position==0){
-                    Toast.makeText(this, "Transactions Clicked", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, TransactionsActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-                }
-                rfabHelper.toggleContent();
-            }
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new ProceedInstitiutionFragment(),"Clients");
+        adapter.addFragment(new FormFragment(),"Other Clients");
+        //adapter.addFragment(new InstitutionFragment(),"Groups");
+        viewPager.setAdapter(adapter);
+        stateName=getIntent().getStringExtra("STATENAME");
+        serviceName=getIntent().getStringExtra("SERVICENAME");
 
-            private void setupViewPager(ViewPager viewPager) {
-                ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-                adapter.addFragment(new ProceedInstitiutionFragment(),"Clients");
-                adapter.addFragment(new FormFragment(),"Other Clients");
-                //adapter.addFragment(new InstitutionFragment(),"Groups");
-                viewPager.setAdapter(adapter);
-                stateName=getIntent().getStringExtra("STATENAME");
-                serviceName=getIntent().getStringExtra("SERVICENAME");
+        FragmentManager in=getSupportFragmentManager();
+        Fragment instituteFragment=new InstitutionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("stateName", stateName);
+        bundle.putString("serviceName",serviceName);
+        //bundle.putString("userImageUrl",userImageUrl);
+        instituteFragment.setArguments(bundle);
+        //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
 
-                FragmentManager in=getSupportFragmentManager();
-                Fragment instituteFragment=new InstitutionFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("stateName", stateName);
-                bundle.putString("serviceName",serviceName);
-                //bundle.putString("userImageUrl",userImageUrl);
-                instituteFragment.setArguments(bundle);
-                //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
+    }
 
-            }
-
-            private void setHeaderImageList() {
-                for(int i=0;i<headerList.size();i++){
-                    CustomSliderView customSliderView = new CustomSliderView(this);
-                    // initialize a SliderLayout
-                    customSliderView
-                            .image(headerList.get(i))
-                            .setScaleType(BaseSliderView.ScaleType.Fit)
-                            .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-                                @Override
-                                public void onSliderClick(BaseSliderView slider) {
-                                    //TODO URL
-                                }
-                            });
-                    mHeaderSlider.addSlider(customSliderView);
-                }
-                mHeaderSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-                mHeaderSlider.setBackgroundColor(getResources().getColor(R.color.main_screen_bottom_color));
-                mHeaderSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-                mHeaderSlider.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
+    private void setHeaderImageList() {
+        for(int i=0;i<headerList.size();i++){
+            CustomSliderView customSliderView = new CustomSliderView(this);
+            // initialize a SliderLayout
+            customSliderView
+                    .image(headerList.get(i))
+                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                        @Override
+                        public void onSliderClick(BaseSliderView slider) {
+                            //TODO URL
+                        }
+                    });
+            mHeaderSlider.addSlider(customSliderView);
+        }
+        mHeaderSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+        mHeaderSlider.setBackgroundColor(getResources().getColor(R.color.main_screen_bottom_color));
+        mHeaderSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        mHeaderSlider.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
 //        mHeaderSlider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
-            }
+    }
 
-            private void LoadHeaderImageList() {
-
-
-
-                Hash_file_maps = new HashMap<String, String>();
+    private void LoadHeaderImageList() {
 
 
-                Hash_file_maps.put("Sabpaisa Digitizing Cash", "http://205.147.103.27:6060/Docs/Images/HomeImage/sabpaisa.png");
-                Hash_file_maps.put("Payment & Transfer", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_2.png");
-                Hash_file_maps.put("The Future Of Payments", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_image.jpg");
-                Hash_file_maps.put("UPI", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_1.svg.png");
-                for(String name : Hash_file_maps .keySet())
-                {
-                    TextSliderView textSliderView = new TextSliderView(this);
-                    // initialize a SliderLayout
-                    textSliderView
-                            .description(name)
-                            .image(Hash_file_maps.get(name))
-                            .setScaleType(BaseSliderView.ScaleType.Fit)
-                            .setOnSliderClickListener(this);
 
-                    //add your extra information
-                    textSliderView.bundle(new Bundle());
-                    textSliderView.getBundle()
-                            .putString("extra",name);
+        Hash_file_maps = new HashMap<String, String>();
 
-                    mHeaderSlider.addSlider(textSliderView);
-                }
+
+        Hash_file_maps.put("Sabpaisa Digitizing Cash", "http://205.147.103.27:6060/Docs/Images/HomeImage/sabpaisa.png");
+        Hash_file_maps.put("Payment & Transfer", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_2.png");
+        Hash_file_maps.put("The Future Of Payments", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_image.jpg");
+        Hash_file_maps.put("UPI", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_1.svg.png");
+        for(String name : Hash_file_maps .keySet())
+        {
+            TextSliderView textSliderView = new TextSliderView(this);
+            // initialize a SliderLayout
+            textSliderView
+                    .description(name)
+                    .image(Hash_file_maps.get(name))
+                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .setOnSliderClickListener(this);
+
+            //add your extra information
+            textSliderView.bundle(new Bundle());
+            textSliderView.getBundle()
+                    .putString("extra",name);
+
+            mHeaderSlider.addSlider(textSliderView);
+        }
  /*       headerList.add(R.drawable.test_header600240);
         headerList.add(R.drawable.test_header600241);
         headerList.add(R.drawable.test_header600242);
         headerList.add(R.drawable.test_header600243);*/
-            }
+    }
 
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (verticalOffset == 0)
-                {
-                    rfaLayout.setVisibility(GONE);
-                    //fab.setVisibility(View.GONE);// Collapsed
-                }
-                else
-                {
-                    rfaLayout.setVisibility(View.VISIBLE);
-                    //fab.setVisibility(View.VISIBLE);// Not collapsed
-                }
-            }
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        if (verticalOffset == 0)
+        {
+            rfaLayout.setVisibility(GONE);
+            //fab.setVisibility(View.GONE);// Collapsed
+        }
+        else
+        {
+            rfaLayout.setVisibility(View.VISIBLE);
+            //fab.setVisibility(View.VISIBLE);// Not collapsed
+        }
+    }
 
-            @Override
-            public boolean onCreateOptionsMenu(Menu menu) {
-                // Inflate the menu; this adds items to the action bar if it is present.
-                getMenuInflater().inflate(R.menu.coa_menu, menu);
-
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.coa_menu, menu);
 
 
-                return true;
-            }
 
-            @Override
-            public boolean onOptionsItemSelected(MenuItem item) {
-                // Handle action bar item clicks here. The action bar will
-                // automatically handle clicks on the Home/Up button, so long
-                // as you specify a parent activity in AndroidManifest.xml.
-                int id = item.getItemId();
-                if (toggle.onOptionsItemSelected(item)) {
-                    return true;
-                }
-                //noinspection SimplifiableIfStatement
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        //noinspection SimplifiableIfStatement
         /* if (id == R.id.action_settings) {
             return true;
         }*/
 
-                return super.onOptionsItemSelected(item);
-            }
+        return super.onOptionsItemSelected(item);
+    }
 
-            @SuppressWarnings("StatementWithEmptyBody")
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                android.app.Fragment newFragment = null;
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                // Handle navigation view item clicks here.
-                int id = item.getItemId();
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        android.app.Fragment newFragment = null;
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-                if (id == R.id.nav_Profile) {
-                    Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, ProfileNavigationActivity.class);
+        if (id == R.id.nav_Profile) {
+            Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, ProfileNavigationActivity.class);
 
-                    startActivity(intent);
-                    // Handle the camera action
-                } /*else if (id == R.id.nav_Chat) {
+            startActivity(intent);
+            // Handle the camera action
+        } /*else if (id == R.id.nav_Chat) {
 
         } *//*else if (id == R.id.nav_Settings) {
             Intent intent=new Intent(MainActivity.this, SettingsNavigationActivity.class);
@@ -655,18 +655,18 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
             startActivity(intent);
 
         }*/
-                else  if(id == R.id.nav_ChangePassword)
-                {
-                    Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, ForgotActivity.class);
+        else  if(id == R.id.nav_ChangePassword)
+        {
+            Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, ForgotActivity.class);
 
-                    startActivity(intent);
-                }
-                else  if(id == R.id.nav_Privacy_Policy)
-                {
-                    Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, PrivacyPolicyActivity.class);
+            startActivity(intent);
+        }
+        else  if(id == R.id.nav_Privacy_Policy)
+        {
+            Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, PrivacyPolicyActivity.class);
 
-                    startActivity(intent);
-                }
+            startActivity(intent);
+        }
         /*else if (id == R.id.nav_Settings) {
             Intent intent=new Intent(MainActivity.this, SettingsNavigationActivity.class);
 
@@ -676,58 +676,58 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
         }*/
 
-                else if (id == R.id.nav_logout) {
+        else if (id == R.id.nav_logout) {
 
-                    AlertDialog.Builder builder=new AlertDialog.Builder( MainActivityWithoutSharedPrefernce.this); //Home is name of the activity
-                    builder.setMessage("Do you want to Logout?");
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
+            AlertDialog.Builder builder=new AlertDialog.Builder( MainActivityWithoutSharedPrefernce.this); //Home is name of the activity
+            builder.setMessage("Do you want to Logout?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
 
-                            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                            SharedPreferences.Editor editor = settings.edit();
-                            editor.remove("logged");
-                            editor.commit();
-                            finish();
-                            Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, LogInActivity.class);
-
-                            startActivity(intent);
-
-
-
-                        }
-                    });
-
-                    builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-
-                    AlertDialog alert=builder.create();
-                    alert.show();
-
-
-
-                }else if (id == R.id.nav_share) {
-                    try {
-                        Intent i = new Intent(Intent.ACTION_SEND);
-                        i.setType("text/plain");
-                        i.putExtra(Intent.EXTRA_SUBJECT, "Sabpaisa App");
-                        String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
-                        sAux = sAux + "https://www.sabpaisa.in/QwikCollect/sabpaisa \n\n";
-                        i.putExtra(Intent.EXTRA_TEXT, sAux);
-                        startActivity(Intent.createChooser(i, "Complete action using "));
-                    } catch (Exception e) {
-                        //e.toString();
-                    }
-
-
-                } else if (id == R.id.nav_rate) {
-                    Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, RateActivity.class);
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove("logged");
+                    editor.commit();
+                    finish();
+                    Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, LogInActivity.class);
 
                     startActivity(intent);
+
+
+
+                }
+            });
+
+            builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alert=builder.create();
+            alert.show();
+
+
+
+        }else if (id == R.id.nav_share) {
+            try {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_SUBJECT, "Sabpaisa App");
+                String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
+                sAux = sAux + "https://www.sabpaisa.in/QwikCollect/sabpaisa \n\n";
+                i.putExtra(Intent.EXTRA_TEXT, sAux);
+                startActivity(Intent.createChooser(i, "Complete action using "));
+            } catch (Exception e) {
+                //e.toString();
+            }
+
+
+        } else if (id == R.id.nav_rate) {
+            Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, RateActivity.class);
+
+            startActivity(intent);
 
 /*
             getFragmentManager()
@@ -743,51 +743,51 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.tt, fragment, fragment.getTag()).commit();
         */
+        }
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onSliderClick(BaseSliderView slider) {
+
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    public void initToolBar(String title) {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(title);
+
+        setSupportActionBar(toolbar);
+
+        toolbar.setNavigationIcon(R.drawable.threelines);
+        toolbar.setNavigationOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
-
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
-                return true;
-            }
-
-            @Override
-            public void onSliderClick(BaseSliderView slider) {
-
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-
-            public void initToolBar(String title) {
-                toolbar = (Toolbar) findViewById(R.id.toolbar);
-                toolbar.setTitle(title);
-
-                setSupportActionBar(toolbar);
-
-                toolbar.setNavigationIcon(R.drawable.threelines);
-                toolbar.setNavigationOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                );
-            }
+        );
+    }
 
 /*
     private void getUserIm(final  String token) {
@@ -892,73 +892,73 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
 
 
-            private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {
-                ImageView bmImage;
+    private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
 
-                @Override
-                protected void onPreExecute() {
-                    super.onPreExecute();
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
 //            loading.show();
-                }
+        }
 
-                public DownloadLogoTask(ImageView bmImage) {
-                    this.bmImage = bmImage;
-                }
+        public DownloadLogoTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
 
-                protected Bitmap doInBackground(String... urls) {
-                    String urldisplay = urls[0];
-                    Bitmap bitmap = null;
-                    try {
-                        InputStream in = new java.net.URL(urldisplay).openStream();
-                        bitmap = BitmapFactory.decodeStream(in);
-                    } catch (Exception e) {
-                        Log.e("Error", e.getMessage());
-                        e.printStackTrace();
-                    }
-                    return bitmap;
-                }
-
-                protected void onPostExecute(Bitmap result) {
-                    bmImage.setImageBitmap(result);
-                    //loading.dismiss();
-                }
-
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
             }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            //loading.dismiss();
+        }
+
+    }
 
 
-            //Code for fetching image from server
-            private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-                ImageView bmImage;
+    //Code for fetching image from server
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
 
-                @Override
-                protected void onPreExecute() {
-                    super.onPreExecute();
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
 //            loading.show();
-                }
+        }
 
-                public DownloadImageTask(ImageView bmImage) {
-                    this.bmImage = bmImage;
-                }
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
 
-                protected Bitmap doInBackground(String... urls) {
-                    String urldisplay = urls[0];
-                    Bitmap bitmap = null;
-                    try {
-                        InputStream in = new java.net.URL(urldisplay).openStream();
-                        bitmap = BitmapFactory.decodeStream(in);
-                    } catch (Exception e) {
-                        Log.e("Error", e.getMessage());
-                        e.printStackTrace();
-                    }
-                    return bitmap;
-                }
-
-                protected void onPostExecute(Bitmap result) {
-                    bmImage.setImageBitmap(result);
-                    //loading.dismiss();
-                }
-
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
             }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            //loading.dismiss();
+        }
+
+    }
     private String getUserIm(final  String token) {
 
         String  tag_string_req = "req_clients";
@@ -983,7 +983,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                     JSONObject jsonObject1 = new JSONObject(response);
                     FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
                     userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
-                     i= userImageUrl;
+                    i= userImageUrl;
                     Log.d("check123",""+i);
                     ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
 
@@ -1065,5 +1065,4 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
     }
 
 
-        }
-
+}

@@ -157,7 +157,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
 
-         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -463,7 +463,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         Bitmap iconSearch = BitmapFactory.decodeResource(getResources(), R.drawable.search); //Converting drawable into bitmap
         Bitmap newIconSearch = resizeBitmapImageFn(iconSearch, (int) convertDpToPixel(20f, this)); //resizing the bitmap
         Drawable dSearch = new BitmapDrawable(getResources(), newIconSearch); //Converting bitmap into drawable
-       // menu.getItem(1).setIcon(dSearch);
+        // menu.getItem(1).setIcon(dSearch);
         searchView.setMenuItem(menu.getItem(0));  //TODO searchView
 
         return true;
