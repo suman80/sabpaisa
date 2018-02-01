@@ -111,9 +111,11 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     AppBarLayout appBarLayout;
     private CustomViewPager viewPager;
     private TabLayout tabLayout;
+    TextView usernameniv,mailIdniv;
     Toolbar toolbar;
     String userImageUrl=null;
     ImageView niv;
+    int value=2;
     String response,userAccessToken;
     ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,mPinInfo,mPinInfo2;
     LinearLayout paymentButton,chatButton,memberButton;
@@ -186,6 +188,8 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 //        Log.d("userskip",userImageUrl);
         //Initialise the navigation header image
          niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+         usernameniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.username_nav);
+         mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
 
         //set the NAvigationImage header using glide
 
@@ -242,6 +246,10 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
         setHeaderImageList();
         getUserIm(userAccessToken);
+
+
+        navigationView.setItemIconTintList(null);
+
 
         sendMoney.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,7 +317,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value=2;
+
                 Intent intent = new Intent(MainActivitySkip.this,ChatSDKLoginActivity.class);
                 intent.putExtra("VALUE",value);
                 startActivity(intent);
@@ -324,6 +332,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         });*/
 
         searchViewBar();
+        showProfileData();
     }
 /*
     @Override
@@ -807,6 +816,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
         } else if (id == R.id.nav_rate) {
             Intent intent=new Intent(MainActivitySkip.this, RateActivity.class);
+            intent.putExtra("VALUE",value);
 
             startActivity(intent);
 
@@ -1003,6 +1013,100 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         }
 
     };
+
+
+    private void showProfileData() {
+
+        String tag_string_req = "req_register";
+
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfile+"?token="+userAccessToken, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+                Log.d("SKipusernamenav", "Register Response: " + response1.toString());
+
+                try {
+                    //progressBar.setVisibility(View.GONE);
+                    JSONObject object = new JSONObject(response1);
+                    String response = object.getString("response");
+                    String status =object.getString("status");
+
+                    if (status.equals("success")) {
+                        usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
+                        //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
+                        mailIdniv.setText(object.getJSONObject("response").getString("emailId").toString());
+                       /// et_address.setText(object.getJSONObject("response").getString("address").toString());
+                      //  et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
+                        Log.d("skipusername", "userName" + usernameniv);
+                        Log.d("skipusermailid", "Mail" + mailIdniv);
+
+                    }else {
+                       // Toast.makeText(getApplicationContext(),"Could  not able to load data",Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                   // Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+               /* if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog closed
+                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    Log.e(TAG, "Update Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+                    //TODO
+                } else if (error instanceof ServerError) {
+                    //TODO
+                } else if (error instanceof NetworkError) {
+                    //TODO
+                } else if (error instanceof ParseError) {
+                    //TODO
+                }
+*/
+            }
+        }); /*{
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userAccessToken", userAccessToken);
+
+                return params;
+            }
+
+        };
+*/
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
 
 }
 

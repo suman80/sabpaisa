@@ -87,6 +87,7 @@ import in.sabpaisa.droid.sabpaisa.Model.*;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.PayFeeFragment;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
+import in.sabpaisa.droid.sabpaisa.ProfileNavigationActivityFullViewProceed;
 import in.sabpaisa.droid.sabpaisa.R;
 
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
@@ -102,6 +103,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     public static String userImageUrl=null;
     AppBarLayout appBarLayout;
+    TextView usernameniv,mailIdniv;
     LinearLayout paymentButton,chatButton,memberButton;
     MaterialSearchView searchView;
     ArrayList<FeedData> feedData;
@@ -159,7 +161,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        navigationView.setItemIconTintList(null);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sabpaisa");
@@ -204,6 +206,10 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
 
         niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+        usernameniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.username_nav);
+        mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
+        showProfileData();
+
         getUserIm(useracesstoken);
 /*
         Glide.with(FullViewOfClientsProceed.this)
@@ -569,8 +575,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         int id = item.getItemId();
 
         if (id == R.id.nav_Profile) {
-            Intent intent=new Intent(FullViewOfClientsProceed.this, ProfileNavigationActivity.class);
-
+            Intent intent=new Intent(FullViewOfClientsProceed.this, ProfileNavigationActivityFullViewProceed.class);
+intent.putExtra("state",state);
             startActivity(intent);
             // Handle the camera action
         } /*else if (id == R.id.nav_Chat) {
@@ -859,6 +865,98 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         return tag_string_req;
     }
 
+    private void showProfileData() {
+
+        String tag_string_req = "req_register";
+
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfile+"?token="+useracesstoken, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+                Log.d("SKipusernamenav", "Register Response: " + response1.toString());
+
+                try {
+                    //progressBar.setVisibility(View.GONE);
+                    JSONObject object = new JSONObject(response1);
+                    String response = object.getString("response");
+                    String status =object.getString("status");
+
+                    if (status.equals("success")) {
+                        usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
+                        //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
+                        mailIdniv.setText(object.getJSONObject("response").getString("emailId").toString());
+                        /// et_address.setText(object.getJSONObject("response").getString("address").toString());
+                        //  et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
+                        Log.d("skipusername", "userName" + usernameniv);
+                        Log.d("skipusermailid", "Mail" + mailIdniv);
+
+                    }else {
+                        // Toast.makeText(getApplicationContext(),"Could  not able to load data",Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    // Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+               /* if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog closed
+                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    Log.e(TAG, "Update Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+                    //TODO
+                } else if (error instanceof ServerError) {
+                    //TODO
+                } else if (error instanceof NetworkError) {
+                    //TODO
+                } else if (error instanceof ParseError) {
+                    //TODO
+                }
+*/
+            }
+        }); /*{
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userAccessToken", userAccessToken);
+
+                return params;
+            }
+
+        };
+*/
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
 
 }
 

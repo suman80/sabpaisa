@@ -1,4 +1,4 @@
-package in.sabpaisa.droid.sabpaisa.Util;
+package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,12 +35,9 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.crash.FirebaseCrash;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,21 +46,18 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import in.sabpaisa.droid.sabpaisa.AppController;
-import in.sabpaisa.droid.sabpaisa.LogInActivity;
-import in.sabpaisa.droid.sabpaisa.MainActivity;
-import in.sabpaisa.droid.sabpaisa.MainActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Model.ProfileModel;
-import in.sabpaisa.droid.sabpaisa.R;
-import in.sabpaisa.droid.sabpaisa.RegisterActivity;
-import in.sabpaisa.droid.sabpaisa.UIN;
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
-public class ProfileNavigationActivity extends AppCompatActivity {
-    private static final String TAG = ProfileNavigationActivity.class.getSimpleName();
+public class ProfileNavigationActivityFullViewProceed extends AppCompatActivity {
+    private static final String TAG = ProfileNavigationActivityFullViewProceed.class.getSimpleName();
     ImageView userImage;
-    Button  numberEdit, mailIdEdit,addressEdit,tv_NameEdit;
+    Button numberEdit, mailIdEdit,addressEdit,tv_NameEdit;
     TextView userName,mNumber;
-    EditText  mailId,et_address,et_UserName;
+    EditText mailId,et_address,et_UserName;
     Toolbar toolbar;
     LinearLayout layout;
     String userAccessToken;
@@ -73,6 +66,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String clientId;
     String userImageUrl;
+    String state,clientImageURLPath,clientName,ClientId;
     public static String MYSHAREDPREFPNA="mySharedPrefPNA";
 
 
@@ -126,18 +120,15 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         mailId.setEnabled(false);
         et_address.setEnabled(false);
         et_UserName.setEnabled(false);
-        toolbar.setNavigationIcon(R.drawable.previousmoresmall);
 
-        toolbar.setNavigationOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onBackPressed();
-                        //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
-                    }
-                }
+        Intent i=getIntent();
+        clientId=i.getStringExtra("clientId");
+        clientImageURLPath=i.getStringExtra("clientImageURLPath");
+        state=i.getStringExtra("state");
 
-        );
+Log.d("ProfileFullViewProceed","clientid"+clientId);
+Log.d("ProfileFullViewProceed","image"+clientImageURLPath);
+Log.d("ProfileFullViewProceed","state"+state);
        /* numberEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,9 +232,12 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(ProfileNavigationActivity.this, MainActivity.class) ;
+        Intent intent = new Intent(ProfileNavigationActivityFullViewProceed.this, FullViewOfClientsProceed.class) ;
         intent.putExtra("clientId", clientId);
-       // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.putExtra("state",state);
+        intent.putExtra("userImageUrl",userImageUrl);
+        intent.putExtra("clientName",clientName);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
 
         finish();
         startActivity(intent);
@@ -322,7 +316,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                             final String status = obj.getString("status");
                             if (status.equals("success")) {
 
-                                AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                                AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                                 // Setting Dialog Title
                                 alertDialog.setTitle("User Image Update");
@@ -339,7 +333,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                                         Intent intent=new Intent();
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
 
-                                      /*  Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                      /*  Intent intent = new Intent(ProfileNavigationActivityFullViewProceed.this,ProfileNavigationActivityFullViewProceed.class);
                                         startActivity(intent);*/
                                     }
                                 });
@@ -435,7 +429,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");
@@ -508,10 +502,10 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     if (status.equals("success")) {
 
                         userImageUrl =object.getJSONObject("response").getString("userImageUrl");
-                        new DownloadImageTask(userImage).execute(userImageUrl);
+                        new ProfileNavigationActivityFullViewProceed.DownloadImageTask(userImage).execute(userImageUrl);
 
                     }else {
-                     //   Toast.makeText(getApplicationContext(),"Cannot able to load image!",Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getApplicationContext(),"Cannot able to load image!",Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -525,7 +519,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");
@@ -604,7 +598,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
                         profile.setFullName(response);
 
-                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
                         alertDialog.setTitle("Name Update");
@@ -618,7 +612,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         // Setting OK Button
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                Intent intent = new Intent(ProfileNavigationActivityFullViewProceed.this,ProfileNavigationActivityFullViewProceed.class);
                                 startActivity(intent);
                                 finish();
                             }
@@ -628,7 +622,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         alertDialog.show();
 
                     }else if (status.equals("failure")){
-                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
                         alertDialog.setTitle("Name Update");
@@ -643,7 +637,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
-                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                Intent intent = new Intent(ProfileNavigationActivityFullViewProceed.this,ProfileNavigationActivityFullViewProceed.class);
                                 startActivity(intent);
                                 finish();
 
@@ -666,7 +660,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");
@@ -751,7 +745,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
                         profile.setAddress(response);
 
-                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
                         alertDialog.setTitle("Address Update");
@@ -765,7 +759,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         // Setting OK Button
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                Intent intent = new Intent(ProfileNavigationActivityFullViewProceed.this,ProfileNavigationActivityFullViewProceed.class);
                                 startActivity(intent);
                                 finish();
                             }
@@ -775,7 +769,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         alertDialog.show();
 
                     }else if (status.equals("failure")){
-                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
                         alertDialog.setTitle("Address Update");
@@ -790,7 +784,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
-                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                Intent intent = new Intent(ProfileNavigationActivityFullViewProceed.this,ProfileNavigationActivityFullViewProceed.class);
                                 startActivity(intent);
                                 finish();
 
@@ -815,7 +809,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");
@@ -894,7 +888,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
 
 
-                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
                         alertDialog.setTitle("Email Update");
@@ -908,7 +902,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         // Setting OK Button
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                Intent intent = new Intent(ProfileNavigationActivityFullViewProceed.this,ProfileNavigationActivityFullViewProceed.class);
                                 startActivity(intent);
                                 finish();
                             }
@@ -918,7 +912,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         alertDialog.show();
 
                     }else if (status.equals("failure")){
-                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
                         alertDialog.setTitle("Email Update");
@@ -933,7 +927,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
-                                Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
+                                Intent intent = new Intent(ProfileNavigationActivityFullViewProceed.this,ProfileNavigationActivityFullViewProceed.class);
                                 startActivity(intent);
                                 finish();
 
@@ -954,7 +948,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");

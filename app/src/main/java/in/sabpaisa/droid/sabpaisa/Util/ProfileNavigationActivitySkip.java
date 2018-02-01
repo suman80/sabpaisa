@@ -494,7 +494,7 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                         new DownloadImageTask(userImage).execute(userImageUrl);
 
                     }else {
-                        Toast.makeText(getApplicationContext(),"Cannot able to load image!",Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getApplicationContext(),"Cannot able to load image!",Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

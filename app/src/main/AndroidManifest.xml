@@ -66,20 +66,16 @@
             android:name=".Util.SkipClientDetailsScreen"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".Util.FullViewOfClientsProceed"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" >
-
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.FullViewOfClientsProceed" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".FeedDetails"
             android:configChanges="orientation"
@@ -88,13 +84,11 @@
             android:name=".MainActivitySkip"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivitySkip" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".GroupDetails"
@@ -330,16 +324,13 @@
         <!-- ./Firebase Notifications -->
         <activity android:name=".Util.ProfileNavigationActivitySkip" />
         <activity android:name=".MainActivitySkipWithoutSharedPrefernce">
-
-
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivitySkipWithoutSharedPrefernce" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
-
         </activity>
+        <activity android:name=".ProfileNavigationActivityFullViewProceed"></activity>
     </application>
 
 </manifest>
