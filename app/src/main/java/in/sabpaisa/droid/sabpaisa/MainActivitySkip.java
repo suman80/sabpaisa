@@ -174,6 +174,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
         toggle.syncState();
 
+//        getActionBar().setDisplayHomeAsUpEnabled(true);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -190,6 +191,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
          niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
          usernameniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.username_nav);
          mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
+        //toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
 
         //set the NAvigationImage header using glide
 
@@ -224,6 +226,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sabpaisa");
+        toolbar.setNavigationIcon(R.drawable.ic_navigation);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
@@ -333,6 +336,34 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
         searchViewBar();
         showProfileData();
+
+        usernameniv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivitySkip.this,ProfileNavigationActivitySkip.class);
+                startActivity(intent);
+
+            }
+        });
+
+        niv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivitySkip.this,ProfileNavigationActivitySkip.class);
+                startActivity(intent);
+
+            }
+        });
+
+        mailIdniv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivitySkip.this,ProfileNavigationActivitySkip.class);
+                startActivity(intent);
+
+            }
+        });
+
     }
 /*
     @Override

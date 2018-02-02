@@ -165,6 +165,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sabpaisa");
+        toolbar.setNavigationIcon(R.drawable.ic_navigation);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
@@ -209,6 +210,40 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         usernameniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.username_nav);
         mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
         showProfileData();
+
+
+        usernameniv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(FullViewOfClientsProceed.this,ProfileNavigationActivityFullViewProceed.class);
+                intent.putExtra("ClientId",ClientId);
+                intent.putExtra("state",state);
+                startActivity(intent);
+
+            }
+        });
+
+        niv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(FullViewOfClientsProceed.this,ProfileNavigationActivityFullViewProceed.class);
+                intent.putExtra("ClientId",ClientId);
+                intent.putExtra("state",state);
+                startActivity(intent);
+
+            }
+        });
+
+        mailIdniv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(FullViewOfClientsProceed.this,ProfileNavigationActivityFullViewProceed.class);
+                intent.putExtra("ClientId",ClientId);intent.putExtra("state",state);
+                startActivity(intent);
+
+            }
+        });
+
 
         getUserIm(useracesstoken);
 /*

@@ -343,6 +343,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sabpaisa");
+        toolbar.setNavigationIcon(R.drawable.ic_navigation);
 
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
@@ -477,16 +478,39 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
-
-        /*fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });*/
-
         getUserIm(userAccessToken);
         showProfileData();
+
+        usernameniv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,ProfileNavigationActivity.class);
+                intent.putExtra("ClientId",ClientId);
+                startActivity(intent);
+
+            }
+        });
+
+        niv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,ProfileNavigationActivity.class);
+                intent.putExtra("ClientId",ClientId);
+                startActivity(intent);
+
+            }
+        });
+
+        mailIdniv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,ProfileNavigationActivity.class);
+                intent.putExtra("ClientId",ClientId);
+                startActivity(intent);
+
+            }
+        });
+
     }
 
 
@@ -867,6 +891,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     public void initToolBar(String title) {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(title);
+
 
         setSupportActionBar(toolbar);
 

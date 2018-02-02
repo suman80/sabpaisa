@@ -126,7 +126,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         mailId.setEnabled(false);
         et_address.setEnabled(false);
         et_UserName.setEnabled(false);
-        toolbar.setNavigationIcon(R.drawable.previousmoresmall);
+        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
 
         toolbar.setNavigationOnClickListener(
                 new View.OnClickListener() {

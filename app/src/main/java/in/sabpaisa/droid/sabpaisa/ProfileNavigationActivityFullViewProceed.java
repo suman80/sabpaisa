@@ -225,7 +225,18 @@ Log.d("ProfileFullViewProceed","state"+state);
         showProfileData();
         showProfileImage();
 
+        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
 
+        toolbar.setNavigationOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                        //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+        );
     }
 
 
