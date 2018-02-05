@@ -37,6 +37,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
@@ -55,6 +57,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     Button proceed,skip;
     String userImageUrl;
     String userAccessToken,response;
+    Map<String, Integer> stateMap;
 
     public static final String PREFS_NAME1 = "LoginPrefs";
 
@@ -129,9 +132,10 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         //Initializing arrayLists
         stateArrayList = new ArrayList<>();
         clientNameArrayList = new ArrayList<>();
+
+        stateMap = new HashMap<>();//Added on 1st Feb
+        stateMap.put("Select State",-1);//Added on 1st Feb
         getStateData();
-
-
         final TextView bankTxt, clientTxt, institute;
         bankTxt = (TextView) findViewById(R.id.spinnerBank).findViewById(R.id.textName);
         clientTxt = (TextView) findViewById(R.id.spinnerClient).findViewById(R.id.textName);
@@ -253,8 +257,10 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                         if (i == 0) {
                             stateArrayList.add("Select State");
                         }
+
                         stateArrayList.add(getterSetter.getStateName().toString());
-                        ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_spinner_item, stateArrayList);
+                        stateMap.put(getterSetter.getStateName().toString(),getterSetter.getStateId());
+                        ArrayAdapter<String> bankAdapter = new ArrayAdapter<String>(FilterActivity.this, R.layout.spinner_item, stateArrayList);
                         bankAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         stateSpinner.setAdapter(bankAdapter);
 
@@ -326,7 +332,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
 
                             Log.d("serviceArrayList", "" + serviceArrayList);
 
-                            ArrayAdapter<String> clientadapter = new ArrayAdapter<String>(FilterActivity.this, R.layout.support_simple_spinner_dropdown_item, serviceArrayList);
+                            ArrayAdapter<String> clientadapter = new ArrayAdapter<String>(FilterActivity.this, R.layout.spinner_item, serviceArrayList);
                             clientadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             serviceSpinner.setAdapter(clientadapter);
                             serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -334,8 +340,8 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                                 public void onItemSelected(AdapterView<?> parentView,
                                                            View selectedItemView, int position, long id) {
                                     clientsSpinner.setAdapter(null);
-                                    getClientData(serviceSpinner.getSelectedItem().toString(), stateSpinner.getSelectedItem().toString());
-
+                                  //  getClientData(serviceSpinner.getSelectedItem().toString(), stateSpinner.getSelectedItem().toString());
+                                    getClientData(serviceSpinner.getSelectedItem().toString(), stateMap.get(stateSpinner.getSelectedItem().toString())+"");
                                 }
 
                                 public void onNothingSelected(AdapterView<?> arg0) {// do nothing
@@ -501,9 +507,12 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String selected=parent.getItemAtPosition(position).toString();
         //  Toast.makeText(this,selected,Toast.LENGTH_SHORT).show();
+        Log.d("StateID"," "+selected);
+        int stateId = stateMap.get(selected);
         serviceSpinner.setAdapter(null);
         clientsSpinner.setAdapter(null);
-        getServiceData(selected);
+       // getServiceData(selected);
+        getServiceData(""+stateId);
     }
 
     @Override

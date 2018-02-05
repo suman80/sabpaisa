@@ -76,7 +76,7 @@ public class ProceedInstitiutionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_institutions, container, false);
-       // ((MainActivity) getActivity()).initToolBar(clientId);
+        // ((MainActivity) getActivity()).initToolBar(clientId);
         linearLayoutnoDataFound = (LinearLayout)rootView.findViewById(R.id.noDataFound);
         shimmerRecyclerView=(ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
         recyclerViewInstitutions = (RecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
@@ -144,8 +144,10 @@ public class ProceedInstitiutionFragment extends Fragment {
 
 
                         institution.setOrgWal(jsonObject1.getString("clientImagePath"));
-
-                        institution.setOrgAddress(jsonObject1.getString("state"));
+                        //Added on 1st Feb
+                        JSONObject jsonObject2 = jsonObject1.getJSONObject("lookupState");
+                        institution.setOrgAddress(jsonObject2.getString("stateName"));
+                        //Added on 1st Feb
                         institution.setOrgDesc(jsonObject1.getString("landingPage"));
 
                         Log.d("JSONobjectResp", "-->" + response);
@@ -255,3 +257,5 @@ public class ProceedInstitiutionFragment extends Fragment {
 
     }
 }
+
+

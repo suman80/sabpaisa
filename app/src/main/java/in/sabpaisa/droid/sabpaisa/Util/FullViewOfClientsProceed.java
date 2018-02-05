@@ -89,6 +89,7 @@ import in.sabpaisa.droid.sabpaisa.PayFeeFragment;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.ProfileNavigationActivityFullViewProceed;
 import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.UIN;
 
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
@@ -108,7 +109,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     MaterialSearchView searchView;
     ArrayList<FeedData> feedData;
     NavigationView navigationView;
-    String i,useracesstoken,response;
+    String i,useracesstoken,response,response1;
     ImageView niv;
     ArrayList<FeedData> filteredfeedList;
     ArrayList<GroupListData> GroupData;
@@ -205,6 +206,16 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
         Log.d("FFResfilter", " " + response);
 
+        // Added on 3rd feb
+        SharedPreferences sharedPreferences12 = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+
+        response1 = sharedPreferences12.getString("clientId", "123");
+
+        ClientId = response1;
+
+        Log.d("fullviewclientid",""+ClientId);
+
+
 
         niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
         usernameniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.username_nav);
@@ -269,6 +280,11 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         Glide.with(FullViewOfClientsProceed.this)
                 .load(clientImageURLPath)
                 .error(R.drawable.default_users)
+                .into(clientImagePath);
+
+        Glide.with(FullViewOfClientsProceed.this)/*//Added on 1st Feb*/
+                .load(clientImageURLPath)
+                .error(R.drawable.image_not_found)
                 .into(clientImagePath);
         searchViewBar();
 

@@ -123,7 +123,9 @@ public class InstitutionSkipFragment extends Fragment {
                             institution.setOrganizationId(jsonObject1.getString("clientId"));
                             institution.setOrganization_name(jsonObject1.getString("clientName"));
                             institution.setOrgLogo(jsonObject1.getString("clientLogoPath"));
-                            institution.setOrgAddress(jsonObject1.getString("state"));
+                            JSONObject jsonObject2 = jsonObject1.getJSONObject("lookupState");
+                            institution.setOrgAddress(jsonObject2.getString("stateName"));
+
                             institution.setOrgWal(jsonObject1.getString("clientImagePath"));
                             institutions.add(institution);
                         }

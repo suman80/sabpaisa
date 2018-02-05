@@ -6,39 +6,52 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-<!--
-    <androi.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            style="@style/CustomTabLayoutStyle"
+    <!--
+        <androi.ViewPager
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_collapseMode="pin"
-            app:tabGravity="fill"
-            app:tabMode="fixed" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-////
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                style="@style/CustomTabLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_collapseMode="pin"
+                app:tabGravity="fill"
+                app:tabMode="fixed" />
 
-    </androi.ViewPager>
--->
+    ////
+
+        </androi.ViewPager>
+    -->
 
     <Button
         android:id="@+id/btn_pay"
         android:layout_width="wrap_content"
-
         android:layout_height="40dp"
-
         android:background="@drawable/background_button"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="25dp"
         android:layout_gravity="center"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:text="Pay"
-
+        android:text="Pay Through QC"
         android:textSize="20dp" />
+
+    <!--Added on 1st Feb-->
+    <Button
+        android:id="@+id/btn_payLP"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/background_button"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:text="Pay Through LP"
+        android:textSize="20dp" />
+
+
+
 </LinearLayout>

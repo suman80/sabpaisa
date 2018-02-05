@@ -14,6 +14,7 @@
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/thumbnail"
             android:layout_width="60dp"
+            android:src="@drawable/image_not_found"
             android:layout_height="30sp"
             android:scaleType="fitXY"
             android:layout_alignParentLeft="true"
@@ -60,6 +61,7 @@
         android:id="@+id/clinetbanner"
         android:layout_width="match_parent"
         android:layout_height="150sp"
+        android:src="@drawable/image_not_found"
 
         />
 

@@ -327,7 +327,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
-        /*fab.setOnClickListener(new View.OnClickListener() {
+      /*  fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

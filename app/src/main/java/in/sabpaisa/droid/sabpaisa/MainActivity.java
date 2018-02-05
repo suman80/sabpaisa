@@ -428,7 +428,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         bank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(MainActivity.this, AccountInfoActivity.class);
+                /*Intent intent = new Intent(MainActivity.this, AstatccountInfoActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);*/
                 Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();

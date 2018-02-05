@@ -54,7 +54,9 @@ import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 
 public class UIN extends AppCompatActivity {
-    String clientId,userAccessToken,response;
+    String userAccessToken,response;
+ String clientId ;
+
     EditText uinnnumber;
     String userImageUrl;
     //TextView clientname;
@@ -83,7 +85,7 @@ public class UIN extends AppCompatActivity {
         clientlogopath=(ImageView)findViewById(R.id.institutelogo);
 
 
-        clientId=getIntent().getStringExtra("clientId");
+       clientId=getIntent().getStringExtra("clientId");
         clientname=getIntent().getStringExtra("clientname");
         clientImageURLPath=getIntent().getStringExtra("clientImagePath");
         clientLogoURLPath=getIntent().getStringExtra("clientLogoPath");
@@ -202,11 +204,14 @@ public class UIN extends AppCompatActivity {
                     //String response1 = response.getString("response");
                     // Log.i("status_UIN", "status=" + status);
                     Log.i("response_UIN", "Repsomse_UIN=" + response1);
-                    if (response1.equals("UIN verified")) {
+                    if (status.equals("success")&&response1.equals("UIN verified")) {
                         callMainScreen();
-                    } else {
-                        if (response1.equals("Invalid UIN number")) {
-                            AlertDialog alertDialog = new AlertDialog.Builder(UIN.this, R.style.MyDialogTheme).create();
+                        Log.d("InIfPArt","UINVerifu");
+                    } else if (status.equals("success")&& response1.equals("Invalid UIN number")) {
+
+                        Log.d("InelseIf1PArt","UINVerifu");
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(UIN.this, R.style.MyDialogTheme).create();
 
                             // Setting Dialog Title
                             alertDialog.setTitle("UIN Does not match");
@@ -231,8 +236,10 @@ public class UIN extends AppCompatActivity {
                         }
                         else {
                             callErrorPopup();
-                        }
+                        Log.d("InelsePArt","UINVerifu");
+
                     }
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -503,3 +510,5 @@ public class UIN extends AppCompatActivity {
     }
 
 }
+
+

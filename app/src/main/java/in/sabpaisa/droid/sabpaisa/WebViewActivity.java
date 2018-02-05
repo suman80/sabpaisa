@@ -21,7 +21,7 @@ import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 public class WebViewActivity extends AppCompatActivity {
     ProgressBar progressBar;
     WebView webView;
-    String url,landing_page;
+    String url,landing_page,url1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +29,25 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_web_view);
 
         webView = (WebView) findViewById(R.id.myWebView);
+        webView.getSettings().setJavaScriptEnabled(true);
+        //webView.loadUrl(postUrl);
+        webView.setHorizontalScrollBarEnabled(false);
         progressBar =(ProgressBar) findViewById(R.id.progressBar);
 
-        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(ProceedInstitiutionFragment.MYSHAREDPREFProceed, MODE_PRIVATE);
+       /* SharedPreferences sharedPreferences = getApplication().getSharedPreferences(ProceedInstitiutionFragment.MYSHAREDPREFProceed, MODE_PRIVATE);
         landing_page=sharedPreferences.getString("landing_page","123");
         Log.d("WebView",""+landing_page);
-        url=landing_page;
-        webView.loadUrl(url);
+        url=landing_page;*/
 
+        //Added on 2nd Feb
+        url=getIntent().getStringExtra("QC");
+        // url1=getIntent().getStringExtra("LP");
+        Log.d("webViewURL"," "+url);
+        //Log.d("webViewURL"," "+url1);
+
+        webView.loadUrl("https://"+url.trim());
+        // webView.loadUrl("https://"+url1.trim());
+/*------------------- //Added on 2nd Feb------------------------------------*/
         progressBar.getProgressDrawable().setColorFilter(Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
 
         webView.setWebViewClient(new MyWebViewClient());
@@ -70,4 +81,6 @@ public class WebViewActivity extends AppCompatActivity {
         }
     }
 }
+
+
 

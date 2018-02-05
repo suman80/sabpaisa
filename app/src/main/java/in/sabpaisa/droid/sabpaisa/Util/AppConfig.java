@@ -25,7 +25,7 @@ public class AppConfig {
 	public static String URL_UserProfileUpdate ="http://205.147.103.27:6060/SabPaisaAppApi/updateUser";
 	public static String URL_UserProfileImageUpdate ="http://205.147.103.27:6060/SabPaisaAppApi/updateUserImage";
 
-
+	public static String URL_Payment ="http://205.147.103.27:6060/SabPaisaAppApi/getLandingPages";//Added on 1st Feb
 	public static String SAb_Api ="http://205.147.103.27:6060/SabPaisaAppApi";
 
 

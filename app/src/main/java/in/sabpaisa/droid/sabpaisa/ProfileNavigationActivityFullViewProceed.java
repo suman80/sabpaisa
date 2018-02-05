@@ -243,7 +243,7 @@ Log.d("ProfileFullViewProceed","state"+state);
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(ProfileNavigationActivityFullViewProceed.this, FullViewOfClientsProceed.class) ;
+       /* Intent intent = new Intent(ProfileNavigationActivityFullViewProceed.this, FullViewOfClientsProceed.class) ;
         intent.putExtra("clientId", clientId);
         intent.putExtra("state",state);
         intent.putExtra("userImageUrl",userImageUrl);
@@ -251,7 +251,8 @@ Log.d("ProfileFullViewProceed","state"+state);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
 
         finish();
-        startActivity(intent);
+        startActivity(intent);*/
+       finish();
 
         /*intent.putExtra("clientId", clientId);
         intent.putExtra("userImageUrl", userImageUrl);

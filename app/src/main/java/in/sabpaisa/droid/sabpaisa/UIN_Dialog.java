@@ -33,7 +33,8 @@ public class UIN_Dialog extends Dialog  {
 
     public Context c;
     public Button yes,no;
-    String clientId,userAccessToken;
+   String clientId ;
+            String userAccessToken;
 
     public UIN_Dialog(Context context) {
         super(context);
@@ -50,7 +51,8 @@ public class UIN_Dialog extends Dialog  {
         clientId=sharedPreferences.getString("clientId","123");
         userAccessToken=sharedPreferences.getString("userAccessToken","123");
 
-
+        Log.d("UinDialogclientid",""+clientId);
+        Log.d("UinDialogUseraceestoken","****"+userAccessToken);
         yes = (Button) findViewById(R.id.btn_yes);
         no = (Button) findViewById(R.id.btn_no);
         yes.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +117,32 @@ public class UIN_Dialog extends Dialog  {
                         alertDialog.show();
 
 
-                    } else if (response1.equals("User_Not_Registered")){
+                    }
+                    else
+                    {
+                        AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
+
+                        // Setting Dialog TiRehtle
+                        alertDialog.setTitle("Request Sent");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Request is already sent");
+
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+                    }
+                    /*else if (response1.equals("User_Not_Registered")){
                         AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
 
                         // Setting Dialog TiRehtle
@@ -138,9 +165,11 @@ public class UIN_Dialog extends Dialog  {
                         // Showing Alert Message
                         alertDialog.show();
 
-                    }
+                    }*/
 
-                } catch (JSONException e) {
+                }
+
+               catch (JSONException e) {
                     e.printStackTrace();
                     /*Toast.makeText(getApplicationContext(),
                             "Error: " + e.getMessage(),
