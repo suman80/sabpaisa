@@ -66,8 +66,10 @@ Context ctx;
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         Uri sounduri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(),R.drawable.sabpaisa1234)); //Notification icon
-       // builder.setSmallIcon(R.drawable.sabpaisa1234);
+//        builder.setLargeIcon(BitmapFactory.decodeResource(ctx.getResources(),R.drawable.sabpaisa1234)); //Notification icon
+
+
+        builder.setSmallIcon(R.drawable.sabpaisa1234);
         builder.setContentTitle(messageBody);
         builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(image));
         builder.setAutoCancel(true);

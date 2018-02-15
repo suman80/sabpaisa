@@ -395,7 +395,7 @@ String userImageUrl;
 
         }else if (value==2){//in.sabpaisa.droid.sabpaisa.MainActivitySkipWithoutSharedPrefernce 2.in.sabpaisa.droid.sabpaisa.MainActivitySkip
 
-            Intent intent1 = new Intent("in.sabpaisa.droid.sabpaisa.MainActivitySkipWithoutSharedPrefernce");
+            Intent intent1 = new Intent("in.sabpaisa.droid.sabpaisa.MainActivitySkip");
             Log.d("CSDKMA","Fire_MASWSP");
             prefs.edit().clear();
             startActivity(intent1);

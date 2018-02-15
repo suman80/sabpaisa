@@ -109,6 +109,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     MaterialSearchView searchView;
     ArrayList<FeedData> feedData;
     NavigationView navigationView;
+    String x;
     String i,useracesstoken,response,response1;
     ImageView niv;
     ArrayList<FeedData> filteredfeedList;
@@ -222,7 +223,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
         showProfileData();
 
-
+mailIdniv.setText(x);
         usernameniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -931,11 +932,18 @@ intent.putExtra("state",state);
                     JSONObject object = new JSONObject(response1);
                     String response = object.getString("response");
                     String status =object.getString("status");
-
-                    if (status.equals("success")) {
+                    x = object.getJSONObject("response").getString("emailId").toString();
+                if(x.equals("null"))
+{
+    usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
+mailIdniv.setText("");
+}
+                  else   if (status.equals("success")) {
                         usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
-                        mailIdniv.setText(object.getJSONObject("response").getString("emailId").toString());
+
+                        mailIdniv.setText(x);
+                        //mailIdniv.setText(object.getJSONObject("response").getString("emailId").toString());
                         /// et_address.setText(object.getJSONObject("response").getString("address").toString());
                         //  et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
                         Log.d("skipusername", "userName" + usernameniv);

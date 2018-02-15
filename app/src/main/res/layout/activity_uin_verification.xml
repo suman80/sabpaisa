@@ -14,8 +14,6 @@
             android:layout_height="250dp"
             android:layout_gravity="center"
             android:layout_marginTop="150dp"
-
-            android:background="@drawable/sabpaisa"
             android:orientation="vertical"/>
 
 
@@ -24,7 +22,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-
                 android:orientation="vertical"
                 >
 
@@ -33,7 +30,7 @@
                     android:layout_width="100dp"
 
                     android:layout_height="100dp"
-                    android:src="@drawable/coaicon" />
+                     />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -42,9 +39,10 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:id="@+id/InstitueNAme"
-                    android:textColor="@color/bg_title"
+
+                    android:textColor="@color/bg_orange"
                     android:textSize="20sp"
-                    android:text="Client NAme"/>
+                    android:text="Client Name"/>
 
 
             </LinearLayout>
@@ -62,6 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center|left"
+
                     android:text="Enter UIN No"
                     android:textColor="@color/bg_text_color"
                     android:textStyle="bold"
@@ -74,7 +73,8 @@
                     android:layout_marginLeft="5dp"
                     android:background="@drawable/otp_edittext_border"
                     android:hint="Enter UIN Number"
-                    android:inputType="number"
+                    android:singleLine="true"
+                    android:maxLength="20"
                     android:paddingLeft="10dp"
                     android:textColor="@color/bg_text_color"
                     android:textSize="@dimen/text_size_normal" />

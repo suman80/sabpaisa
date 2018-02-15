@@ -101,8 +101,7 @@ public class ChatSDKUiHelper {
     public static ChatSDKUiHelper getInstance() {
         if (instance == null)
             throw new NullPointerException("You need to init ui helper before using the sdk, " +
-                    "You can use default init if you want to test the sdk or use default components." +
-                    "The use of this class is to make the BaseComponents of the SDK Ui adapt to your LoginActivity, MainActivity and ChatActivity. ");
+                    "You can use default init if you want to test the sdk or use default components." + "The use of this class is to make the BaseComponents of the SDK Ui adapt to your LoginActivity, MainActivity and ChatActivity. ");
 
         return instance;
     }

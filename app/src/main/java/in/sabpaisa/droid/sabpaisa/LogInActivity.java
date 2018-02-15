@@ -52,6 +52,7 @@ import in.sabpaisa.droid.sabpaisa.Util.TelephonyInfo;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static android.text.InputType.TYPE_CLASS_TEXT;
 import static in.sabpaisa.droid.sabpaisa.Util.TelephonyInfo.getOutput;
 
 @RuntimePermissions
@@ -60,8 +61,10 @@ public class LogInActivity extends AppCompatActivity  {
     public static String mobileNo,password;
     EditText et_phone_number,et_password;
 
-    TextView forgotPassword,register,passwordShow;
+    TextView forgotPassword,register;
     Button login;
+    Button passwordShow;
+
 
     public static String MySharedPrefLogin="mySharedPrefForlogin";
 
@@ -90,7 +93,7 @@ public class LogInActivity extends AppCompatActivity  {
 
 
             // password = (EditText)findViewById(R.id.et_password);
-            passwordShow = (TextView)findViewById(R.id.tv_password_show);
+            passwordShow = (Button) findViewById(R.id.tv_password_show);
             forgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
             et_phone_number = (EditText) findViewById(R.id.et_phone_number);
             et_password = (EditText) findViewById(R.id.et_password);

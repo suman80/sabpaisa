@@ -1,10 +1,3 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:27 PM
- */
-
 package com.braunster.chatsdk.view;
 
 import android.content.Context;
@@ -14,6 +7,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -35,6 +29,7 @@ public class ChatMessageBoxView extends LinearLayout implements View.OnClickList
     protected TextView btnSend;
     protected ImageButton btnOptions;
     protected EditText etMessage;
+    protected ImageButton pay;
     protected PopupWindow optionPopup;
 
     /**
@@ -65,7 +60,11 @@ public class ChatMessageBoxView extends LinearLayout implements View.OnClickList
         btnSend = (TextView) findViewById(R.id.chat_sdk_btn_chat_send_message);
         btnOptions = (ImageButton) findViewById(R.id.chat_sdk_btn_options);
         etMessage = (EditText) findViewById(R.id.chat_sdk_et_message_to_send);
+        pay = (ImageButton) findViewById(R.id.chat_sdk_btn_options1);
     }
+
+
+
 
     @Override
     protected void onFinishInflate() {
@@ -78,6 +77,7 @@ public class ChatMessageBoxView extends LinearLayout implements View.OnClickList
         btnSend.setOnClickListener(this);
 
         btnOptions.setOnClickListener(this);
+        pay.setOnClickListener(this);
 
         etMessage.setOnEditorActionListener(this);
         etMessage.setOnKeyListener(this);
@@ -123,6 +123,12 @@ public class ChatMessageBoxView extends LinearLayout implements View.OnClickList
 
             if (messageBoxOptionsListener != null)
                 messageBoxOptionsListener.onPickImagePressed();
+        }
+
+        else if (id == R.id.chat_sdk_btn_options1)
+        {
+            Toast.makeText(getContext(), "Coming Soon..", Toast.LENGTH_SHORT).show();
+
         }
        /* else  if (id == R.id.chat_sdk_btn_take_picture) {
             if (!Utils.SystemChecks.checkCameraHardware(getContext()))
@@ -191,6 +197,8 @@ public class ChatMessageBoxView extends LinearLayout implements View.OnClickList
     public SuperToast getAlertToast() {
         return alertToast;
     }
+
+
 
 
     public interface MessageBoxOptionsListener {

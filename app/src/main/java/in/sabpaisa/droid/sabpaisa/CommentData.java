@@ -4,6 +4,11 @@ package in.sabpaisa.droid.sabpaisa;
 
 public class  CommentData extends in.sabpaisa.droid.sabpaisa.Util.CommentData {
 
+
+    String userImageUrl;
+
+
+
     public CommentData(String commentText) {
         this.commentText = commentText;
     }
@@ -50,5 +55,13 @@ public class  CommentData extends in.sabpaisa.droid.sabpaisa.Util.CommentData {
 
     public void setCommentName(String commentName) {
         this.commentName = commentName;
+    }
+
+    public String getUserImageUrl() {
+        return userImageUrl;
+    }
+
+    public void setUserImageUrl(String userImageUrl) {
+        this.userImageUrl = userImageUrl;
     }
 }

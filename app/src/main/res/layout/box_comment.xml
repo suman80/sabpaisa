@@ -19,6 +19,7 @@
         android:background="@drawable/otp_edittext_border"
         android:hint="Add Comment"
         android:paddingLeft="5dp"
+        android:maxLength="50"
         android:textColorHint="@color/black_50"
         android:textSize="@dimen/text_size_small"
         />

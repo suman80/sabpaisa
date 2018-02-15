@@ -72,6 +72,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textAllCaps="false"
+
                 android:background="@drawable/chat_sdk_register_button_selector"
                 android:text="@string/register" />
 
@@ -81,6 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textAllCaps="false"
                 android:background="@drawable/chat_sdk_login_button_selector"
                 android:text="@string/login" />
 
@@ -139,6 +142,8 @@
             android:layout_height="wrap_content"
 
             android:layout_marginTop="40dp"
+            android:textAllCaps="false"
+
             android:background="@drawable/chat_sdk_login_anonymously_button_selector"
             android:text="@string/anonymous_login" />
 

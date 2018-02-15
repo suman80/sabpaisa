@@ -60,6 +60,7 @@ public class UIN_Dialog extends Dialog  {
             public void onClick(View v) {
 //UIN uin=new UIN();
                 RequestUINNumber(clientId,userAccessToken);
+                dismiss();
             }
         });
         no.setOnClickListener(new View.OnClickListener() {

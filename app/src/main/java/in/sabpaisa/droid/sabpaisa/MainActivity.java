@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
     Bundle bundle;
+    String x;
     String stateName,serviceName,ClientId;
     public  static  String MYSHAREDPREF="mySharedPref";
 
@@ -312,8 +313,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
          niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
         usernameniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.username_nav);
-        mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
+        usernameniv.setText("");
 
+        mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
         // View header = navigationView.getHeaderView(0);
       // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
 
@@ -344,6 +346,11 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sabpaisa");
         toolbar.setNavigationIcon(R.drawable.ic_navigation);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+onBackPressed();            }
+        });
 
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
@@ -480,6 +487,10 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         });
         getUserIm(userAccessToken);
         showProfileData();
+        String y=x;
+/*g.d("xmailidmain",""+y);
+Log.d("xmailidmain",""+x);*/
+        //mailIdniv.setText(x);
 
         usernameniv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1262,15 +1273,35 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
                     JSONObject object = new JSONObject(response1);
                     String response = object.getString("response");
                     String status =object.getString("status");
+                    x = object.getJSONObject("response").getString("emailId").toString();
+if (x.equals("null"))
+{
+    usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
 
-                    if (status.equals("success")) {
+    mailIdniv.setText("");
+}
+                   else if (status.equals("success")) {
+
+
                         usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
-                        mailIdniv.setText(object.getJSONObject("response").getString("emailId").toString());
+
+                      mailIdniv.setText(x);
+
+                        /*if(x==null) {
+                            mailIdniv.setText(" ");
+                            Log.d("mainusername111", "" +x );
+                        }
+                        else
+                        {
+
+                            mailIdniv.setText(x);
+                        Log.d("mainusername11", "userName" +x );
+                        }*/
                         /// et_address.setText(object.getJSONObject("response").getString("address").toString());
                         //  et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
-                        Log.d("skipusername", "userName" + usernameniv);
-                        Log.d("skipusermailid", "Mail" + mailIdniv);
+                        Log.d("mainusername", "userName" + usernameniv);
+                        Log.d("mainusermailid", "Mail" + mailIdniv);
 
                     }else {
                         // Toast.makeText(getApplicationContext(),"Could  not able to load data",Toast.LENGTH_SHORT).show();

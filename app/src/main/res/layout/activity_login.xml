@@ -78,28 +78,31 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="25dp">
 
-            <TextView
+            <Button
                 android:elevation="15dp"
                 android:id="@+id/tv_password_show"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
                 android:layout_gravity="end"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
                 android:text="Show"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:background="@drawable/background_button" />
 
             <EditText
-                android:imeOptions="actionDone"
+                android:imeOptions="actionNext"
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
+                android:maxLength="15"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_edittext"
                 android:drawableLeft="@drawable/ic_lock_black_24dp"
                 android:drawablePadding="10dp"
+                android:singleLine="true"
                 android:hint="@string/hint_password"
                 />
         </FrameLayout>

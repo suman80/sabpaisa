@@ -36,13 +36,23 @@
             android:maxLines="@integer/chat_sdk_max_message_lines"
             android:isScrollContainer="true"
             android:inputType="textShortMessage|textMultiLine" />
-        <ImageView
+       <!-- <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/pay"
             android:layout_gravity="end|center"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"/>-->
     </LinearLayout>
+
+    <ImageButton
+
+        android:id="@+id/chat_sdk_btn_options1"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end|center"
+        android:layout_marginRight="10dp"
+        android:contentDescription="@string/acces_message_option_button"
+        android:src="@drawable/pay" />
 
     <TextView
         android:layout_width="wrap_content"

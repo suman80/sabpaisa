@@ -150,7 +150,7 @@ Log.d("ProfileFullViewProceed","state"+state);
 //                mailId.setFocusable(true);
                 if (mailIdEdit.getText().toString().equals("Edit")) {
                     mailId.setEnabled(true);
-                    mailId.setText(" ");
+                   // mailId.setText(" ");
                     mailId.requestFocus();
                     mailIdEdit.setText("Save");
                 }else if(mailIdEdit.getText().toString().equals("Save")) {
@@ -177,7 +177,7 @@ Log.d("ProfileFullViewProceed","state"+state);
             public void onClick(View v) {
                 if (addressEdit.getText().toString().equals("Edit")) {
                     et_address.setEnabled(true);
-                    et_address.setText(" ");
+                    //et_address.setText(" ");
                     et_address.requestFocus();
                     addressEdit.setText("Save");
 
@@ -202,7 +202,7 @@ Log.d("ProfileFullViewProceed","state"+state);
             public void onClick(View v) {
                 if (tv_NameEdit.getText().toString().equals("Edit")) {
                     et_UserName.setEnabled(true);
-                    et_UserName.setText(" ");
+                    et_UserName.setText("");
                     et_UserName.requestFocus();
                     tv_NameEdit.setText("Save");
 
@@ -671,7 +671,7 @@ Log.d("ProfileFullViewProceed","state"+state);
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -739,7 +739,7 @@ Log.d("ProfileFullViewProceed","state"+state);
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_UserProfileUpdate+"?token="+userAccessToken+"&"+"address="+address, new Response.Listener<String>() {
+                AppConfig.URL_UserProfileUpdate+"?token="+userAccessToken+"&"+"address="+address.trim().replace(" ","%20"), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {

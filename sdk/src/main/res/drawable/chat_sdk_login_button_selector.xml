@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true" android:drawable="@color/chat_sdk_button_login_button_color_pressed" />
-    <item android:state_pressed="false" android:drawable="@color/chat_sdk_button_login_button_color" />
-</selector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+    <corners
+        android:radius="100dp"
+        />
+    <gradient
+        android:angle="45"
+        android:centerX="35%"
+        android:centerColor="@color/bg_orange"
+        android:startColor="@color/bg_orange"
+        android:endColor="@color/bg_orange"
+        android:type="linear"
+        />
+    <padding
+        android:left="0dp"
+        android:top="0dp"
+        android:right="0dp"
+        android:bottom="0dp"
+        />
+    <size
+        android:width="300dp"
+        android:height="48dp"
+        />
+    <stroke
+        android:width="3dp"
+        android:color="@color/bg_orange"
+        />
+</shape>

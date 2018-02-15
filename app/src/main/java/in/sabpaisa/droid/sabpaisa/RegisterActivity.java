@@ -176,17 +176,24 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
+
         send_Otp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String number = et_phone_number.getText().toString();
                 if (number.equals("")) {
+
+
+
                     Toast.makeText(getApplicationContext(), "Please enter Phone Number!", Toast.LENGTH_LONG).show();
                 } else if (isOnline()) {
-
+                    mBottomSheetDialog.setCancelable(false);//Added on 2nd Feb
+                    mBottomSheetDialog.setCanceledOnTouchOutside(false);//Added on 2nd Feb
                     mBottomSheetDialog.show();
                     callTimerCoundown();
                     sendOTP(v, number);
+
+
                     // Toast.makeText(OTPVarify.this, "first name field is empty", Toast.LENGTH_LONG).show();
                 } else {
 
@@ -902,6 +909,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 {
                     timerTextView.setText("00:" + sec);
+
                 }
 //                resentButton.setClickable(false);
 //                waitTextView.setClickable(false);
@@ -909,6 +917,8 @@ public class RegisterActivity extends AppCompatActivity {
 
             public void onFinish() {
                 timerTextView.setText("00:00");
+                mBottomSheetDialog.hide();
+
 //                resentButton.setClickable(true);
 //                waitTextView.setClickable(true);
             }

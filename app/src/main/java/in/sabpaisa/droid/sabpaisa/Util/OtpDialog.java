@@ -144,6 +144,7 @@ public class OtpDialog extends BottomSheetDialog {
 
             public void onFinish() {
                 timerTextView.setText("00:00");
+                dismiss();
 //                resentButton.setClickable(true);
 //                waitTextView.setClickable(true);
             }

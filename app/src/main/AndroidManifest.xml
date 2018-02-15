@@ -246,6 +246,7 @@
         <activity
             android:name=".SendMoneyAcIFSCDialog"
             android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
             android:theme="@style/DialogTheme" />
         <activity
             android:name=".SendConfirmUPImPINDialog"
@@ -272,6 +273,16 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+
+        <receiver
+            android:name=".ConnectivityReceiver"
+            android:screenOrientation="portrait"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
@@ -322,15 +333,18 @@
             </intent-filter>
         </service>
         <!-- ./Firebase Notifications -->
-        <activity android:name=".Util.ProfileNavigationActivitySkip" />
-        <activity android:name=".MainActivitySkipWithoutSharedPrefernce">
+        <activity android:name=".Util.ProfileNavigationActivitySkip"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivitySkipWithoutSharedPrefernce"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivitySkipWithoutSharedPrefernce" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileNavigationActivityFullViewProceed"></activity>
+        <activity android:name=".ProfileNavigationActivityFullViewProceed"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

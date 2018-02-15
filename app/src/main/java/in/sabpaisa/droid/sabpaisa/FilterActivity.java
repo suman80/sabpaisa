@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.provider.Contacts;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -45,8 +47,9 @@ import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.StateGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
-public class FilterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class FilterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener ,ConnectivityReceiver.ConnectivityReceiverListener {
 
     private static final String TAG = FilterActivity.class.getSimpleName();
 
@@ -78,12 +81,14 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
     String clientLogoPath;
     String clientImagePath;
     String clientname11;
+    int stateId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_filter);
-
+        checkConnection();
         proceed = (Button)findViewById(R.id.proceed);
         skip = (Button) findViewById(R.id.skip);
 
@@ -265,6 +270,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                         stateSpinner.setAdapter(bankAdapter);
 
                         stateSpinner.setOnItemSelectedListener(FilterActivity.this);
+                        Log.d("statearryli",""+stateArrayList);
 
                     }
                 }catch(JSONException e){
@@ -310,52 +316,146 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                 //parsing Json
                 JSONObject jsonObject = null;
 
+          /*  if (response1.equals("failure"))
+            {
+                    Toast.makeText(FilterActivity.this,"No Data Found",Toast.LENGTH_SHORT).show();
+
+
+            }
+*/
                     try {
                         serviceArrayList = new ArrayList<String>();
 
                         jsonObject = new JSONObject(response1);
                         String status = jsonObject.getString("status");
                         String response = jsonObject.getString("response");
+                        Log.d("responsefilterser","servicelist=="+response);
 
-                        if (status.equals("success")) {
+
+
+
+                        if (((status.equals("success"))&& (response.length()>0))) {
                             JSONArray jsonArray = jsonObject.getJSONArray("response");
-                            for (int i = 0; i < jsonArray.length(); i++) {
 
-                                String str = jsonArray.getString(i);
-                                Log.d("1", str);
+                            if(jsonArray.length() == 0){
+                                Log.d("Array SIZE ", " sdfsdfsdfsdfdf"+jsonArray.length());
+                                Log.d("{}","[]");
+                                AlertDialog.Builder builder =new AlertDialog.Builder(FilterActivity.this);
+                                builder.setTitle("");
+                                builder.setMessage("No data is available for Selected State");
+                                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                AlertDialog alertDialog = builder.create();
+                                alertDialog.show();
+                            }
+                            else{
+                                for (int i = 0; i < jsonArray.length(); i++) {
 
-                                if (i == 0) {
-                                    serviceArrayList.add("Select Service");
+                                    String str = jsonArray.getString(i);
+                                    Log.d("fikolkk", str);
+
+                                    if (i == 0) {
+                                        serviceArrayList.add("Select Service");
+                                    }
+                                    serviceArrayList.add(str);
                                 }
-                                serviceArrayList.add(str);
+
+                                Log.d("serviceArrayList", "" + serviceArrayList);
+
+                                ArrayAdapter<String> clientadapter = new ArrayAdapter<String>(FilterActivity.this, R.layout.spinner_item, serviceArrayList);
+                                clientadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                serviceSpinner.setAdapter(clientadapter);
+                                serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                                    public void onItemSelected(AdapterView<?> parentView,
+                                                               View selectedItemView, int position, long id) {
+                                        clientsSpinner.setAdapter(null);
+                                        //  getClientData(serviceSpinner.getSelectedItem().toString(), stateSpinner.getSelectedItem().toString());
+                                        getClientData(serviceSpinner.getSelectedItem().toString(), stateMap.get(stateSpinner.getSelectedItem().toString())+"");
+                                    }
+
+                                    public void onNothingSelected(AdapterView<?> arg0) {// do nothing
+                                    }
+
+                                });
                             }
 
-                            Log.d("serviceArrayList", "" + serviceArrayList);
-
-                            ArrayAdapter<String> clientadapter = new ArrayAdapter<String>(FilterActivity.this, R.layout.spinner_item, serviceArrayList);
-                            clientadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            serviceSpinner.setAdapter(clientadapter);
-                            serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                                public void onItemSelected(AdapterView<?> parentView,
-                                                           View selectedItemView, int position, long id) {
-                                    clientsSpinner.setAdapter(null);
-                                  //  getClientData(serviceSpinner.getSelectedItem().toString(), stateSpinner.getSelectedItem().toString());
-                                    getClientData(serviceSpinner.getSelectedItem().toString(), stateMap.get(stateSpinner.getSelectedItem().toString())+"");
-                                }
-
-                                public void onNothingSelected(AdapterView<?> arg0) {// do nothing
-                                }
-
-                            });
-
-                        }else if (status.equals("failure") && response.equals("No Record Found"))
-                        {//Toast.makeText(getApplicationContext(),"No Services Found!",Toast.LENGTH_SHORT).show();
-
-                            Log.d(TAG,"InElseIfPart");
+//                            JSONArray jsonArray = jsonObject.getJSONArray("response");
+//                            for (int i = 0; i < jsonArray.length(); i++) {
+//
+//                                String str = jsonArray.getString(i);
+//                                Log.d("fikolkk", str);
+//
+//                                if (i == 0) {
+//                                    serviceArrayList.add("Select Service");
+//                                }
+//                                serviceArrayList.add(str);
+//                            }
+//
+//                            Log.d("serviceArrayList", "" + serviceArrayList);
+//
+//                            ArrayAdapter<String> clientadapter = new ArrayAdapter<String>(FilterActivity.this, R.layout.spinner_item, serviceArrayList);
+//                            clientadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                            serviceSpinner.setAdapter(clientadapter);
+//                            serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//
+//                                public void onItemSelected(AdapterView<?> parentView,
+//                                                           View selectedItemView, int position, long id) {
+//                                    clientsSpinner.setAdapter(null);
+//                                  //  getClientData(serviceSpinner.getSelectedItem().toString(), stateSpinner.getSelectedItem().toString());
+//                                    getClientData(serviceSpinner.getSelectedItem().toString(), stateMap.get(stateSpinner.getSelectedItem().toString())+"");
+//                                }
+//
+//                                public void onNothingSelected(AdapterView<?> arg0) {// do nothing
+//                                }
+//
+//                            });
 
                         }
-                    else {Log.d(TAG,"InElsePart");}
+
+
+
+                       // else if ((status.equals("failure")  && ((stateId>0) ))|| (((status.equals("success")&&response.equals("[]" ))&&stateId>0)))
+
+                        else if ((status.equals("failure")  && ((stateId>0) ))) {
+
+                            AlertDialog.Builder builder =new AlertDialog.Builder(FilterActivity.this);
+                            builder.setTitle("");
+                            builder.setMessage("No data is available for Selected State");
+                            builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+
+
+                           // Toast.makeText(getApplicationContext(),"Select any other state",Toast.LENGTH_SHORT).show();
+
+
+                            }
+
+//                        else if((status.equals("success"))  && (response.length()<=0)){
+//                            Log.d("{}","[]");
+//                            AlertDialog.Builder builder =new AlertDialog.Builder(FilterActivity.this);
+//                            builder.setTitle("");
+//                            builder.setMessage("No data is available for Selected State");
+//                            builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.dismiss();
+//                                }
+//                            });
+//                            AlertDialog alertDialog = builder.create();
+//                            alertDialog.show();
+//                        }
+
 
                     } catch(JSONException e){
                             e.printStackTrace();
@@ -388,7 +488,11 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
 
         String  tag_string_req = "req_clients";
 
-        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_ServiceBasedOnState+state+"&service="+serviceName, new Response.Listener<String>(){
+
+        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_ServiceBasedOnState+state+"&service="+serviceName.trim().replace(" ","%20"), new Response.Listener<String>(){
+
+
+/*        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_ServiceBasedOnState+state+"&service="+serviceName, new Response.Listener<String>(){*/
 
             @Override
             public void onResponse(String response1)
@@ -508,11 +612,17 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         String selected=parent.getItemAtPosition(position).toString();
         //  Toast.makeText(this,selected,Toast.LENGTH_SHORT).show();
         Log.d("StateID"," "+selected);
-        int stateId = stateMap.get(selected);
+         stateId = stateMap.get(selected);
         serviceSpinner.setAdapter(null);
         clientsSpinner.setAdapter(null);
        // getServiceData(selected);
-        getServiceData(""+stateId);
+        if(stateId==0) {
+
+
+        }
+        else {
+            getServiceData("" + stateId);
+        }
     }
 
     @Override
@@ -655,7 +765,8 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                     Log.d("responsefilter",""+response);
                     Log.d("statusfilter",""+status);
                     JSONObject jsonObject1 = new JSONObject(response);
-                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();
+                    fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
                     userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
 
                     Log.d("userImageUrlfilter",""+userImageUrl);
@@ -738,5 +849,51 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         finish();
         moveTaskToBack(true);
         System.exit(0);
+    }
+
+    // Method to manually check connection status
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+    }
+
+    // Showing the status in Snackbar
+    private void showSnack(boolean isConnected) {
+        String message;
+        int color;
+        if (isConnected) {
+            message = "Good! Connected to Internet";
+            color = Color.WHITE;
+        } else {
+            message = "Sorry! Not connected to internet";
+            color = Color.RED;
+        }
+
+        Snackbar snackbar = Snackbar
+                .make(findViewById(R.id.fab), message, Snackbar.LENGTH_LONG);
+
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(color);
+        snackbar.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        AppController.getInstance().setConnectivityListener(this);
+    }
+
+    /**
+     * Callback will be triggered when there is change in
+     * network connection
+     */
+
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+
     }
 }

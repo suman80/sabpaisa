@@ -18,7 +18,6 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         super.onTokenRefresh();
-
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
 
         // Saving reg id to shared preferences
@@ -30,13 +29,12 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
         registrationComplete.putExtra("token", refreshedToken);
-        Log.d("Tokenfirebase","-->"+refreshedToken);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
     private void sendRegistrationToServer(final String token) {
         // sending gcm token to server
-        Log.d("rid", "sendRegistrationToServer: " + token);
+        Log.e(TAG, "sendRegistrationToServer: " + token);
     }
 
     private void storeRegIdInPref(String token) {

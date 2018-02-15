@@ -21,6 +21,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -102,8 +103,8 @@ import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 import static android.view.View.GONE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener
-        ,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener,OnFragmentInteractionListener,InstitutionSkipFragment.GetDataInterface{
+public class MainActivitySkip extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener,AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener
+        ,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener,OnFragmentInteractionListener,InstitutionSkipFragment.GetDataInterface {
 
     private SliderLayout mHeaderSlider;
     ArrayList<Integer> headerList = new ArrayList<>();
@@ -111,18 +112,19 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     AppBarLayout appBarLayout;
     private CustomViewPager viewPager;
     private TabLayout tabLayout;
-    TextView usernameniv,mailIdniv;
+    TextView usernameniv, mailIdniv;
     Toolbar toolbar;
-    String userImageUrl=null;
+    String userImageUrl = null;
     ImageView niv;
-    int value=2;
-    String response,userAccessToken;
-    ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,mPinInfo,mPinInfo2;
-    LinearLayout paymentButton,chatButton,memberButton;
-    int isMpinSet=1;
+    int value = 2;
+    String x;
+    String response, userAccessToken;
+    ImageView sendMoney, requestMoney, socialPayment, transaction, profile, bank, mPinInfo, mPinInfo2;
+    LinearLayout paymentButton, chatButton, memberButton;
+    int isMpinSet = 1;
     FloatingActionButton fab;
     ActionBarDrawerToggle toggle;
-    HashMap<String,String> Hash_file_maps;
+    HashMap<String, String> Hash_file_maps;
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
@@ -137,8 +139,6 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     InstitutionSkipFragment institutionSkipFragment;
 
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,16 +146,14 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
         setContentView(R.layout.activity_main_navigation);
 
-
+         //checkConnection();
         this.mHandler = new Handler();
-       // m_Runnable.run();
+        // m_Runnable.run();
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
         response = sharedPreferences.getString("response", "123");
 
         userAccessToken = response;
-
-
 
 
         Log.d("AccessTokensilter", " " + userAccessToken);
@@ -179,23 +177,19 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
-
         // get the userPRofileimage from filter activity
-        Intent i=getIntent();
+        Intent i = getIntent();
 
-       // userImageUrl=i.getStringExtra("userImageUrl");
+        // userImageUrl=i.getStringExtra("userImageUrl");
 
 //        Log.d("userskip",userImageUrl);
         //Initialise the navigation header image
-         niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
-         usernameniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.username_nav);
-         mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
+        niv = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+        usernameniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.username_nav);
+        mailIdniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_nav);
         //toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
 
         //set the NAvigationImage header using glide
-
-
 
 
         //ChatSDKUiHelper.initDefault();
@@ -210,24 +204,24 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
 // Set the adapter
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
-        sendMoney = (ImageView)findViewById(R.id.ll_send);
-        requestMoney = (ImageView)findViewById(R.id.ll_request);
-       // socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
-        transaction = (ImageView)findViewById(R.id.ll_transactions);
-        profile = (ImageView)findViewById(R.id.ll_profile);
-        bank = (ImageView)findViewById(R.id.ll_bank);
-        paymentButton = (LinearLayout)findViewById(R.id.payment_button);
-        chatButton = (LinearLayout)findViewById(R.id.chat);
-        memberButton = (LinearLayout)findViewById(R.id.members);
-        rfaLayout = (RapidFloatingActionLayout)findViewById(R.id.activity_main_rfal);
-        rfaBtn = (RapidFloatingActionButton)findViewById(R.id.activity_main_rfab);
+        sendMoney = (ImageView) findViewById(R.id.ll_send);
+        requestMoney = (ImageView) findViewById(R.id.ll_request);
+        // socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
+        transaction = (ImageView) findViewById(R.id.ll_transactions);
+        profile = (ImageView) findViewById(R.id.ll_profile);
+        bank = (ImageView) findViewById(R.id.ll_bank);
+        paymentButton = (LinearLayout) findViewById(R.id.payment_button);
+        chatButton = (LinearLayout) findViewById(R.id.chat);
+        memberButton = (LinearLayout) findViewById(R.id.members);
+        rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.activity_main_rfal);
+        rfaBtn = (RapidFloatingActionButton) findViewById(R.id.activity_main_rfab);
         FabButtonCreate();
         //fab = (FloatingActionButton)findViewById(R.id.fab_dashboard);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sabpaisa");
         toolbar.setNavigationIcon(R.drawable.ic_navigation);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
@@ -240,17 +234,17 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         tabLayout.setupWithViewPager(viewPager);
 
         setSupportActionBar(toolbar);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
-        mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
+        mHeaderSlider = (SliderLayout) findViewById(R.id.slider);
 
         LoadHeaderImageList();
 
         setHeaderImageList();
         getUserIm(userAccessToken);
 
-
+//mailIdniv.setText(x);
         navigationView.setItemIconTintList(null);
 
 
@@ -321,8 +315,8 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivitySkip.this,ChatSDKLoginActivity.class);
-                intent.putExtra("VALUE",value);
+                Intent intent = new Intent(MainActivitySkip.this, ChatSDKLoginActivity.class);
+                intent.putExtra("VALUE", value);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
@@ -340,7 +334,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         usernameniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivitySkip.this,ProfileNavigationActivitySkip.class);
+                Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivitySkip.class);
                 startActivity(intent);
 
             }
@@ -349,7 +343,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         niv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivitySkip.this,ProfileNavigationActivitySkip.class);
+                Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivitySkip.class);
                 startActivity(intent);
 
             }
@@ -358,7 +352,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         mailIdniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivitySkip.this,ProfileNavigationActivitySkip.class);
+                Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivitySkip.class);
                 startActivity(intent);
 
             }
@@ -414,6 +408,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
                 rfaContent
         ).build();
     }
+
     @Override
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
         Toast.makeText(this, "clicked label: " + position, Toast.LENGTH_SHORT).show();
@@ -422,20 +417,20 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
     @Override
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
-        if (position==2){
+        if (position == 2) {
             Toast.makeText(this, "Send Clicked", Toast.LENGTH_SHORT).show();
-            if (isMpinSet==0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
+            if (isMpinSet == 0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
                 Intent intent = new Intent(MainActivitySkip.this, AccountInfoActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-            }else {
+            } else {
                 Intent intent = new Intent(MainActivitySkip.this, SendMoneyActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
-        }else if (position==1){
+        } else if (position == 1) {
             Toast.makeText(this, "Request Clicked", Toast.LENGTH_SHORT).show();
-        }else if (position==0){
+        } else if (position == 0) {
             Toast.makeText(this, "Transactions Clicked", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivitySkip.this, TransactionsActivity.class);
             startActivity(intent);
@@ -450,15 +445,15 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
         institutionSkipFragment = new InstitutionSkipFragment();
 
-        adapter.addFragment(institutionSkipFragment,"Clients");
-        adapter.addFragment(new OtherClientSkipFragment(),"Other Clients");
+        adapter.addFragment(institutionSkipFragment, "Clients");
+        adapter.addFragment(new OtherClientSkipFragment(), "Other Clients");
         //adapter.addFragment(new FormFragment(),"Forms");
         //adapter.addFragment(new InstitutionFragment(),"Groups");
         viewPager.setAdapter(adapter);
     }
 
     private void setHeaderImageList() {
-        for(int i=0;i<headerList.size();i++){
+        for (int i = 0; i < headerList.size(); i++) {
             CustomSliderView customSliderView = new CustomSliderView(this);
             // initialize a SliderLayout
             customSliderView
@@ -489,8 +484,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         Hash_file_maps.put("Payment & Transfer", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_2.png");
         Hash_file_maps.put("The Future Of Payments", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_image.jpg");
         Hash_file_maps.put("UPI", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_1.svg.png");
-        for(String name : Hash_file_maps .keySet())
-        {
+        for (String name : Hash_file_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(this);
             // initialize a SliderLayout
             textSliderView
@@ -502,7 +496,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
             //add your extra information
             textSliderView.bundle(new Bundle());
             textSliderView.getBundle()
-                    .putString("extra",name);
+                    .putString("extra", name);
 
             mHeaderSlider.addSlider(textSliderView);
         }
@@ -513,17 +507,12 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     }
 
 
-
-
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-        if (verticalOffset == 0)
-        {
+        if (verticalOffset == 0) {
             rfaLayout.setVisibility(GONE);
             //fab.setVisibility(View.GONE);// Collapsed
-        }
-        else
-        {
+        } else {
             rfaLayout.setVisibility(View.VISIBLE);
             //fab.setVisibility(View.VISIBLE);// Not collapsed
         }
@@ -536,7 +525,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (query.length()==0&& clientData!=null /*&& GroupData!=null*/){
+                if (query.length() == 0 && clientData != null /*&& GroupData!=null*/) {
                     filteredClientList = clientData;
                     //filteredGroupList = GroupData;
                     institutionSkipFragment.getDataFromActivity();
@@ -545,7 +534,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
                     InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                     imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 }
-                if (query.length() > 0 && clientData!=null /*&& GroupData!=null*/) {
+                if (query.length() > 0 && clientData != null /*&& GroupData!=null*/) {
                     filteredClientList = filterClient(clientData, query);
                     //filteredGroupList = filterGroup(GroupData, query);
 
@@ -562,14 +551,13 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.length()==0&& clientData!=null /*&& GroupData!=null*/){
+                if (newText.length() == 0 && clientData != null /*&& GroupData!=null*/) {
                     filteredClientList = clientData;
                     Log.wtf("filteredfeedList ", String.valueOf(filteredClientList));
                     //filteredGroupList = GroupData;
                     institutionSkipFragment.getDataFromActivity();
                     //groupsFragments.getDataFromActivity();
-                }
-                else if (newText.length() > 0 && clientData!=null /*&& GroupData!=null*/) {
+                } else if (newText.length() > 0 && clientData != null /*&& GroupData!=null*/) {
                     filteredClientList = filterClient(clientData, newText);
                     //filteredGroupList = filterGroup(GroupData, newText);
 
@@ -627,7 +615,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         filteredList.clear();
         for (SkipClientData item : mList) {
             if (item.organization_name.toLowerCase().contains(query) || item.organizationId.toLowerCase().contains(query)
-                    || item.orgAddress.toLowerCase().contains(query) ) {
+                    || item.orgAddress.toLowerCase().contains(query)) {
                 filteredList.add(item);
             }
         }
@@ -635,7 +623,6 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         return filteredList;
     }
     /*END method to search query in Client List*/
-
 
 
     @Override
@@ -651,13 +638,11 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         searchView.setMenuItem(menu.getItem(0));  //TODO searchView
 
 
-
         return true;
     }
 
 
-
-    public boolean      onQueryTextSubmit      (String query) {
+    public boolean onQueryTextSubmit(String query) {
         //Toast.makeText(this, "Searching for: " + query + "...", Toast.LENGTH_SHORT).show();
         mSearchText.setText("Searching for: " + query + "...");
         mSearchText.setTextColor(Color.RED);
@@ -704,17 +689,13 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
             searchView.closeSearch();
         } else {
             super.onBackPressed();
-            Intent intent=new Intent(MainActivitySkip.this,FilterActivity.class);
+            Intent intent = new Intent(MainActivitySkip.this, FilterActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             this.finish();
 
         }
     }
-
-
-
-
 
 
     @Override
@@ -737,7 +718,6 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         }
 
 
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -750,7 +730,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         int id = item.getItemId();
 
         if (id == R.id.nav_Profile) {
-            Intent intent=new Intent(MainActivitySkip.this, ProfileNavigationActivitySkip.class);
+            Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivitySkip.class);
 
             startActivity(intent);
             // Handle the camera action
@@ -761,23 +741,18 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
             startActivity(intent);
 
-        }*/
-        else  if(id == R.id.nav_ChangePassword)
-        {
-            Intent intent=new Intent(MainActivitySkip.this, ForgotActivity.class);
+        }*/ else if (id == R.id.nav_ChangePassword) {
+            Intent intent = new Intent(MainActivitySkip.this, ForgotActivity.class);
 
             startActivity(intent);
-        }
-        else  if(id == R.id.nav_Privacy_Policy)
-        {
-            Intent intent=new Intent(MainActivitySkip.this, PrivacyPolicyActivity.class);
+        } else if (id == R.id.nav_Privacy_Policy) {
+            Intent intent = new Intent(MainActivitySkip.this, PrivacyPolicyActivity.class);
 
             startActivity(intent);
-        }
-        else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
 
 
-            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivitySkip.this); //Home is name of the activity
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivitySkip.this); //Home is name of the activity
             builder.setMessage("Do you want to Logout?");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -788,7 +763,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
                     editor.remove("logged");
                     editor.commit();
                     finish();
-                    Intent intent=new Intent(MainActivitySkip.this, LogInActivity.class);
+                    Intent intent = new Intent(MainActivitySkip.this, LogInActivity.class);
 
                     startActivity(intent);
 
@@ -802,12 +777,11 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
                 }
             });
 
-            AlertDialog alert=builder.create();
+            AlertDialog alert = builder.create();
             alert.show();
 
 
-
-           // onLogoutClick(view);
+            // onLogoutClick(view);
             /*SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
             SharedPreferences.Editor e=sp.edit();
             e.clear();
@@ -824,8 +798,6 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
                 //Go directly to Homescreen.
             }
            */
-
-
 
 
         } else if (id == R.id.nav_share) {
@@ -846,8 +818,8 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
 
         } else if (id == R.id.nav_rate) {
-            Intent intent=new Intent(MainActivitySkip.this, RateActivity.class);
-            intent.putExtra("VALUE",value);
+            Intent intent = new Intent(MainActivitySkip.this, RateActivity.class);
+            intent.putExtra("VALUE", value);
 
             startActivity(intent);
 
@@ -892,6 +864,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
     public void onPageScrollStateChanged(int state) {
 
     }
+
     public void onLogoutClick(final View view) {
         Intent i = new Intent(this, LogInActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -929,17 +902,16 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
         return filteredClientList;
     }
 
-    private void getUserIm(final  String token) {
+    private void getUserIm(final String token) {
 
-        String  tag_string_req = "req_clients";
+        String tag_string_req = "req_clients";
 
-        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
+        StringRequest request = new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfileImage + "?token=" + token, new Response.Listener<String>() {
 
             @Override
-            public void onResponse(String response1)
-            {
+            public void onResponse(String response1) {
 
-                Log.d("Particularclientimage","-->"+response1);
+                Log.d("Particularclientimage", "-->" + response1);
                 //parsing Json
                 JSONObject jsonObject = null;
 
@@ -948,20 +920,21 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
                     jsonObject = new JSONObject(response1.toString());
                     String response = jsonObject.getString("response");
                     String status = jsonObject.getString("status");
-                    Log.d("responsefilter",""+response);
-                    Log.d("statusfilter",""+status);
+                    Log.d("responsefilter", "" + response);
+                    Log.d("statusfilter", "" + status);
                     JSONObject jsonObject1 = new JSONObject(response);
-                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
-                    userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter = new FetchUserImageGetterSetter();
+                    fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                    userImageUrl = fetchUserImageGetterSetter.getUserImageUrl().toString();
 
-                    Log.d("userImageUrlfilter",""+userImageUrl);
+                    Log.d("userImageUrlfilter", "" + userImageUrl);
                     Glide
                             .with(MainActivitySkip.this)
                             .load(userImageUrl)
                             .error(R.drawable.default_users)
                             .into(niv);
 
-                    Log.d("Skip",""+userImageUrl);
+                    Log.d("Skip", "" + userImageUrl);
                  /*   ClientData clientData=new ClientData();
                     clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
                     clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
@@ -976,8 +949,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
                     Log.d("clientiooo","-->"+clientname11 );*/
 
 
-                }
-                catch(JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -986,7 +958,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -1027,20 +999,20 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
             }
 
 
-        }) ;
+        });
 
-        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
 
 
     }
-    private final Runnable m_Runnable = new Runnable()
-    {
+
+    private final Runnable m_Runnable = new Runnable() {
         public void run()
 
         {
-            Toast.makeText(MainActivitySkip.this,"in runnable",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivitySkip.this, "in runnable", Toast.LENGTH_SHORT).show();
 
-            MainActivitySkip.this.mHandler.postDelayed(m_Runnable,1000);
+            MainActivitySkip.this.mHandler.postDelayed(m_Runnable, 1000);
         }
 
     };
@@ -1050,7 +1022,7 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
         String tag_string_req = "req_register";
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfile+"?token="+userAccessToken, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfile + "?token=" + userAccessToken, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -1060,24 +1032,32 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
                     //progressBar.setVisibility(View.GONE);
                     JSONObject object = new JSONObject(response1);
                     String response = object.getString("response");
-                    String status =object.getString("status");
+                    String status = object.getString("status");
+                    x = object.getJSONObject("response").getString("emailId").toString();
 
-                    if (status.equals("success")) {
+                    if(x.equals("null"))
+                    {
+                        usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
+mailIdniv.setText("");
+                    }
+                   else if (status.equals("success")) {
                         usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
-                        mailIdniv.setText(object.getJSONObject("response").getString("emailId").toString());
-                       /// et_address.setText(object.getJSONObject("response").getString("address").toString());
-                      //  et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
+
+
+                        mailIdniv.setText(x);
+                        /// et_address.setText(object.getJSONObject("response").getString("address").toString());
+                        //  et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
                         Log.d("skipusername", "userName" + usernameniv);
                         Log.d("skipusermailid", "Mail" + mailIdniv);
 
-                    }else {
-                       // Toast.makeText(getApplicationContext(),"Could  not able to load data",Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Toast.makeText(getApplicationContext(),"Could  not able to load data",Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                   // Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -1139,6 +1119,54 @@ public class MainActivitySkip extends AppCompatActivity  implements AppBarLayout
 
     }
 
+    // Method to manually check connection status
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+       // showSnack(isConnected);
+    }
+
+    // Showing the status in Snackbar
+    private void showSnack(boolean isConnected) {
+        String message;
+        int color;
+        if (isConnected) {
+            message = "Good! Connected to Internet";
+            color = Color.WHITE;
+        } else {
+            message = "Sorry! Not connected to internet";
+            color = Color.RED;
+        }
+
+        Snackbar snackbar = Snackbar
+                .make(findViewById(R.id.fab), message, Snackbar.LENGTH_LONG);
+
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(color);
+        snackbar.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        AppController.getInstance().setConnectivityListener(this);
+    }
+
+    /**
+     * Callback will be triggered when there is change in
+     * network connection
+     */
+
+
+
+
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        //showSnack(isConnected);
+    }
 }
 
 

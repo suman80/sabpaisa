@@ -70,6 +70,8 @@ public class InstitutionSkipFragment extends Fragment {
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),10));
         recyclerViewInstitutions.setLayoutManager(llm);
 
+        recyclerViewInstitutions.getRecycledViewPool().setMaxRecycledViews(0, 0);
+
 
         //institutionAdapter = new InstitutionAdapter(institutions);
         //recyclerViewInstitutions.setAdapter(institutionAdapter);

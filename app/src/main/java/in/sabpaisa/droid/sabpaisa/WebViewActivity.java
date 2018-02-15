@@ -44,8 +44,8 @@ public class WebViewActivity extends AppCompatActivity {
         // url1=getIntent().getStringExtra("LP");
         Log.d("webViewURL"," "+url);
         //Log.d("webViewURL"," "+url1);
-
-        webView.loadUrl("https://"+url.trim());
+        webView.loadUrl(url);
+        //webView.loadUrl("https://"+url.trim());
         // webView.loadUrl("https://"+url1.trim());
 /*------------------- //Added on 2nd Feb------------------------------------*/
         progressBar.getProgressDrawable().setColorFilter(Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);

@@ -28,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -260,7 +261,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     public void callGetCommentList(final String GropuId) {
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";
-        String urlJsonObj = AppConfiguration.GroupAddComment + "/getGroupsComments?group_id=" + GropuId;
+        final String urlJsonObj = AppConfiguration.GroupAddComment + "/getGroupsComments?group_id=" + GropuId;
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
                 urlJsonObj, new Response.Listener<String>(){
@@ -273,6 +274,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     ArrayList<CommentData> commentArrayList = new ArrayList<CommentData>();
 
                     JSONObject jsonObject = new JSONObject(response);
+                    Log.d("jsonobject1",""+jsonObject);
+
 
                     //String status = jsonObject.getString("status");
 
@@ -287,14 +290,44 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                         for (int i = 0; i < jsonArray.length(); i++) {
                             CommentData groupData = new CommentData();
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+
                             groupData.setCommentText(jsonObject1.getString("commentText"));
                             groupData.setCommentName(jsonObject1.getString("commentByName"));
+                            groupData.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                            String dataTime = jsonObject1.getString("commentDate");
 
-                            String dataTime = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
+
+                                String str = jsonArray.getString(i);
+                                Log.d("444", str);
+                            String userImageUrl=jsonObject1.getString("userImageUrl");
+                     //  String userImageUrl1=groupData.getUserImageUrl().toString();
+                            //.split(" ")[1].replace(".0", "");
+
                             Log.d("dataTimePFF"," "+dataTime);
+                            Log.d("dataimageurlgroup1111"," "+userImageUrl);
+
+
+                            JSONObject jsonObject2=new JSONObject(userImageUrl);
+                            groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
+                            String image=groupData.getUserImageUrl().toString();
+                            Log.d("imageuser"," "+image);
+
+
+                           // Log.d("dataimageurlgroup222222"," "+userImageUrl1);
                             groupData.setComment_date(getDate(Long.parseLong(dataTime)));
+
                             commentArrayList.add(groupData);
-                        }
+
+
+/*
+                            JSONArray jsonArray1 = jsonObject.getJSONArray("userImageUrl");
+                            for (int j = 0; j < jsonArray.length(); j++) {
+
+                                String str1 = jsonArray1.getString(j);
+                                Log.d("1111111111111", str1);
+                            }*/
+
+                            }
                         loadCommentListView(commentArrayList);
                     } else {
                         Log.d("PGF1111","  "+obj.toString());

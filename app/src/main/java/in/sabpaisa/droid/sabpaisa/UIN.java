@@ -38,6 +38,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,9 +99,18 @@ public class UIN extends AppCompatActivity {
         Log.d("clientImageURLPathuin","__>"+clientImageURLPath);
         Log.d("clientImageURLPathuin","__>"+clientLogoURLPath);
         Log.d("clientImageURLPathuin","__>"+clientname);
-        new UIN.DownloadImageTask(clientImagePath).execute(clientImageURLPath);
-        new UIN.DownloadImageTask(clientlogopath).execute(clientLogoURLPath);
-
+       // new UIN.DownloadImageTask(clientImagePath).execute(clientImageURLPath);
+       // new UIN.DownloadImageTask(clientlogopath).execute(clientLogoURLPath);
+        Glide
+                .with(UIN.this)
+                .load(clientLogoURLPath)
+                .error(R.drawable.sabpaisa)
+                .into(clientlogopath);
+        Glide
+                .with(UIN.this)
+                .load(clientImageURLPath)
+                .error(R.drawable.sabpaisa)
+                .into(clientImagePath);
 
         //clientName.setText(R.id.InstitueNAme);
 
@@ -123,7 +133,8 @@ public class UIN extends AppCompatActivity {
     }
 
     public void onVerifyBtn(View view) {
-        if (!isOnline()){
+        if (!isOnline()
+                ){
 
             AlertDialog alertDialog = new AlertDialog.Builder(UIN.this, R.style.MyDialogTheme).create();
 

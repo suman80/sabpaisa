@@ -1,6 +1,8 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -53,6 +55,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     CommentsDB dbHelper;
     private int TOTAL_PAGES = 3;
     ArrayList<CommentData> arrayList;
+    String commentText;
     String FeedsNm, feedsDiscription, feedImg, response, feed_id, userAccessToken;
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -101,6 +104,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 .into(feedImage);
 
         callGetCommentList(feed_id);
+        Log.d("Feedidproceed",""+feed_id);
         arrayList = new ArrayList<>();
         toolbar.setNavigationIcon(R.drawable.previousmoresmall);
 
@@ -170,13 +174,58 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     //EditText group_details_text_view = null;
 
-    EditText group_details_text_view = null;
+    EditText group_details_text_view ;
 
     public void onClickSendComment(View view) {
         group_details_text_view = (EditText) findViewById(R.id.commentadd);
-        String commentText = group_details_text_view.getText().toString();
-        // showpDialog(view);
-        callCommentService(feed_id, userAccessToken, commentText);
+        commentText = group_details_text_view.getText().toString();
+
+        /*if (group_details_text_view.length()==0)
+            Log.d("commentText1"," "+commentText);
+        {
+
+            Log.d("commentText2"," "+commentText);
+            AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
+            builder.setTitle("Comment");
+            builder.setMessage("Hey,looks like you forgot to enter text.");
+            builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
+        }
+*/
+            // showpDialog(view);
+            callCommentService(feed_id, userAccessToken, commentText);
+
+
+/*
+        if (commentText=="null")
+            Log.d("commentText1"," "+commentText);
+        {
+
+            Log.d("commentText2"," "+commentText);
+            AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
+            builder.setTitle("Comment");
+            builder.setMessage("Hey,looks like you forgot to enter text.");
+            builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
+        }*/
+
+
+        Log.d("commentText3"," "+commentText);
+
     }
 
     private void callCommentService(final String feed_id, final String userAccessToken, final String comment_text) {
@@ -244,22 +293,60 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
                     JSONObject jsonObject = new JSONObject(response);
 
-                    //String status = jsonObject.getString("status");
+                    String status = jsonObject.getString("status");
 
-                   // String response1 = jsonObject.getString("response");
+                    String response1 = jsonObject.getString("response");
+                    Log.d("Re[spnsere"," "+response1);
+                    Log.d("Re[spnsere"," "+status);
 
-                        JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                    JSONArray jsonArray = jsonObject.getJSONArray("response");
 
                    // new LoadDBfromAPI().execute(response);
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             CommentData groupData = new CommentData();
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            String a= jsonObject1.getString("commentText");
+                            Log.d("CTadhkacka"," "+a);
                             groupData.setCommentText(jsonObject1.getString("commentText"));
                             groupData.setCommentName(jsonObject1.getString("commentByName"));
 
                             String dataTime = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
                             Log.d("dataTimePFF"," "+dataTime);
+
+                            /*String str = jsonArray.getString(i);
+                            Log.d("444feed", str);
+                            ///String userImageUrl=jsonObject1.getString("userImageUrl");
+                             String userImageUrl1=groupData.getUserImageUrl().toString();
+                            //.split(" ")[1].replace(".0", "");
+                           // Log.d("dataimageurlfeed1111"," "+userImageUrl);
+
+
+                            JSONObject jsonObject2=new JSONObject(userImageUrl1);
+                            groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
+                            String image=groupData.getUserImageUrl().toString();
+                            Log.d("imageuserfeed"," "+image);
+                            Log.d("imageuserfeed11"," "+userImageUrl1);
+
+
+*/
+
+                              String str = jsonArray.getString(i);
+                            Log.d("444feed", str);
+                            String userImageUrl=jsonObject1.getString("userImageUrl");
+                            // String userImageUrl1=groupData.getUserImageUrl().toString();
+                            //.split(" ")[1].replace(".0", "");
+
+                           // Log.d("dataimageurlfeed1111"," "+userImageUrl);
+
+
+                            JSONObject jsonObject2=new JSONObject(userImageUrl);
+                            groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
+                            String image=groupData.getUserImageUrl().toString();
+                            Log.d("imageuserfeed"," "+image);
+                            Log.d("imageuserfeed11"," "+userImageUrl);
+
                             groupData.setComment_date(getDate(Long.parseLong(dataTime)));
                             commentArrayList.add(groupData);
                         }

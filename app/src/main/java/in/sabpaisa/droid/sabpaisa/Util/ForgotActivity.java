@@ -75,6 +75,7 @@ public class ForgotActivity extends AppCompatActivity {
                     registerUser(contactNumber,newPassword);
 
 
+
                 }
                 else {
 
@@ -177,10 +178,10 @@ public class ForgotActivity extends AppCompatActivity {
 */
 
 
-                        Intent intent = new Intent(ForgotActivity.this,LogInActivity.class);
+                        Intent intent = new Intent(ForgotActivity.this,LoginActivityWithoutSharedPreference.class);
                         startActivity(intent);
                     Log.e(TAG, "status: " + status);
-
+finish();
                     //Log.e(TAG, "response2163123: " + userId);
 
 
