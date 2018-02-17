@@ -173,7 +173,45 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         group_details_text_view = (EditText) findViewById(R.id.commentadd);
         String commentText = group_details_text_view.getText().toString();
         // showpDialog(view);
-        callCommentService(GroupId, userAccessToken, commentText);
+        if (commentText.trim().length()==0)
+        {
+
+            Log.d("commentText2"," "+commentText);
+            AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Group_FullScreen.this);
+            builder.setTitle("Comment");
+            builder.setMessage("Hey,looks like you forgot to enter text.");
+            builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
+        }
+        else if(commentText.trim().length()>1999)
+        {
+            AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Group_FullScreen.this);
+            builder.setTitle("Comment");
+            builder.setMessage("Hey folk,It looks like you exceeded the text limit");
+            builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+        // showpDialog(view);
+        else {
+            callCommentService(GroupId, userAccessToken, commentText);
+            Log.e("CommentDatafeeddetaida ", "CommentData " + commentText);
+        }
+
+       // callCommentService(GroupId, userAccessToken, commentText);
     }
 
     private void callCommentService(final String GroupId, final String userAccessToken, final String comment_text) {

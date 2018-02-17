@@ -550,7 +550,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new ProceedInstitiutionFragment(),"Clients");
-        adapter.addFragment(new FormFragment(),"Other Clients");
+        //adapter.addFragment(new FormFragment(),"Other Clients");
         //adapter.addFragment(new InstitutionFragment(),"Groups");
         viewPager.setAdapter(adapter);
         stateName=getIntent().getStringExtra("STATENAME");

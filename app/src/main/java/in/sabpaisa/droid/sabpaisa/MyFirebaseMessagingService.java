@@ -200,7 +200,7 @@ Context ctx;
             // If the app is in background, firebase itself handles the notification
         }
     }
-*/
+
 
 /*
     private void handleDataMessage(JSONObject json) {

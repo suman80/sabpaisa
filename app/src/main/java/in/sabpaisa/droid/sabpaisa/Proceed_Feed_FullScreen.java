@@ -180,8 +180,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         group_details_text_view = (EditText) findViewById(R.id.commentadd);
         commentText = group_details_text_view.getText().toString();
 
-        /*if (group_details_text_view.length()==0)
-            Log.d("commentText1"," "+commentText);
+        /*if (group_details_text_view.trim().length()==0)*/
+        if (commentText.trim().length()==0 )
         {
 
             Log.d("commentText2"," "+commentText);
@@ -198,10 +198,27 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             alertDialog.show();
 
         }
-*/
-            // showpDialog(view);
-            callCommentService(feed_id, userAccessToken, commentText);
+        else if(commentText.trim().length()>1999)
+        {
+            AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
+            builder.setTitle("Comment");
+            builder.setMessage("Hey folk,It looks like you exceeded the text limit");
+            builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
 
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+
+            // showpDialog(view);
+        else {
+            callCommentService(feed_id, userAccessToken, commentText);
+            Log.e("CommentDatafeeddetaida ", "CommentData " + commentText);
+        }
 
 /*
         if (commentText=="null")

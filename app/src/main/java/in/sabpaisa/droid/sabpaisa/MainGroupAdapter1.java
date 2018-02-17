@@ -54,6 +54,8 @@ public class MainGroupAdapter1 extends
         RecyclerView.Adapter<MainGroupAdapter1.MyViewHolder> {
     Context mContext;
     private List<GroupListData> countryList;
+      public Button joinmember;
+
 
     public MainGroupAdapter1(List<GroupListData> countryList,Context context) {
         this.countryList = countryList;
@@ -86,48 +88,98 @@ public class MainGroupAdapter1 extends
         holder.Group_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
+                SharedPreferences sharedPreferences = v.getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+                String token = sharedPreferences.getString("response", "123");
+
+                String groupId = c.getGroupId().toString();
+
+                Log.d("tokenGRP"," "+token);
+                Log.d("groupIdGRP"," "+groupId);
+
+                addMember(token,groupId,v,c);
+
+                /*Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
                 intent.putExtra("groupName",c.getGroupName());
                 intent.putExtra("groupText",c.getGroupText());
                 intent.putExtra("groupImage",c.getImagePath());
                 intent.putExtra("groupId",c.getGroupId());
-                v.getContext().startActivity(intent);
+                v.getContext().startActivity(intent);*/
             }
         });
 
         holder.Group_description.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
+                SharedPreferences sharedPreferences = v.getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+                String token = sharedPreferences.getString("response", "123");
+
+                String groupId = c.getGroupId().toString();
+
+                Log.d("tokenGRP"," "+token);
+                Log.d("groupIdGRP"," "+groupId);
+
+                addMember(token,groupId,v,c);
+
+               /* Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
                 intent.putExtra("groupName",c.getGroupName());
                 intent.putExtra("groupText",c.getGroupText());
                 intent.putExtra("groupImage",c.getImagePath());
                 intent.putExtra("groupId",c.getGroupId());
-                v.getContext().startActivity(intent);
+                v.getContext().startActivity(intent);*/
             }
         });
 
         holder.Group_Image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
-                intent.putExtra("groupName",c.getGroupName());
-                intent.putExtra("groupText",c.getGroupText());
-                intent.putExtra("groupImage",c.getImagePath());
-                intent.putExtra("groupId",c.getGroupId());
-                v.getContext().startActivity(intent);
+
+                    SharedPreferences sharedPreferences = v.getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+                    String token = sharedPreferences.getString("response", "123");
+
+                    String groupId = c.getGroupId().toString();
+
+                    Log.d("tokenGRP", " " + token);
+                    Log.d("groupIdGRP", " " + groupId);
+
+                    addMember(token, groupId, v, c);
+
+
+                    /*Intent intent = new Intent(v.getContext(), Proceed_Group_FullScreen.class);
+                    intent.putExtra("groupName", c.getGroupName());
+                    intent.putExtra("groupText", c.getGroupText());
+                    intent.putExtra("groupImage", c.getImagePath());
+                    intent.putExtra("groupId", c.getGroupId());
+                    v.getContext().startActivity(intent);*/
+
             }
         });
 
         holder.Group_Logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
+
+                SharedPreferences sharedPreferences = v.getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+                String token = sharedPreferences.getString("response", "123");
+
+                String groupId = c.getGroupId().toString();
+
+                Log.d("tokenGRP"," "+token);
+                Log.d("groupIdGRP"," "+groupId);
+
+                addMember(token,groupId,v,c);
+
+                /*Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
                 intent.putExtra("groupName",c.getGroupName());
                 intent.putExtra("groupText",c.getGroupText());
                 intent.putExtra("groupImage",c.getImagePath());
                 intent.putExtra("groupId",c.getGroupId());
-                v.getContext().startActivity(intent);
+
+                v.getContext().startActivity(intent);*/
+
             }
         });
 
@@ -210,24 +262,24 @@ public class MainGroupAdapter1 extends
                     JSONObject jObj = new JSONObject(response1);
 
                     final String response = jObj.getString("response");
-
+////////16th  feb////////response==Member added successfully
                     Log.d("MemberResponse"," "+response);
 
                     String status =jObj.getString("status");
 
                     if (status!=null && status.equals("success")){
 
-                        final AlertDialog alertDialog = new AlertDialog.Builder( view.getContext(), R.style.MyDialogTheme).create();
+                        final AlertDialog alertDialog1 = new AlertDialog.Builder( view.getContext(), R.style.MyDialogTheme).create();
                         // Setting Dialog Title
-                        alertDialog.setTitle("Group Member");
+                        alertDialog1.setTitle("Group Member");
 
                         // Setting Dialog Message
-                        alertDialog.setMessage("Request Sent for Approval ");
+                        alertDialog1.setMessage("Hey,Your request sent for approval ");
 
-                        alertDialog.setCanceledOnTouchOutside(false);
+                        alertDialog1.setCanceledOnTouchOutside(false);
 
                         // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        alertDialog1.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Write your code here to execute after dialog closed
 
@@ -242,36 +294,72 @@ public class MainGroupAdapter1 extends
                         });
 
                         // Showing Alert Message
-                        alertDialog.show();
+                        alertDialog1.show();
 
 
 
                     }
 
-                    else {
 
-                        final AlertDialog alertDialog = new AlertDialog.Builder( view.getContext(), R.style.MyDialogTheme).create();
-                        // Setting Dialog Title
-                        alertDialog.setTitle("Group Member");
-
-                        // Setting Dialog Message
-                        alertDialog.setMessage(response);
-
-                        alertDialog.setCanceledOnTouchOutside(false);
-
-                        // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                ///////////////////////////////////////////////
-                                if(response.equals("User already a member of the client with Status Approved")){
+                    else if (response.equals("User already a member of the client with Status Approved")){
+                              //joinmember.setVisibility(View.GONE);
                                     Intent intent = new Intent(view.getContext(),Proceed_Group_FullScreen.class);
                                     intent.putExtra("groupName",groupListData.getGroupName());
                                     intent.putExtra("groupText",groupListData.getGroupText());
                                     intent.putExtra("groupImage",groupListData.getImagePath());
                                     intent.putExtra("groupId",groupListData.getGroupId());
                                     view.getContext().startActivity(intent);
+
+
                                 }
+
+                                else if(response.equals("User already a member of the client with Status Blocked"))
+                                {
+                                    AlertDialog alertDialog = new AlertDialog.Builder(view.getContext(), R.style.MyDialogTheme).create();
+
+                                    // Setting Dialog Title
+                                    alertDialog.setTitle("");
+
+                                    // Setting Dialog Message
+                                    alertDialog.setMessage("Hey,looks like you are not Authorised to enter this group. Sorry!!!");
+
+                                    // Setting Icon to Dialog
+                                    //  alertDialog.setIcon(R.drawable.tick);
+
+                                    // Setting OK Button
+                                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    });
+
+                                    // Showing Alert Message
+                                    alertDialog.show();
+                                }
+                                else if(response.equals("User already a member of the client with Status Pending"))
+                                {
+                                    AlertDialog alertDialog = new AlertDialog.Builder(view.getContext(), R.style.MyDialogTheme).create();
+
+                                    // Setting Dialog Title
+                                    alertDialog.setTitle("");
+
+                                    // Setting Dialog Message
+                                    alertDialog.setMessage("Hey,Your request is pending.Wait for approval.");
+
+                                    // Setting Icon to Dialog
+                                    //  alertDialog.setIcon(R.drawable.tick);
+
+                                    // Setting OK Button
+                                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    });
+
+                                    // Showing Alert Message
+                                    alertDialog.show();
+                                }
+
                                 ///////////////////////////////////////////////
                                 // Write your code here to execute after dialog closed
 //                                Intent intent = new Intent(view.getContext(),Proceed_Group_FullScreen.class);
@@ -280,13 +368,7 @@ public class MainGroupAdapter1 extends
 //                                intent.putExtra("groupImage",groupListData.getImagePath());
 //                                intent.putExtra("groupId",groupListData.getGroupId());
 //                                view.getContext().startActivity(intent);
-                            }
-                        });
 
-                        // Showing Alert Message
-                        alertDialog.show();
-
-                    }
 
 
                 } catch (JSONException e) {
@@ -362,7 +444,6 @@ public class MainGroupAdapter1 extends
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
     }
-
 
 
 

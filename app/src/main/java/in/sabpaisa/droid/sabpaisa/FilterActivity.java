@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.provider.Contacts;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -61,6 +62,7 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     String userImageUrl;
     String userAccessToken,response;
     Map<String, Integer> stateMap;
+    SharedPreferences sharedPreferences;
 
     public static final String PREFS_NAME1 = "LoginPrefs";
 
@@ -896,4 +898,11 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
     public void onNetworkConnectionChanged(boolean isConnected) {
 
     }
+
+  /*  public void saveSpinnerPosition(int position){
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("spnCalorieRange",position);
+        editor.apply();
+    }*/
 }

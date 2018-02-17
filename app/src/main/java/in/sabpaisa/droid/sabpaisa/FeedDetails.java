@@ -154,6 +154,7 @@ public class FeedDetails extends AppCompatActivity implements SwipeRefreshLayout
                                 groupData.setComment_date(dataTime);
 
                                 commentArrayList.add(groupData);
+                                Log.e("CommentDatafeeddetaid ", "CommentData "+dataTime);
 
                             }
                             loadCommentListView(commentArrayList);
@@ -173,7 +174,7 @@ public class FeedDetails extends AppCompatActivity implements SwipeRefreshLayout
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
 //                        callGroupDataList(listClick, GropuName);
-                        Log.e("CommentData ", "CommentData Error");
+                        Log.e("CommentDatafeeddetai ", "CommentData Error");
                     }
                 }
         );
