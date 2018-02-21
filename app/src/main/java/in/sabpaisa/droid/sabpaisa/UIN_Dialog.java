@@ -75,7 +75,7 @@ public class UIN_Dialog extends Dialog  {
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_RequestUin+clientId+"&aceesToken="+userAccessToken, new Response.Listener<String>()  {
+                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_RequestUin+clientId+"&aceesToken="+userAccessToken, new Response.Listener<String>()  {
 
             @Override
             public void onResponse(String response) {

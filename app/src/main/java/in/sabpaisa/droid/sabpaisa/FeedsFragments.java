@@ -90,7 +90,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     public void callFeedDataList(final String clientId) {
-        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/getParticularClientsFeeds/"+"?client_Id="+clientId;;
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"getParticularClientsFeeds/"+"?client_Id="+clientId;;
 
 
 

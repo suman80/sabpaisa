@@ -95,7 +95,7 @@ public class InstitutionSkipFragment extends Fragment {
 
 
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.url_clientsall, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.url_clientsall, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {

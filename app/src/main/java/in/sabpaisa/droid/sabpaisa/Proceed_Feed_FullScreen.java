@@ -246,7 +246,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     }
 
     private void callCommentService(final String feed_id, final String userAccessToken, final String comment_text) {
-        String urlJsonObj = AppConfiguration.FeedAddComent + "/addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text=" + comment_text;
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text=" + comment_text;
 
         // String urlJsonObj = AppConfiguration.FeedAddComent + "/aaddFeedsComments/" +"?feed_id="+ feed_id+ "/" + 1 + "/" + commentText;
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
@@ -296,7 +296,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     public void callGetCommentList(final String feed_id) {
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";
-        String urlJsonObj = AppConfiguration.FeedAddComent + "/getFeedsComments?feed_id=" + feed_id;
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "getFeedsComments?feed_id=" + feed_id;
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
                 urlJsonObj, new Response.Listener<String>(){

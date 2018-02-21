@@ -361,7 +361,7 @@ btn_pay.setOnClickListener(new OnClickListener() {
 
 
     private void loadComments(final String feed_id,final  String userAccessToken, final String comment_text) {
-        String urlJsonObj = AppConfig.SAb_Api + "/getFeedsComments/" + "feed_id=1";
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api + "getFeedsComments/" + "feed_id=1";
         final JsonArrayRequest request = new JsonArrayRequest(urlJsonObj, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -473,7 +473,7 @@ btn_pay.setOnClickListener(new OnClickListener() {
 
     public void callGetCommentList(final String feed_id) {
 
-        String urlJsonObj = AppConfig.SAb_Api + "/getFeedsComments/" + "feed_id=1";
+        String urlJsonObj = AppConfig.Base_Url +AppConfig.App_api+ "getFeedsComments/" + "feed_id=1";
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
         // Creating the JsonArrayRequest class called arrayreq, passing the required parameters
         //JsonURL is the URL to be fetched from
@@ -571,7 +571,7 @@ btn_pay.setOnClickListener(new OnClickListener() {
     }
 
     private void callCommentService(final String commentText) {
-        String urlJsonObj = AppConfig.SAb_Api + "/addFeedsComments/" +
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "addFeedsComments/" +
                 "feed_id=1" + "/" + "userAccessToken=47DCC2AB8F1FEE94182E4426522C85D127A37404BE91FF13979B5DED7934EB49"+ "/" + "commentText=hi";
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,

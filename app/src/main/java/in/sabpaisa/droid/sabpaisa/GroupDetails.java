@@ -36,6 +36,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 //import neeraj_sabpaisa.com.coa.Adapters.CommentAdapterDatabase;
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
@@ -118,7 +119,7 @@ public class GroupDetails extends AppCompatActivity implements SwipeRefreshLayou
     /*END AsyncTask for saving Data in Database in background*/
 
     public void callGetCommentList() {
-        String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
+        String urlJsonObj = AppConfig.Base_Url+AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
 
         // Creating the JsonArrayRequest class called arrayreq, passing the required parameters
         //JsonURL is the URL to be fetched from

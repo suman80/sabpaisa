@@ -110,7 +110,7 @@ public class ProceedInstitiutionFragment extends Fragment {
 
         String  tag_string_req = "req_clients";
 
-        StringRequest request=new StringRequest(Request.Method.POST, AppConfig.URL_ClientBasedOnClientId+clientId, new Response.Listener<String>(){
+        StringRequest request=new StringRequest(Request.Method.POST, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_ClientBasedOnClientId+clientId, new Response.Listener<String>(){
 
             @Override
             public void onResponse(String response1)

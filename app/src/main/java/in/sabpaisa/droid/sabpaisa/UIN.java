@@ -47,6 +47,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
+import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -62,12 +63,13 @@ public class UIN extends AppCompatActivity {
     String userImageUrl;
     //TextView clientname;
     String clientname;
-    //TextView clientNAmeTextview;
+   String m;
+    TextView clientNAmeTextview;
     ImageView clientImagePath,clientlogopath;
     public  static  String MYSHAREDPREFUIN="mySharedPref11";
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     public static String clientImageURLPath=null;
-    public static String clientLogoURLPath=null;
+    public static String clientLogoPath=null;
 
 
     @Override
@@ -86,24 +88,28 @@ public class UIN extends AppCompatActivity {
         clientlogopath=(ImageView)findViewById(R.id.institutelogo);
 
 
-       clientId=getIntent().getStringExtra("clientId");
-        clientname=getIntent().getStringExtra("clientname");
-        clientImageURLPath=getIntent().getStringExtra("clientImagePath");
-        clientLogoURLPath=getIntent().getStringExtra("clientLogoPath");
+       //clientId=getIntent().getStringExtra("clientId");
+       // clientname=getIntent().getStringExtra("clientname");
+       // clientImageURLPath=getIntent().getStringExtra("clientImagePath");
+      //  clientLogoURLPath=getIntent().getStringExtra("clientLogoPath");
 
-        TextView clientNAmeTextview=(TextView)findViewById(R.id.InstitueNAme);
+         clientNAmeTextview=(TextView)findViewById(R.id.InstitueNAme);
 
+        SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(FilterActivity.MySharedPreffilter, Context.MODE_PRIVATE);
+        clientId=sharedPreferences1.getString("clientId", "abc");
+        getClientsList(clientId);
 
-        clientNAmeTextview.setText(clientname);
+       // clientNAmeTextview.setText(clientname);
         Log.d("ClientIduin","__>"+clientId);
         Log.d("clientImageURLPathuin","__>"+clientImageURLPath);
-        Log.d("clientImageURLPathuin","__>"+clientLogoURLPath);
+        Log.d("clientImageURLPathuin","__>"+clientLogoPath);
         Log.d("clientImageURLPathuin","__>"+clientname);
+        Log.d("clientImageURLPathuin","__>"+clientNAmeTextview);
        // new UIN.DownloadImageTask(clientImagePath).execute(clientImageURLPath);
        // new UIN.DownloadImageTask(clientlogopath).execute(clientLogoURLPath);
-        Glide
+       /* Glide
                 .with(UIN.this)
-                .load(clientLogoURLPath)
+                .load(clientLogoPath)
                 .error(R.drawable.sabpaisa)
                 .into(clientlogopath);
         Glide
@@ -111,7 +117,7 @@ public class UIN extends AppCompatActivity {
                 .load(clientImageURLPath)
                 .error(R.drawable.sabpaisa)
                 .into(clientImagePath);
-
+*/
         //clientName.setText(R.id.InstitueNAme);
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
@@ -125,8 +131,10 @@ public class UIN extends AppCompatActivity {
         Log.d("FFResponse11111", " " + response);
 
         getUserImage(userAccessToken);
+        m="abc";
         SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFUIN,MODE_PRIVATE).edit();
         editor.putString("clientId",clientId);
+        editor.putString("m",m);
         editor.putString("userAccessToken",userAccessToken);
         editor.commit();
 
@@ -196,7 +204,7 @@ public class UIN extends AppCompatActivity {
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_VerifyUin+uinnnumber +"&client_Id="+clientId+"&aceesToken="+userAccessToken, new Response.Listener<String>()  {
+                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_VerifyUin+uinnnumber +"&client_Id="+clientId+"&aceesToken="+userAccessToken, new Response.Listener<String>()  {
 
             @Override
             public void onResponse(String response) {
@@ -425,7 +433,7 @@ public class UIN extends AppCompatActivity {
 
         String  tag_string_req = "req_clients";
 
-        StringRequest request=new StringRequest(Request.Method.GET,AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
+        StringRequest request=new StringRequest(Request.Method.GET,AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
 
             @Override
             public void onResponse(String response1)
@@ -519,7 +527,134 @@ public class UIN extends AppCompatActivity {
 
 
     }
+    @Override
+    public void onBackPressed() {
 
+            super.onBackPressed();
+            Intent intent=new Intent(UIN.this,FilterActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            startActivity(intent);
+
+            finish();
+
+
+
+
+    }
+
+    private void getClientsList(final  String clientId) {
+
+        String  tag_string_req = "req_clients";
+
+        StringRequest request=new StringRequest(Request.Method.POST, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_ClientBasedOnClientId+clientId, new Response.Listener<String>(){
+
+            @Override
+            public void onResponse(String response1)
+            {
+
+                Log.d("Particularclient","-->"+response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1.toString());
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("responsus",""+response);
+                    Log.d("statsus",""+status);
+
+                    if (status.equals("success")) {
+
+                        JSONObject jsonObject1 = new JSONObject(response);
+
+                        ClientData clientData = new ClientData();
+                        clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
+                        clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
+                        clientData.setClientName(jsonObject1.getString("clientName"));
+
+                        clientLogoPath = clientData.getClientLogoPath().toString();
+                        clientImageURLPath = clientData.getClientImagePath().toString();
+                        clientNAmeTextview.setText(clientData.getClientName().toString());
+                        Glide
+                                .with(UIN.this)
+                                .load(clientLogoPath)
+                                .error(R.drawable.sabpaisa)
+                                .into(clientlogopath);
+                        Glide
+                                .with(UIN.this)
+                                .load(clientImageURLPath)
+                                .error(R.drawable.sabpaisa)
+                                .into(clientImagePath);
+
+                        // clientname=clientData.getClientName().toString();
+                        Log.d("clientlogooooo", "-->" + clientLogoPath);
+                        Log.d("clientimageooo", "-->" + clientImagePath);
+                      //  Log.d("clientiooo", "-->" + clientname11);
+
+                    }else if (status.equals("failure"))
+                    {Log.d("UIn","InElseIfPart"+response);}
+                    else {
+                        Log.d("UIn","InElsePart"+response);
+                    }
+                }
+                catch(JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        }) ;
+
+        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+
+
+    }
 }
 
 

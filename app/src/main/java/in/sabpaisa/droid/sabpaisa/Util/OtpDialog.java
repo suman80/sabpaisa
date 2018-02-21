@@ -242,7 +242,7 @@ public class OtpDialog extends BottomSheetDialog {
     private void sendOTP(final String number) {
 //      String urlJsonObj = "http://43.252.89.122:6060/SabPaisaPay/SendOTP/" + number;
 
-        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaPay/SendOTP/" + number;
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"SendOTP/" + number;
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {

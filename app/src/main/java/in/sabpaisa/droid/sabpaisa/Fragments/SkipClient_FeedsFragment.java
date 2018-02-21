@@ -35,6 +35,7 @@ import in.sabpaisa.droid.sabpaisa.MainFeedAdapter;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.RecyclerItemClickListener;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
@@ -113,7 +114,7 @@ public class SkipClient_FeedsFragment extends Fragment implements SwipeRefreshLa
     }
 
     public void callFeedDataList(final int ClientId) {
-        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/getParticularClientsFeeds/"+"?client_Id="+ ClientId;
+        String urlJsonObj = AppConfig.Base_Url+ AppConfig.App_api+"getParticularClientsFeeds/"+"?client_Id="+ ClientId;
 
 
 

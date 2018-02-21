@@ -392,7 +392,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void veryfiOTP(final String number, String otp) {
-        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/verifyOtp?otp="+otp+"&mobile_no="+ number;
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"verifyOtp?otp="+otp+"&mobile_no="+ number;
 
         //   progressBarShow();
 
@@ -516,7 +516,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void sendOTP(View v, final String number) {
 
 
-        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/SendOTP/" +"?mobile_no="+ number;
+        String urlJsonObj =  AppConfig.Base_Url+AppConfig.App_api+"SendOTP/" +"?mobile_no="+ number;
 //        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/SendOTP/" +"?mobile_no="+ number;
 
         //showpDialog(v);
@@ -696,7 +696,7 @@ public class RegisterActivity extends AppCompatActivity {
         //showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_REGISTER, new Response.Listener<String>() {
+                AppConfig.Base_Url+AppConfig.App_api+ AppConfig.URL_REGISTER, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {

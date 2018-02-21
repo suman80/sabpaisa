@@ -316,7 +316,7 @@ Log.d("ProfileFullViewProceed","state"+state);
 
         Log.d(TAG,"IMG_userAccessToken"+userAccessToken);
         //our custom volley request
-        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, AppConfig.URL_UserProfileImageUpdate+"?token="+userAccessToken,
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_UserProfileImageUpdate+"?token="+userAccessToken,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
@@ -405,7 +405,7 @@ Log.d("ProfileFullViewProceed","state"+state);
 
         String tag_string_req = "req_register";
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfile+"?token="+userAccessToken, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfile+"?token="+userAccessToken, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -499,7 +499,7 @@ Log.d("ProfileFullViewProceed","state"+state);
 
         String tag_string_req = "req_register";
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfileImage+"?token="+userAccessToken, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfileImage+"?token="+userAccessToken, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -592,7 +592,7 @@ Log.d("ProfileFullViewProceed","state"+state);
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_UserProfileUpdate+"?token="+userAccessToken+"&"+"fullName="+name, new Response.Listener<String>() {
+                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_UserProfileUpdate+"?token="+userAccessToken+"&"+"fullName="+name, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -739,7 +739,7 @@ Log.d("ProfileFullViewProceed","state"+state);
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_UserProfileUpdate+"?token="+userAccessToken+"&"+"address="+address.trim().replace(" ","%20"), new Response.Listener<String>() {
+                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_UserProfileUpdate+"?token="+userAccessToken+"&"+"address="+address.trim().replace(" ","%20"), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -880,7 +880,7 @@ Log.d("ProfileFullViewProceed","state"+state);
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_UserProfileUpdate+"?token="+userAccessToken+"&"+"emailId="+email, new Response.Listener<String>() {
+                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_UserProfileUpdate+"?token="+userAccessToken+"&"+"emailId="+email, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {

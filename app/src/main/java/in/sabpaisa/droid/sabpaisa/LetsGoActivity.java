@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class LetsGoActivity extends AppCompatActivity implements OliveUpiEventListener {
@@ -44,7 +45,7 @@ public class LetsGoActivity extends AppCompatActivity implements OliveUpiEventLi
     /*STEP:1
 These variables or parameters are used for Merchant server API to get token
 */
-    private static String URL = "http://205.147.103.27:6060/SabPaisaAppApi/getAccessToken"; //merchant server
+    private static String URL = "getAccessToken"; //merchant server
 
     private String mcccode = "123456";
 
@@ -169,7 +170,7 @@ These variables or parameters are used for Merchant server API to get token
         }
 
         // Make request for JSONObject
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, URL, jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, AppConfig.Base_Url+AppConfig.App_api+URL, jsonObject, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {

@@ -50,6 +50,8 @@ import in.sabpaisa.droid.sabpaisa.Model.StateGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
+import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
+
 public class FilterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener ,ConnectivityReceiver.ConnectivityReceiverListener {
 
     private static final String TAG = FilterActivity.class.getSimpleName();
@@ -63,8 +65,10 @@ public class FilterActivity extends AppCompatActivity implements AdapterView.OnI
     String userAccessToken,response;
     Map<String, Integer> stateMap;
     SharedPreferences sharedPreferences;
+    public static String MySharedPreffilter="mySharedPrefForFilter";
 
-    public static final String PREFS_NAME1 = "LoginPrefs";
+    public static final String PREFS_NAME = "loginPrefs";
+
 
 
 ImageView spinnerClick1,spinnerClick2,spinnerClick3;
@@ -91,9 +95,28 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_filter);
         checkConnection();
+        SharedPreferences settings1 = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings1.edit();
+        editor.remove("logged");
+        editor.commit();
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+       /* if (settings.getString("logged1", "").toString().equals("logged")) {
+            Intent intent = new Intent(FilterActivity.this,UIN.class);
+
+            intent.putExtra("clientLogoPath", clientLogoPath);
+            intent.putExtra("clientImagePath", clientImagePath);
+            intent.putExtra("clientname", clientname11);
+            startActivity(intent);
+        }*/
         proceed = (Button)findViewById(R.id.proceed);
         skip = (Button) findViewById(R.id.skip);
+       // SharedPreferences setting = getSharedPreferences(PREFS_NAME, 0);
+        if (settings.getString("filter", "").toString().equals("filter")) {
+            Intent intent = new Intent(FilterActivity.this, MainActivity.class);
+            startActivity(intent);
 
+        }
 
 
         // BankUser =    (AppCompatCheckBox) findViewById(R.id.rb_bankuser);
@@ -148,6 +171,8 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         clientTxt = (TextView) findViewById(R.id.spinnerClient).findViewById(R.id.textName);
         institute = (TextView) findViewById(R.id.InstituteSpinner).findViewById(R.id.textName);
 
+
+
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
         response = sharedPreferences.getString("response", "123");
@@ -155,11 +180,12 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         userAccessToken = response;
 
 
-
-
         Log.d("AccessTokensilter", " " + userAccessToken);
 
         Log.d("FFResfilter", " " + response);
+
+
+
 
         getUserIm(userAccessToken);
         Log.d("imagefilter", " " + userImageUrl);
@@ -196,15 +222,33 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                     // getParticularClientdata(clientId);
 
                     if (stateSpinner.getSelectedItemPosition() != 0 && serviceSpinner.getSelectedItemPosition() != 0 &&clientsSpinner.getSelectedItemPosition()!=0) {
-
+                     /*   SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("filter", "filter");
+                        editor.commit();*/
 
                         //String clientId=serviceSpinner.getSelectedItem().toString();
-                        Intent intent = new Intent(FilterActivity.this, UIN.class);
-                        intent.putExtra("clientId", clientId);
-                        intent.putExtra("clientLogoPath", clientLogoPath);
-                        intent.putExtra("clientImagePath", clientImagePath);
-                        intent.putExtra("clientname", clientname11);
-                        startActivity(intent);
+                        //Intent intent = new Intent(FilterActivity.this, UIN.class);
+
+//                     SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                            Intent intent = new Intent(FilterActivity.this,UIN.class);
+
+                            intent.putExtra("clientLogoPath", clientLogoPath);
+                            intent.putExtra("clientImagePath", clientImagePath);
+                            intent.putExtra("clientname", clientname11);
+                            startActivity(intent);
+
+                        SharedPreferences.Editor editor = getSharedPreferences(MySharedPreffilter,MODE_PRIVATE).edit();
+                        editor.putString("clientId",clientId);
+                        editor.putInt("stateId",stateId);
+                        editor.putString("filter", "filter");
+                        editor.commit();
+                        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                        SharedPreferences.Editor editor1 = settings.edit();
+                        editor1.putString("logged1", "logged1");
+                        editor1.commit();
+                       // intent.putExtra("clientId", clientId);
+
                     } else {
 
                         AlertDialog.Builder builder =new AlertDialog.Builder(FilterActivity.this);
@@ -233,7 +277,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
 
         String  tag_string_req = "req_state";
 
-        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_StateList, new Response.Listener<String>(){
+        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_StateList, new Response.Listener<String>(){
 
             @Override
             public void onResponse(String response) {
@@ -307,7 +351,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
 
         String  tag_string_req = "req_service";
 
-        StringRequest request=new StringRequest(Request.Method.GET,AppConfig.URL_ClientBasedOnState+state, new Response.Listener<String>(){
+        StringRequest request=new StringRequest(Request.Method.GET,AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_ClientBasedOnState+state, new Response.Listener<String>(){
 
             @Override
             public void onResponse(String response1)
@@ -375,6 +419,11 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
 
                                     public void onItemSelected(AdapterView<?> parentView,
                                                                View selectedItemView, int position, long id) {
+
+                                        String selectedstate=parentView.getItemAtPosition(position).toString();
+                                        SharedPreferences.Editor editor = getSharedPreferences(MySharedPreffilter,MODE_PRIVATE).edit();
+                                        editor.putString("selectedstate",selectedstate);
+                                        editor.commit();
                                         clientsSpinner.setAdapter(null);
                                         //  getClientData(serviceSpinner.getSelectedItem().toString(), stateSpinner.getSelectedItem().toString());
                                         getClientData(serviceSpinner.getSelectedItem().toString(), stateMap.get(stateSpinner.getSelectedItem().toString())+"");
@@ -491,7 +540,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         String  tag_string_req = "req_clients";
 
 
-        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_ServiceBasedOnState+state+"&service="+serviceName.trim().replace(" ","%20"), new Response.Listener<String>(){
+        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_ServiceBasedOnState+state+"&service="+serviceName.trim().replace(" ","%20"), new Response.Listener<String>(){
 
 
 /*        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_ServiceBasedOnState+state+"&service="+serviceName, new Response.Listener<String>(){*/
@@ -558,11 +607,15 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                     clientsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            final  String selected1=parent.getItemAtPosition(position).toString();
+                            final  String selectedservice=parent.getItemAtPosition(position).toString();
                             //getParticularClientdata(selected1);
+                            SharedPreferences.Editor editor = getSharedPreferences(MySharedPreffilter,MODE_PRIVATE).edit();
+                            editor.putString("selectedservice",selectedservice);
+                            editor.commit();
                             clientId= clientIdArrayList.get(position);
 
                             getClientsList(clientId);
+
                             Log.d("ClientIDCHECKING", "" + clientId);
 
                         }
@@ -612,6 +665,9 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String selected=parent.getItemAtPosition(position).toString();
+
+
+
         //  Toast.makeText(this,selected,Toast.LENGTH_SHORT).show();
         Log.d("StateID"," "+selected);
          stateId = stateMap.get(selected);
@@ -625,6 +681,10 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         else {
             getServiceData("" + stateId);
         }
+        SharedPreferences.Editor editor = getSharedPreferences(MySharedPreffilter,MODE_PRIVATE).edit();
+        editor.putString("selected",selected);
+        editor.putInt("stateId",stateId);
+        editor.commit();
     }
 
     @Override
@@ -648,7 +708,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
 
         String  tag_string_req = "req_clients";
 
-        StringRequest request=new StringRequest(Request.Method.POST, AppConfig.URL_ClientBasedOnClientId+clientId, new Response.Listener<String>(){
+        StringRequest request=new StringRequest(Request.Method.POST, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_ClientBasedOnClientId+clientId, new Response.Listener<String>(){
 
             @Override
             public void onResponse(String response1)
@@ -749,7 +809,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
 
         String  tag_string_req = "req_clients";
 
-        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
+        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
 
             @Override
             public void onResponse(String response1)
@@ -848,9 +908,12 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         //super.onBackPressed();
 
 
-        finish();
+finish();
         moveTaskToBack(true);
         System.exit(0);
+
+
+
     }
 
     // Method to manually check connection status
@@ -898,8 +961,8 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
     public void onNetworkConnectionChanged(boolean isConnected) {
 
     }
-
-  /*  public void saveSpinnerPosition(int position){
+/*
+    public void saveSpinnerPosition(int position){
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("spnCalorieRange",position);

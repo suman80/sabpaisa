@@ -138,7 +138,7 @@ public class PayFragments extends Fragment {
 
         String tag_string_req = "req_register";
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_Payment + "?clientId=" + clientId, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Payment + "?clientId=" + clientId, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {

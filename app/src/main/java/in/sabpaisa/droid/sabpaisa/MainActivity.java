@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     ImageView niv;
     TextView usernameniv,mailIdniv;
     Toolbar toolbar;
+    String n,m;
     private static int CODE = 1; //declare as FIELD
     private FirebaseAnalytics firebaseAnalytics;
     NetworkImageView nav;
@@ -131,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     Bundle bundle;
     String x;
     String stateName,serviceName,ClientId;
+    String stateName1,serviceName1,ClientId1;
+
     public  static  String MYSHAREDPREF="mySharedPref";
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
@@ -157,6 +160,25 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
        // toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
 
+
+
+        SharedPreferences sharedPreferences2 = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+        n=sharedPreferences2.getString("m","xyz");
+        m=n;
+
+        SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(FilterActivity.MySharedPreffilter, Context.MODE_PRIVATE);
+        stateName1=sharedPreferences1.getString("selectedstate", "abc");
+        stateName=stateName1;
+        serviceName1=sharedPreferences1.getString("selectedservice", "123");
+        serviceName=serviceName1;
+        //ClientId1=sharedPreferences1.getString("stateId", "123");
+        ClientId1=sharedPreferences1.getString("clientId", "123");
+
+        ClientId=ClientId1;
+
+        Log.d("Sharedprefrencemat","-."+ClientId1+stateName1+serviceName1);
+        Log.d("Sharedprefrencemat","-."+ClientId+stateName+serviceName);
+        Log.d("Sharedprefrencemat","-."+ClientId+stateName+serviceName+n+m);
 
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
@@ -234,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         drawer.addDrawerListener(toggle);
         toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
-        ClientId=getIntent().getStringExtra("clientId");
+       // ClientId=getIntent().getStringExtra("clientId");
        // userImageUrl=getIntent().getStringExtra("userImageUrl");
 
         /*Log.d("stateName11111"," "+stateName);
@@ -547,14 +569,22 @@ Log.d("xmailidmain",""+x);*/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if(m=="abc") {
             super.onBackPressed();
-            Intent intent=new Intent(MainActivity.this,FilterActivity.class);
+            Intent intent=new Intent(MainActivity.this,UIN.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             startActivity(intent);
 
             finish();
+
+
+
+        }
+        else{
+            finish();
+            moveTaskToBack(true);
+            System.exit(0);
 
         }
     }
@@ -677,10 +707,10 @@ Log.d("xmailidmain",""+x);*/
         Hash_file_maps = new HashMap<String, String>();
 
 
-        Hash_file_maps.put("Sabpaisa Digitizing Cash", "http://205.147.103.27:6060/Docs/Images/HomeImage/sabpaisa.png");
-        Hash_file_maps.put("Payment & Transfer", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_2.png");
-        Hash_file_maps.put("The Future Of Payments", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_image.jpg");
-        Hash_file_maps.put("UPI", "http://205.147.103.27:6060/Docs/Images/HomeImage/UPI_1.svg.png");
+    Hash_file_maps.put("Sabpaisa Digitizing Cash", AppConfig.Base_Url+"/Docs/Images/HomeImage/sabpaisa.png");
+        Hash_file_maps.put("Payment & Transfer", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_2.png");
+        Hash_file_maps.put("The Future Of Payments", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_image.jpg");
+        Hash_file_maps.put("UPI", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_1.svg.png");
         for(String name : Hash_file_maps .keySet())
         {
             TextSliderView textSliderView = new TextSliderView(this);
@@ -768,8 +798,8 @@ Log.d("xmailidmain",""+x);*/
 
         if (id == R.id.nav_Profile) {
             Intent intent=new Intent(MainActivity.this, ProfileNavigationActivity.class);
-
-                     intent.putExtra("ClientId",ClientId);   startActivity(intent);
+            intent.putExtra("ClientId",ClientId);
+            startActivity(intent);
 
             //startActivity(intent,CODE);
             // Handle the camera action
@@ -852,7 +882,53 @@ Log.d("xmailidmain",""+x);*/
             }
 
 
-        } else if (id == R.id.nav_rate) {
+        }
+        else if(id==R.id.nav_clean_data)
+        {
+            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
+            builder.setMessage("For Selecting any other client .Press OK ");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+
+
+                    SharedPreferences settings = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove("m");
+                    editor.clear();
+                    editor.commit();
+                    finish();
+
+                    Intent intent=new Intent( MainActivity.this, FilterActivity.class);
+
+                    startActivity(intent);
+
+                    /*SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove("logged");
+                    editor.commit();
+                    finish();
+                    Intent intent=new Intent(MainActivity.this, LogInActivity.class);
+
+                    startActivity(intent);
+*/
+
+
+                }
+            });
+
+            builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alert=builder.create();
+            alert.show();
+
+        }
+            else if (id == R.id.nav_rate) {
             Intent intent=new Intent(MainActivity.this, RateActivity.class);
 
             startActivity(intent);
@@ -1156,7 +1232,7 @@ Log.d("xmailidmain",""+x);*/
 
         String  tag_string_req = "req_clients";
 
-        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
+        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
 
             @Override
             public void onResponse(String response1)
@@ -1262,7 +1338,7 @@ Log.d("xmailidmain",""+x);*/
 
         String tag_string_req = "req_register";
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.URL_Show_UserProfile+"?token="+userAccessToken, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfile+"?token="+userAccessToken, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {

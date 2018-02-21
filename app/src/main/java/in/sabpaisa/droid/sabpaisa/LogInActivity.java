@@ -88,11 +88,7 @@ public class LogInActivity extends AppCompatActivity  {
             startActivity(intent);
 
         }
-
-
-
-
-            // password = (EditText)findViewById(R.id.et_password);
+        // password = (EditText)findViewById(R.id.et_password);
             passwordShow = (Button) findViewById(R.id.tv_password_show);
             forgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
             et_phone_number = (EditText) findViewById(R.id.et_phone_number);
@@ -309,7 +305,7 @@ public class LogInActivity extends AppCompatActivity  {
         //showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_LOGIN, new Response.Listener<String>() {
+                AppConfig.Base_Url+AppConfig.App_api+  AppConfig.URL_LOGIN, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -331,7 +327,7 @@ public class LogInActivity extends AppCompatActivity  {
 
                     if (status!=null && status.equals("success")){
 
-                        Intent intent = new Intent(LogInActivity.this,FilterActivity.class);
+                        Intent intent = new Intent(LogInActivity.this,MainActivity.class);
                         
                         startActivity(intent);
 
@@ -441,8 +437,7 @@ public class LogInActivity extends AppCompatActivity  {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-
-        finish();
+finish();
         moveTaskToBack(true);
         System.exit(0);
 

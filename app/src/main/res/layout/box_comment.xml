@@ -19,7 +19,7 @@
         android:hint="Add Comment"
         android:background="@drawable/otp_edittext_border"
         android:paddingLeft="5dp"
-
+        android:maxLines="100"
         android:textColorHint="@color/black_50"
         android:textSize="@dimen/text_size_small"
         />

@@ -36,6 +36,7 @@ import in.sabpaisa.droid.sabpaisa.MainFeedAdapter;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.RecyclerItemClickListener;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
@@ -89,7 +90,7 @@ public class ProceedFeedsFragments extends Fragment {
 
 
     public void callFeedDataList(final String clientId) {
-        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/getParticularClientsFeeds/"+"?client_Id="+clientId;;
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"getParticularClientsFeeds/"+"?client_Id="+clientId;;
 
 
 

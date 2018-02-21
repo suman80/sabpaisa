@@ -251,7 +251,7 @@ public class MainGroupAdapter1 extends
         //showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_ADD_Member+"token="+token+"&"+"groupId="+groupId, new Response.Listener<String>() {
+                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_ADD_Member+"token="+token+"&"+"groupId="+groupId, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {

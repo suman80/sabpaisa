@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
@@ -92,7 +93,7 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     public void callGroupDataList(final String clientId ) {
-        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/getParticularClientsGroups"+"?client_Id="+ clientId;
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"getParticularClientsGroups"+"?client_Id="+ clientId;
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
                 urlJsonObj, new Response.Listener<String>(){
 

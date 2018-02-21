@@ -154,7 +154,7 @@ public class ForgotActivity extends AppCompatActivity {
         //showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_forgotpasswprd, new Response.Listener<String>() {
+                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_forgotpasswprd, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {

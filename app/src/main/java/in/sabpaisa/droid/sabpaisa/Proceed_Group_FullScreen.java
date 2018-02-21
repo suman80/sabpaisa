@@ -3,7 +3,6 @@ package in.sabpaisa.droid.sabpaisa;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,7 +27,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
@@ -49,7 +48,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     CommentsDB dbHelper;
     private int TOTAL_PAGES = 3;
     String GroupsNm,GroupsDiscription,GroupsImg,GroupId,userAccessToken,response;
-
+private EndlessScrollListener scrollListener;
     ArrayList<CommentData> arrayList;
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -160,9 +159,17 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
+        scrollListener=new EndlessScrollListener(llm) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                callGetCommentList(GroupId);
+            }
+        };
+        rv.addOnScrollListener(scrollListener);
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
         rv.setLayoutManager(llm);
         rv.setNestedScrollingEnabled(false);
+
     }
 
     //EditText group_details_text_view = null;
@@ -190,7 +197,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             alertDialog.show();
 
         }
-        else if(commentText.trim().length()>1999)
+        else if(commentText.length()>1999)
         {
             AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Group_FullScreen.this);
             builder.setTitle("Comment");
@@ -215,7 +222,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     }
 
     private void callCommentService(final String GroupId, final String userAccessToken, final String comment_text) {
-        String urlJsonObj = AppConfiguration.GroupAddComment + "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + comment_text;
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + comment_text.trim().replace(" ","%20");
 
         // String urlJsonObj = AppConfiguration.FeedAddComent + "/aaddFeedsComments/" +"?feed_id="+ feed_id+ "/" + 1 + "/" + commentText;
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
@@ -236,27 +243,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
                         ///////////RRRRRRRRRRRRRRRRRRRR?????????????????
                         if(response.getString("response").equals("Not A Member")){
-//                            Log.d("PGF1111","  "+obj.toString());
-                           /* Log.d("IN_ELSE_:111","Comments BBBB" +response);
-                            final AlertDialog alertDialog = new AlertDialog.Builder( getApplicationContext(), R.style.MyDialogTheme).create();
-                            // Setting Dialog Title
-                            alertDialog.setTitle("Comments");
 
-                            // Setting Dialog Message
-                            alertDialog.setMessage(response.getString("response"));
-                            Log.d("IN ELSE : ","Comments BBBB" +response);
-                            alertDialog.setCanceledOnTouchOutside(false);
-
-                            // Setting OK Button
-                            alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-
-
-                                }
-                            });
-
-                            // Showing Alert Message
-                            alertDialog.show();*/
                            Toast.makeText(getApplicationContext(),"You cannot able to comment because your request is in pending status",Toast.LENGTH_SHORT).show();
                         }
                         /////////////RRRRRRRRRRRRR??????????????????
@@ -274,7 +261,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(),
-                            "Error: " + e.getMessage(),
+                            "Error: KASKADKASKDASKCNSKACKASNVKNASKANka" + e.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
                 // hidepDialog();
@@ -299,7 +286,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     public void callGetCommentList(final String GropuId) {
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";
-        final String urlJsonObj = AppConfiguration.GroupAddComment + "/getGroupsComments?group_id=" + GropuId;
+        final String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getGroupsComments?group_id=" + GropuId;
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
                 urlJsonObj, new Response.Listener<String>(){

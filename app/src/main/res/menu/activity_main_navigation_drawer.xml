@@ -36,6 +36,10 @@
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_actionsharenew"
                 android:title="Share"
+                /> <item
+                android:id="@+id/nav_clean_data"
+                android:icon="@drawable/ic_action_cleandata"
+                android:title="Clear Data"
                 />
             <item
                 android:id="@+id/nav_rate"
