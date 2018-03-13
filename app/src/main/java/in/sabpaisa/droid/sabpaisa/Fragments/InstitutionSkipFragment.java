@@ -129,6 +129,7 @@ public class InstitutionSkipFragment extends Fragment {
                             institution.setOrgAddress(jsonObject2.getString("stateName"));
 
                             institution.setOrgWal(jsonObject1.getString("clientImagePath"));
+                            Log.d("institutionskip1","121");
                             institutions.add(institution);
                         }
 

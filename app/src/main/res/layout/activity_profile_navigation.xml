@@ -70,7 +70,17 @@
 
                              />
                     </LinearLayout>
-
+                    <com.jackandphantom.circularprogressbar.CircleProgressbar
+                        android:layout_width="100dp"
+                        android:layout_height="250dp"
+                        app:cpb_progress="50"
+                        app:cpb_roundedCorner="true"
+                        android:layout_marginLeft="140dp"
+                        android:visibility="gone"
+                        android:id="@+id/circleprgrs"
+                        app:cpb_foregroundProgressWidth="15"
+                        app:cpb_foregroundProgressColor="#1864c2"
+                        app:cpb_touchEnabled="true"/>
                     <TextView
                         android:id="@+id/tv_userName"
                         android:layout_width="wrap_content"

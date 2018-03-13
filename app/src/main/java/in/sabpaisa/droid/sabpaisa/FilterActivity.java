@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -86,7 +87,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
 
     String clientLogoPath;
     String clientImagePath;
-    String clientname11;
+    String clientname11,m,n;
     int stateId;
 
     @Override
@@ -95,10 +96,14 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_filter);
         checkConnection();
-        SharedPreferences settings1 = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings1.edit();
-        editor.remove("logged");
-        editor.commit();
+
+        SharedPreferences sharedPreferences2 = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+         n=sharedPreferences2.getString("m","xyz");
+        m=n;
+        if(m.equals("abc")){
+            Intent intent=new Intent(FilterActivity.this,MainActivity.class);
+           startActivity(intent);
+        }
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
        /* if (settings.getString("logged1", "").toString().equals("logged")) {
@@ -112,11 +117,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         proceed = (Button)findViewById(R.id.proceed);
         skip = (Button) findViewById(R.id.skip);
        // SharedPreferences setting = getSharedPreferences(PREFS_NAME, 0);
-        if (settings.getString("filter", "").toString().equals("filter")) {
-            Intent intent = new Intent(FilterActivity.this, MainActivity.class);
-            startActivity(intent);
 
-        }
 
 
         // BankUser =    (AppCompatCheckBox) findViewById(R.id.rb_bankuser);
@@ -241,12 +242,8 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                         SharedPreferences.Editor editor = getSharedPreferences(MySharedPreffilter,MODE_PRIVATE).edit();
                         editor.putString("clientId",clientId);
                         editor.putInt("stateId",stateId);
-                        editor.putString("filter", "filter");
                         editor.commit();
-                        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                        SharedPreferences.Editor editor1 = settings.edit();
-                        editor1.putString("logged1", "logged1");
-                        editor1.commit();
+
                        // intent.putExtra("clientId", clientId);
 
                     } else {
@@ -778,7 +775,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                     });
 
                     // Showing Alert Message
-                    alertDialog.show();
+//                    alertDialog.show();
                     //Log.e(TAG, "Registration Error: " + error.getMessage());
 
                 } else if (error instanceof AuthFailureError) {

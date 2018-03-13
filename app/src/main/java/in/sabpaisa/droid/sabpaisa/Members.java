@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -46,7 +47,6 @@ public class Members extends Fragment {
     ArrayList<Member_GetterSetter> member_getterSetterArrayList;
     MemberAdapter memberAdapter;
     ShimmerRecyclerView recycler_view_Member;
-
     /*START Interface for getting data from activity*/
     GetDataInterface sGetDataInterface;
     /*START Interface for getting data from activity*/

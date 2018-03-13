@@ -473,9 +473,10 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                     finish();
 
                 }*/
-        Intent intent =new Intent(MainActivityWithoutSharedPrefernce.this, FilterActivity.class);
-        startActivity(intent);
-        this.finish();
+
+        moveTaskToBack(true);
+        System.exit(0);
+        finish();
     }
 
     private void FabButtonCreate() {
@@ -696,6 +697,10 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         {
             Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, PrivacyPolicyActivity.class);
 
+            startActivity(intent);
+        }
+        else if(id==R.id.nav_TransactionReport){
+            Intent intent=new Intent(MainActivityWithoutSharedPrefernce.this, TransactionReportNav.class);
             startActivity(intent);
         }
         /*else if (id == R.id.nav_Settings) {

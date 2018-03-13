@@ -368,6 +368,7 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
                 .setIconShadowColor(0xff888888)
                 .setIconShadowDy(ABTextUtil.dip2px(this, 5))
         ;
+
         rfabHelper = new RapidFloatingActionHelper(
                 this,
                 rfaLayout,
@@ -743,7 +744,16 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
 
             startActivity(intent);
         }
+
+        else if(id==R.id.nav_TransactionReport){
+            Intent intent=new Intent(MainActivitySkipWithoutSharedPrefernce.this, TransactionReportNav.class);
+            startActivity(intent);
+        }
         else if (id == R.id.nav_logout) {
+
+
+
+
 
 
             AlertDialog.Builder builder=new AlertDialog.Builder(MainActivitySkipWithoutSharedPrefernce.this); //Home is name of the activity
@@ -902,6 +912,7 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
         String  tag_string_req = "req_clients";
 
         StringRequest request=new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
+
 
             @Override
             public void onResponse(String response1)

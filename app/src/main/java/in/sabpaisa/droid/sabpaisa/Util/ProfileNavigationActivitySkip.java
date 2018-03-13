@@ -406,6 +406,7 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                     String status = object.getString("status");
 
                     if (status.equals("success")) {
+
                         userName.setText(object.getJSONObject("response").getString("fullName").toString());
                         mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
 
@@ -510,6 +511,8 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                     String status = object.getString("status");
 
                     if (status.equals("success")) {
+
+                        Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                         userImageUrl = object.getJSONObject("response").getString("userImageUrl");
                         new DownloadImageTask(userImage).execute(userImageUrl);

@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,8 +36,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -47,9 +53,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     ImageView groupImage;
     CommentsDB dbHelper;
     private int TOTAL_PAGES = 3;
+    String date1;
     String GroupsNm,GroupsDiscription,GroupsImg,GroupId,userAccessToken,response;
 private EndlessScrollListener scrollListener;
     ArrayList<CommentData> arrayList;
+    Button button1;
     SwipeRefreshLayout swipeRefreshLayout;
 
     Toolbar toolbar;
@@ -59,17 +67,27 @@ private EndlessScrollListener scrollListener;
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_proceed_group_full_screen);
-
+//        this.getWindow().setSoftInputMode(
+//                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         groupsName=(TextView)findViewById(R.id.groupsName);
         group_description_details=(TextView)findViewById(R.id.group_description_details);
         groupImage=(ImageView)findViewById(R.id.groupImage);
-
+        button1=(Button)findViewById(R.id.b1);
 
         swipeRefreshLayout= (SwipeRefreshLayout)findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
+        button1.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent intent=new Intent(Proceed_Group_FullScreen.this,NumberOfGroups.class);
+        intent.putExtra("GroupId",GroupId);
 
+        startActivity(intent);
+
+    }
+});
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
@@ -339,7 +357,11 @@ private EndlessScrollListener scrollListener;
 
 
                            // Log.d("dataimageurlgroup222222"," "+userImageUrl1);
-                            groupData.setComment_date(getDate(Long.parseLong(dataTime)));
+                            try {
+                                groupData.setComment_date(getDate(Long.parseLong(dataTime)));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
 
                             commentArrayList.add(groupData);
 
@@ -474,10 +496,33 @@ private EndlessScrollListener scrollListener;
     }
 
 
-    private String getDate(long time) {
+    private String getDate(long time) throws ParseException {
+
+     /*   Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM HH:mm:ss.SS");
+        String strDate = sdf.format(cal.getTime());
+        Log.d("CurrentdateFormat: ","" + strDate);
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat();
+        sdf1.applyPattern("dd/MM HH:mm");
+        Date date = sdf1.parse(strDate);
+        String string=sdf1.format(date);*/
+      /*  Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+       // Calendar cal = Calendar.getInstance();
+
+        cal.setTimeInMillis(time);
+        SimpleDateFormat simpleDateFormat= new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SS");
+        String strDate = simpleDateFormat.format(cal.getTime());
+        Date date = simpleDateFormat.parse(strDate);
+        String string=simpleDateFormat.format(date);
+        String date = DateFormat.format("DD:HH:mm", cal).toString();
+        return date;*/
+      //return string;
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(time);
-        String date = DateFormat.format("HH:mm", cal).toString();
+        String date = DateFormat.format("dd/MM HH:mm", cal).toString();
+        date1 = DateFormat.format("dd/MM ", cal).toString();
+        Log.d("date11",""+date1);
         return date;
     }
 
@@ -486,6 +531,10 @@ private EndlessScrollListener scrollListener;
         callGetCommentList(GroupId);
     }
 
-
+/*public  void numberofgroupmember()
+{
+    Intent intent=new Intent(this,NumberOfGroups.class);
+    startActivity(intent);
+}*/
 
 }

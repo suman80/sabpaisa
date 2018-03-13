@@ -140,10 +140,12 @@ public class ProceedInstitiutionFragment extends Fragment {
                         Log.d("Clientnamejijiji", "-->" + institution.getOrganization_name());
 
                         institution.setOrgLogo(jsonObject1.getString("clientLogoPath"));
-                        Log.d("Clientlogojijiji", "-->" + institution.getOrgLogo());
+                        Log.d("Clientimage", "-->" + institution.getOrgLogo());
 
 
                         institution.setOrgWal(jsonObject1.getString("clientImagePath"));
+
+                        Log.d("ImageTest", "-->" + institution.getOrgLogo());
                         //Added on 1st Feb
                         JSONObject jsonObject2 = jsonObject1.getJSONObject("lookupState");
                         institution.setOrgAddress(jsonObject2.getString("stateName"));

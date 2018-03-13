@@ -275,12 +275,10 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-
-
         <receiver
             android:name=".ConnectivityReceiver"
-            android:screenOrientation="portrait"
-            android:enabled="true">
+            android:enabled="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -302,14 +300,17 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".UPI_UserAccounts"
+            android:name=".Util.LogoutNavigationActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".FetchAccBasedOnIIN"
+            android:name=".TransactionReportNav"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Report"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UPIActivationActivity"
             android:configChanges="orientation"
@@ -333,9 +334,11 @@
             </intent-filter>
         </service>
         <!-- ./Firebase Notifications -->
-        <activity android:name=".Util.ProfileNavigationActivitySkip"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MainActivitySkipWithoutSharedPrefernce"
+        <activity
+            android:name=".Util.ProfileNavigationActivitySkip"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivitySkipWithoutSharedPrefernce"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivitySkipWithoutSharedPrefernce" />
@@ -343,8 +346,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileNavigationActivityFullViewProceed"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ProfileNavigationActivityFullViewProceed"
+            android:screenOrientation="portrait" />
+        <activity android:name=".NumberOfGroups" />
+        <activity android:name=".Reportt"></activity>
     </application>
 
 </manifest>

@@ -1,16 +1,19 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.braunster.chatsdk.activities.ChatSDKMainActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import java.util.List;
 import in.sabpaisa.droid.sabpaisa.AppController;
 
 import in.sabpaisa.droid.sabpaisa.GroupListData;
+import in.sabpaisa.droid.sabpaisa.Members;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.R;
 
@@ -30,7 +34,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
     int count;
     ArrayList<Member_GetterSetter> memberGetterSetterArrayList;
     Context mContext;
-
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     @Override
     public MemberAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -63,19 +66,31 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
                 .load(member_getterSetter.getUserImageUrl())
                 .error(R.drawable.default_users)
                 .into(holder.memberImg);
+        holder.memberChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // Intent intent=new Intent(, ChatSDKMainActivity.class);
+
+                v.getContext().startActivity(new Intent(mContext,ChatSDKMainActivity.class));
+
+            }
+        });
 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView memberImg;
-        TextView memberName,memberTimeStamp;
+        public ImageView memberImg;
+        Button memberChat;
+        public TextView memberName;
+        TextView memberTimeStamp;
         public MyViewHolder(View itemView) {
             super(itemView);
 
 
             memberImg = (ImageView) itemView .findViewById(R.id.memberImg);
             memberName = (TextView)itemView.findViewById(R.id.memberName);
+            memberChat = (Button) itemView.findViewById(R.id.groupmmbrchat);
             //memberTimeStamp = (TextView)itemView.findViewById(R.id.memberTimeStamp);
         }
     }

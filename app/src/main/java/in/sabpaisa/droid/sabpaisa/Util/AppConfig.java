@@ -3,11 +3,13 @@ package in.sabpaisa.droid.sabpaisa.Util;
 public class AppConfig {
 	// Server user login url
 
-	public static String Base_Url="http://205.147.103.27:6060";
+	public static String Base_Url="https://portal.sabpaisa.in";
 	public static String App_api="/SabPaisaAppApi/";
 
 
 	public static String URL_REGISTER = "register-user";
+	public static String URL_TransactionReport = "TransactionData?SptransacationId=";
+	public static String URL_NoOFGroupMembeers = "fetchGroupUsers?clientId=";
 	public static String  URL_LOGIN = "sign-in-user";
 	public static String  URL_forgotpasswprd = "changePassword";
 	public static String  url_clientsall ="clientlist";
@@ -29,6 +31,6 @@ public class AppConfig {
 
 	public static String URL_Payment ="getLandingPages";//Added on 1st Feb
 	public static String SAb_Api ="http://205.147.103.27:6060/SabPaisaAppApi";
-public static String URL_Token="getAccessToken";
+	public static String URL_Token="getAccessToken";
 
 }

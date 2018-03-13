@@ -43,6 +43,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.crash.FirebaseCrash;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -155,8 +156,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         mailIdEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 //                mailId.setFocusable(true);
                 if (mailIdEdit.getText().toString().equals("Edit")) {
+                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                     mailId.setEnabled(true);
                     //mailId.setText(" ");
                     mailId.requestFocus();
@@ -183,7 +187,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
+
                 pickImage();
+
             }
         });
 
@@ -191,6 +199,8 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (addressEdit.getText().toString().equals("Edit")) {
+                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                     et_address.setEnabled(true);
                     //et_address.setText(" ");
                     et_address.requestFocus();
@@ -213,7 +223,10 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         tv_NameEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (tv_NameEdit.getText().toString().equals("Edit")) {
+                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                     et_UserName.setEnabled(true);
                     et_UserName.setText("");
                     et_UserName.requestFocus();
@@ -247,13 +260,12 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
         Intent intent = new Intent(ProfileNavigationActivity.this, MainActivity.class);
         intent.putExtra("clientId", clientId);
         // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
-
-        finish();
         startActivity(intent);
+        finish();
 
         /*intent.putExtra("clientId", clientId);
         intent.putExtra("userImageUrl", userImageUrl);
@@ -332,7 +344,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                             JSONObject obj = new JSONObject(new String(response.data));
                             Log.d(TAG, "IMG_Res" + obj);
                             final String status = obj.getString("status");
+
                             if (status.equals("success")) {
+
+
+
 
                                 AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
 
@@ -526,6 +542,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     String status = object.getString("status");
 
                     if (status.equals("success")) {
+                        //Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                         userImageUrl = object.getJSONObject("response").getString("userImageUrl");
                         new DownloadImageTask(userImage).execute(userImageUrl);
@@ -1065,5 +1082,21 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     public final static boolean isValidEmail(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
+
+
+/*   public void startAnim(){
+        avi.show();
+        // or avi.smoothToShow();
+    }
+
+   public void stopAnim(){
+
+       //avi.hide();
+       Intent intent = new Intent();
+       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+
+
+         avi.smoothToHide();
+    }*/
 
 }

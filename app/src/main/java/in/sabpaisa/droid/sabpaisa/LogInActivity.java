@@ -327,8 +327,8 @@ public class LogInActivity extends AppCompatActivity  {
 
                     if (status!=null && status.equals("success")){
 
-                        Intent intent = new Intent(LogInActivity.this,MainActivity.class);
-                        
+                        Intent intent = new Intent(LogInActivity.this,FilterActivity.class);
+
                         startActivity(intent);
 
                     }else {

@@ -89,6 +89,7 @@ import in.sabpaisa.droid.sabpaisa.PayFeeFragment;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.ProfileNavigationActivityFullViewProceed;
 import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.TransactionReportNav;
 import in.sabpaisa.droid.sabpaisa.UIN;
 
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
@@ -639,7 +640,13 @@ intent.putExtra("state",state);
             startActivity(intent);
 
         }*/
-        else  if(id == R.id.nav_ChangePassword)
+
+
+
+        else if(id==R.id.nav_TransactionReport){
+            Intent intent=new Intent(FullViewOfClientsProceed.this, TransactionReportNav.class);
+            startActivity(intent);
+        } else  if(id == R.id.nav_ChangePassword)
         {
             Intent intent=new Intent(FullViewOfClientsProceed.this, ForgotActivity.class);
 

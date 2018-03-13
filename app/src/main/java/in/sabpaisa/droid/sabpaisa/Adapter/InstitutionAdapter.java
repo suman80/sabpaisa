@@ -58,6 +58,7 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
         }
         else {
             holder.thumbnail.setImageUrl(mainFeedData.getOrgLogo(), imageLoader);
+            Log.d("image1234","adapter-->"+mainFeedData.getOrgLogo().toString());
         }
 
         if (mainFeedData.getOrgLogo()==null){
@@ -65,6 +66,8 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
         }
         else {
             holder.clinetbanner.setImageUrl(mainFeedData.getOrgWal(),imageLoader);
+            Log.d("image1234","adapter-->"+mainFeedData.getOrgWal().toString());
+
         }
 
 

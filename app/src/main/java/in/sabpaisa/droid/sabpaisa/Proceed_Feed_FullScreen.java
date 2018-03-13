@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -18,16 +21,20 @@ import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -38,8 +45,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,9 +67,10 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     private int TOTAL_PAGES = 3;
     ArrayList<CommentData> arrayList;
     String commentText;
+    String date1;
     String FeedsNm, feedsDiscription, feedImg, response, feed_id, userAccessToken;
     SwipeRefreshLayout swipeRefreshLayout;
-
+    RecyclerView rv;
     Toolbar toolbar;
 
     @Override
@@ -66,6 +78,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_proceed__feed__full_screen);
+       // this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -160,25 +173,78 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     }
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
-        RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_group_details_comment);
-        CommentAdapter ca = new CommentAdapter(arrayList);
+         rv = (RecyclerView) findViewById(R.id.recycler_view_group_details_comment);
+        final CommentAdapter ca = new CommentAdapter(arrayList);
         rv.setAdapter(ca);
-
+       // rv.addFocusables(onNavigateUp(),arrayList,);setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rv.addItemDecoration(new SimpleDividerItemDecoration(this));
+        //llm.setReverseLayout(false);
+        llm.setStackFromEnd(true);
+       // rv.smoothScrollBy(100,100);
         rv.setLayoutManager(llm);
-        rv.setNestedScrollingEnabled(false);
+        rv.addItemDecoration(new SimpleDividerItemDecoration(this));
+/*
+        rv.addItemDecoration(new RecyclerView.ItemDecoration() {
+
+            private int textSize = 50;
+            private int groupSpacing = 100;
+            private int itemsInGroup = 3;
+
+            private Paint paint = new Paint();
+            {
+                paint.setTextSize(textSize);
+            }
+
+
+            @Override
+            public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                for (int i = 0; i < parent.getChildCount(); i++) {
+                    View view = parent.getChildAt(i);
+
+                    int position = parent.getChildAdapterPosition(view);
+                    if (position % itemsInGroup == 0) {
+                       // c.drawText("Group " + (position / itemsInGroup + 1), view.getLeft(),
+                         //       view.getTop() - groupSpacing / 2 + textSize / 3, paint);
+                        c.drawText("Group " + date1, view.getLeft(),
+                                view.getTop() - groupSpacing / 2 + textSize / 3, paint);
+                    }
+                }
+            }
+
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                if (parent.getChildAdapterPosition(view) % itemsInGroup == 0) {
+                    outRect.set(0, groupSpacing, 0, 0);
+                }
+            }
+        });*/
+
+        rv.setLayoutManager(llm);
+
+        rv.smoothScrollToPosition(ca.getItemCount());
+       rv.setNestedScrollingEnabled(false);
+
+     /*   rv.post(new Runnable() {
+            @Override
+            public void run() {
+                // Call smooth scroll
+                rv.smoothScrollToPosition(ca.getItemCount() - 1);
+            } });*/
     }
 
 
     //EditText group_details_text_view = null;
+
+
 
     EditText group_details_text_view ;
 
     public void onClickSendComment(View view) {
         group_details_text_view = (EditText) findViewById(R.id.commentadd);
         commentText = group_details_text_view.getText().toString();
+        rv.smoothScrollBy(100,100);
 
         /*if (group_details_text_view.trim().length()==0)*/
         if (commentText.trim().length()==0 )
@@ -261,7 +327,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     // Parsing json object response
                     // response will be a json object
                     String status = response.getString("status");
-                    if (status.equals("success")) {
+                    if (status.equals("success")&&group_details_text_view!=null) {
                         group_details_text_view.setText("");
                        // Toast.makeText(Proceed_Feed_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
                         callGetCommentList(feed_id);
@@ -280,9 +346,32 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("Group Details", "Error: " + error.getMessage());
+                /*VolleyLog.d("Group Details", "Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Proceed_Feed_FullScreen.this, "error!", Toast.LENGTH_SHORT).show();
+*/
+                NetworkResponse response = error.networkResponse;
+                if (error instanceof ServerError && response != null) {
+                    try {
+                        Toast.makeText(Proceed_Feed_FullScreen.this, "error11!", Toast.LENGTH_SHORT).show();
+
+                        String res = new String(response.data,
+                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                        // Now you can use any deserializer to make sense of data
+                        JSONObject obj = new JSONObject(res);
+                    } catch (UnsupportedEncodingException e1) {
+                        // Couldn't properly decode data to string
+                        e1.printStackTrace();
+                        Toast.makeText(Proceed_Feed_FullScreen.this, "error22!", Toast.LENGTH_SHORT).show();
+
+                    } catch (JSONException e2) {
+                        Toast.makeText(Proceed_Feed_FullScreen.this, "error33!", Toast.LENGTH_SHORT).show();
+
+                        // returned data is not JSONObject?
+                        e2.printStackTrace();
+                    }
+                }
                 // hide the progress dialog
                 //hidepDialog();
             }
@@ -364,7 +453,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                             Log.d("imageuserfeed"," "+image);
                             Log.d("imageuserfeed11"," "+userImageUrl);
 
-                            groupData.setComment_date(getDate(Long.parseLong(dataTime)));
+                            try {
+                                groupData.setComment_date(getDate(Long.parseLong(dataTime)));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                             commentArrayList.add(groupData);
                         }
                         loadCommentListView(commentArrayList);
@@ -383,9 +476,31 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     @Override
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
+                        /*error.printStackTrace();
 
-                        Log.e("Feed", "FeedError");
+                        Log.e("Feed", "FeedError");*/
+
+                        NetworkResponse response = error.networkResponse;
+                        if (error instanceof ServerError && response != null) {
+                            try {
+                                Toast.makeText(Proceed_Feed_FullScreen.this, "error1!", Toast.LENGTH_SHORT).show();
+
+                                String res = new String(response.data,
+                                        HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                                // Now you can use any deserializer to make sense of data
+                                JSONObject obj = new JSONObject(res);
+                            } catch (UnsupportedEncodingException e1) {
+                                // Couldn't properly decode data to string
+                                e1.printStackTrace();
+                                Toast.makeText(Proceed_Feed_FullScreen.this, "error2!", Toast.LENGTH_SHORT).show();
+
+                            } catch (JSONException e2) {
+                                Toast.makeText(Proceed_Feed_FullScreen.this, "error3!", Toast.LENGTH_SHORT).show();
+
+                                // returned data is not JSONObject?
+                                e2.printStackTrace();
+                            }
+                        }
                     }
                 }
         );
@@ -436,11 +551,33 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
     }
-    private String getDate(long time) {
+    private String getDate(long time) throws ParseException {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(time);
-        String date = DateFormat.format("HH:mm", cal).toString();
+        String date = DateFormat.format("dd/MM HH:mm", cal).toString();
+         date1 = DateFormat.format("dd/MM ", cal).toString();
+        Log.d("date11",""+date1);
         return date;
+
+       /* Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM HH:mm:ss.SS");
+        String strDate = sdf.format(cal.getTime());
+        Log.d("CurrentdateFormat: ","" + strDate);
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat()
+        Date d = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(date);
+
+        Date date = sdf1.parse(strDate);
+        String string=sdf1.format(date);
+        return string;
+
+      //  Calendar cal = Calendar.getInstance();
+        sdf1.applyPattern("dd/MM HH:mm");
+
+        cal.setTime(d);
+        int month = cal.get(Calendar.MONTH);
+
+        return month + 1;*/
     }
 
     @Override

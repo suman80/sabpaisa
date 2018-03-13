@@ -39,8 +39,6 @@ public class CommentAdapter extends
         public TextView main_feed_comment_username;
         public NetworkImageView main_feed_comment_image;
 
-
-
         public MyViewHolder(View view) {
             super(view);
             main_feed_creation_time = (TextView) view.findViewById(R.id.main_feed_creation_time);

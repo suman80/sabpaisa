@@ -418,6 +418,8 @@ Log.d("ProfileFullViewProceed","state"+state);
                     String status =object.getString("status");
 
                     if (status.equals("success")) {
+                        Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                         userName.setText(object.getJSONObject("response").getString("fullName").toString());
                         mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
                         mailId.setText(object.getJSONObject("response").getString("emailId").toString());
@@ -512,6 +514,8 @@ Log.d("ProfileFullViewProceed","state"+state);
                     String status =object.getString("status");
 
                     if (status.equals("success")) {
+                        Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
 
                         userImageUrl =object.getJSONObject("response").getString("userImageUrl");
                         new ProfileNavigationActivityFullViewProceed.DownloadImageTask(userImage).execute(userImageUrl);

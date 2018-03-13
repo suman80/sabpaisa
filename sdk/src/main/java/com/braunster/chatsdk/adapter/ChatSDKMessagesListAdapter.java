@@ -328,7 +328,7 @@ public class ChatSDKMessagesListAdapter extends BaseAdapter {
     /**
      * Load the default data for each message, The data will be loaded for each message and be animated if needed.
      * <p>
-     * By Overriding this function you change or add logic for your default message data load,
+                                                   * By Overriding this function you change or add logic for your default message data load,
      * For example load online status for each user.
      */
     protected void loadDefaults(View row, ViewHolder holder, int position, MessageListItem message, boolean sender) {
@@ -342,6 +342,8 @@ public class ChatSDKMessagesListAdapter extends BaseAdapter {
         // Set the time of the sending.
         holder.txtTime.setText(message.time);
         animateSides(holder.txtTime, sender, null);
+
+
 
 
         switch (message.delivered) {
@@ -440,7 +442,9 @@ public class ChatSDKMessagesListAdapter extends BaseAdapter {
                     }
 
                     animateContent(image, null, message.delivered != BMessage.Delivered.No);
-                } else {
+                }
+
+                else {
                     image.clearCanvas();
                     if (progressBar.getVisibility() == View.INVISIBLE) {
                         progressBar.setVisibility(View.VISIBLE);

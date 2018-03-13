@@ -17,34 +17,44 @@
             android:id="@+id/nav_Settings"
                         android:title="Settings" />
 -->
+
+        <item
+            android:id="@+id/nav_TransactionReport"
+            android:title="Transaction Report"
+            android:icon="@drawable/ic_action_transaction"/>
+
         <item
             android:id="@+id/nav_ChangePassword"
             android:title="Change Password"
             android:icon="@drawable/ic_action_changepassworddd"/>
+
+
+
+
         <item
-            android:id="@+id/nav_logout"
-          android:icon="@drawable/ic_action_logouttt"
-            android:title="Logout" />
-        <item
-            android:id="@+id/nav_Privacy_Policy"
-            android:icon="@drawable/ic_action_privacyyyyyyy"
-            android:title="Privacy Policy"/>
-
-
-
+            android:id="@+id/nav_clean_data"
+            android:icon="@drawable/ic_action_cleandata"
+            android:title="Clear Data"
+            />
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_actionsharenew"
                 android:title="Share"
-                /> <item
-                android:id="@+id/nav_clean_data"
-                android:icon="@drawable/ic_action_cleandata"
-                android:title="Clear Data"
                 />
+
             <item
                 android:id="@+id/nav_rate"
                 android:icon="@drawable/ic_action_rateeeeeeee"
                 android:title="Rate" />
+        <item
+            android:id="@+id/nav_Privacy_Policy"
+            android:icon="@drawable/ic_action_privacyyyyyyy"
+            android:title="Privacy Policy"/>
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_action_logouttt"
+            android:title="Logout" />
+
 
     </group>
 

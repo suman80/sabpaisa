@@ -86,12 +86,14 @@ import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
+import in.sabpaisa.droid.sabpaisa.Model.TransactionreportModelClass;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+import in.sabpaisa.droid.sabpaisa.Util.LogoutNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
@@ -165,6 +167,10 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         SharedPreferences sharedPreferences2 = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
         n=sharedPreferences2.getString("m","xyz");
         m=n;
+        ClientId1=sharedPreferences2.getString("clientId", "123");
+
+        ClientId=ClientId1;
+
 
         SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(FilterActivity.MySharedPreffilter, Context.MODE_PRIVATE);
         stateName1=sharedPreferences1.getString("selectedstate", "abc");
@@ -172,9 +178,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         serviceName1=sharedPreferences1.getString("selectedservice", "123");
         serviceName=serviceName1;
         //ClientId1=sharedPreferences1.getString("stateId", "123");
-        ClientId1=sharedPreferences1.getString("clientId", "123");
+      /*  ClientId1=sharedPreferences1.getString("clientId", "123");
 
-        ClientId=ClientId1;
+        ClientId=ClientId1;*/
 
         Log.d("Sharedprefrencemat","-."+ClientId1+stateName1+serviceName1);
         Log.d("Sharedprefrencemat","-."+ClientId+stateName+serviceName);
@@ -566,27 +572,24 @@ Log.d("xmailidmain",""+x);*/
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+       /* DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(m=="abc") {
+        } *//*else if(m=="abc") {
             super.onBackPressed();
             Intent intent=new Intent(MainActivity.this,UIN.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             startActivity(intent);
 
-            finish();
+        */
 
 
-
-        }
-        else{
             finish();
             moveTaskToBack(true);
             System.exit(0);
 
-        }
+
     }
 
     private void FabButtonCreate() {
@@ -811,6 +814,11 @@ Log.d("xmailidmain",""+x);*/
             startActivity(intent);
 
         }*/
+
+        else if(id==R.id.nav_TransactionReport){
+            Intent intent=new Intent(MainActivity.this, TransactionReportNav.class);
+            startActivity(intent);
+        }
         else  if(id == R.id.nav_ChangePassword)
         {
             Intent intent=new Intent(MainActivity.this, ForgotActivity.class);
@@ -839,7 +847,10 @@ Log.d("xmailidmain",""+x);*/
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
-
+                    SharedPreferences settings1 = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor1 = settings1.edit();
+                    editor1.remove("m");
+                    editor1.commit();
                     SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.remove("logged");
@@ -895,6 +906,9 @@ Log.d("xmailidmain",""+x);*/
                     SharedPreferences settings = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.remove("m");
+                    editor.remove("selectedstate");
+                    editor.remove("selectedservice");
+                    editor.remove("logged");
                     editor.clear();
                     editor.commit();
                     finish();

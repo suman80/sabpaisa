@@ -90,8 +90,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     public void callFeedDataList(final String clientId) {
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"getParticularClientsFeeds/"+"?client_Id="+clientId;;
-
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"getParticularClientsFeeds/"+"?client_Id="+clientId;
 
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
@@ -130,7 +129,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
                                     feedData.setCreatedDate(jsonObject1.getString("createdDate"));
                                     feedData.setImagePath(jsonObject1.getString("imagePath"));
                                     feedData.setLogoPath(jsonObject1.getString("logoPath"));
-                                    feedArrayList.add(feedData);
+                      feedArrayList.add(feedData);
 
                                 }
                                 Log.d("feedArrayListAfterParse", " " + feedArrayList.get(0).getFeedName());
