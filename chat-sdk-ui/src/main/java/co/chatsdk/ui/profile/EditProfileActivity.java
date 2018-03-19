@@ -15,8 +15,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.mukesh.countrypicker.CountryPicker;
-import com.mukesh.countrypicker.CountryPickerListener;
+/*import com.mukesh.countrypicker.CountryPicker;
+import com.mukesh.countrypicker.CountryPickerListener;*/
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -138,7 +138,7 @@ public class EditProfileActivity extends BaseActivity {
             countryButton.setText(l.getDisplayCountry());
         }
 
-        countryButton.setOnClickListener(new View.OnClickListener() {
+      /*  countryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -153,7 +153,7 @@ public class EditProfileActivity extends BaseActivity {
                 });
                 picker.show(getSupportFragmentManager(), "COUNTRY_PICKER");
             }
-        });
+        });*/
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override

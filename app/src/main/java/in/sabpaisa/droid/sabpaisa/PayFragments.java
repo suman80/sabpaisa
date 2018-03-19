@@ -34,6 +34,11 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -149,11 +154,16 @@ public class PayFragments extends Fragment {
                     JSONObject object = new JSONObject(response1);
                     String status = object.getString("status");
                     if (status.equals("success")) {
-                        responseQC = object.getJSONObject("response").getString("QC");
-                        responseLP = object.getJSONObject("response").getString("LP");
+                        //responseQC = object.getJSONObject("response").getString("QC");
+                        //////////////////////////////////////////////////////////////////////////////
 
-                        Log.d("PaymentRESP", "response" + response1);
-                        Log.d("PaymentRESP", "status" + status);
+                        responseQC = object.getJSONObject("response").getJSONObject("QC").getString("EDUCATION");
+
+                        //responseLP = object.getJSONObject("response").getString("LP");
+                        responseLP = object.getJSONObject("response").getJSONObject("LP").getString("LOAN");
+
+                        Log.d("PaymentRESP", "responseQC" + responseQC);
+                        Log.d("PaymentRESP", "responseLP" + responseLP);
 
                         btn_payQC.setOnClickListener(new View.OnClickListener() {
                             @Override
