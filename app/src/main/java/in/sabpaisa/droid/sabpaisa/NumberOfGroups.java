@@ -14,6 +14,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
+import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
+import com.braunster.chatsdk.network.BNetworkManager;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
@@ -48,6 +51,19 @@ public class NumberOfGroups extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_number_of_groups);
+        // This is used for the app custom toast and activity transition
+        ChatSDKUiHelper.initDefault();
+
+// Init the network manager
+        BNetworkManager.init(getApplicationContext());
+
+// Create a new adapter
+        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
+
+// Set the adapter
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
+
+
         // Inflate the layout for this fragment
         linearLayoutnoDataFound = (LinearLayout) findViewById(R.id.noDataFound);
         recycler_view_Member = (ShimmerRecyclerView) findViewById(R.id.recycler_view_Member);
@@ -55,6 +71,8 @@ public class NumberOfGroups extends AppCompatActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recycler_view_Member.addItemDecoration(new SimpleDividerItemDecoration(this));
         recycler_view_Member.setLayoutManager(llm);
+
+
 
         SharedPreferences sharedPreferences = getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId = sharedPreferences.getString("clientId", "abc");

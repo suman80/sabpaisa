@@ -701,7 +701,57 @@ intent.putExtra("state",state);
 
 
 
-        }else if (id == R.id.nav_share) {
+        }
+
+        else if(id==R.id.nav_clean_data)
+        {
+            AlertDialog.Builder builder=new AlertDialog.Builder(FullViewOfClientsProceed.this); //Home is name of the activity
+            builder.setMessage("For Selecting any other client .Press OK ");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+
+
+                    SharedPreferences settings = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove("m");
+                    editor.remove("selectedstate");
+                    editor.remove("selectedservice");
+                    editor.remove("logged");
+                    editor.clear();
+                    editor.commit();
+                    finish();
+
+                    Intent intent=new Intent( FullViewOfClientsProceed.this, FilterActivity.class);
+
+                    startActivity(intent);
+
+                    /*SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove("logged");
+                    editor.commit();
+                    finish();
+                    Intent intent=new Intent(MainActivity.this, LogInActivity.class);
+
+                    startActivity(intent);
+*/
+
+
+                }
+            });
+
+            builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alert=builder.create();
+            alert.show();
+
+        }
+        else if (id == R.id.nav_share) {
             /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
 
             startActivity(intent);*/

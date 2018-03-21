@@ -59,6 +59,7 @@ public class PayFragments extends Fragment {
     String landing_page;
     Button btn_payQC, btn_payLP;
     String responseQC, responseLP;
+    String token;
 
 
     private static final String TAG = PayFragments.class.getSimpleName();
@@ -81,6 +82,19 @@ public class PayFragments extends Fragment {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(ProceedInstitiutionFragment.MYSHAREDPREFProceed, MODE_PRIVATE);
         landing_page = sharedPreferences.getString("landing_page", "123");
         Log.d("payfragment", "landing_page");
+
+
+        SharedPreferences sharedPreferences1 = getActivity().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+        String response = sharedPreferences1.getString("response", "123");
+
+        if(response!=null) {
+
+            token = response;
+            Log.d("msgmmtoken", " " + token);
+
+            Log.d("msgxnsummt", " " + response);
+        }
         //serviceName=sharedPreferences.getString("SERVICENAME","123");
 
        /* String landing_page = getArguments().getString("landing_page");
@@ -169,7 +183,7 @@ public class PayFragments extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 // do something
-
+getpaymeasaage(token);
                            Intent i = new Intent(getContext(), WebViewActivity.class);
                              /* Intent intent = new Intent(Intent.ACTION_VIEW,
                               Uri.parse("http://43.252.89.223:9191/QwikCollect/Canarabank.jsp"));*/
@@ -184,6 +198,7 @@ public class PayFragments extends Fragment {
                         btn_payLP.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                getpaymeasaage(token);
                                 Intent i = new Intent(getContext(), WebViewActivity.class);
                           /*      Intent intent = new Intent(Intent.ACTION_VIEW,
                                 Uri.parse("http://43.252.89.223:9191/QwikCollect/Canarabank.jsp"));*/
@@ -203,7 +218,7 @@ public class PayFragments extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 // do something
-
+getpaymeasaage(token);
 //                               /*Intent i = new Intent(getContext(), WebViewActivity.class);
 //                               *//*Intent intent = new Intent(Intent.ACTION_VIEW,
 //                                Uri.parse("http://43.252.89.223:9191/QwikCollect/Canarabank.jsp"));*//*
@@ -218,6 +233,7 @@ public class PayFragments extends Fragment {
                         btn_payLP.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                getpaymeasaage(token);
                                /* Intent i = new Intent(getContext(), WebViewActivity.class);
                                 *//*Intent intent = new Intent(Intent.ACTION_VIEW,
                                 Uri.parse("http://43.252.89.223:9191/QwikCollect/Canarabank.jsp"));*//*
@@ -353,6 +369,88 @@ public class PayFragments extends Fragment {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
     }
+    private void getpaymeasaage(final String token) {
+
+        String tag_string_req = "req_clients";
+
+        StringRequest request = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URl_PayMesage + token, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+
+                Log.d("Particularclientimage", "-->" + response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1.toString());
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("paymessageresponse", "" + response);
+                    Log.d("paymessageresponse", "" + status);
+
+
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    // alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        });
+
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
+
+
+    }
+
 
 
 }

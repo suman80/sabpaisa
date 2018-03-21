@@ -244,7 +244,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     public void onClickSendComment(View view) {
         group_details_text_view = (EditText) findViewById(R.id.commentadd);
         commentText = group_details_text_view.getText().toString();
-        rv.smoothScrollBy(100,100);
+//        rv.smoothScrollBy(100,100);
 
         /*if (group_details_text_view.trim().length()==0)*/
         if (commentText.trim().length()==0 )

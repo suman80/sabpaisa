@@ -883,7 +883,8 @@ Log.d("xmailidmain",""+x);*/
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, "Sabpaisa App");
                 String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
-                sAux = sAux + "https://www.sabpaisa.in/QwikCollect/sabpaisa \n\n";
+                sAux = sAux + "\n" +
+                        "https://portal.sabpaisa.in/appRelease/app-release.apk \n\n";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "Complete action using "));
             } catch (Exception e) {
@@ -1460,6 +1461,8 @@ if (x.equals("null"))
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
     }
+
+
 
 }
 

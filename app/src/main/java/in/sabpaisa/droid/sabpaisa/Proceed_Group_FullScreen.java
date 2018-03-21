@@ -30,6 +30,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
+import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
+import com.braunster.chatsdk.network.BNetworkManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,7 +79,17 @@ private EndlessScrollListener scrollListener;
         groupImage=(ImageView)findViewById(R.id.groupImage);
         button1=(Button)findViewById(R.id.b1);
 
-        swipeRefreshLayout= (SwipeRefreshLayout)findViewById(R.id.swipe_container);
+        // This is used for the app custom toast and activity transition
+        ChatSDKUiHelper.initDefault();
+
+// Init the network manager
+        BNetworkManager.init(getApplicationContext());
+
+// Create a new adapter
+        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
+
+// Set the adapter
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);        swipeRefreshLayout= (SwipeRefreshLayout)findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
         button1.setOnClickListener(new View.OnClickListener() {
     @Override
@@ -252,17 +265,17 @@ private EndlessScrollListener scrollListener;
             public void onResponse(JSONObject response) {
                 Log.d("Group Details", response.toString());
 
-                try {
-                    // Parsing json object response
-                    // response will be a json object
-                    String status = response.getString("status");
-                    if (status.equals("success")) {
+
+                            try {
+                                // Parsing json object response
+                                // response will be a json object
+                                String status = response.getString("status");
+                                if (status.equals("success")) {
 
 
-                        ///////////RRRRRRRRRRRRRRRRRRRR?????????????????
-                        if(response.getString("response").equals("Not A Member")){
-
-                           Toast.makeText(getApplicationContext(),"You cannot able to comment because your request is in pending status",Toast.LENGTH_SHORT).show();
+                                    ///////////RRRRRRRRRRRRRRRRRRRR?????????????????
+                                    if(response.getString("response").equals("Not A Member")){
+                                        Toast.makeText(getApplicationContext(),"You cannot able to comment because your request is in pending status",Toast.LENGTH_SHORT).show();
                         }
                         /////////////RRRRRRRRRRRRR??????????????????
 

@@ -594,6 +594,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                     Log.d("clientArrayList", "" + clientArrayList.get(0));
 
 
+
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(FilterActivity.this, R.layout.spinner_item, clientArrayList);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     clientsSpinner.setPrompt("Select");

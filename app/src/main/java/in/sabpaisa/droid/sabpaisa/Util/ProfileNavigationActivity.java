@@ -126,7 +126,9 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
         Log.d(TAG, "userAccessToken " + userAccessToken);
 
-
+        SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFPNA,MODE_PRIVATE).edit();
+        editor.putString("response",userAccessToken);
+        editor.commit();
         sharedPreferences = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
         clientId = sharedPreferences.getString("clientId", "abc");
         Log.d("clintidprofile", "---" + clientId);

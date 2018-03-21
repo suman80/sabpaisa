@@ -350,7 +350,8 @@
             android:name=".ProfileNavigationActivityFullViewProceed"
             android:screenOrientation="portrait" />
         <activity android:name=".NumberOfGroups" />
-        <activity android:name=".Reportt"></activity>
+        <activity android:name=".Reportt" />
+        <activity android:name=".AllTransactionSummary"></activity>
     </application>
 
 </manifest>
