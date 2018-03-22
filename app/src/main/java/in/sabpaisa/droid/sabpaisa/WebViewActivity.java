@@ -124,10 +124,11 @@ public static String MYSharedpref="WebShared";
         Ed.commit();*/
 
 
-
-        //Added on 2nd Feb
-        url = getIntent().getStringExtra("QC");
+        ////////////////////////////////////////////////
+        //22nd March,2018
+        url=getIntent().getStringExtra("URL");
         // url1=getIntent().getStringExtra("LP");
+        //////////////////////////////////////////////////
         Log.d("webViewURL", " " + url);
         //Log.d("webViewURL"," "+url1);
         webView.loadUrl(url);
