@@ -310,7 +310,7 @@ if((!html.equals("null")))
    /* 20 March 2018 12:14:06*/
 
          String   ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
-    Long tsLong = System.currentTimeMillis()/1000;
+    Long tsLong = System.currentTimeMillis();
     transcationDate = tsLong.toString();
 //    java.sql.Timestamp ts = java.sql.Timestamp.valueOf( transcationDate ) ;
 
