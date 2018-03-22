@@ -268,6 +268,9 @@ mailIdniv.setText(x);
 
         SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefOnFullViewOfClientProceed,MODE_PRIVATE).edit();
         editor.putString("clientId",ClientId);
+        editor.putString("clientName",clientName);  //21st March,2018
+        editor.putString("state",state);    //21st March,2018
+        editor.putString("clientImageURLPath",clientImageURLPath);  //21st March,2018
         editor.commit();
 
         TextView clientNameTextView = (TextView) findViewById(R.id.particular_client_name_proceed);

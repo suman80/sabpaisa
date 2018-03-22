@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <!--
         <androi.ViewPager
@@ -27,7 +26,7 @@
         </androi.ViewPager>
     -->
 
-    <Button
+    <!--<Button
         android:id="@+id/btn_pay"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
@@ -39,7 +38,7 @@
         android:text="Pay Through QC"
         android:textSize="20dp" />
 
-    <!--Added on 1st Feb-->
+    &lt;!&ndash;Added on 1st Feb&ndash;&gt;
     <Button
         android:id="@+id/btn_payLP"
         android:layout_width="wrap_content"
@@ -50,8 +49,19 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:text="Pay Through LP"
-        android:textSize="20dp" />
+        android:textSize="20dp" />-->
 
+
+    <!--////////////21st March,2018/////////////-->
+
+    <ExpandableListView
+        android:id="@+id/lvExp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:transcriptMode="alwaysScroll"
+        >
+
+    </ExpandableListView>
 
 
 </LinearLayout>

@@ -1,7 +1,9 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.braunster.chatsdk.activities.ChatSDKMainActivity;
 import com.bumptech.glide.Glide;
 
@@ -25,6 +28,7 @@ import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Members;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 /**
  * Created by rajdeeps on 12/28/17.
@@ -58,7 +62,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
     @Override
     public void onBindViewHolder(MemberAdapter.MyViewHolder holder, int position) {
 
-        Member_GetterSetter member_getterSetter = memberGetterSetterArrayList.get(position);
+        final Member_GetterSetter member_getterSetter = memberGetterSetterArrayList.get(position);
         holder.memberName.setText(member_getterSetter.getFullName());
         //holder.memberTimeStamp.setText(member_getterSetter.getTimestampOfJoining());
         //holder.memberImg.setImageUrl(member_getterSetter.getUserImageUrl(), imageLoader);
@@ -69,10 +73,25 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
         holder.memberChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Intent intent=new Intent(, ChatSDKMainActivity.class);
 
-                v.getContext().startActivity(new Intent(mContext,ChatSDKMainActivity.class));
+                //21st March,2018
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
+                String clientId=sharedPreferences.getString("clientId","abc");
+                String clientName=sharedPreferences.getString("clientName","abc");
+                String state=sharedPreferences.getString("state","abc");
+                String clientImageURLPath=sharedPreferences.getString("clientImageURLPath","abc");
 
+                int value=3;
+                Intent intent = new Intent(mContext,ChatSDKLoginActivity.class);
+                intent.putExtra("VALUE",value);
+                intent.putExtra("CLIENTID",clientId);
+                intent.putExtra("CLIENTNAME",clientName);
+                intent.putExtra("STATE",state);
+                intent.putExtra("CLIENTIMG",clientImageURLPath);
+                mContext.startActivity(intent);
+                ((Activity) mContext).overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+
+                ////21st March,2018
             }
         });
 
