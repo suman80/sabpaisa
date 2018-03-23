@@ -22,7 +22,16 @@
             android:id="@+id/nav_TransactionReport"
             android:title="Transaction Report"
             android:icon="@drawable/ic_action_transaction"/>
+        <item
+            android:id="@+id/nav_txnhistory"
+            android:icon="@drawable/ic_action_histtory"
+            android:title="Transaction History"
+            />
 
+        <item
+            android:id="@+id/nav_Contacts"
+            android:title="Contacts"
+            android:icon="@drawable/ic_action_transaction"/>
         <item
             android:id="@+id/nav_ChangePassword"
             android:title="Change Password"

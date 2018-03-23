@@ -66,6 +66,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
+import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FeedsFragments;
@@ -706,7 +707,13 @@ intent.putExtra("state",state);
 
         }
 
-        else if(id==R.id.nav_clean_data)
+        else if(id==R.id.nav_txnhistory){
+
+            Intent intent=new Intent( FullViewOfClientsProceed.this, AllTransactionSummary.class);
+
+            startActivity(intent);
+
+        }        else if(id==R.id.nav_clean_data)
         {
             AlertDialog.Builder builder=new AlertDialog.Builder(FullViewOfClientsProceed.this); //Home is name of the activity
             builder.setMessage("For Selecting any other client .Press OK ");
@@ -763,7 +770,7 @@ intent.putExtra("state",state);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, "Sabpaisa App");
                 String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
-                sAux = sAux + "https://play.google.com/store/apps/details?id=Orion.Soft \n\n";
+                sAux = sAux + "https://portal.sabpaisa.in/appRelease/app-release.apk \n\n";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "Complete action using "));
             } catch (Exception e) {

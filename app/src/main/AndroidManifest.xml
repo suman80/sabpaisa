@@ -351,7 +351,24 @@
             android:screenOrientation="portrait" />
         <activity android:name=".NumberOfGroups" />
         <activity android:name=".Reportt" />
-        <activity android:name=".AllTransactionSummary"></activity>
-    </application>
+        <activity android:name=".AllTransactionSummary" />
+        <activity android:name=".AllContacts" />
+        <activity
+            android:name=".DeepLinkActivity"
+            android:label="@string/app_name"
+          >
+
+            <!-- [START deep_link_filter] -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:host="portal.sabpaisa.in" android:scheme="http"/>
+                <data android:host="portal.sabpaisa.in" android:scheme="https"/>
+            </intent-filter>
+            <!-- [END deep_link_filter] -->
+        </activity>    </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toolbar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -30,6 +33,7 @@ import java.util.Locale;
 import in.sabpaisa.droid.sabpaisa.Adapter.AllTransactionAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.AllTransactiongettersetter;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
+import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class AllTransactionSummary extends AppCompatActivity {
 String token;
@@ -39,14 +43,27 @@ ShimmerRecyclerView recycler_view_Txn;
 String date1;
     ArrayList<AllTransactiongettersetter> allTransactiongettersetters;
     LinearLayout linearLayoutnoDataFound;
+    Toolbar toolbar;
+    ImageView back;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_all_transaction_summary);
 
 
+        back = (ImageView) findViewById(R.id.bbck);
+       /* toolbar.setTitle("Profile");
+        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
+       */
+       back.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               onBackPressed();
+           }
+       });
 
 
         // Inflate the layout for this fragment

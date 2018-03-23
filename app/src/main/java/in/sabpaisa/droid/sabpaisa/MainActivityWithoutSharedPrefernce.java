@@ -523,6 +523,8 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         rfabHelper.toggleContent();
     }
 
+
+
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     @Override
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
@@ -746,7 +748,8 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
 
 
-        }else if (id == R.id.nav_share) {
+        }
+        else if (id == R.id.nav_share) {
             try {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
@@ -760,7 +763,15 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
             }
 
 
-        } else if (id == R.id.nav_rate) {
+        }
+
+        else if(id==R.id.nav_txnhistory){
+
+            Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, AllTransactionSummary.class);
+
+            startActivity(intent);
+
+        }else if (id == R.id.nav_rate) {
             Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, RateActivity.class);
 
             startActivity(intent);
@@ -801,7 +812,6 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                     finish();
 
                     Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, FilterActivity.class);
-
                     startActivity(intent);
 
                     /*SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);

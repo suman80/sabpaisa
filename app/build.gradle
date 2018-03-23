@@ -48,7 +48,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.weiwangcn.betterspinner:library:1.1.0'
     compile 'com.airbnb.android:lottie:2.1.2'
-
+    compile 'com.google.firebase:firebase-invites:11.4.0'
     // compile 'com.github.santalu:respinner:1.0.1'
     //noinspection GradleCompatible
     compile 'com.google.android.gms:play-services-maps:11.4.0'

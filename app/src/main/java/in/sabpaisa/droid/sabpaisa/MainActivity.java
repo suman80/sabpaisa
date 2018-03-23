@@ -98,6 +98,7 @@ import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
 import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
+import in.sabpaisa.droid.sabpaisa.Util.ShareActivity;
 
 import static android.view.View.GONE;
 import static in.sabpaisa.droid.sabpaisa.CommentAdapterDatabase.context;
@@ -336,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
-       //View header = navigationView.inflateHeaderView(R.layout.nav_header_main_activity_navigation);
+       //View header = navigationView.inflateHeaderView(R.layout.nav_header_main_activity_navigation);`
         //nav = (NetworkImageView) header.findViewById(R.id.profile_image);
 
          niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
@@ -878,21 +879,42 @@ Log.d("xmailidmain",""+x);*/
 
 
         }else if (id == R.id.nav_share) {
+
             try {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, "Sabpaisa App");
                 String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
-                sAux = sAux + "\n" +
-                        "https://portal.sabpaisa.in/appRelease/app-release.apk \n\n";
+                sAux = sAux+"\n"+"https://portal.sabpaisa.in/appRelease/app-release.apk";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
-                startActivity(Intent.createChooser(i, "Complete action using "));
+                startActivity(Intent.createChooser(i, "Share via"));
             } catch (Exception e) {
 
 
                 //e.toString();
             }
 
+/*
+            Intent intent=new Intent( MainActivity.this, ShareActivity.class);
+
+            startActivity(intent);*/
+
+        }
+
+        else if(id==R.id.nav_Contacts){
+
+
+            Intent intent=new Intent( MainActivity.this, AllContacts.class);
+
+            startActivity(intent);
+
+        }
+
+        else if(id==R.id.nav_txnhistory){
+
+            Intent intent=new Intent( MainActivity.this, AllTransactionSummary.class);
+
+            startActivity(intent);
 
         }
         else if(id==R.id.nav_clean_data)
