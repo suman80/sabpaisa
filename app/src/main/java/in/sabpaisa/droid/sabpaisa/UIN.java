@@ -244,6 +244,20 @@ public class UIN extends AppCompatActivity {
                             // Setting OK Button
                             alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
+                                   /* SharedPreferences settings = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = settings.edit();
+                                    editor.remove("m");
+                                    editor.remove("selectedstate");
+                                    editor.remove("selectedservice");
+                                    editor.remove("logged");
+                                    editor.clear();
+                                    editor.commit();
+                                    finish();
+
+                                    Intent intent=new Intent( UIN.this, FilterActivity.class);
+
+                                    startActivity(intent);
+*/
                                     // Write your code here to execute after dialog closed
                                     // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
                                 }
@@ -322,14 +336,10 @@ public class UIN extends AppCompatActivity {
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         // test for connection
-        if (cm.getActiveNetworkInfo() != null
+        //Log.v(TAG, "Internet Connection Not Present");
+        return cm.getActiveNetworkInfo() != null
                 && cm.getActiveNetworkInfo().isAvailable()
-                && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
-        } else {
-            //Log.v(TAG, "Internet Connection Not Present");
-            return false;
-        }
+                && cm.getActiveNetworkInfo().isConnected();
     }
     private void callErrorPopup() {
         UIN_Dialog uniErrorPopUp = new UIN_Dialog(this);
@@ -531,10 +541,19 @@ public class UIN extends AppCompatActivity {
     public void onBackPressed() {
 
             super.onBackPressed();
-            Intent intent=new Intent(UIN.this,FilterActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        SharedPreferences settings = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.remove("m");
+        editor.remove("selectedstate");
+        editor.remove("selectedservice");
+        editor.remove("logged");
+        editor.clear();
+        editor.commit();
+        finish();
 
-            startActivity(intent);
+        Intent intent=new Intent( UIN.this, FilterActivity.class);
+
+        startActivity(intent);
 
             finish();
 

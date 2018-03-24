@@ -816,6 +816,15 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
             startActivity(intent);
 
         }
+
+        else if(id==R.id.nav_Contacts){
+
+
+            Intent intent=new Intent( MainActivitySkipWithoutSharedPrefernce.this, AllContacts.class);
+
+            startActivity(intent);
+
+        }
         else if (id == R.id.nav_share) {
             /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
 
@@ -825,7 +834,7 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, "SabPaisa App");
                 String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
-                sAux = sAux + "https://portal.sabpaisa.in/appRelease/app-release.apk \n\n";
+                sAux = sAux + "https://portal.sabpaisa.in/appRelease/app-release.apk";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "Complete action using "));
             } catch (Exception e) {

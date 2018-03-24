@@ -749,13 +749,22 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
 
         }
+
+        else if(id==R.id.nav_Contacts){
+
+
+            Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, AllContacts.class);
+
+            startActivity(intent);
+
+        }
         else if (id == R.id.nav_share) {
             try {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, "Sabpaisa App");
                 String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
-                sAux = sAux + "https://www.sabpaisa.in/QwikCollect/sabpaisa \n\n";
+                sAux = sAux + "https://portal.sabpaisa.in/appRelease/app-release.apk";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "Complete action using "));
             } catch (Exception e) {

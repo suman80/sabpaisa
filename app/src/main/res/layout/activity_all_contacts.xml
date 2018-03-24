@@ -1,15 +1,48 @@
-
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".AllContacts">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/bg_screen"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:titleMarginStart="40dp"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:subtitleTextColor="@color/white"
+        app:titleTextAppearance="@style/toolBarStyle"
+        app:titleTextColor="@color/white" />
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="17sp"
+    android:textStyle="bold"
+
+    android:text="SabPaisa"
+    android:layout_marginTop="20dp"
+    android:textColor="#fff"
+    android:layout_marginStart="40dp"/>
+
+    <ImageView
+        android:layout_width="29dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/bbck"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/ic_action_previousback"/>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvContacts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp">
     </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

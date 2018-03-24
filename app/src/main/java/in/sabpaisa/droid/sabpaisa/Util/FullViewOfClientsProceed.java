@@ -66,6 +66,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
+import in.sabpaisa.droid.sabpaisa.AllContacts;
 import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.FeedData;
@@ -761,6 +762,15 @@ intent.putExtra("state",state);
             alert.show();
 
         }
+
+        else if(id==R.id.nav_Contacts){
+
+
+            Intent intent=new Intent( FullViewOfClientsProceed.this, AllContacts.class);
+
+            startActivity(intent);
+
+        }
         else if (id == R.id.nav_share) {
             /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
 
@@ -770,7 +780,7 @@ intent.putExtra("state",state);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, "Sabpaisa App");
                 String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
-                sAux = sAux + "https://portal.sabpaisa.in/appRelease/app-release.apk \n\n";
+                sAux = sAux + "https://portal.sabpaisa.in/appRelease/app-release.apk";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "Complete action using "));
             } catch (Exception e) {

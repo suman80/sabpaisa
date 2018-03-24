@@ -12,13 +12,25 @@
         android:background="@color/bg_screen"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SabPaisa"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:layout_marginStart="44dp"/>
+
+
     <ImageView
-        android:layout_width="60dp"
-        android:id="@+id/back4"
+        android:layout_width="29dp"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/ic_action_previousback"
-        android:layout_height="30dp"
-        />
+        android:id="@+id/back4"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/ic_action_previousback"/>
+
 
     <ImageView
         android:layout_width="300dp"

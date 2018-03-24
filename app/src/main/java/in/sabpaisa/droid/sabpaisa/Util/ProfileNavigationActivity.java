@@ -375,7 +375,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                                 });
 
                                 // Showing Alert Message
-                                alertDialog.show();
+//                    alertDialog.show();
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "Image Upload Failed !", Toast.LENGTH_SHORT).show();

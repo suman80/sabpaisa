@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ import in.sabpaisa.droid.sabpaisa.Model.ContactVO;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class AllContacts extends AppCompatActivity {
-
+    ImageView back;
 
         RecyclerView rvContacts;
 
@@ -28,8 +30,15 @@ public class AllContacts extends AppCompatActivity {
             setContentView(R.layout.activity_all_contacts);
 
             rvContacts = (RecyclerView) findViewById(R.id.rvContacts);
+            back = (ImageView) findViewById(R.id.bbck);
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
 
-            getAllContacts();
+          getAllContacts();
         }
 
 

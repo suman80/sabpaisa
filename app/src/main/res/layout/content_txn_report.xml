@@ -18,25 +18,39 @@
 
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-<ImageView
-    android:layout_width="60dp"
-    android:id="@+id/back3"
-    android:layout_marginTop="10dp"
-    android:src="@drawable/ic_action_previousback"
-    android:layout_height="30dp"
-    />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SabPaisa"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:layout_marginStart="40dp"/>
+
+
+    <ImageView
+        android:layout_width="29dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/back3"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/ic_action_previousback"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="40dp"
         android:layout_marginTop="20dp"
+
+        android:gravity="center_horizontal"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="65dp"
-            android:text="Transaction Report :  "
+            android:text="E-Receipt :  "
             android:textStyle="bold"
             android:textColor="@color/bg_orange"
             android:textSize="20dp"/>
@@ -110,6 +124,8 @@ android:layout_marginTop="100dp"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
             android:textSize="17sp"
+            android:singleLine="true"
+
             android:text="ABC" />
     </LinearLayout>
 
@@ -159,6 +175,8 @@ android:layout_marginTop="100dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
         android:textSize="17sp"
+            android:singleLine="true"
+
             android:text="ABC" />
     </LinearLayout>
     <LinearLayout
@@ -207,7 +225,9 @@ android:layout_marginTop="100dp"
             android:layout_weight="0.5"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-android:textSize="17sp"
+            android:textSize="17sp"
+            android:singleLine="true"
+
             android:text="ABC" />
     </LinearLayout>
 
@@ -234,6 +254,7 @@ android:textSize="17sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:singleLine="true"
             android:text="ABC"
 
             android:maxLines="2"
@@ -334,6 +355,8 @@ android:textSize="17sp"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:textSize="17sp"
+                android:singleLine="true"
+
                 android:text="ABC" />
         </LinearLayout>
 

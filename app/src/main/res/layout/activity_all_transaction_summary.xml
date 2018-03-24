@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,12 +15,19 @@
         android:background="@color/bg_screen"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
-
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:subtitleTextColor="@color/white"
         app:titleTextAppearance="@style/toolBarStyle"
         app:titleTextColor="@color/white" />
-
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="SabPaisa"
+    android:layout_marginTop="20dp"
+    android:textSize="17sp"
+    android:textStyle="bold"
+    android:textColor="#fff"
+    android:layout_marginStart="40dp"/>
 
     <ImageView
         android:layout_width="29dp"
@@ -38,7 +45,7 @@
     android:layout_width="match_parent"
     android:layout_height="30dp"
     android:layout_marginTop="65dp"
-    android:text="Transaction History"
+    android:text="Transaction Report"
     android:textStyle="bold"
     android:textSize="22sp"
     android:gravity="center_horizontal"/>
@@ -67,4 +74,4 @@
 
     </FrameLayout>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
