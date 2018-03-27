@@ -26,6 +26,7 @@ import in.sabpaisa.droid.sabpaisa.AppController;
 
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Members;
+import in.sabpaisa.droid.sabpaisa.MembersProfile;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
@@ -70,6 +71,32 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
                 .load(member_getterSetter.getUserImageUrl())
                 .error(R.drawable.default_users)
                 .into(holder.memberImg);
+        holder.memberImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+               /* Intent intent = new Intent(mContext,MembersProfile.class);
+
+                intent.putExtra("",member_getterSetter.getFullName());
+                mContext.startActivity(intent);*/
+
+            }
+        });
+
+        holder.memberName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                /*Intent intent = new Intent(mContext,MembersProfile.class);
+                mContext.startActivity(intent);
+*/
+
+
+            }
+        });
+
+
         holder.memberChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

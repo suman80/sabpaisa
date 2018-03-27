@@ -82,7 +82,7 @@ public class Members extends Fragment {
     public void memberData (final String clientId)
     {
         String tag_string_req = "req_register";
-        String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_Member+"clientId="+clientId;
+        String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_Member+"clienId="+clientId;
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>(){

@@ -59,7 +59,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     String date1;
     String GroupsNm,GroupsDiscription,GroupsImg,GroupId,userAccessToken,response;
 private EndlessScrollListener scrollListener;
-    ArrayList<CommentData> arrayList;
+    ArrayList<CommentData> arrayList,feedArrayList;
     Button button1;
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -550,4 +550,55 @@ private EndlessScrollListener scrollListener;
     startActivity(intent);
 }*/
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+public void privatefeeds(final String groupId)
+{
+
+    String Url=AppConfig.Base_Url+AppConfig.App_api+"privatefeed?groupId=";
+    StringRequest stringRequest=new StringRequest(Request.Method.GET,Url+Groupid ,new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+           Log.d("Private_feeds",response);
+        }
+
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+
+        }
+    });
+}*/
 }

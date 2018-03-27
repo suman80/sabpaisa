@@ -126,12 +126,22 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
-        setContentView(R.layout.activity_main_without_shared_prefernce);
 
 
 
         setContentView(R.layout.activity_main_navigation);
 
+        // This is used for the app custom toast and activity transition
+        ChatSDKUiHelper.initDefault();
+
+// Init the network manager
+        BNetworkManager.init(getApplicationContext());
+
+// Create a new adapter
+        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
+
+// Set the adapter
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -184,17 +194,6 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         Log.d("FFResfilter", " " + response);
 
 
-        // This is used for the app custom toast and activity transition
-        ChatSDKUiHelper.initDefault();
-
-// Init the network manager
-        BNetworkManager.init(getApplicationContext());
-
-// Create a new adapter
-        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
-
-// Set the adapter
-        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
         SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
         response = sharedPreferences1.getString("response", "123");

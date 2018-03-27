@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -31,7 +32,7 @@ public class CommentAdapter extends
 
     private List<CommentData> commentList;
     ImageLoader imageloader = AppController.getInstance().getImageLoader();
-
+Context mContext;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView main_feed_creation_time;
@@ -59,6 +60,23 @@ public class CommentAdapter extends
         Log.d("commentData"," "+commentData.getCommentText());
         holder.main_feed_comment_username.setText(commentData.getCommentName());
         holder.main_feed_creation_time.setText(commentData.getComment_date());
+        holder.main_feed_comment_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*Intent intent = new Intent(mContext,MembersProfile.class);
+
+                //intent.putExtra("",member_getterSetter.getFullName());
+                mContext.startActivity(intent);*/
+            }
+        });
+
+        holder.main_feed_comment_username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*Intent intent = new Intent(mContext,MembersProfile.class);
+                mContext.startActivity(intent);*/
+            }
+        });
         //if (commentData.getCommentText()==null)
 /*
         {
@@ -79,6 +97,14 @@ public class CommentAdapter extends
         holder.main_feed_group_description.setText(commentData.getCommentText());
        // holder.main_feed_comment_image.setImageURI(Uri.parse(commentData.getUserImageUrl().toString()));
         holder.main_feed_comment_image.setImageUrl(commentData.getUserImageUrl(),imageloader);
+        holder.main_feed_comment_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*Intent intent = new Intent(mContext,MembersProfile.class);
+                mContext.startActivity(intent);
+*/
+            }
+        });
 
     }
 

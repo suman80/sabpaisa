@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -277,7 +278,16 @@ OK
                                              @Override
                                              public void onReceiveValue(String html) {
                                                  Log.d("Archana", html); // code here
-                                                  } });
+
+
+                                             } });
+                                         webView.evaluateJavascript( "(function() { return (Html.fromHtml(getString(R.string.nice_html)[0].innerHTML+'</html>'); })();", new ValueCallback<String>() {
+                                             @Override
+                                             public void onReceiveValue(String html) {
+                                                 Log.d("Arhu", html); // code here
+
+
+                                             } });
                                          webView.evaluateJavascript("(function() { return (document.getElementsByName(\"epResponse.amount\")[0].value); })();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
@@ -322,12 +332,12 @@ if((!html.equals("null")))
                 Log.d("timesampyyclnt77",""+clientcode);
 
                 Log.d("timesampyytokn",""+token);
-    savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate);
+    //savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate);
 
-    finish();
+    /*finish();
 
     Intent intent=new Intent(WebViewActivity.this,AllTransactionSummary.class);
-    startActivity(intent);
+    startActivity(intent);*/
 
 
 }
@@ -337,19 +347,21 @@ if((!html.equals("null")))
                                              }
                                          });
 
-                                         webView.evaluateJavascript("(function() { return (document.getElementsByName(\"epResponse.epPaymode\")[0].value); })();", new ValueCallback<String>() {
+                                         webView.evaluateJavascript("(function() { return ( document.select(\"div.container payment-section-wishlist.Cancelled\").first();\"})();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
 
                                                   mode=html.replace("\"","");
-                                                 Log.d("HTML89011mode", mode);
+                                                 // String mode1=mode.substring(19);
+                                                 Log.d("bkunkl,", mode);
+                                                 //Log.d("bkunkl,", mode1);
 
-                                                 Log.d("HTML89011mode", html);
-
+                                                 Log.d("mbhj", html);
 
                                              }
                                          });
-webView.evaluateJavascript("(function() { return (document.getElementsById(\"txtEmail\")[0].value); })();", new ValueCallback<String>() {
+
+                                webView.evaluateJavascript("(function() { return (document.getElementsById(\"txtEmail\")[0].value); })();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
 
@@ -360,7 +372,8 @@ webView.evaluateJavascript("(function() { return (document.getElementsById(\"txt
 
 
                                              }
-                                         });webView.evaluateJavascript("(function() { return (document.getElementsById(\"txtMobileNumber\")[0].value); })();", new ValueCallback<String>() {
+                                         });
+                                webView.evaluateJavascript("(function() { return (document.getElementsById(\"txtMobileNumber\")[0].value); })();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
 
@@ -370,15 +383,12 @@ webView.evaluateJavascript("(function() { return (document.getElementsById(\"txt
                                                  Log.d("HTML890MobileNumber", html);
                                              }
                                         });
-
-
-                                           webView.loadUrl("javascript:window.HtmlViewer.showHTML" +
+                                webView.loadUrl("javascript:window.HtmlViewer.showHTML" +
                                                    "('&lt;html&gt;'+document.getElementsByTagName('html')[0].innerHTML+'&lt;/html&gt;');");
 
 
                                      }
-                                 }
-        );
+                                 });
 
 
 

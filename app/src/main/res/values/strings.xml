@@ -115,6 +115,12 @@
     <string name="deep_link_default">Deep link not set</string>
     <string name="invitation_id_default">Invitation ID not set</string>
     <string name="invite_friends">Invite Friends</string>
+    <string name="nice_html">
+<div class="col-lg-12 col-md-12 col-sm-12 txt-cnt-wait-n">Thank You For Visiting SabPaisa...
+<span style="color: red; font-size: large; font-weight: bold; text-align: center;">Your Transaction was Cancelled.</span>
+
+</div>
+</string>
 
     <string name="invitation_title">SabPaisa Payment and Social App</string>
     <string name="invitation_message">SabPaisa App</string>
