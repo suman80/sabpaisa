@@ -1,9 +1,331 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.sabpaisa.droid.sabpaisa.MembersProfile">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
 
-</android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            app:title="Profile"
+
+            app:navigationIcon="@drawable/ic_action_backin"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/bkg"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/ll_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    >
+
+
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="140dp"
+                        android:id="@+id/coverr"
+                        android:visibility="gone"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/default_users">
+
+                    </ImageView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bkg"
+                        >
+
+                        <LinearLayout
+                            android:id="@+id/ll_userImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:elevation="15dp"
+
+                            android:orientation="vertical">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_userImage"
+                                android:layout_width="160dp"
+                                android:layout_height="160dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/default_users"
+
+                                />
+                        </LinearLayout>
+                        <com.jackandphantom.circularprogressbar.CircleProgressbar
+                            android:layout_width="100dp"
+                            android:layout_height="250dp"
+                            app:cpb_progress="50"
+                            app:cpb_roundedCorner="true"
+                            android:layout_marginLeft="140dp"
+                            android:visibility="gone"
+                            android:id="@+id/circleprgrs"
+                            app:cpb_foregroundProgressWidth="15"
+                            app:cpb_foregroundProgressColor="#1864c2"
+                            app:cpb_touchEnabled="true"/>
+                        <TextView
+                            android:id="@+id/tv_userName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/ll_userImage"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center_horizontal"
+                            android:text="User Name"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                </FrameLayout>
+
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="0px"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.6"
+                        android:text="Name"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:drawableLeft="@drawable/ic_person_black_24dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/UserName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_edittext"
+                            android:inputType="textPersonName"
+
+                            android:text="Test"
+                            android:singleLine="true"
+                            android:textColor="@color/black_50"
+                            android:textColorHint="@color/black_50"
+                            android:textSize="16sp"
+
+
+
+
+
+                            android:lines="2"
+
+                            android:maxLines="5"
+                            android:minLines="2"
+
+                            />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.6"
+                        android:text="Email Id"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:drawableLeft="@drawable/ic_email_black_24dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/emailId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_edittext"
+                            android:inputType="textEmailAddress"
+                            android:text="username@host.xyz"
+                            android:textColor="@color/black_50"
+                            android:textColorHint="@color/black_50"
+                            android:textSize="16sp"
+                            android:singleLine="true"
+                            android:lines="2"
+
+                            android:maxLines="5"
+                            android:minLines="2"
+                            />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.6"
+                        android:text="Address"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:drawableLeft="@drawable/ic_home_black_24dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/et_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_edittext"
+                            android:inputType="text"
+
+                            android:maxLines="1"
+                            android:text="Sant Nagar, Delhi"
+                            android:textColor="@color/black_50"
+                            android:textColorHint="@color/black_50"
+                            android:textSize="16sp"
+                            android:singleLine="true"
+                            />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.6"
+                        android:text="Mobile Number"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:drawableLeft="@drawable/ic_phone_black_24dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/et_mNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:text="9999999999"
+                            android:background="@drawable/background_edittext"
+
+                            android:textColor="@color/black_50"
+                            android:textColorHint="@color/black_50"
+                            android:textSize="16sp" />
+
+                        <!--<Button
+                            android:id="@+id/tv_numberEdit"
+                            android:layout_width="140dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:text="Edit"
+                            android:textColor="#fff"
+                            android:background="@drawable/background_button"
+                            android:textAllCaps="false"
+                            />-->
+
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+
+
+    </LinearLayout>
+<!--
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>-->
+
+</FrameLayout>

@@ -19,8 +19,9 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
+
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/bg_screen"
+        android:background="@drawable/bkg"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -49,7 +50,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bkg">
 
                     <LinearLayout
                         android:id="@+id/ll_userImage"
@@ -62,9 +64,8 @@
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/iv_userImage"
-                            android:layout_marginTop="90dp"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
                             android:layout_gravity="center_horizontal"
                             android:src="@drawable/default_users"
 
@@ -89,7 +90,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center_horizontal"
                         android:text="User Name"
-                        android:textSize="@dimen/activity_horizontal_margin"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
                 </RelativeLayout>
             </FrameLayout>

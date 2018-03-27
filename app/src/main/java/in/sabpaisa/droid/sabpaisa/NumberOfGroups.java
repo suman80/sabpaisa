@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.support.v7.widget.Toolbar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -44,6 +45,7 @@ public class NumberOfGroups extends AppCompatActivity {
     ShimmerRecyclerView recycler_view_Member;
 
     String GroupId;
+    Toolbar toolbar;
 
 
     @Override
@@ -62,7 +64,13 @@ public class NumberOfGroups extends AppCompatActivity {
 
 // Set the adapter
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
-
+toolbar=(Toolbar)findViewById(R.id.toolbar);
+toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        onBackPressed();
+    }
+});
 
         // Inflate the layout for this fragment
         linearLayoutnoDataFound = (LinearLayout) findViewById(R.id.noDataFound);
@@ -126,6 +134,8 @@ public class NumberOfGroups extends AppCompatActivity {
                             Member_GetterSetter member_getterSetter = new Member_GetterSetter();
                             member_getterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
                             member_getterSetter.setFullName(jsonObject1.getString("fullName"));
+                            member_getterSetter.setPhoneNumber(jsonObject1.getString("phoneNumber"));
+                            member_getterSetter.setEmailId(jsonObject1.getString("emailId"));
 
                 Log.d("MMBRNAME",""+jsonObject1.getString("fullName"));
                 Log.d("MMBRIMAGE",""+jsonObject1.getString("userImageUrl"));

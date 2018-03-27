@@ -64,6 +64,7 @@ private EndlessScrollListener scrollListener;
     SwipeRefreshLayout swipeRefreshLayout;
 
     Toolbar toolbar;
+    Button prvtfeeds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ private EndlessScrollListener scrollListener;
         group_description_details=(TextView)findViewById(R.id.group_description_details);
         groupImage=(ImageView)findViewById(R.id.groupImage);
         button1=(Button)findViewById(R.id.b1);
+        prvtfeeds=(Button)findViewById(R.id.b2);
 
         // This is used for the app custom toast and activity transition
         ChatSDKUiHelper.initDefault();
@@ -102,6 +104,14 @@ private EndlessScrollListener scrollListener;
     }
 });
 
+        prvtfeeds.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Proceed_Group_FullScreen.this,PrivateGroupFeeds.class);
+                intent.putExtra("GroupId",GroupId);
+                startActivity(intent);
+            }
+        });
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
         response = sharedPreferences.getString("response", "123");

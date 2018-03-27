@@ -109,7 +109,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         toolbar.setTitle("Profile");
-        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
+        toolbar.setNavigationIcon(R.drawable.ic_action_backin);
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

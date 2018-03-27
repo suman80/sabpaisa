@@ -373,9 +373,8 @@
             </intent-filter>
             <!-- [END deep_link_filter] -->
         </activity>
-        <activity android:name=".MembersProfile">
-
-        </activity>
+        <activity android:name=".MembersProfile"></activity>
+        <activity android:name=".PrivateGroupFeeds"></activity>
     </application>
 
 </manifest>
