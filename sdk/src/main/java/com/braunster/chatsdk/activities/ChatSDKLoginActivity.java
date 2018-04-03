@@ -36,6 +36,7 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
     int pkgValue;
     String ClientId,clientName,state,clientImageURLPath;
     public static String MY_PREFS_NAME_FOR_CHAT = "chatPref";
+    String userName,emailid,MObNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
        // enableFacebookIntegration(getNetworkAdapter().facebookEnabled());
@@ -58,13 +59,21 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         Log.d("pkgClientCSDKLA","pkgClient"+ClientId);
 
         clientName = getIntent().getStringExtra("CLIENTNAME");
+        userName = getIntent().getStringExtra("usernameniv");
         Log.d("pkgClientNAMECSDKLA","pkgClientNAME"+clientName);
+        Log.d("USERNAMECHAT","------"+userName);
 
         state = getIntent().getStringExtra("STATE");
         Log.d("pkgSTATECSDKLA","pkgSTATE"+state);
 
         clientImageURLPath = getIntent().getStringExtra("CLIENTIMG");
         Log.d("pkgIMAGECSDKLA","pkgIMAGE"+clientImageURLPath);
+        MObNumber = getIntent().getStringExtra("mobNumber");
+        emailid = getIntent().getStringExtra("xxxxx");
+        userImageUrl = getIntent().getStringExtra("userImageUrlMaim");
+        Log.d("MOBNUmberChat","----"+MObNumber);
+        Log.d("emailIdChat","---"+emailid);
+        Log.d("emailIdChat","---"+userImageUrl);
 
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME_FOR_CHAT, MODE_PRIVATE).edit();
         editor.putInt("KEY", pkgValue);
@@ -72,6 +81,10 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         editor.putString("CLIENTNAME",clientName);
         editor.putString("STATE",state);
         editor.putString("CLIENTIMG",clientImageURLPath);
+        editor.putString("UsernameChat",userName);
+        editor.putString("emailidChat",emailid);
+        editor.putString("mobNumberChat",MObNumber);
+        editor.putString("userimageChat",userImageUrl);
         editor.apply();
 
 

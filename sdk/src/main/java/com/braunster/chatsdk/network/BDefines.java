@@ -51,7 +51,7 @@ public class BDefines {
     }
 
     public static String getDefaultUserName() {
-        return "Chatcat" + String.valueOf(new Random().nextInt(1000) + 1);
+        return "SabPaisa" + String.valueOf(new Random().nextInt(1000) + 1);
     }
 
     /**
