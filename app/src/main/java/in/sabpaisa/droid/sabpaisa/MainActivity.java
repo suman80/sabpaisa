@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     ImageView niv;
     TextView usernameniv,mailIdniv;
     Toolbar toolbar;
-    String n,m;
+    String n,m,name,mobNumber;
     private static int CODE = 1; //declare as FIELD
     private FirebaseAnalytics firebaseAnalytics;
     NetworkImageView nav;
@@ -498,6 +498,7 @@ onBackPressed();            }
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });*/
+        showProfileData();
 
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -507,15 +508,17 @@ onBackPressed();            }
 
                 Intent intent = new Intent(MainActivity.this,ChatSDKLoginActivity.class);
 
-                intent.putExtra("userImageUrl",userImageUrl);
+               intent.putExtra("userImageUrlMaim",userImageUrl);
+                intent.putExtra("usernameniv",name);
                 intent.putExtra("VALUE",value);
+                intent.putExtra("xxxxx",x);
+                intent.putExtra("mobNumber",mobNumber);
 
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
         getUserIm(userAccessToken);
-        showProfileData();
         String y=x;
 /*g.d("xmailidmain",""+y);
 Log.d("xmailidmain",""+x);*/
@@ -1387,6 +1390,7 @@ Log.d("xmailidmain",""+x);*/
                     String response = object.getString("response");
                     String status =object.getString("status");
                     x = object.getJSONObject("response").getString("emailId").toString();
+                    mobNumber = object.getJSONObject("response").getString("contactNumber").toString();
 if (x.equals("null"))
 {
     usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
@@ -1394,7 +1398,8 @@ if (x.equals("null"))
     mailIdniv.setText("");
 }
                    else if (status.equals("success")) {
-
+name=object.getJSONObject("response").getString("fullName").toString();
+Log.d("namemain",""+name);
 
                         usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());

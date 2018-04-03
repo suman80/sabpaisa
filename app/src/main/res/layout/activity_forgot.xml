@@ -6,10 +6,6 @@
     android:layout_height="match_parent"
     tools:context="in.sabpaisa.droid.sabpaisa.Util.ForgotActivity">
 
-  <!--  <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">-->
 
 
   <ImageView
@@ -19,43 +15,80 @@
       android:layout_marginRight="40dp"
       android:src="@drawable/logonew"/>
 
-   <!-- </android.support.design.widget.AppBarLayout>
--->
+
     <include layout="@layout/content_forgot"
         />
 
 
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="20dp"
+      android:layout_marginRight="20dp"
+      android:layout_marginTop="190dp">
+
 
     <EditText
+        android:id="@+id/et_phone_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:imeOptions="actionNext"
-        android:id="@+id/et_phone_number"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="195dp"
-        android:maxLength="10"
         android:background="@drawable/background_edittext"
         android:drawableLeft="@drawable/ic_phone_black_24dp"
         android:drawablePadding="10dp"
-        android:hint="@string/hint_phone"
-        android:inputType="phone"
+        android:hint="Mobile Number"
+        android:imeOptions="actionNext"
+        android:inputType="number"
+        android:maxLength="10"
+        android:singleLine="true" />
+
+    <Button
+        android:elevation="15dp"
+        android:id="@+id/send_Otp"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:textAllCaps="false"
+        android:text="Send OTP"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:background="@drawable/background_button"
         />
 
-    <EditText
+
+  </FrameLayout>
+
+
+  <EditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:imeOptions="actionNext"
+      android:id="@+id/optEditText"
+      android:layout_marginLeft="20dp"
+      android:layout_marginRight="20dp"
+      android:layout_marginTop="250dp"
+      android:maxLength="10"
+      android:background="@drawable/background_edittext"
+      android:drawableLeft="@drawable/ic_phone_black_24dp"
+      android:drawablePadding="10dp"
+      android:hint="Enter OTP"
+      android:inputType="phone"
+      />
+
+
+
+  <EditText
         android:imeOptions="actionDone"
         android:id="@+id/et_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="295dp"
+        android:layout_marginTop="320dp"
         android:inputType="textPassword"
         android:background="@drawable/background_edittext"
         android:drawableLeft="@drawable/ic_lock_black_24dp"
         android:drawablePadding="10dp"
         android:hint="@string/hint_password" />
-
 
 
 
@@ -65,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="375dp"
+        android:layout_marginTop="400dp"
         android:background="@drawable/background_button"
         android:text="Change Password"
         android:textAllCaps="false"

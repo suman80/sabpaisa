@@ -6,7 +6,37 @@ package in.sabpaisa.droid.sabpaisa.Model;
 
 public class AllTransactiongettersetter {
 
-    String userAcceessToken,id,paidAmount,transcationDate,clientName,spTranscationId;
+    String userAcceessToken;
+    String id;
+    String paidAmount;
+    String transcationDate;
+    String clientName;
+    String spTranscationId;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    String status;
+
+    public AllTransactiongettersetter(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getPaymentStatus() {
+
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    String paymentStatus;
 
     public String getUserAcceessToken() {
         return userAcceessToken;

@@ -59,10 +59,34 @@
                 android:id="@+id/date"
                 />
         </LinearLayout>
+       <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Txn Amount : "
+                android:textSize="17sp"
+                android:singleLine="true"
+                android:layout_weight="0.5"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:textSize="17sp"
+                android:singleLine="true"
+                android:id="@+id/txnamount"
+                />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:orientation="horizontal"
+
             >
 
             <TextView
@@ -70,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:singleLine="true"
-                android:text=" Txn Amount :"
+                android:text=" Txn Status :"
                 android:textSize="17sp" />
 
             <TextView
@@ -79,7 +103,7 @@
                 android:layout_weight="0.5"
                 android:textSize="17sp"
                 android:singleLine="true"
-                android:id="@+id/txnamnt"
+                android:id="@+id/txnstts"
                 />
         </LinearLayout>
 

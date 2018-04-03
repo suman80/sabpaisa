@@ -77,7 +77,7 @@ public class ProfileNavigationActivityFullViewProceed extends AppCompatActivity 
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_profile_navigation);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         layout = (LinearLayout)findViewById(R.id.ll_profile);
         userImage = (ImageView) findViewById(R.id.iv_userImage);
@@ -154,6 +154,8 @@ Log.d("ProfileFullViewProceed","state"+state);
                     mailId.requestFocus();
                     mailIdEdit.setText("Save");
                 }else if(mailIdEdit.getText().toString().equals("Save")) {
+                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                     email=mailId.getText().toString();
                     updateUserProfileEmail(userAccessToken,email);
                     mailId.setFocusable(false);
@@ -168,6 +170,9 @@ Log.d("ProfileFullViewProceed","state"+state);
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                 pickImage();
             }
         });
@@ -182,6 +187,8 @@ Log.d("ProfileFullViewProceed","state"+state);
                     addressEdit.setText("Save");
 
                 } else if(addressEdit.getText().toString().equals("Save")){
+                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                     address=et_address.getText().toString();
                     updateUserProfileAddress(userAccessToken,address);
                     et_address.setFocusable(false);
@@ -207,6 +214,8 @@ Log.d("ProfileFullViewProceed","state"+state);
                     tv_NameEdit.setText("Save");
 
                 } else if(tv_NameEdit.getText().toString().equals("Save")){
+                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                     name=et_UserName.getText().toString();
                     updateUserProfileName(userAccessToken,name);
                     et_UserName.setFocusable(false);
@@ -224,8 +233,11 @@ Log.d("ProfileFullViewProceed","state"+state);
 
         showProfileData();
         showProfileImage();
+        //toolbar.setTitle("Profile");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.black));
+        toolbar.setNavigationIcon(R.drawable.ic_action_backin);
 
-        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
+       // toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
 
         toolbar.setNavigationOnClickListener(
                 new View.OnClickListener() {
@@ -418,7 +430,6 @@ Log.d("ProfileFullViewProceed","state"+state);
                     String status =object.getString("status");
 
                     if (status.equals("success")) {
-                        Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                         userName.setText(object.getJSONObject("response").getString("fullName").toString());
                         mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
@@ -514,7 +525,6 @@ Log.d("ProfileFullViewProceed","state"+state);
                     String status =object.getString("status");
 
                     if (status.equals("success")) {
-                        Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
 
                         userImageUrl =object.getJSONObject("response").getString("userImageUrl");

@@ -107,7 +107,11 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         toolbar.setTitle("Profile");
-        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
+       // toolbar.setTitle("Profile");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.black));
+        toolbar.setNavigationIcon(R.drawable.ic_action_backin);
+
+       // toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -161,6 +165,8 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                     mailId.requestFocus();
                     mailIdEdit.setText("Save");
                 } else if (mailIdEdit.getText().toString().equals("Save")) {
+                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
 
                     if (isValidEmail(mailId.getText().toString().trim())) {
                         email = mailId.getText().toString().trim();
@@ -180,8 +186,11 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
 
 
         userImage.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                 pickImage();
             }
         });
@@ -196,6 +205,8 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                     addressEdit.setText("Save");
 
                 } else if (addressEdit.getText().toString().equals("Save")) {
+                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                     address = et_address.getText().toString();
                     updateUserProfileAddress(userAccessToken, address);
                     et_address.setFocusable(false);
@@ -219,6 +230,8 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                     tv_NameEdit.setText("Save");
 
                 } else if (tv_NameEdit.getText().toString().equals("Save")) {
+                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                     name = et_UserName.getText().toString();
                     updateUserProfileName(userAccessToken, name);
                     et_UserName.setFocusable(false);
@@ -512,7 +525,7 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
 
                     if (status.equals("success")) {
 
-                        Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+                      //  Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                         userImageUrl = object.getJSONObject("response").getString("userImageUrl");
                         new DownloadImageTask(userImage).execute(userImageUrl);

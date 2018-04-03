@@ -61,15 +61,10 @@ public class WebViewActivity extends AppCompatActivity {
     ProgressBar progressBar;
     WebView webView;
     String url,userAccessToken, landing_page, url1;
-    String clientcode,mode;
-String token,paidAmount,clientName,transcationDate,spTranscationId;
-
-public static String MYSharedpref="WebShared";
-
-
-
-
-
+    String clientcode,mode,status;
+    String token,paidAmount,clientName,transcationDate,spTranscationId;
+    String status_cancel,status_failure,status_pending,status_succes;
+    public static String MYSharedpref="WebShared";String searchText="Your Transaction was Cancelled";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -148,17 +143,14 @@ public static String MYSharedpref="WebShared";
         webSettings.setJavaScriptEnabled(true);
 
 
-
-        webView.setOnTouchListener(new View.OnTouchListener() {
-
-            public boolean onTouch(View v, MotionEvent event) {
-                WebView.HitTestResult hr = ((WebView)v).getHitTestResult();
-
-                Log.d("TOuchevent", "getExtra = "+ hr.getExtra() + "\t\t Type=" + hr.getType());
-                return false;
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                //Required functionality here
+                Log.d("Alert", "" + message);
+                return super.onJsAlert(view, url, message, result);
             }
         });
-
         /////////////////////////////////////////
 
 
@@ -200,10 +192,6 @@ public static String MYSharedpref="WebShared";
         /////////////////////////////////////////
         webView.addJavascriptInterface(new MyJavaScriptInterface(WebViewActivity.this), "HtmlViewer");
 
-
-
-
-
         webView.setWebViewClient(new WebViewClient() {
                                      @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                                      @Override
@@ -212,10 +200,7 @@ public static String MYSharedpref="WebShared";
 
                                          ////////////////////
 
-
-
-
-                                         webView.evaluateJavascript("(function() { return (document.getElementsByName(\"cliencode\")[0].value); })();", new ValueCallback<String>() {
+        webView.evaluateJavascript("(function() { return (document.getElementsByName(\"cliencode\")[0].value); })();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
 
@@ -231,64 +216,26 @@ public static String MYSharedpref="WebShared";
 
                                                  Log.d("HTML8901clientname", html);
 
-/*if(!html.isEmpty())
-{
-    finish();
-}
-  */                                              // ((Activity) ctx).finish();
 
                                              }
                                          });
 
 
-
-
-
-                                         /*webView.evaluateJavascript("(function() { return (document.findElement(By.xPath(\"/div/span[contains(., 'Your Transaction was Cancelled ')[0].value]\").getText(); })();", new ValueCallback<String>() {
-                                             @Override
-                                             public void onReceiveValue(String html) {
-
-
-                                                 clientcode=html.replace("\"","");
-                                                 Log.d("", clientcode);
-                                                 Log.d("HTML89011cliencode", html);
-
-
-OK
-
-                                             }
-                                         });
-*/
-/*
-                                         webView.evaluateJavascript("(function() { return (document.getElementsByName(\"epResponse.clientLName\")[0].value); })();", new ValueCallback<String>() {
-                                             @Override
-                                             public void onReceiveValue(String html) {
-
-                                                 clientcode=html.replace("\"","");
-
-
-                                                 Log.d("HTML89012clientnme", html);
-                                                 Log.d("HTML89012clientnme", clientcode);
-
-                                             }
-                                         });*/
-
-
-                                         webView.evaluateJavascript( "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();", new ValueCallback<String>() {
+        webView.evaluateJavascript( "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
                                                  Log.d("Archana", html); // code here
 
 
                                              } });
-                                         webView.evaluateJavascript( "(function() { return (Html.fromHtml(getString(R.string.nice_html)[0].innerHTML+'</html>'); })();", new ValueCallback<String>() {
+        webView.evaluateJavascript( "(function() { return (Html.fromHtml(getString(R.string.nice_html)[0].outerHTML+'</html>'); })();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
                                                  Log.d("Arhu", html); // code here
 
 
                                              } });
-                                         webView.evaluateJavascript("(function() { return (document.getElementsByName(\"epResponse.amount\")[0].value); })();", new ValueCallback<String>() {
+        webView.evaluateJavascript("(function() { return (document.getElementsByName(\"epResponse.amount\")[0].value); })();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
 
@@ -300,54 +247,50 @@ OK
 
                                              }
                                          });
-                                         webView.evaluateJavascript("(function() { return (document.getElementsByName(\"epResponse.SPTxnId\")[0].value); })();", new ValueCallback<String>() {
+        webView.evaluateJavascript("(function() { return (document.getElementsByName(\"epResponse.SPTxnId\")[0].value); })();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
 
-
-
                                                  Log.d("HTML890", html);
-
-
                                                   spTranscationId=html.replace("\"","");
                                                  Log.d("HTML890SPTxnid", spTranscationId);
 
 
 
 
-if((!html.equals("null")))
-{
-   /* 20 March 2018 12:14:06*/
+                                if((!html.equals("null")))
+                                {
+                                   /* 20 March 2018 12:14:06*/
 
-         String   ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
-    Long tsLong = System.currentTimeMillis();
-    transcationDate = tsLong.toString();
-//    java.sql.Timestamp ts = java.sql.Timestamp.valueOf( transcationDate ) ;
+                                         String   ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
+                                    Long tsLong = System.currentTimeMillis();
+                                    transcationDate = tsLong.toString();
 
-    Log.d("timesadate",""+transcationDate);
-    Log.d("timesadatesq",""+ts);
-                Log.d("timesampyyid",""+spTranscationId);
-                Log.d("timesampyyamout",""+paidAmount);
-                Log.d("timesampyyclnt",""+clientName);
-                Log.d("timesampyyclnt77",""+clientcode);
+                                     Log.d("timesadate",""+transcationDate);
+                                     Log.d("timesadatesq",""+ts);
+                                     Log.d("timesampyyid",""+spTranscationId);
+                                     Log.d("timesampyyamout",""+paidAmount);
+                                     Log.d("timesampyyclnt",""+clientName);
+                                     Log.d("timesampyyclnt77",""+clientcode);
+                                     Log.d("timesampyytokn",""+token);
 
-                Log.d("timesampyytokn",""+token);
-    //savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate);
-
-    /*finish();
-
-    Intent intent=new Intent(WebViewActivity.this,AllTransactionSummary.class);
-    startActivity(intent);*/
+                                    finish();
+                            savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate,status);
 
 
-}
+
+                     Intent intent=new Intent(WebViewActivity.this,AllTransactionSummary.class);
+                         startActivity(intent);
+
+
+                                        }
 
 
 
                                              }
                                          });
 
-                                         webView.evaluateJavascript("(function() { return ( document.select(\"div.container payment-section-wishlist.Cancelled\").first();\"})();", new ValueCallback<String>() {
+       webView.evaluateJavascript("(function() { return ( document.select(\"div.container payment-section-wishlist.Cancelled\").first();\"})();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
 
@@ -361,7 +304,7 @@ if((!html.equals("null")))
                                              }
                                          });
 
-                                webView.evaluateJavascript("(function() { return (document.getElementsById(\"txtEmail\")[0].value); })();", new ValueCallback<String>() {
+       webView.evaluateJavascript("(function() { return (document.getElementsById(\"txtEmail\")[0].value); })();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
 
@@ -373,7 +316,7 @@ if((!html.equals("null")))
 
                                              }
                                          });
-                                webView.evaluateJavascript("(function() { return (document.getElementsById(\"txtMobileNumber\")[0].value); })();", new ValueCallback<String>() {
+       webView.evaluateJavascript("(function() { return (document.getElementsById(\"txtMobileNumber\")[0].value); })();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
 
@@ -382,72 +325,15 @@ if((!html.equals("null")))
 
                                                  Log.d("HTML890MobileNumber", html);
                                              }
-                                        });
-                                webView.loadUrl("javascript:window.HtmlViewer.showHTML" +
-                                                   "('&lt;html&gt;'+document.getElementsByTagName('html')[0].innerHTML+'&lt;/html&gt;');");
+                                       });
+      webView.loadUrl("javascript:window.HtmlViewer.showHTML" +
+                                                 "('&lt;html&gt;'+document.getElementsByTagName('html')[0].innerHTML+'&lt;/html&gt;');");
 
 
                                      }
                                  });
 
 
-
-      /*  webView.setOnTouchListener(new View.OnTouchListener() {
-
-            public final static int FINGER_RELEASED = 0;
-            public final static int FINGER_TOUCHED = 1;
-            public final static int FINGER_DRAGGING = 2;
-            public final static int FINGER_UNDEFINED = 3;
-
-            private int fingerState = FINGER_RELEASED;
-
-
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                switch (motionEvent.getAction()) {
-
-                    case MotionEvent.ACTION_DOWN:
-                        if (fingerState == FINGER_RELEASED) fingerState = FINGER_TOUCHED;
-                        else fingerState = FINGER_UNDEFINED;
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        if(fingerState != FINGER_DRAGGING) {
-                            fingerState = FINGER_RELEASED;
-
-                            // Your onClick codes
-
-                        }
-                        else if (fingerState == FINGER_DRAGGING) fingerState = FINGER_RELEASED;
-                        else fingerState = FINGER_UNDEFINED;
-                        break;
-
-                    case MotionEvent.ACTION_MOVE:
-                        if (fingerState == FINGER_TOUCHED || fingerState == FINGER_DRAGGING) fingerState = FINGER_DRAGGING;
-                        else fingerState = FINGER_UNDEFINED;
-                        break;
-
-                    default:
-                        fingerState = FINGER_UNDEFINED;
-
-                }
-
-                return false;
-            }
-        });
-
-*/
-
-
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-                //Required functionality here
-                Log.d("Alert", "" + message);
-                return super.onJsAlert(view, url, message, result);
-            }
-        });
         webView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
                 //ProgressBar progressBar = null;
@@ -463,45 +349,10 @@ if((!html.equals("null")))
         });
 
 
-
-
-
-
-       /* Log.d("timesadate",""+transcationDate);
-        Log.d("timesampyyid",""+spTranscationId);
-        Log.d("timesampyyamout",""+paidAmount);
-        Log.d("timesampyyclnt",""+clientName);
-        Log.d("timesampyyclnt77",""+clientcode);
-
-        Log.d("timesampyytokn",""+token);
-        savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate);
-
-*/
     }
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK: if (webView.canGoBack()) {
-                    webView.goBack();
-                }
-                else {
-                    finish();
-                } return true;
-            }
-        } return super.onKeyDown(keyCode, event);
-    }
-    private class MyWebViewClient extends WebViewClient {
 
-        @Override
-
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-            return false;
-        }
-    }
 
     public class MyJavaScriptInterface {
         public Context ctx;
@@ -510,13 +361,6 @@ if((!html.equals("null")))
 
 
         Handler handlerForJavascriptInterface;
-/*
-
-        public MyJavaScriptInterface(Context ctx) {
-            this.ctx = ctx;
-            this.saabPisaPG = iResult;
-        }
-*/
 
         public MyJavaScriptInterface(Context ctx) {
             this.ctx = ctx;
@@ -526,108 +370,31 @@ if((!html.equals("null")))
         @JavascriptInterface
         public void showHTML(final String html) {
             Log.d("All_HTml_Content", html);
-            //  webView.loadUrl("javascript:  document.getEl('mer_txn').value");
-            if (html.contains("\"status\":\"success\", \"response\"")) {
+            status_cancel=String.valueOf(html.toLowerCase().contains(searchText.toLowerCase()));
+            Log.d("status_cancel", String.valueOf(html.toLowerCase().contains(searchText.toLowerCase()))); // code here
+            if(status_cancel=="true")
+            {
 
-                if (html.contains("\"epResponse.SPTxnId\"")) {
-                    handlerForJavascriptInterface = new Handler();
-//code to use html content here
-                    handlerForJavascriptInterface.post(new Runnable() {
-                        @Override
-                        public void run() {
-/*Toast toast = Toast.makeText(ctx, "Page has been loaded in webview. html content :"+html, Toast.LENGTH_LONG);
-toast.show();*/
-                            Log.d("htmlcontent", "" + html);
-
-                            //  webView.loadUrl("javascript:function myFunction() { var x = document.getElementById('thebox').value; Android.processHTML(x); } myFunction();");
-                            String reqString = html.substring(31, html.length() - 20);
-
-                            int reqString1 = (html.indexOf("epResponse.SPTxnId"));
-
-                            Log.d("reqString", " " + reqString);
-
-                        /* jsonObject = new JSONObject(reqString);
-                         String response=jsonObject.getString("response");
-                         JSONObject jsonObject1=new JSONObject(response);
-                         String SabPaisaTxId=jsonObject1.getString("SabPaisaTxId");
-                         String firstName=jsonObject1.getString("firstName");
-                         String lastName=jsonObject1.getString("lastName");
-                         String payMode=jsonObject1.getString("payMode");
-                         String email=jsonObject1.getString("email");
-                         String mobileNo=jsonObject1.getString("mobileNo");
-                         String transDate=jsonObject1.getString("transDate");
-                         String orgTxnAmount=jsonObject1.getString("orgTxnAmount");
-*/
+                status="Cancelled";
+                Log.d("InIFParCaNcel","----"+status);
+                Log.d("STatus11", String.valueOf(html.toLowerCase().contains(searchText.toLowerCase()))); // code here
 
 
-                        /*    Log.d("jsonObject", "" + jsonObject);
-                            Log.d("jsonObjectresponse", "" + response);
-                            Log.d("SabPaisaTxId", "" + SabPaisaTxId);
-                            Log.d("firstName", "" + firstName);
-                            Log.d("lastName", "" + lastName);
-                            Log.d("payMode", "" + payMode);
-                            Log.d("email", "" + email);
-                            Log.d("mobileNo", "" + mobileNo);
-                            Log.d("transDate", "" + transDate);
-                            Log.d("orgTxnAmount", "" + orgTxnAmount);
-*/
-                            // new EDW().resonse(jsonObject);
-
-                           /* Intent intent=new Intent("sabpaisa.neeraj.com.sabpaisaappintegrationdemo.MainActivity");
-                            intent.putExtra("abc",mobileNo);
-                            startActivity(intent);*/
-
-
-                        }
-                    });
-                }
             }
-        }
 
-/*
-    public void web(){
 
-        Document doc = null;
-        try {
-            doc = Jsoup.connect(url).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        log(doc.title());
-        Log.d("",""+doc.title());
-
-        Elements newsHeadlines = doc.select("#mp-itn b a");
-        for (Element headline : newsHeadlines) {
-            //log("%s\n\t%s",headline.attr("title"), headline.absUrl("href"));
-            Log.d("%s\n\t%s",""+headline.attr("title")+ headline.absUrl("href"));
 
         }
 
-
-
-
-ok
-
-
-
-    }
-*/
     }
 
 
-    public  void savetransaction(final String token,final String spTranscationId,final  String paidAmount,final  String clientName,final String transcationDate)
+    public  void savetransaction(final String token,final String spTranscationId,final  String paidAmount,final  String clientName,final String transcationDate,final String payment_status)
     {
-String urlJsonObj=AppConfig.Base_Url+AppConfig.URL_AllTransaction+token+"&spTranscationId="+spTranscationId+"&paidAmount="+paidAmount+"&clientName="+clientName+"&transcationDate="+transcationDate;
+
+        String urlJsonObj=AppConfig.Base_Url+AppConfig.URL_AllTransaction+token+"&spTranscationId="+spTranscationId+"&paidAmount="+paidAmount+"&clientName="+clientName+"&transcationDate="+transcationDate+"&payment_status="+payment_status;
         urlJsonObj=urlJsonObj.trim().replaceFirst("[ ]","");
-     //   urlJsonObj = urlJsonObj.substring(0, urlJsonObj.length() );
-
-      //  urlJsonObj=urlJsonObj.trim().replaceFirst("0x2647f47f NORMAL null","");
-      //  urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
-
-
-
-
-Log.d("urljsnweb",""+urlJsonObj);
+        Log.d("urljsnweb",""+urlJsonObj);
         JsonObjectRequest jsonObjReq =new JsonObjectRequest(Request.Method.POST, urlJsonObj,null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -654,26 +421,7 @@ Log.d("urljsnweb",""+urlJsonObj);
             public void onErrorResponse(VolleyError error) {
 
             }
-        }); /*{
-
-            @Override
-            protected Map<String, String> getParams() {
-
-
-                // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("spTranscationId", spTranscationId);
-                params.put("paidAmount", paidAmount);
-                params.put("clientName", clientName);
-                params.put("transcationDate", transcationDate);
-                params.put("token",token );
-                // params.put("dob", dob );
-
-
-                return params;
-            }*/
-                //
-
+        });
         Log.d("urltchhi",""+jsonObjReq );
 
 

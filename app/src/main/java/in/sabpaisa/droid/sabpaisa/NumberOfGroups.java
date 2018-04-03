@@ -65,12 +65,14 @@ public class NumberOfGroups extends AppCompatActivity {
 // Set the adapter
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
 toolbar=(Toolbar)findViewById(R.id.toolbar);
+/*
 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         onBackPressed();
     }
 });
+*/
 
         // Inflate the layout for this fragment
         linearLayoutnoDataFound = (LinearLayout) findViewById(R.id.noDataFound);

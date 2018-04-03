@@ -141,9 +141,13 @@ String date1;
                         allTransactiongettersetter.setId(object3.getString("id"));
                         allTransactiongettersetter.setPaidAmount(object3.getString("paidAmount"));
                         allTransactiongettersetter.setSpTranscationId(object3.getString("spTranscationId"));
-                      String datatime=  object3.getString("transcationDate");
-                      Log.d("abcgshy","dnjk"+datatime);
+                        allTransactiongettersetter.setPaymentStatus(object3.getString("paymentStatus"));
+                        String datatime=  object3.getString("transcationDate");
+                        String x=  object3.getString("paymentStatus");
+                        Log.d("abcgshy","dnjk"+datatime);
+                      Log.d("abcgshy","dnjk"+x);
                         try {
+
                             allTransactiongettersetter.setTranscationDate(getDate(Long.parseLong(datatime)));
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -190,7 +194,7 @@ AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
 
-    private String getDate(long time) throws ParseException {
+    private String getDate(long time) {
 
 
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);

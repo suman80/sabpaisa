@@ -65,9 +65,7 @@ import in.sabpaisa.droid.sabpaisa.Util.SharedPref;
 import in.sabpaisa.droid.sabpaisa.Util.SmsListener;
 import in.sabpaisa.droid.sabpaisa.Util.SmsReceiver;
 
-/**
- * Created by Rajdeep Singh on 26-10-2017.
- */
+
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = RegisterActivity.class.getSimpleName();
@@ -382,12 +380,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public boolean CheckPermission(Context context, String Permission) {
-        if (ContextCompat.checkSelfPermission(context,
-                Permission) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            return false;
-        }
+        return ContextCompat.checkSelfPermission(context,
+                Permission) == PackageManager.PERMISSION_GRANTED;
     }
 
 

@@ -62,6 +62,8 @@ import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.RegisterActivity;
 import in.sabpaisa.droid.sabpaisa.UIN;
 
+import static in.sabpaisa.droid.sabpaisa.R.color.black;
+
 public class ProfileNavigationActivity extends AppCompatActivity {
     private static final String TAG = ProfileNavigationActivity.class.getSimpleName();
     ImageView userImage;
@@ -109,6 +111,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         toolbar.setTitle("Profile");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.black));
         toolbar.setNavigationIcon(R.drawable.ic_action_backin);
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
@@ -161,13 +164,13 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
 //                mailId.setFocusable(true);
                 if (mailIdEdit.getText().toString().equals("Edit")) {
-                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                     mailId.setEnabled(true);
                     //mailId.setText(" ");
                     mailId.requestFocus();
                     mailIdEdit.setText("Save");
                 } else if (mailIdEdit.getText().toString().equals("Save")) {
+                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                     if (isValidEmail(mailId.getText().toString().trim())) {
                         email = mailId.getText().toString().trim();
@@ -201,7 +204,6 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (addressEdit.getText().toString().equals("Edit")) {
-                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                     et_address.setEnabled(true);
                     //et_address.setText(" ");
@@ -209,6 +211,8 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     addressEdit.setText("Save");
 
                 } else if (addressEdit.getText().toString().equals("Save")) {
+                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                     address = et_address.getText().toString();
                     updateUserProfileAddress(userAccessToken, address);
                     et_address.setFocusable(false);
@@ -227,7 +231,6 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (tv_NameEdit.getText().toString().equals("Edit")) {
-                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                     et_UserName.setEnabled(true);
                     et_UserName.setText("");
@@ -236,6 +239,8 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     tv_NameEdit.setText("Save");
 
                 } else if (tv_NameEdit.getText().toString().equals("Save")) {
+                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+
                     name = et_UserName.getText().toString();
                     Log.d("Usernameedit11","-->");
 

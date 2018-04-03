@@ -37,6 +37,7 @@ public class AllTransactionAdapter  extends RecyclerView.Adapter<AllTransactionA
 
         AllTransactiongettersetter allTransactiongettersetter = allTransactiongettersetters.get(position);
         holder.paidAmount.setText(allTransactiongettersetter.getPaidAmount());
+        holder.status.setText(allTransactiongettersetter.getPaymentStatus());
         holder.spTranscationId.setText(allTransactiongettersetter.getSpTranscationId());
         holder.transcationDate.setText(allTransactiongettersetter.getTranscationDate());
         //holder.memberTimeStamp.setText(member_getterSetter.getTimestampOfJoining());
@@ -75,7 +76,7 @@ public class AllTransactionAdapter  extends RecyclerView.Adapter<AllTransactionA
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-     TextView id,clientName,spTranscationId,transcationDate,paidAmount;
+     TextView id,clientName,spTranscationId,transcationDate,paidAmount,status;
        /* public ImageView memberImg;
         Button memberChat;
         public TextView memberName;
@@ -85,8 +86,9 @@ public class AllTransactionAdapter  extends RecyclerView.Adapter<AllTransactionA
 
 
             transcationDate= (TextView)itemView.findViewById(R.id.date);
-            paidAmount= (TextView)itemView.findViewById(R.id.txnamnt);
+            paidAmount= (TextView)itemView.findViewById(R.id.txnamount);
             spTranscationId = (TextView)itemView.findViewById(R.id.txn);
+            status = (TextView)itemView.findViewById(R.id.txnstts);
         }
     }
 
