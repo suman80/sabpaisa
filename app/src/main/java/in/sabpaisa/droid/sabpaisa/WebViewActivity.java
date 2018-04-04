@@ -24,6 +24,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -53,18 +54,25 @@ import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import static com.google.firebase.crash.FirebaseCrash.log;
 import static java.lang.System.*;
 
-/**
- * Created by SabPaisa on 27-07-2017.
- */
+
 
 public class WebViewActivity extends AppCompatActivity {
     ProgressBar progressBar;
     WebView webView;
     String url,userAccessToken, landing_page, url1;
     String clientcode,mode,status;
-    String token,paidAmount,clientName,transcationDate,spTranscationId;
+    String token,paidAmount,clientName,transcationDate,spTranscationId=null;
     String status_cancel,status_failure,status_pending,status_succes;
-    public static String MYSharedpref="WebShared";String searchText="Your Transaction was Cancelled";
+    public static String MYSharedpref="WebShared";
+    String searchText="Your Transaction is Cancelled";
+    String searchTextCancelFromAtom="Your Transaction was Cancelled";
+    String searchText1="Your Transaction is Complete";
+    String searchText2="Your Transaction failed";
+    public static String finalstatus ;
+    boolean statusCancel = false;
+    boolean statusFail = false;
+    boolean statusSuccess = false;
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -221,20 +229,15 @@ public class WebViewActivity extends AppCompatActivity {
                                          });
 
 
-        webView.evaluateJavascript( "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();", new ValueCallback<String>() {
+        /*webView.evaluateJavascript( "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
                                                  Log.d("Archana", html); // code here
 
 
                                              } });
-        webView.evaluateJavascript( "(function() { return (Html.fromHtml(getString(R.string.nice_html)[0].outerHTML+'</html>'); })();", new ValueCallback<String>() {
-                                             @Override
-                                             public void onReceiveValue(String html) {
-                                                 Log.d("Arhu", html); // code here
 
-
-                                             } });
+                                             } });*/
         webView.evaluateJavascript("(function() { return (document.getElementsByName(\"epResponse.amount\")[0].value); })();", new ValueCallback<String>() {
                                              @Override
                                              public void onReceiveValue(String html) {
@@ -254,36 +257,38 @@ public class WebViewActivity extends AppCompatActivity {
                                                  Log.d("HTML890", html);
                                                   spTranscationId=html.replace("\"","");
                                                  Log.d("HTML890SPTxnid", spTranscationId);
+//                                                 Log.d("HTML890SPTxnid_status", finalstatus);
 
 
 
-
-                                if((!html.equals("null")))
-                                {
-                                   /* 20 March 2018 12:14:06*/
-
-                                         String   ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
-                                    Long tsLong = System.currentTimeMillis();
-                                    transcationDate = tsLong.toString();
-
-                                     Log.d("timesadate",""+transcationDate);
-                                     Log.d("timesadatesq",""+ts);
-                                     Log.d("timesampyyid",""+spTranscationId);
-                                     Log.d("timesampyyamout",""+paidAmount);
-                                     Log.d("timesampyyclnt",""+clientName);
-                                     Log.d("timesampyyclnt77",""+clientcode);
-                                     Log.d("timesampyytokn",""+token);
-
-                                    finish();
-                            savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate,status);
-
-
-
-                     Intent intent=new Intent(WebViewActivity.this,AllTransactionSummary.class);
-                         startActivity(intent);
-
-
-                                        }
+//                                if(!html.equals("null") )
+//                               // if(html != null && finalstatus != null && spTranscationId != null)
+//                                {
+//                                   /* 20 March 2018 12:14:06*/
+//
+//                                         String   ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
+//                                    Long tsLong = System.currentTimeMillis();
+//                                    transcationDate = tsLong.toString();
+//
+//                                     Log.d("timesadate",""+transcationDate);
+//                                     Log.d("timesadatesq",""+ts);
+//                                     Log.d("timesampyyid",""+spTranscationId);
+//                                     Log.d("timesampyyamout",""+paidAmount);
+//                                     Log.d("timesampyyclnt",""+clientName);
+//                                     Log.d("timesampyyclnt77",""+clientcode);
+//                                     Log.d("timesampyytokn",""+token);
+//                                     Log.d("statusfinal",""+finalstatus);
+//
+//                                    finish();
+//                                    savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate,finalstatus);
+//
+//
+//
+//                     Intent intent=new Intent(WebViewActivity.this,AllTransactionSummary.class);
+//                     startActivity(intent);
+//
+//
+//                                        }
 
 
 
@@ -370,16 +375,132 @@ public class WebViewActivity extends AppCompatActivity {
         @JavascriptInterface
         public void showHTML(final String html) {
             Log.d("All_HTml_Content", html);
-            status_cancel=String.valueOf(html.toLowerCase().contains(searchText.toLowerCase()));
-            Log.d("status_cancel", String.valueOf(html.toLowerCase().contains(searchText.toLowerCase()))); // code here
-            if(status_cancel=="true")
+            if(html.contains(searchText))
+                Log.d("RAJ KUMAR","true11");
+            else
+                Log.d("FAILING CITY", "STARLIN");
+            status_cancel=String.valueOf(/*(html.toLowerCase().contains(searchText.toLowerCase())) || */(html.toLowerCase().contains(searchTextCancelFromAtom.toLowerCase())));
+            status_succes=String.valueOf(html.toLowerCase().contains(searchText1.toLowerCase()));
+            status_failure=String.valueOf(html.toLowerCase().contains(searchText2.toLowerCase()));
+           // Log.d("status_cancel", String.valueOf(html.toLowerCase().contains(searchText.toLowerCase()))); // code here
+            Log.d("status_cancel",status_cancel);
+
+
+
+
+//            if(status_cancel=="true")
+            if (/*status_cancel.equals("true")*/(html.toLowerCase().contains(searchTextCancelFromAtom.toLowerCase())))
             {
 
-                status="Cancelled";
-                Log.d("InIFParCaNcel","----"+status);
+                status="cancelled";
+                finalstatus=status;
+                Log.d("InIFParCaNcel__R","----"+finalstatus);
+
                 Log.d("STatus11", String.valueOf(html.toLowerCase().contains(searchText.toLowerCase()))); // code here
 
 
+
+                if(!html.equals("null") )
+                // if(html != null && finalstatus != null && spTranscationId != null)
+                {
+                    /* 20 March 2018 12:14:06*/
+
+                    String   ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
+                    Long tsLong = System.currentTimeMillis();
+                    transcationDate = tsLong.toString();
+
+//                    Log.d("timesadate",""+transcationDate);
+//                    Log.d("timesadatesq",""+ts);
+//                    Log.d("timesampyyid",""+spTranscationId);
+//                    Log.d("timesampyyamout",""+paidAmount);
+//                    Log.d("timesampyyclnt",""+clientName);
+//                    Log.d("timesampyyclnt77",""+clientcode);
+//                    Log.d("timesampyytokn",""+token);
+                    Log.d("statusfinal",""+finalstatus);
+
+                    finish();
+                    savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate,finalstatus);
+
+
+
+//                    Intent intent=new Intent(WebViewActivity.this,AllTransactionSummary.class);
+//                    startActivity(intent);
+
+
+                }
+
+
+            }
+           else if(/*status_succes=="true"*//*status_succes.equals("true")*/html.toLowerCase().contains(searchText1.toLowerCase())){
+                status="success";
+                finalstatus=status;
+                Log.d("InelseIFParSuccess","----"+finalstatus);
+                Log.d("STatus112", String.valueOf(html.toLowerCase().contains(searchText1.toLowerCase()))); // code here
+
+                if(!html.equals("null") )
+                // if(html != null && finalstatus != null && spTranscationId != null)
+                {
+                    /* 20 March 2018 12:14:06*/
+
+                    String   ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
+                    Long tsLong = System.currentTimeMillis();
+                    transcationDate = tsLong.toString();
+
+//                    Log.d("timesadate",""+transcationDate);
+//                    Log.d("timesadatesq",""+ts);
+//                    Log.d("timesampyyid",""+spTranscationId);
+//                    Log.d("timesampyyamout",""+paidAmount);
+//                    Log.d("timesampyyclnt",""+clientName);
+//                    Log.d("timesampyyclnt77",""+clientcode);
+//                    Log.d("timesampyytokn",""+token);
+                    Log.d("statusfinal",""+finalstatus);
+
+                    finish();
+                    savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate,finalstatus);
+
+
+
+//                    Intent intent=new Intent(WebViewActivity.this,AllTransactionSummary.class);
+//                    startActivity(intent);
+
+
+                }
+            }
+          else   if(/*status_failure=="true"*//*status_failure.equals("true")*/html.toLowerCase().contains(searchText2.toLowerCase()))
+            {
+                status="failure";
+                finalstatus=status;
+                Log.d("InelseIFParfailure","----"+finalstatus);
+                Log.d("STatus113", String.valueOf(html.toLowerCase().contains(searchText2.toLowerCase()))); // code here
+
+                if(!html.equals("null") )
+                // if(html != null && finalstatus != null && spTranscationId != null)
+                {
+                    /* 20 March 2018 12:14:06*/
+
+                    String   ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
+                    Long tsLong = System.currentTimeMillis();
+                    transcationDate = tsLong.toString();
+
+//                    Log.d("timesadate",""+transcationDate);
+//                    Log.d("timesadatesq",""+ts);
+//                    Log.d("timesampyyid",""+spTranscationId);
+//                    Log.d("timesampyyamout",""+paidAmount);
+//                    Log.d("timesampyyclnt",""+clientName);
+//                    Log.d("timesampyyclnt77",""+clientcode);
+//                    Log.d("timesampyytokn",""+token);
+                    Log.d("statusfinal",""+finalstatus);
+
+                    finish();
+                    savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate,finalstatus);
+
+
+
+//                    Intent intent=new Intent(WebViewActivity.this,AllTransactionSummary.class);
+//                    startActivity(intent);
+
+
+                }
             }
 
 

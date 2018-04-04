@@ -96,7 +96,7 @@ String date1;
         String url="https://portal.sabpaisa.in/SabPaisaResponseHandler/SPtranscationIds?token=";
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url + token, new Response.Listener<String>() {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(String response)  {
 
                 Log.d("xyvhjkk.nk",""+response);
                 //progressBar.setVisibility(View.GONE);
@@ -146,12 +146,8 @@ String date1;
                         String x=  object3.getString("paymentStatus");
                         Log.d("abcgshy","dnjk"+datatime);
                       Log.d("abcgshy","dnjk"+x);
-                        try {
 
-                            allTransactiongettersetter.setTranscationDate(getDate(Long.parseLong(datatime)));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                        allTransactiongettersetter.setTranscationDate(getDate(Long.parseLong(datatime)));
 
 
                         allTransactiongettersetters.add(allTransactiongettersetter);

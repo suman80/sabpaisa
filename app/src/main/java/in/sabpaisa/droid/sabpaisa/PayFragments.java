@@ -131,7 +131,7 @@ public class PayFragments extends Fragment {
        /* btn_payQC = (Button) rootView.findViewById(R.id.btn_pay);
         btn_payLP = (Button) rootView.findViewById(R.id.btn_payLP);*/
 
-       //Added on 2nd Feb
+        //Added on 2nd Feb
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         final String clientId = sharedPreferences.getString("clientId", "abc");
         Log.d("clientId_PAY", "" + clientId);
@@ -287,7 +287,7 @@ public class PayFragments extends Fragment {
                             @Override
                             public void onClick(View v) {
                                *//* Intent i = new Intent(getContext(), WebViewActivity.class);
-                                *//**//*Intent intent = new Intent(Intent.ACTION_VIEW,
+                         *//**//*Intent intent = new Intent(Intent.ACTION_VIEW,
                                 Uri.parse("http://43.252.89.223:9191/QwikCollect/Canarabank.jsp"));*//**//*
                                 i.putExtra("QC", responseLP);
                                 startActivity(i);
