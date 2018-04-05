@@ -840,10 +840,10 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         }
 
 
-        else if(id==R.id.nav_TransactionReport){
+       /* else if(id==R.id.nav_TransactionReport){
             Intent intent=new Intent(MainActivitySkip.this, TransactionReportNav.class);
             startActivity(intent);
-        }
+        }*/
         /*
         else if (id == R.id.nav_rate) {
             Intent intent = new Intent(MainActivitySkip.this, RateActivity.class);

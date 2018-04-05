@@ -648,10 +648,10 @@ intent.putExtra("state",state);
 
 
 
-        else if(id==R.id.nav_TransactionReport){
+        /*else if(id==R.id.nav_TransactionReport){
             Intent intent=new Intent(FullViewOfClientsProceed.this, TransactionReportNav.class);
             startActivity(intent);
-        } else  if(id == R.id.nav_ChangePassword)
+        }*/ else  if(id == R.id.nav_ChangePassword)
         {
             Intent intent=new Intent(FullViewOfClientsProceed.this, ForgotActivity.class);
 

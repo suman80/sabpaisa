@@ -700,10 +700,10 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
             startActivity(intent);
         }
-        else if(id==R.id.nav_TransactionReport){
+       /* else if(id==R.id.nav_TransactionReport){
             Intent intent=new Intent(MainActivityWithoutSharedPrefernce.this, TransactionReportNav.class);
             startActivity(intent);
-        }
+        }*/
         /*else if (id == R.id.nav_Settings) {
             Intent intent=new Intent(MainActivity.this, SettingsNavigationActivity.class);
 
