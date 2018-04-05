@@ -416,6 +416,24 @@ String userImageUrl;
             startActivity(intent2);
 
         }
+
+
+        else if (value==4){
+
+
+
+            Intent intent3 = new Intent("in.sabpaisa.droid.sabpaisa.FullViewOfClientsProceed");
+            intent3.putExtra("clientId",ClientId);
+            intent3.putExtra("clientName",clientName);
+            intent3.putExtra("state",state);
+            intent3.putExtra("clientImagePath",clientImageURLPath);
+            Log.d("CSDKMA1","Fire_FVOCP");
+            Log.d("CSDKMA2","FVOCP+ClientId");
+            prefs.edit().clear();
+            startActivity(intent3);
+
+        }
+
         else {
             Log.d("CSDKMA","InElsePart");
         }

@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25"
+    compileSdkVersion 27
+    buildToolsVersion "27"
     defaultConfig {
         applicationId "in.sabpaisa.droid.sabpaisa"
         minSdkVersion 17
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 27
+        versionCode 3
+        versionName "1.2"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

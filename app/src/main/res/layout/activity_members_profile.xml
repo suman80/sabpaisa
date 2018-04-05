@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             app:title="Profile"
 
-            app:navigationIcon="@drawable/ic_action_backin"
+            app:navigationIcon="@drawable/ic_action_navigation_arrow_back"
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/bkg"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"

@@ -886,9 +886,9 @@ Log.d("xmailidmain",""+x);*/
             try {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_SUBJECT, "Sabpaisa App");
+                i.putExtra(Intent.EXTRA_SUBJECT, "SPApp");
                 String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
-                sAux = sAux+"\n"+"https://portal.sabpaisa.in/appRelease/app-release.apk";
+                sAux = sAux+"\n"+"https://play.google.com/store/apps/details?id=in.sabpaisa.droid.sabpaisa";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "Share via"));
             } catch (Exception e) {

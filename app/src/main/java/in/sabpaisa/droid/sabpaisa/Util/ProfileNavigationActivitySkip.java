@@ -109,7 +109,7 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
         toolbar.setTitle("Profile");
        // toolbar.setTitle("Profile");
         toolbar.setTitleTextColor(getResources().getColor(R.color.black));
-        toolbar.setNavigationIcon(R.drawable.ic_action_backin);
+        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
 
        // toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){

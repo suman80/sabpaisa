@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="35dp"
-            android:text="SabPaisa"
+            android:text="SPApp"
             android:textSize="25sp" />
 
         <TextView
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:text="Welcome To Sabpaisa!"
+            android:text="Welcome To SPApp!"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="25dp"
-            android:text="Login with SabPaisa"
+            android:text="Login with SPApp"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="25dp"
-                android:text="Don't have a SabPaisa Account ?"
+                android:text="Don't have SPApp Account ?"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold" />

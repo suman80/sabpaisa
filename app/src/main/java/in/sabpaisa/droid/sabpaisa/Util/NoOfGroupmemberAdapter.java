@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa.Util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,7 +65,29 @@ public NoOfGroupmemberAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, 
             public void onClick(View v) {
                 // Intent intent=new Intent(, ChatSDKMainActivity.class);
 
-                v.getContext().startActivity(new Intent(mContext,ChatSDKMainActivity.class));
+
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
+                String clientId=sharedPreferences.getString("clientId","abc");
+                String clientName=sharedPreferences.getString("clientName","abc");
+                String state=sharedPreferences.getString("state","abc");
+                String clientImageURLPath=sharedPreferences.getString("clientImageURLPath","abc");
+
+                int value=4;
+                Intent intent = new Intent(mContext,ChatSDKLoginActivity.class);
+                intent.putExtra("VALUE",value);
+                intent.putExtra("CLIENTID",clientId);
+                intent.putExtra("CLIENTNAME",clientName);
+                intent.putExtra("STATE",state);
+                intent.putExtra("CLIENTIMG",clientImageURLPath);
+                mContext.startActivity(intent);
+               // ((Activity) mContext).overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+
+
+
+
+
+
+                //v.getContext().startActivity(new Intent(mContext,ChatSDKMainActivity.class));
 
             }
         });
