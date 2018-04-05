@@ -717,7 +717,7 @@ intent.putExtra("state",state);
         }        else if(id==R.id.nav_clean_data)
         {
             AlertDialog.Builder builder=new AlertDialog.Builder(FullViewOfClientsProceed.this); //Home is name of the activity
-            builder.setMessage("For Selecting any other client .Press OK ");
+            builder.setMessage("For selecting other Institute/client.Press OK. ");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
@@ -763,14 +763,14 @@ intent.putExtra("state",state);
 
         }
 
-        else if(id==R.id.nav_Contacts){
+      /*  else if(id==R.id.nav_Contacts){
 
 
             Intent intent=new Intent( FullViewOfClientsProceed.this, AllContacts.class);
 
             startActivity(intent);
 
-        }
+        }*/
         else if (id == R.id.nav_share) {
             /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
 

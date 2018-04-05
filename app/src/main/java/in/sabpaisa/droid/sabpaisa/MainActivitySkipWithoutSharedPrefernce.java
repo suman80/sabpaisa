@@ -222,7 +222,7 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
         //fab = (FloatingActionButton)findViewById(R.id.fab_dashboard);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Sabpaisa");
+        toolbar.setTitle("SPApp");
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
@@ -447,7 +447,7 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
         Hash_file_maps = new HashMap<String, String>();
 
 
-        Hash_file_maps.put("Sabpaisa Digitizing Cash", AppConfig.Base_Url+"/Docs/Images/HomeImage/sabpaisa.png");
+        Hash_file_maps.put("SPApp Digitizing Cash", AppConfig.Base_Url+"/Docs/Images/HomeImage/sabpaisa.png");
         Hash_file_maps.put("Payment & Transfer", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_2.png");
         Hash_file_maps.put("The Future Of Payments", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_image.jpg");
         Hash_file_maps.put("UPI", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_1.svg.png");
@@ -817,14 +817,14 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
 
         }
 
-        else if(id==R.id.nav_Contacts){
+       /* else if(id==R.id.nav_Contacts){
 
 
             Intent intent=new Intent( MainActivitySkipWithoutSharedPrefernce.this, AllContacts.class);
 
             startActivity(intent);
 
-        }
+        }*/
         else if (id == R.id.nav_share) {
             /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
 

@@ -373,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         //fab = (FloatingActionButton)findViewById(R.id.fab_dashboard);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Sabpaisa");
+        toolbar.setTitle("SPApp");
         toolbar.setNavigationIcon(R.drawable.ic_navigation);
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
@@ -714,7 +714,7 @@ Log.d("xmailidmain",""+x);*/
         Hash_file_maps = new HashMap<String, String>();
 
 
-    Hash_file_maps.put("Sabpaisa Digitizing Cash", AppConfig.Base_Url+"/Docs/Images/HomeImage/sabpaisa.png");
+    Hash_file_maps.put("SPApp Digitizing Cash", AppConfig.Base_Url+"/Docs/Images/HomeImage/sabpaisa.png");
         Hash_file_maps.put("Payment & Transfer", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_2.png");
         Hash_file_maps.put("The Future Of Payments", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_image.jpg");
         Hash_file_maps.put("UPI", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_1.svg.png");
@@ -904,14 +904,14 @@ Log.d("xmailidmain",""+x);*/
 
         }
 
-        else if(id==R.id.nav_Contacts){
+      /*  else if(id==R.id.nav_Contacts){
 
 
             Intent intent=new Intent( MainActivity.this, AllContacts.class);
 
             startActivity(intent);
 
-        }
+        }*/
 
         else if(id==R.id.nav_txnhistory){
 
@@ -923,7 +923,7 @@ Log.d("xmailidmain",""+x);*/
         else if(id==R.id.nav_clean_data)
         {
             AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
-            builder.setMessage("For Selecting any other client .Press OK ");
+            builder.setMessage("For selecting other Institute/client.Press OK.");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {

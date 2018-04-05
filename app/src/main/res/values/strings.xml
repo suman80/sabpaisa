@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SabPaisa</string>
+    <string name="app_name">SPApp</string>
     <string name="hint_phone">Enter Your 10 digit mobile no</string>
     <string name="hint_fullname">Full Name</string>
     <string name="hint_OTP">Enter OTP</string>

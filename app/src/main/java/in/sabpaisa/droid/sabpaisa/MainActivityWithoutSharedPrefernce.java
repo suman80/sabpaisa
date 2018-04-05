@@ -300,7 +300,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         //fab = (FloatingActionButton)findViewById(R.id.fab_dashboard);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Sabpaisa");
+        toolbar.setTitle("SPApp");
         toolbar.setNavigationIcon(R.drawable.ic_navigation);
         toolbar.setNavigationOnClickListener(
                 new View.OnClickListener() {
@@ -749,14 +749,14 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
         }
 
-        else if(id==R.id.nav_Contacts){
+      /*  else if(id==R.id.nav_Contacts){
 
 
             Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, AllContacts.class);
 
             startActivity(intent);
 
-        }
+        }*/
         else if (id == R.id.nav_share) {
             try {
                 Intent i = new Intent(Intent.ACTION_SEND);
@@ -803,7 +803,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         else if(id==R.id.nav_clean_data)
         {
             AlertDialog.Builder builder=new AlertDialog.Builder(MainActivityWithoutSharedPrefernce.this); //Home is name of the activity
-            builder.setMessage("For Selecting any other client .Press OK ");
+            builder.setMessage("For selecting other Institute/client.Press OK.");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
