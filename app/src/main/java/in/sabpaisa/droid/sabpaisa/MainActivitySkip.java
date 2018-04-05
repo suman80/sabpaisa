@@ -843,27 +843,29 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         else if(id==R.id.nav_TransactionReport){
             Intent intent=new Intent(MainActivitySkip.this, TransactionReportNav.class);
             startActivity(intent);
-        }else if (id == R.id.nav_rate) {
+        }
+        /*
+        else if (id == R.id.nav_rate) {
             Intent intent = new Intent(MainActivitySkip.this, RateActivity.class);
             intent.putExtra("VALUE", value);
 
             startActivity(intent);
 
-/*
+*//*
             getFragmentManager()
                     .beginTransaction()
                     .replace(R.id.tt, newFragment)
-                    .commit();*/
-            /*newFragment = new Ratefragment();
+                    .commit();*//*
+            *//*newFragment = new Ratefragment();
             transaction.replace(R.id.tt, newFragment);
             transaction.addToBackStack(null);
-            transaction.commit();*/
+            transaction.commit();*//*
 
-            /*Fragment fragment = new Fragment();
+            *//*Fragment fragment = new Fragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.tt, fragment, fragment.getTag()).commit();
-        */
-        }
+        *//*
+        }*/
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -53,10 +53,10 @@
                 android:title="Share"
                 />
 
-            <item
+            <!--<item
                 android:id="@+id/nav_rate"
                 android:icon="@drawable/ic_action_rateeeeeeee"
-                android:title="Rate" />
+                android:title="Rate" />-->
         <item
             android:id="@+id/nav_Privacy_Policy"
             android:icon="@drawable/ic_action_privacyyyyyyy"

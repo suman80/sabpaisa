@@ -968,27 +968,27 @@ Log.d("xmailidmain",""+x);*/
             alert.show();
 
         }
-            else if (id == R.id.nav_rate) {
+            /*else if (id == R.id.nav_rate) {
             Intent intent=new Intent(MainActivity.this, RateActivity.class);
 
             startActivity(intent);
 
-/*
+*//*
             getFragmentManager()
                     .beginTransaction()
                     .replace(R.id.tt, newFragment)
-                    .commit();*/
-            /*newFragment = new Ratefragment();
+                    .commit();*//*
+            *//*newFragment = new Ratefragment();
             transaction.replace(R.id.tt, newFragment);
             transaction.addToBackStack(null);
-            transaction.commit();*/
+            transaction.commit();*//*
 
-            /*Fragment fragment = new Fragment();
+            *//*Fragment fragment = new Fragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.tt, fragment, fragment.getTag()).commit();
-        */
+        *//*
         }
-
+*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

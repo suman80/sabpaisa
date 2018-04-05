@@ -779,27 +779,27 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
             startActivity(intent);
 
-        }else if (id == R.id.nav_rate) {
+        }/*else if (id == R.id.nav_rate) {
             Intent intent=new Intent( MainActivityWithoutSharedPrefernce.this, RateActivity.class);
 
             startActivity(intent);
 
-/*
+*//*
             getFragmentManager()
                     .beginTransaction()
                     .replace(R.id.tt, newFragment)
-                    .commit();*/
-            /*newFragment = new Ratefragment();
+                    .commit();*//*
+            *//*newFragment = new Ratefragment();
             transaction.replace(R.id.tt, newFragment);
             transaction.addToBackStack(null);
-            transaction.commit();*/
+            transaction.commit();*//*
 
-            /*Fragment fragment = new Fragment();
+            *//*Fragment fragment = new Fragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.tt, fragment, fragment.getTag()).commit();
-        */
+        *//*
         }
-
+*/
         else if(id==R.id.nav_clean_data)
         {
             AlertDialog.Builder builder=new AlertDialog.Builder(MainActivityWithoutSharedPrefernce.this); //Home is name of the activity

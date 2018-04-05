@@ -788,7 +788,7 @@ intent.putExtra("state",state);
             }
 
 
-        } else if (id == R.id.nav_rate) {
+        } /*else if (id == R.id.nav_rate) {
             Intent intent=new Intent(FullViewOfClientsProceed.this, RateActivity.class);
 
             startActivity(intent);
@@ -796,7 +796,7 @@ intent.putExtra("state",state);
 
 
         }
-
+*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
