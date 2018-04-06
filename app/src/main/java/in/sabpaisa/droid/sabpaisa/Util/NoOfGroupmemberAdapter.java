@@ -79,7 +79,9 @@ public NoOfGroupmemberAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, 
                 intent.putExtra("CLIENTNAME",clientName);
                 intent.putExtra("STATE",state);
                 intent.putExtra("CLIENTIMG",clientImageURLPath);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                // ((Activity) mContext).overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
 
 

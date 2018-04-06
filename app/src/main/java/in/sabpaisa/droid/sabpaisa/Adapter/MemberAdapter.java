@@ -138,7 +138,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
                 intent.putExtra("CLIENTIMG",clientImageURLPath);
                 mContext.startActivity(intent);
                 ((Activity) mContext).overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 ////21st March,2018
             }
         });
