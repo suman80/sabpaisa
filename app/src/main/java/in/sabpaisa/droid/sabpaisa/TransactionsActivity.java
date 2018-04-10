@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.pm.ActivityInfo;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +23,7 @@ public class TransactionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_transactions);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Payment Transactions");
         setSupportActionBar(toolbar);

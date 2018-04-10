@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,7 +35,7 @@ public class SplashScreen extends AppCompatActivity {
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_splash);
 
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 /*TextView   text =(TextView) findViewById(R.id.text);
         text.setOnClickListener(new View.OnClickListener() {
             @Override

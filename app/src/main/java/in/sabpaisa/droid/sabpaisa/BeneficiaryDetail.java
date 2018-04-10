@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +50,9 @@ public class BeneficiaryDetail extends AppCompatActivity implements OliveUpiEven
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
+
         setContentView(R.layout.activity_beneficiary_detail);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mtoolbar = (Toolbar)findViewById(R.id.toolbar);
         upiName = (TextView)findViewById(R.id.tv_upiName);
         upi = (TextView)findViewById(R.id.tv_upi);

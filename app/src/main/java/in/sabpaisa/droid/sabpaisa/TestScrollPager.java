@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.pm.ActivityInfo;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ public class TestScrollPager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_test_scroll_pager);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         ViewPager pager = (ViewPager)findViewById(R.id.viewpager);
         pager.setAdapter(new TestAdapter(getSupportFragmentManager()));
         //Bind the step indicator to the adapter

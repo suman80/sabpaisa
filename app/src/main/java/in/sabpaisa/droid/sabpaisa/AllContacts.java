@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -71,7 +72,7 @@ public class AllContacts extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_contacts);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         pDialog = new ProgressDialog(AllContacts.this);
         pDialog.setMessage("Reading contacts...");

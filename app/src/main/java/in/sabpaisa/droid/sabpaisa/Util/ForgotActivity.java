@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -196,6 +197,7 @@ public class ForgotActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_forgot);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //final EditText et_currentPassword =(EditText) findViewById(R.id.et_currentPassword);
         final EditText et_phone_number = (EditText)findViewById(R.id.et_phone_number);
         final EditText password = (EditText)findViewById(R.id.et_password);

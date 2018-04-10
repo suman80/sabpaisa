@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.CountDownTimer;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,8 +28,9 @@ public class VerifyMobile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
-        setContentView(R.layout.activity_verify_mobile);
 
+        setContentView(R.layout.activity_verify_mobile);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         String optName1 = getIntent().getStringExtra("SIM1");
         String optName2 = getIntent().getStringExtra("SIM2");
 

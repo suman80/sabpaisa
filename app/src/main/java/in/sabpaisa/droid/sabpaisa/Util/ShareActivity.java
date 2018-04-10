@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -31,6 +32,7 @@ public class ShareActivity extends AppCompatActivity implements  GoogleApiClient
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_share);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // Invite button click listener
         findViewById(R.id.invite_button).setOnClickListener(this);
         // [END_EXCLUDE]

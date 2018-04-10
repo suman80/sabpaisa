@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -77,7 +78,7 @@ public class GroupDetails extends AppCompatActivity implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.coa_group_details_screen);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

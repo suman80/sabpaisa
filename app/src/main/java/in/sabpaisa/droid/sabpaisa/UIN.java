@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -79,6 +80,7 @@ public class UIN extends AppCompatActivity {
 
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_uin_verification);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setTheme(R.style.popupTheme);
         //getClientsList(clientId.toString());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

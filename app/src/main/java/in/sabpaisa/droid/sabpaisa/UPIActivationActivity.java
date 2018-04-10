@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class UPIActivationActivity extends AppCompatActivity implements OliveUpi
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_upiactivation);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         OliveUpiManager.getInstance(UPIActivationActivity.this).setListener(this);
         et_cardNo = (EditText)findViewById(R.id.et_cardNo);
         et_ExpNoMM = (EditText)findViewById(R.id.et_ExpNoMM);

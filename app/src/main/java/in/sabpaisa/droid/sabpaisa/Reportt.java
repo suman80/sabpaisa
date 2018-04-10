@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
@@ -53,7 +54,7 @@ String refId=null;
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.content_txn_report);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         t1=(TextView)findViewById(R.id.t11);
         t2=(TextView)findViewById(R.id.t22);
         t3=(TextView)findViewById(R.id.t33);

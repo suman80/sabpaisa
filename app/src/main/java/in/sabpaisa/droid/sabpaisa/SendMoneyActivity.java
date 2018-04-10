@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.support.design.widget.BottomSheetDialog;
@@ -64,7 +65,7 @@ public  class SendMoneyActivity extends AppCompatActivity implements SavedUPIAda
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_send_money);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         OliveUpiManager.getInstance(SendMoneyActivity.this).setListener(this);
 
         OliveUpiManager.getInstance(SendMoneyActivity.this).fetchMyAccounts();

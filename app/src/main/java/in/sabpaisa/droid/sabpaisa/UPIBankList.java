@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +37,7 @@ public class UPIBankList extends AppCompatActivity implements OliveUpiEventListe
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_upibank_list);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         OliveUpiManager.getInstance(UPIBankList.this).setListener(this);
         OliveUpiManager.getInstance(UPIBankList.this).fetchListBanks();
         bankListArrayList=new ArrayList<>();

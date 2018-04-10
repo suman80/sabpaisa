@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -84,7 +85,7 @@ Button HandShake_Btn;
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_upi_sdk_handshake);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         OliveUpiManager.getInstance(UpiSdkHandshake.this).setListener(this);
         getResponse();
 

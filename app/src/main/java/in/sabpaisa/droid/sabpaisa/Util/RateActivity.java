@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class RateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_rate);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         SmileRating smileRating = (SmileRating) findViewById(R.id.ratingBar1);
 
         smileRating.setOnSmileySelectionListener(new SmileRating.OnSmileySelectionListener() {

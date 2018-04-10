@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +26,7 @@ public class AccountInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_info_account);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         bankLogo = (ImageView)findViewById(R.id.iv_bankLogo);
         accountNumber = (TextView)findViewById(R.id.tv_accountNumber);

@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class SendMoneyAcIFSCDialog extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         /*supportRequestWindowFeature(Window.FEATURE_NO_TITLE);*/
         setContentView(R.layout.item_send_account_ifcs);
         /*etWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);*/

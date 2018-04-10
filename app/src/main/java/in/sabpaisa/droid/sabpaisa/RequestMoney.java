@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.BottomSheetDialog;
@@ -65,7 +66,7 @@ public class RequestMoney extends AppCompatActivity implements SavedUPIAdapter.U
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_request_money);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         OliveUpiManager.getInstance(RequestMoney.this).setListener(this);
 
         OliveUpiManager.getInstance(RequestMoney.this).fetchMyAccounts();

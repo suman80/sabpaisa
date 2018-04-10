@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -145,7 +146,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         CommonUtils.setFullScreen(this);
 
         setContentView(R.layout.app_bar_nagationfullview);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
          //checkConnection();
         this.mHandler = new Handler();
         // m_Runnable.run();

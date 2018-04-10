@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,7 +54,7 @@ String date1;
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_all_transaction_summary);
 
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         back = (ImageView) findViewById(R.id.bbck);
        /* toolbar.setTitle("Profile");
         toolbar.setNavigationIcon(R.drawable.ic_action_previousback);

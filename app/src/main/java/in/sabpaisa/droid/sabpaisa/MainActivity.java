@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         //checking
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 //nav=(NetworkImageView)findViewById(R.id.profile_image);
 
 //        requestW

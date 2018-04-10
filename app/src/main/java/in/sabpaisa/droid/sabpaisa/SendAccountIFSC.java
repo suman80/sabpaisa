@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -36,7 +37,7 @@ public class SendAccountIFSC extends AppCompatActivity {
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_send_account_ifsc);
 
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         String ifsc = getIntent().getStringExtra("IFSC");
         Bundle extras = getIntent().getExtras();
         byte[] b = extras.getByteArray("Logo");

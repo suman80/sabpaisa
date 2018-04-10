@@ -3,6 +3,7 @@ package com.braunster.chatsdk.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -42,6 +43,7 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
        // enableFacebookIntegration(getNetworkAdapter().facebookEnabled());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_sdk_activty_login);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
        // setExitOnBackPressed(true);
 

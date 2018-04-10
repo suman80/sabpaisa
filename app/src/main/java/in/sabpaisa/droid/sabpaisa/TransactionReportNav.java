@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.tv.TvContract;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
@@ -41,7 +42,7 @@ ImageView back;
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_transaction_report_nav);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
       RefID_Et=(EditText)findViewById(R.id.refid);
       back=(ImageView)findViewById(R.id.back4);
       enter=(Button)findViewById(R.id.Report);

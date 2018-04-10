@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,6 +51,12 @@ public class SendMoneyDialog extends AppCompatActivity {
         CommonUtils.setFullScreen(this);
         //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_beneficiary_detail);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
+
+
         //getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         DataBinding();
 

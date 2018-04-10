@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -35,7 +36,7 @@ public class Report extends AppCompatActivity {
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.content_txn_report);
 
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         t1=(TextView)findViewById(R.id.t11);
         t2=(TextView)findViewById(R.id.t22);
         t3=(TextView)findViewById(R.id.t33);

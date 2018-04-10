@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -53,6 +54,7 @@ public class NumberOfGroups extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_number_of_groups);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // This is used for the app custom toast and activity transition
         ChatSDKUiHelper.initDefault();
 

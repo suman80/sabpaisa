@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -15,5 +16,6 @@ public class PrivacyPolicyActivity extends AppCompatActivity {
         CommonUtils.setFullScreen(this);
 
         setContentView(R.layout.activity_privacy_policy);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 }
