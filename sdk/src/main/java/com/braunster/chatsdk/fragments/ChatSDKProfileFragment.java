@@ -8,10 +8,13 @@
 package com.braunster.chatsdk.fragments;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,7 @@ import android.widget.LinearLayout;
 
 import com.braunster.chatsdk.R;
 import com.braunster.chatsdk.Utils.Debug;
+import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.braunster.chatsdk.activities.ChatSDKShareWithContactsActivity;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.fragments.abstracted.ChatSDKAbstractProfileFragment;
@@ -28,6 +32,7 @@ import com.braunster.chatsdk.network.BFacebookManager;
 import com.braunster.chatsdk.network.BNetworkManager;
 import com.braunster.chatsdk.object.SaveIndexDetailsTextWatcher;
 
+import static android.content.Context.MODE_PRIVATE;
 import static weborb.util.ThreadContext.context;
 
 /**
@@ -44,6 +49,9 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
     private static final String S_I_D_EMAIL = "saved_email_data";
 
     private EditText etName, etMail, etPhone;
+
+    /////////10-april-2018////////////////////////
+    String name,mobNo,emailid,profileurl;
 
     public static ChatSDKProfileFragment newInstance() {
         ChatSDKProfileFragment f = new ChatSDKProfileFragment();
@@ -164,10 +172,28 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
             return;
         }
 
+        //  Start 10-april-2018////////////////////////
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(ChatSDKLoginActivity.MY_PREFS_NAME_FOR_CHAT, Context.MODE_PRIVATE);
+        name=sharedPreferences.getString("UsernameChat","abc");
+       mobNo =sharedPreferences.getString("mobNumberChat","abc");
+       profileurl =sharedPreferences.getString("userimageChat","abc");
+       emailid =sharedPreferences.getString("emailidChat","abc");
+        Log.d("namechat",""+name);
+        Log.d("profileuserchat",""+profileurl);
+        Log.d("ChatDetusemobnor",""+mobNo);
+        Log.d("ChatDetuseremail",""+emailid);
+
+
         BUser user = BNetworkManager.sharedManager().getNetworkAdapter().currentUserModel();
-        etName.setText(user.getMetaName());
-        etPhone.setText(user.metaStringForKey(BDefines.Keys.BPhone));
-        etMail.setText(user.getMetaEmail());
+
+        /////////10-april-2018////////////////////////
+
+        etName.setText(name);
+        etPhone.setText(mobNo);
+        etMail.setText(emailid);
+
+        //  end 10-april-2018////////////////////////
+
 
         chatSDKProfileHelper.loadProfilePic(loginType);
     }

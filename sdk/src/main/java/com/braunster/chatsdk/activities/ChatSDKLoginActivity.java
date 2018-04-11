@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,7 +38,16 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
     int pkgValue;
     String ClientId,clientName,state,clientImageURLPath;
     public static String MY_PREFS_NAME_FOR_CHAT = "chatPref";
+
+
+
+    //  Start 10-april-2018////////////////////////
+
     String userName,emailid,MObNumber;
+    //  End 10-april-2018////////////////////////
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
        // enableFacebookIntegration(getNetworkAdapter().facebookEnabled());
@@ -46,6 +56,7 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
        // setExitOnBackPressed(true);
+
 
         View view = findViewById(R.id.chat_sdk_root_view);
 
@@ -70,6 +81,13 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
 
         clientImageURLPath = getIntent().getStringExtra("CLIENTIMG");
         Log.d("pkgIMAGECSDKLA","pkgIMAGE"+clientImageURLPath);
+
+
+
+        //  Start 10-april-2018////////////////////////
+
+
+
         MObNumber = getIntent().getStringExtra("mobNumber");
         emailid = getIntent().getStringExtra("xxxxx");
         userImageUrl = getIntent().getStringExtra("userImageUrlMaim");
@@ -77,20 +95,35 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         Log.d("emailIdChat","---"+emailid);
         Log.d("emailIdChat","---"+userImageUrl);
 
+
+        //  End 10-april-2018////////////////////////
+
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME_FOR_CHAT, MODE_PRIVATE).edit();
         editor.putInt("KEY", pkgValue);
         editor.putString("CLIENTID",ClientId);
         editor.putString("CLIENTNAME",clientName);
         editor.putString("STATE",state);
         editor.putString("CLIENTIMG",clientImageURLPath);
+
+
+        //  Start 10-april-2018////////////////////////
+
         editor.putString("UsernameChat",userName);
         editor.putString("emailidChat",emailid);
         editor.putString("mobNumberChat",MObNumber);
         editor.putString("userimageChat",userImageUrl);
         editor.apply();
 
+        //  end 10-april-2018////////////////////////
 
         //((TextView) findViewById(R.id.chat_sdk_txt_version)).setText(String.valueOf(BuildConfig.VERSION_NAME));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                anonymosLogin();
+            }
+        }, 1000);
+
     }
 
     @Override
@@ -189,6 +222,8 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         if (i == R.id.chat_sdk_btn_login) {
             passwordLogin();
         } else if (i == R.id.chat_sdk_btn_anon_login) {
+
+
             anonymosLogin();
         } else if (i == R.id.chat_sdk_btn_register) {
             register();

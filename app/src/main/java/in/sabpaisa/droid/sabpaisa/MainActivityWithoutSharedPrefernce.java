@@ -102,6 +102,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
     NavigationView navigationView;String x;
     NetworkImageView nav;
     String userImageUrl;
+    String name,mobNumber;
     String useracesstoken;
     String response,response1,userAccessToken;
     ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,UpibankList,mPinInfo,mPinInfo2;
@@ -446,6 +447,16 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
                 intent.putExtra("userImageUrl",userImageUrl);
                 intent.putExtra("VALUE",value);
+
+
+                /////////10-april-2018////////////////////////
+
+
+                intent.putExtra("userImageUrlMaim",userImageUrl);
+                intent.putExtra("usernameniv",name);
+                //  intent.putExtra("VALUE",value);
+                intent.putExtra("xxxxx",x);
+                intent.putExtra("mobNumber",mobNumber);
 
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
@@ -1184,12 +1195,27 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                     String response = object.getString("response");
                     String status =object.getString("status");
                     x = object.getJSONObject("response").getString("emailId").toString();
-if(x.equals("null"))
+
+
+
+
+                    /////////10-april-2018////////////////////////
+
+                    mobNumber = object.getJSONObject("response").getString("contactNumber").toString();
+
+                    if(x.equals("null"))
 {
     usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
 mailIdniv.setText("");
 }
                   else   if (status.equals("success")) {
+
+
+                        /////////10-april-2018////////////////////////
+
+
+                        name=object.getJSONObject("response").getString("fullName").toString();
+
                         usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
 

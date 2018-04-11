@@ -116,6 +116,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     TextView usernameniv, mailIdniv;
     Toolbar toolbar;
     String userImageUrl = null;
+    String name,mobNumber;
     ImageView niv;
     int value = 2;
     String x;
@@ -318,6 +319,13 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
                 Intent intent = new Intent(MainActivitySkip.this, ChatSDKLoginActivity.class);
                 intent.putExtra("VALUE", value);
+
+
+                intent.putExtra("userImageUrlMaim",userImageUrl);
+                intent.putExtra("usernameniv",name);
+                //intent.putExtra("VALUE",value);
+                intent.putExtra("xxxxx",x);
+                intent.putExtra("mobNumber",mobNumber);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
@@ -1063,6 +1071,8 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
                     String response = object.getString("response");
                     String status = object.getString("status");
                     x = object.getJSONObject("response").getString("emailId").toString();
+                    mobNumber = object.getJSONObject("response").getString("contactNumber").toString();
+
 
                     if(x.equals("null"))
                     {
@@ -1070,6 +1080,10 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 mailIdniv.setText("");
                     }
                    else if (status.equals("success")) {
+                        name=object.getJSONObject("response").getString("fullName").toString();
+                        Log.d("namemainSKIP",""+name);
+                        Log.d("namemainSKIP",""+mobNumber);
+
                         usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
 

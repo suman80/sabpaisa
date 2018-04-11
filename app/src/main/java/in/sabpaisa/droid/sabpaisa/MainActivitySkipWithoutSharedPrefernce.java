@@ -122,6 +122,8 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
     private TabLayout tabLayout;
     Toolbar toolbar;
     String userImageUrl=null;
+    String x,name,mobNumber;
+    TextView mailIdniv,usernameniv;
     ImageView niv;
     String response,userAccessToken;
     ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,mPinInfo,mPinInfo2;
@@ -168,7 +170,7 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+showProfileData();
         //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
@@ -190,6 +192,10 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
 //        Log.d("userskip",userImageUrl);
         //Initialise the navigation header image
         niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+        usernameniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.username_nav);
+        usernameniv.setText("");
+
+        mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
 
         //set the NAvigationImage header using glide
 
@@ -311,6 +317,12 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
                 int value=2;
                 Intent intent = new Intent(MainActivitySkipWithoutSharedPrefernce.this,ChatSDKLoginActivity.class);
                 intent.putExtra("VALUE",value);
+                intent.putExtra("userImageUrlMaim",userImageUrl);
+                intent.putExtra("usernameniv",name);
+              //  intent.putExtra("VALUE",value);
+                intent.putExtra("xxxxx",x);
+                intent.putExtra("mobNumber",mobNumber);
+
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
 
@@ -320,6 +332,8 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
         });
         /*fab.setOnClickListener(new View.OnClickListener() {
             @Override
+
+
             public void onClick(View v) {
 
             }
@@ -671,16 +685,14 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
 
     @Override
     public void onBackPressed() {
-        if (searchView.isSearchOpen()) {
-            searchView.closeSearch();
-        } else {
+
             super.onBackPressed();
             Intent intent=new Intent(MainActivitySkipWithoutSharedPrefernce.this,FilterActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             this.finish();
 
-        }
+
     }
 
 
@@ -1031,7 +1043,7 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
 
 
     }
-    private final Runnable m_Runnable = new Runnable()
+   /* private final Runnable m_Runnable = new Runnable()
     {
         public void run()
 
@@ -1041,7 +1053,121 @@ public class MainActivitySkipWithoutSharedPrefernce extends AppCompatActivity  i
             MainActivitySkipWithoutSharedPrefernce.this.mHandler.postDelayed(m_Runnable,1000);
         }
 
-    };
+    };*/
+   private void showProfileData() {
+
+       String tag_string_req = "req_register";
+
+       StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfile+"?token="+userAccessToken, new Response.Listener<String>() {
+
+           @Override
+           public void onResponse(String response1) {
+               Log.d("SKipusernamenav", "Register Response: " + response1.toString());
+
+               try {
+                   //progressBar.setVisibility(View.GONE);
+                   JSONObject object = new JSONObject(response1);
+                   String response = object.getString("response");
+                   String status =object.getString("status");
+                   x = object.getJSONObject("response").getString("emailId").toString();
+                   mobNumber = object.getJSONObject("response").getString("contactNumber").toString();
+                   if (x.equals("null"))
+                   {
+                       usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
+
+                       mailIdniv.setText("");
+                   }
+                   else if (status.equals("success")) {
+                       name=object.getJSONObject("response").getString("fullName").toString();
+                       Log.d("namemain",""+name);
+
+                       usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
+                       //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
+
+                       mailIdniv.setText(x);
+
+                        /*if(x==null) {
+                            mailIdniv.setText(" ");
+                            Log.d("mainusername111", "" +x );
+                        }
+                        else
+                        {
+
+                            mailIdniv.setText(x);
+                        Log.d("mainusername11", "userName" +x );
+                        }*/
+                       /// et_address.setText(object.getJSONObject("response").getString("address").toString());
+                       //  et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
+                       Log.d("mainusername", "userName" + usernameniv);
+                       Log.d("mainusermailid", "Mail" + mailIdniv);
+
+                   }else {
+                       // Toast.makeText(getApplicationContext(),"Could  not able to load data",Toast.LENGTH_SHORT).show();
+                   }
+
+               } catch (JSONException e) {
+                   e.printStackTrace();
+                   // Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+               }
+
+           }
+       }, new Response.ErrorListener() {
+
+           @Override
+           public void onErrorResponse(VolleyError error) {
+
+               /* if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog closed
+                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    Log.e(TAG, "Update Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+                    //TODO
+                } else if (error instanceof ServerError) {
+                    //TODO
+                } else if (error instanceof NetworkError) {
+                    //TODO
+                } else if (error instanceof ParseError) {
+                    //TODO
+                }
+*/
+           }
+       }); /*{
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userAccessToken", userAccessToken);
+
+                return params;
+            }
+
+        };
+*/
+       // Adding request to request queue
+       AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+   }
 
 }
 

@@ -104,6 +104,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     public static String clientImageURLPath=null;
     private ViewPager viewPager;
     TextView mSearchText;
+    String name,mobNumber;
+
     ActionBarDrawerToggle toggle;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     public static String userImageUrl=null;
@@ -307,6 +309,11 @@ mailIdniv.setText(x);
                 intent.putExtra("CLIENTNAME",clientName);
                 intent.putExtra("STATE",state);
                 intent.putExtra("CLIENTIMG",clientImageURLPath);
+                intent.putExtra("userImageUrlMaim",userImageUrl);
+                intent.putExtra("usernameniv",name);
+                //intent.putExtra("VALUE",value);
+                intent.putExtra("xxxxx",x);
+                intent.putExtra("mobNumber",mobNumber);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
@@ -1011,12 +1018,20 @@ intent.putExtra("state",state);
                     String response = object.getString("response");
                     String status =object.getString("status");
                     x = object.getJSONObject("response").getString("emailId").toString();
-                if(x.equals("null"))
+                    mobNumber = object.getJSONObject("response").getString("contactNumber").toString();
+
+
+                    if(x.equals("null"))
 {
     usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
 mailIdniv.setText("");
 }
                   else   if (status.equals("success")) {
+
+                        name=object.getJSONObject("response").getString("fullName").toString();
+                        Log.d("namemainFull",""+name);
+                        Log.d("namemainFull",""+mobNumber);
+
                         usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
 

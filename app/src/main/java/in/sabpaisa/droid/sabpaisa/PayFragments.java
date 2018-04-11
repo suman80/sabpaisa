@@ -221,7 +221,7 @@ public class PayFragments extends Fragment {
 
                         listAdapter = new ExpandableListAdapter(getContext(), listDataHeader, listDataChild,hashMapR);
 
-                        // setting list adapter
+                        // setting list adapterz
                         expListView.setAdapter(listAdapter);
 //21st March,2018..................................................................................................................
 //
