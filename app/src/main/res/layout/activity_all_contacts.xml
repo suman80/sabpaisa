@@ -13,29 +13,14 @@
         android:background="@color/bg_screen"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
-        app:titleMarginStart="40dp"
+        app:navigationIcon="@drawable/ic_action_previousback"
+        app:title="Contacts"
+
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:subtitleTextColor="@color/white"
         app:titleTextAppearance="@style/toolBarStyle"
         app:titleTextColor="@color/white" />
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textSize="17sp"
-    android:textStyle="bold"
 
-    android:text="SabPaisa"
-    android:layout_marginTop="20dp"
-    android:textColor="#fff"
-    android:layout_marginStart="40dp"/>
-
-    <ImageView
-        android:layout_width="29dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/bbck"
-        android:layout_marginStart="5dp"
-        android:src="@drawable/ic_action_previousback"/>
 
 
     <ListView

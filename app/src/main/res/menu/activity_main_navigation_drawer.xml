@@ -30,10 +30,10 @@
             android:title="Report"
             />
 
-       <!-- <item
+        <item
             android:id="@+id/nav_Contacts"
             android:title="Contacts"
-            android:icon="@drawable/ic_action_contactsss"/>-->
+            android:icon="@drawable/ic_action_contactsss"/>
         <item
             android:id="@+id/nav_ChangePassword"
             android:title="Change Password"

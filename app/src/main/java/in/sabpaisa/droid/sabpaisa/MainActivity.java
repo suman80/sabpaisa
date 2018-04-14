@@ -905,14 +905,14 @@ Log.d("xmailidmain",""+x);*/
 
         }
 
-      /*  else if(id==R.id.nav_Contacts){
+        else if(id==R.id.nav_Contacts){
 
 
             Intent intent=new Intent( MainActivity.this, AllContacts.class);
 
             startActivity(intent);
 
-        }*/
+        }
 
         else if(id==R.id.nav_txnhistory){
 

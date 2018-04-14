@@ -771,14 +771,14 @@ intent.putExtra("state",state);
 
         }
 
-      /*  else if(id==R.id.nav_Contacts){
+        else if(id==R.id.nav_Contacts){
 
 
             Intent intent=new Intent( FullViewOfClientsProceed.this, AllContacts.class);
 
             startActivity(intent);
 
-        }*/
+        }
         else if (id == R.id.nav_share) {
             /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
 

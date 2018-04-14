@@ -818,14 +818,14 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
             startActivity(intent);
 
         }
-        /*else if(id==R.id.nav_Contacts){
+        else if(id==R.id.nav_Contacts){
 
 
             Intent intent=new Intent( MainActivitySkip.this, AllContacts.class);
 
             startActivity(intent);
 
-        }*/
+        }
 
         else if (id == R.id.nav_share) {
             /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
