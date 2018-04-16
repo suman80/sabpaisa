@@ -111,6 +111,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
     FloatingActionButton fab;
     ActionBarDrawerToggle toggle;
     //public  static String userImageUrl=null;
+    //public  static String userImageUrl=null;error
     HashMap<String,String> Hash_file_maps;
 
     ImageView niv;
@@ -447,6 +448,13 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
                 intent.putExtra("userImageUrl",userImageUrl);
                 intent.putExtra("VALUE",value);
+                intent.putExtra("CLIENTID",ClientId);
+
+                intent.putExtra("userImageUrlMaim",userImageUrl);
+                intent.putExtra("usernameniv",name);
+                //intent.putExtra("VALUE",value);
+                intent.putExtra("xxxxx",x);
+                intent.putExtra("mobNumber",mobNumber);
 
 
                 /////////10-april-2018////////////////////////

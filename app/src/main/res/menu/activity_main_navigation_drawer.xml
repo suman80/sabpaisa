@@ -20,10 +20,10 @@
                         android:title="Settings" />
 -->
 
-        <!--<item
+        <item
             android:id="@+id/nav_TransactionReport"
             android:title="E-Receipt"
-            android:icon="@drawable/ic_action_transaction"/>-->
+            android:icon="@drawable/ic_action_transaction"/>
         <item
             android:id="@+id/nav_txnhistory"
             android:icon="@drawable/ic_action_histtory"

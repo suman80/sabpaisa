@@ -8,6 +8,7 @@ public class AppConfig {
 
 
 	public static String URL_REGISTER = "register-user";
+	public static String URL_Contacts = "SPuserInUsercontactList";
 	public static String URL_AllTransaction = "/SabPaisaResponseHandler/saveSPtranscationId?token=";
 	public static String URL_TransactionReport = "TransactionData?SptransacationId=";
 	public static String URL_NoOFGroupMembeers = "fetchGroupUsers?clientId=";

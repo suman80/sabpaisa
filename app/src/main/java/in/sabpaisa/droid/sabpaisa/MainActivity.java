@@ -817,13 +817,13 @@ Log.d("xmailidmain",""+x);*/
             Intent intent=new Intent(MainActivity.this, SettingsNavigationActivity.class);
 
             startActivity(intent);
-
+4884507071709195026666865
         }*/
 
-        /*else if(id==R.id.nav_TransactionReport){
+        else if(id==R.id.nav_TransactionReport){
             Intent intent=new Intent(MainActivity.this, TransactionReportNav.class);
             startActivity(intent);
-        }*/
+        }
         else  if(id == R.id.nav_ChangePassword)
         {
             Intent intent=new Intent(MainActivity.this, ForgotActivity.class);
