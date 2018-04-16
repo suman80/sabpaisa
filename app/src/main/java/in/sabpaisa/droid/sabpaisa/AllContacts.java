@@ -104,7 +104,7 @@ toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                                     int position, long id){
                 //TODO Do whatever you want with the list datactlist
  contact= (String) parent.getItemAtPosition(position);
-Log.d("Bandar" ,""+contact);
+Log.d("contactItem" ,""+contact);
                 ContactsApi(contactList);
                 Toast.makeText(getApplicationContext(), "item clicked : \n" + contactList.get(position), Toast.LENGTH_SHORT).show();
 
