@@ -58,13 +58,14 @@ import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.braunster.chatsdk.network.BNetworkManager;
 import com.bumptech.glide.Glide;
+import com.crashlytics.android.Crashlytics;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
+//import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 import com.wangjie.androidbucket.utils.ABTextUtil;
@@ -100,6 +101,7 @@ import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
 import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ShareActivity;
+import io.fabric.sdk.android.Fabric;
 
 import static android.view.View.GONE;
 import static in.sabpaisa.droid.sabpaisa.CommentAdapterDatabase.context;
@@ -157,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_navigation);
 
+        Fabric.with(this, new Crashlytics());
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -204,8 +208,10 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
             }catch (NullPointerException e){
                 // [START log_and_report]
-                FirebaseCrash.logcat(Log.ERROR, "MainActivity", "NPE caught");
-                FirebaseCrash.report(e);
+             //   FirebaseCrash.logcat(Log.ERROR, "MainActivity", "NPE caught");
+                Crashlytics.log(Log.ERROR, "MainActivity", "NPE caught");
+               // FirebaseCrash.report(e);
+                Crashlytics.logException(e);
             }
         }
 

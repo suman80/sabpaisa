@@ -52,7 +52,7 @@ import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 
-import static com.google.firebase.crash.FirebaseCrash.log;
+//import static com.google.firebase.crash.FirebaseCrash.log;
 import static java.lang.System.*;
 
 

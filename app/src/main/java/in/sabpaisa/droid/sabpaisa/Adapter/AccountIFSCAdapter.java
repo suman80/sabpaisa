@@ -21,12 +21,14 @@ import in.sabpaisa.droid.sabpaisa.Model.Bank;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SendAccountIFSC;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by abc on 16-06-2017.
  */
 
 public class AccountIFSCAdapter extends RecyclerView.Adapter<AccountIFSCAdapter.MyViewHolder> {
+
 
     Context context;
     ArrayList<Bank> banks;

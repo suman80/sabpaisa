@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 27
@@ -19,12 +20,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
+    dexOptions
+            {
+                incremental false
+                javaMaxHeapSize "2048M"
+                preDexLibraries = false
+            }
 }
 
 dependencies {
 
 // Test
-
+    compile 'com.crashlytics.sdk.android:crashlytics:2.9.1'
     compile 'com.mikepenz:materialdrawer:6.0.2'
 
 //
@@ -41,7 +50,6 @@ dependencies {
     //    compile 'com.github.clans:fab:1.6.4'
     //    compile 'com.getbase:floatingactionbutton:1.10.1'
     //
-
 
     compile 'com.github.chrisbanes:PhotoView:2.1.2'
     compile project(':secure-component-sdk')
@@ -74,12 +82,13 @@ dependencies {
 
     compile 'com.google.firebase:firebase-database:11.4.0'
     compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
+
     //noinspection GradleCompatible
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.github.sujithkanna:smileyrating:1.6.8'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:support-v4:25.3.'
+    compile 'com.android.support:support-v4:25.3.1'
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.daimajia.slider:library:1.1.5@aar'
     compile 'com.github.wangjiegulu:RapidFloatingActionButton:1.0.3'
@@ -113,7 +122,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     // compile 'com.google.firebase:firebase-messaging:9.6.0'
     //compile 'com.google.firebase:firebase-messaging:11.8.0'
-    compile 'com.google.firebase:firebase-crash:11.4.0'
+//    compile 'com.google.firebase:firebase-crash:11.4.0'
     compile 'su.j2e:rv-joiner:1.0.3'
 
 

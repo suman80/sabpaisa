@@ -36,6 +36,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +52,7 @@ import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.StateGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+import io.fabric.sdk.android.Fabric;
 
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
@@ -95,6 +97,9 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
+
+
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_filter);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         checkConnection();

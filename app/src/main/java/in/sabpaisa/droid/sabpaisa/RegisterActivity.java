@@ -26,6 +26,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -43,7 +44,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.LoginActivity;
+//import com.google.firebase.crash.FirebaseCrash;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -65,7 +68,7 @@ import in.sabpaisa.droid.sabpaisa.Util.OtpDialog;
 import in.sabpaisa.droid.sabpaisa.Util.SharedPref;
 import in.sabpaisa.droid.sabpaisa.Util.SmsListener;
 import in.sabpaisa.droid.sabpaisa.Util.SmsReceiver;
-
+import io.fabric.sdk.android.Fabric;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -101,12 +104,15 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CommonUtils.setFullScreen(this);
+        //Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_register);
+       // Fabric.with(this, new Crashlytics());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         btn_register = (Button) findViewById(R.id.btn_register);
         send_Otp = (Button) findViewById(R.id.send_Otp);
         optEditText = (EditText) findViewById(R.id.optEditText);
 
+        //Fabric.with(this, new Crashlytics());
         /*btn_name_next1 = (Button) findViewById(R.id.btn_name_next1);
         btn_name_next2 = (Button) findViewById(R.id.btn_name_next2);*/
         //emailid = (EditText) findViewById(R.id.emailid);
@@ -292,11 +298,21 @@ public class RegisterActivity extends AppCompatActivity {
                     Log.v("Home", "############################You are not online!!!!");
                 }
                 //launchAgeScreen();
-
-
             }
 
         });
+
+
+      /*  Button crashButton = new Button(this);
+        crashButton.setText("Crash!");
+        crashButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                //Crashlytics.getInstance().crash(); // Force a crash
+            }
+        });
+        addContentView(crashButton,
+                new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));*/
 
 
         passwordShow.setOnClickListener(new View.OnClickListener() {
