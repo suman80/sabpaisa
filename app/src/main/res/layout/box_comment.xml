@@ -1,27 +1,39 @@
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="75dp"
-    android:layout_alignParentBottom="true"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_gravity="bottom"
+    android:weightSum="1" >
+
 
     <LinearLayout
-        android:focusable="true"
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:id="@+id/linearLayout" >
+        android:id="@+id/linearLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="1dip"
+        android:gravity="center|bottom"
+
+        android:orientation="horizontal">
+
+
+        <!-- android:layout_width="395dp"
+        android:layout_height="42dp"-->
+
 
         <EditText
             android:id="@+id/commentadd"
-            android:layout_width="395dp"
-            android:layout_height="42dp"
-            android:layout_alignBottom="@+id/imageView2"
-            android:layout_alignEnd="@+id/linearLayout"
-            android:layout_weight="1"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1.0"
             android:background="@drawable/otp_edittext_border"
+            android:gravity="bottom"
             android:hint="Add Comment"
+            android:inputType="textMultiLine"
             android:maxLines="100"
-            android:paddingLeft="5dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="6dp"
             android:textColorHint="@color/black_50"
             android:textSize="@dimen/text_size_small" />
     </LinearLayout>
@@ -38,5 +50,4 @@
         android:elevation="10dp"
         android:onClick="onClickSendComment" />
 
-
-</RelativeLayout>
+</LinearLayout>
