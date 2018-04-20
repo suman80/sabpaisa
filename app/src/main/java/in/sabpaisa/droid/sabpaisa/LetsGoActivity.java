@@ -116,7 +116,7 @@ These variables or parameters are used for Merchant server API to get token
 
         //creating object of SDKHandshake
         sdkHandshake = new SDKHandshake();
-        //setting values for SDKHandshake
+        //setting commentborder for SDKHandshake
         sdkHandshake.setAppid("com.olive.upi.sdk");      //Not done or test value
         sdkHandshake.setCustName("Divve");   //Not done or test value
         sdkHandshake.setDeviceid(deviceId.toString());   //Not done or test value

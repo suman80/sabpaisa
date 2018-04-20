@@ -79,7 +79,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
 
             background = (LinearLayout)itemView.findViewById(R.id.ll_background);
             userName = (TextView)itemView.findViewById(R.id.tv_userName);
-            userNumber = (TextView)itemView.findViewById(R.id.tv_userNumber);
+           // userNumber = (TextView)itemView.findViewById(R.id.tv_userNumber);
         }
     }
 }

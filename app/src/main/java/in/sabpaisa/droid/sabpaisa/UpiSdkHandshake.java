@@ -235,7 +235,7 @@ Button HandShake_Btn;
 
         //creating object of SDKHandshake
         sdkHandshake = new SDKHandshake();
-        //setting values for SDKHandshake
+        //setting commentborder for SDKHandshake
         sdkHandshake.setAppid("com.olive.upi.sdk");      //Not done or test value
         sdkHandshake.setCustName("Divve");   //Not done or test value
         sdkHandshake.setDeviceid(deviceId);   //Not done or test value

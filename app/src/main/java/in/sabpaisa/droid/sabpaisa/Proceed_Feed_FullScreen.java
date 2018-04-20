@@ -40,6 +40,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.rockerhieu.emojicon.EmojiconEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;

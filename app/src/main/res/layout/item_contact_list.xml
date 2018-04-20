@@ -2,37 +2,65 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.sabpaisa.droid.sabpaisa.AllContacts">
+
 
     <LinearLayout
         android:id="@+id/ll_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <ImageView
             android:layout_marginLeft="@dimen/margin_side"
             android:layout_marginTop="@dimen/margin_side"
             android:layout_width="35dp"
+            android:id="@+id/ivContactImage"
             android:layout_height="35dp"
-            android:src="@drawable/add_member"/>
+            android:src="@drawable/contacts"/>
         <LinearLayout
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:id="@+id/tv_userName"
-                android:layout_width="match_parent"
+                android:id="@+id/tvContactName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Harpreet Singh"
                 android:textSize="@dimen/text_size_heading"/>
-            <TextView
-                android:id="@+id/tv_userNumber"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="9458763183"/>
+
+
+
         </LinearLayout>
+
+
+        <Button
+            android:id="@+id/abc1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_orange"
+            android:text="Invite"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:visibility="invisible" />
+
+       <!-- <Button
+            android:id="@+id/abc"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+
+            android:background="@color/bg_orange"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:layout_marginTop="@dimen/margin_side"
+
+
+            android:text="Invite"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:visibility="invisible" />
+-->
     </LinearLayout>
 </LinearLayout>

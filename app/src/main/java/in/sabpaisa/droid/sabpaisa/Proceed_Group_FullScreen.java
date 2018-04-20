@@ -34,6 +34,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
 import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.network.BNetworkManager;
+import com.rockerhieu.emojicon.EmojiconEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -220,7 +221,8 @@ private EndlessScrollListener scrollListener;
     EditText group_details_text_view = null;
 
     public void onClickSendComment(View view) {
-        group_details_text_view = (EditText) findViewById(R.id.commentadd);
+        group_details_text_view = (
+                EditText) findViewById(R.id.commentadd);
         String commentText = group_details_text_view.getText().toString();
         // showpDialog(view);
         if (commentText.trim().length()==0)

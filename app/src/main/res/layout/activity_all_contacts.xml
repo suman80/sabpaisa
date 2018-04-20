@@ -29,6 +29,19 @@
         android:layout_height="match_parent"
         android:layout_marginTop="80dp">
     </ListView>
+  <Button
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+
+        android:layout_alignParentEnd="true"
+android:id="@+id/abc"
+
+        android:layout_alignTop="@+id/rvContacts"
+        android:background="@color/bg_orange"
+        android:text="Invite"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:visibility="gone" />
 
 </RelativeLayout>
 
