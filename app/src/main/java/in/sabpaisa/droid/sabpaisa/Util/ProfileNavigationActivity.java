@@ -373,7 +373,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                                 alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         Intent intent = new Intent();
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
 
                                       /*  Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
                                         startActivity(intent);*/

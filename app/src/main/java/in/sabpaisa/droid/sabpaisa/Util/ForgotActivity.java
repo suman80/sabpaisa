@@ -184,11 +184,13 @@ public class ForgotActivity extends AppCompatActivity {
     private EditText et_otp;
     Handler handler = new Handler();
     String deviceId;
+    String otp11;
     String otpTag = "Please Use this OTP to verify your Mobile on SabPaisa App";
     EditText optEditText = null;
     CountDownTimer countDownTimer = null;
     TextView timerTextView = null;
     ProgressDialog progressBar = null;
+    EditText password;
     BottomSheetDialog mBottomSheetDialog;
     private static final int REQUEST_READ_PERMISSION = 123;
 
@@ -200,7 +202,7 @@ public class ForgotActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //final EditText et_currentPassword =(EditText) findViewById(R.id.et_currentPassword);
         final EditText et_phone_number = (EditText)findViewById(R.id.et_phone_number);
-        final EditText password = (EditText)findViewById(R.id.et_password);
+        password = (EditText)findViewById(R.id.et_password);
         Button btn_save = (Button)findViewById(R.id.btn_save);
         send_Otp = (Button) findViewById(R.id.send_Otp);
         optEditText = (EditText) findViewById(R.id.optEditText);
@@ -312,7 +314,10 @@ public class ForgotActivity extends AppCompatActivity {
                     et_phone_number.setError("Please make sure that You have entered 10 digit number");
 
                 }
-
+                            if(newPassword.length()==0)
+                            {
+                                password.setError("Please enter password ");
+                            }
                 else if(et_otp.length()==0){
 
                     et_otp.setError("Please click on the send otp");
@@ -419,27 +424,42 @@ public class ForgotActivity extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response1);
                     String status = jObj.getString("status");
 
-                    //String userId = jObj.getString("userId");
-                    //boolean error = jObj.getBoolean("e623+rror");
-                    //status =jObj.getString("status");
+                    if(status.equals("success")&&et_otp.getText().toString().equals(otp11)) {
 
-                    // response = jObj.getString("response");
-
-                    //launchMainScreen();
-                        /*Intent intent1 = new Intent(RegisterActivity.this, MainActivity.class);
-                        //intent1.putExtra("response", response);
-
-                        startActivity(intent1);
-*/
-
-
-                        Intent intent = new Intent(ForgotActivity.this,LoginActivityWithoutSharedPreference.class);
-                        startActivity(intent);
-                    Log.e(TAG, "status: " + status);
-finish();
+    Intent intent = new Intent(ForgotActivity.this, LoginActivityWithoutSharedPreference.class);
+    startActivity(intent);
+    Log.e(TAG, "status: " + status);
+    finish();
+}
                     //Log.e(TAG, "response2163123: " + userId);
 
+else
+{
 
+
+    AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
+
+    // Setting Dialog Title
+    alertDialog.setTitle("Incorrect OTP");
+
+    // Setting Dialog Message
+    alertDialog.setMessage("Hey, its look like OTP is incorrect");
+    // Setting Icon to Dialog
+    //  alertDialog.setIcon(R.drawable.tick);
+
+    // Setting OK Button
+    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+            // Write your code here to execute after dialog closed
+            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+        }
+    });
+
+    // Showing Alert Message
+    alertDialog.show();
+
+
+}
 
 
 
@@ -591,42 +611,18 @@ finish();
                     // Parsing json object response
                     // response will be a json object
                     String status = response.getString("status");
-                    if (status.equals("success")) {
-                        //SharedPref.putBoolean(RegisterActivity.this, AppConfiguration.OPT_VARIFICATION, true);
-                        //launchAgeScreen();
-                        //callUINVarificationScreen();
-                        //Toast.makeText(OTPVarify.this, "OTP Verified ", Toast.LENGTH_LONG).show();
 
-                        send_Otp.setVisibility(View.INVISIBLE);
+                    otp11 = response.getString("otp");
+                    String  verifireponse= response.getString("response");
+
+                    Log.d("Archana1111111",""+status);
+                    Log.d("Archana111111111",""+otp11);
+                    Log.d("Archana211111111",""+verifireponse);
+
+                    if (status.equals("success")) {
+                         send_Otp.setVisibility(View.INVISIBLE);
 
                     } else if (status.equals("failure")) {
-                        // Toast.makeText(OTPVarify.this, "Unable To send OTP varify", Toast.LENGTH_LONG).show();
-                        // Error occurred in registration. Get the error
-                        // message
-                       /* AlertDialog alertDialog = new AlertDialog.Builder();
-
-                        // Setting Dialog Title
-                        alertDialog.setTitle("OTP send error");
-
-                        // Setting Dialog Message
-                        alertDialog.setMessage("Due to Server response .Unable to send OTP .Please try again");
-
-                        // Setting Icon to Dialog
-                        //  alertDialog.setIcon(R.drawable.tick);
-
-                        // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog closed
-                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                        // Showing Alert Message
-                        alertDialog.show();*/
-
-                        //  String errorMsg = jObj.getString("error_msg");
-                        //Toast.makeText(context,errorMsg, Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {
