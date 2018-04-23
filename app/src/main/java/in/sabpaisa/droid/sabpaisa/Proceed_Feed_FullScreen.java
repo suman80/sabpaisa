@@ -188,7 +188,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        scrollListener=new EndlessScrollListener(llm) {
+
+       llm.setReverseLayout(true);
+       scrollListener=new EndlessScrollListener(llm) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 callGetCommentList(feed_id);

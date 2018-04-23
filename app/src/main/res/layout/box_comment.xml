@@ -11,7 +11,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-android:layout_weight="2"
+        android:layout_weight="2"
         android:layout_marginTop="1dip"
         android:gravity="bottom"
 
@@ -28,10 +28,9 @@ android:layout_weight="2"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-
             android:hint="Add Comment"
             android:gravity="top|left"
-            android:inputType="textMultiLine"
+            android:inputType="textMultiLine|textAutoCorrect"
             android:maxLines="7"
             android:scrollbars="vertical"
             android:layout_marginRight="20dp"
@@ -39,8 +38,8 @@ android:layout_weight="2"
             android:paddingRight="6dp"
             android:textColorHint="@color/black_50"
             android:textSize="@dimen/text_size_small"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890\n!@#$%^*()_+=-:'[]{}|\?/."
-            />
+            android:imeOptions="actionSend"
+            android:digits="0x26\u00AE\u0026abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890^{}:;-\n!@#$%^*()!'#$%'']()*+,‐./0:;=>?@[\]^_`{|}~¡¢£¤¥¦§©ª« ¬ ®ˉ°±²³´µ¶¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ  "/>
 <!--
         </android.support.design.widget.TextInputLayout>-->
     </LinearLayout>

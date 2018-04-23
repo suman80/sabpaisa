@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +50,7 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
 String key;
     private List<ContactVO> contactVOList;
     private Context mContext;
-    static ImageView sp;
+    static Button sp;
 
     public AllContactsAdapter(List<ContactVO> contactVOList, Context mContext){
         this.contactVOList = contactVOList;
@@ -88,7 +89,7 @@ String key;
             tvContactName = (TextView) itemView.findViewById(R.id.tvContactName);
            // tvPhoneNumber = (TextView) itemView.findViewById(R.id.tvPhoneNumber);
 
-        sp=(ImageView)itemView.findViewById(R.id.abc);
+        sp=(Button) itemView.findViewById(R.id.abc);
         }
     }
 

@@ -403,8 +403,6 @@ onBackPressed();            }
         setSupportActionBar(toolbar);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
-
-
         mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
 
         /*stateName=getIntent().getStringExtra("STATENAME");

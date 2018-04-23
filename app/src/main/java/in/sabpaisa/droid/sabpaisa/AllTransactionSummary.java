@@ -34,6 +34,7 @@ import java.util.Locale;
 import in.sabpaisa.droid.sabpaisa.Adapter.AllTransactionAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.AllTransactiongettersetter;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class AllTransactionSummary extends AppCompatActivity {
@@ -93,8 +94,8 @@ String date1;
 
     public void alltxnsummary(final  String token)
     {
-
-        String url="https://portal.sabpaisa.in/SabPaisaResponseHandler/SPtranscationIds?token=";
+        String url= AppConfig.Base_Url+"/SabPaisaResponseHandler/"+AppConfig.URL_AllTransactionReport;
+       // String url="https://portal.sabpaisa.in/SabPaisaResponseHandler/SPtranscationIds?token=";
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url + token, new Response.Listener<String>() {
             @Override
             public void onResponse(String response)  {

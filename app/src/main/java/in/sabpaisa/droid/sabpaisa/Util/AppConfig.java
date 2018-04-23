@@ -3,9 +3,9 @@ package in.sabpaisa.droid.sabpaisa.Util;
 public class AppConfig {
 	// Server user login url
 
-	public static String Base_Url="https://portal.sabpaisa.in";
+	//public static String Base_Url="https://portal.sabpaisa.in";
 
-	//public static String Base_Url="https://spl.sabpaisa.in";
+	public static String Base_Url="https://spl.sabpaisa.in";
 
 
 	public static String App_api="/SabPaisaAppApi/";
@@ -14,6 +14,7 @@ public class AppConfig {
 	public static String URL_Contacts = "SPuserInUsercontactList";
 	public static String URL_AllTransaction = "/SabPaisaResponseHandler/saveSPtranscationId?token=";
 	public static String URL_TransactionReport = "TransactionData?SptransacationId=";
+	public static String URL_AllTransactionReport="SPtranscationIds?token=";
 	public static String URL_NoOFGroupMembeers = "fetchGroupUsers?clientId=";
 	public static String  URL_LOGIN = "sign-in-user";
 	public static String  URL_forgotpasswprd = "changePassword";

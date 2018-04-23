@@ -27,10 +27,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
@@ -44,6 +47,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,6 +63,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     TextView groupsName,group_description_details;
     ImageView groupImage;
+    String encodedUrl;
     CommentsDB dbHelper;
     private int TOTAL_PAGES = 3;
     String date1;
@@ -207,10 +212,14 @@ private EndlessScrollListener scrollListener;
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
         final CommentAdapter ca = new CommentAdapter(arrayList);
+
         rv.setAdapter(ca);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
+
+
+        llm.setReverseLayout(true);
         scrollListener=new EndlessScrollListener(llm) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
@@ -281,13 +290,15 @@ private EndlessScrollListener scrollListener;
     }
 
     private void callCommentService(final String GroupId, final String userAccessToken, final String comment_text) {
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + comment_text.trim().replace(" ","%20");
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + comment_text.trim();
 
         // String urlJsonObj = AppConfiguration.FeedAddComent + "/aaddFeedsComments/" +"?feed_id="+ feed_id+ "/" + 1 + "/" + commentText;
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
+
+
 
             @Override
             public void onResponse(JSONObject response) {
@@ -327,15 +338,38 @@ private EndlessScrollListener scrollListener;
             }
         }, new Response.ErrorListener() {
 
+
+
+
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("Group Details", "Error: " + error.getMessage());
+
+                NetworkResponse response = error.networkResponse;
+                if (error instanceof ServerError && response != null) {
+                    try {
+                        String res = new String(response.data,
+                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                        // Now you can use any deserializer to make sense of data
+                        String obj = new String(res);
+                    } catch (UnsupportedEncodingException e1) {
+                        // Couldn't properly decode data to string
+                        e1.printStackTrace();
+                    }
+                }
+
+
+
+                /*VolleyLog.d("Group Details", "Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                        error.getMessage(), Toast.LENGTH_SHORT).show();*/
                 // hide the progress dialog
                 //hidepDialog();
             }
+
+
         });
+
+
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
@@ -345,7 +379,21 @@ private EndlessScrollListener scrollListener;
     public void callGetCommentList(final String GropuId) {
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";
-        final String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getGroupsComments?group_id=" + GropuId;
+        String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getGroupsComments?group_id=" + GropuId;
+
+
+        urlJsonObj.replaceAll("%", "%25");
+
+
+
+        try {
+            encodedUrl = java.net.URLEncoder.encode(urlJsonObj,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        //urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
+
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
                 urlJsonObj, new Response.Listener<String>(){
@@ -417,7 +465,7 @@ private EndlessScrollListener scrollListener;
 
                             }
                         loadCommentListView(commentArrayList);
-                    } else {
+                    } /*else {
                         Log.d("PGF1111","  "+obj.toString());
                         Log.d("IN_ELSE_:111","Comments BBBB" +response);
                         AlertDialog alertDialog = new AlertDialog.Builder(Proceed_Group_FullScreen.this, R.style.MyDialogTheme).create();
@@ -443,7 +491,7 @@ private EndlessScrollListener scrollListener;
                         alertDialog.show();
 
 
-                    }
+                    }*/
 
                     Log.d("PGF","  "+obj.toString());
                     ///////////////////////////////
@@ -479,8 +527,26 @@ private EndlessScrollListener scrollListener;
                 //as a parameter
                 new Response.ErrorListener() {
                     @Override
-                    // Handles errors that occur due to Volley
+                    // Handles erroronErrorResponses that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
+
+                        NetworkResponse response = error.networkResponse;
+                        if (error instanceof ServerError && response != null) {
+                            try {
+                                String res = new String(response.data,
+                                        HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                                // Now you can use any deserializer to make sense of data
+                                JSONObject obj = new JSONObject(res);
+                            } catch (UnsupportedEncodingException e1) {
+                                // Couldn't properly decode data to string
+                                e1.printStackTrace();
+                            } catch (JSONException e2) {
+                                // returned data is not JSONObject?
+                                e2.printStackTrace();
+                            }
+                        }
+
+
                         error.printStackTrace();
 
                         Log.e("Feed", "FeedError");
