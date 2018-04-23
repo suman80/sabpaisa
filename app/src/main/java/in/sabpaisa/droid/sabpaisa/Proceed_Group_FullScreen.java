@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
 import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.network.BNetworkManager;
+import com.bumptech.glide.Glide;
 import com.rockerhieu.emojicon.EmojiconEditText;
 
 import org.json.JSONArray;
@@ -67,7 +70,7 @@ private EndlessScrollListener scrollListener;
 
     Toolbar toolbar;
     Button prvtfeeds;
-
+    ScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +80,7 @@ private EndlessScrollListener scrollListener;
 //        this.getWindow().setSoftInputMode(
 //                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        scrollView=(ScrollView)findViewById(R.id.scrollView);
         groupsName=(TextView)findViewById(R.id.groupsName);
         group_description_details=(TextView)findViewById(R.id.group_description_details);
         groupImage=(ImageView)findViewById(R.id.groupImage);
@@ -137,7 +140,12 @@ private EndlessScrollListener scrollListener;
 
         groupsName.setText(GroupsNm);
         group_description_details.setText(GroupsDiscription);
-        new DownloadImageTask(groupImage).execute(GroupsImg);
+       // new DownloadImageTask(groupImage).execute(GroupsImg);
+
+        Glide.with(getApplicationContext())
+                .load(GroupsImg)
+                .error(R.drawable.image_not_found)
+                .into(groupImage);
 
         callGetCommentList(GroupId);
         arrayList = new ArrayList<>();
@@ -197,8 +205,8 @@ private EndlessScrollListener scrollListener;
 
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
-        RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
-        CommentAdapter ca = new CommentAdapter(arrayList);
+        final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
+        final CommentAdapter ca = new CommentAdapter(arrayList);
         rv.setAdapter(ca);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -213,8 +221,14 @@ private EndlessScrollListener scrollListener;
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
         rv.setLayoutManager(llm);
         rv.setNestedScrollingEnabled(false);
-
-    }
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //replace this line to scroll up or down
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 100L);
+         }
 
     //EditText group_details_text_view = null;
 

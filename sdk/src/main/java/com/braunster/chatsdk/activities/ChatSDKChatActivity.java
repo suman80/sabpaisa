@@ -15,9 +15,7 @@ import com.braunster.chatsdk.Utils.Debug;
 import com.braunster.chatsdk.activities.abstracted.ChatSDKAbstractChatActivity;
 
 
-/**
- * Created by itzik on 6/8/2014.
- */
+
 public class ChatSDKChatActivity extends ChatSDKAbstractChatActivity implements AbsListView.OnScrollListener {
 
     private static final String TAG = ChatSDKChatActivity.class.getSimpleName();

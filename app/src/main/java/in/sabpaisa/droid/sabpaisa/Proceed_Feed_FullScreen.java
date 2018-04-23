@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +75,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView rv;
     Toolbar toolbar;
+    ScrollView scrollView;
+    EndlessScrollListener scrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         response = sharedPreferences.getString("response", "123");
 
         userAccessToken = response;
+        scrollView=(ScrollView)findViewById(R.id.scrollView);
 
         Log.d("AccessToken", " " + userAccessToken);
 
@@ -97,7 +101,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         feedsName = (TextView) findViewById(R.id.feedsName);
         feed_description_details = (TextView) findViewById(R.id.feed_description_details);
         feedImage = (ImageView) findViewById(R.id.feedImage);
-        swipeRefreshLayout= (SwipeRefreshLayout)findViewById(R.id.swipe_container);
+        swipeRefreshLayout= (SwipeRefreshLayout)
+                findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
 
         FeedsNm = getIntent().getStringExtra("feedName");
@@ -174,6 +179,35 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     }
 
+
+
+    private void loadCommentListView(ArrayList<CommentData> arrayList) {
+        final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
+        final CommentAdapter ca = new CommentAdapter(arrayList);
+        rv.setAdapter(ca);
+
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        scrollListener=new EndlessScrollListener(llm) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                callGetCommentList(feed_id);
+            }
+        };
+        rv.addOnScrollListener(scrollListener);
+        rv.addItemDecoration(new SimpleDividerItemDecoration(this));
+        rv.setLayoutManager(llm);
+        rv.setNestedScrollingEnabled(false);
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //replace this line to scroll up or down
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 100L);
+    }
+
+/*
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
          rv = (RecyclerView) findViewById(R.id.recycler_view_group_details_comment);
         final CommentAdapter ca = new CommentAdapter(arrayList);
@@ -187,6 +221,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
        // rv.smoothScrollBy(100,100);
         rv.setLayoutManager(llm);
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
+*/
 /*
         rv.addItemDecoration(new RecyclerView.ItemDecoration() {
 
@@ -221,20 +256,24 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     outRect.set(0, groupSpacing, 0, 0);
                 }
             }
-        });*/
+        });*//*
+
 
         rv.setLayoutManager(llm);
 
         rv.smoothScrollToPosition(ca.getItemCount());
        rv.setNestedScrollingEnabled(false);
 
-     /*   rv.post(new Runnable() {
+     */
+/*   rv.post(new Runnable() {
             @Override
             public void run() {
                 // Call smooth scroll
                 rv.smoothScrollToPosition(ca.getItemCount() - 1);
-            } });*/
+            } });*//*
+
     }
+*/
 
 
     //EditText group_details_text_view = null;
