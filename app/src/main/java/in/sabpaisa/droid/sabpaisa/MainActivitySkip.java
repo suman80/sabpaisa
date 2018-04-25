@@ -144,7 +144,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+        //CommonUtils.setFullScreen(this);
 
         setContentView(R.layout.app_bar_nagationfullview);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -847,12 +847,13 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
 
         }
+//changes 25 april
 
-
-       /* else if(id==R.id.nav_TransactionReport){
-            Intent intent=new Intent(MainActivitySkip.this, TransactionReportNav.class);
+        else if(id==R.id.nav_TransactionReport){
+            Intent intent=new Intent(MainActivitySkip.this, LogoutNavigationActivity.class);
             startActivity(intent);
-        }*/
+        }
+        //// end
         /*
         else if (id == R.id.nav_rate) {
             Intent intent = new Intent(MainActivitySkip.this, RateActivity.class);

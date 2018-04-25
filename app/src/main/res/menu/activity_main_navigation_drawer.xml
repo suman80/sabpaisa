@@ -29,12 +29,7 @@
             android:icon="@drawable/ic_action_histtory"
             android:title="Report"
             />
-
-        <item
-            android:id="@+id/nav_Contacts"
-            android:title="Contacts"
-            android:icon="@drawable/ic_action_contactsss"/>
-        <item
+       <item
             android:id="@+id/nav_ChangePassword"
             android:title="Change Password"
             android:icon="@drawable/ic_action_changepassworddd"/>
@@ -47,7 +42,15 @@
             android:icon="@drawable/ic_action_cleandata"
             android:title="Change Institute/Client"
             />
-            <item
+
+
+
+        <item
+            android:id="@+id/nav_Contacts"
+            android:title="Invite"
+            android:icon="@drawable/ic_action_contactsss"/>
+
+        <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_actionsharenew"
                 android:title="Share"

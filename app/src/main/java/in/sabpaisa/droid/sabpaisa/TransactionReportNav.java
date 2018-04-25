@@ -40,7 +40,7 @@ ImageView back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+       // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_transaction_report_nav);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
       RefID_Et=(EditText)findViewById(R.id.refid);

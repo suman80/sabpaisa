@@ -16,7 +16,7 @@ public class LogoutNavigationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+       // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_logout_navigation);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 

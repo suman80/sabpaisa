@@ -47,7 +47,7 @@ public class FeedDetails extends AppCompatActivity implements SwipeRefreshLayout
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+      //  CommonUtils.setFullScreen(this);
         setContentView(R.layout.coa_feed_details_screen);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

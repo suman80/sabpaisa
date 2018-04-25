@@ -76,7 +76,7 @@ public class GroupDetails extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+      //  CommonUtils.setFullScreen(this);
         setContentView(R.layout.coa_group_details_screen);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 

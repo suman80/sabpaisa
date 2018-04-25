@@ -22,7 +22,7 @@ public class TransactionResultDialog extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+        //CommonUtils.setFullScreen(this);
        // supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.list_transaction_result);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

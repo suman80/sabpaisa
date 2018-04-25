@@ -197,7 +197,7 @@ public class ForgotActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+       // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_forgot);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //final EditText et_currentPassword =(EditText) findViewById(R.id.et_currentPassword);
@@ -314,26 +314,17 @@ public class ForgotActivity extends AppCompatActivity {
                     et_phone_number.setError("Please make sure that You have entered 10 digit number");
 
                 }
-                            if(newPassword.length()==0)
-                            {
-                                password.setError("Please enter password ");
-                            }
+                if(newPassword.length()==0)
+                {
+                password.setError("Please enter password ");
+                 }
                 else if(et_otp.length()==0){
 
                     et_otp.setError("Please click on the send otp");
-                } /*else if(et_currentPassword.length()==0){
-
-                    et_currentPassword.setError("Please enter your Current Password");
-                }*/
+                }
                 else if(isOnline())
                 {
-                    //Intent intent21 = new Intent(Name.this, Gender.class);
-
-                    //startActivity(intent21);
-                    //launchAgeScreen();
                     registerUser(contactNumber,newPassword);
-
-
 
                 }
                 else {
@@ -361,22 +352,7 @@ public class ForgotActivity extends AppCompatActivity {
                     alertDialog.show();
                     Log.v("Home", "############################You are not online!!!!");
                 }
-                //launchAgeScreen();
-
-
-
-       /*     }
-
-        });
-*/
-
-
-
-
-
-
-                //LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
-            }
+                }
 
 
         });

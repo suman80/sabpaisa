@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -131,6 +132,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView main_feed_description, main_feed_name, main_feed_creation_time;
                 ImageView client_Image,cilent_Logo;
+
         public MyViewHolder(View view) {
             super(view);
             main_feed_description = (TextView) view.findViewById(R.id.main_feed_description);

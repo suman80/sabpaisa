@@ -96,7 +96,7 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+    //    CommonUtils.setFullScreen(this);
 
 
         Fabric.with(this, new Crashlytics());

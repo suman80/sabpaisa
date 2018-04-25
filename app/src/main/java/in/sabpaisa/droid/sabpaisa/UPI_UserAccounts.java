@@ -40,7 +40,7 @@ public class UPI_UserAccounts extends AppCompatActivity implements OliveUpiEvent
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+       // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_upi__user_accounts);
 
 

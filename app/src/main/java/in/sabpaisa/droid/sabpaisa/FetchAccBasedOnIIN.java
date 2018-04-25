@@ -46,7 +46,7 @@ public class FetchAccBasedOnIIN extends AppCompatActivity implements OliveUpiEve
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+       // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_fetch_acc_based_on_iin);
 
         Intent intent = getIntent();

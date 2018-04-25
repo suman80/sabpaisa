@@ -79,7 +79,7 @@ private EndlessScrollListener scrollListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+      //  CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_proceed_group_full_screen);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 //        this.getWindow().setSoftInputMode(

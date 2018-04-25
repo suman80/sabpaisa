@@ -135,7 +135,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+       // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_nagationfullview);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -656,10 +656,10 @@ intent.putExtra("state",state);
 
 
 
-        /*else if(id==R.id.nav_TransactionReport){
-            Intent intent=new Intent(FullViewOfClientsProceed.this, TransactionReportNav.class);
+        else if(id==R.id.nav_TransactionReport){
+            Intent intent=new Intent(FullViewOfClientsProceed.this, LogoutNavigationActivity.class);
             startActivity(intent);
-        }*/ else  if(id == R.id.nav_ChangePassword)
+        } else  if(id == R.id.nav_ChangePassword)
         {
             Intent intent=new Intent(FullViewOfClientsProceed.this, ForgotActivity.class);
 

@@ -33,7 +33,7 @@ public class UPIActivationActivity extends AppCompatActivity implements OliveUpi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+       // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_upiactivation);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         OliveUpiManager.getInstance(UPIActivationActivity.this).setListener(this);

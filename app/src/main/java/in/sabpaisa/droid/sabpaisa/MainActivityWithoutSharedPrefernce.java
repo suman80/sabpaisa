@@ -128,7 +128,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+        //CommonUtils.setFullScreen(this);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 

@@ -52,7 +52,7 @@ String refId=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+      //  CommonUtils.setFullScreen(this);
         setContentView(R.layout.content_txn_report);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         t1=(TextView)findViewById(R.id.t11);

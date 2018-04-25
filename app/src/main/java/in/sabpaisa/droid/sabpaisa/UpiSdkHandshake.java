@@ -83,7 +83,7 @@ Button HandShake_Btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+       // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_upi_sdk_handshake);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         OliveUpiManager.getInstance(UpiSdkHandshake.this).setListener(this);

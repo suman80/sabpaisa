@@ -25,7 +25,7 @@ public class RateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+        //CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_rate);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         SmileRating smileRating = (SmileRating) findViewById(R.id.ratingBar1);

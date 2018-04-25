@@ -33,7 +33,7 @@ public class Report extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+        //CommonUtils.setFullScreen(this);
         setContentView(R.layout.content_txn_report);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

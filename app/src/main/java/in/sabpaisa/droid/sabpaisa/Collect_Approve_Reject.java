@@ -34,7 +34,7 @@ public class Collect_Approve_Reject extends AppCompatActivity implements OliveUp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+       // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_collect__approve__reject);
 
         OliveUpiManager.getInstance(Collect_Approve_Reject.this).setListener(this);

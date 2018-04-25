@@ -197,7 +197,6 @@ public class MainGroupAdapter1 extends
                 Log.d("groupIdGRP"," "+groupId);
 
                 addMember(token,groupId,v,c);
-
             }
         });
 
@@ -445,7 +444,26 @@ public class MainGroupAdapter1 extends
 
     }
 
+public  void statusGroup(final  String clientId,final String token)
+{
+StringRequest stringRequest=new
+        StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "/memberStatusWithGroup?clientId=" + clientId + "&token=" + token, new Response.Listener<String>() {
+    @Override
+    public void onResponse(String response) {
 
+        Log.d("StatusActiveornot",""+response);
+
+    }
+}, new Response.ErrorListener() {
+    @Override
+    public void onErrorResponse(VolleyError error) {
+
+    }
+});
+
+AppController.getInstance().addToRequestQueue(stringRequest);
+
+}
 
 
 

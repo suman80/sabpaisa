@@ -66,16 +66,16 @@ public class ChangePassword extends AppCompatActivity {
     CountDownTimer countDownTimer = null;
     TextView timerTextView = null;
     ProgressDialog progressBar = null;
+    String otp11;
     BottomSheetDialog mBottomSheetDialog;
     private static final int REQUEST_READ_PERMISSION = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+        //CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_forgot);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //final EditText et_currentPassword =(EditText) findViewById(R.id.et_currentPassword);
         final EditText et_phone_number = (EditText)findViewById(R.id.et_phone_number);
         final EditText password = (EditText)findViewById(R.id.et_currentpass);
         final EditText curentpwd = (EditText)findViewById(R.id.et_mailId);
@@ -124,8 +124,6 @@ public class ChangePassword extends AppCompatActivity {
                 String number = et_phone_number.getText().toString();
                 if (number.equals("")) {
 
-
-
                     Toast.makeText(getApplicationContext(), "Please enter Phone Number!", Toast.LENGTH_LONG).show();
                 } else if (isOnline()) {
                     mBottomSheetDialog.setCancelable(false);//Added on 2nd Feb
@@ -134,9 +132,7 @@ public class ChangePassword extends AppCompatActivity {
                     callTimerCoundown();
                     sendOTP(v, number);
 
-
-                    // Toast.makeText(OTPVarify.this, "first name field is empty", Toast.LENGTH_LONG).show();
-                } else {
+                    } else {
 
                     AlertDialog alertDialog = new AlertDialog.Builder(ChangePassword.this, R.style.MyDialogTheme).create();
 
@@ -200,15 +196,9 @@ public class ChangePassword extends AppCompatActivity {
                 }
                 else if(isOnline())
                 {
-                    //Intent intent21 = new Intent(Name.this, Gender.class);
 
-                    //startActivity(intent21);
-                    //launchAgeScreen();
                     registerUser(contactNumber,newPassword,currentPassword);
-
-
-
-                }
+                    }
                 else {
 
                     AlertDialog alertDialog = new AlertDialog.Builder(ChangePassword.this, R.style.MyDialogTheme).create();
@@ -234,30 +224,10 @@ public class ChangePassword extends AppCompatActivity {
                     alertDialog.show();
                     Log.v("Home", "############################You are not online!!!!");
                 }
-                //launchAgeScreen();
-
-
-
-       /*     }
-
-        });
-*/
-
-
-
-
-
-
-                //LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
-            }
+       }
 
 
         });
-
-
-
-
-
     }
 
 
@@ -297,32 +267,13 @@ public class ChangePassword extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response1);
                     String status = jObj.getString("status");
 
-                    //String userId = jObj.getString("userId");
-                    //boolean error = jObj.getBoolean("e623+rror");
-                    //status =jObj.getString("status");
+                    if(status.equals("success")&&et_otp.getText().toString().equals(otp11)) {
 
-                    // response = jObj.getString("response");
-
-                    //launchMainScreen();
-                        /*Intent intent1 = new Intent(RegisterActivity.this, MainActivity.class);
-                        //intent1.putExtra("response", response);
-
-                        startActivity(intent1);
-*/
-
-
-                    Intent intent = new Intent(ChangePassword.this,LoginActivityWithoutSharedPreference.class);
-                    startActivity(intent);
-                    Log.e(TAG, "status: " + status);
-                    finish();
-                    //Log.e(TAG, "response2163123: " + userId);
-
-
-
-
-
-
-
+                        Intent intent = new Intent(ChangePassword.this, LoginActivityWithoutSharedPreference.class);
+                        startActivity(intent);
+                        Log.e(TAG, "status: " + status);
+                        finish();
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -360,9 +311,7 @@ public class ChangePassword extends AppCompatActivity {
                     // Showing Alert Message
                     alertDialog.show();
                     Log.e(TAG, "Registration Error: " + error.getMessage());
-                    /*Toast.makeText(context,
-                            context.getString(R.string.error_network_timeout),
-                            Toast.LENGTH_LONG).show();*/
+
                 } else if (error instanceof AuthFailureError) {
 
                     //TODO
@@ -469,42 +418,17 @@ public class ChangePassword extends AppCompatActivity {
                     // Parsing json object response
                     // response will be a json object
                     String status = response.getString("status");
-                    if (status.equals("success")) {
-                        //SharedPref.putBoolean(RegisterActivity.this, AppConfiguration.OPT_VARIFICATION, true);
-                        //launchAgeScreen();
-                        //callUINVarificationScreen();
-                        //Toast.makeText(OTPVarify.this, "OTP Verified ", Toast.LENGTH_LONG).show();
+                    otp11 = response.getString("otp");
+                    String  verifireponse= response.getString("response");
 
+                    Log.d("Archana1111111",""+status);
+                    Log.d("Archana111111111",""+otp11);
+                    Log.d("Archana211111111",""+verifireponse);
+
+                    if (status.equals("success")) {
                         send_Otp.setVisibility(View.INVISIBLE);
 
                     } else if (status.equals("failure")) {
-                        // Toast.makeText(OTPVarify.this, "Unable To send OTP varify", Toast.LENGTH_LONG).show();
-                        // Error occurred in registration. Get the error
-                        // message
-                       /* AlertDialog alertDialog = new AlertDialog.Builder();
-
-                        // Setting Dialog Title
-                        alertDialog.setTitle("OTP send error");
-
-                        // Setting Dialog Message
-                        alertDialog.setMessage("Due to Server response .Unable to send OTP .Please try again");
-
-                        // Setting Icon to Dialog
-                        //  alertDialog.setIcon(R.drawable.tick);
-
-                        // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog closed
-                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                        // Showing Alert Message
-                        alertDialog.show();*/
-
-                        //  String errorMsg = jObj.getString("error_msg");
-                        //Toast.makeText(context,errorMsg, Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {
@@ -532,9 +456,7 @@ public class ChangePassword extends AppCompatActivity {
 
 
         String urlJsonObj =  AppConfig.Base_Url+AppConfig.App_api+"SendOTP/" +"?mobile_no="+ number;
-//        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/SendOTP/" +"?mobile_no="+ number;
 
-        //showpDialog(v);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
@@ -551,13 +473,9 @@ public class ChangePassword extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("success")) {
 
-                        //Toast.makeText(getApplicationContext(), "OTP sent", Toast.LENGTH_LONG).show();
-
-
                         SmsReceiver.bindListener(new SmsListener() {
                             @Override
                             public void messageReceived(String messageText) {
-//                Toast.makeText(context, "Message: " + messageText, Toast.LENGTH_LONG).show();
                                 Log.i("OTP", "messageText=" + messageText);
 
                                 final String optSplit[] = messageText.split(":");
@@ -567,42 +485,17 @@ public class ChangePassword extends AppCompatActivity {
                                         @Override
                                         public void run() {
 
-                                            /*if (countDownTimer != null) {
-                                                countDownTimer.cancel();
-                                            }*/
 
                                             mBottomSheetDialog.hide();
 
                                             veryfiOTP(number, optSplit[1]);
 
-                                            //  callVaryfyOTP(optSplit[1]);
-                                        /*OtpDialog dialog = null;
-                                        dialog = new OtpDialog(RegisterActivity.this,number);
-                                        Bundle bundle = new Bundle();
-                                        dialog.onCreate(bundle);
-                                        dialog.dismiss();*/
                                         }
                                     }, 1000);
                                 }
                             }
                         });
 
-                       /* if (!optEditText.getText().toString().equals("")) {
-                            String optText = optEditText.getText().toString();
-                            if (countDownTimer != null) {
-                                countDownTimer.cancel();
-                            }
-
-                            veryfiOTP(number, optText);
-
-                            //callVaryfyOTP(optText);
-                        }*/
-                        //  callTimerCoundown();
-
-
-
-
-                        //Toast.makeText(getApplicationContext(), "OTP sent", Toast.LENGTH_LONG).show();
 
                     }
                     else if (status.equals("failure")){
@@ -684,13 +577,6 @@ public class ChangePassword extends AppCompatActivity {
                 }
 
 
-
-             /*   VolleyLog.d("eclipse", "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();*/
-                //Show_Dialog(getApplicationContext(), number);
-                // hide the progress dialog
-                //hidepDialog();
             }
         });
 

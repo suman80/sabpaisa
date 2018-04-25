@@ -85,7 +85,7 @@
         android:id="@+id/verifyuin"
 
         android:layout_below="@+id/ttl"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:onClick="onVerifyBtn"
         android:text="Verify"
 
@@ -98,7 +98,6 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:textAllCaps="false"
         android:textColor="@color/white"
-
         android:textStyle="bold" />
 
 

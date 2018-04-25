@@ -27,7 +27,7 @@ public class VerifyMobile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+       // CommonUtils.setFullScreen(this);
 
         setContentView(R.layout.activity_verify_mobile);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

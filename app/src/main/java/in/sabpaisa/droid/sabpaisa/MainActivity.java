@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     protected void onCreate(Bundle savedInstanceState) {
         //checking
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+       // CommonUtils.setFullScreen(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 //nav=(NetworkImageView)findViewById(R.id.profile_image);
 
@@ -823,11 +823,13 @@ Log.d("xmailidmain",""+x);*/
             startActivity(intent);
 4884507071709195026666865
         }*/
-
+//Changes 25 april
         else if(id==R.id.nav_TransactionReport){
-            Intent intent=new Intent(MainActivity.this, TransactionReportNav.class);
+            Intent intent=new Intent(MainActivity.this, LogoutNavigationActivity.class);
             startActivity(intent);
         }
+
+        // end
         else  if(id == R.id.nav_ChangePassword)
         {
             Intent intent=new Intent(MainActivity.this, ForgotActivity.class);

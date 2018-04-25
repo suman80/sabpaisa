@@ -35,7 +35,7 @@ public class UPIBankList extends AppCompatActivity implements OliveUpiEventListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
+       // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_upibank_list);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         OliveUpiManager.getInstance(UPIBankList.this).setListener(this);

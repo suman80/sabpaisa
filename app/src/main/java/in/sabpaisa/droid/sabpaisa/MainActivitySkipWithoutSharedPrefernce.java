@@ -99,6 +99,7 @@ import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
+import in.sabpaisa.droid.sabpaisa.Util.LogoutNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivitySkip;
@@ -758,10 +759,10 @@ showProfileData();
             startActivity(intent);
         }
 
-        /*else if(id==R.id.nav_TransactionReport){
-            Intent intent=new Intent(MainActivitySkipWithoutSharedPrefernce.this, TransactionReportNav.class);
+        else if(id==R.id.nav_TransactionReport){
+            Intent intent=new Intent(MainActivitySkipWithoutSharedPrefernce.this, LogoutNavigationActivity.class);
             startActivity(intent);
-        }*/
+        }
         else if (id == R.id.nav_logout) {
 
 
