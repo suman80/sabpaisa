@@ -23,7 +23,8 @@
         <item
             android:id="@+id/nav_TransactionReport"
             android:title="E-Receipt"
-            android:icon="@drawable/ic_action_transaction"/>
+            android:icon="@drawable/ic_action_transaction"
+            android:visible="false"/>
         <item
             android:id="@+id/nav_txnhistory"
             android:icon="@drawable/ic_action_histtory"
@@ -48,6 +49,7 @@
         <item
             android:id="@+id/nav_Contacts"
             android:title="Invite"
+            android:visible="false"
             android:icon="@drawable/ic_action_contactsss"/>
 
         <item

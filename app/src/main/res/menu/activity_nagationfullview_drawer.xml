@@ -21,6 +21,7 @@
         <item
             android:id="@+id/nav_TransactionReport"
             android:title="E-Receipt"
+            android:visible="false"
             android:icon="@drawable/ic_action_transaction"/>
 
 
@@ -50,6 +51,7 @@
         <item
             android:id="@+id/nav_Contacts"
             android:title="Invite"
+            android:visible="false"
             android:icon="@drawable/ic_action_contactsss"/>
 
         <item

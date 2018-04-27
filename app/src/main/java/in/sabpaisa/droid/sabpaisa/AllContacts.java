@@ -405,12 +405,6 @@ Log.d("BeforeFunction",""+contactList);
 
                             Log.d("numbersREGorNot", "==>" + object1.optString(key));
 
-                            ArrayList<String> a =new ArrayList<>();
-
-                            a.add(key);
-                            Log.d("numbersREGorNotqArr", "==>" + a);
-
-
                             for (int i = 0; i < contactList.size(); i++) {
                                 if (object1.optString(key).equals("Registered User") && contactList.get(i).equals(key)) {
 
