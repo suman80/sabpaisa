@@ -409,6 +409,33 @@ public class ForgotActivity extends AppCompatActivity {
 }
                     //Log.e(TAG, "response2163123: " + userId);
 
+else if(!et_otp.getText().toString().equals(otp11))
+{
+
+
+    AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
+
+    // Setting Dialog Title
+    alertDialog.setTitle("SPApp");
+
+    // Setting Dialog Message
+    alertDialog.setMessage("Hey, its look like OTP is incorrect or trying with other mobile device");
+    // Setting Icon to Dialog
+    //  alertDialog.setIcon(R.drawable.tick);
+
+    // Setting OK Button
+    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+            // Write your code here to execute after dialog closed
+            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+        }
+    });
+
+    // Showing Alert Message
+    alertDialog.show();
+
+
+}
 else
 {
 
@@ -416,10 +443,10 @@ else
     AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
 
     // Setting Dialog Title
-    alertDialog.setTitle("Incorrect OTP");
+    alertDialog.setTitle("");
 
     // Setting Dialog Message
-    alertDialog.setMessage("Hey, its look like OTP is incorrect");
+    alertDialog.setMessage("Your password is successfully changed");
     // Setting Icon to Dialog
     //  alertDialog.setIcon(R.drawable.tick);
 
@@ -509,26 +536,11 @@ else
 
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-
-
-
-
-
-
                 params.put("contactNumber", contactNumber);
                 params.put("newPassword", newPassword);
-                // params.put("password", password);
-                //params.put("deviceId", deviceId);
-                // params.put("dob", dob );
-
-
                 return params;
             }
-
-
-
-
-        };
+       };
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);

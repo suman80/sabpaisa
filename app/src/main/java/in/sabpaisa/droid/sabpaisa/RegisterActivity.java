@@ -244,10 +244,10 @@ String otp11;
                         AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
-                        alertDialog.setTitle("Incorrect OTP");
+                        alertDialog.setTitle("SPApp");
 
                         // Setting Dialog Message
-                        alertDialog.setMessage("Hey, its look like OTP is incorrect");
+                        alertDialog.setMessage("Hey, its look like OTP is incorrect or you are trying to Register with other mobile device");
                         // Setting Icon to Dialog
                         //  alertDialog.setIcon(R.drawable.tick);
 

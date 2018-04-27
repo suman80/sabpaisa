@@ -51,6 +51,7 @@ import java.util.UUID;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference;
 import in.sabpaisa.droid.sabpaisa.Util.SmsListener;
 import in.sabpaisa.droid.sabpaisa.Util.SmsReceiver;
@@ -275,6 +276,62 @@ public class ChangePassword extends AppCompatActivity {
                         finish();
                     }
 
+                    else if(!et_otp.getText().toString().equals(otp11))
+                    {
+
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(ChangePassword.this, R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("SPApp");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Hey, its look like OTP is incorrect or trying with other mobile device");
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+
+                    }
+                    else
+                    {
+
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(ChangePassword.this, R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Your password is successfully changed");
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+
+                    }
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -491,7 +548,7 @@ public class ChangePassword extends AppCompatActivity {
                                             veryfiOTP(number, optSplit[1]);
 
                                         }
-                                    }, 1000);
+                                    }, 10000);
                                 }
                             }
                         });

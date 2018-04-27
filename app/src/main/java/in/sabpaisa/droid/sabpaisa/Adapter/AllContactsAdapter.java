@@ -59,7 +59,7 @@ String key;
 
     @Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_contact_list, null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.contactsrecylcerview, null);
         ContactViewHolder contactViewHolder = new ContactViewHolder(view);
         return contactViewHolder;
     }
@@ -67,6 +67,7 @@ String key;
     @Override
     public void onBindViewHolder(ContactViewHolder holder, int position) {
         ContactVO contactVO = contactVOList.get(position);
+
         holder.tvContactName.setText(contactVO.getContactName());
         holder.tvPhoneNumber.setText(contactVO.getContactNumber());
 

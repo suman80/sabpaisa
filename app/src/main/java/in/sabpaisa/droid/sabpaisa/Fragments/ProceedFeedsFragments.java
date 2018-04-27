@@ -76,7 +76,7 @@ public class ProceedFeedsFragments extends Fragment {
         linearLayoutnoDataFound = (LinearLayout)rootView.findViewById(R.id.noDataFound);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");
-        Log.d("clientId_PFF",""+clientId);
+    Log.d("clientId_PFF",""+clientId);
         /*swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);*/
 

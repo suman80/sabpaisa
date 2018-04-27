@@ -64,7 +64,7 @@ public class AllContacts extends AppCompatActivity {
 
     ArrayList<String> contactList;
     Cursor cursor;
-    String p1,p2,p3;
+    String p1,p2,p3,p4,p5;
     Toolbar toolbar;
     String contact;
     JSONObject object1;
@@ -228,25 +228,22 @@ Log.d("BeforeFunction",""+contactList);
                         Log.d("Actualphonenumber", "" + phoneNumber);
                         p2 = phoneNumber.replace(" ", "");
                         p1 = p2.replace("+91", "");
+                        p3=p1.replace("(","");
+                        p4=p3.replace(")","");
+                        p5=p4.replace("-","");
 
                         int n = contactList.size();
 
                         Set<String> s = new LinkedHashSet<String>(contactList);
-
-
                         n = removeDuplicates(contactList, n);
-
                         for (int i = 0; i < n; i++) {
                             System.out.print(contactList.get(i) + " Separator");
-
-
                             Log.d("CLashasdh", "" + contactList.get(i));
                         }
-
                         Log.d("Replace+91", "" + s);
                         Log.d("Replace+91", "" + p1);
 
-                        contactList.add(p1);
+                        contactList.add(p5);
                         //Converting ArrayList to HashSet to remove duplicates
                         HashSet<String> listToSet = new HashSet<String>(contactList);
 //Creating Arraylist without duplicate commentborder
@@ -390,44 +387,49 @@ Log.d("BeforeFunction",""+contactList);
                     JsonArray jsonObject1 = new JsonObject().getAsJsonArray("response1");
                     Log.d("tvji1145", " " + jsonObject1);
 
-                     object1 = jObj.getJSONObject("response");
+                   /*  object1 = jObj.getJSONObject("response");
                     Log.d("tvji1145", " " + object1);
                     Iterator<String> iterator = object1.keys();
                     Log.d("tvji11452", " " + iterator);
-                    while (iterator.hasNext()) {
-                        key = iterator.next();
-                        Log.d("UserContactList", "==>" + key);
+*/
 
-                        Log.d("numbersREGorNot", "==>" + object1.optString(key));
-//for(int i=0;i<contactList.size();i++) {
-    /* else {
+                     object1 = jObj.getJSONObject("response");
 
-        Log.d("numbersinelse", "==>" + key);
+                    Log.d("tvji1145", " " + object1);
+                    Iterator<String> iterator = object1.keys();
+                    Log.d("tvji11452", " " + iterator);
 
-        invite.setVisibility(View.INVISIBLE);
+                        while (iterator.hasNext()) {
+                            key = iterator.next();
+                            Log.d("UserContactList", "==>" + key);
+
+                            Log.d("numbersREGorNot", "==>" + object1.optString(key));
+
+                            ArrayList<String> a =new ArrayList<>();
+
+                            a.add(key);
+                            Log.d("numbersREGorNotqArr", "==>" + a);
 
 
-    }*/
-                        for(int i=0;i<contactList.size();i++) {
-                        if (object1.optString(key).equals("User_Not_Registered")) {
+                            for (int i = 0; i < contactList.size(); i++) {
+                                if (object1.optString(key).equals("Registered User") && contactList.get(i).equals(key)) {
 
 
-                            Log.d("numbersREGorNotqyeuqye", "==>" + key);
-                            Log.d("numbersREGorNotq", "==>" + object1.optString(key));
+                                    Log.d("numbersREGorNotqyeuqye", "==>" + key);
+                                    Log.d("numbersREGorNotq", "==>" + object1.optString(key));
 
-                                //if (contactList.get(i) == key) {
+                                    //if (contactList.get(i) == key) {
 
                                     Log.d("numbersRE", "==>" + key);
 
-                                    invitet1 = (Button) findViewById(R.id.abc2);
 
-                                    invite.setVisibility(View.VISIBLE);
+                                    //invite.setVisibility(View.VISIBLE);
                                     invitet1.setVisibility(View.VISIBLE);
-                               //  }
+                                    //  }
+
+                                }
                             }
                         }
-
-                    }
 
 
 
@@ -465,7 +467,7 @@ Log.d("BeforeFunction",""+contactList);
 
                     // Showing Alert Message
                     alertDialog.show();
-                    Log.e("", "Cpntacts api Error: " + error.getMessage());
+                    Log.e("", "Contacts api Error: " + error.getMessage());
                     /*Toast.makeText(context,
                             context.getString(R.string.error_network_timeout),
                             Toast.LENGTH_LONG).show();*/
