@@ -261,7 +261,7 @@ public class MainGroupAdapter1 extends
                     JSONObject jObj = new JSONObject(response1);
 
                     final String response = jObj.getString("response");
-////////16th  feb////////response==Member added successfully
+            ////////16th  feb////////response==Member added successfully
                     Log.d("MemberResponse"," "+response);
 
                     String status =jObj.getString("status");

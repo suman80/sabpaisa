@@ -16,6 +16,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -40,24 +43,32 @@ import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapt
 import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.network.BNetworkManager;
 import com.bumptech.glide.Glide;
+import com.olive.upi.transport.model.lib.NameValuePair;
+import com.parse.signpost.http.HttpResponse;
 import com.rockerhieu.emojicon.EmojiconEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+
+
 
 public class Proceed_Group_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
@@ -68,7 +79,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     private int TOTAL_PAGES = 3;
     String date1;
     String GroupsNm,GroupsDiscription,GroupsImg,GroupId,userAccessToken,response;
-private EndlessScrollListener scrollListener;
+    private EndlessScrollListener scrollListener;
     ArrayList<CommentData> arrayList,feedArrayList;
     Button button1;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -84,6 +95,7 @@ private EndlessScrollListener scrollListener;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 //        this.getWindow().setSoftInputMode(
 //                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         scrollView=(ScrollView)findViewById(R.id.scrollView);
         groupsName=(TextView)findViewById(R.id.groupsName);
@@ -102,7 +114,8 @@ private EndlessScrollListener scrollListener;
         BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
 
 // Set the adapter
-        BNetworkManager.sharedManager().setNetworkAdapter(adapter);        swipeRefreshLayout= (SwipeRefreshLayout)findViewById(R.id.swipe_container);
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
+        swipeRefreshLayout= (SwipeRefreshLayout)findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
         button1.setOnClickListener(new View.OnClickListener() {
     @Override
@@ -151,6 +164,7 @@ private EndlessScrollListener scrollListener;
                 .load(GroupsImg)
                 .error(R.drawable.image_not_found)
                 .into(groupImage);
+
 
         callGetCommentList(GroupId);
         arrayList = new ArrayList<>();
@@ -236,7 +250,7 @@ private EndlessScrollListener scrollListener;
                 //replace this line to scroll up or down
                 scrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
-        }, 100L);
+        }, 10L);
          }
 
     //EditText group_details_text_view = null;
@@ -244,8 +258,30 @@ private EndlessScrollListener scrollListener;
     EditText group_details_text_view = null;
 
     public void onClickSendComment(View view) {
-        group_details_text_view = (
-                EditText) findViewById(R.id.commentadd);
+        group_details_text_view = (EditText) findViewById(R.id.commentadd);
+
+        //group_details_text_view.setInputType(InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE|InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        /*group_details_text_view.setFilters(
+                new InputFilter[]
+                        { new PartialRegexInputFilter(
+                                "[A-Za-z0-9!#$%&(){|}~:;<=>?@*+,./^_`-\'\" \t\r\n\f]+")
+                        }
+        );*/
+
+
+        group_details_text_view.setFilters(new InputFilter[]{new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if (source != null) {
+                    String s = source.toString();
+                    if (s.contains("\n")) {
+                        return s.replaceAll("\n", "");
+                    }
+                }
+                return null;
+            }
+        }});
+
         String commentText = group_details_text_view.getText().toString();
         // showpDialog(view);
         if (commentText.trim().length()==0)
@@ -265,6 +301,25 @@ private EndlessScrollListener scrollListener;
             alertDialog.show();
 
         }
+        else if(commentText.equals("%"))
+
+        {
+            commentText.replace("%", "%25");
+            Log.e("ctctcc ", "CommentData" + commentText);
+            callCommentService(GroupId, userAccessToken, commentText);
+        }
+
+
+        else if(commentText.equals("&"))
+
+        {
+            commentText.replace("&", "%26");
+            Log.e("ctctcc ", "CommentData2 " + commentText);
+            callCommentService(GroupId, userAccessToken, commentText);
+
+        }
+
+
         else if(commentText.length()>1999)
         {
             AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Group_FullScreen.this);
@@ -282,19 +337,28 @@ private EndlessScrollListener scrollListener;
         }
         // showpDialog(view);
         else {
-            callCommentService(GroupId, userAccessToken, commentText);
-            Log.e("CommentDatafeeddetaida ", "CommentData " + commentText);
-        }
+            //Toast.makeText(getApplicationContext(),"Hi Hello ",Toast.LENGTH_SHORT).show();
 
-       // callCommentService(GroupId, userAccessToken, commentText);
+            callCommentService(GroupId, userAccessToken, commentText);
+            Log.e("CommentDatafeeddetaida ", "CommentData1 " + commentText);
+        }
+        //callCommentService(GroupId, userAccessToken, commentText);
     }
 
     private void callCommentService(final String GroupId, final String userAccessToken, final String comment_text) {
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + comment_text.trim();
+
+
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(comment_text);
+
+
+
+        //String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + comment_text;
 
         // String urlJsonObj = AppConfiguration.FeedAddComent + "/aaddFeedsComments/" +"?feed_id="+ feed_id+ "/" + 1 + "/" + commentText;
-        urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
+        //urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
+        //urlJsonObj = urlJsonObj.trim().replace("","%25");
 
+        //urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
 
@@ -359,6 +423,7 @@ private EndlessScrollListener scrollListener;
 
 
 
+
                 /*VolleyLog.d("Group Details", "Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_SHORT).show();*/
@@ -367,7 +432,12 @@ private EndlessScrollListener scrollListener;
             }
 
 
+
+
+
         });
+
+
 
 
 
@@ -380,12 +450,19 @@ private EndlessScrollListener scrollListener;
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";
         String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getGroupsComments?group_id=" + GropuId;
+        try {
+            urlJsonObj = URLDecoder.decode(urlJsonObj, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        //urlJsonObj.replaceAll("%", "%25");
 
 
-        urlJsonObj.replaceAll("%", "%25");
+        //////////////////////////////
 
 
-
+/////////////////////////////////
         try {
             encodedUrl = java.net.URLEncoder.encode(urlJsonObj,"UTF-8");
         } catch (UnsupportedEncodingException e) {
@@ -424,6 +501,7 @@ private EndlessScrollListener scrollListener;
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
 
                             groupData.setCommentText(jsonObject1.getString("commentText"));
+
                             groupData.setCommentName(jsonObject1.getString("commentByName"));
                             groupData.setUserImageUrl(jsonObject1.getString("userImageUrl"));
                             String dataTime = jsonObject1.getString("commentDate");

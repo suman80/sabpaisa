@@ -15,7 +15,7 @@
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:text="Waiting Time for OTP or you can put manually after 1 min"
+        android:text="Waiting Time for OTP "
         android:textColor="@color/bg_orange"
         android:textStyle="bold"
         android:ellipsize="marquee"

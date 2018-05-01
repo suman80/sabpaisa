@@ -18,6 +18,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
@@ -49,6 +52,8 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -212,7 +217,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 /*
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
          rv = (RecyclerView) findViewById(R.id.recycler_view_group_details_comment);
-        final CommentAdapter ca = new CommentAdapter(arrayList);
+        final CommentAdapter ca = new CommentAcommentadddapter(arrayList);
         rv.setAdapter(ca);
        // rv.addFocusables(onNavigateUp(),arrayList,);setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -286,6 +291,22 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     public void onClickSendComment(View view) {
         group_details_text_view = (EditText) findViewById(R.id.commentadd);
+
+        //group_details_text_view.setInputType(InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE|InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+
+
+        group_details_text_view.setFilters(new InputFilter[]{new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if (source != null) {
+                    String s = source.toString();
+                    if (s.contains("\n")) {
+                        return s.replaceAll("\n", "");
+                    }
+                }
+                return null;
+            }
+        }});
         commentText = group_details_text_view.getText().toString();
 //        rv.smoothScrollBy(100,100);
 
@@ -307,6 +328,28 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             alertDialog.show();
 
         }
+
+        else if(commentText.equals("%"))
+
+        {
+            commentText.replace("%", "%25");
+            Log.e("ctctcc ", "CommentData" + commentText);
+            callCommentService(feed_id, userAccessToken, commentText);
+        }
+
+
+        else if(commentText.equals("&"))
+
+        {
+            commentText.replace("&", "%26");
+            Log.e("ctctcc ", "CommentData2 " + commentText);
+            callCommentService(feed_id, userAccessToken, commentText);
+
+        }
+
+
+
+
         else if(commentText.trim().length()>1999)
         {
             AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
@@ -355,7 +398,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     }
 
     private void callCommentService(final String feed_id, final String userAccessToken, final String comment_text) {
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text=" + comment_text;
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text="  + URLEncoder.encode(comment_text);
 
         // String urlJsonObj = AppConfiguration.FeedAddComent + "/aaddFeedsComments/" +"?feed_id="+ feed_id+ "/" + 1 + "/" + commentText;
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
@@ -429,6 +472,12 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";
         String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "getFeedsComments?feed_id=" + feed_id;
+
+        try {
+            urlJsonObj = URLDecoder.decode(urlJsonObj, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
                 urlJsonObj, new Response.Listener<String>(){

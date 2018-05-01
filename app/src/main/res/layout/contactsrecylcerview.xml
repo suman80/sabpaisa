@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="19dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/contacts"
+            android:id="@+id/con"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:textSize="20sp"
+            android:id="@+id/number"
+            android:textAllCaps="false"
+            android:textColor="@color/bg_orange"
+
+            android:text="98898989898"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_orange"
+            android:layout_marginLeft="60dp"
+            android:id="@+id/buttonInvite"
+            android:layout_marginRight="14dp"
+            android:layout_gravity="center"
+            android:text="Invite" />
+
+
+
+
+
+    </LinearLayout>
+</RelativeLayout>

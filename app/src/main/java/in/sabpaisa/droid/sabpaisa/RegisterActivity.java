@@ -236,7 +236,9 @@ String otp11;
 
                 } else if (isOnline()) {
                     Log.e(TAG, "otp11 " +otp11);
-                    if(!et_otp.getText().toString().equals(otp11))
+
+                    registerUser(contactNumber, fullName, password, deviceId);
+                    /*if(!et_otp.getText().toString().equals(otp11))
 
                     {
 
@@ -263,10 +265,42 @@ String otp11;
                         alertDialog.show();
 
 
-
+*/
                     }
-                   else   {
-                        registerUser(contactNumber, fullName, password, deviceId);
+                   else if(!et_otp.getText().toString().equals(otp11))
+
+                {
+                    Log.e(TAG, "otp12 " +otp11);
+
+
+
+                    {
+
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("SPApp");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Hey, its look like OTP is incorrect or trying with other mobile device");
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+
+
+                        //registerUser(contactNumber, fullName, password, deviceId);
 
                     }
 
@@ -292,7 +326,6 @@ String otp11;
                             // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
                         }
                     });
-
                     // Showing Alert Message
                     alertDialog.show();
                     Log.v("Home", "############################You are not online!!!!");
@@ -437,7 +470,7 @@ String otp11;
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(RegisterActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(RegisterActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
                 //progressBarDismiss();
             }
@@ -446,7 +479,7 @@ String otp11;
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("OTP", "Error: " + error.getMessage());
-                Toast.makeText(RegisterActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(RegisterActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 // hide the progress dialog
                 //progressBarDismiss();
             }
@@ -584,9 +617,9 @@ String otp11;
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),
-                            "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(),
+                        //    "Error: " + e.getMessage(),
+                         //   Toast.LENGTH_LONG).show();
                 }
                 //hidepDialog();
             }
@@ -758,7 +791,7 @@ String otp11;
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
             }

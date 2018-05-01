@@ -1,3 +1,4 @@
+/*
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.app.AlertDialog;
@@ -42,9 +43,11 @@ import in.sabpaisa.droid.sabpaisa.Model.ContactVO;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
+*/
 /**
  * Created by archana on 22/3/18.
- */
+ *//*
+
 
 public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter.ContactViewHolder>{
 String key;
@@ -57,12 +60,14 @@ String key;
         this.mContext = mContext;
     }
 
-    @Override
+    */
+/*@Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.contactsrecylcerview, null);
         ContactViewHolder contactViewHolder = new ContactViewHolder(view);
         return contactViewHolder;
-    }
+    }*//*
+
 
     @Override
     public void onBindViewHolder(ContactViewHolder holder, int position) {
@@ -172,7 +177,8 @@ String key;
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage()==null || error.getMessage()==null || error.getMessage()==null ||                error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    /*AlertDialog alertDialog = new AlertDialog.Builder(, R.style.MyDialogTheme).create();
+                    */
+/*AlertDialog alertDialog = new AlertDialog.Builder(, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");
@@ -193,10 +199,13 @@ String key;
 
                     // Showing Alert Message
                     alertDialog.show();
-                 */   Log.e("", "Cpntacts api Error: " + error.getMessage());
-                    /*Toast.makeText(context,
+                 *//*
+   Log.e("", "Cpntacts api Error: " + error.getMessage());
+                    */
+/*Toast.makeText(context,
                             context.getString(R.string.error_network_timeout),
-                            Toast.LENGTH_LONG).show();*/
+                            Toast.LENGTH_LONG).show();*//*
+
                 } else if (error instanceof AuthFailureError) {
                     //TODO
                 } else if (error instanceof ServerError) {
@@ -244,3 +253,4 @@ String key;
 }
 
 
+*/

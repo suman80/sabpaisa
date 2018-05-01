@@ -17,6 +17,10 @@ public static java.lang.String TABLENAME;
 # If you do not use SQLCipher:
 -dontwarn org.greenrobot.greendao.database.**
 
+-dontwarn java.nio.file.Files
+-dontwarn java.nio.file.Path
+-dontwarn java.nio.file.OpenOption
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
