@@ -1,11 +1,19 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".AllContacts">
 
-
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        >
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -15,33 +23,23 @@
         app:contentInsetStart="0dp"
         app:navigationIcon="@drawable/ic_action_previousback"
         app:title="Contacts"
-
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:subtitleTextColor="@color/white"
         app:titleTextAppearance="@style/toolBarStyle"
         app:titleTextColor="@color/white" />
-
-
-
-    <ListView
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical">
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
         android:id="@+id/rvContacts"
+
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp">
-    </ListView>
-  <Button
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-
-        android:layout_alignParentEnd="true"
-android:id="@+id/abc"
-
-        android:layout_alignTop="@+id/rvContacts"
-        android:background="@color/bg_orange"
-        android:text="Invite"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:visibility="gone" />
-
+        >
+    </com.cooltechworks.views.shimmer.ShimmerRecyclerView>
+</android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
 </RelativeLayout>
 

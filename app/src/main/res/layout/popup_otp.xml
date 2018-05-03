@@ -32,14 +32,14 @@
         android:layout_below="@id/popup_header"
         android:background="@color/black_50" />
 
-    <!--Added On 2nd feb-->
-    <com.airbnb.lottie.LottieAnimationView
+  <!-- // Added On 2nd feb-->
+    <!--<com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animatwion_vie"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         app:lottie_autoPlay="true"
         app:lottie_fileName="animation-w200-h200.json"
-        app:lottie_loop="true"/>
+        app:lottie_loop="true"/>-->
 
 
 

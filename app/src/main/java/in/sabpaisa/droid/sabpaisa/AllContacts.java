@@ -13,12 +13,14 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -43,7 +45,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.crashlytics.android.answers.LevelStartEvent;
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -53,16 +55,17 @@ import org.json.JSONObject;
 import java.util.Map;
 import java.util.Set;
 
+import in.sabpaisa.droid.sabpaisa.Adapter.AllContactsAdapter;
+import in.sabpaisa.droid.sabpaisa.Model.ContactVO;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
 
 public class AllContacts extends AppCompatActivity {
-    private ListView mListView;
+    private ShimmerRecyclerView mListView;
     private ProgressDialog pDialog;
     private android.os.Handler updateBarHandler;
     Button invitet1;
-
-    ArrayList<String> contactList;
+    ArrayList<String> contactList,nameList;
     Cursor cursor;
     String p1,p2,p3,p4,p5;
     Toolbar toolbar;
@@ -70,32 +73,30 @@ public class AllContacts extends AppCompatActivity {
     JSONObject object1;
     String key;
     Button invite;
-
+    ContactVO contactVO;
+    String name;
     int counter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_contacts);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-toolbar=(Toolbar)findViewById(R.id.toolbar);
-toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        onBackPressed();
-    }
-});
+        toolbar=(Toolbar)findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         pDialog = new ProgressDialog(AllContacts.this);
         pDialog.setMessage("Reading contacts...");
 
-        invite=(Button) findViewById(R.id.abc);
+        //invite=(Button) findViewById(R.id.abc);
         pDialog.setCancelable(false);
-      pDialog.show();
+        pDialog.show();
+        mListView = (ShimmerRecyclerView) findViewById(R.id.rvContacts);
 
-        mListView = (ListView) findViewById(R.id.rvContacts);
         updateBarHandler = new Handler() ;
-
-
-
         // Since reading contacts takes more time, let's run it on a separate thread.
         new Thread(new Runnable() {
 
@@ -106,34 +107,8 @@ toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 
             }
         }).start();
-
-Log.d("BeforeFunction",""+contactList);
-
-        // Set onclicklistener to the list item.
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id){
-                //TODO Do whatever you want with the list datactlist
-            contact= (String) parent.getItemAtPosition(position);
-                Log.d("contactItem" ,""+contact);
-
-                ContactsApi(contactList);
-
-
-             Toast.makeText(getApplicationContext(), "item clicked : \n" + contactList.get(position), Toast.LENGTH_SHORT).show();
-
-
-
-            }
-        });
-
-
-
-
+        Log.d("BeforeFunction",""+contactList);
     }
-
 
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
@@ -145,9 +120,9 @@ Log.d("BeforeFunction",""+contactList);
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
             contactList = new ArrayList<String>();
+            nameList = new ArrayList<String>();
             getContacts();
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1 , contactList);
-            mListView.setAdapter(adapter);
+
         }
     }
 
@@ -165,12 +140,10 @@ Log.d("BeforeFunction",""+contactList);
     }
 
 
-
     public void getContacts() {
 
-
         contactList = new ArrayList<String>();
-
+        nameList = new ArrayList<String>();
         String phoneNumber = null;
         String email = null;
 
@@ -207,12 +180,15 @@ Log.d("BeforeFunction",""+contactList);
                     }
                 });
 
-                String contact_id = cursor.getString(cursor.getColumnIndex(_ID));
-                String name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME));
-
                 int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
 
                 if (hasPhoneNumber > 0) {
+
+                    String contact_id = cursor.getString(cursor.getColumnIndex(_ID));
+                    name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME));
+                  //  ContactVO contactVO=new ContactVO();
+
+
 
                     // output.append("\n First Name:" + name);
 
@@ -220,9 +196,6 @@ Log.d("BeforeFunction",""+contactList);
                     Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null, Phone_CONTACT_ID + " = ?", new String[]{contact_id}, null);
 
                     while (phoneCursor.moveToNext()) {
-                        // phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
-                        //output.append("\n Phone number:" + phoneNumber);
-                        //contactList.add(phoneNumber);
 
                         phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         Log.d("Actualphonenumber", "" + phoneNumber);
@@ -233,9 +206,25 @@ Log.d("BeforeFunction",""+contactList);
                         p5=p4.replace("-","");
 
                         int n = contactList.size();
+                        int m=nameList.size();
 
                         Set<String> s = new LinkedHashSet<String>(contactList);
+                        Set<String> p = new LinkedHashSet<String>(nameList);
                         n = removeDuplicates(contactList, n);
+                            for (int i = 0; i < m; i++) {
+                            System.out.print(nameList.get(i) + " Separator");
+                            Log.d("CLashasdh", "" + nameList.get(i));
+                           // nameList.add(nameList.get(i));
+                            Log.d("ReplacinsNumber", "" + nameList);
+                                contactVO.setContactName(name);
+                        }
+
+                        nameList.add(name);
+
+                        Log.d("Replace+91Number", "" + nameList);
+                        Log.d("Replace+91NAme", "" + p);
+
+
                         for (int i = 0; i < n; i++) {
                             System.out.print(contactList.get(i) + " Separator");
                             Log.d("CLashasdh", "" + contactList.get(i));
@@ -244,6 +233,8 @@ Log.d("BeforeFunction",""+contactList);
                         Log.d("Replace+91", "" + p1);
 
                         contactList.add(p5);
+                       // nameList.add(name);
+                        Log.d("nameList",String.valueOf(nameList));
                         //Converting ArrayList to HashSet to remove duplicates
                         HashSet<String> listToSet = new HashSet<String>(contactList);
 //Creating Arraylist without duplicate commentborder
@@ -251,8 +242,6 @@ Log.d("BeforeFunction",""+contactList);
                         Log.d("szlistwithoutduplicates", "" + listToSet.size()); //should print 3 becaues of duplicates Android removed
                         Log.d("szlistwithoutduplicates", "" + listWithoutDuplicates); //should print 3 becaues of duplicates Android removed
 
-
-////////////////////////////////////////////////////////////////////
                         for (int i = 0; i < contactList.size(); i++) {
 
                             for (int j = i + 1; j < contactList.size(); j++) {
@@ -267,8 +256,6 @@ Log.d("BeforeFunction",""+contactList);
 
                         System.out.println("After Removing duplicate elements:" + contactList);
 
-//////////                                 ////////////////////////////////
-
                         if (phoneNumber.length() == 10) {
                             p2 = p1;
                             p3 = p2.replace("+91", "");
@@ -279,8 +266,6 @@ Log.d("BeforeFunction",""+contactList);
 
 
                     }
-
-
                     phoneCursor.close();
 
                     // Read every email id associated with the contact
@@ -290,34 +275,15 @@ Log.d("BeforeFunction",""+contactList);
 
                         email = emailCursor.getString(emailCursor.getColumnIndex(DATA));
 
-                       // output.append("\n Email:" + email);
+                        // output.append("\n Email:" + email);
 
                     }
 
                     emailCursor.close();
                 }
-
-                Log.d("beforeadding", "" + p3);
                 Set<String> s = new LinkedHashSet<>(contactList);
-
-                Log.d("beforeadding", "" + s);
-                // Add the contact to the ArrayList
-               // contactList.add(output.toString());
             }
-
-            // ListView has to be updated using a ui thread
-            runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.single_contact_view, R.id.tvContactName1, contactList);
-
-
-                    Log.d("Contactlistaar", "" + contactList);
-
-                    mListView.setAdapter(adapter);
-                }
-            });
+            ContactsApi(contactList);
 
             // Dismiss the progressbar after 500 millisecondds
             updateBarHandler.postDelayed(new Runnable() {
@@ -362,7 +328,6 @@ Log.d("BeforeFunction",""+contactList);
         map.put("contactList", contactList);
         JSONObject jObj1 = new JSONObject(map);
 
-
         JsonObjectRequest strReq = new JsonObjectRequest(Request.Method.POST,
                 AppConfig.Base_Url+AppConfig.App_api+ AppConfig.URL_Contacts,jObj1, new Response.Listener<JSONObject>() {
             @Override
@@ -372,61 +337,58 @@ Log.d("BeforeFunction",""+contactList);
 
 
                 try {
+                    ArrayList<ContactVO> contactVOList;
+                    AllContactsAdapter allContactsAdapter;
+                    contactVOList=new ArrayList<ContactVO>();
+
                     JSONObject jObj = new JSONObject(String.valueOf(response));
-
-
                     String status = jObj.getString("status");
                     String response1 = jObj.getString("response");
 
                     Log.d("STATUS ", " " + status);
                     Log.d("STATUS1234567890 ", " " + response1);
 
-
-                    //   JsonArray jsonObject=new JsonArray(response1.charAt(i));
-                    // Log.d("tvji11", " "+ jsonObject);
                     JsonArray jsonObject1 = new JsonObject().getAsJsonArray("response1");
                     Log.d("tvji1145", " " + jsonObject1);
-
-                   /*  object1 = jObj.getJSONObject("response");
-                    Log.d("tvji1145", " " + object1);
-                    Iterator<String> iterator = object1.keys();
-                    Log.d("tvji11452", " " + iterator);
-*/
-
-                     object1 = jObj.getJSONObject("response");
-
+                    object1 = jObj.getJSONObject("response");
                     Log.d("tvji1145", " " + object1);
                     Iterator<String> iterator = object1.keys();
                     Log.d("tvji11452", " " + iterator);
 
-                        while (iterator.hasNext()) {
-                            key = iterator.next();
-                            Log.d("UserContactList", "==>" + key);
 
-                            Log.d("numbersREGorNot", "==>" + object1.optString(key));
+                    while (iterator.hasNext()) {
+                        key = iterator.next();
+                        Log.d("UserContactList", "==>" + key);
+                        Log.d("numbersREGorNot", "==>" + object1.optString(key));
+                           contactVO=new ContactVO();
 
-                            for (int i = 0; i < contactList.size(); i++) {
-                                if (object1.optString(key).equals("Registered User") && contactList.get(i).equals(key)) {
+                        contactVO.setContactName(name);
+                        if (object1.optString(key).equals("User_Not_Registered")) {
+                            Log.d("numbersREGorNotqyeuqye", "==>" + key);
+                            Log.d("numbersREGorNotq", "==>" + object1.optString(key));
+
+                            contactVO.setInviteButtonVisibility(0);
+                           /* for(int i=0;i<nameList.size();i++) {
+
+                                contactVO.setContactName(nameList.get(i).toString());
+                            }*/
+                        }
+                        else
+                        {
+                            contactVO.setInviteButtonVisibility(1);
 
 
-                                    Log.d("numbersREGorNotqyeuqye", "==>" + key);
-                                    Log.d("numbersREGorNotq", "==>" + object1.optString(key));
-
-                                    //if (contactList.get(i) == key) {
-
-                                    Log.d("numbersRE", "==>" + key);
-
-
-                                    //invite.setVisibility(View.VISIBLE);
-                                    invitet1.setVisibility(View.VISIBLE);
-                                    //  }
-
-                                }
-                            }
                         }
 
 
+                        contactVO.setContactNumber(key.toString());
 
+                        contactVOList.add(contactVO);
+                        Log.d("contactVOList",""+contactVOList);
+
+                    }
+                    allContactsAdapter = new AllContactsAdapter(contactVOList,getApplicationContext());
+                    mListView.setAdapter(allContactsAdapter);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -449,22 +411,19 @@ Log.d("BeforeFunction",""+contactList);
                     alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
 
                     // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
+                    //alertDialog.setIcon(R.drawable.appicon);
 
                     // Setting OK Button
                     alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Write your code here to execute after dialog closed
-                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
                         }
                     });
 
                     // Showing Alert Message
                     alertDialog.show();
                     Log.e("", "Contacts api Error: " + error.getMessage());
-                    /*Toast.makeText(context,
-                            context.getString(R.string.error_network_timeout),
-                            Toast.LENGTH_LONG).show();*/
+
                 } else if (error instanceof AuthFailureError) {
                     //TODO
                 } else if (error instanceof ServerError) {
@@ -474,23 +433,17 @@ Log.d("BeforeFunction",""+contactList);
                 } else if (error instanceof ParseError) {
                     //TODO
                 }
-
-
-
             }
         }) {
 
 
             protected Map<String, String> getParams() {
                 ArrayList<String> contactList = new ArrayList<String>();
-
-
                 Map<String, String> params = new HashMap<String, String>();
-
                 int i=0;
                 for(String object: contactList){
                     params.put("contactList["+(i++)+"]", object);
-                    // first send both data with same param name as contactList[] ....  
+                    // first send both data with same param name as contactList[] ....
                     // now send with params contactList[0],contactList[1] ..and so on
                 }
 
@@ -509,12 +462,4 @@ Log.d("BeforeFunction",""+contactList);
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-
-public void visible()
-{
-    Button invitet1;
-    invitet1=(Button)findViewById(R.id.abc1);
-    invitet1.setVisibility(View.VISIBLE);
-
-}
 }

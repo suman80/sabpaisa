@@ -399,8 +399,11 @@ public class ForgotActivity extends AppCompatActivity {
                 try {
                     JSONObject jObj = new JSONObject(response1);
                     String status = jObj.getString("status");
+                    String response = jObj.getString("response");
+                    Log.d("Registerreposy",""+response) ;
+                    Log.d("Registerstts",""+status) ;
 
-                    if(status.equals("success")&&et_otp.getText().toString().equals(otp11)) {
+if(status.equals("success")&&et_otp.getText().toString().equals(otp11)) {
 
     Intent intent = new Intent(ForgotActivity.this, LoginActivityWithoutSharedPreference.class);
     startActivity(intent);
@@ -409,7 +412,7 @@ public class ForgotActivity extends AppCompatActivity {
 }
                     //Log.e(TAG, "response2163123: " + userId);
 
-else if(!et_otp.getText().toString().equals(otp11))
+else if(status.equals("failure")&&!et_otp.getText().toString().equals(otp11))
 {
 
 
@@ -419,7 +422,7 @@ else if(!et_otp.getText().toString().equals(otp11))
     alertDialog.setTitle("SPApp");
 
     // Setting Dialog Message
-    alertDialog.setMessage("Hey, its look like OTP is incorrect or trying with other mobile device");
+    alertDialog.setMessage("Hey, its look like OTP is incorrect or trying with other mobile device or you are not Registered with us");
     // Setting Icon to Dialog
     //  alertDialog.setIcon(R.drawable.tick);
 

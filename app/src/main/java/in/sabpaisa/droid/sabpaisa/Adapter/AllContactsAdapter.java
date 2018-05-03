@@ -1,9 +1,9 @@
-/*
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -43,38 +43,66 @@ import in.sabpaisa.droid.sabpaisa.Model.ContactVO;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
-*/
 /**
  * Created by archana on 22/3/18.
- *//*
-
+ */
 
 public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter.ContactViewHolder>{
-String key;
-    private List<ContactVO> contactVOList;
+    String key;
+    private ArrayList<ContactVO> contactVOList;
     private Context mContext;
     static Button sp;
 
-    public AllContactsAdapter(List<ContactVO> contactVOList, Context mContext){
+    public AllContactsAdapter(ArrayList<ContactVO> contactVOList, Context mContext){
         this.contactVOList = contactVOList;
         this.mContext = mContext;
     }
 
-    */
-/*@Override
+
+
+    @Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.contactsrecylcerview, null);
         ContactViewHolder contactViewHolder = new ContactViewHolder(view);
         return contactViewHolder;
-    }*//*
-
+    }
 
     @Override
     public void onBindViewHolder(ContactViewHolder holder, int position) {
         ContactVO contactVO = contactVOList.get(position);
 
-        holder.tvContactName.setText(contactVO.getContactName());
+         holder.tvContactName.setText(contactVO.getContactName());
         holder.tvPhoneNumber.setText(contactVO.getContactNumber());
+        Log.d("contactVO",String.valueOf(contactVO.getInviteButtonVisibility()));
+        Log.d("contactVO",String.valueOf(contactVO.getContactName()));
+        if(contactVO.getInviteButtonVisibility()==0)
+        {
+            holder.invite.setVisibility(View.VISIBLE);
+            holder.invite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("text/plain");
+                        i.putExtra(Intent.EXTRA_SUBJECT, "SPApp");
+                        String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
+                        sAux = sAux+"\n"+"https://play.google.com/store/apps/details?id=in.sabpaisa.droid.sabpaisa";
+                        i.putExtra(Intent.EXTRA_TEXT, sAux);
+
+                        mContext.startActivity(Intent.createChooser(i, "Share via"));
+                    } catch (Exception e) {
+
+
+                        //e.toString();
+                    }
+                }
+            });
+        }
+        else
+        {
+            holder.invite.setVisibility(View.INVISIBLE);
+        }
+
 
     }
 
@@ -88,14 +116,15 @@ String key;
         ImageView ivContactImage;
         TextView tvContactName;
         TextView tvPhoneNumber;
+        Button invite;
 
         public ContactViewHolder(View itemView) {
             super(itemView);
-            ivContactImage = (ImageView) itemView.findViewById(R.id.ivContactImage);
-            tvContactName = (TextView) itemView.findViewById(R.id.tvContactName);
-           // tvPhoneNumber = (TextView) itemView.findViewById(R.id.tvPhoneNumber);
-
-        sp=(Button) itemView.findViewById(R.id.abc);
+            //ivContactImage = (ImageView) itemView.findViewById(R.id.ivContactImage);
+            tvContactName = (TextView) itemView.findViewById(R.id.name);
+            tvPhoneNumber = (TextView) itemView.findViewById(R.id.number);
+            invite=(Button) itemView.findViewById(R.id.buttonInvite);
+           // sp=(Button) itemView.findViewById(R.id.abc);
         }
     }
 
@@ -104,153 +133,6 @@ String key;
 
 
 
-    private void ContactsApi(final ArrayList<String> contactList ) {
-
-
-        // Tag used to cancel the request
-        String tag_string_req = "req_contacts";
-
-        Map<String, List<String>> map = new HashMap<String, List<String>>();
-        map.put("contactList", contactList);
-        JSONObject jObj1 = new JSONObject(map);
-
-
-        JsonObjectRequest strReq = new JsonObjectRequest(Request.Method.POST,
-                AppConfig.Base_Url+AppConfig.App_api+ AppConfig.URL_Contacts,jObj1, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                Log.d("Contactsreponse ", " " + response.toString());
-
-
-                try {
-                    JSONObject jObj = new JSONObject(String.valueOf(response));
-
-
-                    String status = jObj.getString("status");
-                    String response1 = jObj.getString("response");
-
-                    Log.d("STATUS ", " " + status);
-                    Log.d("STATUS1234567890 ", " " + response1);
-
-
-                    //   JsonArray jsonObject=new JsonArray(response1.charAt(i));
-                    // Log.d("tvji11", " "+ jsonObject);
-                    JsonArray jsonObject1 = new JsonObject().getAsJsonArray("response1");
-                    Log.d("tvji1145", " " + jsonObject1);
-
-                    JSONObject object1 = jObj.getJSONObject("response");
-                    Log.d("tvji1145", " " + object1);
-                    Iterator<String> iterator = object1.keys();
-                    Log.d("tvji11452", " " + iterator);
-                    while (iterator.hasNext()) {
-                        key = iterator.next();
-                        Log.d("UserContactList", "==>" + key);
-
-                        Log.d("numbersREGorNot", "==>" + object1.optString(key));
-                        if (object1.optString(key).equals("User_Not_Registered"))
-                        {
-                            Log.d("numbersREGorNotqyeuqye", "==>pagalo"+key);
-
-
-                            sp.setVisibility(View.VISIBLE);
-                            //.setVisibility();
-                        }
-
-                    }
-
-
-
-
-
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                 //   Toast.makeText(g, "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                if (error.getMessage()==null || error.getMessage()==null || error.getMessage()==null ||                error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    */
-/*AlertDialog alertDialog = new AlertDialog.Builder(, R.style.MyDialogTheme).create();
-
-                    // Setting Dialog Title
-                    alertDialog.setTitle("Network/Connection Error");
-
-                    // Setting Dialog Message
-                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
-
-                    // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
-
-                    // Setting OK Button
-                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Write your code here to execute after dialog closed
-                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    // Showing Alert Message
-                    alertDialog.show();
-                 *//*
-   Log.e("", "Cpntacts api Error: " + error.getMessage());
-                    */
-/*Toast.makeText(context,
-                            context.getString(R.string.error_network_timeout),
-                            Toast.LENGTH_LONG).show();*//*
-
-                } else if (error instanceof AuthFailureError) {
-                    //TODO
-                } else if (error instanceof ServerError) {
-                    //TODO
-                } else if (error instanceof NetworkError) {
-                    //TODO
-                } else if (error instanceof ParseError) {
-                    //TODO
-                }
-
-
-
-            }
-        }) {
-
-
-            protected Map<String, String> getParams() {
-                ArrayList<String> contactList = new ArrayList<String>();
-
-
-                Map<String, String> params = new HashMap<String, String>();
-
-                int i=0;
-                for(String object: contactList){
-                    params.put("contactList["+(i++)+"]", object);
-                    // first send both data with same param name as contactList[] ....
-                    // now send with params contactList[0],contactList[1] ..and so on
-                }
-
-                params.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                return params;
-            }
-
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-
-        };
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
 
 }
 
-
-*/

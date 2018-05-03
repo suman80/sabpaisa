@@ -8,6 +8,15 @@ public class ContactVO  {
     private String ContactImage;
     private String ContactName;
     private String ContactNumber;
+    private int InviteButtonVisibility;
+
+    public int getInviteButtonVisibility() {
+        return InviteButtonVisibility;
+    }
+
+    public void setInviteButtonVisibility(int inviteButtonVisibility) {
+        this.InviteButtonVisibility = inviteButtonVisibility;
+    }
 
     public String getContactImage() {
         return ContactImage;
@@ -33,5 +42,4 @@ public class ContactVO  {
         ContactNumber = contactNumber;
     }
 }
-
 

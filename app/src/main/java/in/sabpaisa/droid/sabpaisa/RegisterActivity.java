@@ -7,7 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
+import android.content.SyncResult;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
@@ -26,27 +26,33 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpStack;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.crashlytics.android.Crashlytics;
+import com.android.volley.toolbox.Volley;
 import com.facebook.LoginActivity;
-//import com.google.firebase.crash.FirebaseCrash;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.security.ProviderInstaller;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -55,6 +61,8 @@ import android.Manifest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,29 +71,36 @@ import java.util.UUID;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
-import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference;
 import in.sabpaisa.droid.sabpaisa.Util.OtpDialog;
 import in.sabpaisa.droid.sabpaisa.Util.SharedPref;
 import in.sabpaisa.droid.sabpaisa.Util.SmsListener;
 import in.sabpaisa.droid.sabpaisa.Util.SmsReceiver;
-import io.fabric.sdk.android.Fabric;
 
+/**
+ * Created by Rajdeep Singh on 26-10-2017.
+ */
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = RegisterActivity.class.getSimpleName();
     EditText et_phone_number, et_FullName, et_password;
     private Button btn_register,sentOtpTest;
     private Button send_Otp;
+    int MY_SOCKET_TIMEOUT_MS =100000;
+
     private ProgressDialog pDialog;
     private EditText et_otp;
     String number;
     String otpTag = "Please Use this OTP to verify your Mobile on SabPaisa App";
     Handler handler = new Handler();
+    String otp11;
     EditText optEditText = null;
+    RequestQueue requestQueue;
+
+
     Button resentButton = null; /*Type is changed from TextView to Button, also name is refracted*/
     TextView waitTextView = null;
-String otp11;
+
     CountDownTimer countDownTimer = null;
     TextView timerTextView = null;
     ProgressDialog progressBar = null;
@@ -94,17 +109,27 @@ String otp11;
     String deviceId;
     Button passwordShow;
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // CommonUtils.setFullScreen(this);
-        //Fabric.with(this, new Crashlytics());
+        CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_register);
-       // Fabric.with(this, new Crashlytics());
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         btn_register = (Button) findViewById(R.id.btn_register);
         send_Otp = (Button) findViewById(R.id.send_Otp);
         optEditText = (EditText) findViewById(R.id.optEditText);
+
+        /*btn_name_next1 = (Button) findViewById(R.id.btn_name_next1);
+        btn_name_next2 = (Button) findViewById(R.id.btn_name_next2);*/
+        //emailid = (EditText) findViewById(R.id.emailid);
+
+
         et_phone_number = (EditText) findViewById(R.id.et_phone_number);
         et_FullName = (EditText) findViewById(R.id.et_FullName);
         //et_otp =(EditText) findViewById(R.id.et_otp);
@@ -113,7 +138,7 @@ String otp11;
         passwordShow=(Button) findViewById(R.id.tv_password_show1);
         et_otp=(EditText)findViewById(R.id.optEditText);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-         /*START Initiallizing BottomSheetDialog and giving its view in sheetView*/
+        /*START Initiallizing BottomSheetDialog and giving its view in sheetView*/
         mBottomSheetDialog = new BottomSheetDialog(RegisterActivity.this);
         LayoutInflater inflater = (LayoutInflater) RegisterActivity.this.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
@@ -128,6 +153,23 @@ String otp11;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /*final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+
+        final String tmDevice, tmSerial, androidId;
+
+
+        tmDevice = "" + tm.getDeviceId();
+        tmSerial = "" + tm.getSimSerialNumber();
+        androidId = "" + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
+        final String deviceId = deviceUuid.toString();
+
+        Log.e(TAG, "Device Id: " + deviceId);*/
+        // Progress dialog
+        //pDialog = new ProgressDialog(this);
+        //pDialog.setCancelable(false);
+
 //Code Added for visible and invisible of send_Otp
         et_phone_number.addTextChangedListener(new TextWatcher() {
             @Override
@@ -151,24 +193,17 @@ String otp11;
         });
 
 
-
         send_Otp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String number = et_phone_number.getText().toString();
                 if (number.equals("")) {
-
-
-
                     Toast.makeText(getApplicationContext(), "Please enter Phone Number!", Toast.LENGTH_LONG).show();
                 } else if (isOnline()) {
-                    mBottomSheetDialog.setCancelable(false);//Added on 2nd Feb
-                    mBottomSheetDialog.setCanceledOnTouchOutside(false);//Added on 2nd Feb
+
                     mBottomSheetDialog.show();
                     callTimerCoundown();
                     sendOTP(v, number);
-
-
                     // Toast.makeText(OTPVarify.this, "first name field is empty", Toast.LENGTH_LONG).show();
                 } else {
 
@@ -209,11 +244,18 @@ String otp11;
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Toast.makeText(getApplicationContext(), "Registeration ", Toast.LENGTH_LONG).show();
+
                 //      String id = emailid.getText().toString();
 
                 String contactNumber = et_phone_number.getText().toString();
                 String fullName = et_FullName.getText().toString();
                 String otp=et_otp.getText().toString();
+
+                // String dob =  et_phone_number.getText().toString();
+
+                // String otp =  et_otp.getText().toString();
                 String password = et_password.getText().toString();
 
                 if ((contactNumber.length() == 0) || (contactNumber.length() < 10)) {
@@ -224,7 +266,7 @@ String otp11;
 
                 else if(et_otp.length()==0){
 
-                   et_otp.setError("Please click on the send otp");
+                    et_otp.setError("Please click on the send otp");
                 }
                 else if (fullName.length() == 0) {
 
@@ -236,9 +278,7 @@ String otp11;
 
                 } else if (isOnline()) {
                     Log.e(TAG, "otp11 " +otp11);
-
-                    registerUser(contactNumber, fullName, password, deviceId);
-                    /*if(!et_otp.getText().toString().equals(otp11))
+                    if(!et_otp.getText().toString().equals(otp11))
 
                     {
 
@@ -265,42 +305,10 @@ String otp11;
                         alertDialog.show();
 
 
-*/
+
                     }
-                   else if(!et_otp.getText().toString().equals(otp11))
-
-                {
-                    Log.e(TAG, "otp12 " +otp11);
-
-
-
-                    {
-
-
-                        AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
-
-                        // Setting Dialog Title
-                        alertDialog.setTitle("SPApp");
-
-                        // Setting Dialog Message
-                        alertDialog.setMessage("Hey, its look like OTP is incorrect or trying with other mobile device");
-                        // Setting Icon to Dialog
-                        //  alertDialog.setIcon(R.drawable.tick);
-
-                        // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog closed
-                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                        // Showing Alert Message
-                        alertDialog.show();
-
-
-
-                        //registerUser(contactNumber, fullName, password, deviceId);
+                    else   {
+                        registerUser(contactNumber, fullName, password, deviceId);
 
                     }
 
@@ -326,6 +334,7 @@ String otp11;
                             // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
                         }
                     });
+
                     // Showing Alert Message
                     alertDialog.show();
                     Log.v("Home", "############################You are not online!!!!");
@@ -334,18 +343,6 @@ String otp11;
             }
 
         });
-
-
-      /*  Button crashButton = new Button(this);
-        crashButton.setText("Crash!");
-        crashButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                //Crashlytics.getInstance().crash(); // Force a crash
-            }
-        });
-        addContentView(crashButton,
-                new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));*/
 
 
         passwordShow.setOnClickListener(new View.OnClickListener() {
@@ -430,8 +427,12 @@ String otp11;
     }
 
     public boolean CheckPermission(Context context, String Permission) {
-        return ContextCompat.checkSelfPermission(context,
-                Permission) == PackageManager.PERMISSION_GRANTED;
+        if (ContextCompat.checkSelfPermission(context,
+                Permission) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -454,23 +455,23 @@ String otp11;
                     // response will be a json object
                     String status = response.getString("status");
 
+
                     otp11 = response.getString("otp");
                     String  verifireponse= response.getString("response");
 
                     Log.d("Archana1111111",""+status);
                     Log.d("Archana111111111",""+otp11);
                     Log.d("Archana211111111",""+verifireponse);
-
                     if (status.equals("success")) {
 
                         send_Otp.setVisibility(View.INVISIBLE);
 
                     } else if (status.equals("failure")) {
-                          }
+                                           }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    //Toast.makeText(RegisterActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
                 //progressBarDismiss();
             }
@@ -479,7 +480,7 @@ String otp11;
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("OTP", "Error: " + error.getMessage());
-               // Toast.makeText(RegisterActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 // hide the progress dialog
                 //progressBarDismiss();
             }
@@ -489,12 +490,32 @@ String otp11;
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+
+   /* private void progressBarDismiss() {
+        if (progressBar != null) {
+            progressBar.dismiss();
+        }
+    }
+
+
+
+
+    OtpDialog otpDialog = null;
+
+    public void Show_Dialog(Context v, String number) {
+        otpDialog = new OtpDialog(RegisterActivity.this, number);
+        Bundle bundle = new Bundle();
+        otpDialog.onCreate(bundle); *//*otpDialog.show(); was creating the problem with dialog, instead we called onCreate method to start bottomSheetDialog*//*
+        //otpDialog.show();
+    }*/
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent=new Intent(RegisterActivity.this,LoginActivityWithoutSharedPreference.class);
         startActivity(intent);
-      this.finish();
+        this.finish();
 
 
     }
@@ -517,7 +538,8 @@ String otp11;
     private void sendOTP(View v, final String number) {
 
 
-        String urlJsonObj =  AppConfig.Base_Url+AppConfig.App_api+"SendOTP/" +"?mobile_no="+ number;
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"SendOTP/" +"?mobile_no="+ number;
+//        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/SendOTP/" +"?mobile_no="+ number;
 
         //showpDialog(v);
 
@@ -617,9 +639,9 @@ String otp11;
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                   // Toast.makeText(getApplicationContext(),
-                        //    "Error: " + e.getMessage(),
-                         //   Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
                 }
                 //hidepDialog();
             }
@@ -650,7 +672,7 @@ String otp11;
 
                     // Showing Alert Message
                     alertDialog.show();
-                    Log.e(TAG, "Registration Error: " + error.getMessage());
+                    Log.e(TAG, "OTP Error: " + error.getMessage());
                     /*Toast.makeText(context,
                             context.getString(R.string.error_network_timeout),
                             Toast.LENGTH_LONG).show();*/
@@ -679,6 +701,61 @@ String otp11;
             }
         });
 
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            try {
+                ProviderInstaller.installIfNeeded(getApplicationContext());
+            } catch (GooglePlayServicesRepairableException e) {
+                // Indicates that Google Play services is out of date, disabled, etc.
+                // Prompt the user to install/update/enable Google Play services.
+                GooglePlayServicesUtil.showErrorNotification(e.getConnectionStatusCode(), getApplicationContext());
+                // Notify the SyncManager that a soft error occurred.
+                //final SyncResult syncResult = null;
+                //syncResult.stats.numIOExceptions++;
+
+                Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+                return;
+            } catch (GooglePlayServicesNotAvailableException e) {
+                // Indicates a non-recoverable error; the ProviderInstaller is not able
+                // to install an up-to-date Provider.
+                // Notify the SyncManager that a hard error occurred.
+                //syncResult.stats.numAuthExceptions++;
+                Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            HttpStack stack = null;
+            try {
+                stack = new HurlStack(null, new TLSSocketFactory());
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            }
+
+            // AppController.getInstance().addToRequestQueue(getApplicationContext(),stack);
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext(), stack);
+        } else {
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+            //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+
+
+
+
+
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
@@ -692,52 +769,24 @@ String otp11;
         // Tag used to cancel the request
         String tag_string_req = "req_register";
 
+        //pDialog.setMessage("Registering ...");
+        //showDialog();
+
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.Base_Url+AppConfig.App_api+ AppConfig.URL_REGISTER, new Response.Listener<String>() {
+                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_REGISTER, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
                 Log.d(TAG, "Register Response: " + response1.toString());
+//                hideDialog();
 
                 try {
                     JSONObject jObj = new JSONObject(response1);
                     String response = jObj.getString("response");
                     String status =jObj.getString("status");
 
-/*
-                     if(!et_otp.getText().toString().equals(otp11))
-                    {
+                    if (status!=null && status.equals("success")) {
 
-                        Log.e(TAG, "Inelseifhu " +status);
-
-                        AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
-
-                        // Setting Dialog Title
-                        alertDialog.setTitle("Incorrect OTP");
-
-                        // Setting Dialog Message
-                        alertDialog.setMessage("Hey, its look like OTP is incorrect");
-                        // Setting Icon to Dialog
-                        //  alertDialog.setIcon(R.drawable.tick);
-
-                        // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog closed
-                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                        // Showing Alert Message
-                        alertDialog.show();
-
-
-                    }*/
-                  // else
-                     //  if(et_otp.getText().toString().equals(otp11)) {
-
-                   if (status!=null && status.equals("success")) {
-                           //registerUser(contactNumber, fullName, password, deviceId);
                         launchAgeScreen();
 
                         Log.e(TAG, "123" + fullName);
@@ -746,12 +795,7 @@ String otp11;
 
                         Log.e(TAG, "response2163123: " + response);
 
-                    }
-
-
-
-
-                    else if ( status.equals("failed") && response.equals("Duplicate_Phone_No")){
+                    }else if (status!=null && status.equals("failed") && response.equals("Duplicate_Phone_No")){
                         AlertDialog.Builder builder =new AlertDialog.Builder(RegisterActivity.this);
                         builder.setTitle("Registration Error");
                         builder.setMessage("You have already registered with this number. Please click Okay to Login");
@@ -764,15 +808,18 @@ String otp11;
                         });
                         AlertDialog alertDialog = builder.create();
                         alertDialog.show();
+                        //Toast.makeText(RegisterActivity.this, "", Toast.LENGTH_LONG).show();
 
-                    }else if ( status.equals("failed") && response.equals("Duplicate_Mail_ID")){
+
+
+                        /*
 
                         AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
                         // Setting Dialog Title
                         alertDialog.setTitle("Registration Error");
 
                         // Setting Dialog Message
-                        alertDialog.setMessage("222You have already registered with this Email. Please click Okay to Login");
+                        alertDialog.setMessage("You have already registered with this number. Please click Okay to Login");
 
                         alertDialog.setCanceledOnTouchOutside(false);
 
@@ -780,7 +827,32 @@ String otp11;
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Write your code here to execute after dialog closed
-                             launchAgeScreen();
+                                Intent intent = new Intent(RegisterActivity.this,LogInActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+*/
+
+                    }else if (status!=null && status.equals("failed") && response.equals("Duplicate_Mail_ID")){
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Registration Error");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("You have already registered with this Email. Please click Okay to Login");
+
+                        alertDialog.setCanceledOnTouchOutside(false);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                launchAgeScreen();
                             }
                         });
 
@@ -791,7 +863,7 @@ String otp11;
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                   // Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -800,7 +872,7 @@ String otp11;
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -862,10 +934,101 @@ String otp11;
 
         };
 
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
 
+
+        strReq.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            try {
+                ProviderInstaller.installIfNeeded(getApplicationContext());
+            } catch (GooglePlayServicesRepairableException e) {
+                // Indicates that Google Play services is out of date, disabled, etc.
+                // Prompt the user to install/update/enable Google Play services.
+                GooglePlayServicesUtil.showErrorNotification(e.getConnectionStatusCode(), getApplicationContext());
+                // Notify the SyncManager that a soft error occurred.
+                //final SyncResult syncResult = null;
+                //syncResult.stats.numIOExceptions++;
+
+                Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+                return;
+            } catch (GooglePlayServicesNotAvailableException e) {
+                // Indicates a non-recoverable error; the ProviderInstaller is not able
+                // to install an up-to-date Provider.
+                // Notify the SyncManager that a hard error occurred.
+                //syncResult.stats.numAuthExceptions++;
+                Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            HttpStack stack = null;
+            try {
+                stack = new HurlStack(null, new TLSSocketFactory());
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            }
+
+           // AppController.getInstance().addToRequestQueue(getApplicationContext(),stack);
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext(), stack);
+        } else {
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+            //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+
+
+
+        // Adding request to request queue
+      //
+        //
+        //
+        //
+        //
+        // AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+    /*ProgressDialog loading = null;
+
+    private void showpDialog(View v) {
+        loading = new ProgressDialog(v.getContext());
+        loading = new ProgressDialog(v.getContext());
+        loading.setCancelable(true);
+        loading.setMessage("Please wait for OTP.....");
+        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        loading.show();
+    }*/
+
+
+
+    /* private void hidepDialog() {
+         if (loading != null) {
+             loading.dismiss();
+         }
+     }
+
+    *//* private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }*//*
+
+     *//*  private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }*//*
+     */
     private void launchAgeScreen() {
         startActivity(new Intent(RegisterActivity.this, LoginActivityWithoutSharedPreference.class));
 
@@ -886,15 +1049,13 @@ String otp11;
 
                 {
                     timerTextView.setText("00:" + sec);
-
                 }
-
+//                resentButton.setClickable(false);
+//                waitTextView.setClickable(false);
             }
 
             public void onFinish() {
                 timerTextView.setText("00:00");
-                mBottomSheetDialog.hide();
-
 //                resentButton.setClickable(true);
 //                waitTextView.setClickable(true);
             }
