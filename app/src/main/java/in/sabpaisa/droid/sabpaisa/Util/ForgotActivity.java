@@ -197,7 +197,7 @@ public class ForgotActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // CommonUtils.setFullScreen(this);
+        // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_forgot);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //final EditText et_currentPassword =(EditText) findViewById(R.id.et_currentPassword);
@@ -316,8 +316,8 @@ public class ForgotActivity extends AppCompatActivity {
                 }
                 if(newPassword.length()==0)
                 {
-                password.setError("Please enter password ");
-                 }
+                    password.setError("Please enter password ");
+                }
                 else if(et_otp.length()==0){
 
                     et_otp.setError("Please click on the send otp");
@@ -352,7 +352,7 @@ public class ForgotActivity extends AppCompatActivity {
                     alertDialog.show();
                     Log.v("Home", "############################You are not online!!!!");
                 }
-                }
+            }
 
 
         });
@@ -403,69 +403,69 @@ public class ForgotActivity extends AppCompatActivity {
                     Log.d("Registerreposy",""+response) ;
                     Log.d("Registerstts",""+status) ;
 
-if(status.equals("success")&&et_otp.getText().toString().equals(otp11)) {
+                    if(status.equals("success")&&et_otp.getText().toString().equals(otp11)) {
 
-    Intent intent = new Intent(ForgotActivity.this, LoginActivityWithoutSharedPreference.class);
-    startActivity(intent);
-    Log.e(TAG, "status: " + status);
-    finish();
-}
+                        Intent intent = new Intent(ForgotActivity.this, LoginActivityWithoutSharedPreference.class);
+                        startActivity(intent);
+                        Log.e(TAG, "status: " + status);
+                        finish();
+                    }
                     //Log.e(TAG, "response2163123: " + userId);
 
-else if(status.equals("failure")&&!et_otp.getText().toString().equals(otp11))
-{
+                    else if(status.equals("failure")&&!et_otp.getText().toString().equals(otp11))
+                    {
 
 
-    AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
 
-    // Setting Dialog Title
-    alertDialog.setTitle("SPApp");
+                        // Setting Dialog Title
+                        alertDialog.setTitle("SPApp");
 
-    // Setting Dialog Message
-    alertDialog.setMessage("Hey, its look like OTP is incorrect or trying with other mobile device or you are not Registered with us");
-    // Setting Icon to Dialog
-    //  alertDialog.setIcon(R.drawable.tick);
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Hey, its look like OTP is incorrect or trying with other mobile device or you are not Registered with us");
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
 
-    // Setting OK Button
-    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int which) {
-            // Write your code here to execute after dialog closed
-            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-        }
-    });
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-    // Showing Alert Message
-    alertDialog.show();
-
-
-}
-else
-{
+                        // Showing Alert Message
+                        alertDialog.show();
 
 
-    AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
-
-    // Setting Dialog Title
-    alertDialog.setTitle("");
-
-    // Setting Dialog Message
-    alertDialog.setMessage("Your password is successfully changed");
-    // Setting Icon to Dialog
-    //  alertDialog.setIcon(R.drawable.tick);
-
-    // Setting OK Button
-    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int which) {
-            // Write your code here to execute after dialog closed
-            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-        }
-    });
-
-    // Showing Alert Message
-    alertDialog.show();
+                    }
+                    else
+                    {
 
 
-}
+                        AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Your password is successfully changed");
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+
+                    }
 
 
 
@@ -543,7 +543,7 @@ else
                 params.put("newPassword", newPassword);
                 return params;
             }
-       };
+        };
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
@@ -611,7 +611,7 @@ else
                     Log.d("Archana211111111",""+verifireponse);
 
                     if (status.equals("success")) {
-                         send_Otp.setVisibility(View.INVISIBLE);
+                        send_Otp.setVisibility(View.INVISIBLE);
 
                     } else if (status.equals("failure")) {
                     }

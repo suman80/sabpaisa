@@ -42,4 +42,3 @@ public class ContactVO  {
         ContactNumber = contactNumber;
     }
 }
-

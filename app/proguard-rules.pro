@@ -28,21 +28,6 @@
 -dontskipnonpubliclibraryclasses
 -verbose
 
-
--optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
--optimizations !method/inlining/*
--optimizationpasses 5
--allowaccessmodification
--assumenosideeffects
-
--assumenosideeffects class android.util.Log {
-    public static boolean isLoggable(java.lang.String, int);
-    public static int v(...);
-    public static int i(...);
-    public static int w(...);
-    public static int d(...);
-    public static int e(...);
-}
 -dontwarn java.nio.file.Files
 -dontwarn java.nio.file.Path
 -dontwarn java.nio.file.OpenOption
@@ -55,3 +40,8 @@
     public private *;
 }
 
+
+-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+-optimizations !method/inlining/*
+-optimizationpasses 5
+-allowaccessmodification

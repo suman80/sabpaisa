@@ -71,7 +71,7 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
     public void onBindViewHolder(ContactViewHolder holder, int position) {
         ContactVO contactVO = contactVOList.get(position);
 
-         holder.tvContactName.setText(contactVO.getContactName());
+        holder.tvContactName.setText(contactVO.getContactName());
         holder.tvPhoneNumber.setText(contactVO.getContactNumber());
         Log.d("contactVO",String.valueOf(contactVO.getInviteButtonVisibility()));
         Log.d("contactVO",String.valueOf(contactVO.getContactName()));
@@ -124,7 +124,7 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
             tvContactName = (TextView) itemView.findViewById(R.id.name);
             tvPhoneNumber = (TextView) itemView.findViewById(R.id.number);
             invite=(Button) itemView.findViewById(R.id.buttonInvite);
-           // sp=(Button) itemView.findViewById(R.id.abc);
+            // sp=(Button) itemView.findViewById(R.id.abc);
         }
     }
 
@@ -135,4 +135,3 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
 
 
 }
-

@@ -186,7 +186,7 @@ public class AllContacts extends AppCompatActivity {
 
                     String contact_id = cursor.getString(cursor.getColumnIndex(_ID));
                     name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME));
-                  //  ContactVO contactVO=new ContactVO();
+                    //  ContactVO contactVO=new ContactVO();
 
 
 
@@ -211,12 +211,12 @@ public class AllContacts extends AppCompatActivity {
                         Set<String> s = new LinkedHashSet<String>(contactList);
                         Set<String> p = new LinkedHashSet<String>(nameList);
                         n = removeDuplicates(contactList, n);
-                            for (int i = 0; i < m; i++) {
+                        for (int i = 0; i < m; i++) {
                             System.out.print(nameList.get(i) + " Separator");
                             Log.d("CLashasdh", "" + nameList.get(i));
-                           // nameList.add(nameList.get(i));
+                            // nameList.add(nameList.get(i));
                             Log.d("ReplacinsNumber", "" + nameList);
-                                contactVO.setContactName(name);
+                            contactVO.setContactName(name);
                         }
 
                         nameList.add(name);
@@ -233,7 +233,7 @@ public class AllContacts extends AppCompatActivity {
                         Log.d("Replace+91", "" + p1);
 
                         contactList.add(p5);
-                       // nameList.add(name);
+                        // nameList.add(name);
                         Log.d("nameList",String.valueOf(nameList));
                         //Converting ArrayList to HashSet to remove duplicates
                         HashSet<String> listToSet = new HashSet<String>(contactList);
@@ -360,7 +360,7 @@ public class AllContacts extends AppCompatActivity {
                         key = iterator.next();
                         Log.d("UserContactList", "==>" + key);
                         Log.d("numbersREGorNot", "==>" + object1.optString(key));
-                           contactVO=new ContactVO();
+                        contactVO=new ContactVO();
 
                         contactVO.setContactName(name);
                         if (object1.optString(key).equals("User_Not_Registered")) {

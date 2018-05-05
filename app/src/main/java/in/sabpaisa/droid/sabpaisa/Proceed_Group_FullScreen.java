@@ -21,8 +21,10 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,7 +72,7 @@ import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 
 
-public class Proceed_Group_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class Proceed_Group_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,View.OnKeyListener {
 
     TextView groupsName,group_description_details;
     ImageView groupImage;
@@ -90,7 +92,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  CommonUtils.setFullScreen(this);
+        //  CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_proceed_group_full_screen);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 //        this.getWindow().setSoftInputMode(
@@ -118,15 +120,15 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         swipeRefreshLayout= (SwipeRefreshLayout)findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
         button1.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        Intent intent=new Intent(Proceed_Group_FullScreen.this,NumberOfGroups.class);
-        intent.putExtra("GroupId",GroupId);
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Proceed_Group_FullScreen.this,NumberOfGroups.class);
+                intent.putExtra("GroupId",GroupId);
 
-        startActivity(intent);
+                startActivity(intent);
 
-    }
-});
+            }
+        });
 
         prvtfeeds.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +160,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
         groupsName.setText(GroupsNm);
         group_description_details.setText(GroupsDiscription);
-       // new DownloadImageTask(groupImage).execute(GroupsImg);
+        // new DownloadImageTask(groupImage).execute(GroupsImg);
 
         Glide.with(getApplicationContext())
                 .load(GroupsImg)
@@ -184,6 +186,46 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         );
 
     }
+
+
+
+
+
+    @Override
+    public boolean onKey(View view, int keyCode, KeyEvent event) {
+
+        TextView responseText = (TextView) findViewById(R.id.responseText);
+        EditText myEditText = (EditText) view;
+
+        if (keyCode == EditorInfo.IME_ACTION_SEARCH ||
+                keyCode == EditorInfo.IME_ACTION_DONE ||
+                event.getAction() == KeyEvent.ACTION_DOWN &&
+                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+
+            if (!event.isShiftPressed()) {
+                Log.v("AndroidEnterKeyActivity","Enter Key Pressed!");
+                switch (view.getId()) {
+                    case R.id.commentadd:
+                        responseText
+                                .setText("Just pressed the ENTER key, " +
+                                        "focus was on Text Box1. " +
+                                        "You typed:\n" + myEditText.getText());
+                        break;
+                    /*case R.id.editText2:
+                        responseText
+                                .setText("Just pressed the ENTER key, " +
+                                        "focus was on Text Box2. " +
+                                        "You typed:\n" + myEditText.getText());
+                        break;*/
+                }
+                return true;
+            }
+
+        }
+        return false; // pass on to other listeners.
+
+    }
+
 
 
 
@@ -251,7 +293,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 scrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
         }, 10L);
-         }
+    }
 
     //EditText group_details_text_view = null;
 
@@ -268,7 +310,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                         }
         );*/
 
-
+/*
         group_details_text_view.setFilters(new InputFilter[]{new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -280,7 +322,13 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 }
                 return null;
             }
-        }});
+        }});*/
+
+
+
+
+
+
 
         String commentText = group_details_text_view.getText().toString();
         // showpDialog(view);
@@ -369,16 +417,16 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 Log.d("Group Details", response.toString());
 
 
-                            try {
-                                // Parsing json object response
-                                // response will be a json object
-                                String status = response.getString("status");
-                                if (status.equals("success")) {
+                try {
+                    // Parsing json object response
+                    // response will be a json object
+                    String status = response.getString("status");
+                    if (status.equals("success")) {
 
 
-                                    ///////////RRRRRRRRRRRRRRRRRRRR?????????????????
-                                    if(response.getString("response").equals("Not A Member")){
-                                        Toast.makeText(getApplicationContext(),"You cannot able to comment because your request is in pending status",Toast.LENGTH_SHORT).show();
+                        ///////////RRRRRRRRRRRRRRRRRRRR?????????????????
+                        if(response.getString("response").equals("Not A Member")){
+                            Toast.makeText(getApplicationContext(),"You cannot able to comment because your request is in pending status",Toast.LENGTH_SHORT).show();
                         }
                         /////////////RRRRRRRRRRRRR??????????????????
 
@@ -507,10 +555,10 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                             String dataTime = jsonObject1.getString("commentDate");
 
 
-                                String str = jsonArray.getString(i);
-                                Log.d("444", str);
+                            String str = jsonArray.getString(i);
+                            Log.d("444", str);
                             String userImageUrl=jsonObject1.getString("userImageUrl");
-                     //  String userImageUrl1=groupData.getUserImageUrl().toString();
+                            //  String userImageUrl1=groupData.getUserImageUrl().toString();
                             //.split(" ")[1].replace(".0", "");
 
                             Log.d("dataTimePFF"," "+dataTime);
@@ -523,7 +571,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                             Log.d("imageuser"," "+image);
 
 
-                           // Log.d("dataimageurlgroup222222"," "+userImageUrl1);
+                            // Log.d("dataimageurlgroup222222"," "+userImageUrl1);
                             try {
                                 groupData.setComment_date(getDate(Long.parseLong(dataTime)));
                             } catch (ParseException e) {
@@ -541,7 +589,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                                 Log.d("1111111111111", str1);
                             }*/
 
-                            }
+                        }
                         loadCommentListView(commentArrayList);
                     } /*else {
                         Log.d("PGF1111","  "+obj.toString());
@@ -702,7 +750,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         String string=simpleDateFormat.format(date);
         String date = DateFormat.format("DD:HH:mm", cal).toString();
         return date;*/
-      //return string;
+        //return string;
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(time);
         String date = DateFormat.format("dd/MM HH:mm", cal).toString();
