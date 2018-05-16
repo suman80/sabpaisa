@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,7 +156,9 @@ public class CommentAdapterDatabase extends RecyclerView.Adapter<RecyclerView.Vi
 
         void bindData(CommentData commentData) {
             main_feed_creation_time.setText(commentData.getComment_date());
-            main_feed_group_description.setText(commentData.getCommentText());
+           // main_feed_group_description.setText(commentData.getCommentText());
+
+            main_feed_group_description.setText(StringEscapeUtils.unescapeJava(commentData.getCommentText()));
         }
     }
 

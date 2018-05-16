@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.IntRange;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,21 +27,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpStack;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,7 +98,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.LoginActivity;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.security.ProviderInstaller;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -160,6 +172,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import in.sabpaisa.droid.sabpaisa.TLSSocketFactory;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
@@ -183,6 +196,7 @@ public class ForgotActivity extends AppCompatActivity {
     private Button send_Otp;
     private EditText et_otp;
     Handler handler = new Handler();
+    int MY_SOCKET_TIMEOUT_MS =100000;
     String deviceId;
     String otp11;
     String otpTag = "Please Use this OTP to verify your Mobile on SabPaisa App";
@@ -190,6 +204,8 @@ public class ForgotActivity extends AppCompatActivity {
     CountDownTimer countDownTimer = null;
     TextView timerTextView = null;
     ProgressDialog progressBar = null;
+    RequestQueue requestQueue;
+
     EditText password;
     BottomSheetDialog mBottomSheetDialog;
     private static final int REQUEST_READ_PERMISSION = 123;
@@ -213,10 +229,7 @@ public class ForgotActivity extends AppCompatActivity {
                 (Context.LAYOUT_INFLATER_SERVICE);
         View sheetView = inflater.inflate(R.layout.popup_otp, null);
         mBottomSheetDialog.setContentView(sheetView);
-
         timerTextView = (TextView) sheetView.findViewById(R.id.timer_text_view);
-
-
 
 //Code Added for visible and invisible of send_Otp
         et_phone_number.addTextChangedListener(new TextWatcher() {
@@ -228,28 +241,18 @@ public class ForgotActivity extends AppCompatActivity {
                     send_Otp.setVisibility(View.VISIBLE);
                 }
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
-
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
-
-
-
         send_Otp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String number = et_phone_number.getText().toString();
                 if (number.equals("")) {
-
-
-
                     Toast.makeText(getApplicationContext(), "Please enter Phone Number!", Toast.LENGTH_LONG).show();
                 } else if (isOnline()) {
                     mBottomSheetDialog.setCancelable(false);//Added on 2nd Feb
@@ -257,22 +260,15 @@ public class ForgotActivity extends AppCompatActivity {
                     mBottomSheetDialog.show();
                     callTimerCoundown();
                     sendOTP(v, number);
-
-
                     // Toast.makeText(OTPVarify.this, "first name field is empty", Toast.LENGTH_LONG).show();
                 } else {
-
                     AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
-
                     // Setting Dialog Title
                     alertDialog.setTitle("No Internet Connection");
-
                     // Setting Dialog Message
                     alertDialog.setMessage("Please check internet connection and try again. Thank you.");
-
                     // Setting Icon to Dialog
                     //  alertDialog.setIcon(R.drawable.tick);
-
                     // Setting OK Button
                     alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -280,7 +276,6 @@ public class ForgotActivity extends AppCompatActivity {
                             // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
                         }
                     });
-
                     // Showing Alert Message
                     alertDialog.show();
                     Log.v("Home", "############################You are not online!!!!");
@@ -288,31 +283,20 @@ public class ForgotActivity extends AppCompatActivity {
 
             }
         });
-
-
         if (CheckPermission(this, Manifest.permission.READ_PHONE_STATE)) {
             deviceId();
         } else {
             RequestPermission(ForgotActivity.this, Manifest.permission.READ_PHONE_STATE, REQUEST_READ_PERMISSION);
         }
-
-
-
-
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 String contactNumber = et_phone_number.getText().toString();
                 String newPassword =password.getText().toString();
                 //String  currentPassword = et_currentPassword.getText().toString();
                 Log.e(TAG, "response: " + contactNumber);
-
                 if ((et_phone_number.length() == 0)  ||(et_phone_number.length()<10)) {
-
                     et_phone_number.setError("Please make sure that You have entered 10 digit number");
-
                 }
                 if(newPassword.length()==0)
                 {
@@ -325,21 +309,16 @@ public class ForgotActivity extends AppCompatActivity {
                 else if(isOnline())
                 {
                     registerUser(contactNumber,newPassword);
-
                 }
                 else {
 
                     AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
-
                     // Setting Dialog Title
                     alertDialog.setTitle("No Internet Connection");
-
                     // Setting Dialog Message
                     alertDialog.setMessage("Please check internet connection and try again. Thank you.");
-
                     // Setting Icon to Dialog
                     //  alertDialog.setIcon(R.drawable.tick);
-
                     // Setting OK Button
                     alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -347,23 +326,13 @@ public class ForgotActivity extends AppCompatActivity {
                             // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
                         }
                     });
-
                     // Showing Alert Message
                     alertDialog.show();
                     Log.v("Home", "############################You are not online!!!!");
                 }
             }
-
-
         });
-
-
-
-
-
     }
-
-
 
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -377,14 +346,9 @@ public class ForgotActivity extends AppCompatActivity {
             return false;
         }
     }
-
-
     private void registerUser(final String contactNumber,final String newPassword ) {
-
-
         // Tag used to cancel the request
         String tag_string_req = "req_register";
-
         //pDialog.setMessage("Registering ...");
         //showDialog();
 
@@ -403,7 +367,7 @@ public class ForgotActivity extends AppCompatActivity {
                     Log.d("Registerreposy",""+response) ;
                     Log.d("Registerstts",""+status) ;
 
-                    if(status.equals("success")&&et_otp.getText().toString().equals(otp11)) {
+                    if(status.equals("success") && et_otp.getText().toString().equals(otp11)) {
 
                         Intent intent = new Intent(ForgotActivity.this, LoginActivityWithoutSharedPreference.class);
                         startActivity(intent);
@@ -411,8 +375,33 @@ public class ForgotActivity extends AppCompatActivity {
                         finish();
                     }
                     //Log.e(TAG, "response2163123: " + userId);
+                    else if(status.equals("failure")&&et_otp.getText().toString().equals(otp11))
+                    {
 
-                    else if(status.equals("failure")&&!et_otp.getText().toString().equals(otp11))
+                        AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("SPApp");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Hey,Its look like you are not registered with us.");
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+
+
+                                Intent intent=new Intent(ForgotActivity.this,RegisterActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                        // Showing Alert Message
+                        alertDialog.show();
+                    }
+                    else if(!et_otp.getText().toString().equals(otp11))
                     {
 
 
@@ -425,7 +414,6 @@ public class ForgotActivity extends AppCompatActivity {
                         alertDialog.setMessage("Hey, its look like OTP is incorrect or trying with other mobile device or you are not Registered with us");
                         // Setting Icon to Dialog
                         //  alertDialog.setIcon(R.drawable.tick);
-
                         // Setting OK Button
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -433,21 +421,14 @@ public class ForgotActivity extends AppCompatActivity {
                                 // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
                             }
                         });
-
                         // Showing Alert Message
                         alertDialog.show();
-
-
                     }
-                    else
-                    {
-
-
+                    else {
                         AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
                         alertDialog.setTitle("");
-
                         // Setting Dialog Message
                         alertDialog.setMessage("Your password is successfully changed");
                         // Setting Icon to Dialog
@@ -466,22 +447,13 @@ public class ForgotActivity extends AppCompatActivity {
 
 
                     }
-
-
-
-
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
-
             }
 
-
         }, new Response.ErrorListener() {
-
             @Override
             public void onErrorResponse(VolleyError error) {
 
@@ -504,7 +476,6 @@ public class ForgotActivity extends AppCompatActivity {
                             // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
                         }
                     });
-
                     // Showing Alert Message
                     alertDialog.show();
                     Log.e(TAG, "Registration Error: " + error.getMessage());
@@ -524,19 +495,13 @@ public class ForgotActivity extends AppCompatActivity {
 
                     //TODO
                 }
-
-
-
                 /*Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();*/
                 //hideDialog();
             }
         }) {
-
             @Override
             protected Map<String, String> getParams() {
-
-
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("contactNumber", contactNumber);
@@ -548,12 +513,10 @@ public class ForgotActivity extends AppCompatActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
-
     private void launchMainScreen() {
         startActivity(new Intent(ForgotActivity.this, MainActivity.class));
 
     }
-
     private void callTimerCoundown() {
         if (countDownTimer != null) {
             countDownTimer.cancel();
@@ -618,7 +581,7 @@ public class ForgotActivity extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(ForgotActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(ForgotActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
                 //progressBarDismiss();
             }
@@ -627,7 +590,7 @@ public class ForgotActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("OTP", "Error: " + error.getMessage());
-                Toast.makeText(ForgotActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(ForgotActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 // hide the progress dialog
                 //progressBarDismiss();
             }
@@ -661,8 +624,6 @@ public class ForgotActivity extends AppCompatActivity {
                     if (status.equals("success")) {
 
                         //Toast.makeText(getApplicationContext(), "OTP sent", Toast.LENGTH_LONG).show();
-
-
                         SmsReceiver.bindListener(new SmsListener() {
                             @Override
                             public void messageReceived(String messageText) {
@@ -681,7 +642,6 @@ public class ForgotActivity extends AppCompatActivity {
                                             }*/
 
                                             mBottomSheetDialog.hide();
-
                                             veryfiOTP(number, optSplit[1]);
 
                                             //  callVaryfyOTP(optSplit[1]);
@@ -707,15 +667,10 @@ public class ForgotActivity extends AppCompatActivity {
                             //callVaryfyOTP(optText);
                         }*/
                         //  callTimerCoundown();
-
-
-
-
                         //Toast.makeText(getApplicationContext(), "OTP sent", Toast.LENGTH_LONG).show();
 
                     }
                     else if (status.equals("failure")){
-
                         AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
@@ -741,9 +696,9 @@ public class ForgotActivity extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),
+                   /* Toast.makeText(getApplicationContext(),
                             "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_LONG).show();*/
                 }
                 //hidepDialog();
             }
@@ -794,6 +749,10 @@ public class ForgotActivity extends AppCompatActivity {
 
 
 
+
+
+
+
              /*   VolleyLog.d("eclipse", "Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_SHORT).show();*/
@@ -802,6 +761,67 @@ public class ForgotActivity extends AppCompatActivity {
                 //hidepDialog();
             }
         });
+
+
+
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            try {
+                ProviderInstaller.installIfNeeded(getApplicationContext());
+            } catch (GooglePlayServicesRepairableException e) {
+                // Indicates that Google Play services is out of date, disabled, etc.
+                // Prompt the user to install/update/enable Google Play services.
+                GooglePlayServicesUtil.showErrorNotification(e.getConnectionStatusCode(), getApplicationContext());
+                // Notify the SyncManager that a soft error occurred.
+                //final SyncResult syncResult = null;
+                //syncResult.stats.numIOExceptions++;
+
+                // Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+                return;
+            } catch (GooglePlayServicesNotAvailableException e) {
+                // Indicates a non-recoverable error; the ProviderInstaller is not able
+                // to install an up-to-date Provider.
+                // Notify the SyncManager that a hard error occurred.
+                //syncResult.stats.numAuthExceptions++;
+                //Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            HttpStack stack = null;
+            try {
+                stack = new HurlStack(null, new TLSSocketFactory());
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            }
+
+            // AppController.getInstance().addToRequestQueue(getApplicationContext(),stack);
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext(), stack);
+        } else {
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+            //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+
+
+
+
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);

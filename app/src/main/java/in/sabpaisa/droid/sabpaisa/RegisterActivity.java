@@ -196,6 +196,7 @@ public class RegisterActivity extends AppCompatActivity {
         send_Otp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(), "Please enter Phone Number121313!", Toast.LENGTH_LONG).show();
                 String number = et_phone_number.getText().toString();
                 if (number.equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter Phone Number!", Toast.LENGTH_LONG).show();
@@ -471,7 +472,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(RegisterActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(RegisterActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
                 //progressBarDismiss();
             }
@@ -479,8 +480,8 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("OTP", "Error: " + error.getMessage());
-                Toast.makeText(RegisterActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                //VolleyLog.d("OTP", "Error: " + error.getMessage());
+              //  Toast.makeText(RegisterActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 // hide the progress dialog
                 //progressBarDismiss();
             }
@@ -639,9 +640,9 @@ public class RegisterActivity extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),
+                   /* Toast.makeText(getApplicationContext(),
                             "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_LONG).show();*/
                 }
                 //hidepDialog();
             }
@@ -672,7 +673,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     // Showing Alert Message
                     alertDialog.show();
-                    Log.e(TAG, "OTP Error: " + error.getMessage());
+                 //   Log.e(TAG, "OTP Error: " + error.getMessage());
                     /*Toast.makeText(context,
                             context.getString(R.string.error_network_timeout),
                             Toast.LENGTH_LONG).show();*/
@@ -719,14 +720,14 @@ public class RegisterActivity extends AppCompatActivity {
                 //final SyncResult syncResult = null;
                 //syncResult.stats.numIOExceptions++;
 
-                Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
                 return;
             } catch (GooglePlayServicesNotAvailableException e) {
                 // Indicates a non-recoverable error; the ProviderInstaller is not able
                 // to install an up-to-date Provider.
                 // Notify the SyncManager that a hard error occurred.
                 //syncResult.stats.numAuthExceptions++;
-                Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -863,7 +864,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -894,7 +895,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     // Showing Alert Message
                     alertDialog.show();
-                    Log.e(TAG, "Registration Error: " + error.getMessage());
+                   // Log.e(TAG, "Registration Error: " + error.getMessage());
                     /*Toast.makeText(context,
                             context.getString(R.string.error_network_timeout),
                             Toast.LENGTH_LONG).show();*/
@@ -954,14 +955,14 @@ public class RegisterActivity extends AppCompatActivity {
                 //final SyncResult syncResult = null;
                 //syncResult.stats.numIOExceptions++;
 
-                Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
                 return;
             } catch (GooglePlayServicesNotAvailableException e) {
                 // Indicates a non-recoverable error; the ProviderInstaller is not able
                 // to install an up-to-date Provider.
                 // Notify the SyncManager that a hard error occurred.
                 //syncResult.stats.numAuthExceptions++;
-                Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
                 return;
             }
 

@@ -75,7 +75,6 @@ android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-
                 android:text="8 Members"
                 android:textColor="@color/bg_text_color"
                 android:textSize="@dimen/text_size_xsmall" />
@@ -88,8 +87,7 @@ android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:maxLines="50"
-
-            android:text="Fractal landscape of Julian set of numbers by Wikimedia Commons user Gertbuschmann public domain here:"
+            android:text="hi"
             android:textColor="@color/bg_text_color"
             android:textSize="@dimen/text_size_xsmall" />
 

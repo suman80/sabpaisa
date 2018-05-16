@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/white">
 
@@ -11,9 +11,9 @@
         <ImageView
             android:id="@+id/institutepic"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:layout_gravity="center"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="120dp"
             android:orientation="vertical"/>
 
 
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="430dp"
+                android:layout_marginTop="330dp"
                 android:id="@+id/ttl"
                 android:orientation="horizontal">
 
@@ -85,10 +85,10 @@
         android:id="@+id/verifyuin"
 
         android:layout_below="@+id/ttl"
-        android:layout_marginTop="30dp"
+
         android:onClick="onVerifyBtn"
         android:text="Verify"
-
+        android:layout_marginTop="10dp"
         android:textSize="@dimen/text_size_normal"
         android:layout_width="match_parent"
         android:layout_height="40dp"

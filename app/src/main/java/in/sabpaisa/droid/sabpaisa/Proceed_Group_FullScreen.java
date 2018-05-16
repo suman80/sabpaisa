@@ -20,6 +20,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.format.DateFormat;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -49,6 +50,7 @@ import com.olive.upi.transport.model.lib.NameValuePair;
 import com.parse.signpost.http.HttpResponse;
 import com.rockerhieu.emojicon.EmojiconEditText;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,9 +68,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+import retrofit2.http.HTTP;
 
 
 
@@ -86,15 +90,20 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     Button button1;
     SwipeRefreshLayout swipeRefreshLayout;
 
+    View collapsingLayout;
     Toolbar toolbar;
     Button prvtfeeds;
     ScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        //Emojiconize.activity(this).go();
         //  CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_proceed_group_full_screen);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        collapsingLayout = findViewById(R.id.collapsingLayout);
 //        this.getWindow().setSoftInputMode(
 //                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -105,7 +114,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         groupImage=(ImageView)findViewById(R.id.groupImage);
         button1=(Button)findViewById(R.id.b1);
         prvtfeeds=(Button)findViewById(R.id.b2);
-
+       // emojIcon = new EmojIconActions(this);\
         // This is used for the app custom toast and activity transition
         ChatSDKUiHelper.initDefault();
 
@@ -302,33 +311,25 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     public void onClickSendComment(View view) {
         group_details_text_view = (EditText) findViewById(R.id.commentadd);
 
-        //group_details_text_view.setInputType(InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE|InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        /*group_details_text_view.setFilters(
-                new InputFilter[]
-                        { new PartialRegexInputFilter(
-                                "[A-Za-z0-9!#$%&(){|}~:;<=>?@*+,./^_`-\'\" \t\r\n\f]+")
-                        }
-        );*/
 
-/*
-        group_details_text_view.setFilters(new InputFilter[]{new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                if (source != null) {
-                    String s = source.toString();
-                    if (s.contains("\n")) {
-                        return s.replaceAll("\n", "");
-                    }
-                }
-                return null;
-            }
-        }});*/
+        StringEscapeUtils.escapeJava(group_details_text_view.getText().toString());
+        byte[] data = new byte[0];
+        try {
+            data = group_details_text_view.getText().toString().getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
 
 
+        EditText etEmojiEditText = new EditText(this);
+        etEmojiEditText.setText("TYPE SOMETHING IN EMOJI");
 
+        String toServer = String.valueOf(group_details_text_view.getText());
+        String toServerUnicodeEncoded = StringEscapeUtils.escapeJava(toServer);
 
-
+        String serverResponse = "SOME RESPONSE FROM SERVER WITH UNICODE CHARACTERS";
+        String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
 
         String commentText = group_details_text_view.getText().toString();
         // showpDialog(view);
@@ -396,17 +397,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     private void callCommentService(final String GroupId, final String userAccessToken, final String comment_text) {
 
 
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(comment_text);
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(comment_text)
+                ;
 
 
 
-        //String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + comment_text;
 
-        // String urlJsonObj = AppConfiguration.FeedAddComent + "/aaddFeedsComments/" +"?feed_id="+ feed_id+ "/" + 1 + "/" + commentText;
-        //urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
-        //urlJsonObj = urlJsonObj.trim().replace("","%25");
-
-        //urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
 
@@ -414,7 +410,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("Group Details", response.toString());
+                Log.d("a", response.toString());
 
 
                 try {
@@ -512,7 +508,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 /////////////////////////////////
         try {
-            encodedUrl = java.net.URLEncoder.encode(urlJsonObj,"UTF-8");
+            encodedUrl = java.net.URLDecoder.decode(urlJsonObj,"UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -591,53 +587,10 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
                         }
                         loadCommentListView(commentArrayList);
-                    } /*else {
-                        Log.d("PGF1111","  "+obj.toString());
-                        Log.d("IN_ELSE_:111","Comments BBBB" +response);
-                        AlertDialog alertDialog = new AlertDialog.Builder(Proceed_Group_FullScreen.this, R.style.MyDialogTheme).create();
-
-                        //AlertDialog alertDialog = new AlertDialog.Builder( getApplicationContext(), R.style.MyDialogTheme).create();
-                        // Setting Dialog Title)
-                        alertDialog.setTitle("Comments");
-
-                        // Setting Dialog Message
-                        alertDialog.setMessage(obj.toString());
-                        Log.d("IN ELSE : ","Comments BBBB" +response);
-                        alertDialog.setCanceledOnTouchOutside(false);
-
-                        // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-
-                            }
-                        });
-
-                        // Showing Alert Message
-                        alertDialog.show();
-
-
-                    }*/
+                    }
 
                     Log.d("PGF","  "+obj.toString());
-                    ///////////////////////////////
 
-//                    JSONArray jsonArray = jsonObject.getJSONArray("response");
-
-                    // new LoadDBfromAPI().execute(response);
-//
-//                    for (int i = 0; i < jsonArray.length(); i++) {
-//                        CommentData groupData = new CommentData();
-//                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-//                        groupData.setCommentText(jsonObject1.getString("commentText"));
-//                        groupData.setCommentName(jsonObject1.getString("commentByName"));
-//
-//                        String dataTime = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
-//                        Log.d("dataTimePFF"," "+dataTime);
-//                        groupData.setComment_date(getDate(Long.parseLong(dataTime)));
-//                        commentArrayList.add(groupData);
-//                    }
-//                    loadCommentListView(commentArrayList);
 
 
                 }

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/collapsingLayout"
@@ -54,7 +57,7 @@
                         android:textAllCaps="false"
                         android:textStyle="bold"
                         android:background="@drawable/button_corner"
-                        android:textSize="12sp"/>
+                        android:textSize="9sp"/>
 
                     <Button
                         android:layout_width="100dp"
@@ -219,10 +222,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-
-
-        >
+        android:layout_gravity="bottom" >
 
         <include
             layout="@layout/box_comment"

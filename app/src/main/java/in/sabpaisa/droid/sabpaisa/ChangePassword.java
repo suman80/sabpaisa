@@ -77,13 +77,13 @@ public class ChangePassword extends AppCompatActivity {
         //CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_forgot);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        final EditText et_phone_number = (EditText)findViewById(R.id.et_phone_number);
-        final EditText password = (EditText)findViewById(R.id.et_currentpass);
-        final EditText curentpwd = (EditText)findViewById(R.id.et_mailId);
-        Button btn_save = (Button)findViewById(R.id.btn_save);
+        final EditText et_phone_number = (EditText) findViewById(R.id.et_phone_number);
+        final EditText password = (EditText) findViewById(R.id.et_currentpass);
+        final EditText curentpwd = (EditText) findViewById(R.id.et_mailId);
+        Button btn_save = (Button) findViewById(R.id.btn_save);
         send_Otp = (Button) findViewById(R.id.send_Otp);
         optEditText = (EditText) findViewById(R.id.optEditText);
-        et_otp=(EditText)findViewById(R.id.optEditText);
+        et_otp = (EditText) findViewById(R.id.optEditText);
         /*START Initiallizing BottomSheetDialog and giving its view in sheetView*/
         mBottomSheetDialog = new BottomSheetDialog(ChangePassword.this);
         LayoutInflater inflater = (LayoutInflater) ChangePassword.this.getSystemService
@@ -92,7 +92,6 @@ public class ChangePassword extends AppCompatActivity {
         mBottomSheetDialog.setContentView(sheetView);
 
         timerTextView = (TextView) sheetView.findViewById(R.id.timer_text_view);
-
 
 
 //Code Added for visible and invisible of send_Otp
@@ -118,7 +117,6 @@ public class ChangePassword extends AppCompatActivity {
         });
 
 
-
         send_Otp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,7 +131,7 @@ public class ChangePassword extends AppCompatActivity {
                     callTimerCoundown();
                     sendOTP(v, number);
 
-                    } else {
+                } else {
 
                     AlertDialog alertDialog = new AlertDialog.Builder(ChangePassword.this, R.style.MyDialogTheme).create();
 
@@ -170,37 +168,30 @@ public class ChangePassword extends AppCompatActivity {
         }
 
 
-
-
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
                 String contactNumber = et_phone_number.getText().toString();
-                String newPassword =password.getText().toString();
-                String  currentPassword = curentpwd.getText().toString();
+                String newPassword = password.getText().toString();
+                String currentPassword = curentpwd.getText().toString();
                 Log.e(TAG, "response: " + contactNumber);
 
-                if ((et_phone_number.length() == 0)  ||(et_phone_number.length()<10)) {
+                if ((et_phone_number.length() == 0) || (et_phone_number.length() < 10)) {
 
                     et_phone_number.setError("Please make sure that You have entered 10 digit number");
 
-                }
-
-                else if(et_otp.length()==0){
+                } else if (et_otp.length() == 0) {
 
                     et_otp.setError("Please click on the send otp");
-                } else if(curentpwd.length()==0){
+                } else if (curentpwd.length() == 0) {
 
                     curentpwd.setError("Please enter your Current Password");
-                }
-                else if(isOnline())
-                {
+                } else if (isOnline()) {
 
-                    registerUser(contactNumber,newPassword,currentPassword);
-                    }
-                else {
+                    registerUser(contactNumber, newPassword, currentPassword);
+                } else {
 
                     AlertDialog alertDialog = new AlertDialog.Builder(ChangePassword.this, R.style.MyDialogTheme).create();
 
@@ -225,12 +216,11 @@ public class ChangePassword extends AppCompatActivity {
                     alertDialog.show();
                     Log.v("Home", "############################You are not online!!!!");
                 }
-       }
+            }
 
 
         });
     }
-
 
 
     public boolean isOnline() {
@@ -247,7 +237,7 @@ public class ChangePassword extends AppCompatActivity {
     }
 
 
-    private void registerUser(final String contactNumber,final String newPassword, final String Curentpwd ) {
+    private void registerUser(final String contactNumber, final String newPassword, final String Curentpwd) {
 
 
         // Tag used to cancel the request
@@ -257,7 +247,7 @@ public class ChangePassword extends AppCompatActivity {
         //showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_forgotpasswprd, new Response.Listener<String>() {
+                AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_forgotpasswprd, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -268,16 +258,13 @@ public class ChangePassword extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response1);
                     String status = jObj.getString("status");
 
-                    if(status.equals("success")&&et_otp.getText().toString().equals(otp11)) {
+                    if (status.equals("success") && et_otp.getText().toString().equals(otp11)) {
 
                         Intent intent = new Intent(ChangePassword.this, LoginActivityWithoutSharedPreference.class);
                         startActivity(intent);
                         Log.e(TAG, "status: " + status);
                         finish();
-                    }
-
-                    else if(!et_otp.getText().toString().equals(otp11))
-                    {
+                    } else if (!et_otp.getText().toString().equals(otp11)) {
 
 
                         AlertDialog alertDialog = new AlertDialog.Builder(ChangePassword.this, R.style.MyDialogTheme).create();
@@ -302,9 +289,7 @@ public class ChangePassword extends AppCompatActivity {
                         alertDialog.show();
 
 
-                    }
-                    else
-                    {
+                    } else {
 
 
                         AlertDialog alertDialog = new AlertDialog.Builder(ChangePassword.this, R.style.MyDialogTheme).create();
@@ -345,7 +330,7 @@ public class ChangePassword extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(ChangePassword.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -399,21 +384,15 @@ public class ChangePassword extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
 
 
-
-
-
-
                 params.put("contactNumber", contactNumber);
                 params.put("newPassword", newPassword);
-                 params.put("currentPassword", Curentpwd);
+                params.put("currentPassword", Curentpwd);
                 //params.put("deviceId", deviceId);
                 // params.put("dob", dob );
 
 
                 return params;
             }
-
-
 
 
         };
@@ -457,8 +436,9 @@ public class ChangePassword extends AppCompatActivity {
         }.start();
 
     }
+
     private void veryfiOTP(final String number, String otp) {
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"verifyOtp?otp="+otp+"&mobile_no="+ number;
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "verifyOtp?otp=" + otp + "&mobile_no=" + number;
 
         //   progressBarShow();
 
@@ -476,11 +456,11 @@ public class ChangePassword extends AppCompatActivity {
                     // response will be a json object
                     String status = response.getString("status");
                     otp11 = response.getString("otp");
-                    String  verifireponse= response.getString("response");
+                    String verifireponse = response.getString("response");
 
-                    Log.d("Archana1111111",""+status);
-                    Log.d("Archana111111111",""+otp11);
-                    Log.d("Archana211111111",""+verifireponse);
+                    Log.d("Archana1111111", "" + status);
+                    Log.d("Archana111111111", "" + otp11);
+                    Log.d("Archana211111111", "" + verifireponse);
 
                     if (status.equals("success")) {
                         send_Otp.setVisibility(View.INVISIBLE);
@@ -512,7 +492,7 @@ public class ChangePassword extends AppCompatActivity {
     private void sendOTP(View v, final String number) {
 
 
-        String urlJsonObj =  AppConfig.Base_Url+AppConfig.App_api+"SendOTP/" +"?mobile_no="+ number;
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "SendOTP/" + "?mobile_no=" + number;
 
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
@@ -554,8 +534,7 @@ public class ChangePassword extends AppCompatActivity {
                         });
 
 
-                    }
-                    else if (status.equals("failure")){
+                    } else if (status.equals("failure")) {
 
                         AlertDialog alertDialog = new AlertDialog.Builder(ChangePassword.this, R.style.MyDialogTheme).create();
 
@@ -593,7 +572,7 @@ public class ChangePassword extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(ChangePassword.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -640,6 +619,7 @@ public class ChangePassword extends AppCompatActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
+
     private void deviceId() {
         final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
 
@@ -665,6 +645,7 @@ public class ChangePassword extends AppCompatActivity {
 
         Log.e(TAG, "Device Id: " + deviceId);
     }
+
     @Override
     public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
 
@@ -701,6 +682,4 @@ public class ChangePassword extends AppCompatActivity {
                 Permission) == PackageManager.PERMISSION_GRANTED;
     }
 
-
 }
-

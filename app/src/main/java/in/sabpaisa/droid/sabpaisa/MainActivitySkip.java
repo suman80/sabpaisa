@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -43,15 +44,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpStack;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
 import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
@@ -62,6 +68,10 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.security.ProviderInstaller;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.wangjie.androidbucket.utils.ABTextUtil;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -73,6 +83,8 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloating
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,6 +127,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     private TabLayout tabLayout;
     TextView usernameniv, mailIdniv;
     Toolbar toolbar;
+    RequestQueue requestQueue;
     String userImageUrl = null;
     String name,mobNumber;
     ImageView niv;
@@ -132,6 +145,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     private RapidFloatingActionHelper rfabHelper;
     private View view;
     Handler mHandler;
+    int MY_SOCKET_TIMEOUT_MS =100000;
 
     TextView mSearchText;
     MaterialSearchView searchView;
@@ -1039,6 +1053,62 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
         });
 
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            try {
+                ProviderInstaller.installIfNeeded(getApplicationContext());
+            } catch (GooglePlayServicesRepairableException e) {
+                // Indicates that Google Play services is out of date, disabled, etc.
+                // Prompt the user to install/update/enable Google Play services.
+                GooglePlayServicesUtil.showErrorNotification(e.getConnectionStatusCode(), getApplicationContext());
+                // Notify the SyncManager that a soft error occurred.
+                //final SyncResult syncResult = null;
+                //syncResult.stats.numIOExceptions++;
+
+                // Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+                return;
+            } catch (GooglePlayServicesNotAvailableException e) {
+                // Indicates a non-recoverable error; the ProviderInstaller is not able
+                // to install an up-to-date Provider.
+                // Notify the SyncManager that a hard error occurred.
+                //syncResult.stats.numAuthExceptions++;
+                //Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            HttpStack stack = null;
+            try {
+                stack = new HurlStack(null, new TLSSocketFactory());
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            }
+
+            // AppController.getInstance().addToRequestQueue(getApplicationContext(),stack);
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext(), stack);
+        } else {
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+            //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+
+
+
+
+
+
         AppController.getInstance().addToRequestQueue(request, tag_string_req);
 
 
@@ -1158,6 +1228,60 @@ mailIdniv.setText("");
 
         };
 */
+
+
+        strReq.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            try {
+                ProviderInstaller.installIfNeeded(getApplicationContext());
+            } catch (GooglePlayServicesRepairableException e) {
+                // Indicates that Google Play services is out of date, disabled, etc.
+                // Prompt the user to install/update/enable Google Play services.
+                GooglePlayServicesUtil.showErrorNotification(e.getConnectionStatusCode(), getApplicationContext());
+                // Notify the SyncManager that a soft error occurred.
+                //final SyncResult syncResult = null;
+                //syncResult.stats.numIOExceptions++;
+
+                // Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+                return;
+            } catch (GooglePlayServicesNotAvailableException e) {
+                // Indicates a non-recoverable error; the ProviderInstaller is not able
+                // to install an up-to-date Provider.
+                // Notify the SyncManager that a hard error occurred.
+                //syncResult.stats.numAuthExceptions++;
+                //Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            HttpStack stack = null;
+            try {
+                stack = new HurlStack(null, new TLSSocketFactory());
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            }
+
+            // AppController.getInstance().addToRequestQueue(getApplicationContext(),stack);
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext(), stack);
+        } else {
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+            //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+
+
+
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
