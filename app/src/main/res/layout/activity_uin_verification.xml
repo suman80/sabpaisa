@@ -83,9 +83,7 @@
 
     <Button
         android:id="@+id/verifyuin"
-
         android:layout_below="@+id/ttl"
-
         android:onClick="onVerifyBtn"
         android:text="Verify"
         android:layout_marginTop="10dp"
