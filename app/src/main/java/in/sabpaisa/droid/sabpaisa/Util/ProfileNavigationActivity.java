@@ -75,6 +75,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     LinearLayout layout;
     String userAccessToken;
     String address, email, name;
+    String x;
     ProgressBar progressBar;
     SharedPreferences sharedPreferences;
     String clientId;
@@ -448,17 +449,17 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     if (status.equals("success")) {
                         userName.setText(object.getJSONObject("response").getString("fullName").toString());
                         mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
-
-                        if (object.getJSONObject("response").getString("emailId").toString() == null) {
-                            mailId.setText(" ");
+ x=object.getJSONObject("response").getString("emailId").toString();
+                        if (x.equals("null")) {
+                            mailId.setText("Enter your EmailId");
                         } else {
-                            mailId.setText(object.getJSONObject("response").getString("emailId").toString());
+                            mailId.setText(x);
                         }
-
-                        if (object.getJSONObject("response").getString("address").toString() == null) {
-                            et_address.setText(" ");
+String a=object.getJSONObject("response").getString("address").toString();
+                        if (a.equals("null")) {
+                            et_address.setText("Enter Your Address ");
                         } else {
-                            et_address.setText(object.getJSONObject("response").getString("address").toString());
+                            et_address.setText(a);
                         }
 
                         et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());

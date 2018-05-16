@@ -1,9 +1,13 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,15 +36,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import in.sabpaisa.droid.sabpaisa.AllContacts;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.Model.ContactVO;
 import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.SortArrayListAscendingDescending;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
 /**
@@ -50,15 +59,21 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter.ContactViewHolder>{
     String key;
     private ArrayList<ContactVO> contactVOList;
+    private ArrayList<String> nameList;
     private Context mContext;
+    ArrayList<String> sortedArrayListAscending;
+    int counter;
+    Set<String> p;
+    Cursor cursor;
     static Button sp;
+    private Handler  updateBarHandler = new Handler() ;;
+
+    String p1,p2,p3,p4,p5,name;
 
     public AllContactsAdapter(ArrayList<ContactVO> contactVOList, Context mContext){
         this.contactVOList = contactVOList;
         this.mContext = mContext;
     }
-
-
 
     @Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -71,10 +86,14 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
     public void onBindViewHolder(ContactViewHolder holder, int position) {
         ContactVO contactVO = contactVOList.get(position);
 
-        holder.tvContactName.setText(contactVO.getContactName());
+
+        //getContacts();
+       // for (int i = 0; i < nameList.size(); i++) {
+            holder.tvContactName.setText(contactVO.getContactName());
+        //}
         holder.tvPhoneNumber.setText(contactVO.getContactNumber());
         Log.d("contactVO",String.valueOf(contactVO.getInviteButtonVisibility()));
-        Log.d("contactVO",String.valueOf(contactVO.getContactName()));
+        Log.d("contactVOhuihu",String.valueOf(contactVO.getContactName()));
         if(contactVO.getInviteButtonVisibility()==0)
         {
             holder.invite.setVisibility(View.VISIBLE);
@@ -91,8 +110,6 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
 
                         mContext.startActivity(Intent.createChooser(i, "Share via"));
                     } catch (Exception e) {
-
-
                         //e.toString();
                     }
                 }
@@ -111,7 +128,7 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
         return contactVOList.size();
     }
 
-    public static class ContactViewHolder extends RecyclerView.ViewHolder{
+    public class ContactViewHolder extends RecyclerView.ViewHolder{
 
         ImageView ivContactImage;
         TextView tvContactName;
@@ -123,8 +140,12 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
             //ivContactImage = (ImageView) itemView.findViewById(R.id.ivContactImage);
             tvContactName = (TextView) itemView.findViewById(R.id.name);
             tvPhoneNumber = (TextView) itemView.findViewById(R.id.number);
+
             invite=(Button) itemView.findViewById(R.id.buttonInvite);
             // sp=(Button) itemView.findViewById(R.id.abc);
+
+
+
         }
     }
 
@@ -132,6 +153,190 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
 
 
 
+    public void getContacts() {
+
+        //contactList = new ArrayList<String>();
+        nameList = new ArrayList<String>();
+        String phoneNumber = null;
+        String email = null;
+
+        Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
+        String _ID = ContactsContract.Contacts._ID;
+        String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME;
+        String HAS_PHONE_NUMBER = ContactsContract.Contacts.HAS_PHONE_NUMBER;
+
+        Uri PhoneCONTENT_URI = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String Phone_CONTACT_ID = ContactsContract.CommonDataKinds.Phone.CONTACT_ID;
+        String NUMBER = ContactsContract.CommonDataKinds.Phone.NUMBER;
+
+        Uri EmailCONTENT_URI = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
+        String EmailCONTACT_ID = ContactsContract.CommonDataKinds.Email.CONTACT_ID;
+        String DATA = ContactsContract.CommonDataKinds.Email.DATA;
+
+        StringBuffer output;
+
+        ContentResolver contentResolver = mContext.getContentResolver();
+
+        cursor = contentResolver.query(CONTENT_URI, null, null, null, null);
+
+        // Iterate every contact in the phone
+        if (cursor.getCount() > 0) {
+
+            counter = 0;
+            while (cursor.moveToNext()) {
+                output = new StringBuffer();
+                // Update the progress message
+                updateBarHandler.post(new Runnable() {
+                    public void run() {
+                      //  pDialog.setMessage("Reading contacts : " + counter++ + "/" + cursor.getCount());
+                    }
+                });
+
+                int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
+                String contact_id = cursor.getString(cursor.getColumnIndex(_ID));
+                name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME));
+                if (hasPhoneNumber > 0) {
+
+
+                    //  ContactVO contactVO=new ContactVO();
+                    // output.append("\n First Name:" + name)
+
+                    //This is to read multiple phone numbers associated with the same contact
+                    Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null, Phone_CONTACT_ID + " = ?", new String[]{contact_id}, null);
+
+                    while (phoneCursor.moveToNext()) {
+
+                        phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        Log.d("Actualphonenumber", "" + phoneNumber);
+                        p2 = phoneNumber.replace(" ", "");
+                        p1 = p2.replace("+91", "");
+                        p3=p1.replace("(","");
+                        p4=p3.replace(")","");
+                        p5=p4.replace("-","");
+
+                        //int n = contactList.size();
+                        int m=nameList.size();
+
+                       // Set<String> s = new LinkedHashSet<String>(contactList);
+
+                        p = new LinkedHashSet<String>(nameList);
+                        m = removeDuplicates(nameList, m);
+                        for (int i = 0; i < m; i++) {
+                            System.out.print(nameList.get(i) + " Separator");
+                            Log.d("CLashasdh", "" + nameList.get(i));
+                            // nameList.add(nameList.get(i));
+                            Log.d("ReplacinsNumber", "" + nameList);
+//                            contactVO.setContactName(name);
+                        }
+
+
+                        Log.d("Replace+91Number", "" + nameList);
+                        Log.d("Replace+91NAmeadapter", "" + p);
+
+                        SortArrayListAscendingDescending sortArrayList = new SortArrayListAscendingDescending(nameList);
+                        ArrayList<String> unsortedArrayList = sortArrayList.getArrayList();
+                        System.out.println("Unsorted ArrayList: " + unsortedArrayList);
+                        sortedArrayListAscending = sortArrayList.sortAscending();
+                        System.out.println("Sorted ArrayList in Ascending Order : " + sortedArrayListAscending);
+
+
+
+
+
+
+
+
+                        HashSet<String> listToSet = new HashSet<String>(nameList);
+//Creating Arraylist without duplicate commentborder
+                        List<String> listWithoutDuplicates = new ArrayList<String>(listToSet);
+                        Log.d("szlistwithoutduplicate1", "" + listToSet.size()); //should print 3 becaues of duplicates Android removed
+                        Log.d("szlistwithoutduplicate1", "" + listWithoutDuplicates); //should print 3 becaues of duplicates Android removed
+
+                       /* ArrayList<String> sortedArrayListDescending = sortArrayList.sortDescending();
+                        System.out.println("Sorted ArrayList in Descending Order: " + sortedArrayListDescending);
+*/
+                       /* for (int i = 0; i < m; i++) {
+                            System.out.print(nameList.get(i) + " Separator");
+                            Log.d("CLashasdh", "" + nameList.get(i));
+                        }*/
+                       // Log.d("Replace+91", "" + s);
+                      /*  ContactVO contactVO=new ContactVO();
+                        contactVO.setContactName(p.toString());*/
+
+                        Log.d("Replace+91", "" + p1);
+
+                        //contactList.add(p5);
+                        nameList.add(name);
+                        Log.d("nameList12342",String.valueOf(nameList));
+                        //Converting ArrayList to HashSet to remove duplicates
+                       // HashSet<String> listToSet = new HashSet<String>(contactList);
+//Creating Arraylist without duplicate commentborder
+                       // List<String> listWithoutDuplicates = new ArrayList<String>(listToSet);
+                       // Log.d("szlistwithoutduplicates", "" + listToSet.size()); //should print 3 becaues of duplicates Android removed
+                        //Log.d("szlistwithoutduplicates", "" + listWithoutDuplicates); //should print 3 becaues of duplicates Android removed
+
+                        for (int i = 0; i < nameList.size(); i++) {
+
+                            for (int j = i + 1; j < nameList.size(); j++) {
+                                if (nameList.get(i).equals(nameList.get(j))) {
+                                    nameList.remove(j);
+                                    j--;
+                                }
+                            }
+
+                        }
+
+                        System.out.println("Archanaaaa" + nameList);
+
+                        if (phoneNumber.length() == 10) {
+                            p2 = p1;
+                            p3 = p2.replace("+91", "");
+                            Log.d("Length 10", "" + p2);
+                            Log.d("Length 101", "" + p3);
+
+                        }
+                    }
+                    phoneCursor.close();
+
+                    // Read every email id associated with the contact
+                    Cursor emailCursor = contentResolver.query(EmailCONTENT_URI, null, EmailCONTACT_ID + " = ?", new String[]{contact_id}, null);
+
+                    while (emailCursor.moveToNext()) {
+                        email = emailCursor.getString(emailCursor.getColumnIndex(DATA));
+
+                        // output.append("\n Email:" + email);
+
+                    }
+
+                    emailCursor.close();
+                }
+                //Set<String> s= new LinkedHashSet<>(contactList);
+            }
+            //ContactsApi(contactList);
+            // Dismiss the progressbar after 500 millisecondds
+            updateBarHandler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                   // pDialog.cancel();
+                }
+            }, 500);
+        }
+    }
+
+    static int removeDuplicates(List<String> arr, int n) {
+        if (n == 0 || n == 1)
+            return n;
+        // To store index of next unique element
+        int j = 0;
+        // Doing same as done in Method 1
+        // Just maintaining another updated index i.e. j
+        for (int i = 0; i < n - 1; i++)
+            if (arr.get(i) != arr.get(i + 1))
+                arr.set(j++, arr.get(i));
+        arr.set(j++, arr.get(n - 1));
+        return j;
+    }
 
 
 }

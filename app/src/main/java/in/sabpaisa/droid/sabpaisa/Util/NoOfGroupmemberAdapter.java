@@ -253,16 +253,20 @@ Button memberChat;
                     String response = object.getString("response");
                     String status =object.getString("status");
                     x = object.getJSONObject("response").getString("emailId").toString();
+                    name=object.getJSONObject("response").getString("fullName").toString();
 
                     mobNumber = object.getJSONObject("response").getString("contactNumber").toString();
 
                     if(x.equals("null"))
                     {
+
+                        x="PleaseSetYourNAme@gmail.com";
                         // usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mailIdniv.setText("");
                     }
                     else   if (status.equals("success")) {
                         name=object.getJSONObject("response").getString("fullName").toString();
+                        x = object.getJSONObject("response").getString("emailId").toString();
 
                         // usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());

@@ -336,9 +336,9 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
 
                 intent.putExtra("userImageUrlMaim",userImageUrl);
-                intent.putExtra("usernameniv",name);
+                intent.putExtra("usernameniv",usernameniv.getText().toString().trim());
                 //intent.putExtra("VALUE",value);
-                intent.putExtra("xxxxx",x);
+                intent.putExtra("xxxxx",mailIdniv.getText().toString().trim());
                 intent.putExtra("mobNumber",mobNumber);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);

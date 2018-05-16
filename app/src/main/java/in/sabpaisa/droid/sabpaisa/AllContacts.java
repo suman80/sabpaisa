@@ -134,7 +134,7 @@ public class AllContacts extends AppCompatActivity {
                 // Permission is granted
                 showContacts();
             } else {
-                Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Until you grant the permission, we cannot display the names", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -172,7 +172,6 @@ public class AllContacts extends AppCompatActivity {
             counter = 0;
             while (cursor.moveToNext()) {
                 output = new StringBuffer();
-
                 // Update the progress message
                 updateBarHandler.post(new Runnable() {
                     public void run() {
@@ -181,16 +180,13 @@ public class AllContacts extends AppCompatActivity {
                 });
 
                 int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
-
+                String contact_id = cursor.getString(cursor.getColumnIndex(_ID));
+               // name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME));
                 if (hasPhoneNumber > 0) {
 
-                    String contact_id = cursor.getString(cursor.getColumnIndex(_ID));
-                    name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME));
+
                     //  ContactVO contactVO=new ContactVO();
-
-
-
-                    // output.append("\n First Name:" + name);
+                     output.append("\n First Name:" + name);
 
                     //This is to read multiple phone numbers associated with the same contact
                     Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null, Phone_CONTACT_ID + " = ?", new String[]{contact_id}, null);
@@ -198,7 +194,9 @@ public class AllContacts extends AppCompatActivity {
                     while (phoneCursor.moveToNext()) {
 
                         phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        name = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                         Log.d("Actualphonenumber", "" + phoneNumber);
+                        Log.d("Actualname", "" + name);
                         p2 = phoneNumber.replace(" ", "");
                         p1 = p2.replace("+91", "");
                         p3=p1.replace("(","");
@@ -216,15 +214,11 @@ public class AllContacts extends AppCompatActivity {
                             Log.d("CLashasdh", "" + nameList.get(i));
                             // nameList.add(nameList.get(i));
                             Log.d("ReplacinsNumber", "" + nameList);
-                            contactVO.setContactName(name);
+//                            contactVO.setContactName(name);
                         }
-
-                        nameList.add(name);
 
                         Log.d("Replace+91Number", "" + nameList);
                         Log.d("Replace+91NAme", "" + p);
-
-
                         for (int i = 0; i < n; i++) {
                             System.out.print(contactList.get(i) + " Separator");
                             Log.d("CLashasdh", "" + contactList.get(i));
@@ -233,7 +227,7 @@ public class AllContacts extends AppCompatActivity {
                         Log.d("Replace+91", "" + p1);
 
                         contactList.add(p5);
-                        // nameList.add(name);
+                        // nameList.add(name.toString());
                         Log.d("nameList",String.valueOf(nameList));
                         //Converting ArrayList to HashSet to remove duplicates
                         HashSet<String> listToSet = new HashSet<String>(contactList);
@@ -248,13 +242,30 @@ public class AllContacts extends AppCompatActivity {
                                 if (contactList.get(i).equals(contactList.get(j))) {
                                     contactList.remove(j);
                                     j--;
-
                                 }
                             }
 
                         }
 
                         System.out.println("After Removing duplicate elements:" + contactList);
+/*HashSet<String> listToSet1 = new HashSet<String>(nameList);
+//Creating Arraylist without duplicate commentborder
+                        List<String> listWithoutDuplicates1 = new ArrayList<String>(listToSet1);
+                        Log.d("szlistwithoutduplicates", "" + listToSet.size()); //should print 3 becaues of duplicates Android removed
+                        Log.d("szlistwithoutduplicates", "" + listWithoutDuplicates); //should print 3 becaues of duplicates Android removed
+
+                        for (int i = 0; i < nameList.size(); i++) {
+
+                            for (int j = i + 1; j < nameList.size(); j++) {
+                                if (nameList.get(i).equals(nameList.get(j))) {
+                                    nameList.remove(j);
+                                    j--;
+                                }
+                            }
+
+                        }*/
+
+                        System.out.println("After Remarcahana" + nameList);
 
                         if (phoneNumber.length() == 10) {
                             p2 = p1;
@@ -263,8 +274,6 @@ public class AllContacts extends AppCompatActivity {
                             Log.d("Length 101", "" + p3);
 
                         }
-
-
                     }
                     phoneCursor.close();
 
@@ -281,10 +290,9 @@ public class AllContacts extends AppCompatActivity {
 
                     emailCursor.close();
                 }
-                Set<String> s = new LinkedHashSet<>(contactList);
+                Set<String> s= new LinkedHashSet<>(contactList);
             }
             ContactsApi(contactList);
-
             // Dismiss the progressbar after 500 millisecondds
             updateBarHandler.postDelayed(new Runnable() {
 
@@ -294,98 +302,78 @@ public class AllContacts extends AppCompatActivity {
                 }
             }, 500);
         }
-
-
     }
 
     static int removeDuplicates(List<String> arr, int n) {
         if (n == 0 || n == 1)
             return n;
-
         // To store index of next unique element
         int j = 0;
-
         // Doing same as done in Method 1
         // Just maintaining another updated index i.e. j
         for (int i = 0; i < n - 1; i++)
             if (arr.get(i) != arr.get(i + 1))
                 arr.set(j++, arr.get(i));
-
-        arr.set(j++, arr.get(n - 1));
-
+                arr.set(j++, arr.get(n - 1));
         return j;
     }
-
-
-
     private void ContactsApi(final ArrayList<String> contactList ) {
-
-
         // Tag used to cancel the request
         String tag_string_req = "req_contacts";
-
         Map<String, List<String>> map = new HashMap<String, List<String>>();
         map.put("contactList", contactList);
         JSONObject jObj1 = new JSONObject(map);
-
         JsonObjectRequest strReq = new JsonObjectRequest(Request.Method.POST,
                 AppConfig.Base_Url+AppConfig.App_api+ AppConfig.URL_Contacts,jObj1, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
-                Log.d("Contactsreponse ", " " + response.toString());
-
-
+                Log.d("Contactsresponse ", " " + response.toString());
                 try {
+
                     ArrayList<ContactVO> contactVOList;
                     AllContactsAdapter allContactsAdapter;
                     contactVOList=new ArrayList<ContactVO>();
-
                     JSONObject jObj = new JSONObject(String.valueOf(response));
                     String status = jObj.getString("status");
                     String response1 = jObj.getString("response");
-
                     Log.d("STATUS ", " " + status);
-                    Log.d("STATUS1234567890 ", " " + response1);
-
+                    Log.d("STATUS1234567890", " " + response1);
                     JsonArray jsonObject1 = new JsonObject().getAsJsonArray("response1");
                     Log.d("tvji1145", " " + jsonObject1);
                     object1 = jObj.getJSONObject("response");
                     Log.d("tvji1145", " " + object1);
                     Iterator<String> iterator = object1.keys();
                     Log.d("tvji11452", " " + iterator);
-
-
+                    int count=0;
                     while (iterator.hasNext()) {
                         key = iterator.next();
                         Log.d("UserContactList", "==>" + key);
                         Log.d("numbersREGorNot", "==>" + object1.optString(key));
                         contactVO=new ContactVO();
 
-                        contactVO.setContactName(name);
+                       // contactVO.setContactName(name);
                         if (object1.optString(key).equals("User_Not_Registered")) {
                             Log.d("numbersREGorNotqyeuqye", "==>" + key);
                             Log.d("numbersREGorNotq", "==>" + object1.optString(key));
-
                             contactVO.setInviteButtonVisibility(0);
                            /* for(int i=0;i<nameList.size();i++) {
-
-                                contactVO.setContactName(nameList.get(i).toString());
+                          contactVO.setContactName(nameList.get(i).toString());
                             }*/
                         }
                         else
                         {
                             contactVO.setInviteButtonVisibility(1);
+                            }
 
 
-                        }
-
-
+                        for (int i=0; i<count; count++) {
+                            contactVO.setContactName(nameList.get(count).toString());
+                      }
                         contactVO.setContactNumber(key.toString());
-
                         contactVOList.add(contactVO);
+                        count++;
                         Log.d("contactVOList",""+contactVOList);
-
                     }
                     allContactsAdapter = new AllContactsAdapter(contactVOList,getApplicationContext());
                     mListView.setAdapter(allContactsAdapter);
@@ -401,30 +389,25 @@ public class AllContacts extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null || error.getMessage()==null || error.getMessage()==null ||                error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error.getMessage()==null || error.getMessage()==null || error.getMessage()==null ||error instanceof TimeoutError||error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(AllContacts.this, R.style.MyDialogTheme).create();
-
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");
-
                     // Setting Dialog Message
                     alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
 
                     // Setting Icon to Dialog
                     //alertDialog.setIcon(R.drawable.appicon);
-
                     // Setting OK Button
                     alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Write your code here to execute after dialog closed
                         }
                     });
-
                     // Showing Alert Message
                     alertDialog.show();
                     Log.e("", "Contacts api Error: " + error.getMessage());
-
-                } else if (error instanceof AuthFailureError) {
+                    } else if (error instanceof AuthFailureError) {
                     //TODO
                 } else if (error instanceof ServerError) {
                     //TODO
@@ -435,8 +418,6 @@ public class AllContacts extends AppCompatActivity {
                 }
             }
         }) {
-
-
             protected Map<String, String> getParams() {
                 ArrayList<String> contactList = new ArrayList<String>();
                 Map<String, String> params = new HashMap<String, String>();
@@ -446,20 +427,15 @@ public class AllContacts extends AppCompatActivity {
                     // first send both data with same param name as contactList[] ....
                     // now send with params contactList[0],contactList[1] ..and so on
                 }
-
                 params.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
                 return params;
-            }
-
+             }
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
             }
-
         };
-
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
-
 }

@@ -187,10 +187,15 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
         BUser user = BNetworkManager.sharedManager().getNetworkAdapter().currentUserModel();
 
         /////////10-april-2018////////////////////////
+        Log.d("chatsdkProfilename",""+name);
 
         etName.setText(name);
+        Log.d("chatsdkProfilemobno",""+mobNo);
+
         etPhone.setText(mobNo);
+        Log.d("chatsdkProfileemail",""+emailid);
         etMail.setText(emailid);
+
 
         //  end 10-april-2018////////////////////////
 
@@ -199,9 +204,9 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
     }
 
     private void setDetails(int loginType, Bundle bundle) {
-        etName.setText(bundle.getString(S_I_D_NAME));
-        etPhone.setText(bundle.getString(S_I_D_PHONE));
-        etMail.setText(bundle.getString(S_I_D_EMAIL));
+        etName.setText(name);
+        etPhone.setText(mobNo);
+        etMail.setText(emailid);
 
         chatSDKProfileHelper.loadProfilePic(loginType);
     }
