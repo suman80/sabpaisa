@@ -431,12 +431,28 @@ Log.d("ProfileFullViewProceed","state"+state);
                     String status =object.getString("status");
 
                     if (status.equals("success")) {
-
                         userName.setText(object.getJSONObject("response").getString("fullName").toString());
+                        mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
+                       String x=object.getJSONObject("response").getString("emailId").toString();
+                        if (x.equals("null")) {
+                            mailId.setText("Enter your EmailId");
+                        } else {
+                            mailId.setText(x);
+                        }
+                        String a=object.getJSONObject("response").getString("address").toString();
+                        if (a.equals("null")) {
+                            et_address.setText("Enter Your Address ");
+                        } else {
+                            et_address.setText(a);
+                        }
+
+                        et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
+
+                      /*  userName.setText(object.getJSONObject("response").getString("fullName").toString());
                         mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
                         mailId.setText(object.getJSONObject("response").getString("emailId").toString());
                         et_address.setText(object.getJSONObject("response").getString("address").toString());
-                        et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
+                        et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());*/
                         Log.d(TAG, "userName" + userName);
 
                     }else {

@@ -162,7 +162,7 @@ public class CommentAdapterDatabase extends RecyclerView.Adapter<RecyclerView.Vi
         //        ProgressBar progressBar;
         public MyLoadViewHolder(View view) {
             super(view);
-//            progressBar = (ProgressBar)view.findViewById(R.id.loadmore_progress);
+//      progressBar = (ProgressBar)view.findViewById(R.id.loadmore_progress);
         }
     }
 

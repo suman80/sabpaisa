@@ -213,7 +213,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
 
         getUserIm(userAccessToken);
-        String userImageUrl1=getIntent().getStringExtra("userImageUrl");
+        final String userImageUrl1=getIntent().getStringExtra("userImageUrl");
 
         Log.d("ujhuolvbluhkl","-->"+userImageUrl1);
 
@@ -451,9 +451,9 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                 intent.putExtra("CLIENTID",ClientId);
 
                 intent.putExtra("userImageUrlMaim",userImageUrl);
-                intent.putExtra("usernameniv",name);
+                intent.putExtra("usernameniv",usernameniv.getText().toString().trim());
                 //intent.putExtra("VALUE",value);
-                intent.putExtra("xxxxx",x);
+                intent.putExtra("xxxxx",mailIdniv.getText().toString().trim());
                 intent.putExtra("mobNumber",mobNumber);
 
 
@@ -1204,6 +1204,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
                     String status =object.getString("status");
                     x = object.getJSONObject("response").getString("emailId").toString();
 
+                    name=object.getJSONObject("response").getString("fullName").toString();
 
 
 

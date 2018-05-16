@@ -514,9 +514,9 @@ onBackPressed();            }
                 Intent intent = new Intent(MainActivity.this,ChatSDKLoginActivity.class);
 
                intent.putExtra("userImageUrlMaim",userImageUrl);
-                intent.putExtra("usernameniv",name);
+                intent.putExtra("usernameniv",usernameniv.getText().toString().trim());
                 intent.putExtra("VALUE",value);
-                intent.putExtra("xxxxx",x);
+                intent.putExtra("xxxxx",mailIdniv.getText().toString().trim());
                 intent.putExtra("mobNumber",mobNumber);
 
                 startActivity(intent);
@@ -1402,7 +1402,7 @@ if (x.equals("null"))
 {
     usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
 
-    mailIdniv.setText("");
+    mailIdniv.setText("PleaseSetYourEmail@Domain.com");
 }
                    else if (status.equals("success")) {
 name=object.getJSONObject("response").getString("fullName").toString();
@@ -1482,7 +1482,7 @@ Log.d("namemain",""+name);
 
             @Override
             protected Map<String, String> getParams() {
-                // Posting params to register url
+                // Posprofiting params to register url
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("userAccessToken", userAccessToken);
 
