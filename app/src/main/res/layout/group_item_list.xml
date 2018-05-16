@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     xmlns:autofit="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/linearLayoutGroupItemList"
+    >
 
    <LinearLayout
        android:layout_width="match_parent"

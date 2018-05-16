@@ -5,35 +5,24 @@ package in.sabpaisa.droid.sabpaisa;
  */
 
 public class GroupListData {
-    String clientId;
-    public String groupId;
-    public String groupName;
-    public String groupText;
-    public String createdDate;
-    String imagePath;
-    String logoPath;
+
+    public String groupId,groupText,groupName,clientId,createdDate,imagePath,logoPath,status,memberStatus;
 
     public GroupListData() {
     }
 
-    public GroupListData(String clientId, String groupId, String groupName, String groupText, String createdDate, String imagePath, String logoPath) {
-        this.clientId = clientId;
+    public GroupListData(String groupId, String groupText, String groupName, String clientId, String createdDate, String imagePath, String logoPath, String status, String memberStatus) {
         this.groupId = groupId;
-        this.groupName = groupName;
         this.groupText = groupText;
+        this.groupName = groupName;
+        this.clientId = clientId;
         this.createdDate = createdDate;
         this.imagePath = imagePath;
         this.logoPath = logoPath;
+        this.status = status;
+        this.memberStatus = memberStatus;
     }
 
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
 
     public String getGroupId() {
         return groupId;
@@ -41,6 +30,14 @@ public class GroupListData {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public String getGroupText() {
+        return groupText;
+    }
+
+    public void setGroupText(String groupText) {
+        this.groupText = groupText;
     }
 
     public String getGroupName() {
@@ -51,12 +48,12 @@ public class GroupListData {
         this.groupName = groupName;
     }
 
-    public String getGroupText() {
-        return groupText;
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setGroupText(String groupText) {
-        this.groupText = groupText;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public String getCreatedDate() {
@@ -81,6 +78,22 @@ public class GroupListData {
 
     public void setLogoPath(String logoPath) {
         this.logoPath = logoPath;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMemberStatus() {
+        return memberStatus;
+    }
+
+    public void setMemberStatus(String memberStatus) {
+        this.memberStatus = memberStatus;
     }
 }
 

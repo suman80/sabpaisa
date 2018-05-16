@@ -228,7 +228,7 @@
 
         <include
             layout="@layout/box_comment"
-            android:layout_width="374dp"
+            android:layout_width="334dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_below="@id/comment"

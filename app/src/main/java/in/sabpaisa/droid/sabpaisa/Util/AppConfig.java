@@ -4,8 +4,7 @@ public class AppConfig {
 	// Server user login url
 
 
-//public static String Base_Url="https://portal.sabpaisa.in";
-
+    //public static String Base_Url="https://portal.sabpaisa.in";
 	public static String Base_Url="https://spl.sabpaisa.in";
 
 

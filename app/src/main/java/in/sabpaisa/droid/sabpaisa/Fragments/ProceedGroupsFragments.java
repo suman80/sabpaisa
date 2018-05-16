@@ -33,6 +33,7 @@ import in.sabpaisa.droid.sabpaisa.FeedsFragments;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MainGroupAdapter1;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.RecyclerItemClickListener;
@@ -51,6 +52,10 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     public static String clientId;
     LinearLayout linearLayoutnoDataFound;
     ShimmerRecyclerView groupList;
+
+    SharedPreferences sharedPreferences1;
+
+    String token;
 
     String tag_string_req = "req_register";
     SwipeRefreshLayout swipeRefreshLayout;
@@ -94,14 +99,20 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         //  swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         //  swipeRefreshLayout.setOnRefreshListener(this);
 
-        callGroupDataList(clientId);
+        sharedPreferences1 = getActivity().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+        token = sharedPreferences1.getString("response", "123");
+
+        Log.d("TokenInPGF"," "+token);
+
+        callGroupDataList(token,clientId);
 
         return rootView;
     }
 
-    public void callGroupDataList(final String clientId ) {
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"getParticularClientsGroups"+"?client_Id="+ clientId;
-        StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
+    public void callGroupDataList(final String token,final String clientId ) {
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"memberStatusWithGroup"+"?token="+ token+"&clientId="+clientId;
+        StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 urlJsonObj, new Response.Listener<String>(){
 
             @Override
@@ -121,7 +132,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
                         for (int i = 0; i < jsonArray.length(); i++) {
 
-                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            JSONObject jsonObjectX = jsonArray.getJSONObject(i);
+                            JSONObject jsonObject1 = jsonObjectX.getJSONObject("clientGroup");
                             GroupListData groupListData = new GroupListData();
                             groupListData.setClientId(jsonObject1.getString("clientId"));
                             groupListData.setGroupId(jsonObject1.getString("groupId"));
@@ -130,13 +142,14 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                             groupListData.setCreatedDate(jsonObject1.getString("createdDate"));
                             groupListData.setImagePath(jsonObject1.getString("imagePath"));
                             groupListData.setLogoPath(jsonObject1.getString("logoPath"));
+                            groupListData.setMemberStatus(jsonObjectX.getString("memberStatus"));
                             groupArrayList.add(groupListData);
                         }
                         Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
-                       /*START listener for sending data to activity*/
+                        /*START listener for sending data to activity*/
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetGroups(groupArrayList);
-                            /*END listener for sending data to activity*/
+                        /*END listener for sending data to activity*/
 
                         mainGroupAdapter1 = new MainGroupAdapter1(groupArrayList,getContext());
                         groupList.setAdapter(mainGroupAdapter1);
@@ -150,7 +163,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                 catch(JSONException e){
                     // If an error occurs, this prints the error to the log
                     e.printStackTrace();
-                    callGroupDataList(clientId);
+                    callGroupDataList(token,clientId);
                 }
 
             }
@@ -163,7 +176,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        callGroupDataList(clientId);
+                        callGroupDataList(token,clientId);
                         Log.e("Group fragments", "Group fragments Error");
                     }
                 }
@@ -176,7 +189,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     /*START onRefresh() for SwipeRefreshLayout*/
     @Override
     public void onRefresh() {
-        callGroupDataList(clientId);
+        callGroupDataList(token,clientId);
     }
 
 

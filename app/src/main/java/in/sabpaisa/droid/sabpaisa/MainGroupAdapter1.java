@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -183,6 +184,10 @@ public class MainGroupAdapter1 extends
             }
         });
 
+        holder.joinmember.setText(c.getMemberStatus());
+        if(c.getMemberStatus().equals("Approved"))
+            holder.joinmember.setVisibility(View.INVISIBLE);
+
         holder.joinmember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,6 +204,11 @@ public class MainGroupAdapter1 extends
                 addMember(token,groupId,v,c);
             }
         });
+
+        if (c.getMemberStatus().equals("Blocked")){
+            holder.linearLayoutGroupItemList.setEnabled(false);
+            holder.linearLayoutGroupItemList.setAlpha(.5f);
+        }
 
 
     }
@@ -225,6 +235,7 @@ public class MainGroupAdapter1 extends
         public ImageView Group_Logo;
         public PhotoView Group_Image;
         public Button joinmember;
+        public LinearLayout linearLayoutGroupItemList;
 
         public MyViewHolder(View view) {
             super(view);
@@ -234,6 +245,7 @@ public class MainGroupAdapter1 extends
             joinmember = (Button) view.findViewById(R.id.joinmember);
             Group_Logo = (ImageView) view.findViewById(R.id.Group_Logo);
             Group_Image = (PhotoView) view.findViewById(R.id.Group_Image);
+            linearLayoutGroupItemList = (LinearLayout)view.findViewById(R.id.linearLayoutGroupItemList);
 
         }
     }
