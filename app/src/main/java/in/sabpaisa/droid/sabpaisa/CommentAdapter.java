@@ -21,6 +21,8 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.bumptech.glide.Glide;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.io.InputStream;
 import java.util.List;
 
@@ -94,7 +96,8 @@ Context mContext;
             alertDialog.show();
 
         }*/
-        holder.main_feed_group_description.setText(commentData.getCommentText());
+        //StringEscapeUtils.unescapeJava(commentData.getCommentText());
+        holder.main_feed_group_description.setText(StringEscapeUtils.unescapeJava(commentData.getCommentText()));
        // holder.main_feed_comment_image.setImageURI(Uri.parse(commentData.getUserImageUrl().toString()));
         holder.main_feed_comment_image.setImageUrl(commentData.getUserImageUrl(),imageloader);
         holder.main_feed_comment_image.setOnClickListener(new View.OnClickListener() {

@@ -46,6 +46,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.rockerhieu.emojicon.EmojiconEditText;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,6 +74,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     ImageView feedImage;
     CommentsDB dbHelper;
     private int TOTAL_PAGES = 3;
+    String i;
     ArrayList<CommentData> arrayList;
     String commentText;
     String date1;
@@ -165,8 +167,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         }
 
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
+            String urldisplay = urls[0];            Bitmap bitmap = null;
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 bitmap = BitmapFactory.decodeStream(in);
@@ -291,11 +292,20 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     public void onClickSendComment(View view) {
         group_details_text_view = (EditText) findViewById(R.id.commentadd);
+        StringEscapeUtils.escapeJava(group_details_text_view.getText().toString());
+        EditText etEmojiEditText = new EditText(this);
+        etEmojiEditText.setText("TYPE SOMETHING IN EMOJI");
+
+        String toServer = String.valueOf(group_details_text_view.getText());
+        String toServerUnicodeEncoded = StringEscapeUtils.escapeJava(toServer);
+
+        String serverResponse = "SOME RESPONSE FROM SERVER WITH UNICODE CHARACTERS";
+        String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
 
         //group_details_text_view.setInputType(InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE|InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 
 
-        group_details_text_view.setFilters(new InputFilter[]{new InputFilter() {
+       /* group_details_text_view.setFilters(new InputFilter[]{new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
                 if (source != null) {
@@ -306,12 +316,14 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 }
                 return null;
             }
-        }});
+        }});*/
         commentText = group_details_text_view.getText().toString();
+        i= StringEscapeUtils.escapeJava(commentText);
+        Log.d("commentText3","67667767 "+i);
 //        rv.smoothScrollBy(100,100);
 
         /*if (group_details_text_view.trim().length()==0)*/
-        if (commentText.trim().length()==0 )
+        if (i.trim().length()==0 )
         {
 
             Log.d("commentText2"," "+commentText);
@@ -329,7 +341,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         }
 
-        else if(commentText.equals("%"))
+        else if(i.equals("%"))
 
         {
             commentText.replace("%", "%25");
@@ -338,7 +350,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         }
 
 
-        else if(commentText.equals("&"))
+        else if(i.equals("&"))
 
         {
             commentText.replace("&", "%26");
@@ -350,7 +362,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
 
-        else if(commentText.trim().length()>1999)
+        else if(i.trim().length()>1999)
         {
             AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
             builder.setTitle("Comment");
@@ -398,7 +410,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     }
 
     private void callCommentService(final String feed_id, final String userAccessToken, final String comment_text) {
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text="  + URLEncoder.encode(comment_text);
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text="  + URLEncoder.encode(i);
 
         // String urlJsonObj = AppConfiguration.FeedAddComent + "/aaddFeedsComments/" +"?feed_id="+ feed_id+ "/" + 1 + "/" + commentText;
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
@@ -422,9 +434,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),
+                   /* Toast.makeText(getApplicationContext(),
                             "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_LONG).show();*/
                 }
                 // hidepDialog();
             }
@@ -440,7 +452,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 NetworkResponse response = error.networkResponse;
                 if (error instanceof ServerError && response != null) {
                     try {
-                        Toast.makeText(Proceed_Feed_FullScreen.this, "error11!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Proceed_Feed_FullScreen.this, "error11!", Toast.LENGTH_SHORT).show();
 
                         String res = new String(response.data,
                                 HttpHeaderParser.parseCharset(response.headers, "utf-8"));
@@ -449,10 +461,10 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     } catch (UnsupportedEncodingException e1) {
                         // Couldn't properly decode data to string
                         e1.printStackTrace();
-                        Toast.makeText(Proceed_Feed_FullScreen.this, "error22!", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(Proceed_Feed_FullScreen.this, "error22!", Toast.LENGTH_SHORT).show();
 
                     } catch (JSONException e2) {
-                        Toast.makeText(Proceed_Feed_FullScreen.this, "error33!", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(Proceed_Feed_FullScreen.this, "error33!", Toast.LENGTH_SHORT).show();
 
                         // returned data is not JSONObject?
                         e2.printStackTrace();
@@ -473,11 +485,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         String tag_string_req="req_register";
         String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "getFeedsComments?feed_id=" + feed_id;
 
-        try {
+        /*try {
             urlJsonObj = URLDecoder.decode(urlJsonObj, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
                 urlJsonObj, new Response.Listener<String>(){
@@ -575,7 +587,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                         NetworkResponse response = error.networkResponse;
                         if (error instanceof ServerError && response != null) {
                             try {
-                                Toast.makeText(Proceed_Feed_FullScreen.this, "error1!", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(Proceed_Feed_FullScreen.this, "error1!", Toast.LENGTH_SHORT).show();
 
                                 String res = new String(response.data,
                                         HttpHeaderParser.parseCharset(response.headers, "utf-8"));
@@ -584,10 +596,10 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                             } catch (UnsupportedEncodingException e1) {
                                 // Couldn't properly decode data to string
                                 e1.printStackTrace();
-                                Toast.makeText(Proceed_Feed_FullScreen.this, "error2!", Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(Proceed_Feed_FullScreen.this, "error2!", Toast.LENGTH_SHORT).show();
 
                             } catch (JSONException e2) {
-                                Toast.makeText(Proceed_Feed_FullScreen.this, "error3!", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(Proceed_Feed_FullScreen.this, "error3!", Toast.LENGTH_SHORT).show();
 
                                 // returned data is not JSONObject?
                                 e2.printStackTrace();

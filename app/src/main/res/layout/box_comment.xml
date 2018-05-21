@@ -3,8 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:layout_gravity="bottom"
-    android:layout_weight="1"
-    >
+    android:layout_weight="1" >
 
 
     <LinearLayout
@@ -14,15 +13,12 @@
         android:layout_weight="2"
         android:layout_marginTop="1dip"
         android:gravity="bottom"
-
         android:orientation="horizontal">
 
 
-        <!-- android:layout_width="395dp"
-        android:layout_height="42dp"-->
-        <!-- <android.support.design.widget.TextInputLayout >-->
 
-        <EditText
+
+        <io.github.rockerhieu.emojicon.EmojiconEditText
             android:id="@+id/commentadd"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
@@ -40,9 +36,8 @@
             android:textColorHint="@color/black_50"
             android:textSize="@dimen/text_size_small"
             android:imeOptions="actionSend"
-            android:digits=".\]`|^{}`|^{}0x26\u00AE\u0026abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890^{}:;-\n!@#$%^*()!'#$%'']()*+,‐./0:;=>?@[\]^_`{|}~¡¢£¤¥¦§©ª« ¬ ®ˉ°±²³´µ¶¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ\n  \"/>
-        <!--
-                  </android.support.design.widget.TextInputLayout>-->
+            />
+
     </LinearLayout>
 
     <ImageView

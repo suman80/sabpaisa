@@ -84,6 +84,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     CommentsDB dbHelper;
     private int TOTAL_PAGES = 3;
     String date1;
+    String i;
     String GroupsNm,GroupsDiscription,GroupsImg,GroupId,userAccessToken,response;
     private EndlessScrollListener scrollListener;
     ArrayList<CommentData> arrayList,feedArrayList;
@@ -313,12 +314,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
         StringEscapeUtils.escapeJava(group_details_text_view.getText().toString());
-        byte[] data = new byte[0];
-        try {
-            data = group_details_text_view.getText().toString().getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+
 
 
 
@@ -332,8 +328,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
 
         String commentText = group_details_text_view.getText().toString();
+        i=StringEscapeUtils.escapeJava(commentText);
+        Log.d("commentText3","67667767 "+i);
+
         // showpDialog(view);
-        if (commentText.trim().length()==0)
+        if (i.trim().length()==0)
         {
 
             Log.d("commentText2"," "+commentText);
@@ -350,7 +349,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             alertDialog.show();
 
         }
-        else if(commentText.equals("%"))
+        else if(i.equals("%"))
 
         {
             commentText.replace("%", "%25");
@@ -359,7 +358,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         }
 
 
-        else if(commentText.equals("&"))
+        else if(i.equals("&"))
 
         {
             commentText.replace("&", "%26");
@@ -369,7 +368,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         }
 
 
-        else if(commentText.length()>1999)
+        else if(i.length()>1999)
         {
             AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Group_FullScreen.this);
             builder.setTitle("Comment");
@@ -397,9 +396,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     private void callCommentService(final String GroupId, final String userAccessToken, final String comment_text) {
 
 
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(comment_text)
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" +URLEncoder.encode(i)
                 ;
-
+        Log.d("242424", urlJsonObj);
 
 
 
@@ -494,11 +493,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";
         String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getGroupsComments?group_id=" + GropuId;
-        try {
-            urlJsonObj = URLDecoder.decode(urlJsonObj, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+
+        //StringEscapeUtils.unescapeJava(String text)
+
 
         //urlJsonObj.replaceAll("%", "%25");
 
@@ -507,11 +504,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
 /////////////////////////////////
-        try {
-            encodedUrl = java.net.URLDecoder.decode(urlJsonObj,"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+
 
         //urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
 
