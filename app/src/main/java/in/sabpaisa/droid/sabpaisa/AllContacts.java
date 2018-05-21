@@ -4,9 +4,14 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -15,6 +20,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +33,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -48,6 +58,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,6 +69,7 @@ import java.util.Set;
 import in.sabpaisa.droid.sabpaisa.Adapter.AllContactsAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.ContactVO;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 
 public class AllContacts extends AppCompatActivity {
@@ -71,21 +83,26 @@ public class AllContacts extends AppCompatActivity {
     Toolbar toolbar;
     String contact;
     JSONObject object1;
+    Map<String, String> mapNameNumber;
     String key;
     Button invite;
     ContactVO contactVO;
     String name;
     int counter;
+    MaterialSearchView searchView;
+    ArrayList<ContactVO> contactVOList;
+    AllContactsAdapter allContactsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_contacts);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                finish();
             }
         });
         pDialog = new ProgressDialog(AllContacts.this);
@@ -95,6 +112,8 @@ public class AllContacts extends AppCompatActivity {
         pDialog.setCancelable(false);
         pDialog.show();
         mListView = (ShimmerRecyclerView) findViewById(R.id.rvContacts);
+
+        searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
         updateBarHandler = new Handler() ;
         // Since reading contacts takes more time, let's run it on a separate thread.
@@ -108,6 +127,57 @@ public class AllContacts extends AppCompatActivity {
             }
         }).start();
         Log.d("BeforeFunction",""+contactList);
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+
+                allContactsAdapter = new AllContactsAdapter(contactVOList,getApplicationContext());
+                mListView.setAdapter(allContactsAdapter);
+                allContactsAdapter.notifyDataSetChanged();
+            }
+        });
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                if (newText !=null && !newText.isEmpty()){
+                    ArrayList<ContactVO> newcontactVOArrayList = new ArrayList<>();
+
+                    for (ContactVO items : contactVOList){
+                        if (items.ContactName.toLowerCase().contains(newText.toLowerCase())){
+                            newcontactVOArrayList.add(items);
+                        }
+                    }
+                    allContactsAdapter = new AllContactsAdapter(newcontactVOArrayList,getApplicationContext());
+                    mListView.setAdapter(allContactsAdapter);
+                    allContactsAdapter.notifyDataSetChanged();
+
+
+                }else {
+                    allContactsAdapter = new AllContactsAdapter(contactVOList,getApplicationContext());
+                    mListView.setAdapter(allContactsAdapter);
+                    allContactsAdapter.notifyDataSetChanged();
+                }
+
+                return true;
+            }
+        });
+
+
+
+
     }
 
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
@@ -144,6 +214,7 @@ public class AllContacts extends AppCompatActivity {
 
         contactList = new ArrayList<String>();
         nameList = new ArrayList<String>();
+        mapNameNumber = new HashMap<String, String>();
         String phoneNumber = null;
         String email = null;
 
@@ -203,32 +274,46 @@ public class AllContacts extends AppCompatActivity {
                         p4=p3.replace(")","");
                         p5=p4.replace("-","");
 
+                        while(p5.startsWith("0"))
+                            p5=p5.substring(1);
+
                         int n = contactList.size();
                         int m=nameList.size();
-
+                        /////////////////////test/////////////////////////
+                        Log.d("RAJSIZE1234", m+"");
+                        ////////////////////////test////////////////////
                         Set<String> s = new LinkedHashSet<String>(contactList);
                         Set<String> p = new LinkedHashSet<String>(nameList);
                         n = removeDuplicates(contactList, n);
-                        for (int i = 0; i < m; i++) {
-                            System.out.print(nameList.get(i) + " Separator");
-                            Log.d("CLashasdh", "" + nameList.get(i));
-                            // nameList.add(nameList.get(i));
-                            Log.d("ReplacinsNumber", "" + nameList);
-//                            contactVO.setContactName(name);
-                        }
+//                        for (int i = 0; i < m; i++) {
+//
+//                            System.out.print(nameList.get(i) + " Separator");
+//                            Log.d("RAJINLOOP", m+"");
+//                            Log.d("CLashasdh", "" + nameList.get(i));
+//                            // nameList.add(nameList.get(i));
+//                            Log.d("ReplacinsNumber", "" + nameList);
+////                            contactVO.setContactName(name);
+//                        }
 
                         Log.d("Replace+91Number", "" + nameList);
                         Log.d("Replace+91NAme", "" + p);
-                        for (int i = 0; i < n; i++) {
-                            System.out.print(contactList.get(i) + " Separator");
-                            Log.d("CLashasdh", "" + contactList.get(i));
-                        }
+//                        for (int i = 0; i < n; i++) {
+//                            System.out.print(contactList.get(i) + " Separator");
+//                            Log.d("CLashasdh", "" + contactList.get(i));
+//                        }
                         Log.d("Replace+91", "" + s);
                         Log.d("Replace+91", "" + p1);
-
+                        //////////////////Test/////////
+                        if(!contactList.contains(p5) && (name !=null && !name.isEmpty())){
+                            nameList.add(name);
+                            mapNameNumber.put(p5,name);
+                        }
+                        /////////////////Test//////////
                         contactList.add(p5);
-                        // nameList.add(name.toString());
-                        Log.d("nameList",String.valueOf(nameList));
+
+//                        Log.d("nameList",String.valueOf(nameList));
+
+                        Log.d("TESTING_LOOOP","TTTTTTTTTTT");
                         //Converting ArrayList to HashSet to remove duplicates
                         HashSet<String> listToSet = new HashSet<String>(contactList);
 //Creating Arraylist without duplicate commentborder
@@ -276,6 +361,8 @@ public class AllContacts extends AppCompatActivity {
                         }
                     }
                     phoneCursor.close();
+
+                    Log.d("phoneCursorClosed","YES");
 
                     // Read every email id associated with the contact
                     Cursor emailCursor = contentResolver.query(EmailCONTENT_URI, null, EmailCONTACT_ID + " = ?", new String[]{contact_id}, null);
@@ -331,21 +418,21 @@ public class AllContacts extends AppCompatActivity {
                 Log.d("Contactsresponse ", " " + response.toString());
                 try {
 
-                    ArrayList<ContactVO> contactVOList;
-                    AllContactsAdapter allContactsAdapter;
                     contactVOList=new ArrayList<ContactVO>();
                     JSONObject jObj = new JSONObject(String.valueOf(response));
                     String status = jObj.getString("status");
                     String response1 = jObj.getString("response");
                     Log.d("STATUS ", " " + status);
                     Log.d("STATUS1234567890", " " + response1);
-                    JsonArray jsonObject1 = new JsonObject().getAsJsonArray("response1");
-                    Log.d("tvji1145", " " + jsonObject1);
+//                    JsonArray jsonObject1 = new JsonObject().getAsJsonArray("response1");
+//                    Log.d("tvji1145", " " + jsonObject1);
                     object1 = jObj.getJSONObject("response");
                     Log.d("tvji1145", " " + object1);
                     Iterator<String> iterator = object1.keys();
                     Log.d("tvji11452", " " + iterator);
                     int count=0;
+
+                    Log.d("NAMELISTSIZE",nameList.size()+"");
                     while (iterator.hasNext()) {
                         key = iterator.next();
                         Log.d("UserContactList", "==>" + key);
@@ -367,14 +454,29 @@ public class AllContacts extends AppCompatActivity {
                             }
 
 
-                        for (int i=0; i<count; count++) {
-                            contactVO.setContactName(nameList.get(count).toString());
-                      }
+//                        for (int i=0; i<count; count++) {
+//                            contactVO.setContactName(nameList.get(count).toString());
+//                      }
+                        contactVO.setContactName(mapNameNumber.get(key.toString()));
                         contactVO.setContactNumber(key.toString());
                         contactVOList.add(contactVO);
                         count++;
                         Log.d("contactVOList",""+contactVOList);
+
+/*                        Collections.sort(contactVOList, new Comparator<ContactVO>() {
+                            @Override
+                            public int compare(ContactVO contactVO, ContactVO t1) {
+                                return contactVO.getContactName().compareTo(t1.getContactName());
+                            }
+                        });*/
+
                     }
+                    Collections.sort(contactVOList, new Comparator<ContactVO>() {
+                        @Override
+                        public int compare(ContactVO contactVO, ContactVO t1) {
+                            return contactVO.getContactName().compareTo(t1.getContactName());
+                        }
+                    });
                     allContactsAdapter = new AllContactsAdapter(contactVOList,getApplicationContext());
                     mListView.setAdapter(allContactsAdapter);
 
@@ -438,4 +540,26 @@ public class AllContacts extends AppCompatActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu,menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+
+        return true;
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (searchView.isSearchOpen()) {
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
+            finish();
+        }
+    }
+
+
 }

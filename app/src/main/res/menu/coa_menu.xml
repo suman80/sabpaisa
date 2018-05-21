@@ -46,7 +46,7 @@
             android:icon="@drawable/ic_action_searchicon"
             android:orderInCategory="101"
             android:title="Search"
-            app:showAsAction="collapseActionView|always" />
+            app:showAsAction="always" />
 
 
 

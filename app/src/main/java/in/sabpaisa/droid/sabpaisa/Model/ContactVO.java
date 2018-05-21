@@ -5,10 +5,10 @@ package in.sabpaisa.droid.sabpaisa.Model;
  */
 
 public class ContactVO  {
-    private String ContactImage;
-    private String ContactName;
-    private String ContactNumber;
-    private int InviteButtonVisibility;
+    public String ContactImage;
+    public String ContactName;
+    public String ContactNumber;
+    public int InviteButtonVisibility;
 
     public int getInviteButtonVisibility() {
         return InviteButtonVisibility;

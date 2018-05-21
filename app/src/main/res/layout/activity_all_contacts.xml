@@ -14,26 +14,38 @@
         android:orientation="vertical"
         android:layout_height="match_parent"
         >
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <FrameLayout
+            android:id="@+id/toolbar_container"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/bg_screen"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp"
-            app:navigationIcon="@drawable/ic_action_previousback"
-            app:title="Contacts"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:subtitleTextColor="@color/white"
-            app:titleTextAppearance="@style/toolBarStyle"
-            app:titleTextColor="@color/white" />
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/bg_screen"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:navigationIcon="@drawable/ic_action_previousback"
+                app:title="Contacts"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:subtitleTextColor="@color/white"
+                app:titleTextAppearance="@style/toolBarStyle"
+                app:titleTextColor="@color/white" />
+
+            <com.miguelcatalan.materialsearchview.MaterialSearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </FrameLayout>
+
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical">
             <com.cooltechworks.views.shimmer.ShimmerRecyclerView
                 android:id="@+id/rvContacts"
-
                 android:scrollbars="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
