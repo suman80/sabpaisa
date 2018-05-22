@@ -100,7 +100,10 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
             holder.invite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.d("AllContactsAdapter","PressedOutside");
+                    //Toast.makeText(mContext,"AllContactsAdapter--->Pressed",Toast.LENGTH_SHORT).show();
                     try {
+                        Log.d("AllContactsAdapter","PressedInside");
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("text/plain");
                         i.putExtra(Intent.EXTRA_SUBJECT, "SPApp");

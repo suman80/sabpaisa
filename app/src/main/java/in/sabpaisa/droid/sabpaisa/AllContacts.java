@@ -137,7 +137,7 @@ public class AllContacts extends AppCompatActivity {
             @Override
             public void onSearchViewClosed() {
 
-                allContactsAdapter = new AllContactsAdapter(contactVOList,getApplicationContext());
+                allContactsAdapter = new AllContactsAdapter(contactVOList,AllContacts.this);
                 mListView.setAdapter(allContactsAdapter);
                 allContactsAdapter.notifyDataSetChanged();
             }
@@ -160,13 +160,13 @@ public class AllContacts extends AppCompatActivity {
                             newcontactVOArrayList.add(items);
                         }
                     }
-                    allContactsAdapter = new AllContactsAdapter(newcontactVOArrayList,getApplicationContext());
+                    allContactsAdapter = new AllContactsAdapter(newcontactVOArrayList,AllContacts.this);
                     mListView.setAdapter(allContactsAdapter);
                     allContactsAdapter.notifyDataSetChanged();
 
 
                 }else {
-                    allContactsAdapter = new AllContactsAdapter(contactVOList,getApplicationContext());
+                    allContactsAdapter = new AllContactsAdapter(contactVOList,AllContacts.this);
                     mListView.setAdapter(allContactsAdapter);
                     allContactsAdapter.notifyDataSetChanged();
                 }
@@ -471,13 +471,13 @@ public class AllContacts extends AppCompatActivity {
                         });*/
 
                     }
-                    Collections.sort(contactVOList, new Comparator<ContactVO>() {
+                    /*Collections.sort(contactVOList, new Comparator<ContactVO>() {
                         @Override
                         public int compare(ContactVO contactVO, ContactVO t1) {
                             return contactVO.getContactName().compareTo(t1.getContactName());
                         }
-                    });
-                    allContactsAdapter = new AllContactsAdapter(contactVOList,getApplicationContext());
+                    });*/
+                    allContactsAdapter = new AllContactsAdapter(contactVOList,AllContacts.this);
                     mListView.setAdapter(allContactsAdapter);
 
                 } catch (JSONException e) {
