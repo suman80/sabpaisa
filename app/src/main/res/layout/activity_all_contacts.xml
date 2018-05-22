@@ -31,12 +31,12 @@
                 app:subtitleTextColor="@color/white"
                 app:titleTextAppearance="@style/toolBarStyle"
                 app:titleTextColor="@color/white" />
-
-            <com.miguelcatalan.materialsearchview.MaterialSearchView
+<!--Search code-->
+           <!-- <com.miguelcatalan.materialsearchview.MaterialSearchView
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                />-->
 
         </FrameLayout>
 

@@ -113,7 +113,8 @@ public class AllContacts extends AppCompatActivity {
         pDialog.show();
         mListView = (ShimmerRecyclerView) findViewById(R.id.rvContacts);
 
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        //Search Code
+        //searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
         updateBarHandler = new Handler() ;
         // Since reading contacts takes more time, let's run it on a separate thread.
@@ -128,7 +129,8 @@ public class AllContacts extends AppCompatActivity {
         }).start();
         Log.d("BeforeFunction",""+contactList);
 
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+        //Search Code
+        /*searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
 
@@ -174,7 +176,7 @@ public class AllContacts extends AppCompatActivity {
                 return true;
             }
         });
-
+*/
 
 
 
@@ -541,24 +543,25 @@ public class AllContacts extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu,menu);
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);
 
         return true;
-    }
+    }*/
 
 
     @Override
     public void onBackPressed() {
-        if (searchView.isSearchOpen()) {
-            searchView.closeSearch();
-        } else {
+        //Search Code
+//        if (searchView.isSearchOpen()) {
+//            searchView.closeSearch();
+//        } else {
             super.onBackPressed();
             finish();
-        }
+       // }
     }
 
 
