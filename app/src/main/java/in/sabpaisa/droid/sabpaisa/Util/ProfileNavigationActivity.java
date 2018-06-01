@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,6 +43,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 //import com.google.firebase.crash.FirebaseCrash;
 
 
@@ -81,6 +84,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     String clientId;
     String userImageUrl;
     public static String MYSHAREDPREFPNA = "mySharedPrefPNA";
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -89,7 +93,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         //CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_profile_navigation);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         layout = (LinearLayout) findViewById(R.id.ll_profile);
         userImage = (ImageView) findViewById(R.id.iv_userImage);
@@ -172,14 +176,14 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     mailId.requestFocus();
                     mailIdEdit.setText("Save");
                 } else if (mailIdEdit.getText().toString().equals("Save")) {
-                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                     if (isValidEmail(mailId.getText().toString().trim())) {
                         email = mailId.getText().toString().trim();
                         updateUserProfileEmail(userAccessToken, email);
                         mailId.setFocusable(false);
                     } else {
-                        Toast.makeText(getApplicationContext(), "Please enter correct email id", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileNavigationActivity.this, "Please enter correct email id", Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -194,7 +198,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
 
                 pickImage();
@@ -213,7 +217,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     addressEdit.setText("Save");
 
                 } else if (addressEdit.getText().toString().equals("Save")) {
-                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                     address = et_address.getText().toString();
                     updateUserProfileAddress(userAccessToken, address);
@@ -241,7 +245,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     tv_NameEdit.setText("Save");
 
                 } else if (tv_NameEdit.getText().toString().equals("Save")) {
-                    Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                     name = et_UserName.getText().toString();
                     Log.d("Usernameedit11","-->");
@@ -261,6 +265,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
 
         showProfileData();
+        progressBar.setVisibility(View.VISIBLE);
         showProfileImage();
 
 
@@ -314,6 +319,13 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                 Bitmap userImg = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
                 uploadBitmap(userImg);
+
+                progressDialog = new ProgressDialog(ProfileNavigationActivity.this);
+                progressDialog.setMessage("Loading Please Wait ...");
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+                progressDialog.setCanceledOnTouchOutside(false);
+
             }
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
@@ -334,7 +346,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     * */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 
@@ -356,7 +368,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
                             if (status.equals("success")) {
 
-
+                                if (progressDialog.isShowing()) {
+                                    progressDialog.dismiss();
+                                    progressDialog.setCanceledOnTouchOutside(true);
+                                    progressDialog.setCancelable(true);
+                                }
 
 
                                 AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
@@ -382,10 +398,15 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                                 });
 
                                 // Showing Alert Message
-//                    alertDialog.show();
+                    alertDialog.show();
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "Image Upload Failed !", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ProfileNavigationActivity.this, "Image Upload Failed !", Toast.LENGTH_SHORT).show();
+                                if (progressDialog.isShowing()) {
+                                    progressDialog.dismiss();
+                                    progressDialog.setCanceledOnTouchOutside(true);
+                                    progressDialog.setCancelable(true);
+                                }
                             }
 
                         } catch (JSONException e) {
@@ -396,7 +417,13 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("Error In Upoload",error.toString());
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                            progressDialog.setCanceledOnTouchOutside(true);
+                            progressDialog.setCancelable(true);
+                        }
+                        Toast.makeText(ProfileNavigationActivity.this,"Image Upload Failed !" , Toast.LENGTH_SHORT).show();
                     }
                 }) {
 
@@ -449,13 +476,13 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     if (status.equals("success")) {
                         userName.setText(object.getJSONObject("response").getString("fullName").toString());
                         mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
- x=object.getJSONObject("response").getString("emailId").toString();
+                        x=object.getJSONObject("response").getString("emailId").toString();
                         if (x.equals("null")) {
                             mailId.setText("Enter your EmailId");
                         } else {
                             mailId.setText(x);
                         }
-String a=object.getJSONObject("response").getString("address").toString();
+                        String a=object.getJSONObject("response").getString("address").toString();
                         if (a.equals("null")) {
                             et_address.setText("Enter Your Address ");
                         } else {
@@ -545,16 +572,20 @@ String a=object.getJSONObject("response").getString("address").toString();
                 Log.d(TAG, "Register Response: " + response1.toString());
 
                 try {
-                    progressBar.setVisibility(View.GONE);
                     JSONObject object = new JSONObject(response1);
                     String response = object.getString("response");
                     String status = object.getString("status");
 
                     if (status.equals("success")) {
                         //Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
-
+                        progressBar.setVisibility(View.GONE);
                         userImageUrl = object.getJSONObject("response").getString("userImageUrl");
-                        new DownloadImageTask(userImage).execute(userImageUrl);
+                        //new DownloadImageTask(userImage).execute(userImageUrl);
+                        Glide.with( ProfileNavigationActivity.this)
+                                .load(userImageUrl)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .error(R.drawable.default_users)
+                                .into(userImage);
 
                     } else {
                        // Toast.makeText(getApplicationContext(), "Cannot able to load image!", Toast.LENGTH_SHORT).show();

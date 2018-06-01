@@ -63,6 +63,7 @@ import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.braunster.chatsdk.network.BNetworkManager;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.crashlytics.android.Crashlytics;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
@@ -1316,9 +1317,9 @@ Log.d("xmailidmain",""+x);*/
                     Log.d("userImageUrlfilter",""+userImageUrl);
                     //Glide.with(MainActivity.this).load(userImageUrl).error(R.drawable.default_users).into(niv);
 
-                    Glide
-                            .with(MainActivity.this)
+                    Glide.with(MainActivity.this)
                             .load(userImageUrl)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .error(R.drawable.default_users)
                             .into(niv);
 

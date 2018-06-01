@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,6 +43,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,7 +79,7 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
     String clientId;
     String userImageUrl;
     public static String MYSHAREDPREFPNA = "mySharedPrefPNA";
-
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,6 +251,7 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
 
 
         showProfileData();
+        progressBar.setVisibility(View.VISIBLE);
         showProfileImage();
 
 
@@ -292,6 +296,11 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                 Bitmap userImg = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
                 uploadBitmap(userImg);
+                progressDialog = new ProgressDialog(ProfileNavigationActivitySkip.this);
+                progressDialog.setMessage("Loading Please Wait ...");
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+                progressDialog.setCanceledOnTouchOutside(false);
             }
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
@@ -312,7 +321,7 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
     * */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 
@@ -332,6 +341,11 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                             Log.d(TAG, "IMG_Res" + obj);
                             final String status = obj.getString("status");
                             if (status.equals("success")) {
+                                if (progressDialog.isShowing()) {
+                                    progressDialog.dismiss();
+                                    progressDialog.setCanceledOnTouchOutside(true);
+                                    progressDialog.setCancelable(true);
+                                }
 
                                 AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
 
@@ -359,6 +373,12 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                                 alertDialog.show();
 
                             } else {
+                                if (progressDialog.isShowing()) {
+                                    progressDialog.dismiss();
+                                    progressDialog.setCanceledOnTouchOutside(true);
+                                    progressDialog.setCancelable(true);
+                                }
+
                                 Toast.makeText(getApplicationContext(), "Image Upload Failed !", Toast.LENGTH_SHORT).show();
                             }
 
@@ -370,7 +390,13 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                            progressDialog.setCanceledOnTouchOutside(true);
+                            progressDialog.setCancelable(true);
+                        }
+
+                        Toast.makeText(getApplicationContext(),"Image Upload Failed !" , Toast.LENGTH_SHORT).show();
                     }
                 }) {
 
@@ -424,7 +450,7 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
 
                         userName.setText(object.getJSONObject("response").getString("fullName").toString());
                         mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
-String x=object.getJSONObject("response").getString("emailId").toString();
+                        String x=object.getJSONObject("response").getString("emailId").toString();
                         if ( x.equals(" null")) {
                             mailId.setText("Enter Your EmailID");
                         } else {
@@ -530,7 +556,14 @@ String x=object.getJSONObject("response").getString("emailId").toString();
                       //  Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                         userImageUrl = object.getJSONObject("response").getString("userImageUrl");
-                        new DownloadImageTask(userImage).execute(userImageUrl);
+                        //new DownloadImageTask(userImage).execute(userImageUrl);
+
+                        Glide.with( ProfileNavigationActivitySkip.this)
+                                .load(userImageUrl)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .error(R.drawable.default_users)
+                                .into(userImage);
+
 
                     } else {
                         Toast.makeText(getApplicationContext(), "Cannot able to load image!", Toast.LENGTH_SHORT).show();

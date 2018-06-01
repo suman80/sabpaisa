@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +39,8 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +54,7 @@ import in.sabpaisa.droid.sabpaisa.Model.ProfileModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
 public class ProfileNavigationActivityFullViewProceed extends AppCompatActivity {
@@ -69,7 +73,7 @@ public class ProfileNavigationActivityFullViewProceed extends AppCompatActivity 
     String userImageUrl;
     String state,clientImageURLPath,clientName,ClientId;
     public static String MYSHAREDPREFPNA="mySharedPrefPNA";
-
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -233,6 +237,7 @@ Log.d("ProfileFullViewProceed","state"+state);
 
 
         showProfileData();
+        progressBar.setVisibility(View.VISIBLE);
         showProfileImage();
         //toolbar.setTitle("Profile");
         toolbar.setTitleTextColor(getResources().getColor(R.color.black));
@@ -300,6 +305,12 @@ Log.d("ProfileFullViewProceed","state"+state);
                 Bitmap userImg=MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
                 uploadBitmap(userImg);
+                progressDialog = new ProgressDialog(ProfileNavigationActivityFullViewProceed.this);
+                progressDialog.setMessage("Loading Please Wait ...");
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+                progressDialog.setCanceledOnTouchOutside(false);
+
             }
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
@@ -320,7 +331,7 @@ Log.d("ProfileFullViewProceed","state"+state);
     * */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 
@@ -340,6 +351,12 @@ Log.d("ProfileFullViewProceed","state"+state);
                             Log.d(TAG,"IMG_Res"+obj);
                             final String status = obj.getString("status");
                             if (status.equals("success")) {
+
+                                if (progressDialog.isShowing()) {
+                                    progressDialog.dismiss();
+                                    progressDialog.setCanceledOnTouchOutside(true);
+                                    progressDialog.setCancelable(true);
+                                }
 
                                 AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivityFullViewProceed.this, R.style.MyDialogTheme).create();
 
@@ -367,6 +384,11 @@ Log.d("ProfileFullViewProceed","state"+state);
                                 alertDialog.show();
 
                             }else {
+                                if (progressDialog.isShowing()) {
+                                    progressDialog.dismiss();
+                                    progressDialog.setCanceledOnTouchOutside(true);
+                                    progressDialog.setCancelable(true);
+                                }
                                 Toast.makeText(getApplicationContext(),"Image Upload Failed !",Toast.LENGTH_SHORT).show();
                             }
 
@@ -378,7 +400,12 @@ Log.d("ProfileFullViewProceed","state"+state);
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                            progressDialog.setCanceledOnTouchOutside(true);
+                            progressDialog.setCancelable(true);
+                        }
+                        Toast.makeText(getApplicationContext(), "Image Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
                 }) {
 
@@ -545,7 +572,14 @@ Log.d("ProfileFullViewProceed","state"+state);
 
 
                         userImageUrl =object.getJSONObject("response").getString("userImageUrl");
-                        new ProfileNavigationActivityFullViewProceed.DownloadImageTask(userImage).execute(userImageUrl);
+                        //new ProfileNavigationActivityFullViewProceed.DownloadImageTask(userImage).execute(userImageUrl);
+
+                        Glide.with( ProfileNavigationActivityFullViewProceed.this)
+                                .load(userImageUrl)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .error(R.drawable.default_users)
+                                .into(userImage);
+
 
                     }else {
                        // Toast.makeText(getApplicationContext(),"Cannot able to load image!",Toast.LENGTH_SHORT).show();
