@@ -105,6 +105,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     private ViewPager viewPager;
     TextView mSearchText;
     String name,mobNumber;
+     static boolean active = false;
+     String ts;
 
     ActionBarDrawerToggle toggle;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -140,7 +142,6 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         paymentButton = (LinearLayout)findViewById(R.id.payment_button);
         chatButton = (LinearLayout)findViewById(R.id.chat);
         memberButton = (LinearLayout)findViewById(R.id.members);
@@ -184,11 +185,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
         viewPager.setOffscreenPageLimit(3);
         setupViewPager(viewPager);
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-
         landingPage =getIntent().getStringExtra("landingPage");
         Log.d("page",""+landingPage);
 /*
@@ -608,6 +606,7 @@ mailIdniv.setText(x);
 
             Intent intent=new Intent(FullViewOfClientsProceed.this,MainActivity.class);
             intent.putExtra("clientId",ClientId);
+            intent.putExtra("ts",ts);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
@@ -1087,7 +1086,7 @@ mailIdniv.setText("");
                 } else if (error instanceof ServerError) {
                     //TODO
                 } else if (error instanceof NetworkError) {
-                    //TODO
+                    //TODOonb
                 } else if (error instanceof ParseError) {
                     //TODO
                 }
@@ -1111,6 +1110,51 @@ mailIdniv.setText("");
 
     }
 
+/*      @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Store our shared preference
+                SharedPreferences.Editor editor = getSharedPreferences("OURINFO",MODE_PRIVATE).edit();
+
+       *//* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+        Editor ed = sp.edit();
+       *//* editor.putBoolean("active", true);
+       Log.d("ARCOnStart","----");
+        editor.commit();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences(MySharedPrefOnFullViewOfClientProceed, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", false);
+        ed.putString("ts", ts);
+        Log.d("ARCOnStop","--");
+
+        ed.commit();
+        Long tsLong = System.currentTimeMillis()/1000;
+      ts = tsLong.toString();
+        Log.d("timemainactiviu",""+ts);
+
+}
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", false);
+        Log.d("ARCOnResume" ,"----");
+
+        ed.commit();
+
+    }*/
 }
 
 

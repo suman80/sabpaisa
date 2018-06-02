@@ -4,7 +4,14 @@
     >
 
     <group>
-
+        <item android:icon="@drawable/notification"
+            android:title="Notification"
+            app:showAsAction="always"
+            android:id="@+id/bbell"
+            app:actionLayout="@layout/custom_notification_icon"
+            android:visible="false"
+            android:orderInCategory="100"
+            />
       <!--  <item
             android:id="@+id/three_dot_menu"
             android:icon="@drawable/ic_more_vert_white_24dp"

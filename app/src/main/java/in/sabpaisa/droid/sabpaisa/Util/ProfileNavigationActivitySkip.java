@@ -452,13 +452,13 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                         mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
                         String x=object.getJSONObject("response").getString("emailId").toString();
                         if ( x.equals(" null")) {
-                            mailId.setText("Enter Your EmailID");
+                            mailId.setText("");
                         } else {
                             mailId.setText(x);
                         }
 
                         if (object.getJSONObject("response").getString("address").toString().equals("null")) {
-                            et_address.setText("Enter Your Address");
+                            et_address.setText("");
                         } else {
                             et_address.setText(object.getJSONObject("response").getString("address").toString());
                         }

@@ -84,7 +84,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     CommentsDB dbHelper;
     private int TOTAL_PAGES = 3;
     String date1;
-    String i;
+    String i,ts;
+    public static String MySharedPRoceedGroupFullScreen="mySharedPrefForTime";
+
     String GroupsNm,GroupsDiscription,GroupsImg,GroupId,userAccessToken,response;
     private EndlessScrollListener scrollListener;
     ArrayList<CommentData> arrayList,feedArrayList;
@@ -767,4 +769,51 @@ public void privatefeeds(final String groupId)
         }
     });
 }*/
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Store our shared preference
+        SharedPreferences.Editor editor = getSharedPreferences("OURINFO",MODE_PRIVATE).edit();
+
+       /* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+        Editor ed = sp.edit();
+       */ editor.putBoolean("active", true);
+        Log.d("ARCOnStartgroup","----");
+        editor.commit();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences(MySharedPRoceedGroupFullScreen, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", false);
+        ed.putString("ts", ts);
+        Log.d("ARCOnStopGroup","--");
+
+        ed.commit();
+        Long tsLong = System.currentTimeMillis()/1000;
+        ts = tsLong.toString();
+        Log.d("ARCTimeGroup",""+ts);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", false);
+        Log.d("ARCOnResumeGroup" ,"----");
+
+        ed.commit();
+
+    }
+
 }

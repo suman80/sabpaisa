@@ -36,6 +36,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textIsSelectable="true"
+
                 android:text="Messahe texx"
                 android:layout_centerVertical="true"
                 android:id="@+id/txt_content"

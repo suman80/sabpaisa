@@ -35,10 +35,12 @@
             </menu>
         </item>-->
 
-       <!-- <item android:icon="@drawable/bell"
+        <item android:icon="@drawable/notification"
             android:title="Notification"
+            android:actionLayout="@layout/custom_notification_icon"
+            android:visible="false"
             app:showAsAction="always"
-            />-->
+            />
 
         <!--<item
             android:id="@+id/action_searchSP"

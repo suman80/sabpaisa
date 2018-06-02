@@ -55,13 +55,16 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -74,6 +77,12 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     ImageView feedImage;
     CommentsDB dbHelper;
     private int TOTAL_PAGES = 3;
+    String ts1;
+    Timestamp ts;
+
+    String dataTime1;
+    int mHour;
+    int mMinute;
     String i;
     ArrayList<CommentData> arrayList;
     String commentText;
@@ -82,8 +91,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView rv;
     Toolbar toolbar;
+    String dataTime;
     ScrollView scrollView;
     EndlessScrollListener scrollListener;
+    public static String MySharedPrefProceedFeedFullScreen="mySharedPrefFortime";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,79 +227,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         }, 100L);
     }
 
-/*
-    private void loadCommentListView(ArrayList<CommentData> arrayList) {
-         rv = (RecyclerView) findViewById(R.id.recycler_view_group_details_comment);
-        final CommentAdapter ca = new CommentAcommentadddapter(arrayList);
-        rv.setAdapter(ca);
-       // rv.addFocusables(onNavigateUp(),arrayList,);setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        //llm.setReverseLayout(false);
-        llm.setStackFromEnd(true);
-       // rv.smoothScrollBy(100,100);
-        rv.setLayoutManager(llm);
-        rv.addItemDecoration(new SimpleDividerItemDecoration(this));
-*/
-/*
-        rv.addItemDecoration(new RecyclerView.ItemDecoration() {
-
-            private int textSize = 50;
-            private int groupSpacing = 100;
-            private int itemsInGroup = 3;
-
-            private Paint paint = new Paint();
-            {
-                paint.setTextSize(textSize);
-            }
-
-
-            @Override
-            public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                for (int i = 0; i < parent.getChildCount(); i++) {
-                    View view = parent.getChildAt(i);
-
-                    int position = parent.getChildAdapterPosition(view);
-                    if (position % itemsInGroup == 0) {
-                       // c.drawText("Group " + (position / itemsInGroup + 1), view.getLeft(),
-                         //       view.getTop() - groupSpacing / 2 + textSize / 3, paint);
-                        c.drawText("Group " + date1, view.getLeft(),
-                                view.getTop() - groupSpacing / 2 + textSize / 3, paint);
-                    }
-                }
-            }
-
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                if (parent.getChildAdapterPosition(view) % itemsInGroup == 0) {
-                    outRect.set(0, groupSpacing, 0, 0);
-                }
-            }
-        });*//*
-
-
-        rv.setLayoutManager(llm);
-
-        rv.smoothScrollToPosition(ca.getItemCount());
-       rv.setNestedScrollingEnabled(false);
-
-     */
-/*   rv.post(new Runnable() {
-            @Override
-            public void run() {
-                // Call smooth scroll
-                rv.smoothScrollToPosition(ca.getItemCount() - 1);
-            } });*//*
-
-    }
-*/
-
-
-    //EditText group_details_text_view = null;
-
-
-
     EditText group_details_text_view ;
 
     public void onClickSendComment(View view) {
@@ -302,27 +241,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         String serverResponse = "SOME RESPONSE FROM SERVER WITH UNICODE CHARACTERS";
         String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
 
-        //group_details_text_view.setInputType(InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE|InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-
-
-       /* group_details_text_view.setFilters(new InputFilter[]{new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                if (source != null) {
-                    String s = source.toString();
-                    if (s.contains("\n")) {
-                        return s.replaceAll("\n", "");
-                    }
-                }
-                return null;
-            }
-        }});*/
         commentText = group_details_text_view.getText().toString();
         i= StringEscapeUtils.escapeJava(commentText);
         Log.d("commentText3","67667767 "+i);
 //        rv.smoothScrollBy(100,100);
 
-        /*if (group_details_text_view.trim().length()==0)*/
         if (i.trim().length()==0 )
         {
 
@@ -384,27 +307,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             Log.e("CommentDatafeeddetaida ", "CommentData " + commentText);
         }
 
-/*
-        if (commentText=="null")
-            Log.d("commentText1"," "+commentText);
-        {
-
-            Log.d("commentText2"," "+commentText);
-            AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
-            builder.setTitle("Comment");
-            builder.setMessage("Hey,looks like you forgot to enter text.");
-            builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-
-        }*/
-
-
         Log.d("commentText3"," "+commentText);
 
     }
@@ -444,11 +346,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                /*VolleyLog.d("Group Details", "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(Proceed_Feed_FullScreen.this, "error!", Toast.LENGTH_SHORT).show();
-*/
+
                 NetworkResponse response = error.networkResponse;
                 if (error instanceof ServerError && response != null) {
                     try {
@@ -485,12 +383,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         String tag_string_req="req_register";
         String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "getFeedsComments?feed_id=" + feed_id;
 
-        /*try {
-            urlJsonObj = URLDecoder.decode(urlJsonObj, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
-
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
                 urlJsonObj, new Response.Listener<String>(){
 
@@ -522,25 +414,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                             groupData.setCommentText(jsonObject1.getString("commentText"));
                             groupData.setCommentName(jsonObject1.getString("commentByName"));
 
-                            String dataTime = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
-                            Log.d("dataTimePFF"," "+dataTime);
-
-                            /*String str = jsonArray.getString(i);
-                            Log.d("444feed", str);
-                            ///String userImageUrl=jsonObject1.getString("userImageUrl");
-                             String userImageUrl1=groupData.getUserImageUrl().toString();
-                            //.split(" ")[1].replace(".0", "");
-                           // Log.d("dataimageurlfeed1111"," "+userImageUrl);
-
-
-                            JSONObject jsonObject2=new JSONObject(userImageUrl1);
-                            groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
-                            String image=groupData.getUserImageUrl().toString();
-                            Log.d("imageuserfeed"," "+image);
-                            Log.d("imageuserfeed11"," "+userImageUrl1);
-
-
-*/
+                             dataTime1 = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
+                            Log.d("dataTimePFF"," "+dataTime1);
 
                               String str = jsonArray.getString(i);
                             Log.d("444feed", str);
@@ -558,7 +433,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                             Log.d("imageuserfeed11"," "+userImageUrl);
 
                             try {
-                                groupData.setComment_date(getDate(Long.parseLong(dataTime)));
+                                groupData.setComment_date(getDate(Long.parseLong(dataTime1)));
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
@@ -627,8 +502,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
                     groupData.setCommentText(colorObj.getString("commentText"));
-                    String dataTime = colorObj.getString("commentDate");//.split(" ")[1].replace(".0", "");
+                     dataTime = colorObj.getString("commentDate");//.split(" ")[1].replace(".0", "");
                     groupData.setComment_date(dataTime);
+
+                    Log.d("ARCdatatime",""+dataTime);
+
 // groupData.setPage(Integer.valueOf(String.valueOf(i/10+1)));
 
                     dbHelper.insertComment(colorObj.getString("commentId"), colorObj.getString("comment_text"), colorObj.getString("comment_date"), colorObj.getString("comment_by"), colorObj.getString("group_id"), Integer.valueOf(String.valueOf(i / 10 + 1)));
@@ -644,12 +522,14 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            Log.d("ARcOnPReexecute","----");
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             swipeRefreshLayout.setRefreshing(false);
+             Log.d("ARcOnPReexecute","----");
             loadCommentListView(arrayList);
         }
 
@@ -662,36 +542,63 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
          date1 = DateFormat.format("dd/MM ", cal).toString();
         Log.d("date11",""+date1);
         return date;
-
-       /* Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM HH:mm:ss.SS");
-        String strDate = sdf.format(cal.getTime());
-        Log.d("CurrentdateFormat: ","" + strDate);
-
-        SimpleDateFormat sdf1 = new SimpleDateFormat()
-        Date d = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(date);
-
-        Date date = sdf1.parse(strDate);
-        String string=sdf1.format(date);
-        return string;
-
-      //  Calendar cal = Calendar.getInstance();
-        sdf1.applyPattern("dd/MM HH:mm");
-
-        cal.setTime(d);
-        int month = cal.get(Calendar.MONTH);
-
-        return month + 1;*/
-    }
+        }
 
     @Override
     public void onRefresh() {
         callGetCommentList(feed_id);
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences preferences = getSharedPreferences(Proceed_Feed_FullScreen.MySharedPrefProceedFeedFullScreen, 0);
+        preferences.edit().remove("ts").commit();
+        // Store our shared preference
+        SharedPreferences.Editor editor = getSharedPreferences("OURINFO",MODE_PRIVATE).edit();
 
+       /* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+        Editor ed = sp.edit();
+       */ editor.putBoolean("active", true);
+        Log.d("ARCOnStartFeed","----");
+        editor.commit();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //Date object
+        Date date= new Date();
+        //getTime() returns current time in milliseconds
+        long time = date.getTime();
+        //Passed the milliseconds to constructor of Timestamp class
+        ts = new Timestamp(time);
+        ts1= String.valueOf(ts);
+        System.out.println("Current Time Stamp: "+ts);
+        Log.d("ARCTimeFeed",""+time);
+        Log.d("ARCTimeFeedts1",""+ts1);
 
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences(MySharedPrefProceedFeedFullScreen, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", false);
+        ed.putString("ts", String.valueOf(Long.valueOf(time)));
+        Log.d("ARCTimeFeedts111",""+String.valueOf(ts));
+        Log.d("ARCOnStopFeed","--"+String.valueOf(Long.valueOf(time)));
+        ed.commit();
+         }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", false);
+        Log.d("ARCOnResumeFeed" ,"----");
+        ed.commit();
+
+        }
 }
 
 

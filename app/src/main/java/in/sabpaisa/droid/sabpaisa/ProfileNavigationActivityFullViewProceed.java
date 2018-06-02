@@ -462,13 +462,13 @@ Log.d("ProfileFullViewProceed","state"+state);
                         mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
                        String x=object.getJSONObject("response").getString("emailId").toString();
                         if (x.equals("null")) {
-                            mailId.setText("Enter your EmailId");
+                            mailId.setText("");
                         } else {
                             mailId.setText(x);
                         }
                         String a=object.getJSONObject("response").getString("address").toString();
                         if (a.equals("null")) {
-                            et_address.setText("Enter Your Address ");
+                            et_address.setText("");
                         } else {
                             et_address.setText(a);
                         }

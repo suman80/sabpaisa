@@ -41,17 +41,11 @@
 
 
 
-       <!-- <item
-            android:id="@+id/nav_clean_data"
-            android:icon="@drawable/ic_action_cleandata"
-            android:title="Clear Data"
-            />-->
-
 
         <item
             android:id="@+id/nav_Contacts"
             android:title="Invite"
-            android:visible="true"
+
             android:icon="@drawable/ic_action_contactsss"/>
 
         <item

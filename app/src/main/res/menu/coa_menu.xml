@@ -35,18 +35,24 @@
             </menu>
         </item>-->
 
-    <!--    <item android:icon="@drawable/bell"
-            android:title="Notification"
-            app:showAsAction="always"
 
-            />-->
 
         <item
             android:id="@+id/action_searchSP"
             android:icon="@drawable/ic_action_searchicon"
             android:orderInCategory="101"
             android:title="Search"
-            app:showAsAction="always" />
+            app:showAsAction="collapseActionView|always" />
+    <item android:icon="@drawable/notification"
+        android:title="Notification"
+        app:showAsAction="always"
+        app:actionLayout="@layout/custom_notification_icon"
+        android:visible="false"
+
+        android:orderInCategory="102"
+
+
+        />
 
 
 

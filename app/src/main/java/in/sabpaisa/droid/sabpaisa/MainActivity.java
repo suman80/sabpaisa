@@ -9,9 +9,12 @@ import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +25,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
@@ -77,6 +81,8 @@ import com.google.android.gms.security.ProviderInstaller;
 import com.google.firebase.analytics.FirebaseAnalytics;
 //import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 import com.wangjie.androidbucket.utils.ABTextUtil;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -85,21 +91,31 @@ import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
+import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.TransactionreportModelClass;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
@@ -116,7 +132,9 @@ import in.sabpaisa.droid.sabpaisa.Util.ShareActivity;
 import io.fabric.sdk.android.Fabric;
 
 import static android.view.View.GONE;
+import static com.mikepenz.materialize.util.UIUtils.convertDpToPixel;
 import static in.sabpaisa.droid.sabpaisa.CommentAdapterDatabase.context;
+import static in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment.MYSHAREDPREFProceed;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
@@ -128,8 +146,18 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     private CustomViewPager viewPager;
     private TabLayout tabLayout;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    ImageView niv;
+    ImageView niv,bell;
+    TextView notificationNumber;
+    String total= String.valueOf(0);
+    String posttime;
+    String time;
+     View menu_bell;
+    String img,imglogo,orgname,state;
     RequestQueue requestQueue;
+    int temp=0,tempfeeds=0;
+    String ts;
+    int sum = 0,sumfeeds=0;
+    String count,countfeeds,clntname;
     TextView usernameniv,mailIdniv;
     Toolbar toolbar;
     String n,m,name,mobNumber;
@@ -153,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     String x;
     String stateName,serviceName,ClientId;
     String stateName1,serviceName1,ClientId1;
-
+Handler mHandler;
     public  static  String MYSHAREDPREF="mySharedPref";
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
@@ -172,6 +200,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_navigation);
+        this.mHandler = new Handler();
+
+        this.mHandler.postDelayed(m_Runnable,5000);
 
         Fabric.with(this, new Crashlytics());
 
@@ -206,6 +237,20 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         Log.d("Sharedprefrencemat","-."+ClientId+stateName+serviceName);
         Log.d("Sharedprefrencemat","-."+ClientId+stateName+serviceName+n+m);
 
+        SharedPreferences sharedPreferences11 = getApplication().getSharedPreferences(Proceed_Feed_FullScreen.MySharedPrefProceedFeedFullScreen, Context.MODE_PRIVATE);
+
+        posttime = sharedPreferences11.getString("ts", "123");
+
+
+      /////  Long posttime1= Long.valueOf(posttime);
+
+//        Timestamp t =  new Timestamp( Long.valueOf(posttime) );
+
+        Log.d("ArcPosttime",""+posttime);
+
+      //  Log.d("ArcPosttime11",""+posttime1);
+  //      Log.d("ArcPosttime111",""+t);
+
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
@@ -227,52 +272,22 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
                // FirebaseCrash.report(e);
                 Crashlytics.logException(e);
             }
+
+
+
         }
-
-        //getUserIm(userAccessToken);
-        //new DownloadImageTask(nav).execute(userImageUrl);
-/*
-        Picasso.with(this).load(userImageUrl).into(nav);
-*/
-
-/*
-        Context context = getApplicationContext();
-
-// Create a new configuration
-        Configuration.Builder builder = new Configuration.Builder(context);
-
-// Perform any configuration steps (optional)
-        builder.firebaseRootPath("prod");
-
-// Initialize the Chat SDK
-        ChatSDK.initialize(builder.build());
-        UserInterfaceModule.activate(context);
-
-// Activate the Firebase module
-        FirebaseModule.activate();
-
-// File storage is needed for profile image upload and image messages
-        FirebaseFileStorageModule.activate();
-
-
-*/
-
-
+        Long tsLong = System.currentTimeMillis()/1000;
+        ts = tsLong.toString();
+        Log.d("timemainactiviu",""+ts);
 
         // This is used for the app custom toast and activity transition
         ChatSDKUiHelper.initDefault();
-
 // Init the network manager
         BNetworkManager.init(getApplicationContext());
-
-// Create a new adapter
+        // Create a new adapter
         BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
-
 // Set the adapter
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
-
-
-
 
         //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_drawer,
@@ -285,25 +300,14 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
        // ClientId=getIntent().getStringExtra("clientId");
-       // userImageUrl=getIntent().getStringExtra("userImageUrl");
-
-        /*Log.d("stateName11111"," "+stateName);
-        Log.d("serviceName1111"," "+serviceName);*/
-
         Log.d("CLIENTID(MainActivity)","-->"+ClientId);
         Log.d("userImageUrl(MainAhjhkn","-->"+userImageUrl);
-      /*  Intent intent=new Intent(MainActivity.this, FullViewOfClientsProceed.class);
-        intent.putExtra("userImageUrl",userImageUrl);*/
-
-
       //Firebase Analytics
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
         ClientData clientData=new ClientData();
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, clientData.getClientId());
        // bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, clientData.getClientName());
-
         //Logs an app event.
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
@@ -315,21 +319,14 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
         firebaseAnalytics.setSessionTimeoutDuration(500);
-
-
         //Sets the user ID property.
         firebaseAnalytics.setUserId(String.valueOf(clientData.getClientId()));
-
         //Sets a user property to a given value.
         //firebaseAnalytics.setUserProperty("Client",clientData.getClientName());
-
-
         // Firebase push notification
-
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
                 // checking for type intent filter
                 if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
                     // gcm successfully registered
@@ -351,10 +348,6 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         };
 
         displayFirebaseRegId();
-
-
-
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
@@ -418,19 +411,6 @@ onBackPressed();            }
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
         mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
-
-        /*stateName=getIntent().getStringExtra("STATENAME");
-        serviceName=getIntent().getStringExtra("SERVICENAME");*/
-   /*     ClientId=getIntent().getStringExtra("clientId");
-        userImageUrl=getIntent().getStringExtra("userImageUrl");
-
-        *//*Log.d("stateName11111"," "+stateName);
-        Log.d("serviceName1111"," "+serviceName);*//*
-
-        Log.d("CLIENTID(MainActivity)","-->"+ClientId);
-        Log.d("userImageUrl(MainAhjhkn","-->"+userImageUrl);
-*/
-
        //new MainActivity.DownloadImageTask(nav).execute(userImageUrl);
         SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREF,MODE_PRIVATE).edit();
         editor.putString("clientId",ClientId);
@@ -439,7 +419,7 @@ onBackPressed();            }
         LoadHeaderImageList();
         setHeaderImageList();
 
-        sendMoney.setOnClickListener(new View.OnClickListener() {
+        sendMoney.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*if (isMpinSet==0) {             *//*TODO check if mpin is set or not, for now i am hardcoding it*//*
@@ -490,16 +470,6 @@ onBackPressed();            }
             }
         });
 
-      /*  UpibankList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, UPIBankList.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-            }
-        });
-*/
-
         transaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -509,14 +479,6 @@ onBackPressed();            }
                 Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();
             }
         });
-        /*socialPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,SocialPayment.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-            }
-        });*/
         showProfileData();
 
         chatButton.setOnClickListener(new View.OnClickListener() {
@@ -538,10 +500,8 @@ onBackPressed();            }
             }
         });
         getUserIm(userAccessToken);
+        getClientsList(ClientId1);
         String y=x;
-/*g.d("xmailidmain",""+y);
-Log.d("xmailidmain",""+x);*/
-        //mailIdniv.setText(x);
 
         usernameniv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -573,9 +533,11 @@ Log.d("xmailidmain",""+x);*/
             }
         });
 
+
+        NotificationCount(ClientId1,posttime,userAccessToken);
+
+
     }
-
-
     private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
@@ -778,8 +740,86 @@ Log.d("xmailidmain",""+x);*/
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_activity_navigation, menu);
-        return true;
+
+        //Notification
+        Bitmap iconNoti = BitmapFactory.decodeResource(getResources(), R.drawable.notification); //Converting drawable into bitmap
+       Bitmap newIconNoti = resizeBitmapImageFn(iconNoti, (int) convertDpToPixel(20f, this)); //resizing the bitmap
+        Drawable dNoti = new BitmapDrawable(getResources(), newIconNoti); //Converting bitmap into drawable
+    //  menu.getItem(0).setIcon(dNoti);
+        menu_bell =  menu.findItem(R.id.bbell).getActionView();
+
+        bell = (ImageView)menu_bell.findViewById(R.id.notification_bell);
+       /// bell.setImageDrawable(dNoti);
+        notificationNumber = (TextView)menu_bell.findViewById(R.id.notifyNum);
+       /* int temp = Integer.parseInt(total);
+        notificationNumber.setText(""+temp);
+       */// notificationNumber.setText("0");
+      /*  if (notificationNumber.equals("0")){
+          //  notificationNumber.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            //temp = Integer.parseInt(total);
+           // notificationNumber.setText(""+temp);
+       //notificationNumber.setText(""+total);
+       }*/
+        menu_bell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               /* int temp = Integer.parseInt(total);
+                notificationNumber.setText(""+temp);*/
+
+
+                Intent intent=new Intent(MainActivity.this,FullViewOfClientsProceed.class);
+              intent.putExtra("clientId",ClientId1);
+              intent.putExtra("clientImagePath",img);
+              intent.putExtra("state",state);
+              intent.putExtra("clientName",clntname);
+              startActivity(intent);
+            }
+        });
+      /*  menu_bell.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+               *//* if (notificationNumber.equals("0")){
+                    notificationNumber.setVisibility(View.INVISIBLE);
+                }else {
+                    int temp = Integer.parseInt(notificationNumber.getText().toString())-1;
+                    notificationNumber.setText(""+temp);
+                }
+             *//*   return false;
+            }
+        });
+ */       return true;
     }
+
+
+    private Bitmap resizeBitmapImageFn(
+            Bitmap bmpSource, int maxResolution) {
+        int iWidth = bmpSource.getWidth();
+        int iHeight = bmpSource.getHeight();
+        int newWidth = iWidth;
+        int newHeight = iHeight;
+        float rate = 0.0f;
+
+        if (iWidth > iHeight) {
+            if (maxResolution < iWidth) {
+                rate = maxResolution / (float) iWidth;
+                newHeight = (int) (iHeight * rate);
+                newWidth = maxResolution;
+            }
+        } else {
+            if (maxResolution < iHeight) {
+                rate = maxResolution / (float) iHeight;
+                newWidth = (int) (iWidth * rate);
+                newHeight = maxResolution;
+            }
+        }
+
+        return Bitmap.createScaledBitmap(
+                bmpSource, newWidth, newHeight, true);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -890,6 +930,7 @@ Log.d("xmailidmain",""+x);*/
                 }
             });
 
+
             builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
@@ -912,7 +953,8 @@ Log.d("xmailidmain",""+x);*/
                 sAux = sAux+"\n"+"https://play.google.com/store/apps/details?id=in.sabpaisa.droid.sabpaisa";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "Share via"));
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
 
 
                 //e.toString();
@@ -948,8 +990,6 @@ Log.d("xmailidmain",""+x);*/
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
-
-
                     SharedPreferences settings = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.remove("m");
@@ -1010,7 +1050,6 @@ Log.d("xmailidmain",""+x);*/
         *//*
         }
 */
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -1066,7 +1105,7 @@ Log.d("xmailidmain",""+x);*/
             public void onResponse(String response1)
             {
 
-                Log.d("Particularclientimage","-->"+response1);
+                Log.d("ARCParticularclientimage","-->"+response1);
                 //parsing Json
                 JSONObject jsonObject = null;
 
@@ -1075,14 +1114,14 @@ Log.d("xmailidmain",""+x);*/
                     jsonObject = new JSONObject(response1.toString());
                     String response = jsonObject.getString("response");
                     String status = jsonObject.getString("status");
-                    Log.d("responsus",""+response);
-                    Log.d("statsus",""+status);
+                    Log.d("ARCresponsus",""+response);
+                    Log.d("ARCstatsus",""+status);
                     JSONObject jsonObject1 = new JSONObject(response);
                     FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
                     userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
-                    Log.d("userImageUrlactivity",""+userImageUrl);
-                 */
-/*   ClientData clientData=new ClientData();
+                    Log.d("ARCuserImageUrlactivity",""+userImageUrl);
+
+   ClientData clientData=new ClientData();
                     clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
                     clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
                     clientData.setClientName(jsonObject1.getString("clientName"));
@@ -1091,9 +1130,9 @@ Log.d("xmailidmain",""+x);*/
                     clientImagePath=clientData.getClientImagePath().toString();
                     clientname11=clientData.getClientName().toString();
                     // clientname=clientData.getClientName().toString();
-                    Log.d("clientlogooooo","-->"+clientLogoPath );
-                    Log.d("clientimageooo","-->"+clientImagePath );
-                    Log.d("clientiooo","-->"+clientname11 );*//*
+                    Log.d("ARCclientlogooooo","-->"+clientLogoPath );
+                    Log.d("ARCclientimageooo","-->"+clientImagePath );
+                    Log.d("ARCclientiooo","-->"+clientname11 );
 
 
 
@@ -1155,6 +1194,7 @@ Log.d("xmailidmain",""+x);*/
 
     }
 */
+
 
 
 
@@ -1333,6 +1373,7 @@ Log.d("xmailidmain",""+x);*/
                     clientImagePath=clientData.getClientImagePath().toString();
                     clientname11=clientData.getClientName().toString();
                     // clientname=clientData.getClientName().toString();
+                    ]\]\
                     Log.d("clientlogooooo","-->"+clientLogoPath );
                     Log.d("clientimageooo","-->"+clientImagePath );
                     Log.d("clientiooo","-->"+clientname11 );*/
@@ -1468,9 +1509,10 @@ Log.d("xmailidmain",""+x);*/
                     mobNumber = object.getJSONObject("response").getString("contactNumber").toString();
 if (x.equals("null"))
 {
+
     usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
 
-    mailIdniv.setText("PleaseSetYourEmail@Domain.com");
+    mailIdniv.setText("");
 }
                    else if (status.equals("success")) {
 name=object.getJSONObject("response").getString("fullName").toString();
@@ -1548,7 +1590,8 @@ Log.d("namemain",""+name);
             }
         }); /*{
 
-            @Override
+
+
             protected Map<String, String> getParams() {
                 // Posprofiting params to register url
                 Map<String, String> params = new HashMap<String, String>();
@@ -1614,7 +1657,213 @@ Log.d("namemain",""+name);
 
     }
 
+    public void NotificationCount(final String client_Id,final String postTime,final String token){
+        StringRequest stringRequest=new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "notifications?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+Log.d("NotifactionCount","-->"+s);
+                JSONObject object = null;
+                try {
+                    object = new JSONObject(s);
+                    String response = object.getString("response");
+                    String status = object.getString("status");
+                    Log.d("CountResponse", "-->" + response);
+                    Log.d("Countstatus", "-->" + status);
+                    JSONObject object1 = new JSONObject(response);
+                    JSONArray feeds = object1.getJSONArray("feeds");
 
+                    JSONArray groups = object1.getJSONArray("groups");
+                   // JSONObject jsonObject = new JSONObject(groups);
+                    String result = feeds.getString(0);
+                    String resultgroups = groups.getString(groups.optInt(0));
+                    Log.d("Countresultgroup", "-->" + resultgroups);
+                    Log.d("CountFeeds", "-->" + feeds);
+                    Log.d("Countresult", "-->" + result);
+                    Log.d("CountGroups", "-->" + groups);
+List<String> listB = null;
+                    JSONObject data=null;
+                    for(int i = 0 ; i < feeds.length(); i++){
+
+                         data = feeds.getJSONObject(i);
+                        countfeeds=data.getString("count");
+                        tempfeeds=Integer.parseInt(countfeeds);
+                        sumfeeds = sumfeeds + tempfeeds;
+                        Log.d("countfeedsSum",""+tempfeeds+"--"+sumfeeds);
+
+                        Log.d("Countdata",""+data.getString("id")+"="+data.getString("count"));
+
+                    }
+
+                    JSONObject data1 = null;
+                    for(int i = 0 ; i < groups.length(); i++){
+
+                        data1 = groups.getJSONObject(i);
+
+
+                        Log.d("Countdata11",""+data1.getString("id")+"="+data1.getString("count"));
+                        count=data1.getString("count");
+                         temp= Integer.parseInt(count);
+                        Log.d("counttemp",""+temp);
+                        sum = sum + temp;
+
+
+                    }
+                    Log.d("group" +
+                            "CountSum",""+sum);
+                    total= String.valueOf(sum+sumfeeds);
+if(total.equals("0"))
+{
+    notificationNumber.setText(0);
 
 }
+else {
+    notificationNumber.setText(total);
+}
+                    Log.d("feed" + "CountSum","-->"+sumfeeds);
+                    Log.d("Countonbell" + "total","-->"+total);
+                    //listB.add(data1.getString("count"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+                }
+        });
+ AppController.getInstance().addToRequestQueue(stringRequest);
+    }
+
+
+    private final Runnable m_Runnable = new Runnable()
+    {
+        public void run()
+
+        {
+           // Toast.makeText(MainActivity.this,"in runnable",Toast.LENGTH_SHORT).show();
+
+            MainActivity.this.mHandler.postDelayed(m_Runnable, 5000);
+        }
+
+    };//runnable
+
+
+
+    private void getClientsList(final  String clientId) {
+
+        String  tag_string_req = "req_clients";
+
+        StringRequest request=new StringRequest(Request.Method.POST, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_ClientBasedOnClientId+clientId, new Response.Listener<String>(){
+
+            @Override
+            public void onResponse(String response1)
+            {
+
+                Log.d("ARcParticularclient","-->"+response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+                    jsonObject = new JSONObject(response1.toString());
+                    String status =jsonObject.getString("status");
+
+                    if (status.equals("success")) {
+
+                        String response = jsonObject.getString("response");
+
+                        //Adding data to new jsonobject////////////////////////
+
+                        JSONObject jsonObject1 = new JSONObject(response);
+
+                        Institution institution = new Institution();
+
+                        institution.setOrganizationId(jsonObject1.getString("clientId"));
+                        Log.d("ARCClientIdjij", "-->" + institution.getOrganizationId());
+                        institution.setOrganization_name(jsonObject1.getString("clientName"));
+                        Log.d("ARcClientnamejij", "-->" + institution.getOrganization_name());
+
+                        institution.setOrgLogo(jsonObject1.getString("clientLogoPath"));
+                        Log.d("ARCClientimage", "-->" + institution.getOrgLogo());
+                        institution.setOrgWal(jsonObject1.getString("clientImagePath"));
+                        Log.d("ARCImageTest", "-->" + institution.getOrgLogo());
+                        //Added on 1st Feb
+                        JSONObject jsonObject2 = jsonObject1.getJSONObject("lookupState");
+                        institution.setOrgAddress(jsonObject2.getString("stateName"));
+                        //Added on 1st Feb
+                        institution.setOrgDesc(jsonObject1.getString("landingPage"));
+                        imglogo=institution.getOrgLogo();
+                        orgname=institution.getOrganization_name();
+                        img=institution.getOrgWal();
+                        state=institution.getOrgAddress();
+                        clntname=institution.getOrganization_name();
+                        Log.d("ARCJSONobjectResp", "-->" + response);
+                        Log.d("ARCkeiopp", "-->" + img +"--"+imglogo+"--"+orgname+"---"+state);
+                        Log.d("ARCJSONobjectttt", "-->" + jsonObject);
+                    }else {
+                      }
+
+
+                }
+                catch(JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+
+
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        }) ;
+
+        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+
+
+    }
+
+}
+
 
