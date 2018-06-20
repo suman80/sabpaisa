@@ -6,11 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -66,7 +68,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import in.sabpaisa.droid.sabpaisa.Adapter.FeedsCommentOfflineAdapter;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.Model.FeedCommentsOfflineModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
@@ -96,6 +101,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     EndlessScrollListener scrollListener;
     public static String MySharedPrefProceedFeedFullScreen="mySharedPrefFortime";
 
+    /////////Local Db//////////
+    AppDbComments db;
+    ArrayList<FeedCommentsOfflineModel> arrayListForOffline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +150,10 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 .error(R.drawable.image_not_found)
                 .into(feedImage);
 
-        callGetCommentList(feed_id);
+        ///////////////////////DB/////////////////////////////////
+        db = new AppDbComments(Proceed_Feed_FullScreen.this);
+
+
         Log.d("Feedidproceed",""+feed_id);
         arrayList = new ArrayList<>();
         toolbar.setNavigationIcon(R.drawable.previousmoresmall);
@@ -158,6 +169,79 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 }
 
         );
+
+
+        if (isOnline()) {
+
+            callGetCommentList(feed_id);
+        }else {
+
+            Log.d("ProceedFeedFullSCR", "No Internet");
+
+            /////////////////////Retrive data from local DB///////////////////////////////
+
+            Cursor res = db.getParticularFeedComments(feed_id);
+            arrayListForOffline = new ArrayList<>();
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0) + " ");
+                    stringBuffer.append(res.getString(1) + " ");
+                    stringBuffer.append(res.getString(2) + " ");
+                    stringBuffer.append(res.getString(3) + " ");
+                    stringBuffer.append(res.getString(4) + " ");
+                    stringBuffer.append(res.getString(5) + " ");
+
+                    FeedCommentsOfflineModel feedCommentsOfflineModel = new FeedCommentsOfflineModel();
+                    feedCommentsOfflineModel.setFeedId(res.getString(1));
+                    feedCommentsOfflineModel.setCommentId(res.getInt(2));
+                    feedCommentsOfflineModel.setCommentText(res.getString(3));
+                    feedCommentsOfflineModel.setCommentByName(res.getString(4));
+                    feedCommentsOfflineModel.setCommentDate(res.getString(5));
+
+                    arrayListForOffline.add(feedCommentsOfflineModel);
+
+
+                }
+                Log.d("FeedsCommentsOffline", "-->" + stringBuffer);
+
+//                ProceedGroupsFragmentsOfflineAdapter adapter = new ProceedGroupsFragmentsOfflineAdapter(groupArrayListForOffline, getContext());
+//                groupList.setAdapter(adapter);
+//                adapter.notifyDataSetChanged();
+
+                final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
+                final FeedsCommentOfflineAdapter ca = new FeedsCommentOfflineAdapter(arrayListForOffline);
+                rv.setAdapter(ca);
+
+                LinearLayoutManager llm = new LinearLayoutManager(this);
+                llm.setOrientation(LinearLayoutManager.VERTICAL);
+
+                llm.setReverseLayout(true);
+                scrollListener = new EndlessScrollListener(llm) {
+                    @Override
+                    public void onLoadMore(int page, int totalItemsCount) {
+                        callGetCommentList(feed_id);
+                    }
+                };
+                rv.addOnScrollListener(scrollListener);
+                rv.addItemDecoration(new SimpleDividerItemDecoration(this));
+                rv.setLayoutManager(llm);
+                rv.setNestedScrollingEnabled(false);
+                scrollView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //replace this line to scroll up or down
+                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                }, 100L);
+
+
+            }else {
+                Log.d("PGFLocalDb", "In Else Part");
+                Toast.makeText(Proceed_Feed_FullScreen.this, "No Data Found !", Toast.LENGTH_SHORT).show();
+            }
+
+        }
 
 
         //new LoadDBfromAPI().execute(response);
@@ -379,6 +463,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
     public void callGetCommentList(final String feed_id) {
+
+        db.deleteAllFeedCommentData();
+
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";
         String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "getFeedsComments?feed_id=" + feed_id;
@@ -413,8 +500,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                             Log.d("CTadhkacka"," "+a);
                             groupData.setCommentText(jsonObject1.getString("commentText"));
                             groupData.setCommentName(jsonObject1.getString("commentByName"));
+                            groupData.setCommentId(jsonObject1.getInt("commentId"));
 
-                             dataTime1 = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
+                            dataTime1 = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
                             Log.d("dataTimePFF"," "+dataTime1);
 
                               String str = jsonArray.getString(i);
@@ -438,6 +526,23 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                                 e.printStackTrace();
                             }
                             commentArrayList.add(groupData);
+
+                            //////////////////////////////LOCAL DB//////////////////////////////////////
+
+                            boolean isInserted = db.insertFeedComments(groupData,feed_id);
+                            if (isInserted == true) {
+
+                                //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                                Log.d("PFF", "LocalDBInIfPart" + isInserted);
+
+                            } else {
+                                Log.d("PFF", "LocalDBInElsePart" + isInserted);
+                                //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                            }
+
+
+
                         }
                         loadCommentListView(commentArrayList);
                 }
@@ -599,6 +704,24 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         ed.commit();
 
         }
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("PFF", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
+
+
+
 }
 
 

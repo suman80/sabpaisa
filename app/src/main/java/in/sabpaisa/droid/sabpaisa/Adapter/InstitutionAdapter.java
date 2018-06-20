@@ -1,6 +1,10 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
+import in.sabpaisa.droid.sabpaisa.Model.ParticularClientModelForOffline;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
@@ -31,6 +36,7 @@ import static android.graphics.drawable.Icon.createWithContentUri;
 public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.MyViewHolder> {
     int count;
     ArrayList<Institution> institutions;
+    Context context;
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     @Override
@@ -39,104 +45,104 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
         return new MyViewHolder(v);
     }
 
-    public InstitutionAdapter(ArrayList<Institution> institutions) {
+    public InstitutionAdapter(Context context,ArrayList<Institution> institutions) {
         this.institutions = institutions;
+        this.context = context;
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        final Institution mainFeedData = institutions.get(position);
+            final Institution mainFeedData = institutions.get(position);
 
-        holder.instituteName.setText(mainFeedData.getOrganization_name());
-        holder.instituteLocation.setText(mainFeedData.getOrgAddress());
-        //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
+            holder.instituteName.setText(mainFeedData.getOrganization_name());
+            holder.instituteLocation.setText(mainFeedData.getOrgAddress());
+            //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
 
-        if (mainFeedData.getOrgLogo()==null){
-            holder.thumbnail.setDefaultImageResId(R.drawable.image_not_found);
-        }
-        else {
-            holder.thumbnail.setImageUrl(mainFeedData.getOrgLogo(), imageLoader);
-            Log.d("image1234","adapter-->"+mainFeedData.getOrgLogo().toString());
-        }
+            if (mainFeedData.getOrgLogo() == null) {
+                holder.thumbnail.setDefaultImageResId(R.drawable.image_not_found);
+            } else {
+                holder.thumbnail.setImageUrl(mainFeedData.getOrgLogo(), imageLoader);
+                Log.d("image1234", "adapter-->" + mainFeedData.getOrgLogo().toString());
+            }
 
-        if (mainFeedData.getOrgLogo()==null){
-            holder.clinetbanner.setDefaultImageResId(R.drawable.image_not_found);
-        }
-        else {
-            holder.clinetbanner.setImageUrl(mainFeedData.getOrgWal(),imageLoader);
-            Log.d("image1234","adapter-->"+mainFeedData.getOrgWal().toString());
+            if (mainFeedData.getOrgLogo() == null) {
+                holder.clinetbanner.setDefaultImageResId(R.drawable.image_not_found);
+            } else {
+                holder.clinetbanner.setImageUrl(mainFeedData.getOrgWal(), imageLoader);
+                Log.d("image1234", "adapter-->" + mainFeedData.getOrgWal().toString());
 
-        }
+            }
 
 
-
-        //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
+            //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
 //        holder.instituteLocation.setText(mainFeedData.getOrgDesc());
-        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
-                intent.putExtra("clientName", mainFeedData.getOrganization_name());
+            holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
+                    intent.putExtra("clientName", mainFeedData.getOrganization_name());
 
-                intent.putExtra("state", mainFeedData.getOrgAddress());
-                intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
-                intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
-                intent.putExtra("clientId",mainFeedData.getOrganizationId());
-                intent.putExtra("landing_page",mainFeedData.getOrgDesc());
+                    intent.putExtra("state", mainFeedData.getOrgAddress());
+                    intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
+                    intent.putExtra("clientImagePath", mainFeedData.getOrgWal());
+                    intent.putExtra("clientId", mainFeedData.getOrganizationId());
+                    intent.putExtra("landing_page", mainFeedData.getOrgDesc());
 
-                Log.d("clientId_thumbnail",""+mainFeedData.getOrganizationId());
-                Log.d("land",""+mainFeedData.getOrgDesc());
+                    Log.d("clientId_thumbnail", "" + mainFeedData.getOrganizationId());
+                    Log.d("land", "" + mainFeedData.getOrgDesc());
 
-                v.getContext().startActivity(intent);
-            }
-        });
-        holder.instituteLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
-                v.getContext().startActivity(intent);
-                intent.putExtra("clientName", mainFeedData.getOrganization_name());
-                intent.putExtra("state", mainFeedData.getOrgAddress());
-                intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
-                intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
-                intent.putExtra("clientId",mainFeedData.getOrganizationId());
-                intent.putExtra("landing_page",mainFeedData.getOrgDesc());
-                Log.d("clientId_location",""+mainFeedData.getOrganizationId());
-            }
-        });
-        holder.instituteName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
-                intent.putExtra("clientName", mainFeedData.getOrganization_name());
-                intent.putExtra("state", mainFeedData.getOrgAddress());
-                intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
-                intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
-                Log.d("clientId_instituteNm",""+mainFeedData.getOrganizationId());
-                intent.putExtra("landing_page",mainFeedData.getOrgDesc());
-                Log.d("urllll",""+mainFeedData.getOrgDesc());
-                intent.putExtra("clientId",mainFeedData.getOrganizationId());
+                    v.getContext().startActivity(intent);
+                }
+            });
+            holder.instituteLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
+                    v.getContext().startActivity(intent);
+                    intent.putExtra("clientName", mainFeedData.getOrganization_name());
+                    intent.putExtra("state", mainFeedData.getOrgAddress());
+                    intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
+                    intent.putExtra("clientImagePath", mainFeedData.getOrgWal());
+                    intent.putExtra("clientId", mainFeedData.getOrganizationId());
+                    intent.putExtra("landing_page", mainFeedData.getOrgDesc());
+                    Log.d("clientId_location", "" + mainFeedData.getOrganizationId());
+                }
+            });
+            holder.instituteName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
+                    intent.putExtra("clientName", mainFeedData.getOrganization_name());
+                    intent.putExtra("state", mainFeedData.getOrgAddress());
+                    intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
+                    intent.putExtra("clientImagePath", mainFeedData.getOrgWal());
+                    Log.d("clientId_instituteNm", "" + mainFeedData.getOrganizationId());
+                    intent.putExtra("landing_page", mainFeedData.getOrgDesc());
+                    Log.d("urllll", "" + mainFeedData.getOrgDesc());
+                    intent.putExtra("clientId", mainFeedData.getOrganizationId());
 
-                v.getContext().startActivity(intent);
-            }
-        });
-        holder.clinetbanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
-                intent.putExtra("clientName", mainFeedData.getOrganization_name());
-                intent.putExtra("state", mainFeedData.getOrgAddress());
-                intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
-                intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
-                Log.d("clientId_banner",""+mainFeedData.getOrganizationId());
-                intent.putExtra("clientId",mainFeedData.getOrganizationId());
-                intent.putExtra("landing_page",mainFeedData.getOrgDesc());
-                v.getContext().startActivity(intent);
+                    v.getContext().startActivity(intent);
+                }
+            });
+            holder.clinetbanner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
+                    intent.putExtra("clientName", mainFeedData.getOrganization_name());
+                    intent.putExtra("state", mainFeedData.getOrgAddress());
+                    intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
+                    intent.putExtra("clientImagePath", mainFeedData.getOrgWal());
+                    Log.d("clientId_banner", "" + mainFeedData.getOrganizationId());
+                    intent.putExtra("clientId", mainFeedData.getOrganizationId());
+                    intent.putExtra("landing_page", mainFeedData.getOrgDesc());
+                    v.getContext().startActivity(intent);
 
-            }
-        });
+                }
+            });
+
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -162,4 +168,7 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
     public int getItemCount() {
         return institutions.size();
     }
+
+
+
 }

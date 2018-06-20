@@ -64,7 +64,7 @@ public class InstitutionFragment extends Fragment {
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),10));
         recyclerViewInstitutions.setLayoutManager(llm);
         institutions = new ArrayList<>();
-        institutionAdapter = new InstitutionAdapter(institutions);
+        institutionAdapter = new InstitutionAdapter(getContext(),institutions);
         recyclerViewInstitutions.setAdapter(institutionAdapter);
 
         /*stateName=getArguments().getString("STATE_NAME");

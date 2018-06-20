@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -69,6 +71,10 @@ import java.util.List;
 import java.util.Locale;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import in.sabpaisa.droid.sabpaisa.Adapter.GroupsCommentOfflineAdapter;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
+import in.sabpaisa.droid.sabpaisa.Model.FeedCommentsOfflineModel;
+import in.sabpaisa.droid.sabpaisa.Model.GroupsCommentOfflineModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
@@ -97,6 +103,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     Toolbar toolbar;
     Button prvtfeeds;
     ScrollView scrollView;
+
+    /////////Local Db//////////
+    AppDbComments db;
+    ArrayList<GroupsCommentOfflineModel> arrayListForOffline;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -111,13 +122,13 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 //                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        scrollView=(ScrollView)findViewById(R.id.scrollView);
-        groupsName=(TextView)findViewById(R.id.groupsName);
-        group_description_details=(TextView)findViewById(R.id.group_description_details);
-        groupImage=(ImageView)findViewById(R.id.groupImage);
-        button1=(Button)findViewById(R.id.b1);
-        prvtfeeds=(Button)findViewById(R.id.b2);
-       // emojIcon = new EmojIconActions(this);\
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        groupsName = (TextView) findViewById(R.id.groupsName);
+        group_description_details = (TextView) findViewById(R.id.group_description_details);
+        groupImage = (ImageView) findViewById(R.id.groupImage);
+        button1 = (Button) findViewById(R.id.b1);
+        prvtfeeds = (Button) findViewById(R.id.b2);
+        // emojIcon = new EmojIconActions(this);\
         // This is used for the app custom toast and activity transition
         ChatSDKUiHelper.initDefault();
 
@@ -129,13 +140,13 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 // Set the adapter
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
-        swipeRefreshLayout= (SwipeRefreshLayout)findViewById(R.id.swipe_container);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Proceed_Group_FullScreen.this,NumberOfGroups.class);
-                intent.putExtra("GroupId",GroupId);
+                Intent intent = new Intent(Proceed_Group_FullScreen.this, NumberOfGroups.class);
+                intent.putExtra("GroupId", GroupId);
 
                 startActivity(intent);
 
@@ -145,8 +156,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         prvtfeeds.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Proceed_Group_FullScreen.this,PrivateGroupFeeds.class);
-                intent.putExtra("GroupId",GroupId);
+                Intent intent = new Intent(Proceed_Group_FullScreen.this, PrivateGroupFeeds.class);
+                intent.putExtra("GroupId", GroupId);
                 startActivity(intent);
             }
         });
@@ -160,14 +171,14 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
         Log.d("PGFResponse", " " + response);
 
-        GroupId=getIntent().getStringExtra("groupId");
-        GroupsNm=getIntent().getStringExtra("groupName");
-        GroupsDiscription=getIntent().getStringExtra("groupText");
-        GroupsImg=getIntent().getStringExtra("groupImage");
-        Log.d("NamemPGFS",""+GroupsNm);
-        Log.d("DiscriptionPGFS",""+GroupsDiscription);
-        Log.d("GroupImgPGFS",""+GroupsImg);
-        Log.d("GroupID_PGFS",""+GroupId);
+        GroupId = getIntent().getStringExtra("groupId");
+        GroupsNm = getIntent().getStringExtra("groupName");
+        GroupsDiscription = getIntent().getStringExtra("groupText");
+        GroupsImg = getIntent().getStringExtra("groupImage");
+        Log.d("NamemPGFS", "" + GroupsNm);
+        Log.d("DiscriptionPGFS", "" + GroupsDiscription);
+        Log.d("GroupImgPGFS", "" + GroupsImg);
+        Log.d("GroupID_PGFS", "" + GroupId);
 
 
         groupsName.setText(GroupsNm);
@@ -179,13 +190,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 .error(R.drawable.image_not_found)
                 .into(groupImage);
 
-
-        callGetCommentList(GroupId);
         arrayList = new ArrayList<>();
         toolbar.setNavigationIcon(R.drawable.previousmoresmall);
 
         toolbar.setTitle(GroupsNm);
-        toolbar.setTitleMargin(11,11,11,11);
+        toolbar.setTitleMargin(11, 11, 11, 11);
         toolbar.setNavigationOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -196,6 +205,79 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 }
 
         );
+
+        ///////////////////////DB/////////////////////////////////
+        db = new AppDbComments(Proceed_Group_FullScreen.this);
+
+
+        if (isOnline()) {
+            //API
+            callGetCommentList(GroupId);
+        } else {
+
+            Log.d("ProceedGroupFullSCR", "No Internet");
+
+            /////////////////////Retrive data from local DB///////////////////////////////
+
+            Cursor res = db.getParticularGroupComments(GroupId);
+            arrayListForOffline = new ArrayList<>();
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0) + " ");
+                    stringBuffer.append(res.getString(1) + " ");
+                    stringBuffer.append(res.getString(2) + " ");
+                    stringBuffer.append(res.getString(3) + " ");
+                    stringBuffer.append(res.getString(4) + " ");
+                    stringBuffer.append(res.getString(5) + " ");
+
+                    GroupsCommentOfflineModel feedCommentsOfflineModel = new GroupsCommentOfflineModel();
+                    feedCommentsOfflineModel.setGroupId(res.getString(1));
+                    feedCommentsOfflineModel.setCommentId(res.getInt(2));
+                    feedCommentsOfflineModel.setCommentText(res.getString(3));
+                    feedCommentsOfflineModel.setCommentByName(res.getString(4));
+                    feedCommentsOfflineModel.setCommentDate(res.getString(5));
+
+                    arrayListForOffline.add(feedCommentsOfflineModel);
+
+
+                }
+                Log.d("GroupCommentsOffline", "-->" + stringBuffer);
+
+                final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
+                final GroupsCommentOfflineAdapter ca = new GroupsCommentOfflineAdapter(arrayListForOffline);
+
+                rv.setAdapter(ca);
+
+                LinearLayoutManager llm = new LinearLayoutManager(this);
+                llm.setOrientation(LinearLayoutManager.VERTICAL);
+
+
+                llm.setReverseLayout(true);
+                scrollListener=new EndlessScrollListener(llm) {
+                    @Override
+                    public void onLoadMore(int page, int totalItemsCount) {
+                        callGetCommentList(GroupId);
+                    }
+                };
+                rv.addOnScrollListener(scrollListener);
+                rv.addItemDecoration(new SimpleDividerItemDecoration(this));
+                rv.setLayoutManager(llm);
+                rv.setNestedScrollingEnabled(false);
+                scrollView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //replace this line to scroll up or down
+                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                }, 10L);
+
+            }else {
+                Log.d("PGFLocalDb", "In Else Part");
+                Toast.makeText(Proceed_Group_FullScreen.this, "No Data Found !", Toast.LENGTH_SHORT).show();
+            }
+
+        }
 
     }
 
@@ -492,6 +574,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
     public void callGetCommentList(final String GropuId) {
+
+        db.deleteAllGroupCommentData(GropuId);
+
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";
         String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getGroupsComments?group_id=" + GropuId;
@@ -544,6 +629,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                             groupData.setCommentName(jsonObject1.getString("commentByName"));
                             groupData.setUserImageUrl(jsonObject1.getString("userImageUrl"));
                             String dataTime = jsonObject1.getString("commentDate");
+                            groupData.setCommentId(jsonObject1.getInt("commentId"));
 
 
                             String str = jsonArray.getString(i);
@@ -570,6 +656,20 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                             }
 
                             commentArrayList.add(groupData);
+
+                            //////////////////////////////LOCAL DB//////////////////////////////////////
+
+                            boolean isInserted = db.insertGroupComments(groupData,GropuId);
+                            if (isInserted == true) {
+
+                                //Toast.makeText(Proceed_Group_FullScreen.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                                Log.d("PGF_Scr", "LocalDBInIfPart" + isInserted);
+
+                            } else {
+                                Log.d("PGF_Scr", "LocalDBInElsePart" + isInserted);
+                                //Toast.makeText(Proceed_Group_FullScreen.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                            }
 
 
 /*
@@ -720,6 +820,18 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
 
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("PFF", "Internet Connection Not Present");
+            return false;
+        }
+    }
 
 
 

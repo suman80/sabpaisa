@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 
@@ -34,10 +36,12 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
     ImageLoader imageLoader;
     Context context;
 
-    public MainFeedAdapter(ArrayList<FeedData> countryList,Context context) {
+
+    public MainFeedAdapter(ArrayList<FeedData> countryList, Context context) {
         this.mainFeedDataList = countryList;
-        this.context=context;
+        this.context = context;
     }
+
 
     /*START Method to change data when put query in searchBar*/
     public void setItems(ArrayList<FeedData> feedDatas) {
@@ -46,17 +50,19 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
+        //  if (isOnline()) {
         final FeedData mainFeedData = mainFeedDataList.get(position);
         holder.main_feed_name.setText(mainFeedData.getFeedName());
         holder.main_feed_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),Proceed_Feed_FullScreen.class);
-                intent.putExtra("feedName",mainFeedData.getFeedName());
-                intent.putExtra("feedText",mainFeedData.getFeedText());
-                intent.putExtra("feedImage",mainFeedData.getImagePath());
-                intent.putExtra("feedLogo",mainFeedData.getLogoPath());
-                intent.putExtra("feedId",mainFeedData.getFeedId());
+                Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedName", mainFeedData.getFeedName());
+                intent.putExtra("feedText", mainFeedData.getFeedText());
+                intent.putExtra("feedImage", mainFeedData.getImagePath());
+                intent.putExtra("feedLogo", mainFeedData.getLogoPath());
+                intent.putExtra("feedId", mainFeedData.getFeedId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -64,16 +70,16 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
         holder.main_feed_description.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),Proceed_Feed_FullScreen.class);
-                intent.putExtra("feedName",mainFeedData.getFeedName());
-                intent.putExtra("feedText",mainFeedData.getFeedText());
-                intent.putExtra("feedImage",mainFeedData.getImagePath());
-                intent.putExtra("feedLogo",mainFeedData.getLogoPath());
-                intent.putExtra("feedId",mainFeedData.getFeedId());
+                Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedName", mainFeedData.getFeedName());
+                intent.putExtra("feedText", mainFeedData.getFeedText());
+                intent.putExtra("feedImage", mainFeedData.getImagePath());
+                intent.putExtra("feedLogo", mainFeedData.getLogoPath());
+                intent.putExtra("feedId", mainFeedData.getFeedId());
                 v.getContext().startActivity(intent);
             }
         });
-        Log.d("client_Image123456",""+mainFeedData.getImagePath());
+        Log.d("client_Image123456", "" + mainFeedData.getImagePath());
 
         //new DownloadImageTask(holder.client_Image).execute(mainFeedData.getImagePath());
 
@@ -86,12 +92,12 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
         holder.client_Image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),Proceed_Feed_FullScreen.class);
-                intent.putExtra("feedName",mainFeedData.getFeedName());
-                intent.putExtra("feedText",mainFeedData.getFeedText());
-                intent.putExtra("feedImage",mainFeedData.getImagePath());
-                intent.putExtra("feedLogo",mainFeedData.getLogoPath());
-                intent.putExtra("feedId",mainFeedData.getFeedId());
+                Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedName", mainFeedData.getFeedName());
+                intent.putExtra("feedText", mainFeedData.getFeedText());
+                intent.putExtra("feedImage", mainFeedData.getImagePath());
+                intent.putExtra("feedLogo", mainFeedData.getLogoPath());
+                intent.putExtra("feedId", mainFeedData.getFeedId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -103,9 +109,13 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 .into(holder.cilent_Logo);
 
 
-
-        //new DownloadLogoTask(holder.cilent_Logo).execute(mainFeedData.getLogoPath());
     }
+
+
+    //new DownloadLogoTask(holder.cilent_Logo).execute(mainFeedData.getLogoPath());
+    //}
+
+
     /*END Method to change data when put query in searchBar*/
 
     /*private String getDataFormate(String dateText) throws ParseException {
@@ -131,7 +141,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
      */
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView main_feed_description, main_feed_name, main_feed_creation_time;
-                ImageView client_Image,cilent_Logo;
+        ImageView client_Image, cilent_Logo;
 
         public MyViewHolder(View view) {
             super(view);
@@ -141,75 +151,6 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             client_Image = (ImageView) view.findViewById(R.id.client_Image);
             cilent_Logo = (ImageView) view.findViewById(R.id.client_Logo);
         }
-    }
-
-
-    //Code for fetching image from server
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
-    }
-
-    //Code for fetching image from server
-    private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadLogoTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
     }
 
 

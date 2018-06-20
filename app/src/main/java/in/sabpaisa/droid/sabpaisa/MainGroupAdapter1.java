@@ -51,8 +51,7 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 
-public class MainGroupAdapter1 extends
-        RecyclerView.Adapter<MainGroupAdapter1.MyViewHolder> {
+public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.MyViewHolder> {
     Context mContext;
     private List<GroupListData> countryList;
       public Button joinmember;

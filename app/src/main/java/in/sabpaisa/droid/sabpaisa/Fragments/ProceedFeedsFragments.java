@@ -4,6 +4,10 @@ package in.sabpaisa.droid.sabpaisa.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,12 +31,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import in.sabpaisa.droid.sabpaisa.Adapter.AllTransactionAdapter;
+import in.sabpaisa.droid.sabpaisa.Adapter.ProceedFeedsFragmentsOfflineAdapter;
+import in.sabpaisa.droid.sabpaisa.Adapter.ProceedInstitutionFragmentOfflineAdapter;
+import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FeedDetails;
 import in.sabpaisa.droid.sabpaisa.FeedsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.MainFeedAdapter;
+import in.sabpaisa.droid.sabpaisa.Model.AllTransactiongettersetter;
+import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.RecyclerItemClickListener;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
@@ -47,16 +59,22 @@ public class ProceedFeedsFragments extends Fragment {
     private static final String TAG = ProceedFeedsFragments.class.getSimpleName();
     View rootView;
     LinearLayout linearLayoutnoDataFound;
-    RecyclerView  recyclerView;
+    RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     String tag_string_req = "req_register";
     ArrayList<FeedData> feedArrayList = new ArrayList<FeedData>();
+
+    ArrayList<FeedDataForOffLine> feedArrayListForLocalDb;
+
     MainFeedAdapter mainFeedAdapter;/*Globally Declared Adapter*/
 
     public static String clientId;
 
     /*START Interface for getting data from activity*/
     GetDataInterface sGetDataInterface;
+
+    /////////Local Db//////////
+    AppDbComments db;
 
     public ProceedFeedsFragments() {
         // Required empty public constructor
@@ -72,30 +90,76 @@ public class ProceedFeedsFragments extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_proceed_feeds_fragments, container, false);
-        recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view_feeds) ;
-        linearLayoutnoDataFound = (LinearLayout)rootView.findViewById(R.id.noDataFound);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_feeds);
+        linearLayoutnoDataFound = (LinearLayout) rootView.findViewById(R.id.noDataFound);
+
+        ///////////////////////DB/////////////////////////////////
+        db = new AppDbComments(getContext());
+
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
-        clientId=sharedPreferences.getString("clientId","abc");
-    Log.d("clientId_PFF",""+clientId);
+        clientId = sharedPreferences.getString("clientId", "abc");
+        Log.d("clientId_PFF", "" + clientId);
         /*swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);*/
 
-        callFeedDataList(clientId);
 
-        Log.d("sGetDataInterface",""+sGetDataInterface);
+        if (isOnline()) {
+            callFeedDataList(clientId);
+        } else {
+
+            /////////////////////Retrive data from local DB///////////////////////////////
+
+            Cursor res = db.getParticularFeedData(clientId);
+            feedArrayListForLocalDb = new ArrayList<>();
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0) + " ");
+                    stringBuffer.append(res.getString(1) + " ");
+                    stringBuffer.append(res.getString(2) + " ");
+                    stringBuffer.append(res.getString(3) + " ");
+                    stringBuffer.append(res.getString(4) + " ");
+                    stringBuffer.append(res.getBlob(5) + " ");
+                    stringBuffer.append(res.getBlob(6) + " ");
+
+                    FeedDataForOffLine feedData = new FeedDataForOffLine();
+                    feedData.setClientId(res.getString(1));
+                    feedData.setFeedId(res.getString(2));
+                    feedData.setFeedName(res.getString(3));
+                    feedData.setFeedText(res.getString(4));
+                    feedData.setImagePath(res.getBlob(5));
+                    feedData.setLogoPath(res.getBlob(6));
+                    feedArrayListForLocalDb.add(feedData);
+
+                }
+                Log.d("getFeedData", "-->" + stringBuffer);
+
+                ProceedFeedsFragmentsOfflineAdapter adapter = new ProceedFeedsFragmentsOfflineAdapter(getContext(),feedArrayListForLocalDb);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            } else {
+                Log.d("getFeedDataLocalDb", "In Else Part");
+                Toast.makeText(getContext(), "No Data Found !", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+
+        Log.d("sGetDataInterface", "" + sGetDataInterface);
 
         return rootView;
     }
 
 
-
     public void callFeedDataList(final String clientId) {
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"getParticularClientsFeeds/"+"?client_Id="+clientId;;
 
+        db.deleteAllFeedData();
+
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getParticularClientsFeeds/" + "?client_Id=" + clientId;
 
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
-                urlJsonObj, new Response.Listener<String>(){
+                urlJsonObj, new Response.Listener<String>() {
 
             // Takes the response from the JSON request
             @Override
@@ -114,8 +178,8 @@ public class ProceedFeedsFragments extends Fragment {
 
                     JSONArray jsonArray = null;
                     Object obj = jsonObject.get("response");
-                    if(obj instanceof JSONArray){
-                        jsonArray = (JSONArray)obj;
+                    if (obj instanceof JSONArray) {
+                        jsonArray = (JSONArray) obj;
 
                         for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -130,20 +194,32 @@ public class ProceedFeedsFragments extends Fragment {
                             feedData.setLogoPath(jsonObject1.getString("logoPath"));
                             feedArrayList.add(feedData);
 
+                            //////////////////////////////LOCAL DB//////////////////////////////////////
+
+                            boolean isInserted = db.insertFeedData(feedData);
+                            if (isInserted == true) {
+
+                                //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                                Log.d("PFF", "LocalDBInIfPart" + isInserted);
+
+                            } else {
+                                Log.d("PFF", "LocalDBInElsePart" + isInserted);
+                                //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                            }
+
+
                         }
                         Log.d("feedArrayListAfterParse", " " + feedArrayList.get(0).getFeedName());
-                            //*START listener for sending data to activity*//*
+                        //*START listener for sending data to activity*//*
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetFeeds(feedArrayList);
 
 
-
-                            //*END listener for sending data to activity*//*
+                        //*END listener for sending data to activity*//*
                         loadFeedListView(feedArrayList, recyclerView);
 
-                    }
-                    else
-                    {
+                    } else {
                         linearLayoutnoDataFound.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
                     }
@@ -175,7 +251,7 @@ public class ProceedFeedsFragments extends Fragment {
 
     private void loadFeedListView(ArrayList<FeedData> arrayList, final RecyclerView recyclerView) {
 
-        mainFeedAdapter = new MainFeedAdapter(arrayList,getContext());
+        mainFeedAdapter = new MainFeedAdapter(arrayList, getContext());
         // recyclerView.setAdapter(mainFeedAdapter);
         recyclerView.postDelayed(new Runnable() {
             @Override
@@ -183,12 +259,12 @@ public class ProceedFeedsFragments extends Fragment {
                 recyclerView.setAdapter(mainFeedAdapter);
 
             }
-        },1000);
+        }, 1000);
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(( getContext()), FeedDetails.class);
+                        Intent intent = new Intent((getContext()), FeedDetails.class);
                        /* intent.putExtra("FeedId", feedArrayList.get(position).getFeedId());
                         intent.putExtra("FeedName", feedArrayList.get(position).getFeedName());
                         intent.putExtra("FeedDeatils", feedArrayList.get(position).getFeedText());
@@ -213,20 +289,20 @@ public class ProceedFeedsFragments extends Fragment {
         super.onAttach(context);
 
         try {
-            sGetDataInterface= (GetDataInterface) getActivity();
+            sGetDataInterface = (GetDataInterface) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
         }
     }
 
     public void getDataFromActivity() {
-        if(sGetDataInterface != null){
+        if (sGetDataInterface != null) {
             this.feedArrayList = sGetDataInterface.getFeedDataList();
             mainFeedAdapter.setItems(this.feedArrayList);
             mainFeedAdapter.notifyDataSetChanged();
         }
 
-        Log.d("PFF_I&A"," "+sGetDataInterface+"&"+feedArrayList);
+        Log.d("PFF_I&A", " " + sGetDataInterface + "&" + feedArrayList);
     }
 
 
@@ -246,5 +322,20 @@ public class ProceedFeedsFragments extends Fragment {
         ArrayList<FeedData> getFeedDataList();
     }
     /*END onRefresh() for SwipeRefreshLayout*/
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("PFF", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
 }
 

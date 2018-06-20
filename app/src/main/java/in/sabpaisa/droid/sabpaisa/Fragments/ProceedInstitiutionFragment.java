@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -36,9 +38,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
+import in.sabpaisa.droid.sabpaisa.Adapter.ProceedInstitutionFragmentOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.MainActivity;
+import in.sabpaisa.droid.sabpaisa.MainFeedAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
+import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
+import in.sabpaisa.droid.sabpaisa.Model.ParticularClientModelForOffline;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
@@ -56,10 +63,15 @@ public class ProceedInstitiutionFragment extends Fragment {
     InstitutionAdapter institutionAdapter;
     //ArrayList<Institution> institutions;
     ArrayList<Institution> clientArrayList ;
+
     ShimmerRecyclerView shimmerRecyclerView;
     String landing_page;
     CollapsingToolbarLayout collapsingToolbarLayout;
     String stateName,serviceName,clientId,userImageUrl;
+
+    /////////Local Db//////////
+    AppDbComments db;
+    ArrayList<ParticularClientModelForOffline> clientArrayListForOffline ;
 
     public ProceedInstitiutionFragment() {
 
@@ -85,6 +97,10 @@ public class ProceedInstitiutionFragment extends Fragment {
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),10));
         recyclerViewInstitutions.setLayoutManager(llm);
 
+        ///////////////////////DB/////////////////////////////////
+        db = new AppDbComments(getContext());
+
+
         clientArrayList=new ArrayList<Institution>();
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(MainActivity.MYSHAREDPREF, MODE_PRIVATE);
@@ -101,12 +117,56 @@ public class ProceedInstitiutionFragment extends Fragment {
             }
         },2000);
 
-        getClientsList(clientId.toString());
+        if (isOnline()) {
+
+            getClientsList(clientId.toString());
+
+        }else {
+            /////////////////////Retrive data from local DB///////////////////////////////
+
+            Cursor res = db.getParticularClientData(clientId);
+            clientArrayListForOffline = new ArrayList<>();
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0) + " ");
+                    stringBuffer.append(res.getString(1) + " ");
+                    stringBuffer.append(res.getString(2) + " ");
+                    stringBuffer.append(res.getString(3) + " ");
+                    stringBuffer.append(res.getBlob(4) + " ");
+                    stringBuffer.append(res.getBlob(5) + " ");
+
+
+                    ParticularClientModelForOffline particularClientModelForOffline = new ParticularClientModelForOffline();
+                    particularClientModelForOffline.setClientId(res.getString(1));
+                    particularClientModelForOffline.setClientName(res.getString(2));
+                    particularClientModelForOffline.setState(res.getString(3));
+                    particularClientModelForOffline.setClientImagePath(res.getBlob(4));
+                    particularClientModelForOffline.setClientLogoPath(res.getBlob(5));
+
+                    clientArrayListForOffline.add(particularClientModelForOffline);
+
+                }
+                Log.d("getPIFOfflineData", "-->" + stringBuffer);
+
+                ProceedInstitutionFragmentOfflineAdapter adapter = new ProceedInstitutionFragmentOfflineAdapter(getContext(),clientArrayListForOffline);
+                recyclerViewInstitutions.setAdapter(adapter);
+
+
+
+            } else {
+                Log.d("PIFLocalDb", "In Else Part");
+                Toast.makeText(getContext(), "No Data Found !", Toast.LENGTH_SHORT).show();
+            }
+        }
+
 
         return rootView;
     }
 
     private void getClientsList(final  String clientId) {
+
+        db.deleteAllClientData();
 
         String  tag_string_req = "req_clients";
 
@@ -157,8 +217,21 @@ public class ProceedInstitiutionFragment extends Fragment {
                         Log.d("JSONobjectttt", "-->" + jsonObject);
 
                         clientArrayList.add(institution);
+                        //////////////////////////////LOCAL DB//////////////////////////////////////
 
-                        institutionAdapter = new InstitutionAdapter(clientArrayList);
+                        boolean isInserted = db.insertClientData(institution);
+                        if (isInserted == true) {
+
+                            //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                            Log.d("PFF", "LocalDBInIfPart" + isInserted);
+
+                        } else {
+                            Log.d("PFF", "LocalDBInElsePart" + isInserted);
+                            //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                        }
+
+                        institutionAdapter = new InstitutionAdapter(getContext(),clientArrayList);
                         recyclerViewInstitutions.setAdapter(institutionAdapter);
 
                         Log.d("clientArrayList2222", " " + clientArrayList.get(0).getOrganization_name());
@@ -258,6 +331,22 @@ public class ProceedInstitiutionFragment extends Fragment {
 
 
     }
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("AllTransactionSummary", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
+
 }
 
 
