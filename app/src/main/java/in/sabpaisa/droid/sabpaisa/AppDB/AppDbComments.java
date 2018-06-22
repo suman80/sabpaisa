@@ -308,6 +308,7 @@ public class AppDbComments extends SQLiteOpenHelper {
             return true;
         }
         //comment
+        //comment
     }
 
 
