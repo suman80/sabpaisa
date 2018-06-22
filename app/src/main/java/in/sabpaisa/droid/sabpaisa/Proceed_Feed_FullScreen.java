@@ -28,6 +28,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -105,6 +106,13 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     AppDbComments db;
     ArrayList<FeedCommentsOfflineModel> arrayListForOffline;
 
+    /////////////////START : by RaJ/////////////////
+    ArrayList<CommentData> commentArrayList;
+    /////////////////END : by RaJ/////////////////
+    boolean isScrolling = false;
+    int currentItems,totalItems,scrolledOutItems;
+    int count = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +121,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
        // this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+//        /////////////////////////////////
+        commentArrayList = new ArrayList<CommentData>();
+        /////////////////////////
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
         response = sharedPreferences.getString("response", "123");
@@ -288,27 +298,62 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         final CommentAdapter ca = new CommentAdapter(arrayList);
         rv.setAdapter(ca);
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
+        final LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
        llm.setReverseLayout(true);
-       scrollListener=new EndlessScrollListener(llm) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                callGetCommentList(feed_id);
-            }
-        };
-        rv.addOnScrollListener(scrollListener);
+
+//       scrollListener=new EndlessScrollListener(llm) {
+//            @Override
+//            public void onLoadMore(int page, int totalItemsCount) {
+//                callGetCommentList(feed_id);
+//            }
+//        };
+//        rv.addOnScrollListener(scrollListener);
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
         rv.setLayoutManager(llm);
         rv.setNestedScrollingEnabled(false);
-        scrollView.postDelayed(new Runnable() {
+//        scrollView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                //replace this line to scroll up or down
+//                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+//            }
+//        }, 100L);
+        //////////////////Rajdeep///////////////////////////////////////////////
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void run() {
-                //replace this line to scroll up or down
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                    isScrolling = true;
+                }
+
             }
-        }, 100L);
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                currentItems = llm.getChildCount();
+                totalItems =   llm.getItemCount();
+                scrolledOutItems = llm.findFirstVisibleItemPosition();
+
+                Log.d("onScrolled_WeGet"," "+currentItems+" "+totalItems+" "+scrolledOutItems);
+
+                if (isScrolling &&(currentItems + scrolledOutItems == totalItems)){
+                    //Data Fetch
+                    isScrolling = false;
+                    //FetchData
+                    //count++;
+                    Log.d("Hellio","TESTTTTTTTTTTTTTTTTTTTTTT");
+                    callGetCommentList(feed_id);
+                }
+
+            }
+        });
+
     }
 
     EditText group_details_text_view ;
@@ -468,9 +513,12 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "getFeedsComments?feed_id=" + feed_id;
+        //String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "getFeedsComments?feed_id=" + feed_id;
 
-        StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
+        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"/getPageFeedsComments?feed_id="+feed_id+"&pageNo="+count+"&rowLimit=25";
+
+        Log.d("urlJsonObj  : ",urlJsonObj);
+        StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 urlJsonObj, new Response.Listener<String>(){
 
             // Takes the response from the JSON request
@@ -478,7 +526,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             public void onResponse(String response) {
                 try {
                     swipeRefreshLayout.setRefreshing(false);
-                    ArrayList<CommentData> commentArrayList = new ArrayList<CommentData>();
+//                    /*ArrayList<CommentData> */commentArrayList = new ArrayList<CommentData>();
 
                     JSONObject jsonObject = new JSONObject(response);
 
@@ -544,6 +592,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
                         }
+                        /////Added By RAJ/////////
+                     Log.d("SIZZZZZZZZZZZZZZZZ : ",commentArrayList.size()+"");
+                    //if(count==1)
+                        /////////////////
+
                         loadCommentListView(commentArrayList);
                 }
                 // Try and catch are included to handle any errors due to JSON
@@ -572,6 +625,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                                 String res = new String(response.data,
                                         HttpHeaderParser.parseCharset(response.headers, "utf-8"));
                                 // Now you can use any deserializer to make sense of data
+                                Log.d("EROOR RES : ", res);
                                 JSONObject obj = new JSONObject(res);
                             } catch (UnsupportedEncodingException e1) {
                                 // Couldn't properly decode data to string
@@ -651,6 +705,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     @Override
     public void onRefresh() {
+        count++;
         callGetCommentList(feed_id);
     }
     @Override

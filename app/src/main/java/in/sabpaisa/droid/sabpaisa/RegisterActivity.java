@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SyncResult;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.LoginActivity;
+import com.goodiebag.pinview.Pinview;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -71,6 +73,7 @@ import java.util.UUID;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference;
 import in.sabpaisa.droid.sabpaisa.Util.OtpDialog;
 import in.sabpaisa.droid.sabpaisa.Util.SharedPref;
@@ -89,12 +92,14 @@ public class RegisterActivity extends AppCompatActivity {
     int MY_SOCKET_TIMEOUT_MS =100000;
 
     private ProgressDialog pDialog;
-    private EditText et_otp;
+    //private EditText et_otp;
+    private Pinview et_otp;
     String number;
     String otpTag = "Please Use this OTP to verify your Mobile on SabPaisa App";
     Handler handler = new Handler();
     String otp11;
-    EditText optEditText = null;
+    //EditText optEditText = null;
+    Pinview optEditText = null;
     RequestQueue requestQueue;
 
 
@@ -123,7 +128,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         btn_register = (Button) findViewById(R.id.btn_register);
         send_Otp = (Button) findViewById(R.id.send_Otp);
-        optEditText = (EditText) findViewById(R.id.optEditText);
+        //optEditText = (EditText) findViewById(R.id.optEditText);
+        optEditText = (Pinview) findViewById(R.id.optEditText);
 
         /*btn_name_next1 = (Button) findViewById(R.id.btn_name_next1);
         btn_name_next2 = (Button) findViewById(R.id.btn_name_next2);*/
@@ -136,7 +142,8 @@ public class RegisterActivity extends AppCompatActivity {
         et_password = (EditText) findViewById(R.id.et_password);
         //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         passwordShow=(Button) findViewById(R.id.tv_password_show1);
-        et_otp=(EditText)findViewById(R.id.optEditText);
+        //et_otp=(EditText)findViewById(R.id.optEditText);
+        et_otp=(Pinview)findViewById(R.id.optEditText);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
         /*START Initiallizing BottomSheetDialog and giving its view in sheetView*/
         mBottomSheetDialog = new BottomSheetDialog(RegisterActivity.this);
@@ -203,6 +210,8 @@ public class RegisterActivity extends AppCompatActivity {
                 } else if (isOnline()) {
 
                     mBottomSheetDialog.show();
+                    mBottomSheetDialog.setCanceledOnTouchOutside(true);
+                    mBottomSheetDialog.setCancelable(true);
                     callTimerCoundown();
                     sendOTP(v, number);
                     // Toast.makeText(OTPVarify.this, "first name field is empty", Toast.LENGTH_LONG).show();
@@ -242,6 +251,26 @@ public class RegisterActivity extends AppCompatActivity {
             RequestPermission(RegisterActivity.this, Manifest.permission.READ_PHONE_STATE, REQUEST_READ_PERMISSION);
         }
 
+
+        optEditText.setPinViewEventListener(new Pinview.PinViewEventListener() {
+            @Override
+            public void onDataEntered(Pinview pinview, boolean fromUser) {
+                //Make api calls here or what not
+                //Toast.makeText(SignUpActivity.this, pinview.getValue(), Toast.LENGTH_SHORT).show();
+                if (et_phone_number.getText().length() == 0 || et_phone_number.getText().length() < 10){
+                    //et_phone_number.setError("Please Fill The Phone No. ");
+                    Toast.makeText(RegisterActivity.this,"Please Fill The Phone No.",Toast.LENGTH_SHORT).show();
+                }else {
+                    String number = et_phone_number.getText().toString();
+                    Log.d(number + "  : ", pinview.getValue());
+
+                    veryfiOTP(number, pinview.getValue());
+                }
+            }
+        });
+
+
+
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,7 +281,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 String contactNumber = et_phone_number.getText().toString();
                 String fullName = et_FullName.getText().toString();
-                String otp=et_otp.getText().toString();
+                String otp=et_otp.getValue().toString();
 
                 // String dob =  et_phone_number.getText().toString();
 
@@ -265,9 +294,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                 }
 
-                else if(et_otp.length()==0){
+                else if(et_otp.getValue().toString().trim().isEmpty()){
 
-                    et_otp.setError("Please click on the send otp");
+                    //et_otp.setError("Please click on the send otp");
+                    Toast.makeText(RegisterActivity.this,"Please click on the send otp",Toast.LENGTH_SHORT).show();
                 }
                 else if (fullName.length() == 0) {
 
@@ -279,7 +309,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 } else if (isOnline()) {
                     Log.e(TAG, "otp11 " +otp11);
-                    if(!et_otp.getText().toString().equals(otp11))
+                    if(!et_otp.getValue().toString().equals(otp11))
 
                     {
 
@@ -466,9 +496,10 @@ public class RegisterActivity extends AppCompatActivity {
                     if (status.equals("success")) {
 
                         send_Otp.setVisibility(View.INVISIBLE);
-
-                    } else if (status.equals("failure")) {
-                                           }
+                        Toast.makeText(RegisterActivity.this,String.valueOf(verifireponse),Toast.LENGTH_SHORT).show();
+                    } else if (status.equals("failed")){
+                        Toast.makeText(RegisterActivity.this,String.valueOf(verifireponse),Toast.LENGTH_SHORT).show();
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -570,7 +601,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 final String optSplit[] = messageText.split(":");
                                 if (optSplit[0].trim().equalsIgnoreCase(otpTag)) {
-                                    optEditText.setText(optSplit[1]);
+                                    optEditText.setValue(optSplit[1]);
                                     handler.postAtTime(new Runnable() {
                                         @Override
                                         public void run() {

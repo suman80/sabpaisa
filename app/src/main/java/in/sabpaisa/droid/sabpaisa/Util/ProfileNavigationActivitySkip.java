@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -56,6 +57,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.MainActivitySkip;
@@ -80,6 +82,11 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
     String userImageUrl;
     public static String MYSHAREDPREFPNA = "mySharedPrefPNA";
     ProgressDialog progressDialog;
+
+    /////////////DB///////////////////////
+
+    AppDB db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +117,10 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
 
 
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
+        ///////////////////////DB/////////////////////////////////
+        db = new AppDB(ProfileNavigationActivitySkip.this);
+
 
         toolbar.setTitle("Profile");
        // toolbar.setTitle("Profile");
@@ -432,91 +443,135 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
 
     private void showProfileData() {
 
-        String tag_string_req = "req_register";
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfile + "?token=" + userAccessToken, new Response.Listener<String>() {
+        Cursor res = db.getParticularData(userAccessToken);
 
-            @Override
-            public void onResponse(String response1) {
-                Log.d(TAG, "Register Response: " + response1.toString());
+        if (res.getCount() > 0) {
+            StringBuffer stringBuffer = new StringBuffer();
+            while (res.moveToNext()) {
+                stringBuffer.append(res.getString(0));
+                stringBuffer.append(res.getString(1));
+                stringBuffer.append(res.getString(2));
+                stringBuffer.append(res.getString(3));
+                stringBuffer.append(res.getString(4));
+                stringBuffer.append(res.getString(5));
+                userName.setText(res.getString(1));
+                et_UserName.setText(res.getString(1));
+                mailId.setText(res.getString(2));
+                et_address.setText(res.getString(3));
+                mNumber.setText(res.getString(4));
+            }
+            Log.d("getParticularNumSkip", "-->" + stringBuffer);
 
-                try {
-                    //progressBar.setVisibility(View.GONE);
-                    JSONObject object = new JSONObject(response1);
-                    String response = object.getString("response");
-                    String status = object.getString("status");
+        }else {
 
-                    if (status.equals("success")) {
 
-                        userName.setText(object.getJSONObject("response").getString("fullName").toString());
-                        mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
-                        String x=object.getJSONObject("response").getString("emailId").toString();
-                        if ( x.equals(" null")) {
-                            mailId.setText("");
+            String tag_string_req = "req_register";
+
+            StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_Show_UserProfile + "?token=" + userAccessToken, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response1) {
+                    Log.d(TAG, "Register Response: " + response1.toString());
+
+                    try {
+                        //progressBar.setVisibility(View.GONE);
+                        JSONObject object = new JSONObject(response1);
+                        String response = object.getString("response");
+                        String status = object.getString("status");
+
+                        if (status.equals("success")) {
+
+                            userName.setText(object.getJSONObject("response").getString("fullName").toString());
+                            mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
+                            String x = object.getJSONObject("response").getString("emailId").toString();
+                            if (x.equals(" null")) {
+                                mailId.setText("");
+                            } else {
+                                mailId.setText(x);
+                            }
+
+                            if (object.getJSONObject("response").getString("address").toString().equals("null")) {
+                                et_address.setText("");
+                            } else {
+                                et_address.setText(object.getJSONObject("response").getString("address").toString());
+                            }
+
+                            et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
+                            Log.d(TAG, "userName" + userName);
+
+
+                            //////////////////////////////LOCAL DB//////////////////////////////////////
+                            String Name = object.getJSONObject("response").getString("fullName").toString();
+                            String Email = object.getJSONObject("response").getString("emailId").toString();
+                            String Address = object.getJSONObject("response").getString("address").toString();
+                            String number = object.getJSONObject("response").getString("contactNumber").toString();
+
+                            boolean isInserted = db.insertData(Name, Email, Address, number, userAccessToken);
+
+                            if (isInserted == true) {
+
+                                //Toast.makeText(ProfileNavigationActivity.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                                Log.d("ProfileNavigationSkip", "LocalDBInIfPart" + isInserted);
+
+                            } else {
+                                Log.d("ProfileNavigationSkip", "LocalDBInElsePart" + isInserted);
+                                //Toast.makeText(ProfileNavigationActivity.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                            }
+
+
                         } else {
-                            mailId.setText(x);
+                            Toast.makeText(getApplicationContext(), "Could  not able to load data", Toast.LENGTH_SHORT).show();
                         }
 
-                        if (object.getJSONObject("response").getString("address").toString().equals("null")) {
-                            et_address.setText("");
-                        } else {
-                            et_address.setText(object.getJSONObject("response").getString("address").toString());
-                        }
-
-                        et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
-                        Log.d(TAG, "userName" + userName);
-
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Could  not able to load data", Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
+            }, new Response.ErrorListener() {
 
-            }
-        }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
+                    if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
 
-                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Network/Connection Error");
 
-                    // Setting Dialog Title
-                    alertDialog.setTitle("Network/Connection Error");
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Internet 111Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
 
-                    // Setting Dialog Message
-                    alertDialog.setMessage("Internet 111Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
 
-                    // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-                    // Setting OK Button
-                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Write your code here to execute after dialog closed
-                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                        // Showing Alert Message
+                        alertDialog.show();
+                        Log.e(TAG, "Update Error: " + error.getMessage());
 
-                    // Showing Alert Message
-                    alertDialog.show();
-                    Log.e(TAG, "Update Error: " + error.getMessage());
+                    } else if (error instanceof AuthFailureError) {
+                        //TODO
+                    } else if (error instanceof ServerError) {
+                        //TODO
+                    } else if (error instanceof NetworkError) {
+                        //TODO
+                    } else if (error instanceof ParseError) {
+                        //TODO
+                    }
 
-                } else if (error instanceof AuthFailureError) {
-                    //TODO
-                } else if (error instanceof ServerError) {
-                    //TODO
-                } else if (error instanceof NetworkError) {
-                    //TODO
-                } else if (error instanceof ParseError) {
-                    //TODO
                 }
-
-            }
-        }); /*{
+            }); /*{
 
             @Override
             protected Map<String, String> getParams() {
@@ -529,8 +584,10 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
 
         };
 */
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+            // Adding request to request queue
+            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+        }
 
     }
 
@@ -678,6 +735,20 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
 
                         // Showing Alert Message
                         alertDialog.show();
+
+                        ////////////////Update in Local Db also/////////////////////////////////////
+                        boolean isUpdated = db.updateNameStatus(userAccessToken, name);
+                        if (isUpdated == true) {
+
+                            //Toast.makeText(ProfileNavigationActivity.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                            Log.d("ProfileNavigationSkip", "LocalDBInIfPart" + isUpdated);
+
+                        } else {
+                            Log.d("ProfileNavigationSkip", "LocalDBInElsePart" + isUpdated);
+                            //Toast.makeText(ProfileNavigationActivity.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                        }
+
 
                     } else if (status.equals("failure")) {
                         AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
@@ -843,6 +914,21 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
                         // Showing Alert Message
                         alertDialog.show();
 
+                        ////////////////Update in Local Db also/////////////////////////////////////
+                        boolean isUpdated = db.updateAddressStatus(userAccessToken, address);
+                        if (isUpdated == true) {
+
+                            //Toast.makeText(ProfileNavigationActivity.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                            Log.d("ProfileNavigationSkip", "LocalDBInIfPart" + isUpdated);
+
+                        } else {
+                            Log.d("ProfileNavigationSkip", "LocalDBInElsePart" + isUpdated);
+                            //Toast.makeText(ProfileNavigationActivity.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                        }
+
+
+
                     } else if (status.equals("failure")) {
                         AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();
 
@@ -980,6 +1066,22 @@ public class ProfileNavigationActivitySkip extends AppCompatActivity {
 
                         // Showing Alert Message
                         alertDialog.show();
+
+
+                        ////////////////Update in Local Db also/////////////////////////////////////
+                        boolean isUpdated = db.updateEmailStatus(userAccessToken, email);
+                        if (isUpdated == true) {
+
+                            //Toast.makeText(ProfileNavigationActivity.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                            Log.d("ProfileNavigationSkip", "LocalDBInIfPart" + isUpdated);
+
+                        } else {
+                            Log.d("ProfileNavigationSkip", "LocalDBInElsePart" + isUpdated);
+                            //Toast.makeText(ProfileNavigationActivity.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                        }
+
+
 
                     } else if (status.equals("failure")) {
                         AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivitySkip.this, R.style.MyDialogTheme).create();

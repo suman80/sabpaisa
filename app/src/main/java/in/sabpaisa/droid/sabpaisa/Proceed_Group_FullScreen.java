@@ -108,6 +108,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     AppDbComments db;
     ArrayList<GroupsCommentOfflineModel> arrayListForOffline;
 
+    ArrayList<CommentData> commentArrayList;
+    int count = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -140,6 +143,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 // Set the adapter
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
+
+        commentArrayList = new ArrayList<CommentData>();
+
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -370,23 +376,23 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
         llm.setReverseLayout(true);
-        scrollListener=new EndlessScrollListener(llm) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                callGetCommentList(GroupId);
-            }
-        };
-        rv.addOnScrollListener(scrollListener);
+//        scrollListener=new EndlessScrollListener(llm) {
+//            @Override
+//            public void onLoadMore(int page, int totalItemsCount) {
+//                callGetCommentList(GroupId);
+//            }
+//        };
+//        rv.addOnScrollListener(scrollListener);
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
         rv.setLayoutManager(llm);
         rv.setNestedScrollingEnabled(false);
-        scrollView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //replace this line to scroll up or down
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-            }
-        }, 10L);
+//        scrollView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                //replace this line to scroll up or down
+//                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+//            }
+//        }, 10L);
     }
 
     //EditText group_details_text_view = null;
@@ -579,7 +585,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";
-        String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getGroupsComments?group_id=" + GropuId;
+        //String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getGroupsComments?group_id=" + GropuId;
+        String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getPageGroupsComments?group_id=" + GropuId+"&pageNo="+count+"&rowLimit=25";
 
         //StringEscapeUtils.unescapeJava(String text)
 
@@ -596,7 +603,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         //urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
 
 
-        StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
+        StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 urlJsonObj, new Response.Listener<String>(){
 
             // Takes the response from the JSON request
@@ -604,7 +611,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             public void onResponse(String response) {
                 try {
                     swipeRefreshLayout.setRefreshing(false);
-                    ArrayList<CommentData> commentArrayList = new ArrayList<CommentData>();
+
 
                     JSONObject jsonObject = new JSONObject(response);
                     Log.d("jsonobject1",""+jsonObject);
@@ -809,6 +816,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     @Override
     public void onRefresh() {
+        count++;
         callGetCommentList(GroupId);
     }
 

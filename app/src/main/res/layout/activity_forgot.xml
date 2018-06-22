@@ -57,8 +57,31 @@
 
   </FrameLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="250dp">
 
-  <EditText
+
+
+    <com.goodiebag.pinview.Pinview
+      android:id="@+id/optEditText"
+      android:background="@drawable/pin_background"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:pinWidth="30dp"
+      app:pinHeight="30dp"
+      app:pinLength="6"
+      app:cursorVisible="true"
+      app:forceKeyboard="false"
+      app:hint="0"
+      app:inputType="number"
+      app:password="false"/>
+    </FrameLayout>
+
+  <!--<EditText
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:imeOptions="actionNext"
@@ -72,7 +95,8 @@
       android:drawablePadding="10dp"
       android:hint="Enter OTP"
       android:inputType="phone"
-      />
+      />-->
+
 
 
 
