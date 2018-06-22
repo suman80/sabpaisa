@@ -209,6 +209,10 @@ public class ForgotActivity extends AppCompatActivity {
     ProgressDialog progressBar = null;
     RequestQueue requestQueue;
 
+    //////////////
+    static  int testcount = 1;
+    ///////////////
+
     EditText password;
     BottomSheetDialog mBottomSheetDialog;
     private static final int REQUEST_READ_PERMISSION = 123;
@@ -262,7 +266,8 @@ public class ForgotActivity extends AppCompatActivity {
                     mBottomSheetDialog.setCanceledOnTouchOutside(true);//Added on 2nd Feb
                     mBottomSheetDialog.show();
                     callTimerCoundown();
-                    sendOTP(v, number);
+                    Log.d("Button : Test count : ", testcount++ +"");
+                    sendOTPAPI(v, number);
                     // Toast.makeText(OTPVarify.this, "first name field is empty", Toast.LENGTH_LONG).show();
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(ForgotActivity.this, R.style.MyDialogTheme).create();
@@ -578,7 +583,7 @@ public class ForgotActivity extends AppCompatActivity {
         String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"verifyOtp?otp="+otp+"&mobile_no="+ number;
 
         //   progressBarShow();
-
+        Log.d("Verify Otp url : ",urlJsonObj);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
 
@@ -602,8 +607,10 @@ public class ForgotActivity extends AppCompatActivity {
 
                     if (status.equals("success")) {
                         send_Otp.setVisibility(View.INVISIBLE);
+                        Log.d("verifireponsePass"," "+verifireponse);
                     Toast.makeText(ForgotActivity.this,verifireponse,Toast.LENGTH_SHORT).show();
                     } else if (status.equals("failed")) {
+                        Log.d("verifireponseFail"," "+verifireponse);
                         Toast.makeText(ForgotActivity.this,verifireponse,Toast.LENGTH_SHORT).show();
                     }
 
@@ -628,20 +635,22 @@ public class ForgotActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    private void sendOTP(View v, final String number) {
+    private void sendOTPAPI(View v, final String number) {
 
-
+        Log.d(" sendOTP :Test count : ", testcount++ +"");
         String urlJsonObj =  AppConfig.Base_Url+AppConfig.App_api+"SendOTP/" +"?mobile_no="+ number;
 //        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/SendOTP/" +"?mobile_no="+ number;
 
         //showpDialog(v);
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                urlJsonObj, null, new Response.Listener<JSONObject>() {
+
+        Log.d(" sendOTP :URL : ", urlJsonObj);
+
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, urlJsonObj, null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("Send OTP", response.toString());
+                Log.d("Send OTP11", response.toString());
 
                 try {
                     // Parsing json object response
@@ -852,7 +861,7 @@ public class ForgotActivity extends AppCompatActivity {
 
 
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
+//        AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
     private void deviceId() {
         final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
