@@ -444,7 +444,7 @@ if(object1.isNull("feeds")&&object1.isNull("groups"))
         Log.d("Strngrqst",""+stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
-
+//Notification
     @Override
     public void onBackPressed() {
         super.onBackPressed();
