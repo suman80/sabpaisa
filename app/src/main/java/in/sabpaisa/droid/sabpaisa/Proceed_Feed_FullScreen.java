@@ -84,10 +84,12 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     CommentsDB dbHelper;
     private int TOTAL_PAGES = 3;
     String ts1;
+    String popup;
     Timestamp ts;
 
     String dataTime1;
     int mHour;
+    String value;
     int mMinute;
     String i;
     ArrayList<CommentData> arrayList;
@@ -144,9 +146,12 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         FeedsNm = getIntent().getStringExtra("feedName");
         feedsDiscription = getIntent().getStringExtra("feedText");
+        value=getIntent().getStringExtra("value");
         feedImg = getIntent().getStringExtra("feedImage");
         feed_id = getIntent().getStringExtra("feedId");
+        popup=getIntent().getStringExtra("popup");
         Log.d("FeedsID", "" + feed_id);
+        Log.d("ValUeAT FEED", "" + popup);
         Log.d("FeedsNmPFF", "" + FeedsNm);
         Log.d("feedsDiscriptionPFF", "" + feedsDiscription);
         Log.d("feedImgPFF", "" + feedImg);
@@ -536,37 +541,38 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     Log.d("Re[spnsere"," "+response1);
                     Log.d("Re[spnsere"," "+status);
 
+                    if (status.equals("success")) {
 
-                    JSONArray jsonArray = jsonObject.getJSONArray("response");
+                        JSONArray jsonArray = jsonObject.getJSONArray("response");
 
-                   // new LoadDBfromAPI().execute(response);
+                        // new LoadDBfromAPI().execute(response);
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             CommentData groupData = new CommentData();
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                            String a= jsonObject1.getString("commentText");
-                            Log.d("CTadhkacka"," "+a);
+                            String a = jsonObject1.getString("commentText");
+                            Log.d("CTadhkacka", " " + a);
                             groupData.setCommentText(jsonObject1.getString("commentText"));
                             groupData.setCommentName(jsonObject1.getString("commentByName"));
                             groupData.setCommentId(jsonObject1.getInt("commentId"));
 
                             dataTime1 = jsonObject1.getString("commentDate");//.split(" ")[1].replace(".0", "");
-                            Log.d("dataTimePFF"," "+dataTime1);
+                            Log.d("dataTimePFF", " " + dataTime1);
 
-                              String str = jsonArray.getString(i);
+                            String str = jsonArray.getString(i);
                             Log.d("444feed", str);
-                            String userImageUrl=jsonObject1.getString("userImageUrl");
+                            String userImageUrl = jsonObject1.getString("userImageUrl");
                             // String userImageUrl1=groupData.getUserImageUrl().toString();
                             //.split(" ")[1].replace(".0", "");
 
-                           // Log.d("dataimageurlfeed1111"," "+userImageUrl);
+                            // Log.d("dataimageurlfeed1111"," "+userImageUrl);
 
 
-                            JSONObject jsonObject2=new JSONObject(userImageUrl);
+                            JSONObject jsonObject2 = new JSONObject(userImageUrl);
                             groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
-                            String image=groupData.getUserImageUrl().toString();
-                            Log.d("imageuserfeed"," "+image);
-                            Log.d("imageuserfeed11"," "+userImageUrl);
+                            String image = groupData.getUserImageUrl().toString();
+                            Log.d("imageuserfeed", " " + image);
+                            Log.d("imageuserfeed11", " " + userImageUrl);
 
                             try {
                                 groupData.setComment_date(getDate(Long.parseLong(dataTime1)));
@@ -577,7 +583,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
                             //////////////////////////////LOCAL DB//////////////////////////////////////
 
-                            boolean isInserted = db.insertFeedComments(groupData,feed_id);
+                            boolean isInserted = db.insertFeedComments(groupData, feed_id);
                             if (isInserted == true) {
 
                                 //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
@@ -590,14 +596,16 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                             }
 
 
-
                         }
                         /////Added By RAJ/////////
-                     Log.d("SIZZZZZZZZZZZZZZZZ : ",commentArrayList.size()+"");
-                    //if(count==1)
+                        Log.d("SIZZZZZZZZZZZZZZZZ : ", commentArrayList.size() + "");
+                        //if(count==1)
                         /////////////////
 
                         loadCommentListView(commentArrayList);
+                    }else {
+                        Toast.makeText(Proceed_Feed_FullScreen.this,"No Record Found !",Toast.LENGTH_SHORT).show();
+                    }
                 }
                 // Try and catch are included to handle any errors due to JSON
                 catch (JSONException e) {
@@ -740,7 +748,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         // Store our shared preference
         SharedPreferences sp = getSharedPreferences(MySharedPrefProceedFeedFullScreen, MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
-        ed.putBoolean("active", false);
+        ed.putBoolean("activeFeed", false);
         ed.putString("ts", String.valueOf(Long.valueOf(time)));
         Log.d("ARCTimeFeedts111",""+String.valueOf(ts));
         Log.d("ARCOnStopFeed","--"+String.valueOf(Long.valueOf(time)));
@@ -774,7 +782,15 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         }
     }
 
+/*
+public void onBackPressed()
+{
+super.onBackPressed();
 
+
+this.finish();
+}
+*/
 
 
 }

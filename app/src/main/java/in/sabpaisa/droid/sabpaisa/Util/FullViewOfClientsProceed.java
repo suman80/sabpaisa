@@ -64,7 +64,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AllContacts;
@@ -106,8 +108,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     TextView mSearchText;
     String name,mobNumber;
      static boolean active = false;
-     String ts;
-
+     String Fts;
+Timestamp Fullviewts;
     ActionBarDrawerToggle toggle;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     public static String userImageUrl=null;
@@ -606,7 +608,6 @@ mailIdniv.setText(x);
 
             Intent intent=new Intent(FullViewOfClientsProceed.this,MainActivity.class);
             intent.putExtra("clientId",ClientId);
-            intent.putExtra("ts",ts);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
@@ -974,6 +975,7 @@ intent.putExtra("state",state);
 
                     // Showing Alert Message
                     // alertDialog.show();
+
                     //Log.e(TAG, "Registration Error: " + error.getMessage());
 
                 } else if (error instanceof AuthFailureError) {
@@ -1110,17 +1112,19 @@ mailIdniv.setText("");
 
     }
 
-/*      @Override
+    @Override
     protected void onStart() {
         super.onStart();
+        SharedPreferences preferences = getSharedPreferences(MySharedPrefOnFullViewOfClientProceed, 0);
+        preferences.edit().remove("Groupts").commit();
 
         // Store our shared preference
-                SharedPreferences.Editor editor = getSharedPreferences("OURINFO",MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences("FullTime",MODE_PRIVATE).edit();
 
-       *//* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+       /* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
         Editor ed = sp.edit();
-       *//* editor.putBoolean("active", true);
-       Log.d("ARCOnStart","----");
+       */ editor.putBoolean("active", true);
+        Log.d("ARCOnStartgroup","----");
         editor.commit();
     }
 
@@ -1128,19 +1132,38 @@ mailIdniv.setText("");
     protected void onStop() {
         super.onStop();
 
+        Date date= new Date();
+        //getTime() returns current time in milliseconds
+        long time = date.getTime();
+        //Passed the milliseconds to constructor of Timestamp class
+        Fullviewts = new Timestamp(time);
+        Fts= String.valueOf(Fullviewts);
+        System.out.println("Current Time Stamp: "+Fts);
+        Log.d("ARCTimefull",""+time);
+        Log.d("ARCTimeFullts1",""+Fts);
+
         // Store our shared preference
         SharedPreferences sp = getSharedPreferences(MySharedPrefOnFullViewOfClientProceed, MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", false);
-        ed.putString("ts", ts);
-        Log.d("ARCOnStop","--");
+        ed.putString("FullViewts",String.valueOf(Long.valueOf(time)));
+        Log.d("ARCTimeFullts111",""+String.valueOf(Fts));
+        Log.d("ARCOnStopFull","--"+String.valueOf(Long.valueOf(time)));
+        ed.commit();
+
+      /*  // Store our shared preference
+        SharedPreferences sp = getSharedPreferences(MySharedPRoceedGroupFullScreen, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", false);
+        ed.putString("Groupts", ts);
+        Log.d("ARCOnStopGroup","--");
 
         ed.commit();
         Long tsLong = System.currentTimeMillis()/1000;
-      ts = tsLong.toString();
-        Log.d("timemainactiviu",""+ts);
-
-}
+        ts = tsLong.toString();
+        Log.d("ARCTimeGroup",""+ts);
+*/
+    }
 
     @Override
     protected void onResume() {
@@ -1150,11 +1173,12 @@ mailIdniv.setText("");
         SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", false);
-        Log.d("ARCOnResume" ,"----");
+        Log.d("ARCOnResumFullViewClnt" ,"----");
 
         ed.commit();
 
-    }*/
+    }
+
 }
 
 

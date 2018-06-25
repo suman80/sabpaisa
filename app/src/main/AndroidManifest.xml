@@ -41,160 +41,88 @@
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/sabpaisa1234" />
 
-
-        <activity android:name="com.gun0912.tedpermission.TedPermissionActivity"
+        <activity
+            android:name="com.gun0912.tedpermission.TedPermissionActivity"
             android:configChanges="mcc|mnc|locale|keyboard|keyboardHidden|screenLayout|fontScale|uiMode|orientation|screenSize|layoutDirection"
             android:screenOrientation="unspecified"
             android:theme="@style/Theme.Transparent.Permission"
-            tools:replace="android:screenOrientation"/>
-
-        <activity
-            android:name=".LogInActivity"
-            />
-        <activity
-            android:name=".VerifyMobile"
-            />
-        <activity
-            android:name=".FilterActivity"
-             />
-        <activity
-            android:name=".UPIBankList"
-            />
-        <activity
-            android:name=".UIN"
-             />
-        <activity
-            android:name="com.braunster.chatsdk.activities.ChatSDKLoginActivity"
-            />
-        <activity
-            android:name=".Util.SkipClientDetailsScreen"
-             />
-        <activity
-            android:name=".Util.FullViewOfClientsProceed"
-         >
+            tools:replace="android:screenOrientation" />
+        <activity android:name=".LogInActivity" />
+        <activity android:name=".VerifyMobile" />
+        <activity android:name=".FilterActivity" />
+        <activity android:name=".UPIBankList" />
+        <activity android:name=".UIN" />
+        <activity android:name="com.braunster.chatsdk.activities.ChatSDKLoginActivity" />
+        <activity android:name=".Util.SkipClientDetailsScreen" />
+        <activity android:name=".Util.FullViewOfClientsProceed">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.FullViewOfClientsProceed" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".FeedDetails"
-             />
-        <activity
-            android:name=".MainActivitySkip"
-           >
+        <activity android:name=".FeedDetails" />
+        <activity android:name=".MainActivitySkip">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivitySkip" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".GroupDetails"
-             />
-        <activity
-            android:name=".Util.PrivacyPolicyActivity"
-             />
-        <activity
-            android:name=".Util.ProfileNavigationActivity"
-             />
-        <activity
-            android:name=".Util.RateActivity"
-             />
-        <activity
-            android:name=".Util.SettingsNavigationActivity"
-             />
-        <activity
-            android:name=".Util.ShareActivity"
-             />
-        <activity
-            android:name=".RegisterPasscode"
-          />
-        <activity
-            android:name=".SplashScreen"
-
-            >
+        <activity android:name=".GroupDetails" />
+        <activity android:name=".Util.PrivacyPolicyActivity" />
+        <activity android:name=".Util.ProfileNavigationActivity" />
+        <activity android:name=".Util.RateActivity" />
+        <activity android:name=".Util.SettingsNavigationActivity" />
+        <activity android:name=".Util.ShareActivity" />
+        <activity android:name=".RegisterPasscode" />
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".UpiSdkHandshake"
-             />
-        <activity
-            android:name=".MainActivity"
-            >
+        <activity android:name=".UpiSdkHandshake" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Util.LoginActivityWithoutSharedPreference"
-            >
+        <activity android:name=".Util.LoginActivityWithoutSharedPreference">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivityWithoutSharedPrefernce"
-           >
+        <activity android:name=".MainActivityWithoutSharedPrefernce">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".AccountInfoActivity"
-             />
-        <activity
-            android:name=".RegisterActivity"
-            />
-        <activity
-            android:name=".SetmPIN"
-           />
-        <activity
-            android:name=".SuccessMPIN"
-             />
-        <activity
-            android:name=".SendMoneyActivity"
-             />
-        <activity
-            android:name=".RequestMoney"
-           />
+        <activity android:name=".AccountInfoActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".SetmPIN" />
+        <activity android:name=".SuccessMPIN" />
+        <activity android:name=".SendMoneyActivity" />
+        <activity android:name=".RequestMoney" />
         <activity
             android:name=".BeneficiaryDetail"
-
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".BeneficiaryRequestMoney"
-
             android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".SendConfirmUPImPIN"
-           />
-        <activity
-            android:name=".TransactionResult"
-         />
-        <activity
-            android:name=".SendAccountIFSC"
-      />
-        <activity
-            android:name=".TransactionsActivity"
-             />
-        <activity
-            android:name=".WebViewActivity"
-           />
-        <activity
-            android:name=".TestScrollPager"
-         >
+        <activity android:name=".SendConfirmUPImPIN" />
+        <activity android:name=".TransactionResult" />
+        <activity android:name=".SendAccountIFSC" />
+        <activity android:name=".TransactionsActivity" />
+        <activity android:name=".WebViewActivity" />
+        <activity android:name=".TestScrollPager">
 
             <!--
             <intent-filter>
@@ -204,53 +132,37 @@
             </intent-filter>
             -->
         </activity>
-        <activity
-            android:name=".SocialPayment"
-            />
-        <activity
-            android:name=".ChatDetail"
-             />
+        <activity android:name=".SocialPayment" />
+        <activity android:name=".ChatDetail" />
         <activity
             android:name=".SendMoneyDialog"
-
             android:excludeFromRecents="true"
-
             android:theme="@style/DialogTheme" />
         <activity
             android:name=".SendMoneyAcIFSCDialog"
             android:excludeFromRecents="true"
-
             android:theme="@style/DialogTheme" />
         <activity
             android:name=".SendConfirmUPImPINDialog"
-
             android:excludeFromRecents="true"
-
             android:theme="@style/DialogTheme" />
         <activity
             android:name=".TransactionResultDialog"
-
             android:excludeFromRecents="true"
-
             android:theme="@style/DialogTheme" />
         <activity
             android:name=".Util.ForgotActivity"
-
             android:label="@string/title_activity_forgot"
-
             android:theme="@style/AppTheme" />
 
-        <receiver
-            android:name=".Util.SmsReceiver"
-            >
+        <receiver android:name=".Util.SmsReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
         <receiver
             android:name=".ConnectivityReceiver"
-            android:enabled="true"
-            >
+            android:enabled="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -263,29 +175,15 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".Util.FullViewOfClientsProceed"></activity>
         -->
-        <activity
-            android:name=".Proceed_Feed_FullScreen"
-             />
-        <activity
-            android:name=".Proceed_Group_FullScreen"
-           />
-        <activity
-            android:name=".Util.LogoutNavigationActivity"
-             />
-        <activity
-            android:name=".TransactionReportNav"
-           />
-        <activity
-            android:name=".Report"
-            />
-        <activity
-            android:name=".UPIActivationActivity"
-        />
+        <activity android:name=".Proceed_Feed_FullScreen" />
+        <activity android:name=".Proceed_Group_FullScreen" />
+        <activity android:name=".Util.LogoutNavigationActivity" />
+        <activity android:name=".TransactionReportNav" />
+        <activity android:name=".Report" />
+        <activity android:name=".UPIActivationActivity" />
         <activity
             android:name=".Util.Nagationfullview"
-
             android:label="@string/title_activity_nagationfullview"
-
             android:theme="@style/AppTheme" />
 
         <!-- Firebase Notifications -->
@@ -300,34 +198,30 @@
             </intent-filter>
         </service>
         <!-- ./Firebase Notifications -->
-        <activity
-            android:name=".Util.ProfileNavigationActivitySkip"
-             />
-        <activity
-            android:name=".MainActivitySkipWithoutSharedPrefernce"
-            >
+        <activity android:name=".Util.ProfileNavigationActivitySkip" />
+        <activity android:name=".MainActivitySkipWithoutSharedPrefernce">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivitySkipWithoutSharedPrefernce" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ProfileNavigationActivityFullViewProceed"
 
-            />
-        <activity android:name=".NumberOfGroups"
+        <receiver
+            android:name=".Button_Listerner"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="button_Clicked" />
+            </intent-filter>
+        </receiver>
 
-            />
-        <activity android:name=".Reportt"
-             />
-        <activity android:name=".AllTransactionSummary"
-           />
-        <activity android:name=".AllContacts"
-           />
+        <activity android:name=".ProfileNavigationActivityFullViewProceed" />
+        <activity android:name=".NumberOfGroups" />
+        <activity android:name=".Reportt" />
+        <activity android:name=".AllTransactionSummary" />
+        <activity android:name=".AllContacts" />
         <activity
             android:name=".DeepLinkActivity"
-
             android:label="@string/app_name">
 
             <!-- [START deep_link_filter] -->
@@ -346,11 +240,11 @@
             </intent-filter>
             <!-- [END deep_link_filter] -->
         </activity>
-        <activity android:name=".MembersProfile"
-            />
-        <activity android:name=".PrivateGroupFeeds"
-           />
-        <activity android:name=".ChangePassword">
+        <activity android:name=".MembersProfile" />
+        <activity android:name=".PrivateGroupFeeds" />
+        <activity android:name=".ChangePassword"></activity>
+        <activity android:name=".NotificationPopUPActivity"
+            android:theme="@style/AppTheme.popup">
 
         </activity>
     </application>

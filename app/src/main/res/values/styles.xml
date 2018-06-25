@@ -14,7 +14,10 @@
         <item name="android:textAllCaps">false</item>
 
     </style>
-
+<style name="AppTheme.popup">
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowCloseOnTouchOutside">true</item>
+</style>
 
     <style name="popupTheme" parent="Theme.AppCompat.Light" />
 

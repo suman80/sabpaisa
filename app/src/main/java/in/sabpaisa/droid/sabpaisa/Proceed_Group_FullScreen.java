@@ -81,7 +81,7 @@ import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import retrofit2.http.HTTP;
 
 
-
+import java.sql.Timestamp;
 public class Proceed_Group_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,View.OnKeyListener {
 
     TextView groupsName,group_description_details;
@@ -90,7 +90,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     CommentsDB dbHelper;
     private int TOTAL_PAGES = 3;
     String date1;
-    String i,ts;
+    String i,Gts;
+    Timestamp Groupts;
     public static String MySharedPRoceedGroupFullScreen="mySharedPrefForTime";
 
     String GroupsNm,GroupsDiscription,GroupsImg,GroupId,userAccessToken,response;
@@ -691,6 +692,10 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                         loadCommentListView(commentArrayList);
                     }
 
+                    else {
+                        Toast.makeText(Proceed_Group_FullScreen.this,"No Record Found !",Toast.LENGTH_SHORT).show();
+                    }
+
                     Log.d("PGF","  "+obj.toString());
 
 
@@ -894,8 +899,11 @@ public void privatefeeds(final String groupId)
     protected void onStart() {
         super.onStart();
 
+        SharedPreferences preferences = getSharedPreferences(MySharedPRoceedGroupFullScreen, 0);
+        preferences.edit().remove("Groupts").commit();
+
         // Store our shared preference
-        SharedPreferences.Editor editor = getSharedPreferences("OURINFO",MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences("GroupTime",MODE_PRIVATE).edit();
 
        /* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
         Editor ed = sp.edit();
@@ -908,18 +916,38 @@ public void privatefeeds(final String groupId)
     protected void onStop() {
         super.onStop();
 
+        Date date= new Date();
+        //getTime() returns current time in milliseconds
+        long time = date.getTime();
+        //Passed the milliseconds to constructor of Timestamp class
+        Groupts = new Timestamp(time);
+        Gts= String.valueOf(Groupts);
+        System.out.println("Current Time Stamp: "+Gts);
+        Log.d("ARCTimeGroup",""+time);
+        Log.d("ARCTimeGroup",""+Gts);
+
         // Store our shared preference
         SharedPreferences sp = getSharedPreferences(MySharedPRoceedGroupFullScreen, MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("activeGroup", false);
+
+        ed.putString("Groupts", String.valueOf(Long.valueOf(time)));
+        Log.d("ARCTimeGroupts111",""+String.valueOf(Gts));
+        Log.d("ARCOnStopGroup","--"+String.valueOf(Long.valueOf(time)));
+        ed.commit();
+
+      /*  // Store our shared preference
+        SharedPreferences sp = getSharedPreferences(MySharedPRoceedGroupFullScreen, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", false);
-        ed.putString("ts", ts);
+        ed.putString("Groupts", ts);
         Log.d("ARCOnStopGroup","--");
 
         ed.commit();
         Long tsLong = System.currentTimeMillis()/1000;
         ts = tsLong.toString();
         Log.d("ARCTimeGroup",""+ts);
-
+*/
     }
 
     @Override

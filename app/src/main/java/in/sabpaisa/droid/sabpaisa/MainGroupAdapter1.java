@@ -56,7 +56,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
     private List<GroupListData> countryList;
       public Button joinmember;
 
-
+String popup="Group";
     public MainGroupAdapter1(List<GroupListData> countryList,Context context) {
         this.countryList = countryList;
         this.mContext = context;
@@ -313,7 +313,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
                     else if (response.equals("User already a member of the client with Status Approved")){
                               //joinmember.setVisibility(View.GONE);
+                        popup="Groups";
                                     Intent intent = new Intent(view.getContext(),Proceed_Group_FullScreen.class);
+                                    intent.putExtra("popup",popup);
                                     intent.putExtra("groupName",groupListData.getGroupName());
                                     intent.putExtra("groupText",groupListData.getGroupText());
                                     intent.putExtra("groupImage",groupListData.getImagePath());

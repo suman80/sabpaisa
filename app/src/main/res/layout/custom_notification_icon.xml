@@ -31,12 +31,12 @@
             android:layout_marginRight="0dp"
             android:background="@drawable/rounded_square"
             android:gravity="center"
-            android:minWidth="9sp"
+            android:minWidth="15sp"
             android:paddingBottom="1dp"
-            android:text="0"
             android:paddingLeft="4dp"
+            android:textSize="7sp"
             android:paddingRight="4dp"
             android:textColor="@color/bg_orange"
-            android:textSize="13sp" />
+             />
     </FrameLayout>
 </RelativeLayout>

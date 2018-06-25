@@ -35,6 +35,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
     private ArrayList<FeedData> mainFeedDataList;
     ImageLoader imageLoader;
     Context context;
+    String popup="Feeds";
 
 
     public MainFeedAdapter(ArrayList<FeedData> countryList, Context context) {
@@ -49,7 +50,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         //  if (isOnline()) {
         final FeedData mainFeedData = mainFeedDataList.get(position);
@@ -60,6 +61,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
                 intent.putExtra("feedName", mainFeedData.getFeedName());
                 intent.putExtra("feedText", mainFeedData.getFeedText());
+                intent.putExtra("popup",popup);
                 intent.putExtra("feedImage", mainFeedData.getImagePath());
                 intent.putExtra("feedLogo", mainFeedData.getLogoPath());
                 intent.putExtra("feedId", mainFeedData.getFeedId());
@@ -72,6 +74,8 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
                 intent.putExtra("feedName", mainFeedData.getFeedName());
+                intent.putExtra("popup",popup);
+
                 intent.putExtra("feedText", mainFeedData.getFeedText());
                 intent.putExtra("feedImage", mainFeedData.getImagePath());
                 intent.putExtra("feedLogo", mainFeedData.getLogoPath());
@@ -94,6 +98,8 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
                 intent.putExtra("feedName", mainFeedData.getFeedName());
+                intent.putExtra("popup",popup);
+
                 intent.putExtra("feedText", mainFeedData.getFeedText());
                 intent.putExtra("feedImage", mainFeedData.getImagePath());
                 intent.putExtra("feedLogo", mainFeedData.getLogoPath());

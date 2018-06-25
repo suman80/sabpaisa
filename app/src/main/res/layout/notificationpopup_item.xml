@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/NotificationRecycleview"
+    android:background="@drawable/background_edittext"
+   >
+
+
+    <TextView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circlenotification"
+        android:text="F"
+        android:id="@+id/F"
+        android:textStyle="italic|bold|normal"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textColor="@color/black" />
+
+    <TextView
+
+        android:id="@+id/groupname"
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/F"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="55dp"
+
+
+        android:gravity="center"
+        android:text="GroupNAme"
+        android:textStyle="italic|bold|normal" />
+
+    <TextView
+        android:id="@+id/noOfCount"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:textStyle="italic|bold|normal"
+        android:layout_alignRight="@+id/groupname"
+        android:background="@drawable/circlenotification"
+        android:gravity="center"
+        android:text="No" />
+
+</RelativeLayout>

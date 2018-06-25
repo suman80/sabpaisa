@@ -307,8 +307,250 @@ public class LogInActivity extends AppCompatActivity  {
         overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
     }
 
+    private void registerUser(final String mobileNo , final String password) {
 
 
+        // Tag used to cancel the request
+        String tag_string_req = "req_register";
+
+        //pDialog.setMessage("Registering ...");
+        //showDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.Base_Url+AppConfig.App_api+  AppConfig.URL_LOGIN, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+                Log.d(TAG, "Register Response: " + response1.toString());
+//                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response1);
+
+                    String response = jObj.getString("response");
+                    Log.d(TAG, "Register Response1: " + response);
+
+                    SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefLogin,MODE_PRIVATE).edit();
+                    editor.putString("response",response);
+                    editor.commit();
+
+
+                    String status =jObj.getString("status");
+
+                    if (status!=null && status.equals("success")){
+
+                        Intent intent = new Intent(LogInActivity.this,FilterActivity.class);
+
+                        startActivity(intent);
+
+                    }
+
+                    else if((status.equals("failed")&&  response.equals("UserName or Current password is WRONG")  )) {
+
+
+                        final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Sign in Error");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Please Check Your Credentials");
+
+                        alertDialog.setCanceledOnTouchOutside(false);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+                    }
+
+
+                    else if(response.equals("Deactivated User")  ) {
+
+
+                        final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Sign in Error");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("You are blocked.Kindly contact at app@sabpaisa.in");
+
+                        alertDialog.setCanceledOnTouchOutside(false);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+                    }
+
+                    else {
+
+                        final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Sign in Error");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Please Check Your Credentials");
+
+                        alertDialog.setCanceledOnTouchOutside(false);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog closed
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("mobileNo", mobileNo);
+                params.put("password", password);
+
+
+
+                return params;
+            }
+
+        };
+
+
+        strReq.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+
+
+
+
+
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            try {
+                ProviderInstaller.installIfNeeded(getApplicationContext());
+            } catch (GooglePlayServicesRepairableException e) {
+                // Indicates that Google Play services is out of date, disabled, etc.
+                // Prompt the user to install/update/enable Google Play services.
+                GooglePlayServicesUtil.showErrorNotification(e.getConnectionStatusCode(), getApplicationContext());
+                // Notify the SyncManager that a soft error occurred.
+                //final SyncResult syncResult = null;
+                //syncResult.stats.numIOExceptions++;
+
+                // Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+                return;
+            } catch (GooglePlayServicesNotAvailableException e) {
+                // Indicates a non-recoverable error; the ProviderInstaller is not able
+                // to install an up-to-date Provider.
+                // Notify the SyncManager that a hard error occurred.
+                //syncResult.stats.numAuthExceptions++;
+                //Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            HttpStack stack = null;
+            try {
+                stack = new HurlStack(null, new TLSSocketFactory());
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            }
+
+            // AppController.getInstance().addToRequestQueue(getApplicationContext(),stack);
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext(), stack);
+        } else {
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+            //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+
+/*
     private void registerUser(final String mobileNo , final String password) {
 
 
@@ -501,6 +743,7 @@ public class LogInActivity extends AppCompatActivity  {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
+*/
 
     private void launchMainScreen() {
         startActivity(new Intent(LogInActivity.this, FilterActivity.class));

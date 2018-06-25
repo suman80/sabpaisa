@@ -139,7 +139,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url 'https://maven.google.com' }
-        maven { url "https://dl.bintray.com/hani-momanii/maven"}
+        maven { url "https://dl.bintray.com/hani-momanii/maven" }
     }
 }
 
