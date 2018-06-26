@@ -3,6 +3,7 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -2024,17 +2025,44 @@ feedstotal= Integer.parseInt(CommentcountFeeds);
 // define sound URI, the sound to be played when there's a notification
 
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder builder = null;
+
 
         // Build notification
         Notification noti = new Notification.Builder(this)
                 .setAutoCancel(true)
-                .setCustomBigContentView(remoteViews)
+//                .setCustomBigContentView(remoteViews)
                  .setSmallIcon(R.drawable.sabpaisa1234)
                 .setContentIntent(pIntent)
                 .setSound(soundUri)
                  .build();
 
-          NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+noti.contentView=remoteViews;
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= 16) {
+// Inflate and set the layout for the expanded notification view
+            noti.bigContentView=remoteViews;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(String.valueOf( notification_id),
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+            // Build notification
+            Notification noti1 = new Notification.Builder(this)
+                    .setAutoCancel(true)
+                //.setCustomBigContentView(remoteViews)
+                    .setSmallIcon(R.drawable.sabpaisa1234)
+                    .setContentIntent(pIntent)
+                    //.setSound(soundUri)
+                    .setCustomBigContentView(remoteViews)
+                    .setChannelId(String.valueOf(notification_id))
+                    .build();
+            notificationManager.notify(notification_id, noti1);
+
+        }
 
         // hide the notification after its selected
         noti.flags |= Notification.FLAG_AUTO_CANCEL;
