@@ -591,7 +591,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if (status.equals("success")) {
 
                         otp11=response.getString("otp");
-
+                        Log.d("otp11","AfterSuccessResp"+otp11);
                         //Toast.makeText(getApplicationContext(), "OTP sent", Toast.LENGTH_LONG).show();
 
 
