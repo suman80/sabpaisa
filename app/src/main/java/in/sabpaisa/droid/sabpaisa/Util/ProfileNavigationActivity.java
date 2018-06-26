@@ -131,7 +131,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                Intent intent = new Intent(ProfileNavigationActivity.this, MainActivity.class);
+                intent.putExtra("clientId", clientId);
+                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
 
@@ -287,8 +291,9 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         Intent intent = new Intent(ProfileNavigationActivity.this, MainActivity.class);
         intent.putExtra("clientId", clientId);
         // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        finish();
+        //finish();
 
         /*intent.putExtra("clientId", clientId);
         intent.putExtra("userImageUrl", userImageUrl);
