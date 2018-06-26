@@ -118,7 +118,7 @@ public class ProceedInstitiutionFragment extends Fragment {
         },2000);
 
         if (isOnline()) {
-
+            db.deleteAllClientData();
             getClientsList(clientId.toString());
 
         }else {
@@ -166,7 +166,7 @@ public class ProceedInstitiutionFragment extends Fragment {
 
     private void getClientsList(final  String clientId) {
 
-        db.deleteAllClientData();
+//        db.deleteAllClientData();
 
         String  tag_string_req = "req_clients";
 

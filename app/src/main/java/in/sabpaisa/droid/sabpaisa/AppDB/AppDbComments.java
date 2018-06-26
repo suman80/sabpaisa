@@ -224,7 +224,11 @@ public class AppDbComments extends SQLiteOpenHelper {
     public void deleteAllClientData(){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.execSQL("delete from "+ TABLE_Particular_Client);
+//        db.execSQL("delete from "+ TABLE_Particular_Client);
+//        db.execSQL("delete from "+ TABLE_Particular_Client);
+        Log.d("TABLE_Particular_Client","DELETE");
+        db.delete(TABLE_Particular_Client, null, null);
+
         db.close();
     }
 

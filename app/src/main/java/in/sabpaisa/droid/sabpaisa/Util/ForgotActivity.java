@@ -598,14 +598,16 @@ public class ForgotActivity extends AppCompatActivity {
                     // response will be a json object
                     String status = response.getString("status");
 
-                    otp11 = response.getString("otp");
+
                     String  verifireponse= response.getString("response");
 
                     Log.d("Archana1111111",""+status);
-                    Log.d("Archana111111111",""+otp11);
+
                     Log.d("Archana211111111",""+verifireponse);
 
                     if (status.equals("success")) {
+                        otp11 = response.optString("otp");
+                        Log.d("otp11","Value "+otp11);
                         send_Otp.setVisibility(View.INVISIBLE);
                         Log.d("verifireponsePass"," "+verifireponse);
                     Toast.makeText(ForgotActivity.this,verifireponse,Toast.LENGTH_SHORT).show();
