@@ -981,7 +981,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
                     Log.d("userImageUrlfilter", "" + userImageUrl);
                     Glide
-                            .with(getApplicationContext())
+                            .with(getApplicationContext()) //
                             .load(userImageUrl)
                             .error(R.drawable.default_users)
                             .into(niv);
