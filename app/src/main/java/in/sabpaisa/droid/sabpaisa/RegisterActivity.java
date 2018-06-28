@@ -497,9 +497,9 @@ public class RegisterActivity extends AppCompatActivity {
                         otp11 = response.getString("otp");
                         Log.d("otp11","Value "+otp11);
                         send_Otp.setVisibility(View.INVISIBLE);
-                        //Toast.makeText(RegisterActivity.this,String.valueOf(verifireponse),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this,String.valueOf(verifireponse),Toast.LENGTH_SHORT).show();
                     } else if (status.equals("failed")){
-                        //Toast.makeText(RegisterActivity.this,String.valueOf(verifireponse),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this,String.valueOf(verifireponse),Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -614,7 +614,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                             mBottomSheetDialog.hide();
 
-                                            veryfiOTP(number, optSplit[1]);
+                                            //veryfiOTP(number, optSplit[1]);
 
                                             //  callVaryfyOTP(optSplit[1]);
                                         /*OtpDialog dialog = null;

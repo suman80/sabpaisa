@@ -610,10 +610,10 @@ public class ForgotActivity extends AppCompatActivity {
                         Log.d("otp11","Value "+otp11);
                         send_Otp.setVisibility(View.INVISIBLE);
                         Log.d("verifireponsePass"," "+verifireponse);
-                    //Toast.makeText(ForgotActivity.this,verifireponse,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForgotActivity.this,verifireponse,Toast.LENGTH_SHORT).show();
                     } else if (status.equals("failed")) {
                         Log.d("verifireponseFail"," "+verifireponse);
-                        //Toast.makeText(ForgotActivity.this,verifireponse,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ForgotActivity.this,verifireponse,Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -681,7 +681,7 @@ public class ForgotActivity extends AppCompatActivity {
                                             }*/
 
                                             mBottomSheetDialog.hide();
-                                            veryfiOTP(number, optSplit[1]);
+                                            //veryfiOTP(number, optSplit[1]);
 
                                             //  callVaryfyOTP(optSplit[1]);
                                         /*OtpDialog dialog = null;
