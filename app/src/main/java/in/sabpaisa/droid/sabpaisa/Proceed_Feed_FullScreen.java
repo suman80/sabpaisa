@@ -713,8 +713,14 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     @Override
     public void onRefresh() {
-        count++;
-        callGetCommentList(feed_id);
+
+        if (isOnline()) {
+            count++;
+            callGetCommentList(feed_id);
+        }else {
+            swipeRefreshLayout.setRefreshing(false);
+            Toast.makeText(Proceed_Feed_FullScreen.this,"Seems that you are not connected to the internet \n Please connect your internet to load more data",Toast.LENGTH_SHORT).show();
+        }
     }
     @Override
     protected void onStart() {

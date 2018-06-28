@@ -821,8 +821,15 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     @Override
     public void onRefresh() {
+
+        if (isOnline()){
+
         count++;
         callGetCommentList(GroupId);
+        }else {
+            swipeRefreshLayout.setRefreshing(false);
+            Toast.makeText(Proceed_Group_FullScreen.this,"Seems that you are not connected to the internet \n Please connect your internet to load more data",Toast.LENGTH_SHORT).show();
+        }
     }
 
 /*public  void numberofgroupmember()
