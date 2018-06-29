@@ -467,7 +467,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
                         commentArrayList.clear();
-                     count=1;
+                         count=1;
                         callGetCommentList(feed_id);
 
                     }
