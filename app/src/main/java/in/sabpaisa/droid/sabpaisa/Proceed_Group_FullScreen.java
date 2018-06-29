@@ -519,6 +519,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                         group_details_text_view.setText("");
                         //Toast.makeText(Proceed_Group_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
                         commentArrayList.clear();
+                        count=1;
                         callGetCommentList(GroupId);
 
                     }
