@@ -464,6 +464,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     if (status.equals("success")&&group_details_text_view!=null) {
                         group_details_text_view.setText("");
                        // Toast.makeText(Proceed_Feed_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
+                        commentArrayList.
+                                clear();
                         callGetCommentList(feed_id);
 
                     }
