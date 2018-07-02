@@ -71,6 +71,7 @@ public class NotificationPopUPActivity extends AppCompatActivity {
         clientid=intent.getStringExtra("clientId");
         token=intent.getStringExtra("useraccesstoken");
       //  timegroup=intent.getStringExtra("grouptime");
+
       // feedtime=intent.getStringExtra("feedtime");
 
    //     groupMap = new HashMap<>();
@@ -129,7 +130,7 @@ public class NotificationPopUPActivity extends AppCompatActivity {
                 JSONObject data1=null;
                 JSONArray groups=null;
                 String groupname,groupdescription,grouimage,countfeeds;
-
+int sum,sumgroup = 0,sumfeed = 0;
                 String name,image,description,id,groupid,groupcount = null;
 
 
@@ -158,6 +159,7 @@ public class NotificationPopUPActivity extends AppCompatActivity {
                             grouimage= data1.getString("imagePath");
                             groupid= data1.getString("id");
                             groupcount=   data1.getString("count");
+                            sumgroup=sumgroup+Integer.parseInt(groupcount);
                             groupname=data1.getString("name");
                             groupdescription=data1.getString("description");
                             Log.d("countgroupsSum", "" + grouimage + "--" + groupdescription +" -----"+groupname+"---"+groupid);
@@ -195,6 +197,7 @@ public class NotificationPopUPActivity extends AppCompatActivity {
 
                             data = feeds.getJSONObject(i);
                             countfeeds = data.getString("count");
+                            sumfeed=sumfeed+Integer.parseInt(countfeeds);
                             name = data.getString("name");
                             Log.d("countfeedsSum", "" +  countfeeds+"--" + name);
                             Log.d("Countdata", "" + data.getString("id") + "=" + data.getString("count"));
@@ -231,7 +234,8 @@ public class NotificationPopUPActivity extends AppCompatActivity {
 
                     Log.d("notificationMogrp",""+notificationModelClassArrayList.size());
                     if(notificationModelClassArrayList.size()>0){
-
+                        sum=sumfeed+sumgroup;
+                        Log.d("SCOUNRHKD","+"+sum+ "  "+sumfeed+"  "+sumgroup);
                         notificationAdapter = new NotificationAdapter(notificationModelClassArrayList,NotificationPopUPActivity.this);
                         recyclerView.setVisibility(View.VISIBLE);
                         recyclerView.setAdapter(notificationAdapter);
@@ -451,6 +455,5 @@ if(object1.isNull("feeds")&&object1.isNull("groups"))
         Intent intent = new Intent(NotificationPopUPActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         this.finish();
-
-
-    }}
+    }
+}

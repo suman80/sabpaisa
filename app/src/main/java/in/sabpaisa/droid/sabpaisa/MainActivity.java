@@ -777,6 +777,8 @@ onBackPressed();            }
                     .putString("extra",name);
 
             mHeaderSlider.addSlider(textSliderView);
+
+
         }
  /*       headerList.add(R.drawable.test_header600240);
         headerList.add(R.drawable.test_header600241);

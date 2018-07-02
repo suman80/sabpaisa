@@ -89,6 +89,7 @@
                         android:id="@+id/group_description_details"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:layout_margin="10dp"
                         android:text="@string/message"
                         android:textColor="@color/bg_text_color"
@@ -99,7 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:scaleType="fitXY"
-
+android:visibility="gone"
                         android:src="@drawable/default1" />
                 </LinearLayout>
             </LinearLayout>

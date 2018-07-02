@@ -91,12 +91,15 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="@string/message"
+                        android:visibility="gone"
                         android:textColor="@color/bg_text_color"
                         android:textSize="@dimen/text_size_xsmall" />
 
                     <ImageView
                         android:id="@+id/feedImage"
                         android:layout_width="match_parent"
+
+                        android:visibility="gone"
                         android:layout_height="150dp"
                         android:scaleType="fitXY"
 
@@ -181,14 +184,13 @@
                                 android:id="@+id/progress"/>
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/recycler_view_feed_details_comment"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/comment"
                                 android:layout_marginBottom="350dp"
                                 android:focusable="false"
                                 android:scrollbars="vertical" />
                         </FrameLayout>
-
 
                     </RelativeLayout>
                 </LinearLayout>
