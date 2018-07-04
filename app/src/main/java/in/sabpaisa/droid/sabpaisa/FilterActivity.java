@@ -381,9 +381,6 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                         String response = jsonObject.getString("response");
                         Log.d("responsefilterser","servicelist=="+response);
 
-
-
-
                         if (((status.equals("success"))&& (response.length()>0))) {
                             JSONArray jsonArray = jsonObject.getJSONArray("response");
 
@@ -525,10 +522,6 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
                 if (error instanceof NetworkError) {
                     checkNetworkConnection();
                 }
-
-
-
-
             }
 
 

@@ -161,12 +161,15 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     String Commentcountgroups;
     String CommentcountFeeds;
     private CustomViewPager viewPager;
-    private TabLayout tabLayout;
+    int sum;
+    String posttime1;
+    static  ArrayList<NotificationModelClass> notificationModelClassArrayList;
+
+NotificationModelClass notificationModelClass;
+NotificationAdapter notificationAdapter; private TabLayout tabLayout;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     String posttimeFeed,posttimeGroup;
     ImageView niv,bell,bell1;
-
-
     TextView notificationNumber,notificationNumberFeed;
     String total;
     int total1;
@@ -205,8 +208,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     String stateName,serviceName,ClientId;
     String stateName1,serviceName1,ClientId1;
     String posttimel;
-Handler mHandler;
-
+    Handler mHandler;
     public  static  String MYSHAREDPREF="mySharedPref";
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
@@ -227,20 +229,12 @@ Handler mHandler;
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_navigation);
         this.mHandler = new Handler();
-
         this.mHandler.postDelayed(m_Runnable,5000);
-
         Fabric.with(this, new Crashlytics());
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("Sabpaisa");
-
        // toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
-
-
-
         SharedPreferences sharedPreferences2 = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
         n=sharedPreferences2.getString("m","xyz");
         m=n;
@@ -274,12 +268,8 @@ Handler mHandler;
 
       //  Log.d("ArcPosttime11",""+posttime1);
   //      Log.d("ArcPosttime111",""+t);
-
-
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
-
         response = sharedPreferences.getString("response", "123");
-
         if(response!=null) {
 
             userAccessToken = response;
@@ -296,10 +286,7 @@ Handler mHandler;
                // FirebaseCrash.report(e);
                 Crashlytics.logException(e);
             }
-
-
-
-        }
+            }
         Long tsLong = System.currentTimeMillis()/1000;
         ts = tsLong.toString();
         Log.d("timemainactiviu",""+ts);
@@ -370,31 +357,25 @@ Handler mHandler;
                 }
             }
         };
-
         displayFirebaseRegId();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
        //View header = navigationView.inflateHeaderView(R.layout.nav_header_main_activity_navigation);`
         //nav = (NetworkImageView) header.findViewById(R.id.profile_image);
-
          niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
         usernameniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.username_nav);
         usernameniv.setText("");
-
         mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
         // View header = navigationView.getHeaderView(0);
       // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
-
         //if(url.length() > 0)
             //niv.setImageUrl(userImageUrl, imageLoader);
        // niv.setDefaultImageResId(R.drawable.sabpaisa);
         //niv.setErrorImageResId(R.drawable.
         //error);
         //nav.setImageUrl(userImageUrl);
-
       //  new MainActivity.DownloadImageTask(niv).execute(userImageUrl);
-
         sendMoney = (ImageView)findViewById(R.id.ll_send);
         requestMoney = (ImageView)findViewById(R.id.ll_request);
         //socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
@@ -575,8 +556,8 @@ onBackPressed();            }
         Log.d("ArcPosttimeGroup11",""+timeGroup);
         Log.d("ArcPosttimeGroup11",""+timefull);
 
-        long tGroup = Long.parseLong(timeGroup);
-        long tFeeds = Long.parseLong(timefeed);
+        final long tGroup = Long.parseLong(timeGroup);
+        final long tFeeds = Long.parseLong(timefeed);
 
 
             final Handler handler = new Handler();
@@ -584,18 +565,32 @@ onBackPressed();            }
                 @Override
                 public void run() {
                     //Do something after 20 seconds
-                    Feedsnotification1(ClientId1,timefeed,userAccessToken);//// Increase  the Number of Notification on bell
-                    Groupsnotification1(ClientId1,timeGroup,userAccessToken);//// Increase  the Number of Notification on bell
-                    handler.postDelayed(this, 10000);
+
+                    if(tGroup > tFeeds) {
+                        posttime1 = timeGroup;
+                        NotificationCount(ClientId1, timeGroup, userAccessToken);
+                    }
+                    else {
+                        posttime1 = timefeed;
+                        NotificationCount(ClientId1, timefeed, userAccessToken);
+                    }
+                        handler.postDelayed(this, 1000);
                 }
             }, 1000);
-            Feedsnotification(ClientId1,timefeed,userAccessToken);//// used for notification in notification bar as  if we used  this in handler then the notification are comi
+
+
+        if(tGroup > tFeeds) {
+            posttime1 = timeGroup;
+            Feedsnotification(ClientId1,timeGroup,userAccessToken);//// used for notification in notification bar as  if we used  this in handler then the notification are comi
             Groupsnotification(ClientId1,timeGroup,userAccessToken);/// used for notification in notification bar
+        }
+        else {
+            posttime1 = timefeed;
+            Feedsnotification(ClientId1, timefeed, userAccessToken);//// used for notification in notification bar as  if we used  this in handler then the notification are comi
+            Groupsnotification(ClientId1, timefeed, userAccessToken);/// used for notification in notification bar
+        }
 
-
-
-
-        Log.d("ArcFeedGroup",""+feedstotal+"  "+grouptotal);
+            Log.d("ArcFeedGroup",""+feedstotal+"  "+grouptotal);
 
         Log.d("ArcPosttimeCount",""+Commentcountgroups+ "   "+CommentcountFeeds);
     }
@@ -614,23 +609,10 @@ onBackPressed();            }
 
             //Toast.makeText(this, "Firebase Reg Id is not received yet!" + regId, Toast.LENGTH_SHORT).show();
         }
-        //txtRegId.setText("Firebase Reg Id is not received yet!");*/
     }
 
     @Override
     public void onBackPressed() {
-       /* DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } *//*else if(m=="abc") {
-            super.onBackPressed();
-            Intent intent=new Intent(MainActivity.this,UIN.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            startActivity(intent);
-
-        */
-
 
             finish();
             moveTaskToBack(true);
@@ -780,10 +762,7 @@ onBackPressed();            }
 
 
         }
- /*       headerList.add(R.drawable.test_header600240);
-        headerList.add(R.drawable.test_header600241);
-        headerList.add(R.drawable.test_header600242);
-        headerList.add(R.drawable.test_header600243);*/
+
     }
 
     @Override
@@ -815,28 +794,13 @@ onBackPressed();            }
 
         bell = (ImageView)menu_bell.findViewById(R.id.notification_bell);
         bell1 = (ImageView)menu_bell_feed.findViewById(R.id.notification_bell);
-       /// bell.setImageDrawable(dNoti);
         notificationNumber = (TextView)menu_bell.findViewById(R.id.notifyNum);
-        notificationNumberFeed = (TextView)menu_bell_feed.findViewById(R.id.notifyNum);
-       /* int temp = Integer.parseInt(total);
-        notificationNumber.setText(""+temp);
-       */// notificationNumber.setText("0");
-      /*  if (notificationNumber.equals("0")){
-          //  notificationNumber.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
-            //temp = Integer.parseInt(total);
-           // notificationNumber.setText(""+temp);
-       //notificationNumber.setText(""+total);
-       }*/
+
         menu_bell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-notificationNumber.setText("");
-Commentcountgroups=null;
-CommentcountFeeds=null;
-                Intent intent=new Intent(MainActivity.this,NotificationPopUPActivity.class);
+
+              /*  Intent intent=new Intent(MainActivity.this,NotificationPopUPActivity.class);
 
                 intent.putExtra("clientId",ClientId1);
                 intent.putExtra("useraccesstoken",userAccessToken);
@@ -845,64 +809,11 @@ CommentcountFeeds=null;
                 intent.putExtra("clientImagePath",img);
                 intent.putExtra("state",state);
                 intent.putExtra("clientName",clntname);
-                startActivity(intent);
-               // Toast.makeText(MainActivity.this, "Recieved Comment From Groups ", Toast.LENGTH_LONG).show();
-
-         /*       final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this, R.style.customDialogStyle).create();
-                // Setting Dialog Title
-                alertDialog.setTitle("Notifications");
-                alertDialog.setInverseBackgroundForced(false);
-                alertDialog.setIcon(R.drawable.social_payment_icon);
-
-                // Setting Dialog Message
-                if(CommentcountFeeds.equals("0")) {
-                    alertDialog.setMessage( Commentcountgroups + " " + "Notifications from Groups" + " ");
-                }
-else if(Commentcountgroups.equals("0")) {
-                    alertDialog.setMessage(CommentcountFeeds + " " + "Notifications from Feeds" );
-                }
-                else
-                {
-                    alertDialog.setMessage(CommentcountFeeds+" "+" from Feeds" + "\n" + " "+Commentcountgroups+" "+" from Groups" +" ");
-
-                }
-
-                alertDialog.setCanceledOnTouchOutside(false);
-
-
-                // Setting OK Button
-                alertDialog.setButton("Read ", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to execute after dialog closed
-
-                        Intent intent=new Intent(MainActivity.this,NotificationPopUPActivity.class);
-
-                        intent.putExtra("clientId",ClientId1);
-                        intent.putExtra("clientImagePath",img);
-                        intent.putExtra("state",state);
-                        intent.putExtra("clientName",clntname);
-                        startActivity(intent);
-                    }
-                });
-
-                // Showing Alert Message
-                alertDialog.show();*/
+                startActivity(intent);*/
 
             }
         });
-      /*  menu_bell.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-               *//* if (notificationNumber.equals("0")){
-                    notificationNumber.setVisibility(View.INVISIBLE);
-                }else {
-                    int temp = Integer.parseInt(notificationNumber.getText().toString())-1;
-                    notificationNumber.setText(""+temp);
-                }
-             *//*   return false;
-            }
-        });
- */       return true;
+     return true;
     }
 
 
@@ -979,16 +890,7 @@ else if(Commentcountgroups.equals("0")) {
             intent.putExtra("ClientId",ClientId);
             startActivity(intent);
 
-            //startActivity(intent,CODE);
-            // Handle the camera action
-        } /*else if (id == R.id.nav_Chat) {
-
-        } *//*else if (id == R.id.nav_Settings) {
-            Intent intent=new Intent(MainActivity.this, SettingsNavigationActivity.class);
-
-            startActivity(intent);
-4884507071709195026666865
-        }*/
+        }
 //Changes 25 april
         else if(id==R.id.nav_TransactionReport){
             Intent intent=new Intent(MainActivity.this, LogoutNavigationActivity.class);
@@ -1008,14 +910,7 @@ else if(Commentcountgroups.equals("0")) {
 
             startActivity(intent);
         }
-        /*else if (id == R.id.nav_Settings) {
-            Intent intent=new Intent(MainActivity.this, SettingsNavigationActivity.class);
 
-            startActivity(intent);
-
-
-
-        }*/
 
         else if (id == R.id.nav_logout) {
 
@@ -1072,11 +967,6 @@ else if(Commentcountgroups.equals("0")) {
                 //e.toString();
             }
 
-/*
-            Intent intent=new Intent( MainActivity.this, ShareActivity.class);
-
-            startActivity(intent);*/
-
         }
 
         else if(id==R.id.nav_Contacts){
@@ -1115,16 +1005,6 @@ else if(Commentcountgroups.equals("0")) {
                     Intent intent=new Intent( MainActivity.this, FilterActivity.class);
 
                     startActivity(intent);
-
-                    /*SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.remove("logged");
-                    editor.commit();
-                    finish();
-                    Intent intent=new Intent(MainActivity.this, LogInActivity.class);
-
-                    startActivity(intent);
-*/
 
 
                 }
@@ -1206,179 +1086,6 @@ else if(Commentcountgroups.equals("0")) {
         );
     }
 
-/*
-    private void getUserIm(final  String token) {
-
-        String  tag_string_req = "req_clients";
-
-        StringRequest request=new StringRequest(Request.Method.GET,AppConfig.URL_UserProfilephot   +token, new Response.Listener<String>(){
-
-            @Override
-            public void onResponse(String response1)
-            {
-
-                Log.d("ARCParticularclientimage","-->"+response1);
-                //parsing Json
-                JSONObject jsonObject = null;
-
-                try {
-
-                    jsonObject = new JSONObject(response1.toString());
-                    String response = jsonObject.getString("response");
-                    String status = jsonObject.getString("status");
-                    Log.d("ARCresponsus",""+response);
-                    Log.d("ARCstatsus",""+status);
-                    JSONObject jsonObject1 = new JSONObject(response);
-                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
-                    userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
-                    Log.d("ARCuserImageUrlactivity",""+userImageUrl);
-
-   ClientData clientData=new ClientData();
-                    clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
-                    clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
-                    clientData.setClientName(jsonObject1.getString("clientName"));
-
-                    clientLogoPath=clientData.getClientLogoPath().toString();
-                    clientImagePath=clientData.getClientImagePath().toString();
-                    clientname11=clientData.getClientName().toString();
-                    // clientname=clientData.getClientName().toString();
-                    Log.d("ARCclientlogooooo","-->"+clientLogoPath );
-                    Log.d("ARCclientimageooo","-->"+clientImagePath );
-                    Log.d("ARCclientiooo","-->"+clientname11 );
-
-
-
-                }
-                catch(JSONException e){
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
-
-                    // Setting Dialog Title
-                    alertDialog.setTitle("Network/Connection Error");
-
-                    // Setting Dialog Message
-                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
-
-                    // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
-
-                    // Setting OK Button
-                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-
-                    // Showing Alert Message
-                    alertDialog.show();
-                    //Log.e(TAG, "Registration Error: " + error.getMessage());
-
-                } else if (error instanceof AuthFailureError) {
-
-                    //TODO
-                } else if (error instanceof ServerError) {
-
-                    //TODO
-                } else if (error instanceof NetworkError) {
-
-                    //TODO
-                } else if (error instanceof ParseError) {
-
-                    //TODO
-                }
-
-
-            }
-
-
-        }) ;
-
-        AppController.getInstance().addToRequestQueue(request,tag_string_req);
-
-
-    }
-*/
-
-
-
-
-    private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadLogoTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
-    }
-
-
-    //Code for fetching image from server
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
-    }
-
-
     //Firebase Notification
 
 
@@ -1419,28 +1126,6 @@ else if(Commentcountgroups.equals("0")) {
         super.onPause();
     }
 
-   /* private void subscribeUserToParse() {
-        String deviceToken = FirebaseInstanceId.getInstance().getToken();
-        if (TextUtils.isEmpty(deviceToken)) {
-            Intent intent = new Intent(this, MyFirebaseInstanceIDService.class);
-            startService(intent);
-            return;
-        }
-
-        User user = UserUtil.retrieveUserFromDB(mRealm);
-        String objectId = use
-
-
-
-
-        r.getParseObjectId();
-        if (!TextUtils.isEmpty(objectId)) {
-            ParseUtils.subscribeWithUsersObjectId(objectId, deviceToken);
-        }
-    }*/
-
-
-
     private void getUserIm(final  String token) {
 
         String  tag_string_req = "req_clients";
@@ -1476,21 +1161,6 @@ else if(Commentcountgroups.equals("0")) {
                             .into(niv);
 
                     Log.d("Skip",""+userImageUrl);
-                 /*   ClientData clientData=new ClientData();
-                    clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
-                    clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
-                    clientData.setClientName(jsonObject1.getString("clientName"));
-
-                    clientLogoPath=clientData.getClientLogoPath().toString();
-                    clientImagePath=clientData.getClientImagePath().toString();
-                    clientname11=clientData.getClientName().toString();
-             ,l       // clientname=clientData.getClientName().toString();
-                    ]\]\
-                    Log.d("clientlogooooo","-->"+clientLogoPath );
-                    Log.d("clientimageooo","-->"+clientImagePath );
-                    Log.d("clientiooo","-->"+clientname11 );*/
-
-
                 }
                 catch(JSONException e){
                     e.printStackTrace();
@@ -1544,6 +1214,8 @@ else if(Commentcountgroups.equals("0")) {
 
 
         }) ;
+
+
 
                 request.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
@@ -1629,19 +1301,7 @@ Log.d("namemain",""+name);
 
                       mailIdniv.setText(x);
 
-                        /*if(x==null) {
-                            mailIdniv.setText(" ");
-                            Log.d("mainusername111", "" +x );
-                        }
-                        else
-                        {
-
-                            mailIdniv.setText(x);
-                        Log.d("mainusername11", "userName" +x );
-                        }*/
-                        /// et_address.setText(object.getJSONObject("response").getString("address").toString());
-                        //  et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
-                        Log.d("mainusername", "userName" + usernameniv);
+                          Log.d("mainusername", "userName" + usernameniv);
                         Log.d("mainusermailid", "Mail" + mailIdniv);
 
                     }else {
@@ -1694,20 +1354,7 @@ Log.d("namemain",""+name);
                 }
 */
             }
-        }); /*{
-
-
-
-            protected Map<String, String> getParams() {
-                // Posprofiting params to register url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("userAccessToken", userAccessToken);
-
-                return params;
-            }
-
-        };
-*/
+        });
         strReq.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -1888,9 +1535,7 @@ Log.d("namemain",""+name);
         }) ;
 
         AppController.getInstance().addToRequestQueue(request,tag_string_req);
-
-
-    }
+        }
     public void Feedsnotification(final String client_Id,final String postTime,final String token)
     {
         StringRequest stringRequest=new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+"notificationsForFeeds?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
@@ -1916,8 +1561,6 @@ feedstotal= Integer.parseInt(CommentcountFeeds);
                     if(CommentcountFeeds.equals("0"))
                     {
                         Log.d("0 feeds Commnents", "-->" );
-
-
                     }
                     else {
 //.setText(CommentcountFeeds);
@@ -1967,7 +1610,7 @@ feedstotal= Integer.parseInt(CommentcountFeeds);
                     Log.d("CountResponseGroups", "-->" + response);
                     Log.d("CountstatusGroups", "-->" + status);
                    JSONObject jsonObject1=new JSONObject(response);
-                    String NoofJoinedGroups=jsonObject1.getString("NoofJoinedGroups");
+                    String   NoofJoinedGroups=jsonObject1.getString("NoofJoinedGroups");
                     Commentcountgroups=jsonObject1.getString("Commentcount");
                     Log.d("ARcNOOfJoinedGroups", "-->" + NoofJoinedGroups);
                     Log.d("ARCCommentscountGroups", "-->" + Commentcountgroups);
@@ -1975,6 +1618,7 @@ feedstotal= Integer.parseInt(CommentcountFeeds);
                     Log.d("ARCCommentoups11", "-->" + grouptotal);
 
                     if(Commentcountgroups.equals("0"))
+
                     {
 
 
@@ -1982,7 +1626,8 @@ feedstotal= Integer.parseInt(CommentcountFeeds);
                     else {
                         notificationManager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
                         remoteViews=new RemoteViews(getPackageName(),R.layout.custom_notification);
-                      //  remoteViews.setImageViewResource(R.id.app12,R.drawable.sabpaisa1234);
+                      //  remoteViews.setImageViewResource(R.id.app12,R.drawable.sabpais
+                        // a1234);
                         remoteViews.setTextViewText(R.id.text12,Commentcountgroups +"  " +"Notification from Groups");
 
                         notification_id=(int)System.currentTimeMillis();
@@ -2072,94 +1717,132 @@ noti.contentView=remoteViews;
         notificationManager.notify(notification_id, noti);
         }
 
-
-    public void Feedsnotification1(final String client_Id,final String postTime,final String token)
-    {
-        StringRequest stringRequest=new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+"notificationsForFeeds?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
-            @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
+    public void NotificationCount(final String client_Id,final String postTime,final String token){
+        StringRequest stringRequest=new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "notifications?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-                Log.d("ARCResponseFeeds","Notification"+s);
-                JSONObject jsonObject=null;
-                try {
-                    jsonObject = new JSONObject(s);
-                    String response = jsonObject.getString("response");
-                    String status = jsonObject.getString("status");
-                    Log.d("CountResponseFeeds", "-->" + response);
-                    Log.d("CountstatusFeeds", "-->" + status);
-                    JSONObject object=new JSONObject(response.toString());
-                    String NoofFeeds=object.getString("Nooffeeds");
-                    CommentcountFeeds=object.getString("Commentcount");
-                    Log.d("ARcNOOfFEEDs", "-->" + NoofFeeds);
-                    Log.d("ARCCommentscountFeeds", "-->" + CommentcountFeeds);
-                    if(CommentcountFeeds.equals("0"))
-                    {
+                Log.d("NotifactionCount", "-->" + s);
+                JSONObject object=null;
+                String result;
+                JSONArray feeds = null;
+                JSONObject data =null ;
+                JSONObject data1=null;
+                JSONArray groups=null;
+                String groupname,groupdescription,grouimage,countfeeds;
+                int sumgroup = 0,sumfeed = 0;
+                String name,image,description,id,groupid,groupcount = null;
 
-                    }
-else {
-                        notificationNumberFeed.setText(CommentcountFeeds);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
 
-            }
-        });
-        AppController.getInstance().addToRequestQueue(stringRequest);
+                try{
+                    object=new JSONObject(s);
+                    String response = object.getString("response");
+                    String status = object.getString("status");
+                    Log.d("CountResponse", "-->" + response);
+                    Log.d("Countstatus", "-->" + status);
 
-    }
-    public void Groupsnotification1(final String client_Id,final String postTime,final String token)
-    {
+                    JSONObject object1 = new JSONObject(response);
 
-        StringRequest stringRequest=new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+"notificationsForGroups?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
-            @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(String s) {
-                Log.d("ARCResponseGroups","Notification"+s);
+                    notificationModelClassArrayList  =new ArrayList<NotificationModelClass>();
+                    if(!(object1.isNull("groups")) ) {
 
-                JSONObject jsonObject=null;
-                try {
-                    jsonObject = new JSONObject(s);
-                    String response = jsonObject.getString("response");
-                    String status = jsonObject.getString("status");
-                    Log.d("CountResponseGroups", "-->" + response);
-                    Log.d("CountstatusGroups", "-->" + status);
-                    JSONObject jsonObject1=new JSONObject(response);
-                    String NoofJoinedGroups=jsonObject1.getString("NoofJoinedGroups");
-                    Commentcountgroups=jsonObject1.getString("Commentcount");
-                    Log.d("ARcNOOfJoinedGroups", "-->" + NoofJoinedGroups);
-                    Log.d("ARCCommentscountGroups", "-->" + Commentcountgroups);
-if(Commentcountgroups.equals("0"))
-{
-
-}
-                    {
-
-                        if(Commentcountgroups ==null)
-                            Commentcountgroups="0";
-                        if(CommentcountFeeds ==null)
-                            CommentcountFeeds="0";
-
-                        int total = Integer.parseInt(CommentcountFeeds)+Integer.parseInt(Commentcountgroups);
-
-                        Log.d("TOTLA : ", total+"");
-
-                        if(total==0)
-                        {
-                            menu_bell.setClickable(false);
-                            notificationNumber.setText("");
+                        groups = object1.getJSONArray("groups");
+                        Log.d("CountGroups", "-->" + groups);
+                        for (int i = 0; i < groups.length(); i++) {
+                            notificationModelClass=new NotificationModelClass();
+                            data1 = groups.getJSONObject(i);
+                            grouimage= data1.getString("imagePath");
+                            groupid= data1.getString("id");
+                            groupcount=   data1.getString("count");
+                            sumgroup=sumgroup+Integer.parseInt(groupcount);
+                            groupname=data1.getString("name");
+                            groupdescription=data1.getString("description");
+                            Log.d("countgroupsSum", "" + grouimage + "--" + groupdescription +" -----"+groupname+"---"+groupid);
+                            notificationModelClass.setCount(data1.getString("count"));
+                            notificationModelClass.setName(data1.getString("name"));
+                            notificationModelClass.setIdentify("Group");
+                            notificationModelClass.setId(data1.getString("id"));
+                            notificationModelClass.setDescription(data1.getString("description"));
+                            notificationModelClass.setImagePath(data1.getString("imagePath"));
+                            notificationModelClassArrayList.add(notificationModelClass);
                         }
-                        else {
-                            notificationNumber.setText(Integer.toString(total));
-                        menu_bell.setClickable(true);}
+
+                        Log.d("CountresultGroup", "-->" + groups);
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    if(!(object1.isNull("feeds"))){
+                        feeds = object1.getJSONArray("feeds");
+                        Log.d("CountFeeds", "-->" + feeds);
+                        for (int i = 0; i < feeds.length(); i++) {
+                            notificationModelClass=new NotificationModelClass();
+
+                            data = feeds.getJSONObject(i);
+                            countfeeds = data.getString("count");
+                            sumfeed=sumfeed+Integer.parseInt(countfeeds);
+                            name = data.getString("name");
+                            Log.d("countfeedsSum", "" +  countfeeds+"--" + name);
+                            Log.d("Countdata", "" + data.getString("id") + "=" + data.getString("count"));
+                            notificationModelClass.setCount(data.getString("count"));
+                            notificationModelClass.setName(data.getString("name"));
+                            notificationModelClass.setIdentify("Feed");
+                            notificationModelClass.setDescription(data.getString("description"));
+                            notificationModelClass.setId(data.getString("id"));
+
+                            notificationModelClass.setImagePath(data.getString("imagePath"));
+
+                            notificationModelClassArrayList.add(notificationModelClass);
+
+                        }
+
+                        Log.d("notificationMogrp",""+notificationModelClassArrayList.size());
+                        Log.d("CountGroupselse", "-->" + notificationModelClassArrayList);
+
+                    }
+
+                    Log.d("notificationMogrp",""+notificationModelClassArrayList.size());
+                    if(notificationModelClassArrayList.size()>0){
+                        sum=sumfeed+sumgroup;
+                        notificationNumber.setText(String.valueOf(sum));
+                    //    menu_bell.setClickable(true);
+                        menu_bell.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent=new Intent(MainActivity.this,NotificationPopUPActivity.class);
+
+                                intent.putExtra("clientId",ClientId1);
+                                intent.putExtra("useraccesstoken",userAccessToken);
+                                intent.putExtra("grouptime",timeGroup);
+                                intent.putExtra("feedtime",timefeed);
+                                intent.putExtra("clientImagePath",img);
+                                intent.putExtra("state",state);
+                                intent.putExtra("clientName",clntname);
+                                startActivity(intent);
+                            }
+                        });
+                        Log.d("SCOUNRHKDMain","=="+ sum+ "  "+sumfeed+"  "+sumgroup);
+
+                    }
+
+                    else{
+                     //   menu_bell.setClickable(false);
+                        notificationNumber.setText("");
+                        menu_bell.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                Toast.makeText(getApplicationContext(), "No comments to read " , Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
+                    }
+
                 }
+
+
+                catch (Exception e)
+                {
+
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -2167,12 +1850,23 @@ if(Commentcountgroups.equals("0"))
 
             }
         });
-
+        Log.d("Strngrqst",""+stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
+class  abc extends AsyncTask<String, Void, Void>{
+
+    @Override
+    protected Void doInBackground(String... strings) {
+        Long previousDate = new Long(System.currentTimeMillis());
+        Log.d("doInBackground", "PreviousDate [" + previousDate + "]");
+        Long intervall = new Long(System.currentTimeMillis());
+        Log.d("doInBackground", "intervall [" + intervall + "]");
 
 
+        return null;
+    }
+}
 
 }
 
