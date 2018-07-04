@@ -1669,7 +1669,7 @@ feedstotal= Integer.parseInt(CommentcountFeeds);
         intent.putExtra("clientName",clntname);
         PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent,  PendingIntent.FLAG_UPDATE_CURRENT);
 
-// define sound URI, the sound to be played when there's a notification
+        // define sound URI, the sound to be played when there's a notification
 
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = null;
@@ -1862,7 +1862,6 @@ class  abc extends AsyncTask<String, Void, Void>{
         Log.d("doInBackground", "PreviousDate [" + previousDate + "]");
         Long intervall = new Long(System.currentTimeMillis());
         Log.d("doInBackground", "intervall [" + intervall + "]");
-
 
         return null;
     }
