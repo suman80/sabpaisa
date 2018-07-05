@@ -180,10 +180,6 @@
         <activity android:name=".TransactionReportNav" />
         <activity android:name=".Report" />
         <activity android:name=".UPIActivationActivity" />
-        <activity
-            android:name=".Util.Nagationfullview"
-            android:label="@string/title_activity_nagationfullview"
-            android:theme="@style/AppTheme" />
 
         <!-- Firebase Notifications -->
         <service android:name=".MyFirebaseMessagingService">
