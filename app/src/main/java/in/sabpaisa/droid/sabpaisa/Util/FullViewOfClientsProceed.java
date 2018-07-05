@@ -15,14 +15,11 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -34,14 +31,12 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -73,28 +68,19 @@ import in.sabpaisa.droid.sabpaisa.AllContacts;
 import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.FeedData;
-import in.sabpaisa.droid.sabpaisa.FeedsFragments;
 import in.sabpaisa.droid.sabpaisa.FilterActivity;
-import in.sabpaisa.droid.sabpaisa.FormFragment;
 //import in.sabpaisa.droid.sabpaisa.Fragments.FeedFragments1;
-import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragments;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedGroupsFragments;
-import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
-import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MainActivity;
-import in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce;
 import in.sabpaisa.droid.sabpaisa.Members;
 import in.sabpaisa.droid.sabpaisa.Model.*;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
-import in.sabpaisa.droid.sabpaisa.PayFeeFragment;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
-import in.sabpaisa.droid.sabpaisa.ProfileNavigationActivityFullViewProceed;
 import in.sabpaisa.droid.sabpaisa.R;
-import in.sabpaisa.droid.sabpaisa.TransactionReportNav;
 import in.sabpaisa.droid.sabpaisa.UIN;
 
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
@@ -201,6 +187,7 @@ Timestamp Fullviewts;
         clientName = intent.getStringExtra("clientName");
         state = intent.getStringExtra("state");
         clientImageURLPath= getIntent().getStringExtra("clientImagePath");
+
         ClientId=getIntent().getStringExtra("clientId");
         //userImageUrl=getIntent().getStringExtra("userImageUrl");
         Log.d("ClientId_FVOCL"," "+ClientId);
@@ -233,9 +220,17 @@ mailIdniv.setText(x);
         usernameniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(FullViewOfClientsProceed.this,ProfileNavigationActivityFullViewProceed.class);
+                int value=3;
+
+                Intent intent=new Intent(FullViewOfClientsProceed.this,ProfileNavigationActivity.class);
                 intent.putExtra("ClientId",ClientId);
                 intent.putExtra("state",state);
+                intent.putExtra("clientName",clientName);
+
+
+                intent.putExtra("clientImagePath",clientImageURLPath);
+                intent.putExtra("valueProfile",value);
+
                 startActivity(intent);
 
             }
@@ -244,9 +239,17 @@ mailIdniv.setText(x);
         niv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(FullViewOfClientsProceed.this,ProfileNavigationActivityFullViewProceed.class);
+                int value=3;
+
+                Intent intent=new Intent(FullViewOfClientsProceed.this,ProfileNavigationActivity.class);
                 intent.putExtra("ClientId",ClientId);
                 intent.putExtra("state",state);
+                intent.putExtra("clientName",clientName);
+
+
+                intent.putExtra("clientImagePath",clientImageURLPath);
+                intent.putExtra("valueProfile",value);
+
                 startActivity(intent);
 
             }
@@ -255,8 +258,17 @@ mailIdniv.setText(x);
         mailIdniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(FullViewOfClientsProceed.this,ProfileNavigationActivityFullViewProceed.class);
-                intent.putExtra("ClientId",ClientId);intent.putExtra("state",state);
+                int value=3;
+
+                Intent intent=new Intent(FullViewOfClientsProceed.this,ProfileNavigationActivity.class);
+                intent.putExtra("ClientId",ClientId);
+                intent.putExtra("state",state);
+                intent.putExtra("clientName",clientName);
+
+
+                intent.putExtra("clientImagePath",clientImageURLPath);
+                intent.putExtra("valueProfile",value);
+
                 startActivity(intent);
 
             }
@@ -641,8 +653,17 @@ mailIdniv.setText(x);
         int id = item.getItemId();
 
         if (id == R.id.nav_Profile) {
-            Intent intent=new Intent(FullViewOfClientsProceed.this, ProfileNavigationActivityFullViewProceed.class);
-intent.putExtra("state",state);
+            int value=3;
+
+            Intent intent=new Intent(FullViewOfClientsProceed.this, ProfileNavigationActivity.class);
+            intent.putExtra("ClientId",ClientId);
+            intent.putExtra("state",state);
+            intent.putExtra("clientName",clientName);
+
+
+            intent.putExtra("clientImagePath",clientImageURLPath);
+            intent.putExtra("valueProfile",value);
+
             startActivity(intent);
             // Handle the camera action
         } /*else if (id == R.id.nav_Chat) {

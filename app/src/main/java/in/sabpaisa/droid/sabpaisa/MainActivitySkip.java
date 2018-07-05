@@ -109,7 +109,6 @@ import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.LogoutNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
-import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
 import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 
@@ -357,7 +356,9 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         usernameniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivitySkip.class);
+                int value=2;
+                Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivity.class);
+                intent.putExtra("valueProfile",value);
                 startActivity(intent);
 
             }
@@ -366,7 +367,10 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         niv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivitySkip.class);
+                int value=2;
+                Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivity.class);
+                intent.putExtra("valueProfile",value);
+
                 startActivity(intent);
 
             }
@@ -375,7 +379,11 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         mailIdniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivitySkip.class);
+                int value=2;
+                Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivity.class);
+                intent.putExtra("valueProfile",value);
+
+
                 startActivity(intent);
 
             }
@@ -753,8 +761,10 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         int id = item.getItemId();
 
         if (id == R.id.nav_Profile) {
-            Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivitySkip.class);
-
+            int value=2;
+            Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivity.class);
+         //   intent.putExtra("ClientId",ClientId);
+            intent.putExtra("valueProfile",value);
             startActivity(intent);
             // Handle the camera action
         } /*else if (id == R.id.nav_Chat) {

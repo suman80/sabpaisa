@@ -511,8 +511,10 @@ onBackPressed();            }
         usernameniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int value=1;
                 Intent intent=new Intent(MainActivity.this,ProfileNavigationActivity.class);
                 intent.putExtra("ClientId",ClientId);
+                intent.putExtra("valueProfile",value);
                 startActivity(intent);
 
             }
@@ -521,8 +523,12 @@ onBackPressed();            }
         niv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int value=1;
+
                 Intent intent=new Intent(MainActivity.this,ProfileNavigationActivity.class);
                 intent.putExtra("ClientId",ClientId);
+                intent.putExtra("valueProfile",value);
+
                 startActivity(intent);
 
             }
@@ -531,8 +537,12 @@ onBackPressed();            }
         mailIdniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int value=1;
+
                 Intent intent=new Intent(MainActivity.this,ProfileNavigationActivity.class);
                 intent.putExtra("ClientId",ClientId);
+                intent.putExtra("valueProfile",value);
+
                 startActivity(intent);
 
             }
@@ -886,8 +896,11 @@ onBackPressed();            }
         int id = item.getItemId();
 
         if (id == R.id.nav_Profile) {
+            int value=1;
+
             Intent intent=new Intent(MainActivity.this, ProfileNavigationActivity.class);
             intent.putExtra("ClientId",ClientId);
+            intent.putExtra("valueProfile",value);
             startActivity(intent);
 
         }

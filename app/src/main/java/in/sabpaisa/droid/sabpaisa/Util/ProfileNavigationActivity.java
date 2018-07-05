@@ -83,11 +83,12 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     String x;
     ProgressBar progressBar;
     SharedPreferences sharedPreferences;
+    String clientName,state,clientImageURLPath;
     String clientId;
     String userImageUrl;
     public static String MYSHAREDPREFPNA = "mySharedPrefPNA";
     ProgressDialog progressDialog;
-
+int val;
     /////////////DB///////////////////////
 
     AppDB db;
@@ -125,17 +126,21 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         ///////////////////////DB/////////////////////////////////
         db = new AppDB(ProfileNavigationActivity.this);
 
+
+        Intent intent=getIntent();
+        clientName = intent.getStringExtra("clientName");
+        state = intent.getStringExtra("state");
+        clientImageURLPath= getIntent().getStringExtra("clientImagePath");
+
+        Log.d("ProfileLOGs",""+clientId +" "+"  "+clientImageURLPath+"  "+state);
+
         toolbar.setTitle("Profile");
         toolbar.setTitleTextColor(getResources().getColor(R.color.black));
         toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProfileNavigationActivity.this, MainActivity.class);
-                intent.putExtra("clientId", clientId);
-                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+             onBackPressed();
             }
         });
 
@@ -154,6 +159,8 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         sharedPreferences = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
         clientId = sharedPreferences.getString("clientId", "abc");
         Log.d("clintidprofile", "---" + clientId);
+val=getIntent().getIntExtra("valueProfile",0);
+Log.d("vaalueeProfile",""+val);
 
 
         mNumber.setEnabled(false);
@@ -288,17 +295,35 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        Intent intent = new Intent(ProfileNavigationActivity.this, MainActivity.class);
-        intent.putExtra("clientId", clientId);
-        // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        //finish();
+        if (val==1) {
+            Intent intent = new Intent(ProfileNavigationActivity.this, MainActivity.class);
+            intent.putExtra("clientId", clientId);
+            // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
 
-        /*intent.putExtra("clientId", clientId);
-        intent.putExtra("userImageUrl", userImageUrl);
-        startActivity(intent);*/
-        //this.finish();
+else
+    if (val==2)
+    {
+        Intent intent=new Intent(ProfileNavigationActivity.this,MainActivitySkip.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        startActivity(intent);
+    }
+     else   if(val==3)
+        {
+            Intent intent = new Intent(ProfileNavigationActivity.this, FullViewOfClientsProceed.class);
+            // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+            intent.putExtra("clientId", clientId);
+            intent.putExtra("clientImagePath",clientImageURLPath);
+            intent.putExtra("clientName",clientName);
+            intent.putExtra("state",state);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
+        }
+
     }
 
     public void pickImage() {
