@@ -678,8 +678,7 @@ mailIdniv.setText(x);
 
 
         else if(id==R.id.nav_TransactionReport){
-            Intent intent=new Intent(FullViewOfClientsProceed.this, LogoutNavigationActivity.class);
-            startActivity(intent);
+
         } else  if(id == R.id.nav_ChangePassword)
         {
             Intent intent=new Intent(FullViewOfClientsProceed.this, ForgotActivity.class);

@@ -17,7 +17,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -90,27 +89,19 @@ import java.util.HashMap;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
-import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionSkipFragment;
-import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientSkipFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
-import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
-import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
-import in.sabpaisa.droid.sabpaisa.Util.LogoutNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
-import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
-import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
 
 import static android.view.View.GONE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
@@ -874,8 +865,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 //changes 25 april
 
         else if(id==R.id.nav_TransactionReport){
-            Intent intent=new Intent(MainActivitySkip.this, LogoutNavigationActivity.class);
-            startActivity(intent);
+
         }
         //// end
         /*

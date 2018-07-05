@@ -177,7 +177,6 @@
         -->
         <activity android:name=".Proceed_Feed_FullScreen" />
         <activity android:name=".Proceed_Group_FullScreen" />
-        <activity android:name=".Util.LogoutNavigationActivity" />
         <activity android:name=".TransactionReportNav" />
         <activity android:name=".Report" />
         <activity android:name=".UPIActivationActivity" />

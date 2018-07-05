@@ -14,7 +14,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -30,7 +29,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.res.ResourcesCompat;
@@ -89,9 +87,6 @@ import com.google.android.gms.security.ProviderInstaller;
 import com.google.firebase.analytics.FirebaseAnalytics;
 //import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.squareup.picasso.Picasso;
 import com.wangjie.androidbucket.utils.ABTextUtil;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
@@ -102,22 +97,12 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloating
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Comment;
 
-import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.NotificationAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
@@ -127,25 +112,17 @@ import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.NotificationModelClass;
-import in.sabpaisa.droid.sabpaisa.Model.TransactionreportModelClass;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
-import in.sabpaisa.droid.sabpaisa.Util.LogoutNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
-import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
-import in.sabpaisa.droid.sabpaisa.Util.SettingsNavigationActivity;
-import in.sabpaisa.droid.sabpaisa.Util.ShareActivity;
 import io.fabric.sdk.android.Fabric;
 
 import static android.view.View.GONE;
 import static com.mikepenz.materialize.util.UIUtils.convertDpToPixel;
-import static in.sabpaisa.droid.sabpaisa.CommentAdapterDatabase.context;
-import static in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment.MYSHAREDPREFProceed;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
@@ -905,9 +882,7 @@ onBackPressed();            }
 
         }
 //Changes 25 april
-        else if(id==R.id.nav_TransactionReport){
-            Intent intent=new Intent(MainActivity.this, LogoutNavigationActivity.class);
-            startActivity(intent);
+        else if(id==R.id.nav_TransactionReport) {
         }
 
         // end
