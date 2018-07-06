@@ -90,12 +90,14 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:maxLines="2"
+
             android:text="Fractal landscape of Julian set of numbers by Wikimedia Commons user Gertbuschmann public domain here:"
-            android:textColor="@color/bg_text_color"
-            android:textSize="@dimen/text_size_xsmall" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_small" />
 
         <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/Group_Image"

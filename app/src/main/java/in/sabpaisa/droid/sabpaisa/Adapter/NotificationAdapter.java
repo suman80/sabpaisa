@@ -139,7 +139,6 @@ else if(notificationModelClass.getIdentify().equals("Feed"))
             intent.putExtra("feedName", notificationModelClass.getName().toString());
             intent.putExtra("feedId", notificationModelClass.getId());
             intent.putExtra("popup",popup);
-
             mContext.startActivity(intent);
 
         }

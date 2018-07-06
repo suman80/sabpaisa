@@ -46,7 +46,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
                     android:text="Group Name"
-                    android:textColor="@color/bg_title"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/text_size_small" />
 
 
@@ -75,7 +76,7 @@
             android:layout_marginBottom="5dp"
             android:maxLines="2"
             android:text="Fractal landscape of Julian set of numbers by Wikimedia Commons user Gertbuschmann public domain here:"
-            android:textColor="@color/bg_text_color"
+            android:textColor="@color/black"
             android:textSize="@dimen/text_size_xsmall" />
 
         <com.github.chrisbanes.photoview.PhotoView

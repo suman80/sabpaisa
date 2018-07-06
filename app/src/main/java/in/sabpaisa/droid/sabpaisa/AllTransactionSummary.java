@@ -68,9 +68,6 @@ public class AllTransactionSummary extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         back = (ImageView) findViewById(R.id.bbck);
-       /* toolbar.setTitle("Profile");
-        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
-       */
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,18 +142,15 @@ public class AllTransactionSummary extends AppCompatActivity {
                     stringBuffer.append(res.getString(3));
                     stringBuffer.append(res.getString(4));
                     stringBuffer.append(res.getString(5));
-
                     AllTransactiongettersetter allTransactiongettersetter = new AllTransactiongettersetter();
                     allTransactiongettersetter.setSpTranscationId(res.getString(1));
                     allTransactiongettersetter.setTranscationDate(res.getString(2));
                     allTransactiongettersetter.setPaidAmount(res.getString(3));
                     allTransactiongettersetter.setPaymentStatus(res.getString(4));
                     allTransactiongettersetter.setUserAcceessToken(res.getString(5));
-
                     allTransactiongettersettersForLocalDb.add(allTransactiongettersetter);
 
-
-                }
+                    }
                 Log.d("getTransactionData", "-->" + stringBuffer);
                 Log.d("TransactionForLocalDb", "-->" + allTransactiongettersettersForLocalDb.get(0).getSpTranscationId());
                 Log.d("TransactionForLocalDb", "-->" + allTransactiongettersettersForLocalDb.get(0).getTranscationDate());
@@ -172,11 +166,7 @@ public class AllTransactionSummary extends AppCompatActivity {
                 Log.d("AllTransactionLocalDb", "In Else Part");
                 Toast.makeText(AllTransactionSummary.this,"No Data Found !",Toast.LENGTH_SHORT).show();
             }
-
-
-
-
-        }
+            }
     }
 
     public void alltxnsummary(final String token) {
@@ -253,13 +243,6 @@ public class AllTransactionSummary extends AppCompatActivity {
 
                         Log.d("txnarraysum", "" + jArray3);
 
-                   /* JsonObject jsonObject;
-                    jsonObject = new JsonObject(responsee);
-
-                    for(int i = 0; i < jArray3 .length(); i++)
-
-*/
-
                         for (int i = 0; i < jArray3.length(); i++) {
                             JSONObject object3 = jArray3.getJSONObject(i);
 
@@ -294,19 +277,6 @@ public class AllTransactionSummary extends AppCompatActivity {
 
                             allTransactiongettersetters.add(allTransactiongettersetter);
 
-
-                        /*id   = object3.getString("id");
-                        paidAmount = object3.getString("paidAmount");
-                        transcationDate  = object3.getString("transcationDate");
-                        clientName = object3.getString("clientName");
-                        spTranscationId = object3.getString("spTranscationId");
-                        Log.d("uhnsdhkahk",""+id);
-                        Log.d("uhnsdhkahk",""+paidAmount);
-                        //Log.d("uhnsdhkahk",""+spTranscationId);
-                        Log.d("uhnsdhkahk",""+spTranscationId);
-                        Log.d("uhnsdhkahk",""+clientName);
-                        Log.d("uhnsdhkahk",""+transcationDate);
-               */
                         }
                         Log.d("ArrayListAfterParse", " " + allTransactiongettersetters.get(0).getSpTranscationId());
 

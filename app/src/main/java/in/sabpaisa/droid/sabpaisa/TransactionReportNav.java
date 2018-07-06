@@ -88,10 +88,6 @@ back.setOnClickListener(new View.OnClickListener() {
 
                     // Showing Alert Message
                     alertDialog.show();
-                   /* Log.d("refrenceid131313",""+refID);
-                    Intent intent = new Intent(TransactionReportNav.this, Reportt.class);
-                    intent.putExtra("refID", refID);
-                    startActivity(intent);*/
                 } else {
                     Log.d("refrenceid131314",""+refID);
                     Intent intent = new Intent(TransactionReportNav.this, Reportt.class);
@@ -99,26 +95,7 @@ back.setOnClickListener(new View.OnClickListener() {
                     Log.d("refrencud",""+refID);
 
                     startActivity(intent);
-                    /*AlertDialog alertDialog = new AlertDialog.Builder(TransactionReportNav.this, R.style.MyDialogTheme).create();
 
-                    // Setting Dialog Title
-                    alertDialog.setTitle("");
-
-                    // Setting Dialog Message
-                    alertDialog.setMessage("Hey,you forgot to enter your Reference id");
-                    // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
-
-                    // Setting OK Button
-                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Write your code here to execute after dialog closed
-                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    // Showing Alert Message
-                    alertDialog.show();*/
                 }
 
 

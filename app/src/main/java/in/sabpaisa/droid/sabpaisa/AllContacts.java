@@ -508,6 +508,7 @@ public class AllContacts extends AppCompatActivity {
                             // Write your code here to execute after dialog closed
                         }
                     });
+
                     // Showing Alert Message
                     alertDialog.show();
                     Log.e("", "Contacts api Error: " + error.getMessage());
