@@ -57,9 +57,7 @@ Context mContext;
         this.commentList = countryList;
         this.mContext=context;
     }
-    public CommentAdapter(List<CommentData> countryList) {
-        this.commentList = countryList;
-    }
+
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {

@@ -263,7 +263,7 @@ public class GroupDetails extends AppCompatActivity implements SwipeRefreshLayou
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_group_details_comment);
-        CommentAdapter ca = new CommentAdapter(arrayList);
+        CommentAdapter ca = new CommentAdapter(arrayList,getApplicationContext());
         rv.setAdapter(ca);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);

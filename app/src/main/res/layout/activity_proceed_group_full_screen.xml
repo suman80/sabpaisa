@@ -42,11 +42,13 @@
                         android:id="@+id/groupsName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textStyle="bold|italic"
+                        android:shadowColor="@color/bg_orange"
                         android:text="Council of Architecture"
-                        android:textColor="@color/black"
+                        android:textColor="@color/bg_orange"
                         android:singleLine="true"
                         android:layout_weight="0.1"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
 
                     <Button
                         android:layout_width="100dp"
@@ -55,9 +57,9 @@
                         android:id="@+id/b1"
                         android:onClick="numberofgroupmember"
                         android:textAllCaps="false"
-                        android:textStyle="bold"
+                        android:textStyle="italic"
                         android:background="@drawable/button_corner"
-                        android:textSize="9sp"/>
+                        android:textSize="12sp"/>
 
                     <Button
                         android:layout_width="100dp"
@@ -67,7 +69,7 @@
                         android:layout_marginLeft="5dp"
                         android:textAllCaps="false"
                         android:textSize="12sp"
-                        android:textStyle="bold"
+                        android:textStyle="italic"
                         android:background="@drawable/button_corner"
                         />
                 </LinearLayout>
@@ -157,6 +159,7 @@ android:visibility="gone"
                         android:layout_margin="5dp"
                         android:gravity="center"
                         android:text="Comments"
+                        android:textStyle="bold|italic"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_normal" />
 

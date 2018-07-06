@@ -187,7 +187,7 @@ public class FeedDetails extends AppCompatActivity implements SwipeRefreshLayout
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
-        CommentAdapter ca = new CommentAdapter(arrayList);
+        CommentAdapter ca = new CommentAdapter(arrayList,getApplicationContext());
         rv.setAdapter(ca);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
