@@ -300,7 +300,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
-        final CommentAdapter ca = new CommentAdapter(arrayList);
+        final CommentAdapter ca = new CommentAdapter(arrayList,getApplicationContext());
         rv.setAdapter(ca);
 
         final LinearLayoutManager llm = new LinearLayoutManager(this);

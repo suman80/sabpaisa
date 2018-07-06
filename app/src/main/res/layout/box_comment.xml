@@ -25,6 +25,8 @@
             android:id="@+id/commentadd"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:hint="Add Comment"

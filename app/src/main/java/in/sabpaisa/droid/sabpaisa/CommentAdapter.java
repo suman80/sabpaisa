@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -27,6 +28,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 
 
 public class CommentAdapter extends
@@ -40,17 +42,21 @@ Context mContext;
         public TextView main_feed_creation_time;
         public TextView main_feed_group_description;
         public TextView main_feed_comment_username;
-        public NetworkImageView main_feed_comment_image;
+        public ImageView main_feed_comment_image;
 
         public MyViewHolder(View view) {
             super(view);
             main_feed_creation_time = (TextView) view.findViewById(R.id.main_feed_creation_time);
             main_feed_comment_username = (TextView) view.findViewById(R.id.username);
             main_feed_group_description = (TextView) view.findViewById(R.id.main_feed_group_description);
-            main_feed_comment_image = (NetworkImageView) view.findViewById(R.id.people_name_initial);
+            main_feed_comment_image = (ImageView) view.findViewById(R.id.people_name_initial);
         }
     }
 
+    public CommentAdapter(List<CommentData> countryList,Context context) {
+        this.commentList = countryList;
+        this.mContext=context;
+    }
     public CommentAdapter(List<CommentData> countryList) {
         this.commentList = countryList;
     }
@@ -99,7 +105,13 @@ Context mContext;
         //StringEscapeUtils.unescapeJava(commentData.getCommentText());
         holder.main_feed_group_description.setText(StringEscapeUtils.unescapeJava(commentData.getCommentText()));
        // holder.main_feed_comment_image.setImageURI(Uri.parse(commentData.getUserImageUrl().toString()));
-        holder.main_feed_comment_image.setImageUrl(commentData.getUserImageUrl(),imageloader);
+
+        Glide.with( mContext)
+                .load(commentData.getUserImageUrl())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .error(R.drawable.default_users)
+                .into(holder.main_feed_comment_image);
+       // holder.main_feed_comment_image.setImageUrl(commentData.getUserImageUrl(),imageloader);
         holder.main_feed_comment_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
