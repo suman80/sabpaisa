@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -57,93 +58,125 @@ public TextView  groupNAme,Count,type;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         final NotificationModelClass notificationModelClass=notificationModelClassList.get(position);
 
 holder.Count.setText(notificationModelClass.getCount());
 holder.groupNAme.setText(notificationModelClass.getName());
         Log.d("count=group",String.valueOf(notificationModelClass.getCount().toString())+"   "+notificationModelClassList.size());
-if(notificationModelClass.getIdentify().equals("Group")) {
-    holder.type.setText("G");
-    holder.type.setAllCaps(true);
-    final String   popup="Notification";
+        if(notificationModelClassList.size()>1) {
+            if (notificationModelClass.getIdentify().equals("Group")) {
+                holder.type.setText("G");
+                holder.type.setAllCaps(true);
+                final String popup = "Notification";
 
-    holder.groupNAme.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
+                holder.groupNAme.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-            Intent intent = new Intent(mContext, Proceed_Group_FullScreen.class);
-            notificationModelClassList.remove(position);
-         //   notificationPopUPActivity.groupMap.remove(notificationModelClass);
+                        Intent intent = new Intent(mContext, Proceed_Group_FullScreen.class);
+                        NotificationModelClass recent = notificationModelClassList.get(position);
+                        notificationModelClassList.remove(recent);
+                  /*
+                        notifyItemRemoved(position);
+                        //this line below gives you the animation and also updates the
+                        //list items after the deleted item
+                        notifyItemRangeChanged(position, getItemCount());*/
+                        //   notificationPopUPActivity.groupMap.remove(notificationModelClass);
 
-            notifyItemRemoved(position);
-            intent.putExtra("popup",popup);
-            intent.putExtra("groupText", notificationModelClass.getDescription().toString());
-            intent.putExtra("groupImage", notificationModelClass.getImagePath().toString());
-            intent.putExtra("groupName", notificationModelClass.getName().toString());
-            intent.putExtra("groupId", notificationModelClass.getId());
-            mContext.startActivity(intent);
+                        //notifyItemRemoved(position+1);
+//                       intent.putExtra("popup", popup);
+                        notifyDataSetChanged();
+                        intent.putExtra("groupText", notificationModelClass.getDescription().toString());
+                        intent.putExtra("groupImage", notificationModelClass.getImagePath().toString());
+                        intent.putExtra("groupName", notificationModelClass.getName().toString());
+                        intent.putExtra("groupId", notificationModelClass.getId());
+                        mContext.startActivity(intent);
 
+                    }
+                });
+                holder.Count.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        NotificationModelClass recent = notificationModelClassList.get(position);
+
+                        Intent intent = new Intent(mContext, Proceed_Group_FullScreen.class);
+                        notificationModelClassList.remove(recent);
+                   /*  ;
+                        notifyItemRemoved(position);
+                        //this line below gives you the animation and also updates the
+                        //list items after the deleted item
+                        notifyItemRangeChanged(position, getItemCount());
+                        //    notificationPopUPActivity.groupMap.remove(notificationModelClass);
+                     //   notifyItemRemoved(position+1);
+                       // */
+                        notifyDataSetChanged();
+                        intent.putExtra("groupText", notificationModelClass.getDescription().toString());
+                        intent.putExtra("popup", popup);
+                        intent.putExtra("groupImage", notificationModelClass.getImagePath().toString());
+                        intent.putExtra("groupName", notificationModelClass.getName().toString());
+                        intent.putExtra("groupId", notificationModelClass.getId());
+                        mContext.startActivity(intent);
+
+                    }
+                });
+            } else if (notificationModelClass.getIdentify().equals("Feed")) {
+                final String popup = "Notification";
+
+                holder.type.setText("F");
+                holder.groupNAme.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("ResourceAsColor")
+                    @Override
+                    public void onClick(View view) {
+                        NotificationModelClass recent = notificationModelClassList.get(position);
+
+                        Intent intent = new Intent(mContext, Proceed_Feed_FullScreen.class);
+                        notificationModelClassList.remove(recent);
+                    /*  notificationModelClassList.remove(position);
+                        notifyItemRemoved(position);
+                        //this line below gives you the animation and also updates the
+                        //list items after the deleted item
+                        notifyItemRangeChanged(position, getItemCount());
+                        // notificationPopUPActivity.feedMap.remove(notificationModelClass);
+
+                       //notifyItemRemoved(position+1);
+                       notifyDataSetChanged();*/
+                        notifyDataSetChanged();
+                        intent.putExtra("feedText", notificationModelClass.getDescription().toString());
+                        intent.putExtra("feedImage", notificationModelClass.getImagePath().toString());
+                        intent.putExtra("feedName", notificationModelClass.getName().toString());
+                        intent.putExtra("feedId", notificationModelClass.getId());
+                        intent.putExtra("popup", popup);
+                        mContext.startActivity(intent);
+
+                    }
+                });
+                holder.Count.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        NotificationModelClass recent = notificationModelClassList.get(position);
+
+                        Intent intent = new Intent(mContext, Proceed_Feed_FullScreen.class);
+                        notificationModelClassList.remove(recent);
+                  /*
+                     notifyItemRemoved(position);
+                        //this line below gives you the animation and also updates the
+                        //list items after the deleted item
+                        notifyItemRangeChanged(position, getItemCount());
+                        //notificationPopUPActivity.feedMap.remove(notificationModelClass);
+                      //  notifyItemRemoved(position+1);*/
+                  notifyDataSetChanged();
+                        intent.putExtra("feedText", notificationModelClass.getDescription().toString());
+                        intent.putExtra("feedImage", notificationModelClass.getImagePath().toString());
+                        intent.putExtra("feedName", notificationModelClass.getName().toString());
+                        intent.putExtra("feedId", notificationModelClass.getId());
+                        intent.putExtra("popup", popup);
+                        mContext.startActivity(intent);
+
+                    }
+                });
+            }
         }
-    });
-    holder.Count.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(mContext, Proceed_Group_FullScreen.class);
-            notificationModelClassList.remove(position);
-        //    notificationPopUPActivity.groupMap.remove(notificationModelClass);
-            notifyItemRemoved(position);
-            intent.putExtra("groupText", notificationModelClass.getDescription().toString());
-            intent.putExtra("popup",popup);
-            intent.putExtra("groupImage", notificationModelClass.getImagePath().toString());
-            intent.putExtra("groupName", notificationModelClass.getName().toString());
-            intent.putExtra("groupId", notificationModelClass.getId());
-
-            mContext.startActivity(intent);
-
-        }
-    });
-}
-
-else if(notificationModelClass.getIdentify().equals("Feed"))
-{     final String   popup="Notification";
-
-    holder.type.setText("F");
-    holder.groupNAme.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-            Intent intent = new Intent(mContext, Proceed_Feed_FullScreen.class);
-            notificationModelClassList.remove(position);
-           // notificationPopUPActivity.feedMap.remove(notificationModelClass);
-
-            notifyItemRemoved(position);
-            intent.putExtra("feedText", notificationModelClass.getDescription().toString());
-            intent.putExtra("feedImage", notificationModelClass.getImagePath().toString());
-            intent.putExtra("feedName", notificationModelClass.getName().toString());
-            intent.putExtra("feedId", notificationModelClass.getId());
-            intent.putExtra("popup",popup);
-            mContext.startActivity(intent);
-
-        }
-    });
-    holder.Count.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(mContext, Proceed_Feed_FullScreen.class);
-            notificationModelClassList.remove(position);
-            //notificationPopUPActivity.feedMap.remove(notificationModelClass);
-            notifyItemRemoved(position);
-            intent.putExtra("feedText", notificationModelClass.getDescription().toString());
-            intent.putExtra("feedImage", notificationModelClass.getImagePath().toString());
-            intent.putExtra("feedName", notificationModelClass.getName().toString());
-            intent.putExtra("feedId", notificationModelClass.getId());
-            intent.putExtra("popup",popup);
-            mContext.startActivity(intent);
-
-        }
-    });
-}
     }
 
     @Override

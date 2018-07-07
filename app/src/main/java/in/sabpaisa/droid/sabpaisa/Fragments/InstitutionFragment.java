@@ -38,16 +38,11 @@ public class InstitutionFragment extends Fragment {
     RecyclerView recyclerViewInstitutions;
     InstitutionAdapter institutionAdapter;
     ArrayList<Institution> institutions;
-
-
-
     String stateName,serviceName,userImageUrl;
 
     public InstitutionFragment() {
 
     }
-
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

@@ -206,7 +206,7 @@ NotificationAdapter notificationAdapter; private TabLayout tabLayout;
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_navigation);
         this.mHandler = new Handler();
-        this.mHandler.postDelayed(m_Runnable,5000);
+      /*  this.mHandler.postDelayed(m_Runnable,5000);*/
         Fabric.with(this, new Crashlytics());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

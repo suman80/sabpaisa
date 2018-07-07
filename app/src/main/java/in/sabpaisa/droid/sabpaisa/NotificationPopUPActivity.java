@@ -47,6 +47,10 @@ public class NotificationPopUPActivity extends AppCompatActivity {
     String clientid,token,timegroup,feedtime;
     TextView text;
     String posttime1,posttime,posttimeFeed,posttimeGroup;
+
+    long tGroup;
+
+    long tFeeds;
     //int popup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +66,13 @@ public class NotificationPopUPActivity extends AppCompatActivity {
         int heigth= dm.heightPixels;
         getWindow().setLayout((int)(width*.8),(int)(heigth*.8));
         WindowManager.LayoutParams params=getWindow().getAttributes();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
         params.gravity= Gravity.CENTER;
         params.x=0;
         params.y=-20;
         getWindow().setAttributes(params);
+
         int   popup=1;
         Intent intent=getIntent();
         clientid=intent.getStringExtra("clientId");
@@ -91,22 +98,42 @@ public class NotificationPopUPActivity extends AppCompatActivity {
         posttimeGroup = sharedPreferences112.getString("Groupts", "123");
         timegroup=posttimeGroup;
 
-        long tGroup = Long.parseLong(timegroup);
-        long tFeeds = Long.parseLong(feedtime);
+         tGroup = Long.parseLong(timegroup);
+         tFeeds = Long.parseLong(feedtime);
         Log.d("ArcPosttimeFeed",""+posttimeFeed);
         Log.d("ArcPosttimeGroup",""+posttimeGroup);
         Log.d("ArcPosttimeGroup11",""+timegroup);
         Log.d("ArcPosttimeGroup11",""+timefull);
         Log.d("popuactity",""+timegroup +" "+feedtime+ " "+token+" "+clientid);
 
-     if(tGroup > tFeeds) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something after 20 seconds
+
+
+                handler.postDelayed(this, 1000);
+            }
+        }, 1000);
+
+        if(tGroup > tFeeds) {
+            posttime1 = timegroup;
+            NotificationCount(clientid, timegroup, token);
+        }
+        else {
+            posttime1 = feedtime;
+            NotificationCount(clientid, feedtime, token);
+        }
+
+/*     if(tGroup > tFeeds) {
          posttime1 = timegroup;
          NotificationCount(clientid, timegroup, token);
      }
      else {
          posttime1 = feedtime;
          NotificationCount(clientid, feedtime, token);
-     }
+     }*/
     }
 
     public void NotificationCount(final String client_Id,final String postTime,final String token){
@@ -165,7 +192,6 @@ public class NotificationPopUPActivity extends AppCompatActivity {
                         Log.d("CountFeeds", "-->" + feeds);
                         for (int i = 0; i < feeds.length(); i++) {
                             notificationModelClass=new NotificationModelClass();
-
                             data = feeds.getJSONObject(i);
                             countfeeds = data.getString("count");
                             sumfeed=sumfeed+Integer.parseInt(countfeeds);
@@ -177,11 +203,8 @@ public class NotificationPopUPActivity extends AppCompatActivity {
                             notificationModelClass.setIdentify("Feed");
                             notificationModelClass.setDescription(data.getString("description"));
                             notificationModelClass.setId(data.getString("id"));
-
                             notificationModelClass.setImagePath(data.getString("imagePath"));
-
                             notificationModelClassArrayList.add(notificationModelClass);
-
                         }
 
                         Log.d("notificationMogrp",""+notificationModelClassArrayList.size());
