@@ -1142,7 +1142,7 @@ onBackPressed();            }
                     Log.d("userImageUrlfilter",""+userImageUrl);
                     //Glide.with(MainActivity.this).load(userImageUrl).error(R.drawable.default_users).into(niv);
 
-                    Glide.with(MainActivity.this)
+                    Glide.with(getApplicationContext())
                             .load(userImageUrl)
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .error(R.drawable.default_users)

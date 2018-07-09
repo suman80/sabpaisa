@@ -49,8 +49,20 @@ public class ProceedGroupsFragmentsOfflineAdapter extends RecyclerView.Adapter<P
         holder.Group_name.setText(groupDataForOffLine.getGroupName());
         holder.Group_description.setText(groupDataForOffLine.getGroupText());
 
-        holder.Group_Image.setImageResource(R.drawable.offline);
-        holder.Group_Logo.setImageResource(R.drawable.offline);
+//        holder.Group_Image.setImageResource(R.drawable.offline);
+//        holder.Group_Logo.setImageResource(R.drawable.offline);
+
+        Glide.with(mContext)
+                .load(groupDataForOffLine.getGroupImage())
+                .error(R.drawable.offline)
+                .into(holder.Group_Image);
+
+
+        Glide.with(mContext)
+                .load(groupDataForOffLine.getGroupLogo())
+                .error(R.drawable.offline)
+                .into(holder.Group_Logo);
+
 
         holder.Group_name.setOnClickListener(new View.OnClickListener() {
             @Override

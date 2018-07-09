@@ -2,22 +2,21 @@ package in.sabpaisa.droid.sabpaisa.Model;
 
 public class GroupDataForOffLine {
 
-    public String groupId,groupText,groupName,clientId,memberStatus;
-    byte[] imagePath,logoPath;
+    public String groupId,groupText,groupName,clientId,memberStatus,groupImage,groupLogo;
+
 
 
     public GroupDataForOffLine() {
     }
 
-
-    public GroupDataForOffLine(String groupId, String groupText, String groupName, String clientId, String memberStatus, byte[] imagePath, byte[] logoPath) {
+    public GroupDataForOffLine(String groupId, String groupText, String groupName, String clientId, String memberStatus, String groupImage, String groupLogo) {
         this.groupId = groupId;
         this.groupText = groupText;
         this.groupName = groupName;
         this.clientId = clientId;
         this.memberStatus = memberStatus;
-        this.imagePath = imagePath;
-        this.logoPath = logoPath;
+        this.groupImage = groupImage;
+        this.groupLogo = groupLogo;
     }
 
 
@@ -61,19 +60,19 @@ public class GroupDataForOffLine {
         this.memberStatus = memberStatus;
     }
 
-    public byte[] getImagePath() {
-        return imagePath;
+    public String getGroupImage() {
+        return groupImage;
     }
 
-    public void setImagePath(byte[] imagePath) {
-        this.imagePath = imagePath;
+    public void setGroupImage(String groupImage) {
+        this.groupImage = groupImage;
     }
 
-    public byte[] getLogoPath() {
-        return logoPath;
+    public String getGroupLogo() {
+        return groupLogo;
     }
 
-    public void setLogoPath(byte[] logoPath) {
-        this.logoPath = logoPath;
+    public void setGroupLogo(String groupLogo) {
+        this.groupLogo = groupLogo;
     }
 }

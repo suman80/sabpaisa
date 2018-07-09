@@ -36,14 +36,14 @@ public class FeedsCommentOfflineAdapter extends RecyclerView.Adapter<FeedsCommen
         public TextView main_feed_creation_time;
         public TextView main_feed_group_description;
         public TextView main_feed_comment_username;
-        public NetworkImageView main_feed_comment_image;
+        public ImageView main_feed_comment_image;
 
         public MyViewHolder(View view) {
             super(view);
             main_feed_creation_time = (TextView) view.findViewById(R.id.main_feed_creation_time);
             main_feed_comment_username = (TextView) view.findViewById(R.id.username);
             main_feed_group_description = (TextView) view.findViewById(R.id.main_feed_group_description);
-            main_feed_comment_image = (NetworkImageView) view.findViewById(R.id.people_name_initial);
+            main_feed_comment_image = (ImageView) view.findViewById(R.id.people_name_initial);
         }
     }
 

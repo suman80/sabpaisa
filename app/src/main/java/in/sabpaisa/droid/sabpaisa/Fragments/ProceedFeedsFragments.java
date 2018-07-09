@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa.Fragments;
 
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,11 +26,17 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.AllTransactionAdapter;
@@ -38,6 +46,7 @@ import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDbImage;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FeedDetails;
 import in.sabpaisa.droid.sabpaisa.FeedsFragments;
@@ -51,6 +60,8 @@ import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,6 +86,7 @@ public class ProceedFeedsFragments extends Fragment {
 
     /////////Local Db//////////
     AppDbComments db;
+
 
     public ProceedFeedsFragments() {
         // Required empty public constructor
@@ -119,16 +131,16 @@ public class ProceedFeedsFragments extends Fragment {
                     stringBuffer.append(res.getString(2) + " ");
                     stringBuffer.append(res.getString(3) + " ");
                     stringBuffer.append(res.getString(4) + " ");
-                    stringBuffer.append(res.getBlob(5) + " ");
-                    stringBuffer.append(res.getBlob(6) + " ");
+                    stringBuffer.append(res.getString(5) + " ");
+                    stringBuffer.append(res.getString(6) + " ");
 
                     FeedDataForOffLine feedData = new FeedDataForOffLine();
                     feedData.setClientId(res.getString(1));
                     feedData.setFeedId(res.getString(2));
                     feedData.setFeedName(res.getString(3));
                     feedData.setFeedText(res.getString(4));
-                    feedData.setImagePath(res.getBlob(5));
-                    feedData.setLogoPath(res.getBlob(6));
+                    feedData.setImagePath(res.getString(5));
+                    feedData.setLogoPath(res.getString(6));
                     feedArrayListForLocalDb.add(feedData);
 
                 }
@@ -137,6 +149,9 @@ public class ProceedFeedsFragments extends Fragment {
                 ProceedFeedsFragmentsOfflineAdapter adapter = new ProceedFeedsFragmentsOfflineAdapter(getContext(),feedArrayListForLocalDb);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+
+
+
             } else {
                 Log.d("getFeedDataLocalDb", "In Else Part");
                 Toast.makeText(getContext(), "No Data Found !", Toast.LENGTH_SHORT).show();
@@ -184,19 +199,119 @@ public class ProceedFeedsFragments extends Fragment {
                         for (int i = 0; i < jsonArray.length(); i++) {
 
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                            FeedData feedData = new FeedData();
+                            final FeedData feedData = new FeedData();
                             feedData.setClientId(jsonObject1.getString("clientId"));
                             feedData.setFeedId(jsonObject1.getString("feedId"));
                             feedData.setFeedName(jsonObject1.getString("feedName"));
                             feedData.setFeedText(jsonObject1.getString("feedText"));
                             feedData.setCreatedDate(jsonObject1.getString("createdDate"));
-                            feedData.setImagePath(jsonObject1.getString("imagePath"));
                             feedData.setLogoPath(jsonObject1.getString("logoPath"));
+                            feedData.setImagePath(jsonObject1.getString("imagePath"));
                             feedArrayList.add(feedData);
 
-                            //////////////////////////////LOCAL DB//////////////////////////////////////
 
-                            boolean isInserted = db.insertFeedData(feedData);
+                            /////////////////////Saving To Internal Storage/////////////////////////////////////////
+
+                            final FeedDataForOffLine feedDataForOffLine = new FeedDataForOffLine();
+                            feedDataForOffLine.setClientId(jsonObject1.getString("clientId"));
+                            feedDataForOffLine.setFeedId(jsonObject1.getString("feedId"));
+                            feedDataForOffLine.setFeedName(jsonObject1.getString("feedName"));
+                            feedDataForOffLine.setFeedText(jsonObject1.getString("feedText"));
+
+                            Glide.with(getContext())
+                                    .load(feedData.getLogoPath())
+                                    .asBitmap()
+                                    .into(new SimpleTarget<Bitmap>(100, 100) {
+                                        @Override
+                                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                            Log.d("LogoBitmap", " " + resource);
+                                            //saveLogoToInternalStorage(resource , feedData.getFeedId());
+
+
+                                            ContextWrapper cw = new ContextWrapper(getContext());
+                                            // path to /data/data/yourapp/app_data/imageDir
+                                            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                            // Create imageDir
+                                            File mypath = new File(directory, feedData.getFeedId() + "feedLogo.jpg");
+
+                                            Log.d("mypath", "mypath  " + mypath);
+
+                                            String logoPath = mypath.toString();
+
+
+                                            FileOutputStream fos = null;
+                                            try {
+                                                fos = new FileOutputStream(mypath);
+                                                // Use the compress method on the BitMap object to write image to the OutputStream
+                                                resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                try {
+                                                    fos.close();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            feedDataForOffLine.setLogoPath(logoPath);
+
+                                        }
+                                    });
+
+
+                            Glide.with(getContext())
+                                    .load(feedData.getImagePath())
+                                    .asBitmap()
+                                    .into(new SimpleTarget<Bitmap>(100, 100) {
+                                        @Override
+                                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                            Log.d("ImgBitmap", " " + resource);
+                                            //saveImageToInternalStorage(resource , feedData.getFeedId());
+
+
+                                            ContextWrapper cw = new ContextWrapper(getContext());
+                                            // path to /data/data/yourapp/app_data/imageDir
+                                            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                            // Create imageDir
+                                            File mypath = new File(directory, feedData.getFeedId() + "feedImage.jpg");
+
+                                            Log.d("mypathImg", "mypathImg  " + mypath);
+
+                                            String imagePath = mypath.toString();
+
+                                            FileOutputStream fos = null;
+                                            try {
+                                                fos = new FileOutputStream(mypath);
+                                                // Use the compress method on the BitMap object to write image to the OutputStream
+                                                resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                try {
+                                                    fos.close();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            feedDataForOffLine.setImagePath(imagePath);
+                                        }
+                                    });
+
+
+                            //////////////////////////////LOCAL DB//////////////////////////////////////
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //Do something after 3000ms
+
+                                    Log.d("logoPath_PFF", "IntoLocalDb " + feedDataForOffLine.getLogoPath());
+                                    Log.d("imagePath_PFF", "IntoLocalDb " + feedDataForOffLine.getImagePath());
+
+
+                                    boolean isInserted = db.insertFeedData(feedDataForOffLine);
                             if (isInserted == true) {
 
                                 //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
@@ -207,6 +322,12 @@ public class ProceedFeedsFragments extends Fragment {
                                 Log.d("PFF", "LocalDBInElsePart" + isInserted);
                                 //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
                             }
+
+
+                                }
+                            }, 3000);
+
+
 
 
                         }
@@ -336,6 +457,7 @@ public class ProceedFeedsFragments extends Fragment {
             return false;
         }
     }
+
 
 }
 

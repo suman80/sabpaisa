@@ -20,6 +20,8 @@ import java.net.URL;
 import in.sabpaisa.droid.sabpaisa.CommentData;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
+import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
+import in.sabpaisa.droid.sabpaisa.Model.GroupDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
@@ -34,9 +36,6 @@ public class AppDbComments extends SQLiteOpenHelper {
     public static final String Col_clientId = "particular_client_id";
     public static final String Col_Client_Name = "client_name";
     public static final String Col_State = "state";
-    public static final String Col_clientLogoPath = "clientLogoPath";
-    public static final String Col_clientImagePath = "clientImagePath";
-    public byte [] client_image,client_logo;
 
 
     // Column names for feeds
@@ -48,7 +47,6 @@ public class AppDbComments extends SQLiteOpenHelper {
     public static final String Col_FEED_TEXT = "feed_text";
     public static final String Col_FEED_IMG = "feed_img";
     public static final String Col_FEED_LOGO = "feed_logo";
-    public byte [] feed_image,feed_logo;
     long result;
 
 
@@ -75,7 +73,7 @@ public class AppDbComments extends SQLiteOpenHelper {
     public static final String Col_GROUP_USER_ACCESSTOKEN = "group_user_accesstoken";
     public static final String Col_GROUP_IMG = "group_img";
     public static final String Col_GROUP_LOGO = "group_logo";
-    public byte [] group_image,group_logo;
+
 
 
     // Column names for Groups comments
@@ -86,9 +84,6 @@ public class AppDbComments extends SQLiteOpenHelper {
     public static final String Col_GROUP_CommentText = "comment_Text";
     public static final String Col_GROUP_commentByName = "comment_ByName";
     public static final String Col_GROUP_commentDate = "commentDate";
-
-
-
 
 
     public AppDbComments(Context context) {
@@ -102,10 +97,9 @@ public class AppDbComments extends SQLiteOpenHelper {
                 +Col_ID_AutoIncrement+" INTEGER PRIMARY KEY AUTOINCREMENT,"
                 +Col_clientId+" TEXT,"
                 +Col_Client_Name+" TEXT,"
-                +Col_State+" TEXT,"
-                +Col_clientLogoPath+" BLOB,"
-                +Col_clientImagePath+" BLOB"
+                +Col_State+" TEXT"
                 +")";
+
 
         String sqlForFeeds = " CREATE TABLE " + TABLE_NAME + "("
                 +Col_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -113,8 +107,8 @@ public class AppDbComments extends SQLiteOpenHelper {
                 +Col_FEED_ID+" TEXT,"
                 +Col_FEED_NAME+" TEXT,"
                 +Col_FEED_TEXT+" TEXT,"
-                +Col_FEED_IMG+" BLOB,"
-                +Col_FEED_LOGO+" BLOB"
+                +Col_FEED_IMG+" TEXT,"
+                +Col_FEED_LOGO+" TEXT"
                 +")";
 
 
@@ -151,15 +145,15 @@ public class AppDbComments extends SQLiteOpenHelper {
                 +Col_GROUP_commentDate+" TEXT"
                 +")";
 
-        Log.d("Going to create : ", "client table");
+
         db.execSQL(sqlForClient);
-        Log.d("Going to create : ", "feed table");
+
         db.execSQL(sqlForFeeds);
-        Log.d("Going to create : ", "feed_comments table");
+
         db.execSQL(sqlForFeedsComments);
-        Log.d("created : ", "feed_comments table");
-        Log.d("Going to create : ", "group table");
+
         db.execSQL(sqlForGroups);
+
         db.execSQL(sqlForGroupComments);
     }
 
@@ -183,25 +177,13 @@ public class AppDbComments extends SQLiteOpenHelper {
     // Particular Client data
     public boolean insertClientData(final Institution institution) {
         Log.d("Insert Data in  ", "client table");
-        new clientImageDownloader().execute(institution.getOrgWal());
-        new clientLogoDownloader().execute(institution.getOrgLogo());
 
         final SQLiteDatabase db = this.getWritableDatabase();
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(Col_clientId, institution.getOrganizationId());
                 contentValues.put(Col_Client_Name, institution.getOrganization_name());
                 contentValues.put(Col_State, institution.getOrgAddress());
-                contentValues.put(Col_clientImagePath, client_image);
-                contentValues.put(Col_clientLogoPath, client_logo);
                 result = db.insert(TABLE_Particular_Client, null, contentValues);
-
-            }
-        }, 10000);
 
         if (result == -1) {
             return false;
@@ -232,30 +214,18 @@ public class AppDbComments extends SQLiteOpenHelper {
         db.close();
     }
 
-
     // Feed Data
-    public boolean insertFeedData (final FeedData feedData){
-        new feedImageDownloader().execute(feedData.getImagePath());
-        new feedLogoDownloader().execute(feedData.getLogoPath());
-        //image = getByteFromUrl(feedData.getImagePath(), image);
-        //logo = getByteFromUrl(feedData.getLogoPath(), logo);
-        final SQLiteDatabase db = this.getWritableDatabase();
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Do something after 100ms
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(Col_Client_ID,feedData.getClientId());
-                contentValues.put(Col_FEED_ID,feedData.getFeedId());
-                contentValues.put(Col_FEED_NAME,feedData.getFeedName());
-                contentValues.put(Col_FEED_TEXT,feedData.getFeedText());
-                contentValues.put(Col_FEED_IMG,feed_image);
-                contentValues.put(Col_FEED_LOGO,feed_logo);
-                result = db.insert(TABLE_NAME,null,contentValues);
+    public boolean insertFeedData (final FeedDataForOffLine feedDataForOffLine){
 
-            }
-        }, 10000);
+        final SQLiteDatabase db = this.getWritableDatabase();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(Col_Client_ID,feedDataForOffLine.getClientId());
+                contentValues.put(Col_FEED_ID,feedDataForOffLine.getFeedId());
+                contentValues.put(Col_FEED_NAME,feedDataForOffLine.getFeedName());
+                contentValues.put(Col_FEED_TEXT,feedDataForOffLine.getFeedText());
+                contentValues.put(Col_FEED_IMG,feedDataForOffLine.getImagePath());
+                contentValues.put(Col_FEED_LOGO,feedDataForOffLine.getLogoPath());
+                result = db.insert(TABLE_NAME,null,contentValues);
 
         if (result == -1){
             return false;
@@ -284,17 +254,11 @@ public class AppDbComments extends SQLiteOpenHelper {
 
     //Feeds Comments
     public boolean insertFeedComments (final CommentData commentData , final String feedId){
-        //new feedImageDownloader().execute(feedData.getImagePath());
-        //new feedLogoDownloader().execute(feedData.getLogoPath());
-        //image = getByteFromUrl(feedData.getImagePath(), image);
-        //logo = getByteFromUrl(feedData.getLogoPath(), logo);
+
         final SQLiteDatabase db = this.getWritableDatabase();
-//        final Handler handler = new Handler();
+
         Log.d("Inside Insertion ", " for feed-Comment");
-       /* handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Do something after 100ms*/
+
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(Col_FEED_CommentFeedId,feedId+"");
                 contentValues.put(Col_FEED_CommentId,commentData.getCommentId());
@@ -303,16 +267,13 @@ public class AppDbComments extends SQLiteOpenHelper {
                 contentValues.put(Col_FEED_commentDate,commentData.getComment_date());
                 result = db.insert(TABLE_FEED_COMMENTS,null,contentValues);
 
-            //}
-//        }, 10000);
 
         if (result == -1){
             return false;
         }else {
             return true;
         }
-        //comment
-        //comment
+
     }
 
 
@@ -335,30 +296,20 @@ public class AppDbComments extends SQLiteOpenHelper {
 
 
     //Groups Data
-    public boolean insertGroupData (final GroupListData groupListData , final String userAccessToken){
-        new groupImageDownloader().execute(groupListData.getImagePath());
-        new groupLogoDownloader().execute(groupListData.getLogoPath());
-        //image = getByteFromUrl(feedData.getImagePath(), image);
-        //logo = getByteFromUrl(feedData.getLogoPath(), logo);
-        final SQLiteDatabase db = this.getWritableDatabase();
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Do something after 100ms
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(Col_Client_ID_GROUP,groupListData.getClientId());
-                contentValues.put(Col_GROUP_ID,groupListData.getGroupId());
-                contentValues.put(Col_GROUP_NAME,groupListData.getGroupName());
-                contentValues.put(Col_GROUP_TEXT,groupListData.getGroupText());
-                contentValues.put(Col_GROUP_STATUS,groupListData.getMemberStatus());
-                contentValues.put(Col_GROUP_USER_ACCESSTOKEN,userAccessToken);
-                contentValues.put(Col_GROUP_IMG,group_image);
-                contentValues.put(Col_GROUP_LOGO,group_logo);
-                result = db.insert(TABLE_NAME_GROUPS,null,contentValues);
+    public boolean insertGroupData (final GroupDataForOffLine groupDataForOffLine , final String userAccessToken ){
 
-            }
-        }, 10000);
+        final SQLiteDatabase db = this.getWritableDatabase();
+
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(Col_Client_ID_GROUP,groupDataForOffLine.getClientId());
+                contentValues.put(Col_GROUP_ID,groupDataForOffLine.getGroupId());
+                contentValues.put(Col_GROUP_NAME,groupDataForOffLine.getGroupName());
+                contentValues.put(Col_GROUP_TEXT,groupDataForOffLine.getGroupText());
+                contentValues.put(Col_GROUP_STATUS,groupDataForOffLine.getMemberStatus());
+                contentValues.put(Col_GROUP_USER_ACCESSTOKEN,userAccessToken);
+                contentValues.put(Col_GROUP_IMG,groupDataForOffLine.getGroupImage());
+                contentValues.put(Col_GROUP_LOGO,groupDataForOffLine.getGroupLogo());
+                result = db.insert(TABLE_NAME_GROUPS,null,contentValues);
 
         if (result == -1){
             return false;
@@ -461,200 +412,6 @@ public class AppDbComments extends SQLiteOpenHelper {
 */
 
     /************************Download Image*************************************************************/
-    private class clientImageDownloader extends AsyncTask<String,Void,Bitmap>{
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... url) {
-
-            String myUrl = url [0];
-            Bitmap bitmap = null;
-
-            try {
-                InputStream inputStream = new URL(myUrl).openStream();
-                bitmap = BitmapFactory.decodeStream(inputStream);
-                client_image = getBytes(bitmap);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-//            image = getBytes(bitmap);
-        }
-    }
-
-    private class clientLogoDownloader extends AsyncTask<String,Void,Bitmap>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... url) {
-
-            String myUrl = url [0];
-            Bitmap bitmap = null;
-
-            try {
-                InputStream inputStream = new URL(myUrl).openStream();
-                bitmap = BitmapFactory.decodeStream(inputStream);
-                client_logo = getBytes(bitmap);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-//            logo = getBytes(bitmap);
-        }
-    }
-
-
-    private class feedImageDownloader extends AsyncTask<String,Void,Bitmap>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... url) {
-
-            String myUrl = url [0];
-            Bitmap bitmap = null;
-
-            try {
-                InputStream inputStream = new URL(myUrl).openStream();
-                bitmap = BitmapFactory.decodeStream(inputStream);
-                feed_image = getBytes(bitmap);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-//            image = getBytes(bitmap);
-        }
-    }
-
-    private class feedLogoDownloader extends AsyncTask<String,Void,Bitmap>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... url) {
-
-            String myUrl = url [0];
-            Bitmap bitmap = null;
-
-            try {
-                InputStream inputStream = new URL(myUrl).openStream();
-                bitmap = BitmapFactory.decodeStream(inputStream);
-                feed_logo = getBytes(bitmap);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-//            logo = getBytes(bitmap);
-        }
-    }
-
-
-    private class groupImageDownloader extends AsyncTask<String,Void,Bitmap>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... url) {
-
-            String myUrl = url [0];
-            Bitmap bitmap = null;
-
-            try {
-                InputStream inputStream = new URL(myUrl).openStream();
-                bitmap = BitmapFactory.decodeStream(inputStream);
-                feed_image = getBytes(bitmap);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-//            image = getBytes(bitmap);
-        }
-    }
-
-    private class groupLogoDownloader extends AsyncTask<String,Void,Bitmap>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... url) {
-
-            String myUrl = url [0];
-            Bitmap bitmap = null;
-
-            try {
-                InputStream inputStream = new URL(myUrl).openStream();
-                bitmap = BitmapFactory.decodeStream(inputStream);
-                feed_logo = getBytes(bitmap);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-//            logo = getBytes(bitmap);
-        }
-    }
-
-
-    // convert from bitmap to byte array
-    public static byte[] getBytes(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-        return stream.toByteArray();
-    }
 
 }

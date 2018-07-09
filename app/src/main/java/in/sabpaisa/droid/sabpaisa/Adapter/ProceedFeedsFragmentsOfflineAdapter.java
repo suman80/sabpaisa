@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.bumptech.glide.Glide;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -76,8 +77,22 @@ public void setItems(ArrayList<FeedData> feedDatas) {
 
         //new DownloadImageTask(holder.client_Image).execute(mainFeedData.getImagePath());
 
-        holder.client_Image.setImageResource(R.drawable.offline);
-        holder.cilent_Logo.setImageResource(R.drawable.offline);
+//        holder.client_Image.setImageResource(R.drawable.offline);
+//        holder.cilent_Logo.setImageResource(R.drawable.offline);
+
+
+        Glide.with(context)
+                .load(feedDataForOffLine.getImagePath())
+                .error(R.drawable.offline)
+                .into(holder.client_Image);
+
+
+        Glide.with(context)
+                .load(feedDataForOffLine.getLogoPath())
+                .error(R.drawable.offline)
+                .into(holder.cilent_Logo);
+
+
 
 
         holder.client_Image.setOnClickListener(new View.OnClickListener() {

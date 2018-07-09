@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -17,14 +18,22 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
+import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.ParticularClientModelForOffline;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class ProceedInstitutionFragmentOfflineAdapter extends RecyclerView.Adapter<ProceedInstitutionFragmentOfflineAdapter.MyViewHolder> {
     int count;
@@ -34,7 +43,7 @@ public class ProceedInstitutionFragmentOfflineAdapter extends RecyclerView.Adapt
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_institutions_tab, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.proceed_inst_offline_adapter, parent, false);
         return new MyViewHolder(v);
     }
 
@@ -43,6 +52,9 @@ public class ProceedInstitutionFragmentOfflineAdapter extends RecyclerView.Adapt
         this.context = context;
     }
 
+    public ProceedInstitutionFragmentOfflineAdapter() {
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -50,27 +62,25 @@ public class ProceedInstitutionFragmentOfflineAdapter extends RecyclerView.Adapt
 
         final ParticularClientModelForOffline particularClientModelForOffline = offlineArrayList.get(position);
 
+        SharedPreferences sharedPreferences = context.getSharedPreferences(ProceedInstitiutionFragment.MYSHAREDPREF, MODE_PRIVATE);
+        String logoPath=sharedPreferences.getString("logo_path","123");
+        String imagePath=sharedPreferences.getString("image_path","123");
+        Log.d("logoPathPIFOA"," "+logoPath);
+        Log.d("imagePathPIFOA"," "+imagePath);
+
         holder.instituteName.setText(particularClientModelForOffline.getClientName());
         holder.instituteLocation.setText(particularClientModelForOffline.getState());
-        //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
 
-        /*if (particularClientModelForOffline.getClientLogoPath() == null) {
-            holder.thumbnail.setDefaultImageResId(R.drawable.image_not_found);
-        } else {
-            holder.thumbnail.setImageBitmap(getImage(particularClientModelForOffline.getClientLogoPath()));
-            Log.d("Offline_Logo", "adapter-->" + particularClientModelForOffline.getClientLogoPath().toString());
-        }
+        Glide.with(context)
+                .load(logoPath)
+                .error(R.drawable.offline)
+                .into(holder.thumbnail);
 
-        if (particularClientModelForOffline.getClientImagePath() == null) {
-            holder.clinetbanner.setDefaultImageResId(R.drawable.image_not_found);
-        } else {
-            holder.clinetbanner.setImageBitmap(getImage(particularClientModelForOffline.getClientImagePath()));
-            Log.d("Offline_Image", "adapter-->" + particularClientModelForOffline.getClientImagePath().toString());
 
-        }*/
-
-        holder.thumbnail.setDefaultImageResId(R.drawable.offline);
-        holder.clinetbanner.setDefaultImageResId(R.drawable.offline);
+        Glide.with(context)
+                .load(imagePath)
+                .error(R.drawable.offline)
+                .into(holder.clinetbanner);
 
 
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
@@ -138,14 +148,14 @@ public class ProceedInstitutionFragmentOfflineAdapter extends RecyclerView.Adapt
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView instituteLogo,institutePic;
-        NetworkImageView thumbnail,clinetbanner;
+        ImageView thumbnail,clinetbanner;
         TextView instituteName,instituteLocation;
         public MyViewHolder(View itemView) {
             super(itemView);
 
 
-            thumbnail = (NetworkImageView) itemView .findViewById(R.id.thumbnail);
-            clinetbanner =(NetworkImageView) itemView.findViewById(R.id.clinetbanner);
+            thumbnail = (ImageView) itemView .findViewById(R.id.thumbnail);
+            clinetbanner =(ImageView) itemView.findViewById(R.id.clinetbanner);
             //instituteLogo = (ImageView)itemView.findViewById(R.id.iv_instituteLogo);
             //institutePic = (ImageView)itemView.findViewById(R.id.iv_institutePic);
             //thumbnail =(NetworkImageView)itemView.findViewById(R.id.thumbnail);
@@ -158,25 +168,6 @@ public class ProceedInstitutionFragmentOfflineAdapter extends RecyclerView.Adapt
     @Override
     public int getItemCount() {
         return offlineArrayList.size();
-    }
-
-
-    // convert from byte array to bitmap
-    public static Bitmap getImage(byte[] image) {
-        return BitmapFactory.decodeByteArray(image, 0, image.length);
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        // test for connection
-        if (cm.getActiveNetworkInfo() != null
-                && cm.getActiveNetworkInfo().isAvailable()
-                && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
-        } else {
-            Log.v("AllTransactionSummary", "Internet Connection Not Present");
-            return false;
-        }
     }
 
 

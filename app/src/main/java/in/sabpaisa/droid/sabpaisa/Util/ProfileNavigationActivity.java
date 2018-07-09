@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa.Util;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
@@ -54,7 +56,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,12 +91,13 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     String x;
     ProgressBar progressBar;
     SharedPreferences sharedPreferences;
-    String clientName,state,clientImageURLPath;
+    String clientName, state, clientImageURLPath;
     String clientId;
     String userImageUrl;
     public static String MYSHAREDPREFPNA = "mySharedPrefPNA";
     ProgressDialog progressDialog;
-int val;
+    int val;
+    Bitmap bitmap;
     /////////////DB///////////////////////
 
     AppDB db;
@@ -127,20 +136,20 @@ int val;
         db = new AppDB(ProfileNavigationActivity.this);
 
 
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         clientName = intent.getStringExtra("clientName");
         state = intent.getStringExtra("state");
-        clientImageURLPath= getIntent().getStringExtra("clientImagePath");
+        clientImageURLPath = getIntent().getStringExtra("clientImagePath");
 
-        Log.d("ProfileLOGs",""+clientId +" "+"  "+clientImageURLPath+"  "+state);
+        Log.d("ProfileLOGs", "" + clientId + " " + "  " + clientImageURLPath + "  " + state);
 
         toolbar.setTitle("Profile");
         toolbar.setTitleTextColor(getResources().getColor(R.color.black));
         toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             onBackPressed();
+                onBackPressed();
             }
         });
 
@@ -153,14 +162,14 @@ int val;
 
         Log.d(TAG, "userAccessToken " + userAccessToken);
 
-        SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFPNA,MODE_PRIVATE).edit();
-        editor.putString("response",userAccessToken);
+        SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFPNA, MODE_PRIVATE).edit();
+        editor.putString("response", userAccessToken);
         editor.commit();
         sharedPreferences = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
         clientId = sharedPreferences.getString("clientId", "abc");
         Log.d("clintidprofile", "---" + clientId);
-val=getIntent().getIntExtra("valueProfile",0);
-Log.d("vaalueeProfile",""+val);
+        val = getIntent().getIntExtra("valueProfile", 0);
+        Log.d("vaalueeProfile", "" + val);
 
 
         mNumber.setEnabled(false);
@@ -261,20 +270,20 @@ Log.d("vaalueeProfile",""+val);
                     et_UserName.setEnabled(true);
                     et_UserName.setText("");
                     et_UserName.requestFocus();
-                    Log.d("Usernameedit","-->");
+                    Log.d("Usernameedit", "-->");
                     tv_NameEdit.setText("Save");
 
                 } else if (tv_NameEdit.getText().toString().equals("Save")) {
                     //Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
                     name = et_UserName.getText().toString();
-                    Log.d("Usernameedit11","-->");
+                    Log.d("Usernameedit11", "-->");
 
                     updateUserProfileName(userAccessToken, name);
                     et_UserName.setFocusable(false);
                 } else {
                     et_UserName.setEnabled(false);
-                    Log.d("Usernameedit22","-->");
+                    Log.d("Usernameedit22", "-->");
 
                     tv_NameEdit.setText("Edit");
                 }
@@ -286,7 +295,31 @@ Log.d("vaalueeProfile",""+val);
 
         showProfileData();
         progressBar.setVisibility(View.VISIBLE);
-        showProfileImage();
+
+        if (isOnline()) {
+            showProfileImage();
+        }else {
+            progressBar.setVisibility(View.INVISIBLE);
+            Cursor res = db.getParticularImageData(userAccessToken);
+
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0) + " ");
+                    stringBuffer.append(res.getString(1) + " ");
+                    stringBuffer.append(res.getString(2) + " ");
+                    loadImageFromStorage(res.getString(2));
+                }
+                Log.d("getImgFrmDB", "-->" + stringBuffer);
+
+            } else {
+
+                Log.d("In Else Part", "");
+                //Toast.makeText(ProfileNavigationActivity.this,"In Else Part",Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
 
 
     }
@@ -295,30 +328,24 @@ Log.d("vaalueeProfile",""+val);
     @Override
     public void onBackPressed() {
 
-        if (val==1) {
+        if (val == 1) {
             Intent intent = new Intent(ProfileNavigationActivity.this, MainActivity.class);
             intent.putExtra("clientId", clientId);
             // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-        }
+        } else if (val == 2) {
+            Intent intent = new Intent(ProfileNavigationActivity.this, MainActivitySkip.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-else
-    if (val==2)
-    {
-        Intent intent=new Intent(ProfileNavigationActivity.this,MainActivitySkip.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        startActivity(intent);
-    }
-     else   if(val==3)
-        {
+            startActivity(intent);
+        } else if (val == 3) {
             Intent intent = new Intent(ProfileNavigationActivity.this, FullViewOfClientsProceed.class);
             // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
             intent.putExtra("clientId", clientId);
-            intent.putExtra("clientImagePath",clientImageURLPath);
-            intent.putExtra("clientName",clientName);
-            intent.putExtra("state",state);
+            intent.putExtra("clientImagePath", clientImageURLPath);
+            intent.putExtra("clientName", clientName);
+            intent.putExtra("state", state);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
 
@@ -336,9 +363,6 @@ else
 
 
     }
-
-
-
 
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -375,14 +399,14 @@ else
 
 
     /*
-    * The method is taking Bitmap as an argument
-    * then it will return the byte[] array for the given bitmap
-    * and we will send this array to the server
-    * here we are using JPEG Compression with 80% quality
-    * you can give quality between 0 to 100
-    * 0 means worse quality
-    * 100 means best quality
-    * */
+     * The method is taking Bitmap as an argument
+     * then it will return the byte[] array for the given bitmap
+     * and we will send this array to the server
+     * here we are using JPEG Compression with 80% quality
+     * you can give quality between 0 to 100
+     * 0 means worse quality
+     * 100 means best quality
+     * */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
@@ -394,7 +418,7 @@ else
 
         Log.d(TAG, "IMG_userAccessToken" + userAccessToken);
         //our custom volley request
-        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_UserProfileImageUpdate + "?token=" + userAccessToken,
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_UserProfileImageUpdate + "?token=" + userAccessToken,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
@@ -429,7 +453,7 @@ else
                                 alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         Intent intent = new Intent();
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                                       /*  Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
                                         startActivity(intent);*/
@@ -437,7 +461,7 @@ else
                                 });
 
                                 // Showing Alert Message
-                    alertDialog.show();
+                                alertDialog.show();
 
                             } else {
                                 Toast.makeText(ProfileNavigationActivity.this, "Image Upload Failed !", Toast.LENGTH_SHORT).show();
@@ -456,22 +480,22 @@ else
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("Error In Upoload",error.toString());
+                        Log.d("Error In Upoload", error.toString());
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();
                             progressDialog.setCanceledOnTouchOutside(true);
                             progressDialog.setCancelable(true);
                         }
-                        Toast.makeText(ProfileNavigationActivity.this,"Image Upload Failed !" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileNavigationActivity.this, "Image Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
                 }) {
 
             /*
-            * If you want to add more parameters with the image
-            * you can do it here
-            * here we have only one parameter with the image
-            * which is tags
-            * */
+             * If you want to add more parameters with the image
+             * you can do it here
+             * here we have only one parameter with the image
+             * which is tags
+             * */
             /*@Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
@@ -480,8 +504,8 @@ else
             }*/
 
             /*
-            * Here we are passing image by renaming it with a unique name
-            * */
+             * Here we are passing image by renaming it with a unique name
+             * */
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
@@ -518,7 +542,7 @@ else
             }
             Log.d("getParticularNum", "-->" + stringBuffer);
 
-        }else {
+        } else {
 
 
             String tag_string_req = "req_register";
@@ -572,7 +596,6 @@ else
                                 Log.d("ProfileNavigation", "LocalDBInElsePart" + isInserted);
                                 //Toast.makeText(ProfileNavigationActivity.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
                             }
-
 
 
                         } else {
@@ -647,9 +670,11 @@ else
 
     private void showProfileImage() {
 
+        db.deleteAllImageData();
+
         String tag_string_req = "req_register";
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfileImage + "?token=" + userAccessToken, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_Show_UserProfileImage + "?token=" + userAccessToken, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -665,14 +690,17 @@ else
                         progressBar.setVisibility(View.GONE);
                         userImageUrl = object.getJSONObject("response").getString("userImageUrl");
                         //new DownloadImageTask(userImage).execute(userImageUrl);
-                        Glide.with( ProfileNavigationActivity.this)
+                        Glide.with(ProfileNavigationActivity.this)
                                 .load(userImageUrl)
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .error(R.drawable.default_users)
                                 .into(userImage);
 
+                        new imageDownloader().execute(userImageUrl);
+
+
                     } else {
-                       // Toast.makeText(getApplicationContext(), "Cannot able to load image!", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getApplicationContext(), "Cannot able to load image!", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -744,7 +772,7 @@ else
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_UserProfileUpdate + "?token=" + userAccessToken + "&" + "fullName=" + name.trim().replace(" ","%20"), new Response.Listener<String>() {
+                AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_UserProfileUpdate + "?token=" + userAccessToken + "&" + "fullName=" + name.trim().replace(" ", "%20"), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -800,7 +828,6 @@ else
                         }
 
 
-
                     } else if (status.equals("failure")) {
                         AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
 
@@ -837,7 +864,7 @@ else
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if( error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -897,7 +924,7 @@ else
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_UserProfileUpdate + "?token=" + userAccessToken + "&" + "address=" + address.trim().replace(" ","%20"), new Response.Listener<String>() {
+                AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_UserProfileUpdate + "?token=" + userAccessToken + "&" + "address=" + address.trim().replace(" ", "%20"), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -989,7 +1016,7 @@ else
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if ( error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -1049,7 +1076,7 @@ else
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_UserProfileUpdate + "?token=" + userAccessToken + "&" + "emailId=" + email, new Response.Listener<String>() {
+                AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_UserProfileUpdate + "?token=" + userAccessToken + "&" + "emailId=" + email, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -1104,7 +1131,6 @@ else
                             Log.d("ProfileNavigation", "LocalDBInElsePart" + isUpdated);
                             //Toast.makeText(ProfileNavigationActivity.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
                         }
-
 
 
                     } else if (status.equals("failure")) {
@@ -1254,19 +1280,127 @@ else
     }
 
 
-/*   public void startAnim(){
-        avi.show();
-        // or avi.smoothToShow();
+    private class imageDownloader extends AsyncTask<String,Void,Bitmap> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... url) {
+
+            String myUrl = url [0];
+
+
+            try {
+                InputStream inputStream = new URL(myUrl).openStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+                //image = getBytes(bitmap);
+
+                //Log.d("ImgBytesInTry"," "+image.toString());
+
+                saveToInternalStorage(userAccessToken,bitmap);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+//            logo = getBytes(bitmap);
+            //userImage.setImageBitmap(bitmap);
+            Log.d("ImgBitMapValue"," "+bitmap);
+        }
     }
 
-   public void stopAnim(){
-
-       //avi.hide();
-       Intent intent = new Intent();
-       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
 
 
-         avi.smoothToHide();
-    }*/
+
+    private String saveToInternalStorage(String userAccessToken,Bitmap bitmapImage){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,(System.currentTimeMillis()/1000)+"img.jpg");
+
+        Log.d("mypath","mypath  "+mypath);
+
+
+        //////////////////////////////LOCAL DB//////////////////////////////////////
+
+        boolean isInserted = db.insertUserImageData(userAccessToken,mypath.toString());
+        if (isInserted == true) {
+
+            //Toast.makeText(MainActivity.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+            Log.d("ProfileNavigationIMG", "LocalDBInIfPart" + isInserted);
+
+        } else {
+            Log.d("ProfileNavigationIMG", "LocalDBInElsePart" + isInserted);
+            //Toast.makeText(MainActivity.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+        }
+
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
+
+    private void loadImageFromStorage(String path)
+    {
+
+        try {
+            //File f=new File(path, "profile.jpg");
+            File f=new File(path);
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            //ImageView img=(ImageView)findViewById(R.id.imgPicker);
+            //.setImageBitmap(b);
+
+            userImage.setImageBitmap(b);
+
+            Log.d("b"," "+b);
+
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v(TAG, "Internet Connection Not Present");
+            return false;
+        }
+    }
+
+
 
 }

@@ -2,10 +2,15 @@ package in.sabpaisa.droid.sabpaisa.Fragments;
 
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,13 +27,22 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ProceedFeedsFragmentsOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ProceedGroupsFragmentsOfflineAdapter;
@@ -72,7 +86,6 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
     /////////Local Db//////////
     AppDbComments db;
-
     /*Globally Declared Adapter*/
     /*START Interface for getting data from activity*/
     GetDataInterface sGetDataInterface;
@@ -81,8 +94,6 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     public ProceedGroupsFragments() {
         // Required empty public constructor
     }
-
-
 
 
     @Override
@@ -94,16 +105,16 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragments_groups, container, false);
-        linearLayoutnoDataFound = (LinearLayout)rootView.findViewById(R.id.noDataFound);
-        groupList=(ShimmerRecyclerView)rootView.findViewById(R.id.groupList);
+        linearLayoutnoDataFound = (LinearLayout) rootView.findViewById(R.id.noDataFound);
+        groupList = (ShimmerRecyclerView) rootView.findViewById(R.id.groupList);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         groupList.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         groupList.setLayoutManager(llm);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
-        clientId=sharedPreferences.getString("clientId","abc");
-        Log.d("clientId_PGF",""+clientId);
+        clientId = sharedPreferences.getString("clientId", "abc");
+        Log.d("clientId_PGF", "" + clientId);
 
         // Inflate the layout for this fragment
 
@@ -115,7 +126,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
         token = sharedPreferences1.getString("response", "123");
 
-        Log.d("TokenInPGF"," "+token);
+        Log.d("TokenInPGF", " " + token);
 
 
         ///////////////////////DB/////////////////////////////////
@@ -123,7 +134,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
         if (isOnline()) {
             callGroupDataList(token, clientId);
-        }else {
+        } else {
 
             /////////////////////Retrive data from local DB///////////////////////////////
 
@@ -139,8 +150,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                     stringBuffer.append(res.getString(4) + " ");
                     stringBuffer.append(res.getString(5) + " ");
                     stringBuffer.append(res.getString(6) + " ");
-                    stringBuffer.append(res.getBlob(7) + " ");
-                    stringBuffer.append(res.getBlob(8) + " ");
+                    stringBuffer.append(res.getString(7) + " ");
+                    stringBuffer.append(res.getString(8) + " ");
 
                     GroupDataForOffLine groupDataForOffLine = new GroupDataForOffLine();
                     groupDataForOffLine.setClientId(res.getString(1));
@@ -148,14 +159,14 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                     groupDataForOffLine.setGroupName(res.getString(3));
                     groupDataForOffLine.setGroupText(res.getString(4));
                     groupDataForOffLine.setMemberStatus(res.getString(5));
-                    groupDataForOffLine.setImagePath(res.getBlob(7));
-                    groupDataForOffLine.setLogoPath(res.getBlob(8));
+                    groupDataForOffLine.setGroupImage(res.getString(7));
+                    groupDataForOffLine.setGroupLogo(res.getString(8));
                     groupArrayListForOffline.add(groupDataForOffLine);
 
                 }
                 Log.d("getGroupData", "-->" + stringBuffer);
 
-                ProceedGroupsFragmentsOfflineAdapter adapter = new ProceedGroupsFragmentsOfflineAdapter(groupArrayListForOffline,getContext());
+                ProceedGroupsFragmentsOfflineAdapter adapter = new ProceedGroupsFragmentsOfflineAdapter(groupArrayListForOffline, getContext());
                 groupList.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             } else {
@@ -169,13 +180,13 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         return rootView;
     }
 
-    public void callGroupDataList(final String token,final String clientId ) {
+    public void callGroupDataList(final String token, final String clientId) {
 
         db.deleteAllGroupData();
 
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"memberStatusWithGroup"+"?token="+ token+"&clientId="+clientId;
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "memberStatusWithGroup" + "?token=" + token + "&clientId=" + clientId;
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
-                urlJsonObj, new Response.Listener<String>(){
+                urlJsonObj, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -191,14 +202,14 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
                     JSONArray jsonArray = null;
                     Object obj = jsonObject.get("response");
-                    if(obj instanceof JSONArray){
-                        jsonArray = (JSONArray)obj;
+                    if (obj instanceof JSONArray) {
+                        jsonArray = (JSONArray) obj;
 
                         for (int i = 0; i < jsonArray.length(); i++) {
 
                             JSONObject jsonObjectX = jsonArray.getJSONObject(i);
                             JSONObject jsonObject1 = jsonObjectX.getJSONObject("clientGroup");
-                            GroupListData groupListData = new GroupListData();
+                            final GroupListData groupListData = new GroupListData();
                             groupListData.setClientId(jsonObject1.getString("clientId"));
                             groupListData.setGroupId(jsonObject1.getString("groupId"));
                             groupListData.setGroupName(jsonObject1.getString("groupName"));
@@ -209,19 +220,123 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                             groupListData.setMemberStatus(jsonObjectX.getString("memberStatus"));
                             groupArrayList.add(groupListData);
 
+
+                            /////////////////////Saving To Internal Storage/////////////////////////////////////////
+
+
+                            final GroupDataForOffLine groupDataForOffLine = new GroupDataForOffLine();
+                            groupDataForOffLine.setClientId(jsonObject1.getString("clientId"));
+                            groupDataForOffLine.setGroupId(jsonObject1.getString("groupId"));
+                            groupDataForOffLine.setGroupName(jsonObject1.getString("groupName"));
+                            groupDataForOffLine.setGroupText(jsonObject1.getString("groupText"));
+                            groupDataForOffLine.setMemberStatus(jsonObjectX.getString("memberStatus"));
+
+
+                            Glide.with(getContext())
+                                    .load(groupListData.getLogoPath())
+                                    .asBitmap()
+                                    .into(new SimpleTarget<Bitmap>(100, 100) {
+                                        @Override
+                                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                            Log.d("LogoBitmap", " " + resource);
+                                            //saveLogoToInternalStorage(resource,groupListData.getGroupId());
+
+                                            ContextWrapper cw = new ContextWrapper(getContext());
+                                            // path to /data/data/yourapp/app_data/imageDir
+                                            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                            // Create imageDir
+                                            File mypath = new File(directory, groupDataForOffLine.getGroupId() + "groupLogo.jpg");
+
+                                            Log.d("mypath", "mypath  " + mypath);
+
+                                            String logoPath = mypath.toString();
+
+                                            FileOutputStream fos = null;
+                                            try {
+                                                fos = new FileOutputStream(mypath);
+                                                // Use the compress method on the BitMap object to write image to the OutputStream
+                                                resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                try {
+                                                    fos.close();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            groupDataForOffLine.setGroupLogo(logoPath);
+
+                                        }
+                                    });
+
+
+                            Glide.with(getContext())
+                                    .load(groupListData.getImagePath())
+                                    .asBitmap()
+                                    .into(new SimpleTarget<Bitmap>(100, 100) {
+                                        @Override
+                                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                            Log.d("ImgBitmap", " " + resource);
+                                            //saveImageToInternalStorage(resource,groupListData.getGroupId());
+
+                                            ContextWrapper cw = new ContextWrapper(getContext());
+                                            // path to /data/data/yourapp/app_data/imageDir
+                                            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                            // Create imageDir
+                                            File mypath = new File(directory, groupDataForOffLine.getGroupId() + "groupImage.jpg");
+
+                                            Log.d("mypathImg", "mypathImg  " + mypath);
+
+                                            String imagePath = mypath.toString();
+
+                                            FileOutputStream fos = null;
+                                            try {
+                                                fos = new FileOutputStream(mypath);
+                                                // Use the compress method on the BitMap object to write image to the OutputStream
+                                                resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                try {
+                                                    fos.close();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                            groupDataForOffLine.setGroupImage(imagePath);
+
+                                        }
+                                    });
+
+
                             //////////////////////////////LOCAL DB//////////////////////////////////////
 
-                            boolean isInserted = db.insertGroupData(groupListData,token);
-                            if (isInserted == true) {
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //Do something after 3000ms
 
-                                //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+                                    Log.d("logoPath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupLogo());
+                                    Log.d("imagePath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupImage());
 
-                                Log.d("PGF", "LocalDBInIfPart" + isInserted);
+                                    boolean isInserted = db.insertGroupData(groupDataForOffLine, token);
 
-                            } else {
-                                Log.d("PGF", "LocalDBInElsePart" + isInserted);
-                                //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
-                            }
+                                    if (isInserted == true) {
+
+                                        //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                                        Log.d("PGF", "LocalDBInIfPart" + isInserted);
+
+                                    } else {
+                                        Log.d("PGF", "LocalDBInElsePart" + isInserted);
+                                        //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            }, 3000);
 
 
                         }
@@ -231,19 +346,19 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                         listener.onFragmentSetGroups(groupArrayList);
                         /*END listener for sending data to activity*/
 
-                        mainGroupAdapter1 = new MainGroupAdapter1(groupArrayList,getContext());
+                        mainGroupAdapter1 = new MainGroupAdapter1(groupArrayList, getContext());
                         groupList.setAdapter(mainGroupAdapter1);
 
-                    }else {
+                    } else {
                         linearLayoutnoDataFound.setVisibility(View.VISIBLE);
                         groupList.setVisibility(View.GONE);
                     }
                 }
                 // Try and catch are included to handle any errors due to JSON
-                catch(JSONException e){
+                catch (JSONException e) {
                     // If an error occurs, this prints the error to the log
                     e.printStackTrace();
-                    callGroupDataList(token,clientId);
+                    callGroupDataList(token, clientId);
                 }
 
             }
@@ -256,7 +371,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        callGroupDataList(token,clientId);
+                        callGroupDataList(token, clientId);
                         Log.e("Group fragments", "Group fragments Error");
                     }
                 }
@@ -269,32 +384,29 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     /*START onRefresh() for SwipeRefreshLayout*/
     @Override
     public void onRefresh() {
-        callGroupDataList(token,clientId);
+        callGroupDataList(token, clientId);
     }
-
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            sGetDataInterface= (GetDataInterface) getActivity();
+            sGetDataInterface = (GetDataInterface) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
         }
     }
 
     public void getDataFromActivity() {
-        if(sGetDataInterface != null){
+        if (sGetDataInterface != null) {
             this.groupArrayList = sGetDataInterface.getGroupDataList();
             mainGroupAdapter1.setItems(this.groupArrayList);
             mainGroupAdapter1.notifyDataSetChanged();
         }
 
-        Log.d("PGF_I&A"," "+sGetDataInterface+"&"+groupArrayList);
+        Log.d("PGF_I&A", " " + sGetDataInterface + "&" + groupArrayList);
     }
-
-
 
 
     public interface GetDataInterface {

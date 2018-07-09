@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="60dp"
+            android:src="@drawable/image_not_found"
+            android:layout_height="30sp"
+            android:scaleType="fitXY"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+
+            />
+
+        <!--TODO instituteLogo-->
+        <!--<ImageView
+            android:id="@+id/iv_instituteLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:src="@drawable/coaicon" />-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical">
+
+            <!--TODO instituteName-->
+            <TextView
+                android:id="@+id/tv_instituteName"
+                android:layout_width="match_parent"
+                android:layout_height="20sp"
+                android:text="Council of Architecture" />
+
+            <!--TODO instituteLocation-->
+            <TextView
+                android:id="@+id/tv_instituteLocation"
+                android:layout_width="match_parent"
+                android:layout_height="20sp"
+
+                android:text="New Delhi" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--TODO institutePic-->
+
+    <ImageView
+        android:id="@+id/clinetbanner"
+        android:layout_width="match_parent"
+        android:layout_height="150sp"
+        android:src="@drawable/image_not_found"
+
+        />
+
+    <!-- <ImageView
+         android:id="@+id/iv_institutePic"
+         android:layout_marginTop="15dp"
+         android:layout_width="match_parent"
+         android:layout_height="80dp"
+         android:src="@drawable/institude_architecture"
+         android:scaleType="centerCrop"/>-->
+
+
+    <!--<com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="8dp" />-->
+
+
+</LinearLayout>

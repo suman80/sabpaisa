@@ -22,6 +22,14 @@ public class AppDB extends SQLiteOpenHelper {
     public static final String Col_PhoneNo = "phoneNumber";
     public static final String Col_userAccessToken = "userAccessToken";
 
+
+    // Column names for User profile
+    public static final String TABLE_USER_IMG = "User_Img";
+    public static final String Col_userImageID = "id";
+    public static final String Col_userImageAccessToken = "userAccessToken";
+    public static final String Col_userImg = "userImg";
+
+
 //Column names for Transaction history
     public static final String TABLE_NAME_TRANSACTION = "TransactionTable";
     public static final String Col_Id = "id";
@@ -48,6 +56,14 @@ public class AppDB extends SQLiteOpenHelper {
                 +Col_userAccessToken+" TEXT"
                 +")";
 
+
+        String sqlForUserImage = " CREATE TABLE " + TABLE_USER_IMG + "("
+                +Col_userImageID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
+                +Col_userImageAccessToken+" TEXT,"
+                +Col_userImg+" TEXT"
+                +")";
+
+
         String sqlForTransaction = " CREATE TABLE " + TABLE_NAME_TRANSACTION + "("
                 +Col_Id+" INTEGER PRIMARY KEY AUTOINCREMENT,"
                 +Col_TXN_ID+" TEXT,"
@@ -59,6 +75,7 @@ public class AppDB extends SQLiteOpenHelper {
 
 
         db.execSQL(sql);
+        db.execSQL(sqlForUserImage);
         db.execSQL(sqlForTransaction);
 
     }
@@ -68,6 +85,9 @@ public class AppDB extends SQLiteOpenHelper {
 
         String sql = "DROP TABLE IF EXISTS "+TABLE_NAME;
         db.execSQL(sql);
+
+        String sqlForUserImage = "DROP TABLE IF EXISTS "+TABLE_USER_IMG;
+        db.execSQL(sqlForUserImage);
 
         String sqlForTransaction = "DROP TABLE IF EXISTS "+TABLE_NAME_TRANSACTION;
         db.execSQL(sqlForTransaction);
@@ -110,6 +130,43 @@ public class AppDB extends SQLiteOpenHelper {
                 Col_userAccessToken + "=?",new String[]{userAccessToken1});
         return res;
     }
+
+
+    public boolean insertUserImageData (String userAccessToken , String userImg){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Col_userImageAccessToken,userAccessToken);
+        contentValues.put(Col_userImg,userImg);
+        long result = db.insert(TABLE_USER_IMG,null,contentValues);
+
+        if (result == -1){
+            return false;
+        }else {
+            return true;
+        }
+
+    }
+
+
+
+    public Cursor getParticularImageData(String userAccessToken){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_USER_IMG + " WHERE " +
+                Col_userAccessToken + "=?",new String[]{userAccessToken});
+        return res;
+    }
+
+
+
+    public void deleteAllImageData(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("delete from "+ TABLE_USER_IMG);
+        db.close();
+    }
+
 
 
     public boolean updateNameStatus(String userAccessToken1, String name) {

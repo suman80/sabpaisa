@@ -6,14 +6,14 @@ public class FeedDataForOffLine {
     public String clientId;
     public String feedText;
     public String feedName;
-    public byte [] imagePath;
-    public byte [] logoPath;
+    public String imagePath;
+    public String logoPath;
 
     public FeedDataForOffLine() {
     }
 
 
-    public FeedDataForOffLine(String feedId, String clientId, String feedText, String feedName, byte[] imagePath, byte[] logoPath) {
+    public FeedDataForOffLine(String feedId, String clientId, String feedText, String feedName, String imagePath, String logoPath) {
         this.feedId = feedId;
         this.clientId = clientId;
         this.feedText = feedText;
@@ -55,19 +55,19 @@ public class FeedDataForOffLine {
         this.feedName = feedName;
     }
 
-    public byte[] getImagePath() {
+    public String getImagePath() {
         return imagePath;
     }
 
-    public void setImagePath(byte[] imagePath) {
+    public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 
-    public byte[] getLogoPath() {
+    public String getLogoPath() {
         return logoPath;
     }
 
-    public void setLogoPath(byte[] logoPath) {
+    public void setLogoPath(String logoPath) {
         this.logoPath = logoPath;
     }
 }
