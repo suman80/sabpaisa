@@ -64,7 +64,7 @@ public TextView  groupNAme,Count,type;
 holder.Count.setText(notificationModelClass.getCount());
 holder.groupNAme.setText(notificationModelClass.getName());
         Log.d("count=group",String.valueOf(notificationModelClass.getCount().toString())+"   "+notificationModelClassList.size());
-        if(notificationModelClassList.size()>1) {
+        if(notificationModelClassList.size()>0) {
             if (notificationModelClass.getIdentify().equals("Group")) {
                 holder.type.setText("G");
                 holder.type.setAllCaps(true);

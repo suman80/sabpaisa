@@ -23,12 +23,14 @@ import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Model.GroupDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
+import in.sabpaisa.droid.sabpaisa.Model.MemberOfflineDataModel;
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 public class AppDbComments extends SQLiteOpenHelper {
 
 
     public static final String DATABASE_NAME = "SpAppComments.db";
+    long result;
 
     // Columns names for Particular Clients
     public static final String TABLE_Particular_Client = "particular_client";
@@ -47,7 +49,7 @@ public class AppDbComments extends SQLiteOpenHelper {
     public static final String Col_FEED_TEXT = "feed_text";
     public static final String Col_FEED_IMG = "feed_img";
     public static final String Col_FEED_LOGO = "feed_logo";
-    long result;
+
 
 
     // Column names for feeds comments
@@ -84,6 +86,18 @@ public class AppDbComments extends SQLiteOpenHelper {
     public static final String Col_GROUP_CommentText = "comment_Text";
     public static final String Col_GROUP_commentByName = "comment_ByName";
     public static final String Col_GROUP_commentDate = "commentDate";
+
+
+
+    // Column names for Members
+    public static final String TABLE_NAME_MEMBERS = "members";
+    public static final String Col_ID_MEMBERS = "id";
+    public static final String Col_MEMBERS_Client_ID = "client_id";
+    public static final String Col_MEMBERS_NAME = "members_name";
+    public static final String Col_MEMBERS_IMG = "members_img";
+
+
+
 
 
     public AppDbComments(Context context) {
@@ -146,6 +160,14 @@ public class AppDbComments extends SQLiteOpenHelper {
                 +")";
 
 
+        String sqlForMembers = " CREATE TABLE " + TABLE_NAME_MEMBERS + "("
+                +Col_ID_MEMBERS+" INTEGER PRIMARY KEY AUTOINCREMENT,"
+                +Col_MEMBERS_Client_ID+" TEXT,"
+                +Col_MEMBERS_NAME+" TEXT,"
+                +Col_MEMBERS_IMG+" TEXT"
+                +")";
+
+
         db.execSQL(sqlForClient);
 
         db.execSQL(sqlForFeeds);
@@ -155,6 +177,8 @@ public class AppDbComments extends SQLiteOpenHelper {
         db.execSQL(sqlForGroups);
 
         db.execSQL(sqlForGroupComments);
+
+        db.execSQL(sqlForMembers);
     }
 
     @Override
@@ -165,12 +189,19 @@ public class AppDbComments extends SQLiteOpenHelper {
         String sqlForFeedsComments = "DROP TABLE IF EXISTS "+TABLE_FEED_COMMENTS;
         String sqlForGroups = "DROP TABLE IF EXISTS "+TABLE_NAME_GROUPS;
         String sqlForGroupComments = "DROP TABLE IF EXISTS "+TABLE_GROUP_COMMENTS;
+        String sqlForMembers = "DROP TABLE IF EXISTS "+TABLE_NAME_MEMBERS;
 
         db.execSQL(sqlForClient);
+
         db.execSQL(sqlForFeeds);
+
         db.execSQL(sqlForFeedsComments);
+
         db.execSQL(sqlForGroups);
+
         db.execSQL(sqlForGroupComments);
+
+        db.execSQL(sqlForMembers);
 
     }
 
@@ -338,17 +369,11 @@ public class AppDbComments extends SQLiteOpenHelper {
 
     //Group Comments
     public boolean insertGroupComments (final CommentData commentData , final String groupId){
-        //new feedImageDownloader().execute(feedData.getImagePath());
-        //new feedLogoDownloader().execute(feedData.getLogoPath());
-        //image = getByteFromUrl(feedData.getImagePath(), image);
-        //logo = getByteFromUrl(feedData.getLogoPath(), logo);
+
         final SQLiteDatabase db = this.getWritableDatabase();
-//        final Handler handler = new Handler();
+
         Log.d("Inside Insertion ", " for group-Comment");
-       /* handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Do something after 100ms*/
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(Col_GROUP_CommentGroupId,groupId+"");
         contentValues.put(Col_GROUP_CommentId,commentData.getCommentId());
@@ -357,8 +382,6 @@ public class AppDbComments extends SQLiteOpenHelper {
         contentValues.put(Col_GROUP_commentDate,commentData.getComment_date());
         result = db.insert(TABLE_GROUP_COMMENTS,null,contentValues);
 
-        //}
-//        }, 10000);
 
         if (result == -1){
             return false;
@@ -383,6 +406,41 @@ public class AppDbComments extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.execSQL("delete from "+ TABLE_GROUP_COMMENTS +" WHERE " +Col_GROUP_CommentGroupId + "=?",new String[]{groupId});
+        db.close();
+    }
+
+
+    // Member Data
+    public boolean insertMembersData (final String clientId,final MemberOfflineDataModel memberOfflineDataModel){
+
+        final SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Col_MEMBERS_Client_ID,clientId);
+        contentValues.put(Col_MEMBERS_NAME,memberOfflineDataModel.getFullName());
+        contentValues.put(Col_MEMBERS_IMG,memberOfflineDataModel.getUserImageUrl());
+        result = db.insert(TABLE_NAME_MEMBERS,null,contentValues);
+
+        if (result == -1){
+            return false;
+        }else {
+            return true;
+        }
+
+    }
+
+    public Cursor getParticularMembersData(String clientId){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_NAME_MEMBERS + " WHERE " +
+                Col_MEMBERS_Client_ID + "=?",new String[]{clientId});
+        return res;
+    }
+
+
+    public void deleteAllMembersData(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("delete from "+ TABLE_NAME_MEMBERS);
         db.close();
     }
 
@@ -411,7 +469,6 @@ public class AppDbComments extends SQLiteOpenHelper {
     https://stackoverflow.com/questions/3058909/how-does-one-check-if-a-table-exists-in-an-android-sqlite-database
 */
 
-    /************************Download Image*************************************************************/
 
 
 }

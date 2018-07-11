@@ -2,8 +2,13 @@ package in.sabpaisa.droid.sabpaisa;
 
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,18 +24,29 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.MemberAdapter;
+import in.sabpaisa.droid.sabpaisa.Adapter.MemberOfflineAdapter;
+import in.sabpaisa.droid.sabpaisa.Adapter.ProceedGroupsFragmentsOfflineAdapter;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragments;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedGroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.Model.GroupDataForOffLine;
+import in.sabpaisa.droid.sabpaisa.Model.MemberOfflineDataModel;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
@@ -50,6 +66,10 @@ public class Members extends Fragment {
     /*START Interface for getting data from activity*/
     GetDataInterface sGetDataInterface;
     /*START Interface for getting data from activity*/
+
+    /////////Local Db//////////
+    AppDbComments db;
+    ArrayList<MemberOfflineDataModel> memberOfflineDataModelArrayList;
 
     public Members() {
         // Required empty public cons
@@ -73,7 +93,43 @@ public class Members extends Fragment {
         clientId=sharedPreferences.getString("clientId","abc");
         Log.d("clientId_MEMBERS",""+clientId);
 
-        memberData(clientId);
+        ///////////////////////DB/////////////////////////////////
+        db = new AppDbComments(getContext());
+
+        if (isOnline()) {
+            memberData(clientId);
+        } else {
+
+            /////////////////////Retrive data from local DB///////////////////////////////
+
+            Cursor res = db.getParticularMembersData(clientId);
+            memberOfflineDataModelArrayList = new ArrayList<>();
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0) + " ");
+                    stringBuffer.append(res.getString(1) + " ");
+                    stringBuffer.append(res.getString(2) + " ");
+                    stringBuffer.append(res.getString(3) + " ");
+
+                    MemberOfflineDataModel memberOfflineDataModel = new MemberOfflineDataModel();
+                    memberOfflineDataModel.setFullName(res.getString(2));
+                    memberOfflineDataModel.setUserImageUrl(res.getString(3));
+                    memberOfflineDataModelArrayList.add(memberOfflineDataModel);
+
+                }
+                Log.d("getMemberData", "-->" + stringBuffer);
+
+                MemberOfflineAdapter adapter = new MemberOfflineAdapter(memberOfflineDataModelArrayList,getContext());
+                recycler_view_Member.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            } else {
+                Log.d("MemberLocalDb", "In Else Part");
+                Toast.makeText(getContext(), "No Data Found !", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
 
         return rootView;
     }
@@ -81,6 +137,9 @@ public class Members extends Fragment {
 
     public void memberData (final String clientId)
     {
+
+        db.deleteAllMembersData();
+
         String tag_string_req = "req_register";
         String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_Member+"clientId="+clientId;
 
@@ -115,7 +174,7 @@ public class Members extends Fragment {
                         for (int i = 0; i < jsonArray.length(); i++) {
 
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                            Member_GetterSetter member_getterSetter = new Member_GetterSetter();
+                            final Member_GetterSetter member_getterSetter = new Member_GetterSetter();
                             member_getterSetter.setDeviceId(jsonObject1.getString("deviceId"));
                             member_getterSetter.setEmailId(jsonObject1.getString("emailId"));
                             member_getterSetter.setGroupId(jsonObject1.getString("groupId"));
@@ -130,6 +189,79 @@ public class Members extends Fragment {
 
 
                             member_getterSetterArrayList.add(member_getterSetter);
+
+
+                            /////////////////////Saving To Internal Storage/////////////////////////////////////////
+
+                            final MemberOfflineDataModel memberOfflineDataModel = new MemberOfflineDataModel();
+                            memberOfflineDataModel.setFullName(jsonObject1.getString("fullName"));
+
+                            Glide.with(getContext())
+                                    .load(member_getterSetter.getUserImageUrl())
+                                    .asBitmap()
+                                    .into(new SimpleTarget<Bitmap>(100, 100) {
+                                        @Override
+                                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                            Log.d("LogoBitmap", " " + resource);
+                                            //saveLogoToInternalStorage(resource,groupListData.getGroupId());
+
+                                            ContextWrapper cw = new ContextWrapper(getContext());
+                                            // path to /data/data/yourapp/app_data/imageDir
+                                            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                            // Create imageDir
+                                            File mypath = new File(directory, member_getterSetter.getUserId() + "memberImg.jpg");
+
+                                            Log.d("mypath", "mypath  " + mypath);
+
+                                            String imgPath = mypath.toString();
+
+                                            FileOutputStream fos = null;
+                                            try {
+                                                fos = new FileOutputStream(mypath);
+                                                // Use the compress method on the BitMap object to write image to the OutputStream
+                                                resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                try {
+                                                    fos.close();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            memberOfflineDataModel.setUserImageUrl(imgPath);
+
+                                        }
+                                    });
+
+                            //////////////////////////////LOCAL DB//////////////////////////////////////
+
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //Do something after 3000ms
+
+                                    Log.d("imagePath_Member", "IntoLocalDb " + memberOfflineDataModel.getUserImageUrl());
+
+                                    boolean isInserted = db.insertMembersData(clientId,memberOfflineDataModel);
+
+                                    if (isInserted == true) {
+
+                                        //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                                        Log.d("Members", "LocalDBInIfPart" + isInserted);
+
+                                    } else {
+                                        Log.d("Members", "LocalDBInElsePart" + isInserted);
+                                        //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            }, 3000);
+
+
 
                         }
                         Log.d("ArrayListAfterParse", " " + member_getterSetterArrayList.get(0).getFullName());
@@ -198,6 +330,18 @@ public class Members extends Fragment {
         ArrayList<Member_GetterSetter> getMemberDataList();
     }
 
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("PGF", "Internet Connection Not Present");
+            return false;
+        }
+    }
 
 
 
