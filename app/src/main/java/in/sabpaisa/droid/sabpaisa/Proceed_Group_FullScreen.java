@@ -82,6 +82,10 @@ import retrofit2.http.HTTP;
 
 
 import java.sql.Timestamp;
+
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_FEED_COMMENTS;
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_GROUP_COMMENTS;
+
 public class Proceed_Group_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,View.OnKeyListener {
 
     TextView groupsName,group_description_details;
@@ -584,7 +588,15 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     public void callGetCommentList(final String GropuId) {
 
-        db.deleteAllGroupCommentData(GropuId);
+
+
+        boolean checkDb = db.isTableExists(TABLE_GROUP_COMMENTS);
+
+        Log.d("DbValuePGF"," "+checkDb);
+
+        if (checkDb == true){
+            db.deleteAllGroupCommentData(GropuId);
+        }
 
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";

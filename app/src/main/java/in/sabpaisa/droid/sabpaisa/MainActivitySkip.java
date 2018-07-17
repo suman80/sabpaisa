@@ -9,11 +9,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -62,6 +64,7 @@ import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.braunster.chatsdk.network.BNetworkManager;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -89,6 +92,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionSkipFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientSkipFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
@@ -144,6 +148,10 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
     InstitutionSkipFragment institutionSkipFragment;
 
+    DrawerLayout drawer;
+
+    AppDB appDB;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -170,7 +178,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         setSupportActionBar(toolbar);
 
         //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -230,6 +238,8 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
+        appDB = new AppDB(getApplicationContext());
+
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         appBarLayout.addOnOffsetChangedListener(this);
 
@@ -248,7 +258,68 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         LoadHeaderImageList();
 
         setHeaderImageList();
-        getUserIm(userAccessToken);
+
+        if (isOnline()) {
+            getUserImage(userAccessToken);
+        }else {
+
+            Cursor res = appDB.getParticularImageData(userAccessToken);
+
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0) + " ");
+                    stringBuffer.append(res.getString(1) + " ");
+                    stringBuffer.append(res.getString(2) + " ");
+
+                    Glide.with(getApplicationContext())
+                            .load(res.getString(2))
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .error(R.drawable.default_users)
+                            .into(niv);
+
+                }
+                Log.d("getImgFrmDBMainSkip", "-->" + stringBuffer);
+
+            } else {
+
+                Log.d("In Else Part", "");
+                //Toast.makeText(ProfileNavigationActivity.this,"In Else Part",Toast.LENGTH_SHORT).show();
+
+            }
+
+
+        }
+
+
+        if (isOnline()){
+
+            showProfileData();
+
+        }else {
+
+            Cursor res = appDB.getParticularData(userAccessToken);
+
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0));
+                    stringBuffer.append(res.getString(1));
+                    stringBuffer.append(res.getString(2));
+                    stringBuffer.append(res.getString(3));
+                    stringBuffer.append(res.getString(4));
+                    stringBuffer.append(res.getString(5));
+                    usernameniv.setText(res.getString(1));
+                    mailIdniv.setText(res.getString(2));
+                }
+                Log.d("getParticularNum", "-->" + stringBuffer);
+
+            } else {
+                Log.d("MainActivitySkip","In Else Part");
+            }
+
+        }
+
 
 //mailIdniv.setText(x);
         navigationView.setItemIconTintList(null);
@@ -342,7 +413,6 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         });*/
 
         searchViewBar();
-        showProfileData();
 
         usernameniv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -709,7 +779,10 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     public void onBackPressed() {
         if (searchView.isSearchOpen()) {
             searchView.closeSearch();
-        } else {
+        }else if (this.drawer.isDrawerOpen(GravityCompat.START)) {
+            this.drawer.closeDrawer(GravityCompat.START);
+            Log.d("Drawer","Closing_Skip");
+        }  else {
             super.onBackPressed();
             Intent intent = new Intent(MainActivitySkip.this, FilterActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -954,7 +1027,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         return filteredClientList;
     }
 
-    private void getUserIm(final String token) {
+    private void getUserImage(final String token) {
 
         String tag_string_req = "req_clients";
 
@@ -1335,6 +1408,22 @@ mailIdniv.setText("");
     public void onNetworkConnectionChanged(boolean isConnected) {
         //showSnack(isConnected);
     }
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("MainActivitySkip", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
+
 }
 
 

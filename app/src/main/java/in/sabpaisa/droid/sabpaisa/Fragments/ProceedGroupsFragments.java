@@ -63,6 +63,9 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME;
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_GROUPS;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -182,7 +185,14 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
     public void callGroupDataList(final String token, final String clientId) {
 
-        db.deleteAllGroupData();
+
+        boolean checkDb = db.isTableExists(TABLE_NAME_GROUPS);
+
+        Log.d("DbValuePGF"," "+checkDb);
+
+        if (checkDb == true){
+            db.deleteAllGroupData();
+        }
 
         String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "memberStatusWithGroup" + "?token=" + token + "&clientId=" + clientId;
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,

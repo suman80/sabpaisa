@@ -76,6 +76,8 @@ import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.RegisterActivity;
 import in.sabpaisa.droid.sabpaisa.UIN;
 
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDB.TABLE_USER_IMG;
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_MEMBERS;
 import static in.sabpaisa.droid.sabpaisa.R.color.black;
 
 public class ProfileNavigationActivity extends AppCompatActivity {
@@ -670,7 +672,15 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
     private void showProfileImage() {
 
-        db.deleteAllImageData();
+
+
+        boolean checkDb = db.isTableExists(TABLE_USER_IMG);
+
+        Log.d("DbValuePNA"," "+checkDb);
+
+        if (checkDb == true){
+            db.deleteAllImageData();
+        }
 
         String tag_string_req = "req_register";
 

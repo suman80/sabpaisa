@@ -906,10 +906,19 @@ ImageView spinnerClick1,spinnerClick2,spinnerClick3;
         //super.onBackPressed();
 
 
+/*
 finish();
         moveTaskToBack(true);
         System.exit(0);
+*/
 
+
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
+        startActivity(intent);
+        finish();
+        System.exit(0);
 
 
     }

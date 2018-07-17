@@ -62,6 +62,8 @@ import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
 import static android.content.Context.MODE_PRIVATE;
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME;
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_MEMBERS;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -168,7 +170,14 @@ public class ProceedFeedsFragments extends Fragment {
 
     public void callFeedDataList(final String clientId) {
 
-        db.deleteAllFeedData();
+
+        boolean checkDb = db.isTableExists(TABLE_NAME);
+
+        Log.d("DbValuePFF"," "+checkDb);
+
+        if (checkDb == true){
+            db.deleteAllFeedData();
+        }
 
         String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getParticularClientsFeeds/" + "?client_Id=" + clientId;
 

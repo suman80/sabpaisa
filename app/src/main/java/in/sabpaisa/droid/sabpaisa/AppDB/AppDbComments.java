@@ -167,7 +167,7 @@ public class AppDbComments extends SQLiteOpenHelper {
                 +Col_MEMBERS_IMG+" TEXT"
                 +")";
 
-
+        Log.d("RAJ", "DEEP:MEMBER");
         db.execSQL(sqlForClient);
 
         db.execSQL(sqlForFeeds);
@@ -179,6 +179,7 @@ public class AppDbComments extends SQLiteOpenHelper {
         db.execSQL(sqlForGroupComments);
 
         db.execSQL(sqlForMembers);
+        Log.d("RAJ", "DEEP:MEMBER2");
     }
 
     @Override
@@ -444,19 +445,9 @@ public class AppDbComments extends SQLiteOpenHelper {
         db.close();
     }
 
-    /*public boolean isTableExists(String tableName, boolean openDb) {
-        if(openDb) {
-            if(mDatabase == null || !mDatabase.isOpen()) {
-                mDatabase = getReadableDatabase();
-            }
-
-            if(!mDatabase.isReadOnly()) {
-                mDatabase.close();
-                mDatabase = getReadableDatabase();
-            }
-        }
-
-        Cursor cursor = mDatabase.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'", null);
+    public boolean isTableExists(String tableName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'", null);
         if(cursor!=null) {
             if(cursor.getCount()>0) {
                 cursor.close();
@@ -466,8 +457,8 @@ public class AppDbComments extends SQLiteOpenHelper {
         }
         return false;
     }
-    https://stackoverflow.com/questions/3058909/how-does-one-check-if-a-table-exists-in-an-android-sqlite-database
-*/
+    //https://stackoverflow.com/questions/3058909/how-does-one-check-if-a-table-exists-in-an-android-sqlite-database
+
 
 
 

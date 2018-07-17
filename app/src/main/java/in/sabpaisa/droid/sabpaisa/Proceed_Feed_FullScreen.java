@@ -77,6 +77,9 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_FEED_COMMENTS;
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_GROUPS;
+
 public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     TextView feedsName, feed_description_details;
@@ -518,7 +521,14 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     public void callGetCommentList(final String feed_id) {
 
-        db.deleteAllFeedCommentData();
+        boolean checkDb = db.isTableExists(TABLE_FEED_COMMENTS);
+
+        Log.d("DbValuePFF"," "+checkDb);
+
+        if (checkDb == true){
+            db.deleteAllFeedCommentData();
+        }
+
 
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req="req_register";

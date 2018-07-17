@@ -1,4 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
+
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -12,9 +14,12 @@ import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -42,6 +47,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -106,6 +112,9 @@ import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.NotificationAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDbImage;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
@@ -125,7 +134,7 @@ import static android.view.View.GONE;
 import static com.mikepenz.materialize.util.UIUtils.convertDpToPixel;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
+public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener, NavigationView.OnNavigationItemSelectedListener, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
     private int notification_id;
     private SliderLayout mHeaderSlider;
     ArrayList<Integer> headerList = new ArrayList<>();
@@ -133,70 +142,78 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     AppBarLayout appBarLayout;
     private RemoteViews remoteViews;
     NotificationManager notificationManager;
-    int feedstotal,grouptotal;
+    int feedstotal, grouptotal;
     RecyclerView recyclerView;
     String Commentcountgroups;
     String CommentcountFeeds;
     private CustomViewPager viewPager;
     int sum;
     String posttime1;
-    static  ArrayList<NotificationModelClass> notificationModelClassArrayList;
+    static ArrayList<NotificationModelClass> notificationModelClassArrayList;
 
-NotificationModelClass notificationModelClass;
-NotificationAdapter notificationAdapter; private TabLayout tabLayout;
+    NotificationModelClass notificationModelClass;
+    NotificationAdapter notificationAdapter;
+    private TabLayout tabLayout;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    String posttimeFeed,posttimeGroup;
-    ImageView niv,bell,bell1;
-    TextView notificationNumber,notificationNumberFeed;
+    String posttimeFeed, posttimeGroup;
+    ImageView niv, bell, bell1;
+    TextView notificationNumber, notificationNumberFeed;
     String total;
     int total1;
     String posttime;
     String time;
-     View menu_bell,menu_bell_feed;
-    String timefeed,timeGroup;
-    String img,imglogo,orgname,state;
+    View menu_bell, menu_bell_feed;
+    String timefeed, timeGroup;
+    String img, imglogo, orgname, state;
     RequestQueue requestQueue;
-    int temp=0,tempfeeds=0;
+    int temp = 0, tempfeeds = 0;
     String ts;
     Context context;
-    int sumgroup = 0,sumfeeds=0;
-    String count,countfeeds,clntname;
-    TextView usernameniv,mailIdniv;
+    int sumgroup = 0, sumfeeds = 0;
+    String count, countfeeds, clntname;
+    TextView usernameniv, mailIdniv;
     Toolbar toolbar;
-    String n,m,name,mobNumber;
+    String n, m, name, mobNumber;
     private static int CODE = 1; //declare as FIELD
     private FirebaseAnalytics firebaseAnalytics;
     NetworkImageView nav;
-    String userImageUrl=null;
-    String response,response1,userAccessToken;
-    ImageView sendMoney, requestMoney,socialPayment,transaction,profile,bank,UpibankList,mPinInfo,mPinInfo2;
-    LinearLayout paymentButton,chatButton,memberButton;
-    int isMpinSet=1;
+    String userImageUrl = null;
+    String response, response1, userAccessToken;
+    ImageView sendMoney, requestMoney, socialPayment, transaction, profile, bank, UpibankList, mPinInfo, mPinInfo2;
+    LinearLayout paymentButton, chatButton, memberButton;
+    int isMpinSet = 1;
     FloatingActionButton fab;
-    int MY_SOCKET_TIMEOUT_MS =100000;
+    int MY_SOCKET_TIMEOUT_MS = 100000;
     ActionBarDrawerToggle toggle;
- //public  static String userImageUrl=null;
-    HashMap<String,String> Hash_file_maps;
+    //public  static String userImageUrl=null;
+    HashMap<String, String> Hash_file_maps;
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
     Bundle bundle;
     String x;
-    String stateName,serviceName,ClientId;
-    String stateName1,serviceName1,ClientId1;
+    String stateName, serviceName, ClientId;
+    String stateName1, serviceName1, ClientId1;
     String posttimel;
     Handler mHandler;
-    public  static  String MYSHAREDPREF="mySharedPref";
+    public static String MYSHAREDPREF = "mySharedPref";
+
+    AppDB appDB;
+    AppDbComments appDbComments;
+    AppDbImage appDbImage;
+
+    DrawerLayout drawer;
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
-////Testing
+    ////Testing
+    @SuppressLint("MissingPermission")
     @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //checking
         super.onCreate(savedInstanceState);
-       // CommonUtils.setFullScreen(this);
+        // CommonUtils.setFullScreen(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 //nav=(NetworkImageView)findViewById(R.id.profile_image);
 
@@ -206,67 +223,71 @@ NotificationAdapter notificationAdapter; private TabLayout tabLayout;
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_navigation);
         this.mHandler = new Handler();
-      /*  this.mHandler.postDelayed(m_Runnable,5000);*/
+        /*  this.mHandler.postDelayed(m_Runnable,5000);*/
         Fabric.with(this, new Crashlytics());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("Sabpaisa");
-       // toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
+        // toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         SharedPreferences sharedPreferences2 = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
-        n=sharedPreferences2.getString("m","xyz");
-        m=n;
-        ClientId1=sharedPreferences2.getString("clientId", "123");
+        n = sharedPreferences2.getString("m", "xyz");
+        m = n;
+        ClientId1 = sharedPreferences2.getString("clientId", "123");
 
-        ClientId=ClientId1;
+        ClientId = ClientId1;
 
-        context=this;
+        context = this;
         SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(FilterActivity.MySharedPreffilter, Context.MODE_PRIVATE);
-        stateName1=sharedPreferences1.getString("selectedstate", "abc");
-        stateName=stateName1;
-        serviceName1=sharedPreferences1.getString("selectedservice", "123");
-        serviceName=serviceName1;
+        stateName1 = sharedPreferences1.getString("selectedstate", "abc");
+        stateName = stateName1;
+        serviceName1 = sharedPreferences1.getString("selectedservice", "123");
+        serviceName = serviceName1;
         //ClientId1=sharedPreferences1.getString("stateId", "123");
       /*  ClientId1=sharedPreferences1.getString("clientId", "123");
 
         ClientId=ClientId1;*/
 
-        Log.d("Sharedprefrencemat","-."+ClientId1+stateName1+serviceName1);
-        Log.d("Sharedprefrencemat","-."+ClientId+stateName+serviceName);
-        Log.d("Sharedprefrencemat","-."+ClientId+stateName+serviceName+n+m);
+        Log.d("Sharedprefrencemat", "-." + ClientId1 + stateName1 + serviceName1);
+        Log.d("Sharedprefrencemat", "-." + ClientId + stateName + serviceName);
+        Log.d("Sharedprefrencemat", "-." + ClientId + stateName + serviceName + n + m);
 
+//////////////////////////////////Initializing Sqlite Db////////////////////////////////
+        appDB = new AppDB(getApplicationContext());
+        appDbComments = new AppDbComments(getApplicationContext());
+        appDbImage = new AppDbImage(getApplicationContext());
+        Log.d("SQLITE_DB_MAIN", " " + appDB + " " + appDbComments + " " + appDbImage);
+////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-      /////  Long posttime1= Long.valueOf(posttime);
+        /////  Long posttime1= Long.valueOf(posttime);
 
 //        Timestamp t =  new Timestamp( Long.valueOf(posttime) );
 
-        Log.d("ArcPosttime",""+posttime);
+        Log.d("ArcPosttime", "" + posttime);
 
-      //  Log.d("ArcPosttime11",""+posttime1);
-  //      Log.d("ArcPosttime111",""+t);
+        //  Log.d("ArcPosttime11",""+posttime1);
+        //      Log.d("ArcPosttime111",""+t);
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
         response = sharedPreferences.getString("response", "123");
-        if(response!=null) {
+        if (response != null) {
 
             userAccessToken = response;
             Log.d("AccessToken111", " " + userAccessToken);
 
             Log.d("FFResponse11111", " " + response);
-        }else {
-            try{
+        } else {
+            try {
 
-            }catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 // [START log_and_report]
-             //   FirebaseCrash.logcat(Log.ERROR, "MainActivity", "NPE caught");
+                //   FirebaseCrash.logcat(Log.ERROR, "MainActivity", "NPE caught");
                 Crashlytics.log(Log.ERROR, "MainActivity", "NPE caught");
-               // FirebaseCrash.report(e);
+                // FirebaseCrash.report(e);
                 Crashlytics.logException(e);
             }
-            }
-        Long tsLong = System.currentTimeMillis()/1000;
+        }
+        Long tsLong = System.currentTimeMillis() / 1000;
         ts = tsLong.toString();
-        Log.d("timemainactiviu",""+ts);
+        Log.d("timemainactiviu", "" + ts);
 
         // This is used for the app custom toast and activity transition
         ChatSDKUiHelper.initDefault();
@@ -279,23 +300,23 @@ NotificationAdapter notificationAdapter; private TabLayout tabLayout;
 
         //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_drawer,
-        getApplicationContext().getTheme());
+                getApplicationContext().getTheme());
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
-       // ClientId=getIntent().getStringExtra("clientId");
-        Log.d("CLIENTID(MainActivity)","-->"+ClientId);
-        Log.d("userImageUrl(MainAhjhkn","-->"+userImageUrl);
-      //Firebase Analytics
+        // ClientId=getIntent().getStringExtra("clientId");
+        Log.d("CLIENTID(MainActivity)", "-->" + ClientId);
+        Log.d("userImageUrl(MainAhjhkn", "-->" + userImageUrl);
+        //Firebase Analytics
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        ClientData clientData=new ClientData();
+        ClientData clientData = new ClientData();
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, clientData.getClientId());
-       // bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, clientData.getClientName());
+        // bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, clientData.getClientName());
         //Logs an app event.
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
@@ -338,46 +359,37 @@ NotificationAdapter notificationAdapter; private TabLayout tabLayout;
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
-       //View header = navigationView.inflateHeaderView(R.layout.nav_header_main_activity_navigation);`
-        //nav = (NetworkImageView) header.findViewById(R.id.profile_image);
-         niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
-        usernameniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.username_nav);
-        usernameniv.setText("");
-        mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
-        // View header = navigationView.getHeaderView(0);
-      // NetworkImageView niv = (NetworkImageView) header.findViewById(R.id.profile_image);
-        //if(url.length() > 0)
-            //niv.setImageUrl(userImageUrl, imageLoader);
-       // niv.setDefaultImageResId(R.drawable.sabpaisa);
-        //niv.setErrorImageResId(R.drawable.
-        //error);
-        //nav.setImageUrl(userImageUrl);
-      //  new MainActivity.DownloadImageTask(niv).execute(userImageUrl);
-        sendMoney = (ImageView)findViewById(R.id.ll_send);
-        requestMoney = (ImageView)findViewById(R.id.ll_request);
-        //socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
-        transaction = (ImageView)findViewById(R.id.ll_transactions);
-        profile = (ImageView)findViewById(R.id.ll_profile);
-        bank = (ImageView)findViewById(R.id.ll_bank);
-        //UpibankList = (ImageView)findViewById(R.id.ll_Upibank);
-        paymentButton = (LinearLayout)findViewById(R.id.payment_button);
-        chatButton = (LinearLayout)findViewById(R.id.chat);
-        memberButton = (LinearLayout)findViewById(R.id.members);
-        rfaLayout = (RapidFloatingActionLayout)findViewById(R.id.activity_main_rfal);
-        rfaBtn = (RapidFloatingActionButton)findViewById(R.id.activity_main_rfab);
-        FabButtonCreate();
-        //fab = (FloatingActionButton)findViewById(R.id.fab_dashboard);
 
+        niv = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+        usernameniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.username_nav);
+        usernameniv.setText("");
+        mailIdniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_nav);
+
+        sendMoney = (ImageView) findViewById(R.id.ll_send);
+        requestMoney = (ImageView) findViewById(R.id.ll_request);
+        //socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
+        transaction = (ImageView) findViewById(R.id.ll_transactions);
+        profile = (ImageView) findViewById(R.id.ll_profile);
+        bank = (ImageView) findViewById(R.id.ll_bank);
+        //UpibankList = (ImageView)findViewById(R.id.ll_Upibank);
+        paymentButton = (LinearLayout) findViewById(R.id.payment_button);
+        chatButton = (LinearLayout) findViewById(R.id.chat);
+        memberButton = (LinearLayout) findViewById(R.id.members);
+        rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.activity_main_rfal);
+        rfaBtn = (RapidFloatingActionButton) findViewById(R.id.activity_main_rfab);
+        FabButtonCreate();
+        
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("SPApp");
         toolbar.setNavigationIcon(R.drawable.ic_navigation);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-onBackPressed();            }
+                onBackPressed();
+            }
         });
 
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
@@ -388,20 +400,27 @@ onBackPressed();            }
         viewPager.disableScroll(true);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
+        tabLayout.getTabAt(0).setIcon(R.drawable.clients);
+//////////////////Code for adding image and text on tab bar ////////////////////////////////////////////////
+       /* TextView newTab = (TextView) LayoutInflater.from(MainActivity.this).inflate(R.layout.custom_tab_layout, null);
+        newTab.setText("Clients");
+        newTab.setTypeface(null, Typeface.BOLD);
+        newTab.setCompoundDrawablesWithIntrinsicBounds(R.drawable.clients, 0, 0, 0);
+        tabLayout.getTabAt(0).setCustomView(newTab);
+        */
         setSupportActionBar(toolbar);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
-        mHeaderSlider = (SliderLayout)findViewById(R.id.slider);
-       //new MainActivity.DownloadImageTask(nav).execute(userImageUrl);
-        SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREF,MODE_PRIVATE).edit();
-        editor.putString("clientId",ClientId);
+        mHeaderSlider = (SliderLayout) findViewById(R.id.slider);
+        //new MainActivity.DownloadImageTask(nav).execute(userImageUrl);
+        SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREF, MODE_PRIVATE).edit();
+        editor.putString("clientId", ClientId);
         //editor.putString("userImageUrl",userImageUrl);
         editor.commit();
         LoadHeaderImageList();
         setHeaderImageList();
 
-        sendMoney.setOnClickListener( new View.OnClickListener() {
+        sendMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*if (isMpinSet==0) {             *//*TODO check if mpin is set or not, for now i am hardcoding it*//*
@@ -461,37 +480,95 @@ onBackPressed();            }
                 Toast.makeText(getApplicationContext(), "Coming Soon !", Toast.LENGTH_SHORT).show();
             }
         });
-        showProfileData();
+
 
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                int value=1;
+                int value = 1;
 
-                Intent intent = new Intent(MainActivity.this,ChatSDKLoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, ChatSDKLoginActivity.class);
 
-               intent.putExtra("userImageUrlMaim",userImageUrl);
-                intent.putExtra("usernameniv",usernameniv.getText().toString().trim());
-                intent.putExtra("VALUE",value);
-                intent.putExtra("xxxxx",mailIdniv.getText().toString().trim());
-                intent.putExtra("mobNumber",mobNumber);
+                intent.putExtra("userImageUrlMaim", userImageUrl);
+                intent.putExtra("usernameniv", usernameniv.getText().toString().trim());
+                intent.putExtra("VALUE", value);
+                intent.putExtra("xxxxx", mailIdniv.getText().toString().trim());
+                intent.putExtra("mobNumber", mobNumber);
 
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
-        getUserIm(userAccessToken);
+
+        ////////API CAlls////////////////////////////
+
+        if (isOnline()){
+            getUserImage(userAccessToken);
+        }else{
+
+            Cursor res = appDB.getParticularImageData(userAccessToken);
+
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0) + " ");
+                    stringBuffer.append(res.getString(1) + " ");
+                    stringBuffer.append(res.getString(2) + " ");
+
+                    Glide.with(getApplicationContext())
+                            .load(res.getString(2))
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .error(R.drawable.default_users)
+                            .into(niv);
+
+                }
+                Log.d("getImgFrmDBMain", "-->" + stringBuffer);
+
+            } else {
+
+                Log.d("In Else Part", "");
+                //Toast.makeText(ProfileNavigationActivity.this,"In Else Part",Toast.LENGTH_SHORT).show();
+
+            }
+
+        }
+
+        if (isOnline()) {
+            showProfileData();
+        }else {
+
+            Cursor res = appDB.getParticularData(userAccessToken);
+
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0));
+                    stringBuffer.append(res.getString(1));
+                    stringBuffer.append(res.getString(2));
+                    stringBuffer.append(res.getString(3));
+                    stringBuffer.append(res.getString(4));
+                    stringBuffer.append(res.getString(5));
+                    usernameniv.setText(res.getString(1));
+                    mailIdniv.setText(res.getString(2));
+                }
+                Log.d("getParticularNum", "-->" + stringBuffer);
+
+            } else {
+                Log.d("MainActivity","In Else Part");
+            }
+
+            }
         getClientsList(ClientId1);
-        String y=x;
+        String y = x;
 
         usernameniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value=1;
-                Intent intent=new Intent(MainActivity.this,ProfileNavigationActivity.class);
-                intent.putExtra("ClientId",ClientId);
-                intent.putExtra("valueProfile",value);
+                int value = 1;
+                Intent intent = new Intent(MainActivity.this, ProfileNavigationActivity.class);
+                intent.putExtra("ClientId", ClientId);
+                intent.putExtra("valueProfile", value);
                 startActivity(intent);
 
             }
@@ -500,11 +577,11 @@ onBackPressed();            }
         niv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value=1;
+                int value = 1;
 
-                Intent intent=new Intent(MainActivity.this,ProfileNavigationActivity.class);
-                intent.putExtra("ClientId",ClientId);
-                intent.putExtra("valueProfile",value);
+                Intent intent = new Intent(MainActivity.this, ProfileNavigationActivity.class);
+                intent.putExtra("ClientId", ClientId);
+                intent.putExtra("valueProfile", value);
 
                 startActivity(intent);
 
@@ -514,11 +591,11 @@ onBackPressed();            }
         mailIdniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value=1;
+                int value = 1;
 
-                Intent intent=new Intent(MainActivity.this,ProfileNavigationActivity.class);
-                intent.putExtra("ClientId",ClientId);
-                intent.putExtra("valueProfile",value);
+                Intent intent = new Intent(MainActivity.this, ProfileNavigationActivity.class);
+                intent.putExtra("ClientId", ClientId);
+                intent.putExtra("valueProfile", value);
 
                 startActivity(intent);
 
@@ -527,60 +604,59 @@ onBackPressed();            }
         SharedPreferences sharedPreferences113 = getApplication().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
 
         posttime = sharedPreferences113.getString("ts", "123");
-        final String timefull=posttime;
+        final String timefull = posttime;
 
         SharedPreferences sharedPreferences11 = getApplication().getSharedPreferences(Proceed_Feed_FullScreen.MySharedPrefProceedFeedFullScreen, Context.MODE_PRIVATE);
 
         posttimeFeed = sharedPreferences11.getString("ts", "123");
-        timefeed=posttimeFeed;
+        timefeed = posttimeFeed;
         SharedPreferences sharedPreferences112 = getApplication().getSharedPreferences(Proceed_Group_FullScreen.MySharedPRoceedGroupFullScreen, Context.MODE_PRIVATE);
         posttimeGroup = sharedPreferences112.getString("Groupts", "123");
-         timeGroup=posttimeGroup;
+        timeGroup = posttimeGroup;
 
 
-        Log.d("ArcPosttimeFeed",""+posttimeFeed);
-        Log.d("ArcPosttimeGroup",""+posttimeGroup);
-        Log.d("ArcPosttimeGroup11",""+timeGroup);
-        Log.d("ArcPosttimeGroup11",""+timefull);
+        Log.d("ArcPosttimeFeed", "" + posttimeFeed);
+        Log.d("ArcPosttimeGroup", "" + posttimeGroup);
+        Log.d("ArcPosttimeGroup11", "" + timeGroup);
+        Log.d("ArcPosttimeGroup11", "" + timefull);
 
         final long tGroup = Long.parseLong(timeGroup);
         final long tFeeds = Long.parseLong(timefeed);
 
 
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //Do something after 20 seconds
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something after 20 seconds
 
-                    if(tGroup > tFeeds) {
-                        posttime1 = timeGroup;
-                        NotificationCount(ClientId1, timeGroup, userAccessToken);
-                    }
-                    else {
-                        posttime1 = timefeed;
-                        NotificationCount(ClientId1, timefeed, userAccessToken);
-                    }
-                        handler.postDelayed(this, 1000);
+                if (tGroup > tFeeds) {
+                    posttime1 = timeGroup;
+                    NotificationCount(ClientId1, timeGroup, userAccessToken);
+                } else {
+                    posttime1 = timefeed;
+                    NotificationCount(ClientId1, timefeed, userAccessToken);
                 }
-            }, 1000);
+                handler.postDelayed(this, 1000);
+            }
+        }, 1000);
 
 
-        if(tGroup > tFeeds) {
+        if (tGroup > tFeeds) {
             posttime1 = timeGroup;
-            Feedsnotification(ClientId1,timeGroup,userAccessToken);//// used for notification in notification bar as  if we used  this in handler then the notification are comi
-            Groupsnotification(ClientId1,timeGroup,userAccessToken);/// used for notification in notification bar
-        }
-        else {
+            Feedsnotification(ClientId1, timeGroup, userAccessToken);//// used for notification in notification bar as  if we used  this in handler then the notification are comi
+            Groupsnotification(ClientId1, timeGroup, userAccessToken);/// used for notification in notification bar
+        } else {
             posttime1 = timefeed;
             Feedsnotification(ClientId1, timefeed, userAccessToken);//// used for notification in notification bar as  if we used  this in handler then the notification are comi
             Groupsnotification(ClientId1, timefeed, userAccessToken);/// used for notification in notification bar
         }
 
-            Log.d("ArcFeedGroup",""+feedstotal+"  "+grouptotal);
+        Log.d("ArcFeedGroup", "" + feedstotal + "  " + grouptotal);
 
-        Log.d("ArcPosttimeCount",""+Commentcountgroups+ "   "+CommentcountFeeds);
+        Log.d("ArcPosttimeCount", "" + Commentcountgroups + "   " + CommentcountFeeds);
     }
+
     private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
@@ -591,7 +667,7 @@ onBackPressed();            }
         }
 
 
-            //txtRegId.setText("Firebase Reg Id: " + regId);
+        //txtRegId.setText("Firebase Reg Id: " + regId);
         else {
 
             //Toast.makeText(this, "Firebase Reg Id is not received yet!" + regId, Toast.LENGTH_SHORT).show();
@@ -601,9 +677,26 @@ onBackPressed();            }
     @Override
     public void onBackPressed() {
 
-            finish();
+        if (this.drawer.isDrawerOpen(GravityCompat.START)) {
+            this.drawer.closeDrawer(GravityCompat.START);
+            Log.d("Drawer","Closing");
+        } else {
+            Log.d("Drawer","Closed");
+            /*finish();
             moveTaskToBack(true);
             System.exit(0);
+            super.onBackPressed();
+
+            return;
+*/
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
+            startActivity(intent);
+            finish();
+            System.exit(0);
+        }
+
 
 
     }
@@ -646,6 +739,7 @@ onBackPressed();            }
                 rfaContent
         ).build();
     }
+
     @Override
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
         Toast.makeText(this, "clicked label: " + position, Toast.LENGTH_SHORT).show();
@@ -655,20 +749,20 @@ onBackPressed();            }
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     @Override
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
-        if (position==2){
+        if (position == 2) {
             Toast.makeText(this, "Send Clicked", Toast.LENGTH_SHORT).show();
-            if (isMpinSet==0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
+            if (isMpinSet == 0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
                 Intent intent = new Intent(MainActivity.this, AccountInfoActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-            }else {
+            } else {
                 Intent intent = new Intent(MainActivity.this, SendMoneyActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
-        }else if (position==1){
+        } else if (position == 1) {
             Toast.makeText(this, "Request Clicked", Toast.LENGTH_SHORT).show();
-        }else if (position==0){
+        } else if (position == 0) {
             Toast.makeText(this, "Transactions Clicked", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this, TransactionsActivity.class);
             startActivity(intent);
@@ -679,18 +773,18 @@ onBackPressed();            }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ProceedInstitiutionFragment(),"Clients");
+        adapter.addFragment(new ProceedInstitiutionFragment(), "");//Clients
         //adapter.addFragment(new FormFragment(),"Other Clients");
         //adapter.addFragment(new InstitutionFragment(),"Groups");
         viewPager.setAdapter(adapter);
-        stateName=getIntent().getStringExtra("STATENAME");
-        serviceName=getIntent().getStringExtra("SERVICENAME");
+        stateName = getIntent().getStringExtra("STATENAME");
+        serviceName = getIntent().getStringExtra("SERVICENAME");
 
-        FragmentManager in=getSupportFragmentManager();
-        Fragment instituteFragment=new InstitutionFragment();
+        FragmentManager in = getSupportFragmentManager();
+        Fragment instituteFragment = new InstitutionFragment();
         Bundle bundle = new Bundle();
         bundle.putString("stateName", stateName);
-        bundle.putString("serviceName",serviceName);
+        bundle.putString("serviceName", serviceName);
         //bundle.putString("userImageUrl",userImageUrl);
         instituteFragment.setArguments(bundle);
         //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
@@ -698,7 +792,7 @@ onBackPressed();            }
     }
 
     private void setHeaderImageList() {
-        for(int i=0;i<headerList.size();i++){
+        for (int i = 0; i < headerList.size(); i++) {
             CustomSliderView customSliderView = new CustomSliderView(this);
             // initialize a SliderLayout
             customSliderView
@@ -722,16 +816,14 @@ onBackPressed();            }
     private void LoadHeaderImageList() {
 
 
-
         Hash_file_maps = new HashMap<String, String>();
 
 
-    Hash_file_maps.put("SPApp Digitizing Cash", AppConfig.Base_Url+"/Docs/Images/HomeImage/sabpaisa.png");
-        Hash_file_maps.put("Payment & Transfer", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_2.png");
-        Hash_file_maps.put("The Future Of Payments", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_image.jpg");
-        Hash_file_maps.put("UPI", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_1.svg.png");
-        for(String name : Hash_file_maps .keySet())
-        {
+        Hash_file_maps.put("SPApp Digitizing Cash", AppConfig.Base_Url + "/Docs/Images/HomeImage/sabpaisa.png");
+        Hash_file_maps.put("Payment & Transfer", AppConfig.Base_Url + "/Docs/Images/HomeImage/UPI_2.png");
+        Hash_file_maps.put("The Future Of Payments", AppConfig.Base_Url + "/Docs/Images/HomeImage/UPI_image.jpg");
+        Hash_file_maps.put("UPI", AppConfig.Base_Url + "/Docs/Images/HomeImage/UPI_1.svg.png");
+        for (String name : Hash_file_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(this);
             // initialize a SliderLayout
             textSliderView
@@ -743,7 +835,7 @@ onBackPressed();            }
             //add your extra information
             textSliderView.bundle(new Bundle());
             textSliderView.getBundle()
-                    .putString("extra",name);
+                    .putString("extra", name);
 
             mHeaderSlider.addSlider(textSliderView);
 
@@ -754,13 +846,10 @@ onBackPressed();            }
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-        if (verticalOffset == 0)
-        {
+        if (verticalOffset == 0) {
             rfaLayout.setVisibility(GONE);
             //fab.setVisibility(View.GONE);// Collapsed
-        }
-        else
-        {
+        } else {
             rfaLayout.setVisibility(View.VISIBLE);
             //fab.setVisibility(View.VISIBLE);// Not collapsed
         }
@@ -773,15 +862,15 @@ onBackPressed();            }
 
         //Notification
         Bitmap iconNoti = BitmapFactory.decodeResource(getResources(), R.drawable.notification); //Converting drawable into bitmap
-       Bitmap newIconNoti = resizeBitmapImageFn(iconNoti, (int) convertDpToPixel(20f, this)); //resizing the bitmap
+        Bitmap newIconNoti = resizeBitmapImageFn(iconNoti, (int) convertDpToPixel(20f, this)); //resizing the bitmap
         Drawable dNoti = new BitmapDrawable(getResources(), newIconNoti); //Converting bitmap into drawable
-    //  menu.getItem(0).setIcon(dNoti);
-        menu_bell =  menu.findItem(R.id.bbell).getActionView();
-        menu_bell_feed =  menu.findItem(R.id.bbellFeed).getActionView();
+        //  menu.getItem(0).setIcon(dNoti);
+        menu_bell = menu.findItem(R.id.bbell).getActionView();
+        menu_bell_feed = menu.findItem(R.id.bbellFeed).getActionView();
 
-        bell = (ImageView)menu_bell.findViewById(R.id.notification_bell);
-        bell1 = (ImageView)menu_bell_feed.findViewById(R.id.notification_bell);
-        notificationNumber = (TextView)menu_bell.findViewById(R.id.notifyNum);
+        bell = (ImageView) menu_bell.findViewById(R.id.notification_bell);
+        bell1 = (ImageView) menu_bell_feed.findViewById(R.id.notification_bell);
+        notificationNumber = (TextView) menu_bell.findViewById(R.id.notifyNum);
 
         menu_bell.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -800,7 +889,7 @@ onBackPressed();            }
 
             }
         });
-     return true;
+        return true;
     }
 
 
@@ -873,36 +962,30 @@ onBackPressed();            }
         int id = item.getItemId();
 
         if (id == R.id.nav_Profile) {
-            int value=1;
+            int value = 1;
 
-            Intent intent=new Intent(MainActivity.this, ProfileNavigationActivity.class);
-            intent.putExtra("ClientId",ClientId);
-            intent.putExtra("valueProfile",value);
+            Intent intent = new Intent(MainActivity.this, ProfileNavigationActivity.class);
+            intent.putExtra("ClientId", ClientId);
+            intent.putExtra("valueProfile", value);
             startActivity(intent);
 
         }
 //Changes 25 april
-        else if(id==R.id.nav_TransactionReport) {
+        else if (id == R.id.nav_TransactionReport) {
         }
 
         // end
-        else  if(id == R.id.nav_ChangePassword)
-        {
-            Intent intent=new Intent(MainActivity.this, ForgotActivity.class);
+        else if (id == R.id.nav_ChangePassword) {
+            Intent intent = new Intent(MainActivity.this, ForgotActivity.class);
 
             startActivity(intent);
-        }
-        else  if(id == R.id.nav_Privacy_Policy)
-        {
-            Intent intent=new Intent(MainActivity.this, PrivacyPolicyActivity.class);
+        } else if (id == R.id.nav_Privacy_Policy) {
+            Intent intent = new Intent(MainActivity.this, PrivacyPolicyActivity.class);
 
             startActivity(intent);
-        }
+        } else if (id == R.id.nav_logout) {
 
-
-        else if (id == R.id.nav_logout) {
-
-            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
             builder.setMessage("Do you want to Logout?");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -916,10 +999,9 @@ onBackPressed();            }
                     editor.remove("logged");
                     editor.commit();
                     finish();
-                    Intent intent=new Intent(MainActivity.this, LogInActivity.class);
+                    Intent intent = new Intent(MainActivity.this, LogInActivity.class);
 
                     startActivity(intent);
-
 
 
                 }
@@ -933,49 +1015,41 @@ onBackPressed();            }
                 }
             });
 
-            AlertDialog alert=builder.create();
+            AlertDialog alert = builder.create();
             alert.show();
 
 
-
-        }else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share) {
 
             try {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, "SPApp");
                 String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
-                sAux = sAux+"\n"+"https://play.google.com/store/apps/details?id=in.sabpaisa.droid.sabpaisa";
+                sAux = sAux + "\n" + "https://play.google.com/store/apps/details?id=in.sabpaisa.droid.sabpaisa";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "Share via"));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
 
 
                 //e.toString();
             }
 
-        }
-
-        else if(id==R.id.nav_Contacts){
+        } else if (id == R.id.nav_Contacts) {
 
 
-            Intent intent=new Intent( MainActivity.this, AllContacts.class);
+            Intent intent = new Intent(MainActivity.this, AllContacts.class);
 
             startActivity(intent);
 
-        }
+        } else if (id == R.id.nav_txnhistory) {
 
-        else if(id==R.id.nav_txnhistory){
-
-            Intent intent=new Intent( MainActivity.this, AllTransactionSummary.class);
+            Intent intent = new Intent(MainActivity.this, AllTransactionSummary.class);
 
             startActivity(intent);
 
-        }
-        else if(id==R.id.nav_clean_data)
-        {
-            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
+        } else if (id == R.id.nav_clean_data) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
             builder.setMessage("For selecting other Institute/client.Press OK.");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -990,7 +1064,7 @@ onBackPressed();            }
                     editor.commit();
                     finish();
 
-                    Intent intent=new Intent( MainActivity.this, FilterActivity.class);
+                    Intent intent = new Intent(MainActivity.this, FilterActivity.class);
 
                     startActivity(intent);
 
@@ -1005,7 +1079,7 @@ onBackPressed();            }
                 }
             });
 
-            AlertDialog alert=builder.create();
+            AlertDialog alert = builder.create();
             alert.show();
 
         }
@@ -1019,12 +1093,12 @@ onBackPressed();            }
                     .beginTransaction()
                     .replace(R.id.tt, newFragment)
                     .commit();*//*
-            *//*newFragment = new Ratefragment();
+         *//*newFragment = new Ratefragment();
             transaction.replace(R.id.tt, newFragment);
             transaction.addToBackStack(null);
             transaction.commit();*//*
 
-            *//*Fragment fragment = new Fragment();
+         *//*Fragment fragment = new Fragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.tt, fragment, fragment.getTag()).commit();
         *//*
@@ -1114,17 +1188,16 @@ onBackPressed();            }
         super.onPause();
     }
 
-    private void getUserIm(final  String token) {
+    private void getUserImage(final String token) {
 
-        String  tag_string_req = "req_clients";
+        String tag_string_req = "req_clients";
 
-        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
+        StringRequest request = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_Show_UserProfileImage + "?token=" + token, new Response.Listener<String>() {
 
             @Override
-            public void onResponse(String response1)
-            {
+            public void onResponse(String response1) {
 
-                Log.d("Particularclientimage","-->"+response1);
+                Log.d("Particularclientimage", "-->" + response1);
                 //parsing Json
                 JSONObject jsonObject = null;
 
@@ -1133,13 +1206,14 @@ onBackPressed();            }
                     jsonObject = new JSONObject(response1.toString());
                     String response = jsonObject.getString("response");
                     String status = jsonObject.getString("status");
-                    Log.d("responsefilter",""+response);
-                    Log.d("statusfilter",""+status);
+                    Log.d("responsefilter", "" + response);
+                    Log.d("statusfilter", "" + status);
                     JSONObject jsonObject1 = new JSONObject(response);
-                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
-                    userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter = new FetchUserImageGetterSetter();
+                    fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                    userImageUrl = fetchUserImageGetterSetter.getUserImageUrl().toString();
 
-                    Log.d("userImageUrlfilter",""+userImageUrl);
+                    Log.d("userImageUrlfilter", "" + userImageUrl);
                     //Glide.with(MainActivity.this).load(userImageUrl).error(R.drawable.default_users).into(niv);
 
                     Glide.with(getApplicationContext())
@@ -1148,9 +1222,8 @@ onBackPressed();            }
                             .error(R.drawable.default_users)
                             .into(niv);
 
-                    Log.d("Skip",""+userImageUrl);
-                }
-                catch(JSONException e){
+                    Log.d("Skip", "" + userImageUrl);
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -1160,7 +1233,7 @@ onBackPressed();            }
             public void onErrorResponse(VolleyError error) {
 
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -1201,11 +1274,10 @@ onBackPressed();            }
             }
 
 
-        }) ;
+        });
 
 
-
-                request.setRetryPolicy(new DefaultRetryPolicy(
+        request.setRetryPolicy(new DefaultRetryPolicy(
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -1254,13 +1326,14 @@ onBackPressed();            }
             requestQueue = Volley.newRequestQueue(getApplicationContext());
             //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
         }
-        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
     }
+
     private void showProfileData() {
 
         String tag_string_req = "req_register";
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfile+"?token="+userAccessToken, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_Show_UserProfile + "?token=" + userAccessToken, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -1270,29 +1343,27 @@ onBackPressed();            }
                     //progressBar.setVisibility(View.GONE);
                     JSONObject object = new JSONObject(response1);
                     String response = object.getString("response");
-                    String status =object.getString("status");
+                    String status = object.getString("status");
                     x = object.getJSONObject("response").getString("emailId").toString();
                     mobNumber = object.getJSONObject("response").getString("contactNumber").toString();
-if (x.equals("null"))
-{
+                    if (x.equals("null")) {
 
-    usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
+                        usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
 
-    mailIdniv.setText("");
-}
-                   else if (status.equals("success")) {
-name=object.getJSONObject("response").getString("fullName").toString();
-Log.d("namemain",""+name);
+                        mailIdniv.setText("");
+                    } else if (status.equals("success")) {
+                        name = object.getJSONObject("response").getString("fullName").toString();
+                        Log.d("namemain", "" + name);
 
                         usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
 
-                      mailIdniv.setText(x);
+                        mailIdniv.setText(x);
 
-                          Log.d("mainusername", "userName" + usernameniv);
+                        Log.d("mainusername", "userName" + usernameniv);
                         Log.d("mainusermailid", "Mail" + mailIdniv);
 
-                    }else {
+                    } else {
                         // Toast.makeText(getApplicationContext(),"Could  not able to load data",Toast.LENGTH_SHORT).show();
                     }
 
@@ -1399,37 +1470,33 @@ Log.d("namemain",""+name);
     }
 
 
-
-    private final Runnable m_Runnable = new Runnable()
-    {
+    private final Runnable m_Runnable = new Runnable() {
         public void run()
 
         {
-           // Toast.makeText(MainActivity.this,"in runnable",Toast.LENGTH_SHORT).show();
+            // Toast.makeText(MainActivity.this,"in runnable",Toast.LENGTH_SHORT).show();
             //           MainActivity.this.mHandler.postDelayed(m_Runnable, 5000);
         }
 
     };//runnable
 
 
+    private void getClientsList(final String clientId) {
 
-    private void getClientsList(final  String clientId) {
+        String tag_string_req = "req_clients";
 
-        String  tag_string_req = "req_clients";
-
-        StringRequest request=new StringRequest(Request.Method.POST, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_ClientBasedOnClientId+clientId, new Response.Listener<String>(){
+        StringRequest request = new StringRequest(Request.Method.POST, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_ClientBasedOnClientId + clientId, new Response.Listener<String>() {
 
             @Override
-            public void onResponse(String response1)
-            {
+            public void onResponse(String response1) {
 
-                Log.d("ARcParticularclient","-->"+response1);
+                Log.d("ARcParticularclient", "-->" + response1);
                 //parsing Json
                 JSONObject jsonObject = null;
 
                 try {
                     jsonObject = new JSONObject(response1.toString());
-                    String status =jsonObject.getString("status");
+                    String status = jsonObject.getString("status");
 
                     if (status.equals("success")) {
 
@@ -1455,20 +1522,19 @@ Log.d("namemain",""+name);
                         institution.setOrgAddress(jsonObject2.getString("stateName"));
                         //Added on 1st Feb
                         institution.setOrgDesc(jsonObject1.getString("landingPage"));
-                        imglogo=institution.getOrgLogo();
-                        orgname=institution.getOrganization_name();
-                        img=institution.getOrgWal();
-                        state=institution.getOrgAddress();
-                        clntname=institution.getOrganization_name();
+                        imglogo = institution.getOrgLogo();
+                        orgname = institution.getOrganization_name();
+                        img = institution.getOrgWal();
+                        state = institution.getOrgAddress();
+                        clntname = institution.getOrganization_name();
                         Log.d("ARCJSONobjectResp", "-->" + response);
-                        Log.d("ARCkeiopp", "-->" + img +"--"+imglogo+"--"+orgname+"---"+state);
+                        Log.d("ARCkeiopp", "-->" + img + "--" + imglogo + "--" + orgname + "---" + state);
                         Log.d("ARCJSONobjectttt", "-->" + jsonObject);
-                    }else {
-                      }
+                    } else {
+                    }
 
 
-                }
-                catch(JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -1477,7 +1543,7 @@ Log.d("namemain",""+name);
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -1520,52 +1586,50 @@ Log.d("namemain",""+name);
             }
 
 
-        }) ;
+        });
 
-        AppController.getInstance().addToRequestQueue(request,tag_string_req);
-        }
-    public void Feedsnotification(final String client_Id,final String postTime,final String token)
-    {
-        StringRequest stringRequest=new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+"notificationsForFeeds?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
+    }
+
+    public void Feedsnotification(final String client_Id, final String postTime, final String token) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "notificationsForFeeds?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
             @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(String s) {
-                Log.d("ARCResponseFeeds","Notification"+s);
-                JSONObject jsonObject=null;
+                Log.d("ARCResponseFeeds", "Notification" + s);
+                JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(s);
                     String response = jsonObject.getString("response");
                     String status = jsonObject.getString("status");
                     Log.d("CountResponseFeeds", "-->" + response);
                     Log.d("CountstatusFeeds", "-->" + status);
-                    JSONObject object=new JSONObject(response.toString());
-                    String NoofFeeds=object.getString("Nooffeeds");
-                    CommentcountFeeds=object.getString("Commentcount");
+                    JSONObject object = new JSONObject(response.toString());
+                    String NoofFeeds = object.getString("Nooffeeds");
+                    CommentcountFeeds = object.getString("Commentcount");
                     Log.d("ARcNOOfFEEDs", "-->" + NoofFeeds);
                     Log.d("ARCCommentscountFeeds", "-->" + CommentcountFeeds);
-feedstotal= Integer.parseInt(CommentcountFeeds);
+                    feedstotal = Integer.parseInt(CommentcountFeeds);
                     Log.d("ARCCommentscfeeds", "-->" + feedstotal);
 
-                    if(CommentcountFeeds.equals("0"))
-                    {
-                        Log.d("0 feeds Commnents", "-->" );
-                    }
-                    else {
+                    if (CommentcountFeeds.equals("0")) {
+                        Log.d("0 feeds Commnents", "-->");
+                    } else {
 //.setText(CommentcountFeeds);
-                        notificationManager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-                        remoteViews=new RemoteViews(getPackageName(),R.layout.custom_notification);
+                        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        remoteViews = new RemoteViews(getPackageName(), R.layout.custom_notification);
                         //remoteViews.setImageViewResource(R.id.app12,R.drawable.sabpaisa1234);
-                        remoteViews.setTextViewText(R.id.text12,CommentcountFeeds +"  " +"Notification from Feeds");
+                        remoteViews.setTextViewText(R.id.text12, CommentcountFeeds + "  " + "Notification from Feeds");
 
-                        notification_id=(int)System.currentTimeMillis();
-                        Intent b_intent=new Intent("button_Clicked");
-                        b_intent.putExtra("id",notification_id);
-                        b_intent.putExtra("clientId",ClientId1);
+                        notification_id = (int) System.currentTimeMillis();
+                        Intent b_intent = new Intent("button_Clicked");
+                        b_intent.putExtra("id", notification_id);
+                        b_intent.putExtra("clientId", ClientId1);
 
-                        PendingIntent pendingIntent=PendingIntent.getBroadcast(context,123,b_intent,0);
-                        remoteViews.setOnClickPendingIntent(R.id.text12,pendingIntent);
-                    createNotification();
-                                 }
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 123, b_intent, 0);
+                        remoteViews.setOnClickPendingIntent(R.id.text12, pendingIntent);
+                        createNotification();
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1581,52 +1645,50 @@ feedstotal= Integer.parseInt(CommentcountFeeds);
 
     }
 
-    public void Groupsnotification(final String client_Id,final String postTime,final String token)
-    {
+    public void Groupsnotification(final String client_Id, final String postTime, final String token) {
 
-        StringRequest stringRequest=new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+"notificationsForGroups?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "notificationsForGroups?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
             @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(String s) {
-                Log.d("ARCResponseGroups","Notification"+s);
+                Log.d("ARCResponseGroups", "Notification" + s);
 
-                JSONObject jsonObject=null;
+                JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(s);
                     String response = jsonObject.getString("response");
                     String status = jsonObject.getString("status");
                     Log.d("CountResponseGroups", "-->" + response);
                     Log.d("CountstatusGroups", "-->" + status);
-                   JSONObject jsonObject1=new JSONObject(response);
-                    String   NoofJoinedGroups=jsonObject1.getString("NoofJoinedGroups");
-                    Commentcountgroups=jsonObject1.getString("Commentcount");
+                    JSONObject jsonObject1 = new JSONObject(response);
+                    String NoofJoinedGroups = jsonObject1.getString("NoofJoinedGroups");
+                    Commentcountgroups = jsonObject1.getString("Commentcount");
                     Log.d("ARcNOOfJoinedGroups", "-->" + NoofJoinedGroups);
                     Log.d("ARCCommentscountGroups", "-->" + Commentcountgroups);
-                    grouptotal= Integer.parseInt(Commentcountgroups);
+                    grouptotal = Integer.parseInt(Commentcountgroups);
                     Log.d("ARCCommentoups11", "-->" + grouptotal);
 
-                    if(Commentcountgroups.equals("0"))
+                    if (Commentcountgroups.equals("0"))
 
                     {
 
 
-                    }
-                    else {
-                        notificationManager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-                        remoteViews=new RemoteViews(getPackageName(),R.layout.custom_notification);
-                      //  remoteViews.setImageViewResource(R.id.app12,R.drawable.sabpais
+                    } else {
+                        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        remoteViews = new RemoteViews(getPackageName(), R.layout.custom_notification);
+                        //  remoteViews.setImageViewResource(R.id.app12,R.drawable.sabpais
                         // a1234);
-                        remoteViews.setTextViewText(R.id.text12,Commentcountgroups +"  " +"Notification from Groups");
+                        remoteViews.setTextViewText(R.id.text12, Commentcountgroups + "  " + "Notification from Groups");
 
-                        notification_id=(int)System.currentTimeMillis();
-                        Intent b_intent=new Intent("button_Clicked");
-                        b_intent.putExtra("id",notification_id);
-                        b_intent.putExtra("clientId",ClientId1);
+                        notification_id = (int) System.currentTimeMillis();
+                        Intent b_intent = new Intent("button_Clicked");
+                        b_intent.putExtra("id", notification_id);
+                        b_intent.putExtra("clientId", ClientId1);
 
-                        PendingIntent pendingIntent=PendingIntent.getBroadcast(context,123,b_intent,0);
-                        remoteViews.setOnClickPendingIntent(R.id.text12,pendingIntent);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 123, b_intent, 0);
+                        remoteViews.setOnClickPendingIntent(R.id.text12, pendingIntent);
                         createNotification();
-                                        }
+                    }
 
 
                 } catch (JSONException e) {
@@ -1651,11 +1713,11 @@ feedstotal= Integer.parseInt(CommentcountFeeds);
         // notification is selected
         Intent intent = new Intent(MainActivity.this, FullViewOfClientsProceed.class);
         intent.putExtra("From", "notifyFrag");
-        intent.putExtra("clientId",ClientId1);
-        intent.putExtra("clientImagePath",img);
-        intent.putExtra("state",state);
-        intent.putExtra("clientName",clntname);
-        PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent,  PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.putExtra("clientId", ClientId1);
+        intent.putExtra("clientImagePath", img);
+        intent.putExtra("state", state);
+        intent.putExtra("clientName", clntname);
+        PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // define sound URI, the sound to be played when there's a notification
 
@@ -1667,28 +1729,28 @@ feedstotal= Integer.parseInt(CommentcountFeeds);
         Notification noti = new Notification.Builder(this)
                 .setAutoCancel(true)
 //                .setCustomBigContentView(remoteViews)
-                 .setSmallIcon(R.drawable.sabpaisa1234)
+                .setSmallIcon(R.drawable.sabpaisa1234)
                 .setContentIntent(pIntent)
                 .setSound(soundUri)
-                 .build();
+                .build();
 
 
-noti.contentView=remoteViews;
+        noti.contentView = remoteViews;
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= 16) {
 // Inflate and set the layout for the expanded notification view
-            noti.bigContentView=remoteViews;
+            noti.bigContentView = remoteViews;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(String.valueOf( notification_id),
+            NotificationChannel channel = new NotificationChannel(String.valueOf(notification_id),
                     "Channel human readable title",
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
             // Build notification
             Notification noti1 = new Notification.Builder(this)
                     .setAutoCancel(true)
-                //.setCustomBigContentView(remoteViews)
+                    //.setCustomBigContentView(remoteViews)
                     .setSmallIcon(R.drawable.sabpaisa1234)
                     .setContentIntent(pIntent)
                     //.setSound(soundUri)
@@ -1703,26 +1765,26 @@ noti.contentView=remoteViews;
         noti.flags |= Notification.FLAG_AUTO_CANCEL;
 
         notificationManager.notify(notification_id, noti);
-        }
+    }
 
-    public void NotificationCount(final String client_Id,final String postTime,final String token){
-        StringRequest stringRequest=new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "notifications?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
+    public void NotificationCount(final String client_Id, final String postTime, final String token) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "notifications?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
                 Log.d("NotifactionCount", "-->" + s);
-                JSONObject object=null;
+                JSONObject object = null;
                 String result;
                 JSONArray feeds = null;
-                JSONObject data =null ;
-                JSONObject data1=null;
-                JSONArray groups=null;
-                String groupname,groupdescription,grouimage,countfeeds;
-                int sumgroup = 0,sumfeed = 0;
-                String name,image,description,id,groupid,groupcount = null;
+                JSONObject data = null;
+                JSONObject data1 = null;
+                JSONArray groups = null;
+                String groupname, groupdescription, grouimage, countfeeds;
+                int sumgroup = 0, sumfeed = 0;
+                String name, image, description, id, groupid, groupcount = null;
 
 
-                try{
-                    object=new JSONObject(s);
+                try {
+                    object = new JSONObject(s);
                     String response = object.getString("response");
                     String status = object.getString("status");
                     Log.d("CountResponse", "-->" + response);
@@ -1730,21 +1792,21 @@ noti.contentView=remoteViews;
 
                     JSONObject object1 = new JSONObject(response);
 
-                    notificationModelClassArrayList  =new ArrayList<NotificationModelClass>();
-                    if(!(object1.isNull("groups")) ) {
+                    notificationModelClassArrayList = new ArrayList<NotificationModelClass>();
+                    if (!(object1.isNull("groups"))) {
 
                         groups = object1.getJSONArray("groups");
                         Log.d("CountGroups", "-->" + groups);
                         for (int i = 0; i < groups.length(); i++) {
-                            notificationModelClass=new NotificationModelClass();
+                            notificationModelClass = new NotificationModelClass();
                             data1 = groups.getJSONObject(i);
-                            grouimage= data1.getString("imagePath");
-                            groupid= data1.getString("id");
-                            groupcount=   data1.getString("count");
-                            sumgroup=sumgroup+Integer.parseInt(groupcount);
-                            groupname=data1.getString("name");
-                            groupdescription=data1.getString("description");
-                            Log.d("countgroupsSum", "" + grouimage + "--" + groupdescription +" -----"+groupname+"---"+groupid);
+                            grouimage = data1.getString("imagePath");
+                            groupid = data1.getString("id");
+                            groupcount = data1.getString("count");
+                            sumgroup = sumgroup + Integer.parseInt(groupcount);
+                            groupname = data1.getString("name");
+                            groupdescription = data1.getString("description");
+                            Log.d("countgroupsSum", "" + grouimage + "--" + groupdescription + " -----" + groupname + "---" + groupid);
                             notificationModelClass.setCount(data1.getString("count"));
                             notificationModelClass.setName(data1.getString("name"));
                             notificationModelClass.setIdentify("Group");
@@ -1756,17 +1818,17 @@ noti.contentView=remoteViews;
 
                         Log.d("CountresultGroup", "-->" + groups);
                     }
-                    if(!(object1.isNull("feeds"))){
+                    if (!(object1.isNull("feeds"))) {
                         feeds = object1.getJSONArray("feeds");
                         Log.d("CountFeeds", "-->" + feeds);
                         for (int i = 0; i < feeds.length(); i++) {
-                            notificationModelClass=new NotificationModelClass();
+                            notificationModelClass = new NotificationModelClass();
 
                             data = feeds.getJSONObject(i);
                             countfeeds = data.getString("count");
-                            sumfeed=sumfeed+Integer.parseInt(countfeeds);
+                            sumfeed = sumfeed + Integer.parseInt(countfeeds);
                             name = data.getString("name");
-                            Log.d("countfeedsSum", "" +  countfeeds+"--" + name);
+                            Log.d("countfeedsSum", "" + countfeeds + "--" + name);
                             Log.d("Countdata", "" + data.getString("id") + "=" + data.getString("count"));
                             notificationModelClass.setCount(data.getString("count"));
                             notificationModelClass.setName(data.getString("name"));
@@ -1780,54 +1842,48 @@ noti.contentView=remoteViews;
 
                         }
 
-                        Log.d("notificationMogrp",""+notificationModelClassArrayList.size());
+                        Log.d("notificationMogrp", "" + notificationModelClassArrayList.size());
                         Log.d("CountGroupselse", "-->" + notificationModelClassArrayList);
 
                     }
 
-                    Log.d("notificationMogrp",""+notificationModelClassArrayList.size());
-                    if(notificationModelClassArrayList.size()>0){
-                        sum=sumfeed+sumgroup;
+                    Log.d("notificationMogrp", "" + notificationModelClassArrayList.size());
+                    if (notificationModelClassArrayList.size() > 0) {
+                        sum = sumfeed + sumgroup;
                         notificationNumber.setText(String.valueOf(sum));
-                    //    menu_bell.setClickable(true);
+                        //    menu_bell.setClickable(true);
                         menu_bell.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent=new Intent(MainActivity.this,NotificationPopUPActivity.class);
+                                Intent intent = new Intent(MainActivity.this, NotificationPopUPActivity.class);
 
-                                intent.putExtra("clientId",ClientId1);
-                                intent.putExtra("useraccesstoken",userAccessToken);
-                                intent.putExtra("grouptime",timeGroup);
-                                intent.putExtra("feedtime",timefeed);
-                                intent.putExtra("clientImagePath",img);
-                                intent.putExtra("state",state);
-                                intent.putExtra("clientName",clntname);
+                                intent.putExtra("clientId", ClientId1);
+                                intent.putExtra("useraccesstoken", userAccessToken);
+                                intent.putExtra("grouptime", timeGroup);
+                                intent.putExtra("feedtime", timefeed);
+                                intent.putExtra("clientImagePath", img);
+                                intent.putExtra("state", state);
+                                intent.putExtra("clientName", clntname);
                                 startActivity(intent);
                             }
                         });
-                        Log.d("SCOUNRHKDMain","=="+ sum+ "  "+sumfeed+"  "+sumgroup);
+                        Log.d("SCOUNRHKDMain", "==" + sum + "  " + sumfeed + "  " + sumgroup);
 
-                    }
-
-                    else{
-                     //   menu_bell.setClickable(false);
+                    } else {
+                        //   menu_bell.setClickable(false);
                         notificationNumber.setText("");
                         menu_bell.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 
-                                Toast.makeText(getApplicationContext(), "No comments to read " , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "No comments to read ", Toast.LENGTH_SHORT).show();
                             }
                         });
 
 
                     }
 
-                }
-
-
-                catch (Exception e)
-                {
+                } catch (Exception e) {
 
                 }
 
@@ -1838,22 +1894,39 @@ noti.contentView=remoteViews;
 
             }
         });
-        Log.d("Strngrqst",""+stringRequest);
+        Log.d("Strngrqst", "" + stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
 
-class  abc extends AsyncTask<String, Void, Void>{
+    class abc extends AsyncTask<String, Void, Void> {
 
-    @Override
-    protected Void doInBackground(String... strings) {
-        Long previousDate = new Long(System.currentTimeMillis());
-        Log.d("doInBackground", "PreviousDate [" + previousDate + "]");
-        Long intervall = new Long(System.currentTimeMillis());
-        Log.d("doInBackground", "intervall [" + intervall + "]");
+        @Override
+        protected Void doInBackground(String... strings) {
+            Long previousDate = new Long(System.currentTimeMillis());
+            Log.d("doInBackground", "PreviousDate [" + previousDate + "]");
+            Long intervall = new Long(System.currentTimeMillis());
+            Log.d("doInBackground", "intervall [" + intervall + "]");
 
-        return null;
+            return null;
+        }
     }
-}
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("MainActivity", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
+
+
 
 }
 

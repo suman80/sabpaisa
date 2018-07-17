@@ -30,7 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/coa_campush_img"
-                    android:layout_margin="10dp"
+
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -226,25 +226,59 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-
-
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="#fff"
         >
 
-        <include
-            layout="@layout/box_comment"
-            android:layout_width="334dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@id/comment"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_weight="1"
+            >
 
-        <!--  <ImageView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:src="@drawable/previous" />-->
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="1dip"
+            android:gravity="bottom"
+            android:background="@drawable/background_spinner"
+            android:orientation="horizontal">
+
+            <io.github.rockerhieu.emojicon.EmojiconEditText
+                android:id="@+id/commentadd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:layout_gravity="bottom"
+                android:hint="Add Comment"
+                android:gravity="top|left"
+                android:inputType="textMultiLine|textAutoCorrect"
+                android:maxLines="7"
+                android:scrollbars="vertical"
+                android:textColorHint="@color/black_50"
+                android:textSize="@dimen/text_size_small"
+                android:imeOptions="actionSend"
+                android:background="@drawable/background_edittext_empty"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_toEndOf="@+id/linearLayout"
+            android:background="@drawable/ic_action_send_commnt"
+            android:onClick="onClickSendComment" />
+
+        </LinearLayout>
+
     </FrameLayout>
 
 

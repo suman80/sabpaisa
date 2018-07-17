@@ -51,6 +51,8 @@ import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_MEMBERS;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -97,6 +99,7 @@ public class Members extends Fragment {
         db = new AppDbComments(getContext());
 
         if (isOnline()) {
+            Log.d("RAJ", "DEEP");
             memberData(clientId);
         } else {
 
@@ -138,7 +141,13 @@ public class Members extends Fragment {
     public void memberData (final String clientId)
     {
 
-        db.deleteAllMembersData();
+        boolean checkDb = db.isTableExists(TABLE_NAME_MEMBERS);
+
+        Log.d("DbValueMember"," "+checkDb);
+
+        if (checkDb == true){
+            db.deleteAllMembersData();
+        }
 
         String tag_string_req = "req_register";
         String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_Member+"clientId="+clientId;

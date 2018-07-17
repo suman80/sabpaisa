@@ -68,6 +68,9 @@ import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.R;
 
 import static android.content.Context.MODE_PRIVATE;
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_MEMBERS;
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_Particular_Client;
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbImage.TABLE_ParticularClientImage;
 
 
 public class ProceedInstitiutionFragment extends Fragment {
@@ -138,7 +141,7 @@ public class ProceedInstitiutionFragment extends Fragment {
         }, 2000);
 
         if (isOnline()) {
-            db.deleteAllClientData();
+            //db.deleteAllClientData();
             getClientsList(clientId.toString());
 
         } else {
@@ -210,7 +213,14 @@ public class ProceedInstitiutionFragment extends Fragment {
 
     private void getClientsList(final String clientId) {
 
-//        db.deleteAllClientData();
+
+        boolean checkDb = db.isTableExists(TABLE_Particular_Client);
+
+        Log.d("DbValuePIF"," "+checkDb);
+
+        if (checkDb == true){
+            db.deleteAllClientData();
+        }
 
         String tag_string_req = "req_clients";
 
@@ -276,7 +286,15 @@ public class ProceedInstitiutionFragment extends Fragment {
 
                         /////////////////////Saving To Internal Storage/////////////////////////////////////////
                         ////Deleting path From Db//////
-                        imgDb.deleteAllImageData();
+                        boolean checkDb = imgDb.isTableExists(TABLE_ParticularClientImage);
+
+                        Log.d("DbValuePIF_Img"," "+checkDb);
+
+                        if (checkDb == true){
+                            imgDb.deleteAllImageData();
+                        }
+
+
 
                         Glide.with(getContext())
                                 .load(institution.getOrgLogo())

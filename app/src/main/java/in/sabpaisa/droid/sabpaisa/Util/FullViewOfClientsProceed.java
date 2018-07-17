@@ -9,11 +9,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -30,6 +33,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +57,7 @@ import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.braunster.chatsdk.network.BNetworkManager;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.json.JSONException;
@@ -67,6 +72,7 @@ import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AllContacts;
 import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FilterActivity;
 //import in.sabpaisa.droid.sabpaisa.Fragments.FeedFragments1;
@@ -119,8 +125,11 @@ Timestamp Fullviewts;
 
     private TabLayout tabLayout;
 
+    DrawerLayout drawer;
+
     public static String MySharedPrefOnFullViewOfClientProceed="mySharedPrefForId";
 
+    AppDB appDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +158,7 @@ Timestamp Fullviewts;
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -175,6 +184,21 @@ Timestamp Fullviewts;
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        //////////////////Code for adding image and text on tab bar ///////////////////////////////////////////////
+
+        int[] tabIcons = {
+                R.drawable.feeds,
+                R.drawable.groups,
+                R.drawable.payments,
+                R.drawable.members,
+        };
+
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+
         landingPage =getIntent().getStringExtra("landingPage");
         Log.d("page",""+landingPage);
 /*
@@ -214,7 +238,7 @@ Timestamp Fullviewts;
         niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
         usernameniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.username_nav);
         mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
-        showProfileData();
+
 
 mailIdniv.setText(x);
         usernameniv.setOnClickListener(new View.OnClickListener() {
@@ -274,8 +298,70 @@ mailIdniv.setText(x);
             }
         });
 
+        appDB = new AppDB(getApplicationContext());
 
-        getUserIm(useracesstoken);
+
+        if (isOnline()) {
+
+            getUserImage(useracesstoken);
+
+        }else {
+
+            Cursor res = appDB.getParticularImageData(useracesstoken);
+
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0) + " ");
+                    stringBuffer.append(res.getString(1) + " ");
+                    stringBuffer.append(res.getString(2) + " ");
+
+                    Glide.with(getApplicationContext())
+                            .load(res.getString(2))
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .error(R.drawable.default_users)
+                            .into(niv);
+
+                }
+                Log.d("getImgFrmDBMainFVOCP", "-->" + stringBuffer);
+
+            } else {
+
+                Log.d("In Else Part", "");
+                //Toast.makeText(ProfileNavigationActivity.this,"In Else Part",Toast.LENGTH_SHORT).show();
+
+            }
+
+        }
+
+
+        if (isOnline()){
+            showProfileData();
+        }else {
+
+            Cursor res = appDB.getParticularData(useracesstoken);
+
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0));
+                    stringBuffer.append(res.getString(1));
+                    stringBuffer.append(res.getString(2));
+                    stringBuffer.append(res.getString(3));
+                    stringBuffer.append(res.getString(4));
+                    stringBuffer.append(res.getString(5));
+                    usernameniv.setText(res.getString(1));
+                    mailIdniv.setText(res.getString(2));
+                }
+                Log.d("getParticularNum", "-->" + stringBuffer);
+
+            } else {
+                Log.d("FVOCP","In Else Part");
+            }
+
+        }
+
+
 /*
         Glide.with(FullViewOfClientsProceed.this)
                 .load(userImageUrl)
@@ -340,7 +426,7 @@ mailIdniv.setText(x);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        feedsFragments = new ProceedFeedsFragments();
+        /*feedsFragments = new ProceedFeedsFragments();
         adapter.addFragment(feedsFragments,"Feeds"); //changing here creating different frags
 
         groupsFragments = new ProceedGroupsFragments();
@@ -349,7 +435,18 @@ mailIdniv.setText(x);
         adapter.addFragment(new PayFragments(),"Payment");
 
         membersFragment=new Members();
-        adapter.addFragment(membersFragment,"Members");
+        adapter.addFragment(membersFragment,"Members");*/
+
+        feedsFragments = new ProceedFeedsFragments();
+        adapter.addFragment(feedsFragments,""); //changing here creating different frags
+
+        groupsFragments = new ProceedGroupsFragments();
+        adapter.addFragment(groupsFragments,"");//changing here creating different frags
+
+        adapter.addFragment(new PayFragments(),"");
+
+        membersFragment=new Members();
+        adapter.addFragment(membersFragment,"");
 
         viewPager.setAdapter(adapter);
 
@@ -615,6 +712,9 @@ mailIdniv.setText(x);
     public void onBackPressed() {
         if (searchView.isSearchOpen()) {
             searchView.closeSearch();
+        }else if (this.drawer.isDrawerOpen(GravityCompat.START)) {
+            this.drawer.closeDrawer(GravityCompat.START);
+            Log.d("Drawer","Closing_FVCP");
         } else {
             super.onBackPressed();
 
@@ -918,7 +1018,7 @@ mailIdniv.setText(x);
     public void onFragmentSetClients(ArrayList<SkipClientData> clientData) {
 
     }
-    private String getUserIm(final  String token) {
+    private String getUserImage(final  String token) {
 
         String  tag_string_req = "req_clients";
 
@@ -1198,6 +1298,22 @@ mailIdniv.setText("");
         ed.commit();
 
     }
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("FVOCP", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
+
 
 }
 
