@@ -321,21 +321,20 @@ public class ProceedFeedsFragments extends Fragment {
 
 
                                     boolean isInserted = db.insertFeedData(feedDataForOffLine);
-                            if (isInserted == true) {
+                                    if (isInserted == true) {
 
-                                //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
 
-                                Log.d("PFF", "LocalDBInIfPart" + isInserted);
+                                        Log.d("PFF", "LocalDBInIfPart" + isInserted);
 
-                            } else {
-                                Log.d("PFF", "LocalDBInElsePart" + isInserted);
-                                //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
-                            }
+                                    } else {
+                                        Log.d("PFF", "LocalDBInElsePart" + isInserted);
+                                        //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                                    }
 
 
                                 }
-                            }, 3000);
-
+                            }, 2000);
 
 
 
@@ -469,4 +468,3 @@ public class ProceedFeedsFragments extends Fragment {
 
 
 }
-

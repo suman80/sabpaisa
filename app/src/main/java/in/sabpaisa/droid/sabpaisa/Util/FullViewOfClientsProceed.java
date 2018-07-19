@@ -1046,7 +1046,7 @@ mailIdniv.setText(x);
                     Log.d("check123",""+i);
                     ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
 
-                    Glide.with( FullViewOfClientsProceed.this)
+                    Glide.with( getApplicationContext())
                             .load(i)
                             .error(R.drawable.default_users)
                             .into(niv);

@@ -211,11 +211,11 @@ public class AppDbComments extends SQLiteOpenHelper {
         Log.d("Insert Data in  ", "client table");
 
         final SQLiteDatabase db = this.getWritableDatabase();
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(Col_clientId, institution.getOrganizationId());
-                contentValues.put(Col_Client_Name, institution.getOrganization_name());
-                contentValues.put(Col_State, institution.getOrgAddress());
-                result = db.insert(TABLE_Particular_Client, null, contentValues);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Col_clientId, institution.getOrganizationId());
+        contentValues.put(Col_Client_Name, institution.getOrganization_name());
+        contentValues.put(Col_State, institution.getOrgAddress());
+        result = db.insert(TABLE_Particular_Client, null, contentValues);
 
         if (result == -1) {
             return false;
@@ -250,14 +250,14 @@ public class AppDbComments extends SQLiteOpenHelper {
     public boolean insertFeedData (final FeedDataForOffLine feedDataForOffLine){
 
         final SQLiteDatabase db = this.getWritableDatabase();
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(Col_Client_ID,feedDataForOffLine.getClientId());
-                contentValues.put(Col_FEED_ID,feedDataForOffLine.getFeedId());
-                contentValues.put(Col_FEED_NAME,feedDataForOffLine.getFeedName());
-                contentValues.put(Col_FEED_TEXT,feedDataForOffLine.getFeedText());
-                contentValues.put(Col_FEED_IMG,feedDataForOffLine.getImagePath());
-                contentValues.put(Col_FEED_LOGO,feedDataForOffLine.getLogoPath());
-                result = db.insert(TABLE_NAME,null,contentValues);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Col_Client_ID,feedDataForOffLine.getClientId());
+        contentValues.put(Col_FEED_ID,feedDataForOffLine.getFeedId());
+        contentValues.put(Col_FEED_NAME,feedDataForOffLine.getFeedName());
+        contentValues.put(Col_FEED_TEXT,feedDataForOffLine.getFeedText());
+        contentValues.put(Col_FEED_IMG,feedDataForOffLine.getImagePath());
+        contentValues.put(Col_FEED_LOGO,feedDataForOffLine.getLogoPath());
+        result = db.insert(TABLE_NAME,null,contentValues);
 
         if (result == -1){
             return false;
@@ -291,13 +291,13 @@ public class AppDbComments extends SQLiteOpenHelper {
 
         Log.d("Inside Insertion ", " for feed-Comment");
 
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(Col_FEED_CommentFeedId,feedId+"");
-                contentValues.put(Col_FEED_CommentId,commentData.getCommentId());
-                contentValues.put(Col_FEED_CommentText,commentData.getCommentText());
-                contentValues.put(Col_FEED_commentByName,commentData.getCommentName());
-                contentValues.put(Col_FEED_commentDate,commentData.getComment_date());
-                result = db.insert(TABLE_FEED_COMMENTS,null,contentValues);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Col_FEED_CommentFeedId,feedId+"");
+        contentValues.put(Col_FEED_CommentId,commentData.getCommentId());
+        contentValues.put(Col_FEED_CommentText,commentData.getCommentText());
+        contentValues.put(Col_FEED_commentByName,commentData.getCommentName());
+        contentValues.put(Col_FEED_commentDate,commentData.getComment_date());
+        result = db.insert(TABLE_FEED_COMMENTS,null,contentValues);
 
 
         if (result == -1){
@@ -332,16 +332,16 @@ public class AppDbComments extends SQLiteOpenHelper {
 
         final SQLiteDatabase db = this.getWritableDatabase();
 
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(Col_Client_ID_GROUP,groupDataForOffLine.getClientId());
-                contentValues.put(Col_GROUP_ID,groupDataForOffLine.getGroupId());
-                contentValues.put(Col_GROUP_NAME,groupDataForOffLine.getGroupName());
-                contentValues.put(Col_GROUP_TEXT,groupDataForOffLine.getGroupText());
-                contentValues.put(Col_GROUP_STATUS,groupDataForOffLine.getMemberStatus());
-                contentValues.put(Col_GROUP_USER_ACCESSTOKEN,userAccessToken);
-                contentValues.put(Col_GROUP_IMG,groupDataForOffLine.getGroupImage());
-                contentValues.put(Col_GROUP_LOGO,groupDataForOffLine.getGroupLogo());
-                result = db.insert(TABLE_NAME_GROUPS,null,contentValues);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Col_Client_ID_GROUP,groupDataForOffLine.getClientId());
+        contentValues.put(Col_GROUP_ID,groupDataForOffLine.getGroupId());
+        contentValues.put(Col_GROUP_NAME,groupDataForOffLine.getGroupName());
+        contentValues.put(Col_GROUP_TEXT,groupDataForOffLine.getGroupText());
+        contentValues.put(Col_GROUP_STATUS,groupDataForOffLine.getMemberStatus());
+        contentValues.put(Col_GROUP_USER_ACCESSTOKEN,userAccessToken);
+        contentValues.put(Col_GROUP_IMG,groupDataForOffLine.getGroupImage());
+        contentValues.put(Col_GROUP_LOGO,groupDataForOffLine.getGroupLogo());
+        result = db.insert(TABLE_NAME_GROUPS,null,contentValues);
 
         if (result == -1){
             return false;

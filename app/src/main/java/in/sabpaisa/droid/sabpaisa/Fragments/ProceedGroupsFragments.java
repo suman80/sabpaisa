@@ -346,7 +346,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                                     }
 
                                 }
-                            }, 3000);
+                            }, 2000);
 
 
                         }

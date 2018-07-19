@@ -268,7 +268,7 @@ public class Members extends Fragment {
                                     }
 
                                 }
-                            }, 3000);
+                            }, 2000);
 
 
 

@@ -328,7 +328,7 @@ public class ProceedInstitiutionFragment extends Fragment {
                                 saveImagesIntoLocalDb(logoPath, imagePath);
 
                             }
-                        }, 3000);
+                        }, 1000);
 
 
 
