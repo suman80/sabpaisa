@@ -15,7 +15,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
@@ -47,7 +46,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -114,7 +112,6 @@ import in.sabpaisa.droid.sabpaisa.Adapter.NotificationAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
-import in.sabpaisa.droid.sabpaisa.AppDB.AppDbImage;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
@@ -200,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
     AppDB appDB;
     AppDbComments appDbComments;
-    AppDbImage appDbImage;
 
     DrawerLayout drawer;
 
@@ -254,8 +250,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 //////////////////////////////////Initializing Sqlite Db////////////////////////////////
         appDB = new AppDB(getApplicationContext());
         appDbComments = new AppDbComments(getApplicationContext());
-        appDbImage = new AppDbImage(getApplicationContext());
-        Log.d("SQLITE_DB_MAIN", " " + appDB + " " + appDbComments + " " + appDbImage);
+        Log.d("SQLITE_DB_MAIN", " " + appDB + " " + appDbComments);
 ////////////////////////////////////////////////////////////////////////////////////////
 
         /////  Long posttime1= Long.valueOf(posttime);

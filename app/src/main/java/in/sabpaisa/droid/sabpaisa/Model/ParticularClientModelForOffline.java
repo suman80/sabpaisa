@@ -3,13 +3,13 @@ package in.sabpaisa.droid.sabpaisa.Model;
 public class ParticularClientModelForOffline {
 
     String clientId,clientName,state;
-    byte [] clientImagePath,clientLogoPath;
+    String clientImagePath,clientLogoPath;
 
 
     public ParticularClientModelForOffline() {
     }
 
-    public ParticularClientModelForOffline(String clientId, String clientName, String state, byte[] clientImagePath, byte[] clientLogoPath) {
+    public ParticularClientModelForOffline(String clientId, String clientName, String state, String clientImagePath, String clientLogoPath) {
         this.clientId = clientId;
         this.clientName = clientName;
         this.state = state;
@@ -42,19 +42,19 @@ public class ParticularClientModelForOffline {
         this.state = state;
     }
 
-    public byte[] getClientImagePath() {
+    public String getClientImagePath() {
         return clientImagePath;
     }
 
-    public void setClientImagePath(byte[] clientImagePath) {
+    public void setClientImagePath(String clientImagePath) {
         this.clientImagePath = clientImagePath;
     }
 
-    public byte[] getClientLogoPath() {
+    public String getClientLogoPath() {
         return clientLogoPath;
     }
 
-    public void setClientLogoPath(byte[] clientLogoPath) {
+    public void setClientLogoPath(String clientLogoPath) {
         this.clientLogoPath = clientLogoPath;
     }
 }

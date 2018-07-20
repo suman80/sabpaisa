@@ -62,23 +62,17 @@ public class ProceedInstitutionFragmentOfflineAdapter extends RecyclerView.Adapt
 
         final ParticularClientModelForOffline particularClientModelForOffline = offlineArrayList.get(position);
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences(ProceedInstitiutionFragment.MYSHAREDPREF, MODE_PRIVATE);
-        String logoPath=sharedPreferences.getString("logo_path","123");
-        String imagePath=sharedPreferences.getString("image_path","123");
-        Log.d("logoPathPIFOA"," "+logoPath);
-        Log.d("imagePathPIFOA"," "+imagePath);
-
         holder.instituteName.setText(particularClientModelForOffline.getClientName());
         holder.instituteLocation.setText(particularClientModelForOffline.getState());
 
         Glide.with(context)
-                .load(logoPath)
+                .load(particularClientModelForOffline.getClientLogoPath())
                 .error(R.drawable.offline)
                 .into(holder.thumbnail);
 
 
         Glide.with(context)
-                .load(imagePath)
+                .load(particularClientModelForOffline.getClientImagePath())
                 .error(R.drawable.offline)
                 .into(holder.clinetbanner);
 

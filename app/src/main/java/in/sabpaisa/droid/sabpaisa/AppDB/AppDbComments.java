@@ -24,6 +24,7 @@ import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Model.GroupDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.MemberOfflineDataModel;
+import in.sabpaisa.droid.sabpaisa.Model.ParticularClientModelForOffline;
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 public class AppDbComments extends SQLiteOpenHelper {
@@ -38,7 +39,8 @@ public class AppDbComments extends SQLiteOpenHelper {
     public static final String Col_clientId = "particular_client_id";
     public static final String Col_Client_Name = "client_name";
     public static final String Col_State = "state";
-
+    public static final String Col_clientLogoPath = "clientLogoPath";
+    public static final String Col_clientImagePath = "clientImagePath";
 
     // Column names for feeds
     public static final String TABLE_NAME = "feeds";
@@ -111,7 +113,9 @@ public class AppDbComments extends SQLiteOpenHelper {
                 +Col_ID_AutoIncrement+" INTEGER PRIMARY KEY AUTOINCREMENT,"
                 +Col_clientId+" TEXT,"
                 +Col_Client_Name+" TEXT,"
-                +Col_State+" TEXT"
+                +Col_State+" TEXT,"
+                +Col_clientLogoPath+" TEXT,"
+                +Col_clientImagePath+" TEXT"
                 +")";
 
 
@@ -167,7 +171,7 @@ public class AppDbComments extends SQLiteOpenHelper {
                 +Col_MEMBERS_IMG+" TEXT"
                 +")";
 
-        Log.d("RAJ", "DEEP:MEMBER");
+
         db.execSQL(sqlForClient);
 
         db.execSQL(sqlForFeeds);
@@ -179,7 +183,7 @@ public class AppDbComments extends SQLiteOpenHelper {
         db.execSQL(sqlForGroupComments);
 
         db.execSQL(sqlForMembers);
-        Log.d("RAJ", "DEEP:MEMBER2");
+
     }
 
     @Override
@@ -207,14 +211,16 @@ public class AppDbComments extends SQLiteOpenHelper {
     }
 
     // Particular Client data
-    public boolean insertClientData(final Institution institution) {
+    public boolean insertClientData(final ParticularClientModelForOffline particularClientModelForOffline) {
         Log.d("Insert Data in  ", "client table");
 
         final SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(Col_clientId, institution.getOrganizationId());
-        contentValues.put(Col_Client_Name, institution.getOrganization_name());
-        contentValues.put(Col_State, institution.getOrgAddress());
+        contentValues.put(Col_clientId, particularClientModelForOffline.getClientId());
+        contentValues.put(Col_Client_Name, particularClientModelForOffline.getClientName());
+        contentValues.put(Col_State, particularClientModelForOffline.getState());
+        contentValues.put(Col_clientLogoPath, particularClientModelForOffline.getClientLogoPath());
+        contentValues.put(Col_clientImagePath, particularClientModelForOffline.getClientImagePath());
         result = db.insert(TABLE_Particular_Client, null, contentValues);
 
         if (result == -1) {

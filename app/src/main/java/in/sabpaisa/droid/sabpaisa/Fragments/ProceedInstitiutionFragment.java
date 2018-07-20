@@ -7,9 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -39,28 +37,19 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ProceedInstitutionFragmentOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
-import in.sabpaisa.droid.sabpaisa.AppDB.AppDbImage;
 import in.sabpaisa.droid.sabpaisa.MainActivity;
-import in.sabpaisa.droid.sabpaisa.MainFeedAdapter;
-import in.sabpaisa.droid.sabpaisa.Model.ClientData;
-import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Model.ParticularClientModelForOffline;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -68,9 +57,8 @@ import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.R;
 
 import static android.content.Context.MODE_PRIVATE;
-import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_MEMBERS;
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_Particular_Client;
-import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbImage.TABLE_ParticularClientImage;
+
 
 
 public class ProceedInstitiutionFragment extends Fragment {
@@ -94,7 +82,7 @@ public class ProceedInstitiutionFragment extends Fragment {
     public static String MYSHAREDPREF = "mySharedPref";
     /////////Local Db//////////
     AppDbComments db;
-    AppDbImage imgDb;
+
     ArrayList<ParticularClientModelForOffline> clientArrayListForOffline;
 
     public ProceedInstitiutionFragment() {
@@ -122,7 +110,6 @@ public class ProceedInstitiutionFragment extends Fragment {
 
         ///////////////////////DB/////////////////////////////////
         db = new AppDbComments(getContext());
-        imgDb = new AppDbImage(getContext());
 
         clientArrayList = new ArrayList<Institution>();
 
@@ -156,10 +143,14 @@ public class ProceedInstitiutionFragment extends Fragment {
                     stringBuffer.append(res.getString(1) + " ");
                     stringBuffer.append(res.getString(2) + " ");
                     stringBuffer.append(res.getString(3) + " ");
+                    stringBuffer.append(res.getString(4) + " ");
+                    stringBuffer.append(res.getString(5) + " ");
                     ParticularClientModelForOffline particularClientModelForOffline = new ParticularClientModelForOffline();
                     particularClientModelForOffline.setClientId(res.getString(1));
                     particularClientModelForOffline.setClientName(res.getString(2));
                     particularClientModelForOffline.setState(res.getString(3));
+                    particularClientModelForOffline.setClientLogoPath(res.getString(4));
+                    particularClientModelForOffline.setClientImagePath(res.getString(5));
                     clientArrayListForOffline.add(particularClientModelForOffline);
 
                 }
@@ -167,38 +158,6 @@ public class ProceedInstitiutionFragment extends Fragment {
 
                 ProceedInstitutionFragmentOfflineAdapter adapter = new ProceedInstitutionFragmentOfflineAdapter(getContext(), clientArrayListForOffline);
                 recyclerViewInstitutions.setAdapter(adapter);
-
-
-                Cursor resForImage = imgDb.getParticularClientImageData(clientId);
-
-                Log.d("resForImage Size : ",resForImage.getCount()+"");
-                if (resForImage.getCount() > 0) {
-                    StringBuffer stringBuffer1 = new StringBuffer();
-                    while (resForImage.moveToNext()) {
-
-                        Log.d("INSIDE : "," for clientImages");
-                        stringBuffer1.append(resForImage.getString(0) + " ");
-                        stringBuffer1.append(resForImage.getString(1) + " ");
-                        stringBuffer1.append(resForImage.getString(2) + " ");
-                        stringBuffer1.append(resForImage.getString(3) + " ");
-
-//                        loadLogoFromStorage(resForImage.getString(2));
-//                        loadImageFromStorage(resForImage.getString(3));
-
-                        SharedPreferences.Editor editorImg = getContext().getSharedPreferences(MYSHAREDPREF, MODE_PRIVATE).edit();
-                        editorImg.putString("logo_path", resForImage.getString(2));
-                        editorImg.putString("image_path", resForImage.getString(3));
-                        editorImg.commit();
-
-                    }
-                    Log.d("getImgFrmDBPIF", "-->" + stringBuffer1);
-
-                } else {
-
-                    Log.d("In Else Part", "");
-                    //Toast.makeText(ProfileNavigationActivity.this,"In Else Part",Toast.LENGTH_SHORT).show();
-
-                }
 
 
             } else {
@@ -245,7 +204,7 @@ public class ProceedInstitiutionFragment extends Fragment {
 
                         JSONObject jsonObject1 = new JSONObject(response);
 
-                        Institution institution = new Institution();
+                        final Institution institution = new Institution();
 
                         institution.setOrganizationId(jsonObject1.getString("clientId"));
                         Log.d("ClientIdjijiji", "-->" + institution.getOrganizationId());
@@ -270,31 +229,13 @@ public class ProceedInstitiutionFragment extends Fragment {
                         Log.d("JSONobjectttt", "-->" + jsonObject);
 
                         clientArrayList.add(institution);
-                        //////////////////////////////LOCAL DB//////////////////////////////////////
-
-                        boolean isInserted = db.insertClientData(institution);
-                        if (isInserted == true) {
-
-                            //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
-
-                            Log.d("PIF_Data", "LocalDBInIfPart" + isInserted);
-
-                        } else {
-                            Log.d("PIF_Data", "LocalDBInElsePart" + isInserted);
-                            //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
-                        }
 
                         /////////////////////Saving To Internal Storage/////////////////////////////////////////
-                        ////Deleting path From Db//////
-                        boolean checkDb = imgDb.isTableExists(TABLE_ParticularClientImage);
 
-                        Log.d("DbValuePIF_Img"," "+checkDb);
-
-                        if (checkDb == true){
-                            imgDb.deleteAllImageData();
-                        }
-
-
+                        final ParticularClientModelForOffline particularClientModelForOffline = new ParticularClientModelForOffline();
+                        particularClientModelForOffline.setClientId(jsonObject1.getString("clientId"));
+                        particularClientModelForOffline.setClientName(jsonObject1.getString("clientName"));
+                        particularClientModelForOffline.setState(jsonObject2.getString("stateName"));
 
                         Glide.with(getContext())
                                 .load(institution.getOrgLogo())
@@ -303,7 +244,34 @@ public class ProceedInstitiutionFragment extends Fragment {
                                     @Override
                                     public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
                                         Log.d("LogoBitmap", " " + resource);
-                                        saveLogoToInternalStorage(resource);
+
+                                        ContextWrapper cw = new ContextWrapper(getContext());
+                                        // path to /data/data/yourapp/app_data/imageDir
+                                        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                        // Create imageDir
+                                        File mypath = new File(directory, (System.currentTimeMillis() / 1000) + "logo.jpg");
+
+                                        Log.d("mypath", "mypath  " + mypath);
+
+                                        String logoPath = mypath.toString();
+
+
+                                        FileOutputStream fos = null;
+                                        try {
+                                            fos = new FileOutputStream(mypath);
+                                            // Use the compress method on the BitMap object to write image to the OutputStream
+                                            resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        } finally {
+                                            try {
+                                                fos.close();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        particularClientModelForOffline.setClientLogoPath(logoPath);
+
                                     }
                                 });
 
@@ -315,22 +283,59 @@ public class ProceedInstitiutionFragment extends Fragment {
                                     @Override
                                     public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
                                         Log.d("ImgBitmap", " " + resource);
-                                        saveImageToInternalStorage(resource);
+
+
+                                        ContextWrapper cw = new ContextWrapper(getContext());
+                                        // path to /data/data/yourapp/app_data/imageDir
+                                        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                        // Create imageDir
+                                        File mypath = new File(directory, (System.currentTimeMillis() / 1000) + "image.jpg");
+
+                                        Log.d("mypathImg", "mypathImg  " + mypath);
+
+                                        String imagePath = mypath.toString();
+
+                                        FileOutputStream fos = null;
+                                        try {
+                                            fos = new FileOutputStream(mypath);
+                                            // Use the compress method on the BitMap object to write image to the OutputStream
+                                            resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        } finally {
+                                            try {
+                                                fos.close();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        particularClientModelForOffline.setClientImagePath(imagePath);
+
                                     }
                                 });
 
-                        ///////////////////////Handler For images path For local db/////////////////////////////
+                        //////////////////////////////LOCAL DB//////////////////////////////////////
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                //Do something after 5000ms
-                                saveImagesIntoLocalDb(logoPath, imagePath);
+                                //Do something after 1000ms
+
+                        boolean isInserted = db.insertClientData(particularClientModelForOffline);
+                        if (isInserted == true) {
+
+                            //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                            Log.d("PIF_Data", "LocalDBInIfPart" + isInserted);
+
+                        } else {
+                            Log.d("PIF_Data", "LocalDBInElsePart" + isInserted);
+                            //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                        }
+
 
                             }
                         }, 1000);
-
-
 
                         institutionAdapter = new InstitutionAdapter(getContext(), clientArrayList);
                         recyclerViewInstitutions.setAdapter(institutionAdapter);
@@ -433,80 +438,6 @@ public class ProceedInstitiutionFragment extends Fragment {
 
 
     }
-
-    private String saveLogoToInternalStorage(Bitmap bitmapImage) {
-        ContextWrapper cw = new ContextWrapper(getContext());
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File mypath = new File(directory, (System.currentTimeMillis() / 1000) + "logo.jpg");
-
-        Log.d("mypath", "mypath  " + mypath);
-
-        logoPath = mypath.toString();
-
-
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return directory.getAbsolutePath();
-    }
-
-
-    private String saveImageToInternalStorage(Bitmap bitmapImage) {
-        ContextWrapper cw = new ContextWrapper(getContext());
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File mypath = new File(directory, (System.currentTimeMillis() / 1000) + "image.jpg");
-
-        Log.d("mypathImg", "mypathImg  " + mypath);
-
-        imagePath = mypath.toString();
-
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return directory.getAbsolutePath();
-    }
-
-
-    private void saveImagesIntoLocalDb(String logoPath, String imagePath) {
-        Log.d("logoPath_PIF", "IntoLocalDb " + logoPath+",   imagePath : " + imagePath);
-        Log.d("ClientID_PIF", "IntoLocalDb " + clientId);
-
-        boolean isInserted = imgDb.insertClientImageData(clientId, logoPath, imagePath);
-        if (isInserted == true) {
-            Log.d("PIF_Image", "LocalDBInIfPart" + isInserted);
-        } else {
-            Log.d("PIF_Image", "LocalDBInElsePart" + isInserted);
-        }
-
-    }
-
-
 
 
 
