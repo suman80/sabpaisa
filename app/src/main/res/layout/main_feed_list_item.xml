@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/linearLayout_feed"
+    android:clickable="true"
+    >
 
     <LinearLayout
         android:id="@+id/rl_view"
@@ -80,7 +83,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_xsmall" />
 
-        <com.github.chrisbanes.photoview.PhotoView
+        <ImageView
             android:id="@+id/client_Image"
 
             android:layout_width="match_parent"

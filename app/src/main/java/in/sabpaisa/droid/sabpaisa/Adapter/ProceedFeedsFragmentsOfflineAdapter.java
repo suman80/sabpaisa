@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -48,7 +49,7 @@ public void setItems(ArrayList<FeedData> feedDatas) {
 
         final FeedDataForOffLine feedDataForOffLine = arrayList.get(position);
         holder.main_feed_name.setText(feedDataForOffLine.getFeedName());
-        holder.main_feed_name.setOnClickListener(new View.OnClickListener() {
+        /*holder.main_feed_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
@@ -59,9 +60,9 @@ public void setItems(ArrayList<FeedData> feedDatas) {
                     intent.putExtra("feedId", feedDataForOffLine.getFeedId());
                     v.getContext().startActivity(intent);
             }
-        });
+        });*/
         holder.main_feed_description.setText(feedDataForOffLine.getFeedText());
-        holder.main_feed_description.setOnClickListener(new View.OnClickListener() {
+        /*holder.main_feed_description.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
@@ -73,7 +74,7 @@ public void setItems(ArrayList<FeedData> feedDatas) {
                     v.getContext().startActivity(intent);
             }
         });
-        Log.d("client_Image123456", "" + feedDataForOffLine.getImagePath());
+        Log.d("client_Image123456", "" + feedDataForOffLine.getImagePath());*/
 
         //new DownloadImageTask(holder.client_Image).execute(mainFeedData.getImagePath());
 
@@ -95,7 +96,7 @@ public void setItems(ArrayList<FeedData> feedDatas) {
 
 
 
-        holder.client_Image.setOnClickListener(new View.OnClickListener() {
+        /*holder.client_Image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
@@ -106,7 +107,23 @@ public void setItems(ArrayList<FeedData> feedDatas) {
                     intent.putExtra("feedId", feedDataForOffLine.getFeedId());
                     v.getContext().startActivity(intent);
             }
+        });*/
+
+
+
+        holder.linearLayout_feed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedName", feedDataForOffLine.getFeedName());
+                intent.putExtra("feedText", feedDataForOffLine.getFeedText());
+                intent.putExtra("feedImage", feedDataForOffLine.getImagePath());
+                intent.putExtra("feedLogo", feedDataForOffLine.getLogoPath());
+                intent.putExtra("feedId", feedDataForOffLine.getFeedId());
+                view.getContext().startActivity(intent);
+            }
         });
+
 
 
     }
@@ -136,6 +153,7 @@ public void setItems(ArrayList<FeedData> feedDatas) {
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView main_feed_description, main_feed_name, main_feed_creation_time;
         ImageView client_Image, cilent_Logo;
+        LinearLayout linearLayout_feed;
 
         public MyViewHolder(View view) {
             super(view);
@@ -144,6 +162,7 @@ public void setItems(ArrayList<FeedData> feedDatas) {
             main_feed_creation_time = (TextView) view.findViewById(R.id.main_feed_creation_time);
             client_Image = (ImageView) view.findViewById(R.id.client_Image);
             cilent_Logo = (ImageView) view.findViewById(R.id.client_Logo);
+            linearLayout_feed = (LinearLayout)view.findViewById(R.id.linearLayout_feed);
         }
     }
 

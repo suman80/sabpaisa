@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -52,40 +53,12 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
-        //  if (isOnline()) {
         final FeedData mainFeedData = mainFeedDataList.get(position);
-        holder.main_feed_name.setText(mainFeedData.getFeedName());
-        holder.main_feed_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
-                intent.putExtra("feedName", mainFeedData.getFeedName());
-                intent.putExtra("feedText", mainFeedData.getFeedText());
-                intent.putExtra("popup",popup);
-                intent.putExtra("feedImage", mainFeedData.getImagePath());
-                intent.putExtra("feedLogo", mainFeedData.getLogoPath());
-                intent.putExtra("feedId", mainFeedData.getFeedId());
-                v.getContext().startActivity(intent);
-            }
-        });
-        holder.main_feed_description.setText(mainFeedData.getFeedText());
-        holder.main_feed_description.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
-                intent.putExtra("feedName", mainFeedData.getFeedName());
-                intent.putExtra("popup",popup);
 
-                intent.putExtra("feedText", mainFeedData.getFeedText());
-                intent.putExtra("feedImage", mainFeedData.getImagePath());
-                intent.putExtra("feedLogo", mainFeedData.getLogoPath());
-                intent.putExtra("feedId", mainFeedData.getFeedId());
-                v.getContext().startActivity(intent);
-            }
-        });
-        Log.d("client_Image123456", "" + mainFeedData.getImagePath());
-
-        //new DownloadImageTask(holder.client_Image).execute(mainFeedData.getImagePath());
+        Glide.with(context)
+                .load(mainFeedData.getLogoPath())
+                .error(R.drawable.image_not_found)
+                .into(holder.cilent_Logo);
 
         Glide.with(context)
                 .load(mainFeedData.getImagePath())
@@ -93,7 +66,23 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 .into(holder.client_Image);
 
 
-        holder.client_Image.setOnClickListener(new View.OnClickListener() {
+
+        holder.main_feed_name.setText(mainFeedData.getFeedName());
+        /*holder.main_feed_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedName", mainFeedData.getFeedName());
+                intent.putExtra("feedText", mainFeedData.getFeedText());
+                intent.putExtra("popup",popup);
+                intent.putExtra("feedImage", mainFeedData.getImagePath());
+                intent.putExtra("feedLogo", mainFeedData.getLogoPath());
+                intent.putExtra("feedId", mainFeedData.getFeedId());
+                v.getContext().startActivity(intent);
+            }
+        });*/
+        holder.main_feed_description.setText(mainFeedData.getFeedText());
+        /*holder.main_feed_description.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
@@ -107,29 +96,44 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 v.getContext().startActivity(intent);
             }
         });
+        Log.d("client_Image123456", "" + mainFeedData.getImagePath());*/
 
 
-        Glide.with(context)
-                .load(mainFeedData.getLogoPath())
-                .error(R.drawable.image_not_found)
-                .into(holder.cilent_Logo);
+        /*holder.client_Image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedName", mainFeedData.getFeedName());
+                intent.putExtra("popup",popup);
+
+                intent.putExtra("feedText", mainFeedData.getFeedText());
+                intent.putExtra("feedImage", mainFeedData.getImagePath());
+                intent.putExtra("feedLogo", mainFeedData.getLogoPath());
+                intent.putExtra("feedId", mainFeedData.getFeedId());
+                v.getContext().startActivity(intent);
+            }
+        });*/
+
+        holder.linearLayout_feed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedName", mainFeedData.getFeedName());
+                intent.putExtra("popup",popup);
+
+                intent.putExtra("feedText", mainFeedData.getFeedText());
+                intent.putExtra("feedImage", mainFeedData.getImagePath());
+                intent.putExtra("feedLogo", mainFeedData.getLogoPath());
+                intent.putExtra("feedId", mainFeedData.getFeedId());
+                view.getContext().startActivity(intent);
+            }
+        });
+
+
 
 
     }
 
-
-    //new DownloadLogoTask(holder.cilent_Logo).execute(mainFeedData.getLogoPath());
-    //}
-
-
-    /*END Method to change data when put query in searchBar*/
-
-    /*private String getDataFormate(String dateText) throws ParseException {
-        DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat outputFormat = new SimpleDateFormat("dd MMM");
-        Date date = inputFormat.parse(dateText);
-        return outputFormat.format(date);
-    }*/
 
     @Override
     public int getItemCount() {
@@ -148,6 +152,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView main_feed_description, main_feed_name, main_feed_creation_time;
         ImageView client_Image, cilent_Logo;
+        LinearLayout linearLayout_feed;
 
         public MyViewHolder(View view) {
             super(view);
@@ -156,6 +161,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             main_feed_creation_time = (TextView) view.findViewById(R.id.main_feed_creation_time);
             client_Image = (ImageView) view.findViewById(R.id.client_Image);
             cilent_Logo = (ImageView) view.findViewById(R.id.client_Logo);
+            linearLayout_feed = (LinearLayout)view.findViewById(R.id.linearLayout_feed);
         }
     }
 

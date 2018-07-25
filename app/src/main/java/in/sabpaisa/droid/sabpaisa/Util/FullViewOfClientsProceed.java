@@ -13,7 +13,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -33,7 +32,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,7 +74,7 @@ import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FilterActivity;
 //import in.sabpaisa.droid.sabpaisa.Fragments.FeedFragments1;
-import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragments;
+import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedGroupsFragments;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
@@ -91,7 +89,7 @@ import in.sabpaisa.droid.sabpaisa.UIN;
 
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,OnFragmentInteractionListener,ProceedFeedsFragments.GetDataInterface,ProceedGroupsFragments.GetDataInterface,Members.GetDataInterface {
+public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,OnFragmentInteractionListener,ProceedFeedsFragment.GetDataInterface,ProceedGroupsFragments.GetDataInterface,Members.GetDataInterface {
     ImageView clientImagePath;
     String clientName,state,landingPage;
     public static String ClientId;
@@ -117,7 +115,7 @@ Timestamp Fullviewts;
     ArrayList<FeedData> filteredfeedList;
     ArrayList<GroupListData> GroupData;
     ArrayList<GroupListData> filteredGroupList;
-    ProceedFeedsFragments feedsFragments;
+    ProceedFeedsFragment feedsFragments;
     ProceedGroupsFragments groupsFragments;
     Members membersFragment;
     ArrayList<Member_GetterSetter> memberData;
@@ -437,7 +435,7 @@ mailIdniv.setText(x);
         membersFragment=new Members();
         adapter.addFragment(membersFragment,"Members");*/
 
-        feedsFragments = new ProceedFeedsFragments();
+        feedsFragments = new ProceedFeedsFragment();
         adapter.addFragment(feedsFragments,""); //changing here creating different frags
 
         groupsFragments = new ProceedGroupsFragments();

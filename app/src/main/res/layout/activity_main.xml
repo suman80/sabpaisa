@@ -7,6 +7,10 @@
     android:layout_height="match_parent">
     <include layout="@layout/content_main_activity_navigation" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -19,12 +23,12 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|enterAlways">
 
-
+            <!--Height 651dp-->
             <in.sabpaisa.droid.sabpaisa.Util.CustomViewPager
                 android:id="@+id/viewpager"
                 android:layout_marginTop="2dp"
                 android:layout_width="match_parent"
-                android:layout_height="651dp"
+                android:layout_height="wrap_content"
                 android:visibility="visible"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -211,7 +215,7 @@
             android:layout_height="wrap_content" />-->
 
     </FrameLayout>
-
+    </ScrollView>
 
     <!--<LinearLayout
         android:id="@+id/drawer_left_list_layout"

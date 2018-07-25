@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.github.chrisbanes.photoview.PhotoView;
+//import com.github.chrisbanes.photoview.PhotoView;
 
 import java.text.DateFormat;
 import java.text.ParseException;

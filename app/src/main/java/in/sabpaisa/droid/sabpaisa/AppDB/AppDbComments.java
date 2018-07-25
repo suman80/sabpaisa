@@ -463,6 +463,10 @@ public class AppDbComments extends SQLiteOpenHelper {
         }
         return false;
     }
+
+
+    //https://stackoverflow.com/questions/20415309/android-sqlite-how-to-check-if-a-record-exists
+
     //https://stackoverflow.com/questions/3058909/how-does-one-check-if-a-table-exists-in-an-android-sqlite-database
 
 

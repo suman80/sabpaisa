@@ -120,13 +120,13 @@ public class ProceedInstitiutionFragment extends Fragment {
         userImageUrl = sharedPreferences.getString("userImageUrl", "abc");
         Log.d("PIF_ClientId", "-->" + clientId);
         Log.d("userImageUrlFrag", "-->" + userImageUrl);
-        recyclerViewInstitutions.postDelayed(new Runnable() {
+        /*recyclerViewInstitutions.postDelayed(new Runnable() {
             @Override
             public void run() {
 
             }
         }, 2000);
-
+*/
         if (isOnline()) {
             //db.deleteAllClientData();
             getClientsList(clientId.toString());
@@ -321,17 +321,17 @@ public class ProceedInstitiutionFragment extends Fragment {
                             public void run() {
                                 //Do something after 1000ms
 
-                        boolean isInserted = db.insertClientData(particularClientModelForOffline);
-                        if (isInserted == true) {
+                                boolean isInserted = db.insertClientData(particularClientModelForOffline);
+                                if (isInserted == true) {
 
-                            //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
 
-                            Log.d("PIF_Data", "LocalDBInIfPart" + isInserted);
+                                    Log.d("PIF_Data", "LocalDBInIfPart" + isInserted);
 
-                        } else {
-                            Log.d("PIF_Data", "LocalDBInElsePart" + isInserted);
-                            //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
-                        }
+                                } else {
+                                    Log.d("PIF_Data", "LocalDBInElsePart" + isInserted);
+                                    //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                                }
 
 
                             }

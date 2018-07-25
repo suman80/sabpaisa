@@ -31,6 +31,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,7 @@ import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapt
 import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.network.BNetworkManager;
 import com.bumptech.glide.Glide;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.olive.upi.transport.model.lib.NameValuePair;
 import com.parse.signpost.http.HttpResponse;
 import com.rockerhieu.emojicon.EmojiconEditText;
@@ -115,7 +117,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     ArrayList<CommentData> commentArrayList;
     int count = 1;
-//Again//Again
+
+    ProgressBar progress;
+
+    SpinKitView spin_kit;
+    ImageView imageView2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -134,6 +141,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         groupsName = (TextView) findViewById(R.id.groupsName);
         group_description_details = (TextView) findViewById(R.id.group_description_details);
         groupImage = (ImageView) findViewById(R.id.groupImage);
+        progress = (ProgressBar)findViewById(R.id.progress);
+
+        spin_kit = (SpinKitView)findViewById(R.id.spin_kit);
+        imageView2 = (ImageView)findViewById(R.id.imageView2);
+
         button1 = (Button) findViewById(R.id.b1);
         prvtfeeds = (Button) findViewById(R.id.b2);
         // emojIcon = new EmojIconActions(this);\
@@ -196,11 +208,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         group_description_details.setText(GroupsDiscription);
         // new DownloadImageTask(groupImage).execute(GroupsImg);
 
-        Glide.with(getApplicationContext())
+        /*Glide.with(getApplicationContext())
                 .load(GroupsImg)
                 .error(R.drawable.image_not_found)
                 .into(groupImage);
-
+*/
         arrayList = new ArrayList<>();
         toolbar.setNavigationIcon(R.drawable.previousmoresmall);
 
@@ -222,6 +234,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
         if (isOnline()) {
+            progress.setVisibility(View.VISIBLE);
             //API
             callGetCommentList(GroupId);
         } else {
@@ -398,6 +411,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 //                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 //            }
 //        }, 10L);
+        progress.setVisibility(View.GONE);
     }
 
     //EditText group_details_text_view = null;
@@ -482,6 +496,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         else {
             //Toast.makeText(getApplicationContext(),"Hi Hello ",Toast.LENGTH_SHORT).show();
 
+            imageView2.setVisibility(View.GONE);
+            spin_kit.setVisibility(View.VISIBLE);
+
             callCommentService(GroupId, userAccessToken, commentText);
             Log.e("CommentDatafeeddetaida ", "CommentData1 " + commentText);
         }
@@ -513,6 +530,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     String status = response.getString("status");
                     if (status.equals("success")) {
 
+                        imageView2.setVisibility(View.VISIBLE);
+                        spin_kit.setVisibility(View.GONE);
 
                         ///////////RRRRRRRRRRRRRRRRRRRR?????????????????
                         if(response.getString("response").equals("Not A Member")){
@@ -529,6 +548,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     }
                     else if (status.equals("failed"))
                     {
+                        imageView2.setVisibility(View.VISIBLE);
+                        spin_kit.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(),"Please Join the Group",Toast.LENGTH_SHORT).show();
                     }
 
@@ -537,6 +558,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     Toast.makeText(getApplicationContext(),
                             "Error: KASKADKASKDASKCNSKACKASNVKNASKANka" + e.getMessage(),
                             Toast.LENGTH_LONG).show();
+                    imageView2.setVisibility(View.VISIBLE);
+                    spin_kit.setVisibility(View.GONE);
                 }
                 // hidepDialog();
             }
@@ -548,6 +571,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                imageView2.setVisibility(View.VISIBLE);
+                spin_kit.setVisibility(View.GONE);
                 NetworkResponse response = error.networkResponse;
                 if (error instanceof ServerError && response != null) {
                     try {
@@ -707,6 +732,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     }
 
                     else {
+                        progress.setVisibility(View.GONE);
                         Toast.makeText(Proceed_Group_FullScreen.this,"No Record Found !",Toast.LENGTH_SHORT).show();
                     }
 
@@ -719,7 +745,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 catch (JSONException e) {
                     // If an error occurs, this prints the error to the log
                     e.printStackTrace();
-
+                    progress.setVisibility(View.GONE);
                 }
             }
         },
@@ -729,7 +755,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     @Override
                     // Handles erroronErrorResponses that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
-
+                        progress.setVisibility(View.GONE);
                         NetworkResponse response = error.networkResponse;
                         if (error instanceof ServerError && response != null) {
                             try {

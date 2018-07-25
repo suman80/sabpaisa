@@ -38,8 +38,6 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
-import com.github.chrisbanes.photoview.PhotoView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -232,7 +230,7 @@ String popup="Group";
         public TextView Group_name;
         public TextView Group_description;
         public ImageView Group_Logo;
-        public PhotoView Group_Image;
+        public ImageView Group_Image;
         public Button joinmember;
         public LinearLayout linearLayoutGroupItemList;
 
@@ -243,7 +241,7 @@ String popup="Group";
             Group_description = (TextView) view.findViewById(R.id.Group_description);
             joinmember = (Button) view.findViewById(R.id.joinmember);
             Group_Logo = (ImageView) view.findViewById(R.id.Group_Logo);
-            Group_Image = (PhotoView) view.findViewById(R.id.Group_Image);
+            Group_Image = (ImageView) view.findViewById(R.id.Group_Image);
             linearLayoutGroupItemList = (LinearLayout)view.findViewById(R.id.linearLayoutGroupItemList);
 
         }

@@ -11,12 +11,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -40,12 +38,8 @@ import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.MemberAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.MemberOfflineAdapter;
-import in.sabpaisa.droid.sabpaisa.Adapter.ProceedGroupsFragmentsOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
-import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragments;
-import in.sabpaisa.droid.sabpaisa.Fragments.ProceedGroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
-import in.sabpaisa.droid.sabpaisa.Model.GroupDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Model.MemberOfflineDataModel;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;

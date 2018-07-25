@@ -31,6 +31,7 @@ import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.rockerhieu.emojicon.EmojiconEditText;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -118,6 +120,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     int currentItems,totalItems,scrolledOutItems;
     int count = 1;
 
+    ProgressBar progress;
+
+    SpinKitView spin_kit;
+    ImageView imageView2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,6 +150,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         feedsName = (TextView) findViewById(R.id.feedsName);
         feed_description_details = (TextView) findViewById(R.id.feed_description_details);
         feedImage = (ImageView) findViewById(R.id.feedImage);
+        progress = (ProgressBar)findViewById(R.id.progress);
+
+        spin_kit = (SpinKitView)findViewById(R.id.spin_kit);
+        imageView2 = (ImageView)findViewById(R.id.imageView2);
+
         swipeRefreshLayout= (SwipeRefreshLayout)
                 findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -163,10 +175,10 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         feed_description_details.setText(feedsDiscription);
         //new DownloadImageTask(feedImage).execute(feedImg);
 
-        Glide.with(getApplicationContext())
+        /*Glide.with(getApplicationContext())
                 .load(feedImg)
                 .error(R.drawable.image_not_found)
-                .into(feedImage);
+                .into(feedImage);*/
 
         ///////////////////////DB/////////////////////////////////
         db = new AppDbComments(Proceed_Feed_FullScreen.this);
@@ -190,7 +202,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
         if (isOnline()) {
-
+            progress.setVisibility(View.VISIBLE);
             callGetCommentList(feed_id);
         }else {
 
@@ -302,6 +314,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
+
         final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
         final CommentAdapter ca = new CommentAdapter(arrayList,getApplicationContext());
         rv.setAdapter(ca);
@@ -361,7 +374,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
             }
         });
-
+        progress.setVisibility(View.GONE);
     }
 
     EditText group_details_text_view ;
@@ -440,6 +453,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
             // showpDialog(view);
         else {
+            imageView2.setVisibility(View.GONE);
+            spin_kit.setVisibility(View.VISIBLE);
             callCommentService(feed_id, userAccessToken, commentText);
             Log.e("CommentDatafeeddetaida ", "CommentData " + commentText);
         }
@@ -468,6 +483,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                         group_details_text_view.setText("");
                        // Toast.makeText(Proceed_Feed_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
 
+                        imageView2.setVisibility(View.VISIBLE);
+                        spin_kit.setVisibility(View.GONE);
 
                         commentArrayList.clear();
                          count=1;
@@ -477,6 +494,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    imageView2.setVisibility(View.VISIBLE);
+                    spin_kit.setVisibility(View.GONE);
                    /* Toast.makeText(getApplicationContext(),
                             "Error: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();*/
@@ -488,6 +507,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                imageView2.setVisibility(View.VISIBLE);
+                spin_kit.setVisibility(View.GONE);
                 NetworkResponse response = error.networkResponse;
                 if (error instanceof ServerError && response != null) {
                     try {
@@ -556,7 +577,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     Log.d("Re[spnsere"," "+status);
 
                     if (status.equals("success")) {
-
                         JSONArray jsonArray = jsonObject.getJSONArray("response");
 
                         // new LoadDBfromAPI().execute(response);
@@ -595,6 +615,14 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                             }
                             commentArrayList.add(groupData);
 
+                            loadCommentListView(commentArrayList);
+
+                            /////Added By RAJ/////////
+                            Log.d("SIZZZZZZZZZZZZZZZZ : ", commentArrayList.size() + "");
+                            //if(count==1)
+                            /////////////////
+
+
                             //////////////////////////////LOCAL DB//////////////////////////////////////
 
                             boolean isInserted = db.insertFeedComments(groupData, feed_id);
@@ -611,13 +639,10 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
                         }
-                        /////Added By RAJ/////////
-                        Log.d("SIZZZZZZZZZZZZZZZZ : ", commentArrayList.size() + "");
-                        //if(count==1)
-                        /////////////////
 
-                        loadCommentListView(commentArrayList);
+
                     }else {
+                        progress.setVisibility(View.GONE);
                         Toast.makeText(Proceed_Feed_FullScreen.this,"No Record Found !",Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -625,7 +650,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 catch (JSONException e) {
                     // If an error occurs, this prints the error to the log
                     e.printStackTrace();
-
+                    progress.setVisibility(View.GONE);
                 }
             }
         },
@@ -638,7 +663,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                         /*error.printStackTrace();
 
                         Log.e("Feed", "FeedError");*/
-
+                        progress.setVisibility(View.GONE);
                         NetworkResponse response = error.networkResponse;
                         if (error instanceof ServerError && response != null) {
                             try {

@@ -3,7 +3,6 @@ package in.sabpaisa.droid.sabpaisa.Fragments;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +26,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,12 +41,10 @@ import in.sabpaisa.droid.sabpaisa.Adapter.ProceedFeedsFragmentsOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.FeedData;
-import in.sabpaisa.droid.sabpaisa.FeedDetails;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.MainFeedAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.R;
-import in.sabpaisa.droid.sabpaisa.RecyclerItemClickListener;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
@@ -57,13 +54,15 @@ import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProceedFeedsFragments extends Fragment {
-    private static final String TAG = ProceedFeedsFragments.class.getSimpleName();
-    View rootView;
+public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+
+    private static final String TAG = ProceedFeedsFragment.class.getSimpleName();
+    View rootView = null;
+
     LinearLayout linearLayoutnoDataFound;
-    RecyclerView recyclerView;
-    SwipeRefreshLayout swipeRefreshLayout;
-    String tag_string_req = "req_register";
+    ShimmerRecyclerView recyclerView;
+
+
     ArrayList<FeedData> feedArrayList = new ArrayList<FeedData>();
 
     ArrayList<FeedDataForOffLine> feedArrayListForLocalDb;
@@ -79,21 +78,26 @@ public class ProceedFeedsFragments extends Fragment {
     AppDbComments db;
 
 
-    public ProceedFeedsFragments() {
+
+
+    public ProceedFeedsFragment() {
         // Required empty public constructor
     }
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_proceed_feeds_fragments, container, false);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_feeds);
+        rootView =  inflater.inflate(R.layout.fragment_proceed_feed, container, false);
+
+        recyclerView = (ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_feeds);
+
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+        recyclerView.setLayoutManager(llm);
+
+
         linearLayoutnoDataFound = (LinearLayout) rootView.findViewById(R.id.noDataFound);
 
         ///////////////////////DB/////////////////////////////////
@@ -102,8 +106,7 @@ public class ProceedFeedsFragments extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId = sharedPreferences.getString("clientId", "abc");
         Log.d("clientId_PFF", "" + clientId);
-        /*swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
-        swipeRefreshLayout.setOnRefreshListener(this);*/
+
 
 
         if (isOnline()) {
@@ -153,6 +156,9 @@ public class ProceedFeedsFragments extends Fragment {
 
         Log.d("sGetDataInterface", "" + sGetDataInterface);
 
+
+
+
         return rootView;
     }
 
@@ -167,6 +173,8 @@ public class ProceedFeedsFragments extends Fragment {
         if (checkDb == true){
             db.deleteAllFeedData();
         }
+
+        String tag_string_req = "req_register";
 
         String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getParticularClientsFeeds/" + "?client_Id=" + clientId;
 
@@ -335,7 +343,9 @@ public class ProceedFeedsFragments extends Fragment {
 
 
                         //*END listener for sending data to activity*//*
-                        loadFeedListView(feedArrayList, recyclerView);
+
+                        mainFeedAdapter = new MainFeedAdapter(feedArrayList, getContext());
+                        recyclerView.setAdapter(mainFeedAdapter);
 
                     } else {
                         linearLayoutnoDataFound.setVisibility(View.VISIBLE);
@@ -367,38 +377,10 @@ public class ProceedFeedsFragments extends Fragment {
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
 
-    private void loadFeedListView(ArrayList<FeedData> arrayList, final RecyclerView recyclerView) {
 
-        mainFeedAdapter = new MainFeedAdapter(arrayList, getContext());
-        // recyclerView.setAdapter(mainFeedAdapter);
-        recyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                recyclerView.setAdapter(mainFeedAdapter);
+    @Override
+    public void onRefresh() {
 
-            }
-        }, 1000);
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Intent intent = new Intent((getContext()), FeedDetails.class);
-                       /* intent.putExtra("FeedId", feedArrayList.get(position).getFeedId());
-                        intent.putExtra("FeedName", feedArrayList.get(position).getFeedName());
-                        intent.putExtra("FeedDeatils", feedArrayList.get(position).getFeedText());
-                        startActivity(intent);*/
-                    }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        // do whatever
-                    }
-                })
-        );
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
-        recyclerView.setLayoutManager(llm);
     }
 
 
@@ -426,20 +408,9 @@ public class ProceedFeedsFragments extends Fragment {
 
     /*END Interface for getting data from activity*/
 
-
-
-
-   /* @Override
-    public void onResume() {
-        super.onResume();
-        AppController.getInstance().setConnectivityListener(this);
-    }*/
-
-
     public interface GetDataInterface {
         ArrayList<FeedData> getFeedDataList();
     }
-    /*END onRefresh() for SwipeRefreshLayout*/
 
 
     public boolean isOnline() {
@@ -454,6 +425,5 @@ public class ProceedFeedsFragments extends Fragment {
             return false;
         }
     }
-
 
 }
