@@ -68,12 +68,12 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.security.ProviderInstaller;
-import com.wangjie.androidbucket.utils.ABTextUtil;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
-import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
-import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
+//import com.wangjie.androidbucket.utils.ABTextUtil;
+//import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
+//import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
+//import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
+//import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
+//import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -101,7 +101,7 @@ import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
 import static android.view.View.GONE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implements  AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
+public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implements  /*AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
     private SliderLayout mHeaderSlider;
     ArrayList<Integer> headerList = new ArrayList<>();
     CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -129,9 +129,9 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
     ImageView niv;
     TextView usernameniv,mailIdniv;
-    private RapidFloatingActionLayout rfaLayout;
-    private RapidFloatingActionButton rfaBtn;
-    private RapidFloatingActionHelper rfabHelper;
+//    private RapidFloatingActionLayout rfaLayout;
+//    private RapidFloatingActionButton rfaBtn;
+//    private RapidFloatingActionHelper rfabHelper;
     Bundle bundle;
     String stateName,serviceName,ClientId;
 //    public  static  String MYSHAREDPREF="mySharedPref";
@@ -310,9 +310,9 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         paymentButton = (LinearLayout)findViewById(R.id.payment_button);
         chatButton = (LinearLayout)findViewById(R.id.chat);
         memberButton = (LinearLayout)findViewById(R.id.members);
-        rfaLayout = (RapidFloatingActionLayout)findViewById(R.id.activity_main_rfal);
-        rfaBtn = (RapidFloatingActionButton)findViewById(R.id.activity_main_rfab);
-        FabButtonCreate();
+//        rfaLayout = (RapidFloatingActionLayout)findViewById(R.id.activity_main_rfal);
+//        rfaBtn = (RapidFloatingActionButton)findViewById(R.id.activity_main_rfab);
+       // FabButtonCreate();
         //fab = (FloatingActionButton)findViewById(R.id.fab_dashboard);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -331,7 +331,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
-        appBarLayout.addOnOffsetChangedListener(this);
+        //appBarLayout.addOnOffsetChangedListener(this);
 
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -511,7 +511,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         finish();
     }
 
-    private void FabButtonCreate() {
+  /*  private void FabButtonCreate() {
         RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(this);
         rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
 //        rfaContent.setOnRapidFloatingActionContentListener(this);
@@ -562,7 +562,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
         if (position==2){
             Toast.makeText(this, "Send Clicked", Toast.LENGTH_SHORT).show();
-            if (isMpinSet==0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
+            if (isMpinSet==0) {             *//*TODO check if mpin is set or not, for now i am hardcoding it*//*
                 Intent intent = new Intent( MainActivityWithoutSharedPrefernce.this, AccountInfoActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
@@ -580,7 +580,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
             overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
         }
         rfabHelper.toggleContent();
-    }
+    }*/
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -658,7 +658,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
         headerList.add(R.drawable.test_header600243);*/
     }
 
-    @Override
+    /*@Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
         if (verticalOffset == 0)
         {
@@ -671,7 +671,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
             //fab.setVisibility(View.VISIBLE);// Not collapsed
         }
     }
-
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

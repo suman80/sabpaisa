@@ -138,11 +138,11 @@ Timestamp Fullviewts;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         paymentButton = (LinearLayout)findViewById(R.id.payment_button);
-        chatButton = (LinearLayout)findViewById(R.id.chat);
+        //chatButton = (LinearLayout)findViewById(R.id.chat);
         memberButton = (LinearLayout)findViewById(R.id.members);
 
 
-        //ChatSDKUiHelper.initDefault();
+       /* //ChatSDKUiHelper.initDefault();
 
         ChatSDKUiHelper.initDefault();
 
@@ -154,7 +154,7 @@ Timestamp Fullviewts;
 
 // Set the adapter
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
-
+*/
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
@@ -395,7 +395,7 @@ mailIdniv.setText(x);
         searchViewBar();
 
 
-        chatButton.setOnClickListener(new View.OnClickListener() {
+        /*chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int value=3;
@@ -413,7 +413,7 @@ mailIdniv.setText(x);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
-        });
+        });*/
 
 
     }

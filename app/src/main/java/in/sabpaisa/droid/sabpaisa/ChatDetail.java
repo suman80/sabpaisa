@@ -10,12 +10,12 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Adapter;
 import android.widget.Toast;
 
-import com.wangjie.androidbucket.utils.ABTextUtil;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
-import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
-import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
+//import com.wangjie.androidbucket.utils.ABTextUtil;
+//import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
+//import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
+//import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
+//import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
+//import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +24,16 @@ import in.sabpaisa.droid.sabpaisa.Adapter.ChatAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.ChatModel;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
-public class ChatDetail extends AppCompatActivity implements RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
+public class ChatDetail extends AppCompatActivity /*implements RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener*/ {
 
     RecyclerView recyclerView;
     ArrayList<ChatModel> chatModelArrayList;
     ChatAdapter adapter;
     Toolbar toolbar;
 
-    private RapidFloatingActionLayout rfaLayout;
-    private RapidFloatingActionButton rfaBtn;
-    private RapidFloatingActionHelper rfabHelper;
+//    private RapidFloatingActionLayout rfaLayout;
+//    private RapidFloatingActionButton rfaBtn;
+//    private RapidFloatingActionHelper rfabHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +43,8 @@ public class ChatDetail extends AppCompatActivity implements RapidFloatingAction
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //rfaLayout = (RapidFloatingActionLayout)findViewById(R.id.activity_main_rfal);
-        rfaBtn = (RapidFloatingActionButton)findViewById(R.id.activity_main_rfab);
-        FabButtonCreate();
+        //rfaBtn = (RapidFloatingActionButton)findViewById(R.id.activity_main_rfab);
+        //FabButtonCreate();
 
         recyclerView = (RecyclerView)findViewById(R.id.rv_chat);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -62,7 +62,7 @@ public class ChatDetail extends AppCompatActivity implements RapidFloatingAction
 
     }
 
-    private void FabButtonCreate() {
+   /* private void FabButtonCreate() {
         RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(this);
         rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
 //        rfaContent.setOnRapidFloatingActionContentListener(this);
@@ -112,7 +112,7 @@ public class ChatDetail extends AppCompatActivity implements RapidFloatingAction
         }
         rfabHelper.toggleContent();
     }
-
+*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

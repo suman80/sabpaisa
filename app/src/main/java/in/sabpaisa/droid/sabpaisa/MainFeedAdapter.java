@@ -1,9 +1,11 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +21,12 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -29,6 +36,7 @@ import java.util.Date;
 
 import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+
 
 
 public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyViewHolder> {
@@ -51,7 +59,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         final FeedData mainFeedData = mainFeedDataList.get(position);
 

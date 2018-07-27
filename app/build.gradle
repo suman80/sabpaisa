@@ -96,8 +96,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v4:27.1.1'
     compile 'com.daimajia.slider:library:1.1.5@aar'
-    compile 'com.github.wangjiegulu:RapidFloatingActionButton:1.0.3'
-    compile 'com.github.wangjiegulu:AndroidBucket:1.0.4'
+//    compile 'com.github.wangjiegulu:RapidFloatingActionButton:1.0.3'
+//    compile 'com.github.wangjiegulu:AndroidBucket:1.0.4'
     compile 'com.layer-net:step-indicator:1.1.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
@@ -120,7 +120,6 @@ dependencies {
     //compile 'com.airbnb.android:lottie:2.1.2'
     compile 'com.shitij.goyal:slide-button:1.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-
     compile project(path: ':firebase_plugin')
     //compile project(path: ':chat-sdk-core')
     compile 'gun0912.ted:tedpermission:2.1.0'
@@ -131,6 +130,7 @@ dependencies {
     compile 'su.j2e:rv-joiner:1.0.3'
     compile 'com.github.GoodieBag:Pinview:v1.3'
     compile 'com.github.ybq:Android-SpinKit:1.1.0'
+    //compile 'jp.wasabeef:blurry:2.1.1'
 }
 
 

@@ -75,12 +75,12 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.security.ProviderInstaller;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-import com.wangjie.androidbucket.utils.ABTextUtil;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
-import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
-import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
+//import com.wangjie.androidbucket.utils.ABTextUtil;
+//import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
+//import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
+//import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
+//import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
+//import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,8 +110,7 @@ import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import static android.view.View.GONE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class MainActivitySkip extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener,AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener
-        ,NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener,OnFragmentInteractionListener,InstitutionSkipFragment.GetDataInterface {
+public class MainActivitySkip extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener,/*AppBarLayout.OnOffsetChangedListener,*/ /*RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener,OnFragmentInteractionListener,InstitutionSkipFragment.GetDataInterface {
 
     private SliderLayout mHeaderSlider;
     ArrayList<Integer> headerList = new ArrayList<>();
@@ -134,9 +133,9 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     FloatingActionButton fab;
     ActionBarDrawerToggle toggle;
     HashMap<String, String> Hash_file_maps;
-    private RapidFloatingActionLayout rfaLayout;
+    /*private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
-    private RapidFloatingActionHelper rfabHelper;
+    private RapidFloatingActionHelper rfabHelper;*/
     private View view;
     Handler mHandler;
     int MY_SOCKET_TIMEOUT_MS =100000;
@@ -206,7 +205,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         //set the NAvigationImage header using glide
 
 
-        //ChatSDKUiHelper.initDefault();
+      /*  //ChatSDKUiHelper.initDefault();
 
         ChatSDKUiHelper.initDefault();
 
@@ -217,7 +216,8 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
 
 // Set the adapter
-        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);*/
+
         sendMoney = (ImageView) findViewById(R.id.ll_send);
         requestMoney = (ImageView) findViewById(R.id.ll_request);
         // socialPayment = (ImageView)findViewById(R.id.ll_social_payment);
@@ -225,11 +225,11 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         profile = (ImageView) findViewById(R.id.ll_profile);
         bank = (ImageView) findViewById(R.id.ll_bank);
         paymentButton = (LinearLayout) findViewById(R.id.payment_button);
-        chatButton = (LinearLayout) findViewById(R.id.chat);
+        //chatButton = (LinearLayout) findViewById(R.id.chat);
         memberButton = (LinearLayout) findViewById(R.id.members);
-        rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.activity_main_rfal);
-        rfaBtn = (RapidFloatingActionButton) findViewById(R.id.activity_main_rfab);
-        FabButtonCreate();
+//        rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.activity_main_rfal);
+//        rfaBtn = (RapidFloatingActionButton) findViewById(R.id.activity_main_rfab);
+       // FabButtonCreate();
         //fab = (FloatingActionButton)findViewById(R.id.fab_dashboard);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -241,7 +241,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         appDB = new AppDB(getApplicationContext());
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
-        appBarLayout.addOnOffsetChangedListener(this);
+        //appBarLayout.addOnOffsetChangedListener(this);
 
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -388,7 +388,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });*/
-        chatButton.setOnClickListener(new View.OnClickListener() {
+        /*chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -404,7 +404,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
-        });
+        });*/
       /*  fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -462,7 +462,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
     }*/
 
-    private void FabButtonCreate() {
+   /* private void FabButtonCreate() {
         RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(this);
         rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
 //        rfaContent.setOnRapidFloatingActionContentListener(this);
@@ -511,7 +511,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
         if (position == 2) {
             Toast.makeText(this, "Send Clicked", Toast.LENGTH_SHORT).show();
-            if (isMpinSet == 0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
+            if (isMpinSet == 0) {             *//*TODO check if mpin is set or not, for now i am hardcoding it*//*
                 Intent intent = new Intent(MainActivitySkip.this, AccountInfoActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
@@ -531,7 +531,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         rfabHelper.toggleContent();
     }
 
-
+*/
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -599,7 +599,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     }
 
 
-    @Override
+   /* @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
         if (verticalOffset == 0) {
             rfaLayout.setVisibility(GONE);
@@ -609,7 +609,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
             //fab.setVisibility(View.VISIBLE);// Not collapsed
         }
     }
-
+*/
 
     /*START method to enable searchBar and define its action*/
     private void searchViewBar() { //TODO searchView

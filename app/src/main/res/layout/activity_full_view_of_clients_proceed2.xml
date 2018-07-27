@@ -131,7 +131,7 @@
                     app:tabMode="fixed" />
             </android.support.v4.view.ViewPager>
 
-            <FrameLayout
+            <!--<FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -144,10 +144,10 @@
                     android:visibility="visible" />
 
 
-            </FrameLayout>
+            </FrameLayout>-->
 
 
-            <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
+            <!--<com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
                 android:id="@+id/activity_main_rfal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -168,7 +168,7 @@
                     rfab:rfab_drawable="@drawable/ic_pay_white"
                     rfab:rfab_size="normal" />
             </com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout>
-
+-->
 
             <android.support.design.widget.CoordinatorLayout
                 android:id="@+id/myCoordinatorLayout"

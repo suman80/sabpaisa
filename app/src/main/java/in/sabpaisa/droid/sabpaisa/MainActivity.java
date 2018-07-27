@@ -91,12 +91,12 @@ import com.google.android.gms.security.ProviderInstaller;
 import com.google.firebase.analytics.FirebaseAnalytics;
 //import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.wangjie.androidbucket.utils.ABTextUtil;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
-import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
-import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
+//import com.wangjie.androidbucket.utils.ABTextUtil;
+//import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
+//import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
+//import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
+//import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
+//import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -131,7 +131,7 @@ import static android.view.View.GONE;
 import static com.mikepenz.materialize.util.UIUtils.convertDpToPixel;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener, NavigationView.OnNavigationItemSelectedListener, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity implements /*AppBarLayout.OnOffsetChangedListener,*/ /*RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/ NavigationView.OnNavigationItemSelectedListener, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
     private int notification_id;
     private SliderLayout mHeaderSlider;
     ArrayList<Integer> headerList = new ArrayList<>();
@@ -184,9 +184,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     ActionBarDrawerToggle toggle;
     //public  static String userImageUrl=null;
     HashMap<String, String> Hash_file_maps;
-    private RapidFloatingActionLayout rfaLayout;
-    private RapidFloatingActionButton rfaBtn;
-    private RapidFloatingActionHelper rfabHelper;
+//    private RapidFloatingActionLayout rfaLayout;
+//    private RapidFloatingActionButton rfaBtn;
+//    private RapidFloatingActionHelper rfabHelper;
     Bundle bundle;
     String x;
     String stateName, serviceName, ClientId;
@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         ts = tsLong.toString();
         Log.d("timemainactiviu", "" + ts);
 
-        // This is used for the app custom toast and activity transition
+       /* // This is used for the app custom toast and activity transition
         ChatSDKUiHelper.initDefault();
 // Init the network manager
         BNetworkManager.init(getApplicationContext());
@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
 // Set the adapter
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
-
+*/
         //mDrawerToggle=(ActionBarDrawerToggle)findViewById(R.id.nav)
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_drawer,
                 getApplicationContext().getTheme());
@@ -368,11 +368,11 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         bank = (ImageView) findViewById(R.id.ll_bank);
         //UpibankList = (ImageView)findViewById(R.id.ll_Upibank);
         paymentButton = (LinearLayout) findViewById(R.id.payment_button);
-        chatButton = (LinearLayout) findViewById(R.id.chat);
+        //chatButton = (LinearLayout) findViewById(R.id.chat);
         memberButton = (LinearLayout) findViewById(R.id.members);
-        rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.activity_main_rfal);
-        rfaBtn = (RapidFloatingActionButton) findViewById(R.id.activity_main_rfab);
-        FabButtonCreate();
+        /*rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.activity_main_rfal);
+        rfaBtn = (RapidFloatingActionButton) findViewById(R.id.activity_main_rfab);*/
+        //FabButtonCreate();
         
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("SPApp");
@@ -388,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
-        appBarLayout.addOnOffsetChangedListener(this);
+        //appBarLayout.addOnOffsetChangedListener(this);
 
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -477,7 +477,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         });
 
 
-        chatButton.setOnClickListener(new View.OnClickListener() {
+       /* chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -494,7 +494,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
-        });
+        });*/
 
         ////////API CAlls////////////////////////////
 
@@ -652,6 +652,10 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         Log.d("ArcPosttimeCount", "" + Commentcountgroups + "   " + CommentcountFeeds);
     }
 
+
+
+
+
     private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
@@ -696,7 +700,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
     }
 
-    private void FabButtonCreate() {
+   /* private void FabButtonCreate() {
         RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(this);
         rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
 //        rfaContent.setOnRapidFloatingActionContentListener(this);
@@ -734,19 +738,19 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
                 rfaContent
         ).build();
     }
-
-    @Override
+*/
+    /*@Override
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
         Toast.makeText(this, "clicked label: " + position, Toast.LENGTH_SHORT).show();
         rfabHelper.toggleContent();
-    }
+    }*/
 
-    @TargetApi(Build.VERSION_CODES.ECLAIR)
+   /* @TargetApi(Build.VERSION_CODES.ECLAIR)
     @Override
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
         if (position == 2) {
             Toast.makeText(this, "Send Clicked", Toast.LENGTH_SHORT).show();
-            if (isMpinSet == 0) {             /*TODO check if mpin is set or not, for now i am hardcoding it*/
+            if (isMpinSet == 0) {             *//*TODO check if mpin is set or not, for now i am hardcoding it*//*
                 Intent intent = new Intent(MainActivity.this, AccountInfoActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
@@ -764,7 +768,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
             overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
         }
         rfabHelper.toggleContent();
-    }
+    }*/
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -839,7 +843,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
     }
 
-    @Override
+    /*@Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
         if (verticalOffset == 0) {
             rfaLayout.setVisibility(GONE);
@@ -848,7 +852,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
             rfaLayout.setVisibility(View.VISIBLE);
             //fab.setVisibility(View.VISIBLE);// Not collapsed
         }
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
