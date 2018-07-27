@@ -2,14 +2,9 @@ package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,23 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.bumptech.glide.Glide;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
-import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
-import in.sabpaisa.droid.sabpaisa.MainActivity;
-import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.ParticularClientModelForOffline;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class ProceedInstitutionFragmentOfflineAdapter extends RecyclerView.Adapter<ProceedInstitutionFragmentOfflineAdapter.MyViewHolder> {
     int count;

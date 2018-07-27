@@ -1,6 +1,5 @@
 package in.sabpaisa.droid.sabpaisa;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -83,22 +82,18 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
-import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.ParticularClient;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
-import in.sabpaisa.droid.sabpaisa.Util.RateActivity;
 
-import static android.view.View.GONE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implements  /*AppBarLayout.OnOffsetChangedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
@@ -584,7 +579,7 @@ public class MainActivityWithoutSharedPrefernce extends AppCompatActivity implem
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ProceedInstitiutionFragment(),"Clients");
+        adapter.addFragment(new ParticularClient(),"Clients");
         //adapter.addFragment(new FormFragment(),"Other Clients");
         //adapter.addFragment(new InstitutionFragment(),"Groups");
         viewPager.setAdapter(adapter);

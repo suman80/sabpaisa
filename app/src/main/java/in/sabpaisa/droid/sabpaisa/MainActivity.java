@@ -1,7 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.Notification;
@@ -72,10 +71,6 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
-import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
-import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
-import com.braunster.chatsdk.network.BNetworkManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.crashlytics.android.Crashlytics;
@@ -106,14 +101,13 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.NotificationAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
-import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.ParticularClient;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
@@ -127,7 +121,6 @@ import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import io.fabric.sdk.android.Fabric;
 
-import static android.view.View.GONE;
 import static com.mikepenz.materialize.util.UIUtils.convertDpToPixel;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
@@ -772,7 +765,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ProceedInstitiutionFragment(), "");//Clients
+        adapter.addFragment(new ParticularClient(), "");//Clients
         //adapter.addFragment(new FormFragment(),"Other Clients");
         //adapter.addFragment(new InstitutionFragment(),"Groups");
         viewPager.setAdapter(adapter);

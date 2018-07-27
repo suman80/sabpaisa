@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -79,7 +80,7 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
 
             //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
 //        holder.instituteLocation.setText(mainFeedData.getOrgDesc());
-            holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+            /*holder.thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
@@ -96,8 +97,8 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
 
                     v.getContext().startActivity(intent);
                 }
-            });
-            holder.instituteLocation.setOnClickListener(new View.OnClickListener() {
+            });*/
+            /*holder.instituteLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
@@ -110,8 +111,8 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
                     intent.putExtra("landing_page", mainFeedData.getOrgDesc());
                     Log.d("clientId_location", "" + mainFeedData.getOrganizationId());
                 }
-            });
-            holder.instituteName.setOnClickListener(new View.OnClickListener() {
+            });*/
+            /*holder.instituteName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
@@ -126,8 +127,8 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
 
                     v.getContext().startActivity(intent);
                 }
-            });
-            holder.clinetbanner.setOnClickListener(new View.OnClickListener() {
+            });*/
+           /* holder.clinetbanner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
@@ -141,7 +142,22 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
                     v.getContext().startActivity(intent);
 
                 }
-            });
+            });*/
+
+        holder.linearLayout_ParticularClient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), FullViewOfClientsProceed.class);
+                intent.putExtra("clientName", mainFeedData.getOrganization_name());
+                intent.putExtra("state", mainFeedData.getOrgAddress());
+                intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
+                intent.putExtra("clientImagePath", mainFeedData.getOrgWal());
+                Log.d("clientId_banner", "" + mainFeedData.getOrganizationId());
+                intent.putExtra("clientId", mainFeedData.getOrganizationId());
+                intent.putExtra("landing_page", mainFeedData.getOrgDesc());
+                view.getContext().startActivity(intent);
+            }
+        });
 
     }
 
@@ -149,6 +165,7 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
         ImageView instituteLogo,institutePic;
         NetworkImageView thumbnail,clinetbanner;
         TextView instituteName,instituteLocation;
+        LinearLayout linearLayout_ParticularClient;
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -161,6 +178,9 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
 
             instituteName = (TextView)itemView.findViewById(R.id.tv_instituteName);
             instituteLocation = (TextView)itemView.findViewById(R.id.tv_instituteLocation);
+
+            linearLayout_ParticularClient = (LinearLayout)itemView.findViewById(R.id.linearLayout_ParticularClient);
+
         }
     }
 

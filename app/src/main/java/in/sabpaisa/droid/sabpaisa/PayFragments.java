@@ -3,9 +3,7 @@ package in.sabpaisa.droid.sabpaisa;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -15,8 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
@@ -39,14 +35,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ExpandableListAdapter;
-import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
-import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.ParticularClient;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
-import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -90,7 +83,7 @@ public class PayFragments extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragments_pay, container, false);
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(ProceedInstitiutionFragment.MYSHAREDPREFProceed, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(ParticularClient.MYSHAREDPREFProceed, MODE_PRIVATE);
         landing_page = sharedPreferences.getString("landing_page", "123");
         Log.d("payfragment", "landing_page");
 

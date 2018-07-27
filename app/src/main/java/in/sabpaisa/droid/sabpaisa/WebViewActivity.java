@@ -1,8 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -12,10 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
@@ -25,51 +21,38 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
-import java.io.IOException;
-import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-import in.sabpaisa.droid.sabpaisa.Fragments.ProceedInstitiutionFragment;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 
 //import static com.google.firebase.crash.FirebaseCrash.log;
-import static java.lang.System.*;
-
 
 
 public class WebViewActivity extends AppCompatActivity {
+    public static String MYSharedpref = "WebShared";
+    public static String finalstatus;
     ProgressBar progressBar;
     WebView webView;
-    String url,userAccessToken, landing_page, url1;
-    String clientcode,mode,status;
-    String token,paidAmount,clientName,transcationDate,spTranscationId=null;
-    String status_cancel,status_failure,status_pending,status_succes;
-    public static String MYSharedpref="WebShared";
-    String searchText="Your Transaction is Cancelled";
-    String searchTextCancelFromAtom="Your Transaction was Cancelled";
-    String searchText1="Your Transaction is Complete";
-    String searchText2="Your Transaction failed";
-    public static String finalstatus ;
+    String url, userAccessToken, landing_page, url1;
+    String clientcode, mode, status;
+    String token, paidAmount, clientName, transcationDate, spTranscationId = null;
+    String status_cancel, status_failure, status_pending, status_succes;
+    String searchText = "Your Transaction is Cancelled";
+    String searchTextCancelFromAtom = "Your Transaction was Cancelled";
+    String searchText1 = "Your Transaction is Complete";
+    String searchText2 = "Your Transaction failed";
     boolean statusCancel = false;
     boolean statusFail = false;
     boolean statusSuccess = false;
@@ -88,38 +71,38 @@ public class WebViewActivity extends AppCompatActivity {
 
 
         SharedPreferences sharedPreferences = getSharedPreferences(ProfileNavigationActivity.MYSHAREDPREFPNA, Context.MODE_PRIVATE);
-       // clientId=sharedPreferences.getString("clientId","123");
-        userAccessToken=sharedPreferences.getString("response","123");
-        String re=userAccessToken;
+        // clientId=sharedPreferences.getString("clientId","123");
+        userAccessToken = sharedPreferences.getString("response", "123");
+        String re = userAccessToken;
 
-       // Log.d("UinDialogclientid",""+clientId);
-        Log.d("useraccesstokenweb","****"+re);
+        // Log.d("UinDialogclientid",""+clientId);
+        Log.d("useraccesstokenweb", "****" + re);
 
 
         SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
-       String response = sharedPreferences1.getString("response", "123");
+        String response = sharedPreferences1.getString("response", "123");
 
-        if(response!=null) {
+        if (response != null) {
 
-           token = response;
+            token = response;
             Log.d("webvieewtoken", " " + token);
 
             Log.d("webviewrt", " " + response);
         }
 
 
-        Log.d("timesadate88",""+transcationDate);
-        Log.d("timesampyyid88",""+spTranscationId);
-        Log.d("timesampyyamout88",""+paidAmount);
-        Log.d("timesampyyclnt88",""+clientName);
-        Log.d("timesampyytokn88",""+token);
+        Log.d("timesadate88", "" + transcationDate);
+        Log.d("timesampyyid88", "" + spTranscationId);
+        Log.d("timesampyyamout88", "" + paidAmount);
+        Log.d("timesampyyclnt88", "" + clientName);
+        Log.d("timesampyytokn88", "" + token);
         //22nd March,2018
-        url=getIntent().getStringExtra("URL");
+        url = getIntent().getStringExtra("URL");
         // url1=getIntent().getStringExtra("LP");
         Log.d("webViewURL", " " + url);
         webView.loadUrl(url);
-/*------------------- //Added on 2nd Feb------------------------------------*/
+        /*------------------- //Added on 2nd Feb------------------------------------*/
         progressBar.getProgressDrawable().setColorFilter(Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
 
         final WebSettings webSettings = webView.getSettings();
@@ -177,80 +160,80 @@ public class WebViewActivity extends AppCompatActivity {
                     public void onReceiveValue(String html) {
 
                         SharedPreferences.Editor editor = getSharedPreferences(MYSharedpref, MODE_PRIVATE).edit();
-                              editor.putString("clientname", clientName);
-                              editor.commit();
-                              clientName  =html.replace("\"","");
-                              Log.d("HTML890tclientname", clientName);
-                              Log.d("HTML8901clientname", html);
-                                             }
-                                         });
+                        editor.putString("clientname", clientName);
+                        editor.commit();
+                        clientName = html.replace("\"", "");
+                        Log.d("HTML890tclientname", clientName);
+                        Log.d("HTML8901clientname", html);
+                    }
+                });
 
-        webView.evaluateJavascript("(function() { return (document.getElementsByName(\"epResponse.amount\")[0].value); })();", new ValueCallback<String>() {
-                                             @Override
-                                             public void onReceiveValue(String html) {
-
-
-                                                 paidAmount=html.replace("\"","");
-                                                 Log.d("HTML8901amount", paidAmount);
-                                                 Log.d("HTML8901amount", html);
+                webView.evaluateJavascript("(function() { return (document.getElementsByName(\"epResponse.amount\")[0].value); })();", new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String html) {
 
 
-                                             }
-                                         });
-        webView.evaluateJavascript("(function() { return (document.getElementsByName(\"epResponse.SPTxnId\")[0].value); })();", new ValueCallback<String>() {
-                                             @Override
-                                             public void onReceiveValue(String html) {
+                        paidAmount = html.replace("\"", "");
+                        Log.d("HTML8901amount", paidAmount);
+                        Log.d("HTML8901amount", html);
 
-                                                 Log.d("HTML890", html);
-                                                  spTranscationId=html.replace("\"","");
-                                                 Log.d("HTML890SPTxnid", spTranscationId);
+
+                    }
+                });
+                webView.evaluateJavascript("(function() { return (document.getElementsByName(\"epResponse.SPTxnId\")[0].value); })();", new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String html) {
+
+                        Log.d("HTML890", html);
+                        spTranscationId = html.replace("\"", "");
+                        Log.d("HTML890SPTxnid", spTranscationId);
 //                                                 Log.d("HTML890SPTxnid_status", finalstatus);
 
-                                             }
-                                         });
+                    }
+                });
 
-       webView.evaluateJavascript("(function() { return ( document.select(\"div.container payment-section-wishlist.Cancelled\").first();\"})();", new ValueCallback<String>() {
-                                             @Override
-                                             public void onReceiveValue(String html) {
+                webView.evaluateJavascript("(function() { return ( document.select(\"div.container payment-section-wishlist.Cancelled\").first();\"})();", new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String html) {
 
-                                                  mode=html.replace("\"","");
-                                                 // String mode1=mode.substring(19);
-                                                 Log.d("bkunkl,", mode);
-                                                 //Log.d("bkunkl,", mode1);
+                        mode = html.replace("\"", "");
+                        // String mode1=mode.substring(19);
+                        Log.d("bkunkl,", mode);
+                        //Log.d("bkunkl,", mode1);
 
-                                                 Log.d("mbhj", html);
+                        Log.d("mbhj", html);
 
-                                             }
-                                         });
+                    }
+                });
 
-       webView.evaluateJavascript("(function() { return (document.getElementsById(\"txtEmail\")[0].value); })();", new ValueCallback<String>() {
-                                             @Override
-                                             public void onReceiveValue(String html) {
+                webView.evaluateJavascript("(function() { return (document.getElementsById(\"txtEmail\")[0].value); })();", new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String html) {
 
-                                                 String emailID=html.replace("\"","");
-                                                 Log.d("HTML89011emailId", emailID);
+                        String emailID = html.replace("\"", "");
+                        Log.d("HTML89011emailId", emailID);
 
-                                                 Log.d("HTML89011emailId", html);
-
-
-                                             }
-                                         });
-       webView.evaluateJavascript("(function() { return (document.getElementsById(\"txtMobileNumber\")[0].value); })();", new ValueCallback<String>() {
-                                             @Override
-                                             public void onReceiveValue(String html) {
-
-                                                 String txtMobileNumber=html.replace("\"","");
-                                                 Log.d("HTML890tMobileNumber", txtMobileNumber);
-
-                                                 Log.d("HTML890MobileNumber", html);
-                                             }
-                                       });
-      webView.loadUrl("javascript:window.HtmlViewer.showHTML" +
-                                                 "('&lt;html&gt;'+document.getElementsByTagName('html')[0].innerHTML+'&lt;/html&gt;');");
+                        Log.d("HTML89011emailId", html);
 
 
-                                     }
-                                 });
+                    }
+                });
+                webView.evaluateJavascript("(function() { return (document.getElementsById(\"txtMobileNumber\")[0].value); })();", new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String html) {
+
+                        String txtMobileNumber = html.replace("\"", "");
+                        Log.d("HTML890tMobileNumber", txtMobileNumber);
+
+                        Log.d("HTML890MobileNumber", html);
+                    }
+                });
+                webView.loadUrl("javascript:window.HtmlViewer.showHTML" +
+                        "('&lt;html&gt;'+document.getElementsByTagName('html')[0].innerHTML+'&lt;/html&gt;');");
+
+
+            }
+        });
 
 
         webView.setWebChromeClient(new WebChromeClient() {
@@ -288,6 +271,41 @@ public class WebViewActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    public void savetransaction(final String token, final String spTranscationId, final String paidAmount, final String clientName, final String transcationDate, final String payment_status) {
+
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.URL_AllTransaction + token + "&spTranscationId=" + spTranscationId + "&paidAmount=" + paidAmount + "&clientName=" + clientName + "&transcationDate=" + transcationDate + "&payment_status=" + payment_status;
+        urlJsonObj = urlJsonObj.trim().replaceFirst("[ ]", "");
+        Log.d("urljsnweb", "" + urlJsonObj);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, urlJsonObj, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Log.d("savetransaction", "" + response);
+
+                try {
+                    String status = response.getString("status");
+                    String res = response.getString("response");
+                    Log.d("savetransactionstts", "" + status);
+                    Log.d("savetransactiorespo", "" + res);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        Log.d("urltchhi", "" + jsonObjReq);
+
+
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+    }
 
     public class MyJavaScriptInterface {
         public Context ctx;
@@ -305,124 +323,81 @@ public class WebViewActivity extends AppCompatActivity {
         @JavascriptInterface
         public void showHTML(final String html) {
             Log.d("All_HTml_Content", html);
-            if(html.contains(searchText))
-                Log.d("RAJ KUMAR","true11");
+            if (html.contains(searchText))
+                Log.d("RAJ KUMAR", "true11");
             else
                 Log.d("FAILING CITY", "STARLIN");
-            status_cancel=String.valueOf((html.toLowerCase().contains(searchTextCancelFromAtom.toLowerCase())));
-            status_succes=String.valueOf(html.toLowerCase().contains(searchText1.toLowerCase()));
-            status_failure=String.valueOf(html.toLowerCase().contains(searchText2.toLowerCase()));
-           // Log.d("status_cancel", String.valueOf(html.toLowerCase().contains(searchText.toLowerCase()))); // code here
-            Log.d("status_cancel",status_cancel);
-            if ((html.toLowerCase().contains(searchTextCancelFromAtom.toLowerCase())))
-            {
+            status_cancel = String.valueOf((html.toLowerCase().contains(searchTextCancelFromAtom.toLowerCase())));
+            status_succes = String.valueOf(html.toLowerCase().contains(searchText1.toLowerCase()));
+            status_failure = String.valueOf(html.toLowerCase().contains(searchText2.toLowerCase()));
+            // Log.d("status_cancel", String.valueOf(html.toLowerCase().contains(searchText.toLowerCase()))); // code here
+            Log.d("status_cancel", status_cancel);
+            if ((html.toLowerCase().contains(searchTextCancelFromAtom.toLowerCase()))) {
 
-                status="cancelled";
-                finalstatus=status;
-                Log.d("InIFParCaNcel__R","----"+finalstatus);
+                status = "cancelled";
+                finalstatus = status;
+                Log.d("InIFParCaNcel__R", "----" + finalstatus);
 
                 Log.d("STatus11", String.valueOf(html.toLowerCase().contains(searchText.toLowerCase()))); // code here
 
 
-
-                if(!html.equals("null") )
-                {
+                if (!html.equals("null")) {
                     /* 20 March 2018 12:14:06*/
 
-                    String   ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
+                    String ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
                     Long tsLong = System.currentTimeMillis();
                     transcationDate = tsLong.toString();
-                    Log.d("statusfinal",""+finalstatus);
+                    Log.d("statusfinal", "" + finalstatus);
 
                     finish();
-                    savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate,finalstatus);
+                    savetransaction(token, spTranscationId, paidAmount, clientName, transcationDate, finalstatus);
 
                 }
 
 
-            }
-           else if(html.toLowerCase().contains(searchText1.toLowerCase())){
-                status="success";
-                finalstatus=status;
-                Log.d("InelseIFParSuccess","----"+finalstatus);
+            } else if (html.toLowerCase().contains(searchText1.toLowerCase())) {
+                status = "success";
+                finalstatus = status;
+                Log.d("InelseIFParSuccess", "----" + finalstatus);
                 Log.d("STatus112", String.valueOf(html.toLowerCase().contains(searchText1.toLowerCase()))); // code here
 
-                if(!html.equals("null") )
+                if (!html.equals("null"))
                 // if(html != null && finalstatus != null && spTranscationId != null)
                 {
                     /* 20 March 2018 12:14:06*/
 
-                    String   ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
+                    String ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
                     Long tsLong = System.currentTimeMillis();
                     transcationDate = tsLong.toString();
 
-                    Log.d("statusfinal",""+finalstatus);
+                    Log.d("statusfinal", "" + finalstatus);
 
                     finish();
-                    savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate,finalstatus);
+                    savetransaction(token, spTranscationId, paidAmount, clientName, transcationDate, finalstatus);
 
                 }
-            }
-          else   if(html.toLowerCase().contains(searchText2.toLowerCase()))
-            {
-                status="failure";
-                finalstatus=status;
-                Log.d("InelseIFParfailure","----"+finalstatus);
+            } else if (html.toLowerCase().contains(searchText2.toLowerCase())) {
+                status = "failure";
+                finalstatus = status;
+                Log.d("InelseIFParfailure", "----" + finalstatus);
                 Log.d("STatus113", String.valueOf(html.toLowerCase().contains(searchText2.toLowerCase()))); // code here
 
-                if(!html.equals("null") )
+                if (!html.equals("null"))
                 // if(html != null && finalstatus != null && spTranscationId != null)
                 {
                     /* 20 March 2018 12:14:06*/
 
-                    String   ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
+                    String ts = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(new Date());
                     Long tsLong = System.currentTimeMillis();
                     transcationDate = tsLong.toString();
-                    Log.d("statusfinal",""+finalstatus);
+                    Log.d("statusfinal", "" + finalstatus);
                     finish();
-                    savetransaction(token,spTranscationId,paidAmount,clientName,transcationDate,finalstatus);
+                    savetransaction(token, spTranscationId, paidAmount, clientName, transcationDate, finalstatus);
 
                 }
             }
-                    }
+        }
 
-    }
-
-    public  void savetransaction(final String token,final String spTranscationId,final  String paidAmount,final  String clientName,final String transcationDate,final String payment_status)
-    {
-
-        String urlJsonObj=AppConfig.Base_Url+AppConfig.URL_AllTransaction+token+"&spTranscationId="+spTranscationId+"&paidAmount="+paidAmount+"&clientName="+clientName+"&transcationDate="+transcationDate+"&payment_status="+payment_status;
-        urlJsonObj=urlJsonObj.trim().replaceFirst("[ ]","");
-        Log.d("urljsnweb",""+urlJsonObj);
-        JsonObjectRequest jsonObjReq =new JsonObjectRequest(Request.Method.POST, urlJsonObj,null, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-
-                Log.d("savetransaction",""+response);
-
-                try {
-                    String status = response.getString("status");
-                    String res = response.getString("response");
-                    Log.d("savetransactionstts",""+status);
-                    Log.d("savetransactiorespo",""+res);
-
-                    } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        Log.d("urltchhi",""+jsonObjReq );
-
-
-        AppController.getInstance().addToRequestQueue(jsonObjReq );
     }
 }
 

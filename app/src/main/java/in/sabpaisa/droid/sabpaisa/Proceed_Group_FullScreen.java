@@ -88,40 +88,35 @@ import java.sql.Timestamp;
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_FEED_COMMENTS;
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_GROUP_COMMENTS;
 
-public class Proceed_Group_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,View.OnKeyListener {
+public class Proceed_Group_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnKeyListener {
 
-    TextView groupsName,group_description_details;
+    public static String MySharedPRoceedGroupFullScreen = "mySharedPrefForTime";
+    TextView groupsName, group_description_details;
     ImageView groupImage;
     String encodedUrl;
     CommentsDB dbHelper;
-    private int TOTAL_PAGES = 3;
     String date1;
-    String i,Gts;
+    String i, Gts;
     Timestamp Groupts;
-    public static String MySharedPRoceedGroupFullScreen="mySharedPrefForTime";
-
-    String GroupsNm,GroupsDiscription,GroupsImg,GroupId,userAccessToken,response;
-    private EndlessScrollListener scrollListener;
-    ArrayList<CommentData> arrayList,feedArrayList;
+    String GroupsNm, GroupsDiscription, GroupsImg, GroupId, userAccessToken, response;
+    ArrayList<CommentData> arrayList, feedArrayList;
     Button button1;
     SwipeRefreshLayout swipeRefreshLayout;
-
     View collapsingLayout;
     Toolbar toolbar;
     Button prvtfeeds;
     ScrollView scrollView;
-
     /////////Local Db//////////
     AppDbComments db;
     ArrayList<GroupsCommentOfflineModel> arrayListForOffline;
-
     ArrayList<CommentData> commentArrayList;
     int count = 1;
-
     ProgressBar progress;
-
     SpinKitView spin_kit;
     ImageView imageView2;
+    EditText group_details_text_view = null;
+    private int TOTAL_PAGES = 3;
+    private EndlessScrollListener scrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,16 +136,16 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         groupsName = (TextView) findViewById(R.id.groupsName);
         group_description_details = (TextView) findViewById(R.id.group_description_details);
         groupImage = (ImageView) findViewById(R.id.groupImage);
-        progress = (ProgressBar)findViewById(R.id.progress);
+        progress = (ProgressBar) findViewById(R.id.progress);
 
-        spin_kit = (SpinKitView)findViewById(R.id.spin_kit);
-        imageView2 = (ImageView)findViewById(R.id.imageView2);
+        spin_kit = (SpinKitView) findViewById(R.id.spin_kit);
+        imageView2 = (ImageView) findViewById(R.id.imageView2);
 
         button1 = (Button) findViewById(R.id.b1);
         prvtfeeds = (Button) findViewById(R.id.b2);
         // emojIcon = new EmojIconActions(this);\
         // This is used for the app custom toast and activity transition
-        ChatSDKUiHelper.initDefault();
+       /* ChatSDKUiHelper.initDefault();
 
 // Init the network manager
         BNetworkManager.init(getApplicationContext());
@@ -159,7 +154,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
 
 // Set the adapter
-        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);*/
 
         commentArrayList = new ArrayList<CommentData>();
 
@@ -278,7 +273,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
                 llm.setReverseLayout(true);
-                scrollListener=new EndlessScrollListener(llm) {
+                scrollListener = new EndlessScrollListener(llm) {
                     @Override
                     public void onLoadMore(int page, int totalItemsCount) {
                         callGetCommentList(GroupId);
@@ -296,7 +291,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     }
                 }, 10L);
 
-            }else {
+            } else {
                 Log.d("PGFLocalDb", "In Else Part");
                 Toast.makeText(Proceed_Group_FullScreen.this, "No Data Found !", Toast.LENGTH_SHORT).show();
             }
@@ -304,10 +299,6 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         }
 
     }
-
-
-
-
 
     @Override
     public boolean onKey(View view, int keyCode, KeyEvent event) {
@@ -321,7 +312,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
             if (!event.isShiftPressed()) {
-                Log.v("AndroidEnterKeyActivity","Enter Key Pressed!");
+                Log.v("AndroidEnterKeyActivity", "Enter Key Pressed!");
                 switch (view.getId()) {
                     case R.id.commentadd:
                         responseText
@@ -344,48 +335,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     }
 
-
-
-
-
-    //Code for fetching image from server
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
-    }
-
-
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
-        final CommentAdapter ca = new CommentAdapter(arrayList,getApplicationContext());
+        final CommentAdapter ca = new CommentAdapter(arrayList, getApplicationContext());
 
         rv.setAdapter(ca);
 
@@ -404,27 +356,25 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
         rv.setLayoutManager(llm);
         rv.setNestedScrollingEnabled(false);
-//        scrollView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                //replace this line to scroll up or down
-//                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-//            }
-//        }, 10L);
+/*        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //replace this line to scroll up or down
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 10L);
+
+        */
         progress.setVisibility(View.GONE);
     }
 
     //EditText group_details_text_view = null;
-
-    EditText group_details_text_view = null;
 
     public void onClickSendComment(View view) {
         group_details_text_view = (EditText) findViewById(R.id.commentadd);
 
 
         StringEscapeUtils.escapeJava(group_details_text_view.getText().toString());
-
-
 
 
         EditText etEmojiEditText = new EditText(this);
@@ -437,15 +387,14 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
 
         String commentText = group_details_text_view.getText().toString();
-        i=StringEscapeUtils.escapeJava(commentText);
-        Log.d("commentText3","67667767 "+i);
+        i = StringEscapeUtils.escapeJava(commentText);
+        Log.d("commentText3", "67667767 " + i);
 
         // showpDialog(view);
-        if (i.trim().length()==0)
-        {
+        if (i.trim().length() == 0) {
 
-            Log.d("commentText2"," "+commentText);
-            AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Group_FullScreen.this);
+            Log.d("commentText2", " " + commentText);
+            AlertDialog.Builder builder = new AlertDialog.Builder(Proceed_Group_FullScreen.this);
             builder.setTitle("Comment");
             builder.setMessage("Hey,looks like you forgot to enter text.");
             builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
@@ -457,29 +406,21 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
 
-        }
-        else if(i.equals("%"))
+        } else if (i.equals("%"))
 
         {
             commentText.replace("%", "%25");
             Log.e("ctctcc ", "CommentData" + commentText);
             callCommentService(GroupId, userAccessToken, commentText);
-        }
-
-
-        else if(i.equals("&"))
+        } else if (i.equals("&"))
 
         {
             commentText.replace("&", "%26");
             Log.e("ctctcc ", "CommentData2 " + commentText);
             callCommentService(GroupId, userAccessToken, commentText);
 
-        }
-
-
-        else if(i.length()>1999)
-        {
-            AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Group_FullScreen.this);
+        } else if (i.length() > 1999) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(Proceed_Group_FullScreen.this);
             builder.setTitle("Comment");
             builder.setMessage("Hey folk,It looks like you exceeded the text limit");
             builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
@@ -508,15 +449,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     private void callCommentService(final String GroupId, final String userAccessToken, final String comment_text) {
 
 
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" +URLEncoder.encode(i)
-                ;
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(i);
         Log.d("242424", urlJsonObj);
-
 
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
-
 
 
             @Override
@@ -534,23 +472,21 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                         spin_kit.setVisibility(View.GONE);
 
                         ///////////RRRRRRRRRRRRRRRRRRRR?????????????????
-                        if(response.getString("response").equals("Not A Member")){
-                            Toast.makeText(getApplicationContext(),"You cannot able to comment because your request is in pending status",Toast.LENGTH_SHORT).show();
+                        if (response.getString("response").equals("Not A Member")) {
+                            Toast.makeText(getApplicationContext(), "You cannot able to comment because your request is in pending status", Toast.LENGTH_SHORT).show();
                         }
                         /////////////RRRRRRRRRRRRR??????????????????
 
                         group_details_text_view.setText("");
                         //Toast.makeText(Proceed_Group_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
                         commentArrayList.clear();
-                        count=1;
+                        count = 1;
                         callGetCommentList(GroupId);
 
-                    }
-                    else if (status.equals("failed"))
-                    {
+                    } else if (status.equals("failed")) {
                         imageView2.setVisibility(View.VISIBLE);
                         spin_kit.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(),"Please Join the Group",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Please Join the Group", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -564,8 +500,6 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 // hidepDialog();
             }
         }, new Response.ErrorListener() {
-
-
 
 
             @Override
@@ -597,36 +531,28 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             }
 
 
-
-
-
         });
-
-
-
 
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-
     public void callGetCommentList(final String GropuId) {
-
 
 
         boolean checkDb = db.isTableExists(TABLE_GROUP_COMMENTS);
 
-        Log.d("DbValuePGF"," "+checkDb);
+        Log.d("DbValuePGF", " " + checkDb);
 
-        if (checkDb == true){
+        if (checkDb == true) {
             db.deleteAllGroupCommentData(GropuId);
         }
 
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
-        String tag_string_req="req_register";
+        String tag_string_req = "req_register";
         //String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getGroupsComments?group_id=" + GropuId;
-        String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getPageGroupsComments?group_id=" + GropuId+"&pageNo="+count+"&rowLimit=25";
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getPageGroupsComments?group_id=" + GropuId + "&pageNo=" + count + "&rowLimit=25";
 
         //StringEscapeUtils.unescapeJava(String text)
 
@@ -644,7 +570,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
-                urlJsonObj, new Response.Listener<String>(){
+                urlJsonObj, new Response.Listener<String>() {
 
             // Takes the response from the JSON request
             @Override
@@ -654,7 +580,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
                     JSONObject jsonObject = new JSONObject(response);
-                    Log.d("jsonobject1",""+jsonObject);
+                    Log.d("jsonobject1", "" + jsonObject);
 
 
                     //String status = jsonObject.getString("status");
@@ -664,8 +590,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     JSONArray jsonArray = null;
                     Object obj = jsonObject.get("response");
 
-                    if(obj instanceof JSONArray){
-                        jsonArray = (JSONArray)obj;
+                    if (obj instanceof JSONArray) {
+                        jsonArray = (JSONArray) obj;
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             CommentData groupData = new CommentData();
@@ -681,18 +607,18 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
                             String str = jsonArray.getString(i);
                             Log.d("444", str);
-                            String userImageUrl=jsonObject1.getString("userImageUrl");
+                            String userImageUrl = jsonObject1.getString("userImageUrl");
                             //  String userImageUrl1=groupData.getUserImageUrl().toString();
                             //.split(" ")[1].replace(".0", "");
 
-                            Log.d("dataTimePFF"," "+dataTime);
-                            Log.d("dataimageurlgroup1111"," "+userImageUrl);
+                            Log.d("dataTimePFF", " " + dataTime);
+                            Log.d("dataimageurlgroup1111", " " + userImageUrl);
 
 
-                            JSONObject jsonObject2=new JSONObject(userImageUrl);
+                            JSONObject jsonObject2 = new JSONObject(userImageUrl);
                             groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
-                            String image=groupData.getUserImageUrl().toString();
-                            Log.d("imageuser"," "+image);
+                            String image = groupData.getUserImageUrl().toString();
+                            Log.d("imageuser", " " + image);
 
 
                             // Log.d("dataimageurlgroup222222"," "+userImageUrl1);
@@ -706,7 +632,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
                             //////////////////////////////LOCAL DB//////////////////////////////////////
 
-                            boolean isInserted = db.insertGroupComments(groupData,GropuId);
+                            boolean isInserted = db.insertGroupComments(groupData, GropuId);
                             if (isInserted == true) {
 
                                 //Toast.makeText(Proceed_Group_FullScreen.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
@@ -729,15 +655,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
                         }
                         loadCommentListView(commentArrayList);
-                    }
-
-                    else {
+                    } else {
                         progress.setVisibility(View.GONE);
-                        Toast.makeText(Proceed_Group_FullScreen.this,"No Record Found !",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Proceed_Group_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();
                     }
 
-                    Log.d("PGF","  "+obj.toString());
-
+                    Log.d("PGF", "  " + obj.toString());
 
 
                 }
@@ -783,6 +706,192 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
 
+    private String getDate(long time) throws ParseException {
+
+     /*   Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM HH:mm:ss.SS");
+        String strDate = sdf.format(cal.getTime());
+        Log.d("CurrentdateFormat: ","" + strDate);
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat();
+        sdf1.applyPattern("dd/MM HH:mm");
+        Date date = sdf1.parse(strDate);
+        String string=sdf1.format(date);*/
+      /*  Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+       // Calendar cal = Calendar.getInstance();
+
+        cal.setTimeInMillis(time);
+        SimpleDateFormat simpleDateFormat= new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SS");
+        String strDate = simpleDateFormat.format(cal.getTime());
+        Date date = simpleDateFormat.parse(strDate);
+        String string=simpleDateFormat.format(date);
+        String date = DateFormat.format("DD:HH:mm", cal).toString();
+        return date;*/
+        //return string;
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(time);
+        String date = DateFormat.format("dd/MM HH:mm", cal).toString();
+        date1 = DateFormat.format("dd/MM ", cal).toString();
+        Log.d("date11", "" + date1);
+        return date;
+    }
+
+    @Override
+    public void onRefresh() {
+
+        if (isOnline()) {
+
+            count++;
+            callGetCommentList(GroupId);
+        } else {
+            swipeRefreshLayout.setRefreshing(false);
+            Toast.makeText(Proceed_Group_FullScreen.this, "Seems that you are not connected to the internet \n Please connect your internet to load more data", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("PFF", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        SharedPreferences preferences = getSharedPreferences(MySharedPRoceedGroupFullScreen, 0);
+        preferences.edit().remove("Groupts").commit();
+
+        // Store our shared preference
+        SharedPreferences.Editor editor = getSharedPreferences("GroupTime", MODE_PRIVATE).edit();
+
+       /* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+        Editor ed = sp.edit();
+       */
+        editor.putBoolean("active", true);
+        Log.d("ARCOnStartgroup", "----");
+        editor.commit();
+    }
+
+/*public  void numberofgroupmember()
+{
+    Intent intent=new Intent(this,NumberOfGroups.class);
+    startActivity(intent);
+}*/
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Date date = new Date();
+        //getTime() returns current time in milliseconds
+        long time = date.getTime();
+        //Passed the milliseconds to constructor of Timestamp class
+        Groupts = new Timestamp(time);
+        Gts = String.valueOf(Groupts);
+        System.out.println("Current Time Stamp: " + Gts);
+        Log.d("ARCTimeGroup", "" + time);
+        Log.d("ARCTimeGroup", "" + Gts);
+
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences(MySharedPRoceedGroupFullScreen, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("activeGroup", false);
+
+        ed.putString("Groupts", String.valueOf(Long.valueOf(time)));
+        Log.d("ARCTimeGroupts111", "" + String.valueOf(Gts));
+        Log.d("ARCOnStopGroup", "--" + String.valueOf(Long.valueOf(time)));
+        ed.commit();
+
+      /*  // Store our shared preference
+        SharedPreferences sp = getSharedPreferences(MySharedPRoceedGroupFullScreen, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", false);
+        ed.putString("Groupts", ts);
+        Log.d("ARCOnStopGroup","--");
+
+        ed.commit();
+        Long tsLong = System.currentTimeMillis()/1000;
+        ts = tsLong.toString();
+        Log.d("ARCTimeGroup",""+ts);
+*/
+    }
+
+
+/*
+public void privatefeeds(final String groupId)
+{
+
+    String Url=AppConfig.Base_Url+AppConfig.App_api+"privatefeed?groupId=";
+    StringRequest stringRequest=new StringRequest(Request.Method.GET,Url+Groupid ,new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+           Log.d("Private_feeds",response);
+        }
+
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+
+        }
+    });
+}*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", false);
+        Log.d("ARCOnResumeGroup", "----");
+
+        ed.commit();
+
+    }
+
+    //Code for fetching image from server
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            loading.show();
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            //loading.dismiss();
+        }
+
+    }
+
     public class LoadDBfromAPI extends AsyncTask<JSONArray, Void, Void> {
 
         @Override
@@ -825,189 +934,6 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             loadCommentListView(arrayList);
         }
 
-
-    }
-
-
-    private String getDate(long time) throws ParseException {
-
-     /*   Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM HH:mm:ss.SS");
-        String strDate = sdf.format(cal.getTime());
-        Log.d("CurrentdateFormat: ","" + strDate);
-
-        SimpleDateFormat sdf1 = new SimpleDateFormat();
-        sdf1.applyPattern("dd/MM HH:mm");
-        Date date = sdf1.parse(strDate);
-        String string=sdf1.format(date);*/
-      /*  Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-       // Calendar cal = Calendar.getInstance();
-
-        cal.setTimeInMillis(time);
-        SimpleDateFormat simpleDateFormat= new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SS");
-        String strDate = simpleDateFormat.format(cal.getTime());
-        Date date = simpleDateFormat.parse(strDate);
-        String string=simpleDateFormat.format(date);
-        String date = DateFormat.format("DD:HH:mm", cal).toString();
-        return date;*/
-        //return string;
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(time);
-        String date = DateFormat.format("dd/MM HH:mm", cal).toString();
-        date1 = DateFormat.format("dd/MM ", cal).toString();
-        Log.d("date11",""+date1);
-        return date;
-    }
-
-    @Override
-    public void onRefresh() {
-
-        if (isOnline()){
-
-        count++;
-        callGetCommentList(GroupId);
-        }else {
-            swipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(Proceed_Group_FullScreen.this,"Seems that you are not connected to the internet \n Please connect your internet to load more data",Toast.LENGTH_SHORT).show();
-        }
-    }
-
-/*public  void numberofgroupmember()
-{
-    Intent intent=new Intent(this,NumberOfGroups.class);
-    startActivity(intent);
-}*/
-
-
-
-    public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
-        // test for connection
-        if (cm.getActiveNetworkInfo() != null
-                && cm.getActiveNetworkInfo().isAvailable()
-                && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
-        } else {
-            Log.v("PFF", "Internet Connection Not Present");
-            return false;
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-public void privatefeeds(final String groupId)
-{
-
-    String Url=AppConfig.Base_Url+AppConfig.App_api+"privatefeed?groupId=";
-    StringRequest stringRequest=new StringRequest(Request.Method.GET,Url+Groupid ,new Response.Listener<String>() {
-        @Override
-        public void onResponse(String response) {
-           Log.d("Private_feeds",response);
-        }
-
-    }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-
-        }
-    });
-}*/
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        SharedPreferences preferences = getSharedPreferences(MySharedPRoceedGroupFullScreen, 0);
-        preferences.edit().remove("Groupts").commit();
-
-        // Store our shared preference
-        SharedPreferences.Editor editor = getSharedPreferences("GroupTime",MODE_PRIVATE).edit();
-
-       /* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
-        Editor ed = sp.edit();
-       */ editor.putBoolean("active", true);
-        Log.d("ARCOnStartgroup","----");
-        editor.commit();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        Date date= new Date();
-        //getTime() returns current time in milliseconds
-        long time = date.getTime();
-        //Passed the milliseconds to constructor of Timestamp class
-        Groupts = new Timestamp(time);
-        Gts= String.valueOf(Groupts);
-        System.out.println("Current Time Stamp: "+Gts);
-        Log.d("ARCTimeGroup",""+time);
-        Log.d("ARCTimeGroup",""+Gts);
-
-        // Store our shared preference
-        SharedPreferences sp = getSharedPreferences(MySharedPRoceedGroupFullScreen, MODE_PRIVATE);
-        SharedPreferences.Editor ed = sp.edit();
-        ed.putBoolean("activeGroup", false);
-
-        ed.putString("Groupts", String.valueOf(Long.valueOf(time)));
-        Log.d("ARCTimeGroupts111",""+String.valueOf(Gts));
-        Log.d("ARCOnStopGroup","--"+String.valueOf(Long.valueOf(time)));
-        ed.commit();
-
-      /*  // Store our shared preference
-        SharedPreferences sp = getSharedPreferences(MySharedPRoceedGroupFullScreen, MODE_PRIVATE);
-        SharedPreferences.Editor ed = sp.edit();
-        ed.putBoolean("active", false);
-        ed.putString("Groupts", ts);
-        Log.d("ARCOnStopGroup","--");
-
-        ed.commit();
-        Long tsLong = System.currentTimeMillis()/1000;
-        ts = tsLong.toString();
-        Log.d("ARCTimeGroup",""+ts);
-*/
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Store our shared preference
-        SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
-        SharedPreferences.Editor ed = sp.edit();
-        ed.putBoolean("active", false);
-        Log.d("ARCOnResumeGroup" ,"----");
-
-        ed.commit();
 
     }
 
