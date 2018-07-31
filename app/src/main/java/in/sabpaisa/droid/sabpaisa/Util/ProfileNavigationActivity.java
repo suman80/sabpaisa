@@ -301,7 +301,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         if (isOnline()) {
             showProfileImage();
         }else {
-            progressBar.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.GONE);
             Cursor res = db.getParticularImageData(userAccessToken);
 
             if (res.getCount() > 0) {
@@ -710,9 +710,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
 
                     } else {
+                        progressBar.setVisibility(View.GONE);
                         // Toast.makeText(getApplicationContext(), "Cannot able to load image!", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
+                    progressBar.setVisibility(View.GONE);
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -722,7 +724,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progressBar.setVisibility(View.GONE);
                 if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
 
