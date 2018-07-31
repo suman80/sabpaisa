@@ -26,6 +26,7 @@ import android.text.Spanned;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AbsListView;
@@ -114,6 +115,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     boolean isScrolling = false;
     int currentItems,totalItems,scrolledOutItems;
     int count = 1;
+
+    ActionMode actionMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,6 +263,10 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
         //new LoadDBfromAPI().execute(response);
+
+        RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
+
+
     }
 
 
