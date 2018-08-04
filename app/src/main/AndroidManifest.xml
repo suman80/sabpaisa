@@ -229,11 +229,11 @@
         </activity>
         <activity android:name=".MembersProfile" />
         <activity android:name=".PrivateGroupFeeds" />
-        <activity android:name=".ChangePassword"></activity>
-        <activity android:name=".NotificationPopUPActivity"
-            android:theme="@style/AppTheme.popup">
-
-        </activity>
+        <activity android:name=".ChangePassword" />
+        <activity
+            android:name=".NotificationPopUPActivity"
+            android:theme="@style/AppTheme.popup"></activity>
+        <activity android:name=".SharingActivity"></activity>
     </application>
 
 </manifest>

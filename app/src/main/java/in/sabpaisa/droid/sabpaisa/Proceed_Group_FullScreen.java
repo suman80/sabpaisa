@@ -337,7 +337,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
-        final CommentAdapter ca = new CommentAdapter(arrayList, getApplicationContext());
+        final CommentAdapter ca = new CommentAdapter(arrayList, getApplicationContext(),toolbar);
 
         rv.setAdapter(ca);
 

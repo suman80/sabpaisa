@@ -1,8 +1,9 @@
 package in.sabpaisa.droid.sabpaisa;
 
 
+import java.io.Serializable;
 
-public class  CommentData extends in.sabpaisa.droid.sabpaisa.Util.CommentData {
+public class  CommentData extends in.sabpaisa.droid.sabpaisa.Util.CommentData implements Serializable {
 
 
     String userImageUrl;

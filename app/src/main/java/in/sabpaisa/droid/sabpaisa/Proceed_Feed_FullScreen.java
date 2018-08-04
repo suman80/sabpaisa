@@ -140,9 +140,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         Log.d("FFResponse", " " + response);
 
-        feedsName = (TextView) findViewById(R.id.feedsName);
-        feed_description_details = (TextView) findViewById(R.id.feed_description_details);
-        feedImage = (ImageView) findViewById(R.id.feedImage);
+        //feedsName = (TextView) findViewById(R.id.feedsName);
+        //feed_description_details = (TextView) findViewById(R.id.feed_description_details);
+        //feedImage = (ImageView) findViewById(R.id.feedImage);
         swipeRefreshLayout= (SwipeRefreshLayout)
                 findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -159,7 +159,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         Log.d("feedsDiscriptionPFF", "" + feedsDiscription);
         Log.d("feedImgPFF", "" + feedImg);
 
-        feedsName.setText(FeedsNm);
+        /*feedsName.setText(FeedsNm);
         feed_description_details.setText(feedsDiscription);
         //new DownloadImageTask(feedImage).execute(feedImg);
 
@@ -167,7 +167,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 .load(feedImg)
                 .error(R.drawable.image_not_found)
                 .into(feedImage);
-
+*/
         ///////////////////////DB/////////////////////////////////
         db = new AppDbComments(Proceed_Feed_FullScreen.this);
 
@@ -307,7 +307,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
-        final CommentAdapter ca = new CommentAdapter(arrayList,getApplicationContext());
+        final CommentAdapter ca = new CommentAdapter(arrayList,getApplicationContext(),toolbar);
         rv.setAdapter(ca);
 
         final LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -808,6 +808,7 @@ super.onBackPressed();
 this.finish();
 }
 */
+
 
 
 }
