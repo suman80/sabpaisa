@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/groupMembers"
+        android:title="Group Members"
+        app:showAsAction="never"
+        android:actionLayout="@layout/activity_proceed_group_full_screen"
+        />
+
+    <item android:id="@+id/groupFeeds"
+        android:title="Group Feeds"
+        app:showAsAction="never"
+        android:actionLayout="@layout/activity_proceed_group_full_screen"
+        />
+
+</menu>
+

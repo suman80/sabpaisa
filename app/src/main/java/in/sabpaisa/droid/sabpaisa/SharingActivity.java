@@ -65,7 +65,7 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Share");
-        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
+        toolbar.setNavigationIcon(R.drawable.previousmoresmall);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

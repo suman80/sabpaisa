@@ -125,7 +125,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         setContentView(R.layout.activity_proceed__feed__full_screen);
         // this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
 //        /////////////////////////////////
         commentArrayList = new ArrayList<CommentData>();
         /////////////////////////
@@ -158,6 +158,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         Log.d("FeedsNmPFF", "" + FeedsNm);
         Log.d("feedsDiscriptionPFF", "" + feedsDiscription);
         Log.d("feedImgPFF", "" + feedImg);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(FeedsNm);
+        setSupportActionBar(toolbar);
 
         /*feedsName.setText(FeedsNm);
         feed_description_details.setText(feedsDiscription);
@@ -176,7 +179,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         arrayList = new ArrayList<>();
         toolbar.setNavigationIcon(R.drawable.previousmoresmall);
 
-        toolbar.setTitle(FeedsNm);
         toolbar.setNavigationOnClickListener(
                 new View.OnClickListener() {
                     @Override

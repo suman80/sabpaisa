@@ -91,7 +91,7 @@
             android:textColor="@color/black"
             android:textIsSelectable="true"
             android:textSize="15sp"
-            android:autoLink="web"
+            android:autoLink="web|email|phone|map"
             />
 
     </LinearLayout>

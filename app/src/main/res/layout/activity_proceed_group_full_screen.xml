@@ -1,134 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/collapsingLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+        <FrameLayout
+            android:id="@+id/toolbar_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="@color/bg_screen"
-            app:layout_scrollFlags="scroll|snap">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_collapseMode="pin">
 
-            <LinearLayout
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbarPGF"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/coa_notification_header"
-                android:layout_marginTop="?attr/actionBarSize"
-                android:background="@color/white"
-                android:orientation="vertical">
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/bg_screen"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:subtitleTextColor="@color/white"
+                app:titleTextAppearance="@style/toolBarStyle"
+                app:titleTextColor="@color/white">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/coa_campush_img"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+            </android.support.v7.widget.Toolbar>
 
 
-                    <TextView
-                        android:id="@+id/groupsName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.1"
-                        android:shadowColor="@color/bg_orange"
-                        android:singleLine="true"
-                        android:text="Council of Architecture"
-                        android:textColor="@color/bg_orange"
-                        android:textSize="16sp"
-                        android:textStyle="bold|italic" />
+        </FrameLayout>
 
-                    <Button
-                        android:id="@+id/b1"
-                        android:layout_width="100dp"
-                        android:layout_height="27dp"
-                        android:background="@drawable/button_corner"
-                        android:onClick="numberofgroupmember"
-                        android:text="Group Members"
-                        android:textAllCaps="false"
-                        android:textSize="12sp"
-                        android:textStyle="italic" />
-
-                    <Button
-                        android:id="@+id/b2"
-                        android:layout_width="100dp"
-                        android:layout_height="27dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/button_corner"
-                        android:text="Group feeds"
-                        android:textAllCaps="false"
-                        android:textSize="12sp"
-                        android:textStyle="italic" />
-                </LinearLayout>
-
-                <!--<LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                </LinearLayout>-->
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/group_description_details"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="@string/message"
-                        android:textColor="@color/bg_text_color"
-                        android:textSize="@dimen/text_size_xsmall"
-                        android:visibility="gone" />
-
-                    <ImageView
-                        android:id="@+id/groupImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/default1"
-                        android:visibility="gone" />
-                </LinearLayout>
-            </LinearLayout>
-
-
-            <FrameLayout
-                android:id="@+id/toolbar_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_collapseMode="pin">
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@color/bg_screen"
-                    app:contentInsetLeft="0dp"
-                    app:contentInsetStart="0dp"
-                    app:popupTheme="@style/AppTheme.PopupOverlay"
-                    app:subtitleTextColor="@color/white"
-                    app:titleTextAppearance="@style/toolBarStyle"
-                    app:titleTextColor="@color/white"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    />
-            </FrameLayout>
-        </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
+
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"
@@ -201,25 +110,7 @@
         </ScrollView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-    <!--
 
-      <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-          android:layout_gravity="bottom"
-          >
-
-          <include
-              layout="@layout/box_comment"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-
-              android:layout_gravity="bottom"
-              android:layout_marginLeft="10dp"
-              android:layout_marginRight="10dp" />
-      </LinearLayout>
-
-    -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -230,16 +121,6 @@
         android:background="#fff">
 
 
-        <!--<include
-            layout="@layout/box_comment"
-            android:layout_width="334dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@id/comment"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />-->
-
         <TextView
             android:id="@+id/responseText"
             android:layout_width="wrap_content"
@@ -247,10 +128,6 @@
             android:padding="5dp"
             android:text=""
             android:textAppearance="?android:attr/textAppearanceMedium" />
-        <!--  <ImageView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:src="@drawable/previous" />-->
 
 
         <LinearLayout
@@ -289,26 +166,23 @@
 
             </LinearLayout>
 
-            <com.github.ybq.android.spinkit.SpinKitView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/spin_kit"
                 style="@style/SpinKitView.Large.Circle"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                app:SpinKit_Color="@color/colorAccent"
                 android:visibility="gone"
-                />
+                app:SpinKit_Color="@color/colorAccent" />
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
                 android:layout_toEndOf="@+id/linearLayout"
                 android:background="@drawable/ic_action_send_commnt"
-                android:onClick="onClickSendComment"
-                android:layout_gravity="center_vertical"
-                />
+                android:onClick="onClickSendComment" />
 
         </LinearLayout>
 

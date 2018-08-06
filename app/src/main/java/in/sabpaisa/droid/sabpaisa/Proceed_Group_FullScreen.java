@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -25,11 +27,17 @@ import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -80,6 +88,7 @@ import in.sabpaisa.droid.sabpaisa.Model.GroupsCommentOfflineModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import retrofit2.http.HTTP;
 
 
@@ -92,19 +101,14 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     public static String MySharedPRoceedGroupFullScreen = "mySharedPrefForTime";
     TextView groupsName, group_description_details;
-    ImageView groupImage;
-    String encodedUrl;
     CommentsDB dbHelper;
     String date1;
     String i, Gts;
     Timestamp Groupts;
     String GroupsNm, GroupsDiscription, GroupsImg, GroupId, userAccessToken, response;
     ArrayList<CommentData> arrayList, feedArrayList;
-    Button button1;
     SwipeRefreshLayout swipeRefreshLayout;
-    View collapsingLayout;
     Toolbar toolbar;
-    Button prvtfeeds;
     ScrollView scrollView;
     /////////Local Db//////////
     AppDbComments db;
@@ -127,67 +131,6 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         setContentView(R.layout.activity_proceed_group_full_screen);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        collapsingLayout = findViewById(R.id.collapsingLayout);
-//        this.getWindow().setSoftInputMode(
-//                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
-        groupsName = (TextView) findViewById(R.id.groupsName);
-        group_description_details = (TextView) findViewById(R.id.group_description_details);
-        groupImage = (ImageView) findViewById(R.id.groupImage);
-        progress = (ProgressBar) findViewById(R.id.progress);
-
-        spin_kit = (SpinKitView) findViewById(R.id.spin_kit);
-        imageView2 = (ImageView) findViewById(R.id.imageView2);
-
-        button1 = (Button) findViewById(R.id.b1);
-        prvtfeeds = (Button) findViewById(R.id.b2);
-        // emojIcon = new EmojIconActions(this);\
-        // This is used for the app custom toast and activity transition
-       /* ChatSDKUiHelper.initDefault();
-
-// Init the network manager
-        BNetworkManager.init(getApplicationContext());
-
-// Create a new adapter
-        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
-
-// Set the adapter
-        BNetworkManager.sharedManager().setNetworkAdapter(adapter);*/
-
-        commentArrayList = new ArrayList<CommentData>();
-
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Proceed_Group_FullScreen.this, NumberOfGroups.class);
-                intent.putExtra("GroupId", GroupId);
-
-                startActivity(intent);
-
-            }
-        });
-
-        prvtfeeds.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Proceed_Group_FullScreen.this, PrivateGroupFeeds.class);
-                intent.putExtra("GroupId", GroupId);
-                startActivity(intent);
-            }
-        });
-        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
-
-        response = sharedPreferences.getString("response", "123");
-
-        userAccessToken = response;
-
-        Log.d("PGFAccessToken", " " + userAccessToken);
-
-        Log.d("PGFResponse", " " + response);
 
         GroupId = getIntent().getStringExtra("groupId");
         GroupsNm = getIntent().getStringExtra("groupName");
@@ -199,20 +142,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         Log.d("GroupID_PGFS", "" + GroupId);
 
 
-        groupsName.setText(GroupsNm);
-        group_description_details.setText(GroupsDiscription);
-        // new DownloadImageTask(groupImage).execute(GroupsImg);
-
-        /*Glide.with(getApplicationContext())
-                .load(GroupsImg)
-                .error(R.drawable.image_not_found)
-                .into(groupImage);
-*/
-        arrayList = new ArrayList<>();
+        toolbar = (Toolbar) findViewById(R.id.toolbarPGF);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationIcon(R.drawable.previousmoresmall);
-
-        toolbar.setTitle(GroupsNm);
         toolbar.setTitleMargin(11, 11, 11, 11);
+        getSupportActionBar().setTitle(GroupsNm);
         toolbar.setNavigationOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -223,6 +158,46 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 }
 
         );
+
+
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
+
+        progress = (ProgressBar) findViewById(R.id.progress);
+
+        spin_kit = (SpinKitView) findViewById(R.id.spin_kit);
+        imageView2 = (ImageView) findViewById(R.id.imageView2);
+
+        commentArrayList = new ArrayList<CommentData>();
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+
+       /* ChatSDKUiHelper.initDefault();
+
+// Init the network manager
+        BNetworkManager.init(getApplicationContext());
+
+// Create a new adapter
+        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
+
+// Set the adapter
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);*/
+
+
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+        response = sharedPreferences.getString("response", "123");
+
+        userAccessToken = response;
+
+        Log.d("PGFAccessToken", " " + userAccessToken);
+
+        Log.d("PGFResponse", " " + response);
+
+
+
+        arrayList = new ArrayList<>();
 
         ///////////////////////DB/////////////////////////////////
         db = new AppDbComments(Proceed_Group_FullScreen.this);
@@ -936,5 +911,36 @@ public void privatefeeds(final String groupId)
 
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.group_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.groupMembers:
+                Intent intent = new Intent(Proceed_Group_FullScreen.this, NumberOfGroups.class);
+                intent.putExtra("GroupId", GroupId);
+                startActivity(intent);
+                return true;
+
+
+
+            case R.id.groupFeeds:
+                Intent intent1 = new Intent(Proceed_Group_FullScreen.this, PrivateGroupFeeds.class);
+                intent1.putExtra("GroupId", GroupId);
+                startActivity(intent1);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
 }
