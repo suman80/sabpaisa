@@ -1,137 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/collapsingLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
-
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="@color/bg_screen"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/coa_notification_header"
-                android:layout_marginTop="?attr/actionBarSize"
-                android:background="@color/white"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/coa_campush_img"
-
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:id="@+id/feedsName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:text="Council of Architecture"
-                        android:textColor="@color/black"
-                        android:singleLine="true"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.1"
-                        android:textSize="14sp" />
-
-                    <Button
-                        android:layout_width="100dp"
-                        android:layout_height="27dp"
-                        android:text="Group Members"
-                        android:id="@+id/b1"
-                        android:onClick="numberofgroupmember"
-                        android:textAllCaps="false"
-                        android:textStyle="bold"
-                        android:background="@drawable/button_corner"
-                        android:textSize="12sp"
-                        android:visibility="gone"/>
-
-                    <Button
-                        android:layout_width="100dp"
-                        android:layout_height="27dp"
-                        android:text="Group feeds"
-                        android:visibility="gone"
-                        android:id="@+id/b2"
-                        android:layout_marginLeft="5dp"
-                        android:textAllCaps="false"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:background="@drawable/button_corner"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/feed_description_details"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="@string/message"
-                        android:visibility="gone"
-                        android:textColor="@color/bg_text_color"
-                        android:textSize="@dimen/text_size_xsmall" />
-
-                    <ImageView
-                        android:id="@+id/feedImage"
-                        android:layout_width="match_parent"
-
-                        android:visibility="gone"
-                        android:layout_height="150dp"
-                        android:scaleType="fitXY"
-
-                        android:src="@drawable/default1" />
-                </LinearLayout>
-            </LinearLayout>
-
-
-            <FrameLayout
-                android:id="@+id/toolbar_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_collapseMode="pin">
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@color/bg_screen"
-                    app:contentInsetLeft="0dp"
-                    app:contentInsetStart="0dp"
-                    app:popupTheme="@style/AppTheme.PopupOverlay"
-                    app:subtitleTextColor="@color/white"
-                    app:titleTextAppearance="@style/toolBarStyle"
-                    app:titleTextColor="@color/white" />
-            </FrameLayout>
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-    </android.support.design.widget.AppBarLayout>-->
-
-<!--Added-->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -165,10 +38,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <android.support.v4.widget.NestedScrollView
                 android:id="@+id/nestedScroll1"
                 android:layout_width="match_parent"
@@ -187,13 +62,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:textStyle="bold|italic"
                         android:gravity="center"
                         android:text="Comments"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_normal" />
-
-
+                        android:textSize="@dimen/text_size_normal"
+                        android:textStyle="bold|italic" />
 
 
                     <RelativeLayout
@@ -207,12 +80,13 @@
                             android:layout_height="match_parent">
 
                             <ProgressBar
+                                android:id="@+id/progress"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:layout_gravity="center"
-                                android:visibility="visible"
-                                android:id="@+id/progress"/>
+                                android:visibility="visible" />
+
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/recycler_view_feed_details_comment"
                                 android:layout_width="wrap_content"
@@ -230,95 +104,166 @@
         </ScrollView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-    <!--
 
-      <LinearLayout
+    <FrameLayout
+        android:id="@+id/shareViewFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="40dp"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/share_view_dialog"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-          android:layout_gravity="bottom"
-          >
+            android:layout_height="wrap_content" />
 
-          <include
-              layout="@layout/box_comment"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
+    </FrameLayout>
 
-              android:layout_gravity="bottom"
-              android:layout_marginLeft="10dp"
-              android:layout_marginRight="10dp" />
-      </LinearLayout>
+    <FrameLayout
+        android:id="@+id/ImageViewFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="60dp"
+        android:visibility="gone">
 
-    -->
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/selectedImg"
+        android:scaleType="fitXY"
+        android:layout_gravity="left"
+        />
+
+
+
+            <ImageView
+                android:id="@+id/closeSelectedImage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/ic_close_black_24dp"
+                android:layout_marginLeft="120dp"
+                android:visibility="gone"
+                />
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/DocViewFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="60dp"
+        android:visibility="gone">
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/selectedDoc"
+        android:scaleType="fitXY"
+        android:layout_gravity="left"
+        app:srcCompat="@drawable/ic_sharedoc"
+        />
+
+
+    <me.grantland.widget.AutofitTextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectedDocName"
+        android:layout_marginTop="70dp"
+        />
+
+
+        <ImageView
+            android:id="@+id/closeSelectedDoc"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_close_black_24dp"
+            android:layout_marginLeft="90dp"
+            android:visibility="gone"
+            />
+
+
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:background="#fff"
-        >
+        android:layout_marginRight="10dp"
+        android:background="#fff">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            >
+            android:layout_weight="1">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="1dip"
-            android:gravity="bottom"
-            android:background="@drawable/chat_edit_text_background"
-            android:orientation="horizontal">
-
-            <io.github.rockerhieu.emojicon.EmojiconEditText
-                android:id="@+id/commentadd"
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:layout_gravity="bottom"
-                android:hint="Add Comment"
-                android:gravity="top|left"
-                android:inputType="textMultiLine|textAutoCorrect"
-                android:maxLines="7"
-                android:scrollbars="vertical"
-                android:textColorHint="@color/black_50"
-                android:textSize="@dimen/text_size_small"
-                android:imeOptions="actionSend"
-                android:background="@drawable/background_edittext_empty"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                />
+                android:layout_marginTop="1dip"
+                android:layout_weight="1"
+                android:background="@drawable/chat_edit_text_background"
+                android:gravity="bottom"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <io.github.rockerhieu.emojicon.EmojiconEditText
+                    android:id="@+id/commentadd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/background_edittext_empty"
+                    android:gravity="top|left"
+                    android:hint="Add Comment"
+                    android:imeOptions="actionSend"
+                    android:inputType="textMultiLine|textAutoCorrect"
+                    android:maxLines="7"
+                    android:scrollbars="vertical"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black_50"
+                    android:textSize="@dimen/text_size_small" />
 
-            <com.github.ybq.android.spinkit.SpinKitView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+
+                <ImageView
+                    android:id="@+id/attachmentFile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="0.8"
+                    android:clickable="true"
+                    android:src="@drawable/ic_attachment_file" />
+
+
+            </LinearLayout>
+
+            <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/spin_kit"
                 style="@style/SpinKitView.Large.Circle"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                app:SpinKit_Color="@color/colorAccent"
                 android:visibility="gone"
-                />
+                app:SpinKit_Color="@color/colorAccent" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_toEndOf="@+id/linearLayout"
-            android:background="@drawable/ic_action_send_commnt"
-            android:onClick="onClickSendComment"
-            android:layout_gravity="center_vertical"
-            android:visibility="visible"
-            />
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_toEndOf="@+id/linearLayout"
+                android:background="@drawable/ic_action_send_commnt"
+                android:onClick="onClickSendComment"
+                android:visibility="visible" />
 
         </LinearLayout>
 

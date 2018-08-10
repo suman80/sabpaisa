@@ -135,5 +135,7 @@
 
     <string name="google_play_services_error">Google Play Services Error</string>
 
+    <string name="title_activity_image_fullscreen">ImageFullscreenActivity</string>
+
 
 </resources>

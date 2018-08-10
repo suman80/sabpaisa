@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,7 +10,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -33,9 +36,21 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
@@ -106,8 +121,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        CommentData commentData = commentList.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        final CommentData commentData = commentList.get(position);
         Log.d("commentData", " " + commentData.getCommentName());
         Log.d("commentData", " " + commentData.getCommentText());
         holder.main_feed_comment_username.setText(commentData.getCommentName());
@@ -148,7 +163,99 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         }*/
         //StringEscapeUtils.unescapeJava(commentData.getCommentText());
         holder.main_feed_group_description.setText(StringEscapeUtils.unescapeJava(commentData.getCommentText()));
-        // holder.main_feed_comment_image.setImageURI(Uri.parse(commentData.getUserImageUrl().toString()));
+
+        Log.d("Comment File : ", commentData.getCommentImage());
+
+        if (!(commentData.getCommentImage()==null || commentData.getCommentImage().equals("null") || commentData.getCommentImage().isEmpty())) {
+
+            holder.commentImg.setVisibility(View.VISIBLE);
+            Glide.with(mContext)
+                    .load(commentData.getCommentImage())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.commentImg);
+
+            holder.commentImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext,ImageViewActivity.class);
+                    intent.putExtra("FULL_IMAGE",commentData.getCommentImage());
+                    mContext.startActivity(intent);
+                }
+            });
+
+
+        }
+
+
+        //TODO
+        //https://stackoverflow.com/questions/8646984/how-to-list-files-in-an-android-directory
+
+        /*File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        Log.d("FilesInDownload", "Path: " + directory);
+//        File directory = new File(path);
+        File[] files = directory.listFiles();
+        Log.d("Files", "Size: "+ files.length);
+        for (int i = 0; i < files.length; i++)
+        {
+            Log.d("FilesInDownloadFolder", "FileName:" + files[i].getName());
+        }*/
+
+
+        if (!(commentData.getCommentImage()==null || commentData.getCommentImage().equals("null") || commentData.getCommentImage().isEmpty()) && commentData.getCommentImage().endsWith(".pdf")) {
+            holder.commentImg.setVisibility(View.GONE);
+            holder.pdfFileImg.setVisibility(View.VISIBLE);
+            holder.downloadFile.setVisibility(View.VISIBLE);
+            holder.fileName.setVisibility(View.VISIBLE);
+
+            String arr[] = commentData.getCommentImage().split("/");
+
+            holder.fileName.setText(arr[arr.length-1]);
+
+        }
+        Log.d("outside if block","Doc-file"+commentData.getCommentImage());
+
+        if (!(commentData.getCommentImage()==null || commentData.getCommentImage().equals("null") || commentData.getCommentImage().isEmpty())
+                &&( commentData.getCommentImage().endsWith(".ppt") ||  commentData.getCommentImage().endsWith(".pptx")
+                || commentData.getCommentImage().endsWith(".doc") ||  commentData.getCommentImage().endsWith(".docx")
+                || commentData.getCommentImage().endsWith(".xls") ||  commentData.getCommentImage().endsWith(".xlsx")
+                )) {
+
+            Log.d("Inside if block","Doc file Found"+commentData.getCommentImage());
+            holder.commentImg.setVisibility(View.GONE);
+            holder.docFileImg.setVisibility(View.VISIBLE);
+            holder.downloadFile.setVisibility(View.VISIBLE);
+            holder.fileName.setVisibility(View.VISIBLE);
+
+            String arr[] = commentData.getCommentImage().split("/");
+            holder.fileName.setText(arr[arr.length-1]);
+
+        }
+
+
+        holder.downloadFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                holder.downloadFile.setVisibility(View.GONE);
+
+                DownloadManager downloadManager = (DownloadManager)mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+
+                Uri uri = Uri.parse(commentData.getCommentImage());
+
+                DownloadManager.Request request = new DownloadManager.Request(uri);
+
+                String arr[] = commentData.getCommentImage().split("/");
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, arr[arr.length-1]);
+
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+                Long reference = downloadManager.enqueue(request);
+
+
+            }
+        });
+
+
 
         Glide.with(mContext)
                 .load(commentData.getUserImageUrl())
@@ -185,8 +292,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         public TextView main_feed_creation_time;
         public TextView main_feed_group_description;
         public TextView main_feed_comment_username;
-        public ImageView main_feed_comment_image;
+        public ImageView main_feed_comment_image,commentImg,pdfFileImg,docFileImg;
         public RelativeLayout relative_comments;
+        public TextView downloadFile;
+        public TextView fileName;
 
         public MyViewHolder(View view) {
             super(view);
@@ -194,7 +303,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
             main_feed_comment_username = (TextView) view.findViewById(R.id.username);
             main_feed_group_description = (TextView) view.findViewById(R.id.main_feed_group_description);
             main_feed_comment_image = (ImageView) view.findViewById(R.id.people_name_initial);
+            commentImg = (ImageView) view.findViewById(R.id.commentImg);
+            pdfFileImg = (ImageView) view.findViewById(R.id.pdfFileImg);
+            docFileImg = (ImageView) view.findViewById(R.id.docFileImg);
             relative_comments = (RelativeLayout) view.findViewById(R.id.relative_comments);
+            downloadFile = (TextView) view.findViewById(R.id.downloadFile);
+            fileName = (TextView) view.findViewById(R.id.fileName);
         }
 
 
@@ -239,6 +353,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         }
 
     }
+
 
 
 }

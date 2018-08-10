@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +34,8 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragment;
@@ -41,6 +45,7 @@ import in.sabpaisa.droid.sabpaisa.Fragments.SharedGroupFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.FlagCallback;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
 public class SharingActivity extends AppCompatActivity implements FlagCallback {
 
@@ -182,17 +187,20 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
 
                     Log.d("commentDataArrayList", " " + Item.getCommentText());
                     selectedComment = Item.getCommentText();
+                    String sharedUrl = Item.getCommentImage();
+                    Log.d("sharedUrl"," "+sharedUrl);
+
                     if (feedDataForShare.size() > 0) {
 
                         for (String feedId : feedDataForShare) {
-                            sendFeedComments(feedId, userAccessToken, selectedComment);
+                            sendFeedComments(feedId, userAccessToken, selectedComment,sharedUrl);
                         }
 
                     }
                     if (groupDataForShare.size() > 0) {
 
                         for (String groupId : groupDataForShare) {
-                            sendGroupComments(groupId, userAccessToken, selectedComment);
+                            sendGroupComments(groupId, userAccessToken, selectedComment,sharedUrl);
                         }
 
 
@@ -200,8 +208,7 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
                 }
 
 
-                if(groupDataForShare.size() + feedDataForShare.size()>0)
-                {
+                if (groupDataForShare.size() + feedDataForShare.size() > 0) {
                     Intent intent = new Intent(SharingActivity.this, FullViewOfClientsProceed.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
@@ -215,138 +222,155 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
     }
 
 
-    private void sendFeedComments(final String feed_id, final String userAccessToken, final String commentData) {
+    private void sendFeedComments(final String feed_id, final String userAccessToken, final String commentData , final String sharedPath) {
 
-        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(commentData);
+        String url = AppConfig.Base_Url + AppConfig.App_api + "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(commentData) + "&sharedPath="+sharedPath;
 
-        urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
+        Log.d("urlSendFeed"," "+url);
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                urlJsonObj, null, new Response.Listener<JSONObject>() {
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        Log.d("PFF", "IMG_Res" + response);
+                        try {
 
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("Group Details", response.toString());
-                try {
-                    // Parsing json object response
-                    // response will be a json object
-                    String status = response.getString("status");
-                    if (status.equals("success")) {
+                            JSONObject obj = new JSONObject(new String(response.data));
+                            Log.d("PFF", "IMG_Res" + obj);
+                            final String status = obj.getString("status");
 
-                        Toast.makeText(SharingActivity.this, "Comment has been post successfully.", Toast.LENGTH_SHORT).show();
+                            if (status.equals("success")) {
 
-                    } else {
-                        Toast.makeText(SharingActivity.this, "Comment has not been posted.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SharingActivity.this, "Comment has been post successfully.", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(SharingActivity.this, "Comment has not been posted.", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error In Upoload", error.toString());
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                   /* Toast.makeText(getApplicationContext(),
-                            "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();*/
-                }
-                // hidepDialog();
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                NetworkResponse response = error.networkResponse;
-                if (error instanceof ServerError && response != null) {
-                    try {
-                        //Toast.makeText(Proceed_Feed_FullScreen.this, "error11!", Toast.LENGTH_SHORT).show();
-
-                        String res = new String(response.data,
-                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-                        // Now you can use any deserializer to make sense of data
-                        JSONObject obj = new JSONObject(res);
-                    } catch (UnsupportedEncodingException e1) {
-                        // Couldn't properly decode data to string
-                        e1.printStackTrace();
-                        // Toast.makeText(Proceed_Feed_FullScreen.this, "error22!", Toast.LENGTH_SHORT).show();
-
-                    } catch (JSONException e2) {
-                        // Toast.makeText(Proceed_Feed_FullScreen.this, "error33!", Toast.LENGTH_SHORT).show();
-
-                        // returned data is not JSONObject?
-                        e2.printStackTrace();
+                        Toast.makeText(SharingActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
-                }
-                // hide the progress dialog
-                //hidepDialog();
-            }
-        });
+                }) {
 
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
+
+            /** If you want to add more parameters with the image
+             * you can do it here
+             * here we have only one parameter with the image
+             * which is tags
+             * */
+           /* @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("tags", tags);
+                return params;
+            }*/
+
+
+            /** Here we are passing image by renaming it with a unique name
+             * */
+            /*@Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                String imagename = "SabPaisa_CommentImage";
+                if(commentFile != null){
+                    params.put("commentFile", new DataPart(imagename + ".jpeg", getFileDataFromDrawable(commentFile)));
+
+                    Log.d("Image",params.get("commentFile")+"");
+                }
+                return params;
+            }*/
+        };
+
+        //adding the request to volley
+        Volley.newRequestQueue(this).add(volleyMultipartRequest);
+
     }
 
-    private void sendGroupComments(final String GroupId, final String userAccessToken, final String commentData) {
+    private void sendGroupComments(final String GroupId, final String userAccessToken, final String commentData , final String sharedPath) {
 
-        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(commentData);
+        String url = AppConfig.Base_Url + AppConfig.App_api + "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(commentData) +"&sharedPath="+sharedPath;
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                urlJsonObj, null, new Response.Listener<JSONObject>() {
+        Log.d("urlSendGrp"," "+url);
 
-
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("a", response.toString());
-
-
-                try {
-                    // Parsing json object response
-                    // response will be a json object
-                    String status = response.getString("status");
-                    if (status.equals("success")) {
-
-                        Toast.makeText(SharingActivity.this, "Comment has been post successfully.", Toast.LENGTH_SHORT).show();
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        Log.d("PGF", "IMG_Res" + response);
 
 
-                    } else if (status.equals("failed")) {
+                        try {
+                            // Parsing json object response
+                            // response will be a json object
+                            JSONObject obj = new JSONObject(new String(response.data));
+                            String status = obj.getString("status");
+                            if (status.equals("success")) {
+                                Toast.makeText(SharingActivity.this, "Comment has been post successfully.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.d("Failure : ", obj.getString("response"));
+                                Toast.makeText(SharingActivity.this, "Comment has not been posted.", Toast.LENGTH_SHORT).show();
+                            }
 
-                        Toast.makeText(SharingActivity.this, "Comment has not been posted.", Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("InCatch", " " + e.getMessage());
+
+                        }
+
 
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),
-                            "Error: KASKADKASKDASKCNSKACKASNVKNASKANka" + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
-
-                }
-                // hidepDialog();
-            }
-        }, new Response.ErrorListener() {
-
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                NetworkResponse response = error.networkResponse;
-                if (error instanceof ServerError && response != null) {
-                    try {
-                        String res = new String(response.data,
-                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-                        // Now you can use any deserializer to make sense of data
-                        String obj = new String(res);
-                    } catch (UnsupportedEncodingException e1) {
-                        // Couldn't properly decode data to string
-                        e1.printStackTrace();
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error In Upoload", error.toString());
+                        //Toast.makeText(Proceed_Feed_FullScreen.this, "Image Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
+                }) {
+
+
+            /** If you want to add more parameters with the image
+             * you can do it here
+             * here we have only one parameter with the image
+             * which is tags
+             * */
+           /* @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("tags", tags);
+                return params;
+            }*/
+
+
+            /** Here we are passing image by renaming it with a unique name
+             * */
+            /*@Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                String imagename = "SabPaisa_CommentImage";
+                if(commentFile != null){
+                    params.put("commentFile", new DataPart(imagename + ".jpeg", getFileDataFromDrawable(commentFile)));
+
+                    Log.d("Image",params.get("commentFile")+"");
                 }
+                return params;
+            }*/
+        };
+
+        //adding the request to volley
+        Volley.newRequestQueue(this).add(volleyMultipartRequest);
 
 
-            }
-
-
-        });
-
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
 

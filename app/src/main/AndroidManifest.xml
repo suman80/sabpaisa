@@ -29,6 +29,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+
     <application
         android:name=".AppController"
         android:allowBackup="false"
@@ -232,8 +233,9 @@
         <activity android:name=".ChangePassword" />
         <activity
             android:name=".NotificationPopUPActivity"
-            android:theme="@style/AppTheme.popup"></activity>
-        <activity android:name=".SharingActivity"></activity>
+            android:theme="@style/AppTheme.popup" />
+        <activity android:name=".SharingActivity" />
+        <activity android:name=".ImageViewActivity"></activity>
     </application>
 
 </manifest>

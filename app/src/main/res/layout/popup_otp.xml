@@ -32,17 +32,6 @@
         android:layout_below="@id/popup_header"
         android:background="@color/black_50" />
 
-  <!-- // Added On 2nd feb-->
-    <!--<com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animatwion_vie"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="animation-w200-h200.json"
-        app:lottie_loop="true"/>-->
-
-
-
     <TextView
         android:id="@+id/timer_text_view"
         android:layout_width="match_parent"
@@ -54,104 +43,7 @@
         android:textColor="@color/black"
         android:textSize="48sp"/>
 
-    <!--    <EditText
-            android:id="@+id/otp_enter_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="25dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/edittext_border"
-            android:gravity="center"
-            android:hint="Enter OTP Number."
-            android:inputType="numberPassword"
-            android:maxLength="6"
-            android:textAlignment="center"
-            android:textSize="@dimen/text_size_small" />-->
 
-    <!-- <LinearLayout
-         android:layout_width="match_parent"
-         android:layout_height="300dp"
-         android:layout_alignParentBottom="true"
-         android:layout_centerInParent="true"
-
-         android:orientation="vertical">
-
-
-         <LinearLayout
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-
-             >
-
-
-             <com.airbnb.lottie.LottieAnimationView
-                 android:id="@+id/animation_view"
-                 android:layout_width="match_parent"
-                 android:layout_height="100dp"
-                 android:layout_marginTop="100dp"
-                 app:lottie_autoPlay="true"
-                 app:lottie_fileName="animation-w200-h200.json"
-                 app:lottie_loop="true"
-
-                 />
-
-
-
-             <TextView
-                 android:id="@+id/timer_text_view"
-                 android:layout_width="match_parent"
-                 android:layout_height="60dp"
-                 android:layout_alignParentTop="true"
-                 android:layout_centerInParent="true"
-                 android:layout_margin="5dp"
-                 android:gravity="center"
-                 android:text="00:60"
-                 android:textColor="@color/black"
-                 android:textSize="48sp"
-
-                 />
-
-             &lt;!&ndash;  <LinearLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:orientation="horizontal">
-
-                   <Button
-                       android:layout_weight="1"
-                       android:id="@+id/resend_button"
-                       android:layout_width="match_parent"
-                       android:layout_height="40dp"
-                       android:layout_alignParentBottom="true"
-                       android:layout_alignParentLeft="true"
-                       android:layout_centerInParent="true"
-                       android:layout_margin="10dp"
-                       android:background="@drawable/button_selector"
-                       android:text="Resend"
-                       android:textColor="@color/white"
-                       android:textSize="@dimen/text_size_normal" />
-
-                   <Button
-                       android:layout_weight="1"
-                       android:id="@+id/btn_yes"
-                       android:layout_width="match_parent"
-                       android:layout_height="40dp"
-                       android:layout_alignParentBottom="true"
-                       android:layout_alignParentRight="true"
-                       android:layout_centerInParent="true"
-                       android:layout_margin="10dp"
-                       android:background="@drawable/button_selector"
-                       android:clickable="true"
-                       android:text="Verify"
-                       android:textAllCaps="false"
-                       android:textColor="@color/white"
-                       android:textSize="@dimen/text_size_normal" />
-               </LinearLayout>&ndash;&gt;
-
-         </LinearLayout>
-     </LinearLayout>-->
 
 </LinearLayout>
 

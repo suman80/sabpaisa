@@ -5,10 +5,6 @@ import android.content.Context;
 import android.view.Window;
 import android.view.WindowManager;
 
-/**
- * Created by archana on 9/12/17.
- */
-
 public class CommonUtils {
 
     public static void setFullScreen(Context context) {

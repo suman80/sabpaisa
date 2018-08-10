@@ -8,7 +8,15 @@ public class  CommentData extends in.sabpaisa.droid.sabpaisa.Util.CommentData im
 
     String userImageUrl;
 
+    String commentImage;
 
+    public String getCommentImage() {
+        return commentImage;
+    }
+
+    public void setCommentImage(String commentImage) {
+        this.commentImage = commentImage;
+    }
 
     public CommentData(String commentText) {
         this.commentText = commentText;

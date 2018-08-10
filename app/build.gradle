@@ -12,6 +12,7 @@ android {
         versionName "1.4.1"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -57,7 +58,7 @@ dependencies {
     //    compile 'com.getbase:floatingactionbutton:1.10.1'
     //
 
-    //compile 'com.github.chrisbanes:PhotoView:2.1.2'
+    compile 'com.github.chrisbanes:PhotoView:2.1.4'
     compile project(':secure-component-sdk')
     compile 'com.android.support:multidex:1.0.0'
     //compile 'com.weiwangcn.betterspinner:library:1.1.0'
@@ -131,7 +132,6 @@ dependencies {
     compile 'com.github.GoodieBag:Pinview:v1.3'
     compile 'com.github.ybq:Android-SpinKit:1.1.0'
     //compile 'jp.wasabeef:blurry:2.1.1'
-
 }
 
 

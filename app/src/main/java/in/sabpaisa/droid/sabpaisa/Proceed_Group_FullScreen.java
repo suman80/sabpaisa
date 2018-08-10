@@ -1,5 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Context;
@@ -7,12 +9,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,6 +46,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -53,6 +61,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
 import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.network.BNetworkManager;
@@ -67,6 +76,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -77,6 +89,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -89,10 +102,12 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 import retrofit2.http.HTTP;
 
 
 import java.sql.Timestamp;
+import java.util.Map;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_FEED_COMMENTS;
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_GROUP_COMMENTS;
@@ -121,6 +136,21 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     EditText group_details_text_view = null;
     private int TOTAL_PAGES = 3;
     private EndlessScrollListener scrollListener;
+
+
+    FrameLayout shareViewFrameLayout,ImageViewFrameLayout,DocViewFrameLayout;
+    ImageView attachmentFile,selectedImg,closeSelectedImage,selectedDoc,closeSelectedDoc;
+    TextView selectedDocName;
+
+
+    LinearLayout shareDocument,shareImage;
+
+    String userImageUrl;
+
+    Bitmap commentFile;
+
+    File fileDoc;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -273,6 +303,79 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
         }
 
+
+        /////////////Code for file/image upload in comments///////////////////////////////////////////////////
+        shareViewFrameLayout = (FrameLayout) findViewById(R.id.shareViewFrameLayout);
+        attachmentFile = (ImageView)findViewById(R.id.attachmentFile);
+        shareDocument = (LinearLayout)findViewById(R.id.shareDocument);
+        shareImage = (LinearLayout)findViewById(R.id.shareImage);
+        ImageViewFrameLayout = (FrameLayout)findViewById(R.id.ImageViewFrameLayout);
+        DocViewFrameLayout = (FrameLayout)findViewById(R.id.DocViewFrameLayout);
+        selectedImg = (ImageView)findViewById(R.id.selectedImg);
+        selectedDoc = (ImageView)findViewById(R.id.selectedDoc);
+        selectedDocName = (TextView) findViewById(R.id.selectedDocName);
+        closeSelectedImage = (ImageView)findViewById(R.id.closeSelectedImage);
+        closeSelectedDoc = (ImageView)findViewById(R.id.closeSelectedDoc);
+
+        attachmentFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (shareViewFrameLayout.getVisibility() == View.GONE) {
+                    shareViewFrameLayout.setVisibility(View.VISIBLE);
+                } else {
+                    shareViewFrameLayout.setVisibility(View.GONE);
+                }
+
+
+            }
+        });
+
+
+        closeSelectedImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImageViewFrameLayout.setVisibility(View.GONE);
+                commentFile = null;
+
+            }
+        });
+
+
+        closeSelectedDoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DocViewFrameLayout.setVisibility(View.GONE);
+                fileDoc = null;
+
+            }
+        });
+
+
+
+        shareDocument.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Proceed_Group_FullScreen.this,"Documents",Toast.LENGTH_SHORT).show();
+
+                if (isStoragePermissionGranted()){
+                    showFileChooser();
+                }else {
+                    Toast.makeText(Proceed_Group_FullScreen.this,"Permission Denied !",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        shareImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Proceed_Group_FullScreen.this,"Pick Image",Toast.LENGTH_SHORT).show();
+                pickImage();
+            }
+        });
+
+
     }
 
     @Override
@@ -366,7 +469,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         Log.d("commentText3", "67667767 " + i);
 
         // showpDialog(view);
-        if (i.trim().length() == 0) {
+        if (i.trim().length() == 0 && commentFile == null && fileDoc == null) {
 
             Log.d("commentText2", " " + commentText);
             AlertDialog.Builder builder = new AlertDialog.Builder(Proceed_Group_FullScreen.this);
@@ -421,96 +524,234 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         //callCommentService(GroupId, userAccessToken, commentText);
     }
 
+
+
+    public void pickImage() {
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.putExtra("userImageUrl", userImageUrl);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 200);
+
+
+    }
+
+
+    private void showFileChooser() {
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(
+                    Intent.createChooser(intent, "Select a File to Upload"),
+                    1);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getApplicationContext(), "Please install a File Manager.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            // When an Image is picked
+            if (requestCode == 200 && resultCode == RESULT_OK && data != null) {
+
+
+                Uri selectedimg = data.getData();
+                Log.d("SSSS ", selectedimg+"");
+
+                shareViewFrameLayout.setVisibility(View.GONE);
+                ImageViewFrameLayout.setVisibility(View.VISIBLE);
+                closeSelectedImage.setVisibility(View.VISIBLE);
+
+                selectedImg.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
+
+
+                commentFile = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+                Log.d("STTTTTTS ", selectedimg+"");
+
+
+            }
+
+
+            if (requestCode == 1) {
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri selectedFileURI = data.getData();
+                    fileDoc = new File(selectedFileURI.getPath().toString());
+                    Log.d("PFF", "File : " + fileDoc.getName());
+//                uploadedFileName = file.getName().toString();
+//                tokens = new StringTokenizer(uploadedFileName, ":");
+//                first = tokens.nextToken();
+//                file_1 = tokens.nextToken().trim();
+//                txt_file_name_1.setText(file_1);
+
+                    shareViewFrameLayout.setVisibility(View.GONE);
+                    DocViewFrameLayout.setVisibility(View.VISIBLE);
+                    closeSelectedDoc.setVisibility(View.VISIBLE);
+                    selectedDocName.setText(fileDoc.getName());
+
+
+                }
+            }
+
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong : "+e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+        }
+
+    }
+
+
+
+    /** The method is taking Bitmap as an argument
+     * then it will return the byte[] array for the given bitmap
+     * and we will send this array to the server
+     * here we are using JPEG Compression with 80% quality
+     * you can give quality between 0 to 100
+     * 0 means worse quality
+     * 100 means best quality
+     * */
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+
+
+
     private void callCommentService(final String GroupId, final String userAccessToken, final String comment_text) {
 
+        ImageViewFrameLayout.setVisibility(View.GONE);
+        DocViewFrameLayout.setVisibility(View.GONE);
+        shareViewFrameLayout.setVisibility(View.GONE);
+        closeSelectedImage.setVisibility(View.GONE);
+        closeSelectedDoc.setVisibility(View.GONE);
 
-        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(i);
-        Log.d("242424", urlJsonObj);
+        Log.d("PGF", "IMG_userAccessToken" + userAccessToken);
+        //our custom volley request
+
+        Log.d("comment_text <<<<<<<<< "  ,i+" <<<< "+  URLEncoder.encode(i));
+
+        String url = AppConfig.Base_Url + AppConfig.App_api + "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(i);
+
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        Log.d("PGF", "IMG_Res" + response);
 
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                urlJsonObj, null, new Response.Listener<JSONObject>() {
+                        try {
+                            // Parsing json object response
+                            // response will be a json object
+                            JSONObject obj = new JSONObject(new String(response.data));
+                            String status = obj.getString("status");
+                            if (status.equals("success")) {
 
+                                imageView2.setVisibility(View.VISIBLE);
+                                spin_kit.setVisibility(View.GONE);
 
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("a", response.toString());
+                                commentFile = null;
+                                fileDoc = null;
 
+                                ///////////RRRRRRRRRRRRRRRRRRRR?????????????????
+                                if (obj.getString("response").equals("Not A Member")) {
+                                    Toast.makeText(getApplicationContext(), "You cannot able to comment because your request is in pending status", Toast.LENGTH_SHORT).show();
+                                }
+                                /////////////RRRRRRRRRRRRR??????????????????
 
-                try {
-                    // Parsing json object response
-                    // response will be a json object
-                    String status = response.getString("status");
-                    if (status.equals("success")) {
+                                group_details_text_view.setText("");
+                                //Toast.makeText(Proceed_Group_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
+                                commentArrayList.clear();
+                                count = 1;
+                                callGetCommentList(GroupId);
 
-                        imageView2.setVisibility(View.VISIBLE);
-                        spin_kit.setVisibility(View.GONE);
+                            } else if (status.equals("failed")) {
+                                commentFile = null;
+                                fileDoc = null;
+                                imageView2.setVisibility(View.VISIBLE);
+                                spin_kit.setVisibility(View.GONE);
+                                Toast.makeText(getApplicationContext(), "Please Join the Group", Toast.LENGTH_SHORT).show();
+                            }
 
-                        ///////////RRRRRRRRRRRRRRRRRRRR?????????????????
-                        if (response.getString("response").equals("Not A Member")) {
-                            Toast.makeText(getApplicationContext(), "You cannot able to comment because your request is in pending status", Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(),
+                                    "Error: KASKADKASKDASKCNSKACKASNVKNASKANka" + e.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                            imageView2.setVisibility(View.VISIBLE);
+                            spin_kit.setVisibility(View.GONE);
                         }
-                        /////////////RRRRRRRRRRRRR??????????????????
 
-                        group_details_text_view.setText("");
-                        //Toast.makeText(Proceed_Group_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
-                        commentArrayList.clear();
-                        count = 1;
-                        callGetCommentList(GroupId);
 
-                    } else if (status.equals("failed")) {
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error In Upoload", error.toString());
                         imageView2.setVisibility(View.VISIBLE);
                         spin_kit.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Please Join the Group", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Proceed_Feed_FullScreen.this, "Image Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),
-                            "Error: KASKADKASKDASKCNSKACKASNVKNASKANka" + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                    imageView2.setVisibility(View.VISIBLE);
-                    spin_kit.setVisibility(View.GONE);
-                }
-                // hidepDialog();
-            }
-        }, new Response.ErrorListener() {
+                }) {
 
 
+            /** If you want to add more parameters with the image
+             * you can do it here
+             * here we have only one parameter with the image
+             * which is tags
+             * */
+           /* @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("tags", tags);
+                return params;
+            }*/
+
+
+            /** Here we are passing image by renaming it with a unique name
+             * */
             @Override
-            public void onErrorResponse(VolleyError error) {
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                String imagename = "SabPaisa_CommentImage";
+                if(commentFile != null){
+                    params.put("commentFile", new DataPart(imagename + ".jpeg", getFileDataFromDrawable(commentFile)));
 
-                imageView2.setVisibility(View.VISIBLE);
-                spin_kit.setVisibility(View.GONE);
-                NetworkResponse response = error.networkResponse;
-                if (error instanceof ServerError && response != null) {
-                    try {
-                        String res = new String(response.data,
-                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-                        // Now you can use any deserializer to make sense of data
-                        String obj = new String(res);
-                    } catch (UnsupportedEncodingException e1) {
-                        // Couldn't properly decode data to string
-                        e1.printStackTrace();
-                    }
+                    Log.d("Image",params.get("commentFile")+"");
                 }
 
 
+                if (fileDoc != null){
 
 
-                /*VolleyLog.d("Group Details", "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();*/
-                // hide the progress dialog
-                //hidepDialog();
+
+                    byte [] fileContent = readBytesFromFile(fileDoc.getAbsolutePath());
+
+                    params.put("commentFile", new DataPart(fileDoc.getName(),fileContent));
+
+
+
+                }
+
+
+                return params;
             }
+        };
+
+        //adding the request to volley
+        Volley.newRequestQueue(this).add(volleyMultipartRequest);
 
 
-        });
 
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
     public void callGetCommentList(final String GropuId) {
@@ -528,20 +769,6 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         String tag_string_req = "req_register";
         //String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getGroupsComments?group_id=" + GropuId;
         String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getPageGroupsComments?group_id=" + GropuId + "&pageNo=" + count + "&rowLimit=25";
-
-        //StringEscapeUtils.unescapeJava(String text)
-
-
-        //urlJsonObj.replaceAll("%", "%25");
-
-
-        //////////////////////////////
-
-
-/////////////////////////////////
-
-
-        //urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
 
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
@@ -576,6 +803,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
                             groupData.setCommentName(jsonObject1.getString("commentByName"));
                             groupData.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                            groupData.setCommentImage(jsonObject1.getString("filePath"));
                             String dataTime = jsonObject1.getString("commentDate");
                             groupData.setCommentId(jsonObject1.getInt("commentId"));
 
@@ -941,6 +1169,75 @@ public void privatefeeds(final String groupId)
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+
+
+    private static byte[] readBytesFromFile(String filePath) {
+
+        FileInputStream fileInputStream = null;
+        byte[] bytesArray = null;
+
+        try {
+
+            File file = new File(filePath);
+            bytesArray = new byte[(int) file.length()];
+
+            //read file into bytes[]
+            fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bytesArray);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        return bytesArray;
+
+    }
+
+
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("PFF","Permission is granted");
+                return true;
+            } else {
+
+                Log.v("PFF","Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("PFF","Permission is granted");
+            return true;
+        }
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            Log.v("PFF","Permission: "+permissions[0]+ "was "+grantResults[0]);
+            //resume tasks needing this permission
+        }
+    }
+
+
+
 
 
 }

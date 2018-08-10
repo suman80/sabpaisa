@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relative_comments"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -86,14 +87,79 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:autoLink="web|email|phone|map"
             android:maxLines="50"
             android:text="hi"
             android:textColor="@color/black"
             android:textIsSelectable="true"
-            android:textSize="15sp"
-            android:autoLink="web|email|phone|map"
-            />
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/commentImg"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:visibility="gone" />
+
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="left">
+
+            <ImageView
+                android:id="@+id/pdfFileImg"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_pdf_image" />
+
+
+            <ImageView
+                android:id="@+id/docFileImg"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_doc_image" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/downloadFile"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/download_background"
+                    android:gravity="center"
+                    android:text="download"
+                    android:textColor="#fff"
+                    android:visibility="gone"
+                    />
+
+
+
+            </RelativeLayout>
+        </RelativeLayout>
+
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/fileName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textColor="#000"
+        android:layout_marginTop="220dp"
+        android:visibility="gone"
+        />
+
 
 </RelativeLayout>
