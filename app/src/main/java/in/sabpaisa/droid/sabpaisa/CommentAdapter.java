@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -64,6 +66,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     private List<CommentData> commentList;
     private boolean multiSelect = false;
     private ArrayList<CommentData> selectedItems = new ArrayList<>();
+
+    String alreadyExistFile;
+    ArrayList<String> arrayListAlreadyExistFile = new ArrayList<>();
+
     private android.support.v7.view.ActionMode.Callback actionModeCallbacks = new android.support.v7.view.ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
@@ -190,17 +196,29 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         //TODO
         //https://stackoverflow.com/questions/8646984/how-to-list-files-in-an-android-directory
 
-        /*File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        Log.d("FilesInDownload", "Path: " + directory);
-//        File directory = new File(path);
-        File[] files = directory.listFiles();
-        Log.d("Files", "Size: "+ files.length);
+        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        //Log.d("FilesInDownload", "Path: " + directory);
+        File file = new File(directory.getAbsolutePath());
+        File[] files = file.listFiles();
+        //Log.d("Files", "Size: "+ files.length);
         for (int i = 0; i < files.length; i++)
         {
             Log.d("FilesInDownloadFolder", "FileName:" + files[i].getName());
-        }*/
+            alreadyExistFile = files[i].getName();
+            arrayListAlreadyExistFile.add(alreadyExistFile);
+        }
 
+//        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+//        Log.d("FilesInDownload", "Path: " + directory);
+//        //File file = new File(directory.getAbsolutePath());
+//        File[] files = directory.listFiles();
+//        Log.d("Files", "Size: "+ files.length);
+//        for (int i = 0; i < files.length; i++)
+//        {
+//            Log.d("FilesInDownloadFolder", "FileName:" + files[i].getName());
+//        }
 
+//Code for pdf files
         if (!(commentData.getCommentImage()==null || commentData.getCommentImage().equals("null") || commentData.getCommentImage().isEmpty()) && commentData.getCommentImage().endsWith(".pdf")) {
             holder.commentImg.setVisibility(View.GONE);
             holder.pdfFileImg.setVisibility(View.VISIBLE);
@@ -209,11 +227,63 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
             String arr[] = commentData.getCommentImage().split("/");
 
-            holder.fileName.setText(arr[arr.length-1]);
+            String filenameSplitter[] = arr[arr.length-1].split("_");
+
+            String fileFormat = filenameSplitter[filenameSplitter.length-1].split("\\.")[1];
+            Log.d("Format4 : ", arr[arr.length-1]+"   ");
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < filenameSplitter.length-1;i++){
+
+                if (i>0)
+                    stringBuilder.append("_");
+                stringBuilder.append(filenameSplitter[i]);
+
+
+            }
+            stringBuilder.append("."+fileFormat);
+
+            String fname = stringBuilder.toString();
+            Log.d("Fname "," "+fname);
+
+            if(arrayListAlreadyExistFile.contains(/*arr[arr.length-1]*/fname)){
+                holder.downloadFile.setVisibility(View.GONE);
+                Log.d("InIfPartWhere"," FileExist"+fname);
+
+                holder.downloadedOpenFile.setVisibility(View.VISIBLE);
+
+
+            }else{
+                holder.downloadFile.setVisibility(View.VISIBLE);
+                holder.downloadedOpenFile.setVisibility(View.GONE);
+                Log.d("InElsePartWhere"," FileNOTExist "+fname);
+            }
+
+
+            holder.fileName.setText(/*arr[arr.length-1]*/fname);
 
         }
-        Log.d("outside if block","Doc-file"+commentData.getCommentImage());
 
+        holder.downloadedOpenFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS+"/"+holder.fileName.getText());
+                //Log.d("FilesInDownload", "Path: " + directory);
+
+                Log.d("ToOpenFileGettingPath"," "+directory);
+
+                if (android.os.Build.VERSION.SDK_INT >= 24){
+                    // Do something for lollipop and above versions
+                    openFileForNew(directory);
+                } else{
+                    // do something for phones running an SDK before lollipop
+                    openFile(directory);
+                }
+
+
+            }
+        });
+
+//Code for documents files
         if (!(commentData.getCommentImage()==null || commentData.getCommentImage().equals("null") || commentData.getCommentImage().isEmpty())
                 &&( commentData.getCommentImage().endsWith(".ppt") ||  commentData.getCommentImage().endsWith(".pptx")
                 || commentData.getCommentImage().endsWith(".doc") ||  commentData.getCommentImage().endsWith(".docx")
@@ -227,7 +297,36 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
             holder.fileName.setVisibility(View.VISIBLE);
 
             String arr[] = commentData.getCommentImage().split("/");
-            holder.fileName.setText(arr[arr.length-1]);
+
+            String filenameSplitter[] = arr[arr.length-1].split("_");
+
+            String fileFormat = filenameSplitter[filenameSplitter.length-1].split("\\.")[1];
+            Log.d("Format4 : ", arr[arr.length-1]+"   ");
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < filenameSplitter.length-1;i++){
+
+                if (i>0)
+                stringBuilder.append("_");
+                stringBuilder.append(filenameSplitter[i]);
+
+            }
+            stringBuilder.append("."+fileFormat);
+
+            String fname = stringBuilder.toString();
+
+            Log.d("fnameInDOCXCode"," "+fname);
+
+            if(arrayListAlreadyExistFile.contains(/*arr[arr.length-1]*/fname)){
+                holder.downloadFile.setVisibility(View.GONE);
+                Log.d("InIfPartWhere"," FileExist"+fname);
+                holder.downloadedOpenFile.setVisibility(View.VISIBLE);
+            }else{
+                holder.downloadFile.setVisibility(View.VISIBLE);
+                Log.d("InElsePartWhere"," FileNOTExist "+fname);
+                holder.downloadedOpenFile.setVisibility(View.GONE);
+            }
+
+            holder.fileName.setText(fname);
 
         }
 
@@ -235,6 +334,38 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         holder.downloadFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                String arr[] = commentData.getCommentImage().split("/");
+
+                Log.d("Step1"," "+commentData.getCommentImage().split("/"));
+
+                String filenameSplitter[] = arr[arr.length-1].split("_");
+
+                Log.d("Step2"," "+arr[arr.length-1].split("_"));
+
+                String fileFormat = filenameSplitter[filenameSplitter.length-1].split("\\.")[1];
+
+                Log.d("Step3"," "+filenameSplitter[filenameSplitter.length-1].split("\\.")[1]);
+
+                Log.d("Format4 : ", arr[arr.length-1]+"   ");
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 0; i < filenameSplitter.length-1;i++){
+
+                    if (i>0)
+                    stringBuilder.append("_");
+                    stringBuilder.append(filenameSplitter[i]);
+
+                    Log.d("Step4"," "+stringBuilder);
+
+                }
+                stringBuilder.append("."+fileFormat);
+
+                String fname = stringBuilder.toString();
+
+                Log.d("Step5"," "+fname);
+
+                Log.d("fnameInDownloadCode"," "+fname);
 
                 holder.downloadFile.setVisibility(View.GONE);
 
@@ -244,8 +375,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
                 DownloadManager.Request request = new DownloadManager.Request(uri);
 
-                String arr[] = commentData.getCommentImage().split("/");
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, arr[arr.length-1]);
+//                String arr[] = commentData.getCommentImage().split("/");
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fname);
 
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
@@ -294,7 +425,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         public TextView main_feed_comment_username;
         public ImageView main_feed_comment_image,commentImg,pdfFileImg,docFileImg;
         public RelativeLayout relative_comments;
-        public TextView downloadFile;
+        public TextView downloadFile,downloadedOpenFile;
         public TextView fileName;
 
         public MyViewHolder(View view) {
@@ -308,6 +439,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
             docFileImg = (ImageView) view.findViewById(R.id.docFileImg);
             relative_comments = (RelativeLayout) view.findViewById(R.id.relative_comments);
             downloadFile = (TextView) view.findViewById(R.id.downloadFile);
+            downloadedOpenFile = (TextView) view.findViewById(R.id.downloadedOpenFile);
             fileName = (TextView) view.findViewById(R.id.fileName);
         }
 
@@ -353,6 +485,119 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         }
 
     }
+
+
+
+
+    private void openFile(File url) {
+
+        try {
+
+            Uri uri = Uri.fromFile(url);
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            if (url.toString().contains(".doc") || url.toString().contains(".docx")) {
+                // Word document
+                intent.setDataAndType(uri, "application/msword");
+            } else if (url.toString().contains(".pdf")) {
+                // PDF file
+                intent.setDataAndType(uri, "application/pdf");
+            } else if (url.toString().contains(".ppt") || url.toString().contains(".pptx")) {
+                // Powerpoint file
+                intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+            } else if (url.toString().contains(".xls") || url.toString().contains(".xlsx")) {
+                // Excel file
+                intent.setDataAndType(uri, "application/vnd.ms-excel");
+            } else if (url.toString().contains(".zip") || url.toString().contains(".rar")) {
+                // WAV audio file
+                intent.setDataAndType(uri, "application/x-wav");
+            } else if (url.toString().contains(".rtf")) {
+                // RTF file
+                intent.setDataAndType(uri, "application/rtf");
+            } else if (url.toString().contains(".wav") || url.toString().contains(".mp3")) {
+                // WAV audio file
+                intent.setDataAndType(uri, "audio/x-wav");
+            } else if (url.toString().contains(".gif")) {
+                // GIF file
+                intent.setDataAndType(uri, "image/gif");
+            } else if (url.toString().contains(".jpg") || url.toString().contains(".jpeg") || url.toString().contains(".png")) {
+                // JPG file
+                intent.setDataAndType(uri, "image/jpeg");
+            } else if (url.toString().contains(".txt")) {
+                // Text file
+                intent.setDataAndType(uri, "text/plain");
+            } else if (url.toString().contains(".3gp") || url.toString().contains(".mpg") ||
+                    url.toString().contains(".mpeg") || url.toString().contains(".mpe") || url.toString().contains(".mp4") || url.toString().contains(".avi")) {
+                // Video files
+                intent.setDataAndType(uri, "video/*");
+            } else {
+                intent.setDataAndType(uri, "*/*");
+            }
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(mContext, "No application found which can open the file", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+    private void openFileForNew(File url) {
+
+        try {
+
+            Uri uri = FileProvider.getUriForFile(mContext,mContext.getApplicationContext().getPackageName()+ ".my.package.name.provider",url);
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            if (url.toString().contains(".doc") || url.toString().contains(".docx")) {
+                // Word document
+                intent.setDataAndType(uri, "application/msword");
+            } else if (url.toString().contains(".pdf")) {
+                // PDF file
+                intent.setDataAndType(uri, "application/pdf");
+            } else if (url.toString().contains(".ppt") || url.toString().contains(".pptx")) {
+                // Powerpoint file
+                intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+            } else if (url.toString().contains(".xls") || url.toString().contains(".xlsx")) {
+                // Excel file
+                intent.setDataAndType(uri, "application/vnd.ms-excel");
+            } else if (url.toString().contains(".zip") || url.toString().contains(".rar")) {
+                // WAV audio file
+                intent.setDataAndType(uri, "application/x-wav");
+            } else if (url.toString().contains(".rtf")) {
+                // RTF file
+                intent.setDataAndType(uri, "application/rtf");
+            } else if (url.toString().contains(".wav") || url.toString().contains(".mp3")) {
+                // WAV audio file
+                intent.setDataAndType(uri, "audio/x-wav");
+            } else if (url.toString().contains(".gif")) {
+                // GIF file
+                intent.setDataAndType(uri, "image/gif");
+            } else if (url.toString().contains(".jpg") || url.toString().contains(".jpeg") || url.toString().contains(".png")) {
+                // JPG file
+                intent.setDataAndType(uri, "image/jpeg");
+            } else if (url.toString().contains(".txt")) {
+                // Text file
+                intent.setDataAndType(uri, "text/plain");
+            } else if (url.toString().contains(".3gp") || url.toString().contains(".mpg") ||
+                    url.toString().contains(".mpeg") || url.toString().contains(".mpe") || url.toString().contains(".mp4") || url.toString().contains(".avi")) {
+                // Video files
+                intent.setDataAndType(uri, "video/*");
+            } else {
+                intent.setDataAndType(uri, "*/*");
+            }
+
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Log.d("ActivityNotFndException"," "+e);
+            Toast.makeText(mContext, "No application found which can open the file", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
 
 

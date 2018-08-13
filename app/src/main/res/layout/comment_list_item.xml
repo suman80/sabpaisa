@@ -138,7 +138,22 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/download_background"
                     android:gravity="center"
-                    android:text="download"
+                    android:text="Download"
+                    android:textColor="#fff"
+                    android:visibility="gone"
+                    />
+
+
+                <TextView
+                    android:id="@+id/downloadedOpenFile"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/download_background"
+                    android:gravity="center"
+                    android:text="Open"
                     android:textColor="#fff"
                     android:visibility="gone"
                     />
