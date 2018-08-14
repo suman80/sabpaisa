@@ -3,9 +3,11 @@ package in.sabpaisa.droid.sabpaisa;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -69,6 +72,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
     String alreadyExistFile;
     ArrayList<String> arrayListAlreadyExistFile = new ArrayList<>();
+    ArrayList<Long> list = new ArrayList<>();
 
     private android.support.v7.view.ActionMode.Callback actionModeCallbacks = new android.support.v7.view.ActionMode.Callback() {
         @Override
@@ -150,24 +154,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                 mContext.startActivity(intent);*/
             }
         });
-        //if (commentData.getCommentText()==null)
-/*
-        {
-           // Toast.makeText("comment", "clicking the toolbar!", Toast.LENGTH_SHORT).show();
-            AlertDialog.Builder builder =new AlertDialog.Builder(CommentAdapter.this);
-            builder.setTitle("No internet Connection");
-            builder.setMessage("Please turn on internet connection to continue");
-            builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
 
-        }*/
-        //StringEscapeUtils.unescapeJava(commentData.getCommentText());
         holder.main_feed_group_description.setText(StringEscapeUtils.unescapeJava(commentData.getCommentText()));
 
         Log.d("Comment File : ", commentData.getCommentImage());
@@ -271,14 +258,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
                 Log.d("ToOpenFileGettingPath"," "+directory);
 
-                if (android.os.Build.VERSION.SDK_INT >= 24){
-                    // Do something for lollipop and above versions
-                    openFileForNew(directory);
-                } else{
-                    // do something for phones running an SDK before lollipop
-                    openFile(directory);
-                }
+                if (directory == null){
+                    Toast.makeText(mContext,"Please ensure that file is downloaded successfully",Toast.LENGTH_SHORT).show();
+                }else {
 
+                    if (android.os.Build.VERSION.SDK_INT >= 24) {
+                        // Do something for lollipop and above versions
+                        openFileForNew(directory);
+                    } else {
+                        // do something for phones running an SDK before lollipop
+                        openFile(directory);
+                    }
+
+                }
 
             }
         });
@@ -382,6 +374,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
                 Long reference = downloadManager.enqueue(request);
 
+                holder.downloadedOpenFile.setVisibility(View.VISIBLE);
 
             }
         });
@@ -596,9 +589,5 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
             Toast.makeText(mContext, "No application found which can open the file", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-
 
 }
