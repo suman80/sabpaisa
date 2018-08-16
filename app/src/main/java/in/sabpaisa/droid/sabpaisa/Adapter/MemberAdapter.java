@@ -131,7 +131,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
         });
 
 
-        holder.memberChat.setOnClickListener(new View.OnClickListener() {
+        /*holder.memberChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -165,7 +165,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
                 ////21st March,2018
             }
         });
-
+*/
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -179,7 +179,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
             super(itemView);
             memberImg = (ImageView) itemView .findViewById(R.id.memberImg);
             memberName = (TextView)itemView.findViewById(R.id.memberName);
-            memberChat = (Button) itemView.findViewById(R.id.groupmmbrchat);
+            //memberChat = (Button) itemView.findViewById(R.id.groupmmbrchat);
             //memberTimeStamp = (TextView)itemView.findViewById(R.id.memberTimeStamp);
 
             SharedPreferences prefs = mContext.getSharedPreferences(LogInActivity.MySharedPrefLogin, 0);

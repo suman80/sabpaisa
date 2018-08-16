@@ -32,14 +32,14 @@
                   android:textSize="16sp"
                   android:textStyle="bold" />
 
-              <Button
+             <!-- <Button
                   android:layout_width="27dp"
                   android:layout_height="25dp"
                   android:layout_marginRight="15dp"
                   android:id="@+id/groupmmbrchat"
                   android:background="@drawable/chats"
                   android:layout_marginTop="30dp"/>
-
+-->
        </LinearLayout>
        <!-- <TextView
          android:layout_width="match_parent"

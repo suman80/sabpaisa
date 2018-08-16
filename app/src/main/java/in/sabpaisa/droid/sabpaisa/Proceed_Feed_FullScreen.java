@@ -631,7 +631,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         //our custom volley request
 
         Log.d("comment_text <<<<<<<<< "  ,i+" <<<< "+  URLEncoder.encode(i));
-        String url = AppConfig.Base_Url+AppConfig.App_api+ "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text="  +  URLEncoder.encode(i);
+        String url = AppConfig.Base_Url+AppConfig.App_api+ "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text="  +  URLEncoder.encode(i.trim());
 
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,

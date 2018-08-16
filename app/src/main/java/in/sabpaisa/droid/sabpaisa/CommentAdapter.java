@@ -170,18 +170,46 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
             holder.commentImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+
+
+                    String arr[] = commentData.getCommentImage().split("/");
+
+                    Log.d("Step1"," "+commentData.getCommentImage().split("/"));
+
+                    String filenameSplitter[] = arr[arr.length-1].split("_");
+
+                    Log.d("Step2"," "+arr[arr.length-1].split("_"));
+
+                    String fileFormat = filenameSplitter[filenameSplitter.length-1].split("\\.")[1];
+
+                    Log.d("Step3"," "+filenameSplitter[filenameSplitter.length-1].split("\\.")[1]);
+
+                    Log.d("Format4 : ", arr[arr.length-1]+"   ");
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (int i = 0; i < filenameSplitter.length-1;i++){
+
+                        if (i>0)
+                            stringBuilder.append("_");
+                        stringBuilder.append(filenameSplitter[i]);
+
+                        Log.d("Step4"," "+stringBuilder);
+
+                    }
+                    stringBuilder.append("."+fileFormat);
+
+                    String fname = stringBuilder.toString();
+
+
                     Intent intent = new Intent(mContext,ImageViewActivity.class);
                     intent.putExtra("FULL_IMAGE",commentData.getCommentImage());
+                    intent.putExtra("FULL_IMAGE_NAME",fname);
                     mContext.startActivity(intent);
                 }
             });
 
 
         }
-
-
-        //TODO
-        //https://stackoverflow.com/questions/8646984/how-to-list-files-in-an-android-directory
 
         File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         //Log.d("FilesInDownload", "Path: " + directory);
@@ -363,7 +391,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
                 DownloadManager downloadManager = (DownloadManager)mContext.getSystemService(Context.DOWNLOAD_SERVICE);
 
-                Uri uri = Uri.parse(commentData.getCommentImage());
+                Uri uri = Uri.parse(commentData.getCommentImage().replace(" ","%20").replace("-","%2D"));
 
                 DownloadManager.Request request = new DownloadManager.Request(uri);
 

@@ -125,7 +125,7 @@ public class MemberOfflineAdapter extends RecyclerView.Adapter<MemberOfflineAdap
             super(itemView);
             memberImg = (ImageView) itemView.findViewById(R.id.memberImg);
             memberName = (TextView) itemView.findViewById(R.id.memberName);
-            memberChat = (Button) itemView.findViewById(R.id.groupmmbrchat);
+            //memberChat = (Button) itemView.findViewById(R.id.groupmmbrchat);
 
 
         }

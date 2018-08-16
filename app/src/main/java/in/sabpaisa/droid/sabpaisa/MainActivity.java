@@ -1012,7 +1012,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
 
         } else if (id == R.id.nav_share) {
-
+//https://stackoverflow.com/questions/9730243/how-to-filter-specific-apps-for-action-send-intent-and-set-a-different-text-for
             try {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");

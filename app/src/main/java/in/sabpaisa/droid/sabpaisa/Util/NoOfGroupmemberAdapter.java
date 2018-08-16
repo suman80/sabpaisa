@@ -70,7 +70,7 @@ public NoOfGroupmemberAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, 
                 .load(member_getterSetter.getUserImageUrl())
                 .error(R.drawable.default_users)
                 .into(myViewHolder.memberImg);
-        myViewHolder.memberChat.setOnClickListener(new View.OnClickListener() {
+        /*myViewHolder.memberChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Intent intent=new Intent(, ChatSDKMainActivity.class);
@@ -113,7 +113,7 @@ public NoOfGroupmemberAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, 
                 //v.getContext().startActivity(new Intent(mContext,ChatSDKMainActivity.class));
 
             }
-        });
+        });*/
 
         myViewHolder.memberImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,7 +200,7 @@ Button memberChat;
 
         memberImg = (ImageView) itemView .findViewById(R.id.memberImg);
         memberName = (TextView)itemView.findViewById(R.id.memberName);
-        memberChat = (Button)itemView.findViewById(R.id.groupmmbrchat);
+        //memberChat = (Button)itemView.findViewById(R.id.groupmmbrchat);
         //memberTimeStamp = (TextView)itemView.findViewById(R.id.memberTimeStamp);
 
 

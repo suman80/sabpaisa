@@ -33,14 +33,15 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.NoOfGroupmemberAdapter;
+import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import retrofit2.http.GET;
 
 import static com.android.volley.Request.*;
 
 public class NumberOfGroups extends AppCompatActivity {
 
-    LinearLayout linearLayoutnoDataFound;
     public static String clientId;
+    LinearLayout linearLayoutnoDataFound;
     ArrayList<Member_GetterSetter> member_getterSetterArrayList;
     NoOfGroupmemberAdapter memberAdapter;
     ShimmerRecyclerView recycler_view_Member;
@@ -55,7 +56,7 @@ public class NumberOfGroups extends AppCompatActivity {
         CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_number_of_groups);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        // This is used for the app custom toast and activity transition
+      /*  // This is used for the app custom toast and activity transition
         ChatSDKUiHelper.initDefault();
 
 // Init the network manager
@@ -65,16 +66,16 @@ public class NumberOfGroups extends AppCompatActivity {
         BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
 
 // Set the adapter
-        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
-toolbar=(Toolbar)findViewById(R.id.toolbar);
-/*
-toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        onBackPressed();
-    }
-});
-*/
+        BNetworkManager.sharedManager().setNetworkAdapter(adapter);*/
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         // Inflate the layout for this fragment
         linearLayoutnoDataFound = (LinearLayout) findViewById(R.id.noDataFound);
@@ -85,14 +86,13 @@ toolbar.setNavigationOnClickListener(new View.OnClickListener() {
         recycler_view_Member.setLayoutManager(llm);
 
 
-
         SharedPreferences sharedPreferences = getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId = sharedPreferences.getString("clientId", "abc");
         Log.d("NumerOFGroup", "" + clientId);
         Intent intent = getIntent();
         GroupId = intent.getStringExtra("GroupId");
         Log.d("NumerOFGroup", "" + GroupId);
-        NoOfGRPMembers(clientId,GroupId,"Approved");
+        NoOfGRPMembers(clientId, GroupId, "Approved");
 
     }
 
@@ -141,8 +141,8 @@ toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                             member_getterSetter.setPhoneNumber(jsonObject1.getString("phoneNumber"));
                             member_getterSetter.setEmailId(jsonObject1.getString("emailId"));
 
-                Log.d("MMBRNAME",""+jsonObject1.getString("fullName"));
-                Log.d("MMBRIMAGE",""+jsonObject1.getString("userImageUrl"));
+                            Log.d("MMBRNAME", "" + jsonObject1.getString("fullName"));
+                            Log.d("MMBRIMAGE", "" + jsonObject1.getString("userImageUrl"));
 
                             member_getterSetterArrayList.add(member_getterSetter);
 
@@ -153,7 +153,7 @@ toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                        /* OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getApplication();
                         listener.onFragmentSetMembers(member_getterSetterArrayList);
                       */
-                       /*END listener for sending data to activity*/
+                        /*END listener for sending data to activity*/
                         memberAdapter = new NoOfGroupmemberAdapter(member_getterSetterArrayList, getApplicationContext());
                         recycler_view_Member.setAdapter(memberAdapter);
 

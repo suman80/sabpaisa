@@ -637,9 +637,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         Log.d("PGF", "IMG_userAccessToken" + userAccessToken);
         //our custom volley request
 
-        Log.d("comment_text <<<<<<<<< "  ,i+" <<<< "+  URLEncoder.encode(i));
+        Log.d("comment_text <<<<<<<<< "  ,i+" <<<< "+  URLEncoder.encode(i.trim()));
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(i);
+        String url = AppConfig.Base_Url + AppConfig.App_api + "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(i.trim());
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
                 new Response.Listener<NetworkResponse>() {
