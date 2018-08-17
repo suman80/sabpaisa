@@ -1,13 +1,17 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,6 +41,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -47,6 +52,7 @@ import java.util.Set;
 
 import in.sabpaisa.droid.sabpaisa.AllContacts;
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.Model.ContactVO;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SortArrayListAscendingDescending;
@@ -104,14 +110,18 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
                     //Toast.makeText(mContext,"AllContactsAdapter--->Pressed",Toast.LENGTH_SHORT).show();
                     try {
                         Log.d("AllContactsAdapter","PressedInside");
-                        Intent i = new Intent(Intent.ACTION_SEND);
+                        /*Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("text/plain");
                         i.putExtra(Intent.EXTRA_SUBJECT, "SPApp");
                         String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
                         sAux = sAux+"\n"+"https://play.google.com/store/apps/details?id=in.sabpaisa.droid.sabpaisa";
                         i.putExtra(Intent.EXTRA_TEXT, sAux);
 
-                        mContext.startActivity(Intent.createChooser(i, "Share via"));
+                        mContext.startActivity(Intent.createChooser(i, "Share via"));*/
+
+
+                        shareIntentSpecificApps();
+
                     } catch (Exception e) {
                         //e.toString();
                     }
@@ -340,6 +350,68 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
         arr.set(j++, arr.get(n - 1));
         return j;
     }
+
+
+
+
+    public void shareIntentSpecificApps() {
+
+
+        List<Intent> targetShareIntents = new ArrayList<Intent>();
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        PackageManager pm = mContext.getPackageManager();
+        List<ResolveInfo> resInfos = pm.queryIntentActivities(shareIntent, 0);
+        if (!resInfos.isEmpty()) {
+            System.out.println("Have package");
+            for (ResolveInfo resInfo : resInfos) {
+                String packageName = resInfo.activityInfo.packageName;
+                Log.i("Package Name", packageName);
+
+                if (packageName.contains("com.twitter.android") || packageName.contains("com.facebook.katana")
+                        || packageName.contains("com.whatsapp") || packageName.contains("com.google.android.apps.plus")
+                        || packageName.contains("com.google.android.talk") || packageName.contains("com.slack")
+                        || packageName.contains("com.google.android.gm") || packageName.contains("com.facebook.orca")
+                        || packageName.contains("com.yahoo.mobile") || packageName.contains("com.skype.raider")
+                        || packageName.contains("com.android.mms")|| packageName.contains("com.linkedin.android")
+                        || packageName.contains("com.google.android.apps.messaging")) {
+                    Intent intent = new Intent();
+
+                    String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
+                    sAux = sAux + "\n" + "https://play.google.com/store/apps/details?id=in.sabpaisa.droid.sabpaisa";
+
+                    intent.setComponent(new ComponentName(packageName, resInfo.activityInfo.name));
+                    intent.putExtra("AppName", resInfo.loadLabel(pm).toString());
+                    intent.setAction(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TEXT, sAux);
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "SPApp");
+                    intent.setPackage(packageName);
+                    targetShareIntents.add(intent);
+                }
+            }
+            if (!targetShareIntents.isEmpty()) {
+                Collections.sort(targetShareIntents, new Comparator<Intent>() {
+                    @Override
+                    public int compare(Intent o1, Intent o2) {
+                        return o1.getStringExtra("AppName").compareTo(o2.getStringExtra("AppName"));
+                    }
+                });
+                Intent chooserIntent = Intent.createChooser(targetShareIntents.remove(0), "Select app to share");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetShareIntents.toArray(new Parcelable[]{}));
+                mContext.startActivity(chooserIntent);
+            } else {
+                Toast.makeText(mContext, "No app to share.", Toast.LENGTH_LONG).show();
+            }
+        }
+
+
+    }
+
+
+
+
 
 
 }

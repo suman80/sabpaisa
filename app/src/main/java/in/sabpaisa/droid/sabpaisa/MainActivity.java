@@ -8,11 +8,16 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.LabeledIntent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -22,6 +27,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -43,6 +49,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -100,7 +107,10 @@ import org.json.JSONObject;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.NotificationAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
@@ -1014,13 +1024,21 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         } else if (id == R.id.nav_share) {
 //https://stackoverflow.com/questions/9730243/how-to-filter-specific-apps-for-action-send-intent-and-set-a-different-text-for
             try {
-                Intent i = new Intent(Intent.ACTION_SEND);
+                /*Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, "SPApp");
                 String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
                 sAux = sAux + "\n" + "https://play.google.com/store/apps/details?id=in.sabpaisa.droid.sabpaisa";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
-                startActivity(Intent.createChooser(i, "Share via"));
+                startActivity(Intent.createChooser(i, "Share via"));*/
+
+
+                shareIntentSpecificApps();
+
+
+
+
+
             } catch (Exception e) {
 
 
@@ -1915,6 +1933,63 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
             Log.v("MainActivity", "Internet Connection Not Present");
             return false;
         }
+    }
+
+
+
+    public void shareIntentSpecificApps() {
+
+
+        List<Intent> targetShareIntents = new ArrayList<Intent>();
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        PackageManager pm = MainActivity.this.getPackageManager();
+        List<ResolveInfo> resInfos = pm.queryIntentActivities(shareIntent, 0);
+        if (!resInfos.isEmpty()) {
+            System.out.println("Have package");
+            for (ResolveInfo resInfo : resInfos) {
+                String packageName = resInfo.activityInfo.packageName;
+                Log.i("Package Name", packageName);
+
+                if (packageName.contains("com.twitter.android") || packageName.contains("com.facebook.katana")
+                        || packageName.contains("com.whatsapp") || packageName.contains("com.google.android.apps.plus")
+                        || packageName.contains("com.google.android.talk") || packageName.contains("com.slack")
+                        || packageName.contains("com.google.android.gm") || packageName.contains("com.facebook.orca")
+                        || packageName.contains("com.yahoo.mobile") || packageName.contains("com.skype.raider")
+                        || packageName.contains("com.android.mms")|| packageName.contains("com.linkedin.android")
+                        || packageName.contains("com.google.android.apps.messaging")) {
+                    Intent intent = new Intent();
+
+                    String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
+                    sAux = sAux + "\n" + "https://play.google.com/store/apps/details?id=in.sabpaisa.droid.sabpaisa";
+
+                    intent.setComponent(new ComponentName(packageName, resInfo.activityInfo.name));
+                    intent.putExtra("AppName", resInfo.loadLabel(pm).toString());
+                    intent.setAction(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TEXT, sAux);
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "SPApp");
+                    intent.setPackage(packageName);
+                    targetShareIntents.add(intent);
+                }
+            }
+            if (!targetShareIntents.isEmpty()) {
+                Collections.sort(targetShareIntents, new Comparator<Intent>() {
+                    @Override
+                    public int compare(Intent o1, Intent o2) {
+                        return o1.getStringExtra("AppName").compareTo(o2.getStringExtra("AppName"));
+                    }
+                });
+                Intent chooserIntent = Intent.createChooser(targetShareIntents.remove(0), "Select app to share");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetShareIntents.toArray(new Parcelable[]{}));
+                startActivity(chooserIntent);
+            } else {
+                Toast.makeText(MainActivity.this, "No app to share.", Toast.LENGTH_LONG).show();
+            }
+        }
+
+
     }
 
 

@@ -484,7 +484,10 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
 
-        } else if (i.equals("%"))
+        }else if (!(checkFileExtension(fileDoc))){
+            Toast.makeText(Proceed_Group_FullScreen.this,"Invalid File Format",Toast.LENGTH_SHORT).show();
+        }
+        else if (i.equals("%"))
 
         {
             commentText.replace("%", "%25");
@@ -1236,7 +1239,14 @@ public void privatefeeds(final String groupId)
         }
     }
 
-
+    public boolean checkFileExtension (File file) {
+        if (file.getAbsolutePath().endsWith(".doc") || file.getAbsolutePath().endsWith(".docx")
+                || file.getAbsolutePath().endsWith(".pdf") || file.getAbsolutePath().endsWith(".xls")
+                || file.getAbsolutePath().endsWith(".xlsx")){
+            return true;
+        }
+        return false;
+    }
 
 
 

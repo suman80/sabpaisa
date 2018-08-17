@@ -467,6 +467,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
 
+        }else if (!(checkFileExtension(fileDoc))){
+            Toast.makeText(Proceed_Feed_FullScreen.this,"Invalid File Format",Toast.LENGTH_SHORT).show();
         }
 
         else if(i.equals("%"))
@@ -1081,6 +1083,15 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         }
     }
 
+
+    public boolean checkFileExtension (File file) {
+        if (file.getAbsolutePath().endsWith(".doc") || file.getAbsolutePath().endsWith(".docx")
+                || file.getAbsolutePath().endsWith(".pdf") || file.getAbsolutePath().endsWith(".xls")
+                || file.getAbsolutePath().endsWith(".xlsx")){
+            return true;
+        }
+        return false;
+    }
 
 
 
