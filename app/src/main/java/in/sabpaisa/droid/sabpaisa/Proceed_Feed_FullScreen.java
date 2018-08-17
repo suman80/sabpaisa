@@ -96,6 +96,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     TextView feedsName, feed_description_details;
     ImageView feedImage;
+    EditText group_details_text_view ;
     CommentsDB dbHelper;
     private int TOTAL_PAGES = 3;
     String ts1;
@@ -362,6 +363,10 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         });
 
 
+
+
+
+
     }
 
 
@@ -432,7 +437,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     }
 
-    EditText group_details_text_view ;
+
 
     public void onClickSendComment(View view) {
         group_details_text_view = (EditText) findViewById(R.id.commentadd);
@@ -467,10 +472,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
 
-        }else if (!(checkFileExtension(fileDoc))){
-            Toast.makeText(Proceed_Feed_FullScreen.this,"Invalid File Format",Toast.LENGTH_SHORT).show();
         }
-
         else if(i.equals("%"))
 
         {
@@ -560,7 +562,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
                 Uri selectedimg = data.getData();
-                Log.d("SSSS ", selectedimg+"");
+                Log.d("SSSSselectedimg ", selectedimg+"");
+
+                Log.d("SSSSSelectedFile ", selectedimg.getPath()+"");
 
                 shareViewFrameLayout.setVisibility(View.GONE);
                 ImageViewFrameLayout.setVisibility(View.VISIBLE);
@@ -570,7 +574,16 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
                 commentFile = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
-                Log.d("STTTTTTS ", selectedimg+"");
+                Log.d("STTTTTTS ", selectedimg + "");
+                Log.d("ChkCommentFile ", commentFile + "");
+
+                if (commentFile == null){
+                    shareViewFrameLayout.setVisibility(View.GONE);
+                    ImageViewFrameLayout.setVisibility(View.GONE);
+                    closeSelectedImage.setVisibility(View.GONE);
+                    Toast.makeText(Proceed_Feed_FullScreen.this,"Invalid File Format",Toast.LENGTH_SHORT).show();
+                }
+
 
 
             }
@@ -581,18 +594,20 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     Uri selectedFileURI = data.getData();
                     fileDoc = new File(selectedFileURI.getPath().toString());
                     Log.d("PFF", "File : " + fileDoc.getName());
-//                uploadedFileName = file.getName().toString();
-//                tokens = new StringTokenizer(uploadedFileName, ":");
-//                first = tokens.nextToken();
-//                file_1 = tokens.nextToken().trim();
-//                txt_file_name_1.setText(file_1);
 
-                    shareViewFrameLayout.setVisibility(View.GONE);
-                    DocViewFrameLayout.setVisibility(View.VISIBLE);
-                    closeSelectedDoc.setVisibility(View.VISIBLE);
-                    selectedDocName.setText(fileDoc.getName());
+                    if ( fileDoc!=null && !(checkFileExtension(fileDoc))){
+                        shareViewFrameLayout.setVisibility(View.GONE);
+                        ImageViewFrameLayout.setVisibility(View.GONE);
+                        closeSelectedDoc.setVisibility(View.GONE);
+                        Toast.makeText(Proceed_Feed_FullScreen.this,"Invalid File Format",Toast.LENGTH_SHORT).show();
+                    }else {
 
+                        shareViewFrameLayout.setVisibility(View.GONE);
+                        DocViewFrameLayout.setVisibility(View.VISIBLE);
+                        closeSelectedDoc.setVisibility(View.VISIBLE);
+                        selectedDocName.setText(fileDoc.getName());
 
+                    }
                 }
             }
 
@@ -661,8 +676,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                                 //Toast.makeText(Proceed_Feed_FullScreen.this, "Image Upload Success !", Toast.LENGTH_SHORT).show();
 
                                 commentFile = null;
-                                fileDoc = null;
-
                                 fileDoc = null;
 
                                 commentArrayList.clear();

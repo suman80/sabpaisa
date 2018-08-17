@@ -260,7 +260,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_weight="0.8"
                     android:clickable="true"
-                    android:src="@drawable/ic_attachment_file" />
+                    app:srcCompat="@drawable/ic_attachment_file" />
 
 
             </LinearLayout>

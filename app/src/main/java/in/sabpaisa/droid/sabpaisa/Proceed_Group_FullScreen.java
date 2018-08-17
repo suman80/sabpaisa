@@ -484,8 +484,6 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
 
-        }else if (!(checkFileExtension(fileDoc))){
-            Toast.makeText(Proceed_Group_FullScreen.this,"Invalid File Format",Toast.LENGTH_SHORT).show();
         }
         else if (i.equals("%"))
 
@@ -567,16 +565,26 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
                 Uri selectedimg = data.getData();
                 Log.d("SSSS ", selectedimg+"");
+                Log.d("SSSSSelectedFile ", selectedimg.getPath()+"");
 
-                shareViewFrameLayout.setVisibility(View.GONE);
-                ImageViewFrameLayout.setVisibility(View.VISIBLE);
-                closeSelectedImage.setVisibility(View.VISIBLE);
+                    shareViewFrameLayout.setVisibility(View.GONE);
+                    ImageViewFrameLayout.setVisibility(View.VISIBLE);
+                    closeSelectedImage.setVisibility(View.VISIBLE);
 
-                selectedImg.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
+                    selectedImg.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
 
 
-                commentFile = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
-                Log.d("STTTTTTS ", selectedimg+"");
+                    commentFile = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+                    Log.d("STTTTTTS ", selectedimg + "");
+                    Log.d("ChkCommentFile ", commentFile + "");
+
+                if (commentFile == null){
+                    shareViewFrameLayout.setVisibility(View.GONE);
+                    ImageViewFrameLayout.setVisibility(View.GONE);
+                    closeSelectedImage.setVisibility(View.GONE);
+                    Toast.makeText(Proceed_Group_FullScreen.this,"Invalid File Format",Toast.LENGTH_SHORT).show();
+                }
+
 
 
             }
@@ -587,17 +595,20 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     Uri selectedFileURI = data.getData();
                     fileDoc = new File(selectedFileURI.getPath().toString());
                     Log.d("PFF", "File : " + fileDoc.getName());
-//                uploadedFileName = file.getName().toString();
-//                tokens = new StringTokenizer(uploadedFileName, ":");
-//                first = tokens.nextToken();
-//                file_1 = tokens.nextToken().trim();
-//                txt_file_name_1.setText(file_1);
 
-                    shareViewFrameLayout.setVisibility(View.GONE);
-                    DocViewFrameLayout.setVisibility(View.VISIBLE);
-                    closeSelectedDoc.setVisibility(View.VISIBLE);
-                    selectedDocName.setText(fileDoc.getName());
+                    if ( fileDoc!=null && !(checkFileExtension(fileDoc))){
+                        shareViewFrameLayout.setVisibility(View.GONE);
+                        ImageViewFrameLayout.setVisibility(View.GONE);
+                        closeSelectedDoc.setVisibility(View.GONE);
+                        Toast.makeText(Proceed_Group_FullScreen.this,"Invalid File Format",Toast.LENGTH_SHORT).show();
+                    }else {
 
+                        shareViewFrameLayout.setVisibility(View.GONE);
+                        DocViewFrameLayout.setVisibility(View.VISIBLE);
+                        closeSelectedDoc.setVisibility(View.VISIBLE);
+                        selectedDocName.setText(fileDoc.getName());
+
+                    }
 
                 }
             }
