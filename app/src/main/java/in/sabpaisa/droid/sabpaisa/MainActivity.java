@@ -1988,7 +1988,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
                 Toast.makeText(MainActivity.this, "No app to share.", Toast.LENGTH_LONG).show();
             }
         }
-
+//Check
 
     }
 
