@@ -593,7 +593,10 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 if (resultCode == Activity.RESULT_OK) {
                     Uri selectedFileURI = data.getData();
                     fileDoc = new File(selectedFileURI.getPath().toString());
-                    Log.d("PFF", "File : " + fileDoc.getName());
+                    Log.d("PFFfileDoc1", "File : " + selectedFileURI);
+                    Log.d("PFFfileDoc2", "File : " + fileDoc);
+                    Log.d("PFFfileDoc3", "File : " + fileDoc.getName());
+                    Log.d("PFFfileDoc4", "File : " + fileDoc.getAbsolutePath());
 
                     if ( fileDoc!=null && !(checkFileExtension(fileDoc))){
                         shareViewFrameLayout.setVisibility(View.GONE);

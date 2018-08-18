@@ -27,7 +27,7 @@
         />
 
 
-    <com.shitij.goyal.slidebutton.SwipeButton
+    <!--<com.shitij.goyal.slidebutton.SwipeButton
         android:id="@+id/slide"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -47,7 +47,7 @@
         android:text="Swipe Left To Right"
         android:textColor="#FFFFFF"
         />
-
+-->
 
 
 

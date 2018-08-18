@@ -12,7 +12,7 @@ android {
         versionName "1.4.2"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
+//        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -114,12 +114,12 @@ dependencies {
     //compile 'com.farbod.labelledspinner:labelledspinner:1.1.5'
     compile 'com.google.code.gson:gson:2.8.2'
 
-    compile 'com.jackandphantom.android:circularprogressbar:1.2.0'
+    //compile 'com.jackandphantom.android:circularprogressbar:1.2.0'
 
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile project(path: ':sdk')
     //compile 'com.airbnb.android:lottie:2.1.2'
-    compile 'com.shitij.goyal:slide-button:1.0.0'
+    //compile 'com.shitij.goyal:slide-button:1.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile project(path: ':firebase_plugin')
     //compile project(path: ':chat-sdk-core')

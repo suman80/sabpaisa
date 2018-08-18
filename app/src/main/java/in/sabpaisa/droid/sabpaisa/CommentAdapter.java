@@ -204,6 +204,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                     Intent intent = new Intent(mContext,ImageViewActivity.class);
                     intent.putExtra("FULL_IMAGE",commentData.getCommentImage());
                     intent.putExtra("FULL_IMAGE_NAME",fname);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
                 }
             });

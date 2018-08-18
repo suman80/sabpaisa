@@ -594,7 +594,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 if (resultCode == Activity.RESULT_OK) {
                     Uri selectedFileURI = data.getData();
                     fileDoc = new File(selectedFileURI.getPath().toString());
-                    Log.d("PFF", "File : " + fileDoc.getName());
+
+                    Log.d("PGFfileDoc1", "File : " + selectedFileURI);
+                    Log.d("PGFfileDoc2", "File : " + fileDoc);
+                    Log.d("PGFfileDoc3", "File : " + fileDoc.getName());
+                    Log.d("PGFfileDoc4", "File : " + fileDoc.getAbsolutePath());
+
 
                     if ( fileDoc!=null && !(checkFileExtension(fileDoc))){
                         shareViewFrameLayout.setVisibility(View.GONE);

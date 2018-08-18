@@ -20,7 +20,7 @@ import com.olive.upi.transport.OliveUpiEventListener;
 import com.olive.upi.transport.api.Result;
 import com.olive.upi.transport.api.UpiService;
 import com.olive.upi.transport.model.sdk.SDKHandshake;
-import com.shitij.goyal.slidebutton.SwipeButton;
+//import com.shitij.goyal.slidebutton.SwipeButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +36,7 @@ import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class LetsGoActivity extends AppCompatActivity implements OliveUpiEventListener {
 
-    SwipeButton slide;
+    //SwipeButton slide;
 
     private String deviceId = "351891083827813";
     SDKHandshake sdkHandshake;
@@ -81,7 +81,7 @@ These variables or parameters are used for Merchant server API to get token
 
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-        slide = (SwipeButton) findViewById(R.id.slide);
+        /*slide = (SwipeButton) findViewById(R.id.slide);
 
         slide.addOnSwipeCallback(new SwipeButton.Swipe() {
             @Override
@@ -98,7 +98,7 @@ These variables or parameters are used for Merchant server API to get token
             public void onSwipeConfirm() {
                 getResponse();
             }
-        });
+        });*/
 
     }
 
