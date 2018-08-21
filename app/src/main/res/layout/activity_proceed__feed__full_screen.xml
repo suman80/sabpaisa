@@ -173,7 +173,9 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/selectedDocName"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="80dp"
+        android:maxLines="2"
+        android:maxHeight="25dp"
         />
 
 

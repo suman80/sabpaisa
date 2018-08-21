@@ -308,8 +308,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         if (!(commentData.getCommentImage()==null || commentData.getCommentImage().equals("null") || commentData.getCommentImage().isEmpty())
                 &&( commentData.getCommentImage().endsWith(".ppt") ||  commentData.getCommentImage().endsWith(".pptx")
                 || commentData.getCommentImage().endsWith(".doc") ||  commentData.getCommentImage().endsWith(".docx")
-                || commentData.getCommentImage().endsWith(".xls") ||  commentData.getCommentImage().endsWith(".xlsx")
                 )) {
+
 
             Log.d("Inside if block","Doc file Found"+commentData.getCommentImage());
             holder.commentImg.setVisibility(View.GONE);
@@ -351,6 +351,49 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
         }
 
+        if (!(commentData.getCommentImage()==null || commentData.getCommentImage().equals("null") || commentData.getCommentImage().isEmpty())
+            && commentData.getCommentImage().endsWith(".xls") || commentData.getCommentImage().endsWith(".xlsx") ) {
+
+            Log.d("Inside if block","XLS file Found"+commentData.getCommentImage());
+            holder.commentImg.setVisibility(View.GONE);
+            holder.xlsFileImg.setVisibility(View.VISIBLE);
+            holder.downloadFile.setVisibility(View.VISIBLE);
+            holder.fileName.setVisibility(View.VISIBLE);
+
+            String arr[] = commentData.getCommentImage().split("/");
+
+            String filenameSplitter[] = arr[arr.length-1].split("_");
+
+            String fileFormat = filenameSplitter[filenameSplitter.length-1].split("\\.")[1];
+            Log.d("Format4 : ", arr[arr.length-1]+"   ");
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < filenameSplitter.length-1;i++){
+
+                if (i>0)
+                    stringBuilder.append("_");
+                stringBuilder.append(filenameSplitter[i]);
+
+            }
+            stringBuilder.append("."+fileFormat);
+
+            String fname = stringBuilder.toString();
+
+            Log.d("fnameInDOCXCode"," "+fname);
+
+            if(arrayListAlreadyExistFile.contains(/*arr[arr.length-1]*/fname)){
+                holder.downloadFile.setVisibility(View.GONE);
+                Log.d("InIfPartWhere"," FileExist"+fname);
+                holder.downloadedOpenFile.setVisibility(View.VISIBLE);
+            }else{
+                holder.downloadFile.setVisibility(View.VISIBLE);
+                Log.d("InElsePartWhere"," FileNOTExist "+fname);
+                holder.downloadedOpenFile.setVisibility(View.GONE);
+            }
+
+            holder.fileName.setText(fname);
+
+
+        }
 
         holder.downloadFile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -445,9 +488,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         public TextView main_feed_creation_time;
         public TextView main_feed_group_description;
         public TextView main_feed_comment_username;
-        public ImageView main_feed_comment_image,commentImg,pdfFileImg,docFileImg;
+        public ImageView main_feed_comment_image,commentImg,pdfFileImg,docFileImg,xlsFileImg;
         public RelativeLayout relative_comments;
-        public TextView downloadFile,downloadedOpenFile;
+        public ImageView downloadFile;
+        public TextView downloadedOpenFile;
         public TextView fileName;
 
         public MyViewHolder(View view) {
@@ -459,8 +503,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
             commentImg = (ImageView) view.findViewById(R.id.commentImg);
             pdfFileImg = (ImageView) view.findViewById(R.id.pdfFileImg);
             docFileImg = (ImageView) view.findViewById(R.id.docFileImg);
+            xlsFileImg = (ImageView) view.findViewById(R.id.xlsFileImg);
             relative_comments = (RelativeLayout) view.findViewById(R.id.relative_comments);
-            downloadFile = (TextView) view.findViewById(R.id.downloadFile);
+            downloadFile = (ImageView) view.findViewById(R.id.downloadFile);
             downloadedOpenFile = (TextView) view.findViewById(R.id.downloadedOpenFile);
             fileName = (TextView) view.findViewById(R.id.fileName);
         }
