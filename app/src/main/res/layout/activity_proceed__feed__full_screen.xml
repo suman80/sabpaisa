@@ -245,6 +245,17 @@
                     android:clickable="true"
                     app:srcCompat="@drawable/ic_attachment_file" />
 
+                <ImageView
+                    android:id="@+id/attachment_Image_Video_File"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="0.8"
+                    android:clickable="true"
+                    app:srcCompat="@drawable/ic_photo_camera_black_24dp"
+                    android:layout_marginRight="10dp"
+                    />
+
 
             </LinearLayout>
 

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -35,7 +36,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -166,7 +170,7 @@ public class ParticularClient extends Fragment {
 
         boolean checkDb = db.isTableExists(TABLE_Particular_Client);
 
-        Log.d("DbValuePIF"," "+checkDb);
+        Log.d("DbValuePC"," "+checkDb);
 
         if (checkDb == true){
             db.deleteAllClientData();
@@ -220,7 +224,6 @@ public class ParticularClient extends Fragment {
                         Log.d("JSONobjectttt", "-->" + jsonObject);
 
                         clientArrayList.add(institution);
-
                         /////////////////////Saving To Internal Storage/////////////////////////////////////////
 
                         final ParticularClientModelForOffline particularClientModelForOffline = new ParticularClientModelForOffline();
@@ -328,6 +331,8 @@ public class ParticularClient extends Fragment {
                             }
                         }, 1000);
 
+                        //new saveToInternalStorage().doInBackground(jsonObject1);
+
                         institutionAdapter = new InstitutionAdapter(getContext(), clientArrayList);
                         shimmerRecyclerView.setAdapter(institutionAdapter);
 
@@ -426,4 +431,137 @@ public class ParticularClient extends Fragment {
         }
     }
 
+
+
+    /*public class saveToInternalStorage extends AsyncTask<JSONObject, Void, Void> {
+
+        @Override
+        protected Void doInBackground(JSONObject... jsonObjects) {
+
+            final ParticularClientModelForOffline particularClientModelForOffline = new ParticularClientModelForOffline();
+
+            for (JSONObject jsonArray: jsonObjects) {
+                try {
+                    particularClientModelForOffline.setClientId(jsonArray.getString("clientId"));
+                    particularClientModelForOffline.setClientName(jsonArray.getString("clientName"));
+                    particularClientModelForOffline.setState(jsonArray.getString("stateName"));
+                    particularClientModelForOffline.setClientLogoPath(jsonArray.getString("clientLogoPath"));
+                    Log.d("OrgLogo11", "-->" + particularClientModelForOffline.getClientLogoPath());
+                    particularClientModelForOffline.setClientImagePath(jsonArray.getString("clientImagePath"));
+                    Log.d("OrgWal11", "-->" + particularClientModelForOffline.getClientImagePath());
+
+                    Glide.with(getContext())
+                            .load(particularClientModelForOffline.getClientLogoPath())
+                            .asBitmap()
+                            .into(new SimpleTarget<Bitmap>(100, 100) {
+                                @Override
+                                public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                    Log.d("LogoBitmap", " " + resource);
+
+                                    ContextWrapper cw = new ContextWrapper(getContext());
+                                    // path to /data/data/yourapp/app_data/imageDir
+                                    File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                    // Create imageDir
+                                    File mypath = new File(directory, (System.currentTimeMillis() / 1000) + "logo.jpg");
+
+                                    Log.d("mypath", "mypath  " + mypath);
+
+                                    String logoPath = mypath.toString();
+
+
+                                    FileOutputStream fos = null;
+                                    try {
+                                        fos = new FileOutputStream(mypath);
+                                        // Use the compress method on the BitMap object to write image to the OutputStream
+                                        resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        try {
+                                            fos.close();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+//                                    particularClientModelForOffline.setClientLogoPath(logoPath);
+
+                                }
+                            });
+
+
+                    Glide.with(getContext())
+                            .load(particularClientModelForOffline.getClientImagePath())
+                            .asBitmap()
+                            .into(new SimpleTarget<Bitmap>(100, 100) {
+                                @Override
+                                public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                    Log.d("ImgBitmap", " " + resource);
+
+
+                                    ContextWrapper cw = new ContextWrapper(getContext());
+                                    // path to /data/data/yourapp/app_data/imageDir
+                                    File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                    // Create imageDir
+                                    File mypath = new File(directory, (System.currentTimeMillis() / 1000) + "image.jpg");
+
+                                    Log.d("mypathImg", "mypathImg  " + mypath);
+
+                                    String imagePath = mypath.toString();
+
+                                    FileOutputStream fos = null;
+                                    try {
+                                        fos = new FileOutputStream(mypath);
+                                        // Use the compress method on the BitMap object to write image to the OutputStream
+                                        resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        try {
+                                            fos.close();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    //particularClientModelForOffline.setClientImagePath(imagePath);
+
+                                }
+                            });
+
+                    //////////////////////////////LOCAL DB//////////////////////////////////////
+                    *//*final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 1000ms*//*
+
+                            boolean isInserted = db.insertClientData(particularClientModelForOffline);
+                            if (isInserted == true) {
+
+                                //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                                Log.d("PIF_Data", "LocalDBInIfPart" + isInserted);
+
+                            } else {
+                                Log.d("PIF_Data", "LocalDBInElsePart" + isInserted);
+                                //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                            }
+
+*//*
+                        }
+                    }, 1000);*//*
+
+
+
+                }catch (Exception e){
+                    Log.d("saveToInternalStorage"," "+e.getMessage());
+                }
+
+            }
+
+
+
+            return null;
+        }
+    }
+*/
 }

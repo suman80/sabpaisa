@@ -142,7 +142,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
     FrameLayout shareViewFrameLayout,ImageViewFrameLayout,DocViewFrameLayout;
-    ImageView attachmentFile,selectedImg,closeSelectedImage,selectedDoc,closeSelectedDoc;
+    ImageView attachmentFile,selectedImg,closeSelectedImage,selectedDoc,closeSelectedDoc,attachment_Image_Video_File;
     TextView selectedDocName;
 
 
@@ -154,6 +154,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     File fileDoc;
 
+    public static String MY_PREFS_FOR_GROUP_ID="mySharedPrefForGroupId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -308,6 +309,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
         /////////////Code for file/image upload in comments///////////////////////////////////////////////////
+
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_FOR_GROUP_ID, MODE_PRIVATE).edit();
+        editor.putString("groupId", GroupId);
+        editor.apply();
+
         shareViewFrameLayout = (FrameLayout) findViewById(R.id.shareViewFrameLayout);
         attachmentFile = (ImageView)findViewById(R.id.attachmentFile);
         shareDocument = (LinearLayout)findViewById(R.id.shareDocument);
@@ -319,6 +325,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         selectedDocName = (TextView) findViewById(R.id.selectedDocName);
         closeSelectedImage = (ImageView)findViewById(R.id.closeSelectedImage);
         closeSelectedDoc = (ImageView)findViewById(R.id.closeSelectedDoc);
+        attachment_Image_Video_File = (ImageView)findViewById(R.id.attachment_Image_Video_File);
 
         attachmentFile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -375,6 +382,17 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             public void onClick(View view) {
                 Toast.makeText(Proceed_Group_FullScreen.this,"Pick Image",Toast.LENGTH_SHORT).show();
                 pickImage();
+            }
+        });
+
+        attachment_Image_Video_File.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Proceed_Group_FullScreen.this,DisplayActivity.class);
+                intent.putExtra("CAMVALUE",2);
+                startActivity(intent);
+
             }
         });
 

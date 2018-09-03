@@ -217,6 +217,8 @@ public class ForgotActivity extends AppCompatActivity {
     BottomSheetDialog mBottomSheetDialog;
     private static final int REQUEST_READ_PERMISSION = 123;
 
+    String globalNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -337,6 +339,8 @@ public class ForgotActivity extends AppCompatActivity {
 
                     //et_otp.setError("Please click on the send otp");
                     Toast.makeText(ForgotActivity.this,"Please click on the send otp",Toast.LENGTH_SHORT).show();
+                }else if (!(contactNumber.equals(globalNumber))){
+                    Toast.makeText(ForgotActivity.this,"Otp is not verified with this number",Toast.LENGTH_SHORT).show();
                 }
                 else if(isOnline())
                 {
@@ -608,6 +612,7 @@ public class ForgotActivity extends AppCompatActivity {
                     if (status.equals("success")) {
                         otp11 = response.optString("otp");
                         Log.d("otp11","Value "+otp11);
+                        globalNumber = number;
                         send_Otp.setVisibility(View.INVISIBLE);
                         Log.d("verifireponsePass"," "+verifireponse);
                     Toast.makeText(ForgotActivity.this,verifireponse,Toast.LENGTH_SHORT).show();

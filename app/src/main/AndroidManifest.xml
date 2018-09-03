@@ -28,7 +28,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".AppController"
@@ -235,8 +235,7 @@
             android:name=".NotificationPopUPActivity"
             android:theme="@style/AppTheme.popup" />
         <activity android:name=".SharingActivity" />
-        <activity android:name=".ImageViewActivity"></activity>
-
+        <activity android:name=".ImageViewActivity" />
 
         <provider
             android:name=".Util.GenericFileProvider"
@@ -245,11 +244,10 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
-
-
+        <activity android:name=".DisplayActivity"></activity>
     </application>
 
 </manifest>

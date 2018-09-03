@@ -22,6 +22,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -140,7 +141,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     ImageView imageView2;
 
     FrameLayout shareViewFrameLayout,ImageViewFrameLayout,DocViewFrameLayout;
-    ImageView attachmentFile,selectedImg,closeSelectedImage,selectedDoc,closeSelectedDoc;
+    ImageView attachmentFile,selectedImg,closeSelectedImage,selectedDoc,closeSelectedDoc,attachment_Image_Video_File;
     TextView selectedDocName;
 
     LinearLayout shareDocument,shareImage;
@@ -150,6 +151,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     Bitmap commentFile;
 
     File fileDoc;
+
+    public static String MY_PREFS_FOR_FEED_ID="mySharedPrefForFeedId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -298,6 +301,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         }
 
         /////////////Code for file/image upload in comments///////////////////////////////////////////////////
+
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_FOR_FEED_ID, MODE_PRIVATE).edit();
+        editor.putString("feedId", feed_id);
+        editor.apply();
+
         shareViewFrameLayout = (FrameLayout) findViewById(R.id.shareViewFrameLayout);
         attachmentFile = (ImageView)findViewById(R.id.attachmentFile);
         shareDocument = (LinearLayout)findViewById(R.id.shareDocument);
@@ -309,6 +317,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         selectedDocName = (TextView) findViewById(R.id.selectedDocName);
         closeSelectedImage = (ImageView)findViewById(R.id.closeSelectedImage);
         closeSelectedDoc = (ImageView)findViewById(R.id.closeSelectedDoc);
+        attachment_Image_Video_File = (ImageView)findViewById(R.id.attachment_Image_Video_File);
 
         attachmentFile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -367,6 +376,16 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         });
 
 
+        attachment_Image_Video_File.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Proceed_Feed_FullScreen.this,DisplayActivity.class);
+                intent.putExtra("CAMVALUE",1);
+                startActivity(intent);
+
+            }
+        });
 
 
 
@@ -1251,6 +1270,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             Log.v("PFF","Permission: "+permissions[0]+ "was "+grantResults[0]);
             //resume tasks needing this permission
         }
+
     }
 
 
@@ -1262,7 +1282,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         }
         return false;
     }
-
 
 
 
