@@ -383,6 +383,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 Intent intent = new Intent(Proceed_Feed_FullScreen.this,DisplayActivity.class);
                 intent.putExtra("CAMVALUE",1);
                 startActivity(intent);
+                finish();
 
             }
         });

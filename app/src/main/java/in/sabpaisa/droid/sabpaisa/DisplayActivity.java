@@ -1,7 +1,9 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -31,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -88,15 +91,180 @@ public class DisplayActivity extends AppCompatActivity {
                     SharedPreferences prefs = getSharedPreferences(Proceed_Feed_FullScreen.MY_PREFS_FOR_FEED_ID, MODE_PRIVATE);
                     final String feedId = prefs.getString("feedId", null);
 
-                    String comment = commentEditText.getText().toString();
-                    sendCommentFeed(feedId, userAccessToken, comment, photo);
+                    //////////////////////////////////////////////////////////////////////////
+                    StringEscapeUtils.escapeJava(commentEditText.getText().toString());
+                    EditText etEmojiEditText = new EditText(DisplayActivity.this);
+                    etEmojiEditText.setText("TYPE SOMETHING IN EMOJI");
+
+                    String toServer = String.valueOf(commentEditText.getText());
+                    String toServerUnicodeEncoded = StringEscapeUtils.escapeJava(toServer);
+
+                    String serverResponse = "SOME RESPONSE FROM SERVER WITH UNICODE CHARACTERS";
+                    String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
+
+                    String commentText = commentEditText.getText().toString();
+                    String i= StringEscapeUtils.escapeJava(commentText);
+                    Log.d("commentText3","67667767 "+i);
+//        rv.smoothScrollBy(100,100);
+
+                    if (i.trim().length()==0)
+                    {
+
+                        Log.d("commentText2"," "+commentText);
+                        AlertDialog.Builder builder =new AlertDialog.Builder(DisplayActivity.this);
+                        builder.setTitle("Comment");
+                        builder.setMessage("Hey,looks like you forgot to enter text.");
+                        builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+
+                    }
+                    else if(i.equals("%"))
+
+                    {
+                        commentText.replace("%", "%25");
+                        Log.e("ctctcc ", "CommentData" + commentText);
+                        sendCommentFeed(feedId, userAccessToken, i,photo);
+                    }
+
+
+                    else if(i.equals("&"))
+
+                    {
+                        commentText.replace("&", "%26");
+                        Log.e("ctctcc ", "CommentData2 " + commentText);
+                        sendCommentFeed(feedId, userAccessToken, i,photo);
+
+                    }
+
+
+
+
+                    else if(i.trim().length()>1999)
+                    {
+                        AlertDialog.Builder builder =new AlertDialog.Builder(DisplayActivity.this);
+                        builder.setTitle("Comment");
+                        builder.setMessage("Hey folk,It looks like you exceeded the text limit");
+                        builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+
+                    // showpDialog(view);
+                    else {
+
+
+
+                        sendCommentFeed(feedId, userAccessToken, i,photo);
+                        Log.e("CommentDatafeeddetaida ", "CommentData " + commentText);
+                    }
+
+                    Log.d("commentText3"," "+commentText);
+                    /////////////////////////////////////////////////////////////////////////
+
+                    //sendCommentFeed(feedId, userAccessToken, comment, photo);
                 }
                 if (camVal == 2){
 
                     SharedPreferences prefs = getSharedPreferences(Proceed_Group_FullScreen.MY_PREFS_FOR_GROUP_ID, MODE_PRIVATE);
                     final String groupId = prefs.getString("groupId", null);
-                    String comment = commentEditText.getText().toString();
-                    sendCommentGroup(groupId,userAccessToken,comment,photo);
+
+
+                    StringEscapeUtils.escapeJava(commentEditText.getText().toString());
+                    EditText etEmojiEditText = new EditText(DisplayActivity.this);
+                    etEmojiEditText.setText("TYPE SOMETHING IN EMOJI");
+
+                    String toServer = String.valueOf(commentEditText.getText());
+                    String toServerUnicodeEncoded = StringEscapeUtils.escapeJava(toServer);
+
+                    String serverResponse = "SOME RESPONSE FROM SERVER WITH UNICODE CHARACTERS";
+                    String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
+
+                    String commentText = commentEditText.getText().toString();
+                    String i= StringEscapeUtils.escapeJava(commentText);
+                    Log.d("commentText3","67667767 "+i);
+//        rv.smoothScrollBy(100,100);
+
+                    if (i.trim().length()==0)
+                    {
+
+                        Log.d("commentText2"," "+commentText);
+                        AlertDialog.Builder builder =new AlertDialog.Builder(DisplayActivity.this);
+                        builder.setTitle("Comment");
+                        builder.setMessage("Hey,looks like you forgot to enter text.");
+                        builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+
+                    }
+                    else if(i.equals("%"))
+
+                    {
+                        commentText.replace("%", "%25");
+                        Log.e("ctctcc ", "CommentData" + commentText);
+                        sendCommentGroup(groupId, userAccessToken, i,photo);
+                    }
+
+
+                    else if(i.equals("&"))
+
+                    {
+                        commentText.replace("&", "%26");
+                        Log.e("ctctcc ", "CommentData2 " + commentText);
+                        sendCommentGroup(groupId, userAccessToken, i,photo);
+
+                    }
+
+
+
+
+                    else if(i.trim().length()>1999)
+                    {
+                        AlertDialog.Builder builder =new AlertDialog.Builder(DisplayActivity.this);
+                        builder.setTitle("Comment");
+                        builder.setMessage("Hey folk,It looks like you exceeded the text limit");
+                        builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+
+                    // showpDialog(view);
+                    else {
+
+
+
+                        sendCommentGroup(groupId, userAccessToken, i,photo);
+                        Log.e("CommentDatafeeddetaida ", "CommentData " + commentText);
+                    }
+
+                    Log.d("commentText3"," "+commentText);
+                    /////////////////////////////////////////////////////////////////////////
+
+
+//                    String comment = commentEditText.getText().toString();
+//                    sendCommentGroup(groupId,userAccessToken,comment,photo);
                 }
 
             }

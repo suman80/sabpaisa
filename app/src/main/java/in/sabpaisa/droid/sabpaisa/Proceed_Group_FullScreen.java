@@ -392,6 +392,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 Intent intent = new Intent(Proceed_Group_FullScreen.this,DisplayActivity.class);
                 intent.putExtra("CAMVALUE",2);
                 startActivity(intent);
+                finish();
 
             }
         });
