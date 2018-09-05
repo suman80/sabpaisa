@@ -19,6 +19,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -162,6 +163,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         if (!(commentData.getCommentImage()==null || commentData.getCommentImage().equals("null") || commentData.getCommentImage().isEmpty())) {
 
             holder.commentImg.setVisibility(View.VISIBLE);
+            holder.card_view.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(commentData.getCommentImage())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -237,6 +239,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 //Code for pdf files
         if (!(commentData.getCommentImage()==null || commentData.getCommentImage().equals("null") || commentData.getCommentImage().isEmpty()) && commentData.getCommentImage().endsWith(".pdf")) {
             holder.commentImg.setVisibility(View.GONE);
+            holder.card_view.setVisibility(View.GONE);
             holder.pdfFileImg.setVisibility(View.VISIBLE);
             holder.downloadFile.setVisibility(View.VISIBLE);
             holder.fileName.setVisibility(View.VISIBLE);
@@ -313,6 +316,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
             Log.d("Inside if block","Doc file Found"+commentData.getCommentImage());
             holder.commentImg.setVisibility(View.GONE);
+            holder.card_view.setVisibility(View.GONE);
             holder.docFileImg.setVisibility(View.VISIBLE);
             holder.downloadFile.setVisibility(View.VISIBLE);
             holder.fileName.setVisibility(View.VISIBLE);
@@ -356,6 +360,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
             Log.d("Inside if block","XLS file Found"+commentData.getCommentImage());
             holder.commentImg.setVisibility(View.GONE);
+            holder.card_view.setVisibility(View.GONE);
             holder.xlsFileImg.setVisibility(View.VISIBLE);
             holder.downloadFile.setVisibility(View.VISIBLE);
             holder.fileName.setVisibility(View.VISIBLE);
@@ -493,6 +498,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         public ImageView downloadFile;
         public TextView downloadedOpenFile;
         public TextView fileName;
+        public CardView card_view;
 
         public MyViewHolder(View view) {
             super(view);
@@ -508,6 +514,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
             downloadFile = (ImageView) view.findViewById(R.id.downloadFile);
             downloadedOpenFile = (TextView) view.findViewById(R.id.downloadedOpenFile);
             fileName = (TextView) view.findViewById(R.id.fileName);
+            card_view = (CardView) view.findViewById(R.id.card_view);
         }
 
 
