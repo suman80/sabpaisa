@@ -96,6 +96,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import at.markushi.ui.CircleButton;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import in.sabpaisa.droid.sabpaisa.Adapter.GroupsCommentOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
@@ -135,7 +136,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     int count = 1;
     ProgressBar progress;
     SpinKitView spin_kit;
-    ImageView imageView2;
+    //ImageView imageView2;
+    CircleButton imageView2;
     EditText group_details_text_view = null;
     private int TOTAL_PAGES = 3;
     private EndlessScrollListener scrollListener;
@@ -199,7 +201,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         progress = (ProgressBar) findViewById(R.id.progress);
 
         spin_kit = (SpinKitView) findViewById(R.id.spin_kit);
-        imageView2 = (ImageView) findViewById(R.id.imageView2);
+        //imageView2 = (ImageView) findViewById(R.id.imageView2);
+        imageView2 = (CircleButton) findViewById(R.id.imageView2);
 
         commentArrayList = new ArrayList<CommentData>();
 

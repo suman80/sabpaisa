@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 
@@ -36,6 +37,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -89,6 +91,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import at.markushi.ui.CircleButton;
 import in.sabpaisa.droid.sabpaisa.Adapter.FeedsCommentOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
@@ -138,7 +141,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     ProgressBar progress;
     SpinKitView spin_kit;
-    ImageView imageView2;
+    //ImageView imageView2;
+    CircleButton imageView2;
 
     FrameLayout shareViewFrameLayout,ImageViewFrameLayout,DocViewFrameLayout;
     ImageView attachmentFile,selectedImg,closeSelectedImage,selectedDoc,closeSelectedDoc,attachment_Image_Video_File;
@@ -181,7 +185,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         progress = (ProgressBar) findViewById(R.id.progress);
 
         spin_kit = (SpinKitView) findViewById(R.id.spin_kit);
-        imageView2 = (ImageView) findViewById(R.id.imageView2);
+        //imageView2 = (ImageView) findViewById(R.id.imageView2);
+        imageView2 = (CircleButton) findViewById(R.id.imageView2);
 
         swipeRefreshLayout= (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
