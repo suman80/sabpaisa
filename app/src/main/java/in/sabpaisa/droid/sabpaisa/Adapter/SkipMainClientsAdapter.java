@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.balysv.materialripple.MaterialRippleLayout;
 //import com.github.chrisbanes.photoview.PhotoView;
 
 import java.text.DateFormat;
@@ -64,7 +65,7 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
             holder.clinetbanner.setImageUrl(mainFeedData.getOrgWal(),imageLoader);
         }
 
-
+/*
            holder.clinetbanner.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
@@ -90,7 +91,21 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
                     intent.putExtra("clientId",mainFeedData.getOrganizationId());
                     v.getContext().startActivity(intent);
                 }
-            });
+            });*/
+
+        holder.rippleClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), SkipClientDetailsScreen.class);
+
+                intent.putExtra("clientName", mainFeedData.getOrganization_name());
+                intent.putExtra("state", mainFeedData.getOrgAddress());
+                intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
+                intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
+                intent.putExtra("clientId",mainFeedData.getOrganizationId());
+                v.getContext().startActivity(intent);
+            }
+        });
 
     }
     /*END Method to change data when put query in searchBar*/
@@ -112,6 +127,7 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
         ImageView instituteLogo,institutePic;
         NetworkImageView thumbnail,clinetbanner;
         TextView instituteName,instituteLocation;
+        MaterialRippleLayout rippleClick;
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -124,6 +140,7 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
 
             instituteName = (TextView)itemView.findViewById(R.id.tv_instituteName);
             instituteLocation = (TextView)itemView.findViewById(R.id.tv_instituteLocation);
+            rippleClick = (MaterialRippleLayout)itemView.findViewById(R.id.rippleClick);
 
         }
     }

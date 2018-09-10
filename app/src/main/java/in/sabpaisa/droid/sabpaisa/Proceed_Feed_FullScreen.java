@@ -1289,6 +1289,16 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         return false;
     }
 
+    @Override
+    public void onBackPressed() {
 
+        if (shareViewFrameLayout.getVisibility() == View.VISIBLE)
+        {
+            shareViewFrameLayout.setVisibility(View.GONE);
+        }else {
 
+            finish();
+
+        }
+    }
 }

@@ -3,9 +3,11 @@ package in.sabpaisa.droid.sabpaisa;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -122,9 +125,28 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             }
         });*/
 
-        holder.linearLayout_feed.setOnClickListener(new View.OnClickListener() {
+        /*holder.linearLayout_feed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                Intent intent = new Intent(view.getContext(), Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedName", mainFeedData.getFeedName());
+                intent.putExtra("popup",popup);
+
+                intent.putExtra("feedText", mainFeedData.getFeedText());
+                intent.putExtra("feedImage", mainFeedData.getImagePath());
+                intent.putExtra("feedLogo", mainFeedData.getLogoPath());
+                intent.putExtra("feedId", mainFeedData.getFeedId());
+                view.getContext().startActivity(intent);
+            }
+        });*/
+
+        holder.rippleClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
                 Intent intent = new Intent(view.getContext(), Proceed_Feed_FullScreen.class);
                 intent.putExtra("feedName", mainFeedData.getFeedName());
                 intent.putExtra("popup",popup);
@@ -161,6 +183,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
         public TextView main_feed_description, main_feed_name, main_feed_creation_time;
         ImageView client_Image, cilent_Logo;
         LinearLayout linearLayout_feed;
+        MaterialRippleLayout rippleClick;
 
         public MyViewHolder(View view) {
             super(view);
@@ -170,6 +193,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             client_Image = (ImageView) view.findViewById(R.id.client_Image);
             cilent_Logo = (ImageView) view.findViewById(R.id.client_Logo);
             linearLayout_feed = (LinearLayout)view.findViewById(R.id.linearLayout_feed);
+            rippleClick = (MaterialRippleLayout)view.findViewById(R.id.rippleClick);
         }
     }
 

@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.braunster.chatsdk.activities.ChatSDKMainActivity;
 import com.bumptech.glide.Glide;
@@ -84,15 +85,37 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
                 .load(member_getterSetter.getUserImageUrl())
                 .error(R.drawable.default_users)
                 .into(holder.memberImg);
+
+
+        holder.rippleClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Log.d("POsitikon-",""+memberGetterSetterArrayList.get(position).getFullName().toString());
+                Log.d("POsitikon-",""+memberGetterSetterArrayList.get(position).getUserImageUrl().toString());
+                Intent intent = new Intent(mContext,MembersProfile.class);
+                intent.putExtra("name1",memberGetterSetterArrayList.get(position).getFullName().toString());
+                intent.putExtra("image1",memberGetterSetterArrayList.get(position).getUserImageUrl().toString());
+                intent.putExtra("emailid1",memberGetterSetterArrayList.get(position).getEmailId().toString());
+                intent.putExtra("mobNo1",memberGetterSetterArrayList.get(position).getPhoneNumber().toString());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                mContext.startActivity(intent);
+
+            }
+        });
+/*
         holder.memberImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-               /* Intent intent = new Intent(mContext,MembersProfile.class);
+               */
+/* Intent intent = new Intent(mContext,MembersProfile.class);
 
                 intent.putExtra("",member_getterSetter.getFullName());
-                mContext.startActivity(intent);*/
+                mContext.startActivity(intent);*//*
+
 
                 Log.d("POsitikon-",""+memberGetterSetterArrayList.get(position).getFullName().toString());
                 Log.d("POsitikon-",""+memberGetterSetterArrayList.get(position).getUserImageUrl().toString());
@@ -112,9 +135,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
             @Override
             public void onClick(View v) {
 
-                /*Intent intent = new Intent(mContext,MembersProfile.class);
+                */
+/*Intent intent = new Intent(mContext,MembersProfile.class);
                 mContext.startActivity(intent);
-*/
+*//*
+
 
                 Log.d("POsitikon-",""+memberGetterSetterArrayList.get(position).getFullName().toString());
                 Log.d("POsitikon-",""+memberGetterSetterArrayList.get(position).getUserImageUrl().toString());
@@ -129,6 +154,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
             }
         });
+*/
 
 
         /*holder.memberChat.setOnClickListener(new View.OnClickListener() {
@@ -175,12 +201,17 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
         public TextView memberName;
         TextView memberTimeStamp;
         String response,userAccessToken;
+
+        MaterialRippleLayout rippleClick;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             memberImg = (ImageView) itemView .findViewById(R.id.memberImg);
             memberName = (TextView)itemView.findViewById(R.id.memberName);
             //memberChat = (Button) itemView.findViewById(R.id.groupmmbrchat);
             //memberTimeStamp = (TextView)itemView.findViewById(R.id.memberTimeStamp);
+
+            rippleClick = (MaterialRippleLayout)itemView.findViewById(R.id.rippleClick);
 
             SharedPreferences prefs = mContext.getSharedPreferences(LogInActivity.MySharedPrefLogin, 0);
           /*  response = prefs.getString("response", "123");

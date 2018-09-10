@@ -37,6 +37,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,7 +83,7 @@ String popup="Group";
                 .load(c.getImagePath())
                 .error(R.drawable.image_not_found)
                 .into(holder.Group_Image);
-
+/*
         holder.Group_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,12 +98,12 @@ String popup="Group";
 
                 addMember(token,groupId,v,c);
 
-                /*Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
+                *//*Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
                 intent.putExtra("groupName",c.getGroupName());
                 intent.putExtra("groupText",c.getGroupText());
                 intent.putExtra("groupImage",c.getImagePath());
                 intent.putExtra("groupId",c.getGroupId());
-                v.getContext().startActivity(intent);*/
+                v.getContext().startActivity(intent);*//*
             }
         });
 
@@ -120,12 +121,12 @@ String popup="Group";
 
                 addMember(token,groupId,v,c);
 
-               /* Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
+               *//* Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
                 intent.putExtra("groupName",c.getGroupName());
                 intent.putExtra("groupText",c.getGroupText());
                 intent.putExtra("groupImage",c.getImagePath());
                 intent.putExtra("groupId",c.getGroupId());
-                v.getContext().startActivity(intent);*/
+                v.getContext().startActivity(intent);*//*
             }
         });
 
@@ -145,12 +146,12 @@ String popup="Group";
                     addMember(token, groupId, v, c);
 
 
-                    /*Intent intent = new Intent(v.getContext(), Proceed_Group_FullScreen.class);
+                    *//*Intent intent = new Intent(v.getContext(), Proceed_Group_FullScreen.class);
                     intent.putExtra("groupName", c.getGroupName());
                     intent.putExtra("groupText", c.getGroupText());
                     intent.putExtra("groupImage", c.getImagePath());
                     intent.putExtra("groupId", c.getGroupId());
-                    v.getContext().startActivity(intent);*/
+                    v.getContext().startActivity(intent);*//*
 
             }
         });
@@ -170,14 +171,32 @@ String popup="Group";
 
                 addMember(token,groupId,v,c);
 
-                /*Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
+                *//*Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
                 intent.putExtra("groupName",c.getGroupName());
                 intent.putExtra("groupText",c.getGroupText());
                 intent.putExtra("groupImage",c.getImagePath());
                 intent.putExtra("groupId",c.getGroupId());
 
-                v.getContext().startActivity(intent);*/
+                v.getContext().startActivity(intent);*//*
 
+            }
+        });
+
+        */
+
+        holder.rippleClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sharedPreferences = view.getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+                String token = sharedPreferences.getString("response", "123");
+
+                String groupId = c.getGroupId().toString();
+
+                Log.d("tokenGRP"," "+token);
+                Log.d("groupIdGRP"," "+groupId);
+
+                addMember(token,groupId,view,c);
             }
         });
 
@@ -233,6 +252,7 @@ String popup="Group";
         public ImageView Group_Image;
         public Button joinmember;
         public LinearLayout linearLayoutGroupItemList;
+        MaterialRippleLayout rippleClick;
 
         public MyViewHolder(View view) {
             super(view);
@@ -243,7 +263,7 @@ String popup="Group";
             Group_Logo = (ImageView) view.findViewById(R.id.Group_Logo);
             Group_Image = (ImageView) view.findViewById(R.id.Group_Image);
             linearLayoutGroupItemList = (LinearLayout)view.findViewById(R.id.linearLayoutGroupItemList);
-
+            rippleClick = (MaterialRippleLayout)view.findViewById(R.id.rippleClick);
         }
     }
 

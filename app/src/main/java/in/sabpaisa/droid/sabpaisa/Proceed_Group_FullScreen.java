@@ -1437,5 +1437,19 @@ public void privatefeeds(final String groupId)
     }
 
 
+    @Override
+    public void onBackPressed() {
+
+        if (shareViewFrameLayout.getVisibility() == View.VISIBLE)
+        {
+            shareViewFrameLayout.setVisibility(View.GONE);
+        }else {
+
+            finish();
+
+        }
+    }
+
+
 
 }

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -78,73 +79,23 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
             }
 
 
-            //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
-//        holder.instituteLocation.setText(mainFeedData.getOrgDesc());
-            /*holder.thumbnail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
-                    intent.putExtra("clientName", mainFeedData.getOrganization_name());
 
-                    intent.putExtra("state", mainFeedData.getOrgAddress());
-                    intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
-                    intent.putExtra("clientImagePath", mainFeedData.getOrgWal());
-                    intent.putExtra("clientId", mainFeedData.getOrganizationId());
-                    intent.putExtra("landing_page", mainFeedData.getOrgDesc());
+       /* holder.linearLayout_ParticularClient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), FullViewOfClientsProceed.class);
+                intent.putExtra("clientName", mainFeedData.getOrganization_name());
+                intent.putExtra("state", mainFeedData.getOrgAddress());
+                intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
+                intent.putExtra("clientImagePath", mainFeedData.getOrgWal());
+                Log.d("clientId_banner", "" + mainFeedData.getOrganizationId());
+                intent.putExtra("clientId", mainFeedData.getOrganizationId());
+                intent.putExtra("landing_page", mainFeedData.getOrgDesc());
+                view.getContext().startActivity(intent);
+            }
+        });*/
 
-                    Log.d("clientId_thumbnail", "" + mainFeedData.getOrganizationId());
-                    Log.d("land", "" + mainFeedData.getOrgDesc());
-
-                    v.getContext().startActivity(intent);
-                }
-            });*/
-            /*holder.instituteLocation.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
-                    v.getContext().startActivity(intent);
-                    intent.putExtra("clientName", mainFeedData.getOrganization_name());
-                    intent.putExtra("state", mainFeedData.getOrgAddress());
-                    intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
-                    intent.putExtra("clientImagePath", mainFeedData.getOrgWal());
-                    intent.putExtra("clientId", mainFeedData.getOrganizationId());
-                    intent.putExtra("landing_page", mainFeedData.getOrgDesc());
-                    Log.d("clientId_location", "" + mainFeedData.getOrganizationId());
-                }
-            });*/
-            /*holder.instituteName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
-                    intent.putExtra("clientName", mainFeedData.getOrganization_name());
-                    intent.putExtra("state", mainFeedData.getOrgAddress());
-                    intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
-                    intent.putExtra("clientImagePath", mainFeedData.getOrgWal());
-                    Log.d("clientId_instituteNm", "" + mainFeedData.getOrganizationId());
-                    intent.putExtra("landing_page", mainFeedData.getOrgDesc());
-                    Log.d("urllll", "" + mainFeedData.getOrgDesc());
-                    intent.putExtra("clientId", mainFeedData.getOrganizationId());
-
-                    v.getContext().startActivity(intent);
-                }
-            });*/
-           /* holder.clinetbanner.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), FullViewOfClientsProceed.class);
-                    intent.putExtra("clientName", mainFeedData.getOrganization_name());
-                    intent.putExtra("state", mainFeedData.getOrgAddress());
-                    intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
-                    intent.putExtra("clientImagePath", mainFeedData.getOrgWal());
-                    Log.d("clientId_banner", "" + mainFeedData.getOrganizationId());
-                    intent.putExtra("clientId", mainFeedData.getOrganizationId());
-                    intent.putExtra("landing_page", mainFeedData.getOrgDesc());
-                    v.getContext().startActivity(intent);
-
-                }
-            });*/
-
-        holder.linearLayout_ParticularClient.setOnClickListener(new View.OnClickListener() {
+        holder.rippleClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), FullViewOfClientsProceed.class);
@@ -166,6 +117,7 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
         NetworkImageView thumbnail,clinetbanner;
         TextView instituteName,instituteLocation;
         LinearLayout linearLayout_ParticularClient;
+        MaterialRippleLayout rippleClick;
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -180,6 +132,8 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
             instituteLocation = (TextView)itemView.findViewById(R.id.tv_instituteLocation);
 
             linearLayout_ParticularClient = (LinearLayout)itemView.findViewById(R.id.linearLayout_ParticularClient);
+
+            rippleClick = (MaterialRippleLayout)itemView.findViewById(R.id.rippleClick);
 
         }
     }

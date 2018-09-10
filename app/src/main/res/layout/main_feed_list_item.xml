@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     android:id="@+id/linearLayout_feed"
     android:clickable="true"
-    >
+    android:layout_marginBottom="20dp">
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rippleClick"
+        app:mrl_rippleOverlay="true"
+        app:mrl_rippleHover="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
 
     <LinearLayout
         android:id="@+id/rl_view"
@@ -83,16 +99,22 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_xsmall" />
 
+
         <ImageView
             android:id="@+id/client_Image"
 
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="20dp"
             android:scaleType="fitXY"/>
+
 
 
     </LinearLayout>
 
+        </LinearLayout>
+
+    </com.balysv.materialripple.MaterialRippleLayout>
+
 </LinearLayout>
+
