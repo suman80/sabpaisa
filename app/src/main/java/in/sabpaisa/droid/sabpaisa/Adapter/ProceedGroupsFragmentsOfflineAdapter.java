@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
 import java.util.List;
 
@@ -61,6 +62,7 @@ public class ProceedGroupsFragmentsOfflineAdapter extends RecyclerView.Adapter<P
                 .error(R.drawable.offline)
                 .into(holder.Group_Logo);
 
+/*
 
         holder.Group_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +167,7 @@ public class ProceedGroupsFragmentsOfflineAdapter extends RecyclerView.Adapter<P
             }
         });
 
+*/
 
        /* holder.joinmember.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,6 +186,34 @@ public class ProceedGroupsFragmentsOfflineAdapter extends RecyclerView.Adapter<P
             }
         });
 */
+
+
+
+       holder.rippleClick.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               SharedPreferences sharedPreferences = v.getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+               String token = sharedPreferences.getString("response", "123");
+
+               String groupId = groupDataForOffLine.getGroupId().toString();
+
+               Log.d("tokenGRPOffline", " " + token);
+               Log.d("groupIdGRPOffline", " " + groupId);
+
+               if (groupDataForOffLine.getMemberStatus().equals("Approved")) {
+
+                   Intent intent = new Intent(v.getContext(), Proceed_Group_FullScreen.class);
+                   intent.putExtra("groupName", groupDataForOffLine.getGroupName());
+                   intent.putExtra("groupText", groupDataForOffLine.getGroupText());
+                   //intent.putExtra("groupImage",groupDataForOffLine.getImagePath());
+                   intent.putExtra("groupId", groupDataForOffLine.getGroupId());
+                   v.getContext().startActivity(intent);
+               }
+
+
+           }
+       });
 
 
 
@@ -225,6 +256,7 @@ public class ProceedGroupsFragmentsOfflineAdapter extends RecyclerView.Adapter<P
         public ImageView Group_Image;
         public Button joinmember;
         public LinearLayout linearLayoutGroupItemList;
+        MaterialRippleLayout rippleClick;
 
         public MyViewHolder(View view) {
             super(view);
@@ -235,6 +267,8 @@ public class ProceedGroupsFragmentsOfflineAdapter extends RecyclerView.Adapter<P
             Group_Logo = (ImageView) view.findViewById(R.id.Group_Logo);
             Group_Image = (ImageView) view.findViewById(R.id.Group_Image);
             linearLayoutGroupItemList = (LinearLayout) view.findViewById(R.id.linearLayoutGroupItemList);
+
+            rippleClick = (MaterialRippleLayout)view.findViewById(R.id.rippleClick);
 
         }
     }

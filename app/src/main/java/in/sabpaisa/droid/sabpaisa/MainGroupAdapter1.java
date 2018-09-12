@@ -83,6 +83,15 @@ String popup="Group";
                 .load(c.getImagePath())
                 .error(R.drawable.image_not_found)
                 .into(holder.Group_Image);
+
+        if (c.getMemberStatus().equals("Blocked")){
+
+            Log.d("RajBhai","Checking fade effect");
+            holder.linearLayoutGroupItemList.setEnabled(false);
+            holder.linearLayoutGroupItemList.setAlpha(.5f);
+        }
+
+
 /*
         holder.Group_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,10 +209,12 @@ String popup="Group";
             }
         });
 
-        holder.joinmember.setText(c.getMemberStatus());
-        if(c.getMemberStatus().equals("Approved"))
-            holder.joinmember.setVisibility(View.INVISIBLE);
 
+        holder.joinmember.setText(c.getMemberStatus());
+        if(c.getMemberStatus().equals("Approved")) {
+            holder.joinmember.setVisibility(View.INVISIBLE);
+        }
+        
         holder.joinmember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,10 +232,7 @@ String popup="Group";
             }
         });
 
-        if (c.getMemberStatus().equals("Blocked")){
-            holder.linearLayoutGroupItemList.setEnabled(false);
-            holder.linearLayoutGroupItemList.setAlpha(.5f);
-        }
+
 
 
     }

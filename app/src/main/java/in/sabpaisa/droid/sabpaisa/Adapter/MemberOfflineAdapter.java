@@ -103,12 +103,15 @@ public class MemberOfflineAdapter extends RecyclerView.Adapter<MemberOfflineAdap
             }
         });
 
-        holder.memberChat.setOnClickListener(new View.OnClickListener() {
+        /*holder.memberChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext,"No Internet Connection !",Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
+
+
+
 
 
     }

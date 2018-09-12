@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
 
 import java.io.InputStream;
@@ -111,7 +112,7 @@ public void setItems(ArrayList<FeedData> feedDatas) {
 
 
 
-        holder.linearLayout_feed.setOnClickListener(new View.OnClickListener() {
+       /* holder.linearLayout_feed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), Proceed_Feed_FullScreen.class);
@@ -122,7 +123,20 @@ public void setItems(ArrayList<FeedData> feedDatas) {
                 intent.putExtra("feedId", feedDataForOffLine.getFeedId());
                 view.getContext().startActivity(intent);
             }
-        });
+        });*/
+
+       holder.rippleClick.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent intent = new Intent(view.getContext(), Proceed_Feed_FullScreen.class);
+               intent.putExtra("feedName", feedDataForOffLine.getFeedName());
+               intent.putExtra("feedText", feedDataForOffLine.getFeedText());
+               intent.putExtra("feedImage", feedDataForOffLine.getImagePath());
+               intent.putExtra("feedLogo", feedDataForOffLine.getLogoPath());
+               intent.putExtra("feedId", feedDataForOffLine.getFeedId());
+               view.getContext().startActivity(intent);
+           }
+       });
 
 
 
@@ -154,6 +168,7 @@ public void setItems(ArrayList<FeedData> feedDatas) {
         public TextView main_feed_description, main_feed_name, main_feed_creation_time;
         ImageView client_Image, cilent_Logo;
         LinearLayout linearLayout_feed;
+        MaterialRippleLayout rippleClick;
 
         public MyViewHolder(View view) {
             super(view);
@@ -163,6 +178,7 @@ public void setItems(ArrayList<FeedData> feedDatas) {
             client_Image = (ImageView) view.findViewById(R.id.client_Image);
             cilent_Logo = (ImageView) view.findViewById(R.id.client_Logo);
             linearLayout_feed = (LinearLayout)view.findViewById(R.id.linearLayout_feed);
+            rippleClick = (MaterialRippleLayout)view.findViewById(R.id.rippleClick);
         }
     }
 

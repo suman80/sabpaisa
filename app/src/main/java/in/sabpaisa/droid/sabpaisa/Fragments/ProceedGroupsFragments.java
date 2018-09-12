@@ -356,7 +356,42 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                         listener.onFragmentSetGroups(groupArrayList);
                         /*END listener for sending data to activity*/
 
-                        mainGroupAdapter1 = new MainGroupAdapter1(groupArrayList, getContext());
+                        ArrayList<GroupListData> arrayListForApproved = new ArrayList<>();
+
+                        for (GroupListData approvedValue:groupArrayList) {
+                            if (approvedValue.getMemberStatus().contains("Approved")){
+
+                                arrayListForApproved.add(approvedValue);
+
+                            }
+                        }
+
+                        for (GroupListData approvedValue:groupArrayList) {
+                            if (approvedValue.getMemberStatus().contains("Pending")){
+
+                                arrayListForApproved.add(approvedValue);
+
+                            }
+                        }
+
+                        for (GroupListData approvedValue:groupArrayList) {
+                            if (approvedValue.getMemberStatus().contains("Blocked")){
+
+                                arrayListForApproved.add(approvedValue);
+
+                            }
+                        }
+
+                        for (GroupListData approvedValue:groupArrayList) {
+                            if (approvedValue.getMemberStatus().contains("Not joined")){
+
+                                arrayListForApproved.add(approvedValue);
+
+                            }
+                        }
+
+                        //mainGroupAdapter1 = new MainGroupAdapter1(groupArrayList, getContext());
+                        mainGroupAdapter1 = new MainGroupAdapter1(arrayListForApproved, getContext());
                         groupList.setAdapter(mainGroupAdapter1);
 
                     } else {
