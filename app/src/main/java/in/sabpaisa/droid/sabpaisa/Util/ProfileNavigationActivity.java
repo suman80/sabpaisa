@@ -146,8 +146,8 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         Log.d("ProfileLOGs", "" + clientId + " " + "  " + clientImageURLPath + "  " + state);
 
         toolbar.setTitle("Profile");
-        toolbar.setTitleTextColor(getResources().getColor(R.color.black));
-        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -270,7 +270,6 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                 if (tv_NameEdit.getText().toString().equals("Edit")) {
 
                     et_UserName.setEnabled(true);
-                    et_UserName.setText("");
                     et_UserName.requestFocus();
                     Log.d("Usernameedit", "-->");
                     tv_NameEdit.setText("Save");
@@ -278,11 +277,20 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                 } else if (tv_NameEdit.getText().toString().equals("Save")) {
                     //Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
-                    name = et_UserName.getText().toString();
-                    Log.d("Usernameedit11", "-->");
+                    name = et_UserName.getText().toString().trim();
 
-                    updateUserProfileName(userAccessToken, name);
-                    et_UserName.setFocusable(false);
+                    if (!TextUtils.isEmpty(name)) {
+
+                        Log.d("Usernameedit11", "-->");
+
+                        updateUserProfileName(userAccessToken, name);
+
+                        et_UserName.setFocusable(false);
+
+                    } else {
+                        Toast.makeText(ProfileNavigationActivity.this, "Please fill your name !", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
                     et_UserName.setEnabled(false);
                     Log.d("Usernameedit22", "-->");
@@ -300,7 +308,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
         if (isOnline()) {
             showProfileImage();
-        }else {
+        } else {
             progressBar.setVisibility(View.GONE);
             Cursor res = db.getParticularImageData(userAccessToken);
 
@@ -323,14 +331,14 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         }
 
 
-
     }
 
 
     @Override
     public void onBackPressed() {
 
-        if (val == 1) {
+        finish();
+       /* if (val == 1) {
             Intent intent = new Intent(ProfileNavigationActivity.this, MainActivity.class);
             intent.putExtra("clientId", clientId);
             // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
@@ -351,7 +359,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
 
-        }
+        }*/
 
     }
 
@@ -673,12 +681,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     private void showProfileImage() {
 
 
-
         boolean checkDb = db.isTableExists(TABLE_USER_IMG);
 
-        Log.d("DbValuePNA"," "+checkDb);
+        Log.d("DbValuePNA", " " + checkDb);
 
-        if (checkDb == true){
+        if (checkDb == true) {
             db.deleteAllImageData();
         }
 
@@ -1292,7 +1299,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
     }
 
 
-    private class imageDownloader extends AsyncTask<String,Void,Bitmap> {
+    private class imageDownloader extends AsyncTask<String, Void, Bitmap> {
 
         @Override
         protected void onPreExecute() {
@@ -1302,7 +1309,7 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         @Override
         protected Bitmap doInBackground(String... url) {
 
-            String myUrl = url [0];
+            String myUrl = url[0];
 
 
             try {
@@ -1312,9 +1319,9 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
                 //Log.d("ImgBytesInTry"," "+image.toString());
 
-                saveToInternalStorage(userAccessToken,bitmap);
+                saveToInternalStorage(userAccessToken, bitmap);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -1326,26 +1333,24 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             super.onPostExecute(bitmap);
 //            logo = getBytes(bitmap);
             //userImage.setImageBitmap(bitmap);
-            Log.d("ImgBitMapValue"," "+bitmap);
+            Log.d("ImgBitMapValue", " " + bitmap);
         }
     }
 
 
-
-
-    private String saveToInternalStorage(String userAccessToken,Bitmap bitmapImage){
+    private String saveToInternalStorage(String userAccessToken, Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Create imageDir
-        File mypath=new File(directory,(System.currentTimeMillis()/1000)+"img.jpg");
+        File mypath = new File(directory, (System.currentTimeMillis() / 1000) + "img.jpg");
 
-        Log.d("mypath","mypath  "+mypath);
+        Log.d("mypath", "mypath  " + mypath);
 
 
         //////////////////////////////LOCAL DB//////////////////////////////////////
 
-        boolean isInserted = db.insertUserImageData(userAccessToken,mypath.toString());
+        boolean isInserted = db.insertUserImageData(userAccessToken, mypath.toString());
         if (isInserted == true) {
 
             //Toast.makeText(MainActivity.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
@@ -1375,29 +1380,24 @@ public class ProfileNavigationActivity extends AppCompatActivity {
         return directory.getAbsolutePath();
     }
 
-    private void loadImageFromStorage(String path)
-    {
+    private void loadImageFromStorage(String path) {
 
         try {
             //File f=new File(path, "profile.jpg");
-            File f=new File(path);
+            File f = new File(path);
             Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
             //ImageView img=(ImageView)findViewById(R.id.imgPicker);
             //.setImageBitmap(b);
 
             userImage.setImageBitmap(b);
 
-            Log.d("b"," "+b);
+            Log.d("b", " " + b);
 
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
     }
-
-
 
 
     public boolean isOnline() {
@@ -1412,7 +1412,6 @@ public class ProfileNavigationActivity extends AppCompatActivity {
             return false;
         }
     }
-
 
 
 }

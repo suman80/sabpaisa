@@ -19,7 +19,7 @@
         app:subtitleTextColor="@color/white"
         app:titleTextAppearance="@style/toolBarStyle"
         app:titleTextColor="@color/white" />
-<TextView
+<!--<TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="SabPaisa"
@@ -27,18 +27,18 @@
     android:textSize="17sp"
     android:textStyle="bold"
     android:textColor="#fff"
-    android:layout_marginStart="40dp"/>
+    android:layout_marginStart="40dp"/>-->
 
-    <ImageView
+  <!--  <ImageView
         android:layout_width="29dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:id="@+id/bbck"
-        android:src="@drawable/ic_action_previousback"/>
+        android:src="@drawable/ic_action_previousback"/>-->
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
 
         tools:context="in.sabpaisa.droid.sabpaisa.NumberOfGroups">
 <TextView

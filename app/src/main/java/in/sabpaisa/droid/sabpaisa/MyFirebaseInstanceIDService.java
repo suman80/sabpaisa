@@ -1,15 +1,30 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
+
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+
 /**
- * Created by archana on 16/1/18.
+ * Created by rajdeep on 14/9/18.
  */
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
@@ -23,24 +38,18 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // Saving reg id to shared preferences
         storeRegIdInPref(refreshedToken);
 
-        // sending reg id to your server
-        sendRegistrationToServer(refreshedToken);
-
         // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
         registrationComplete.putExtra("token", refreshedToken);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
-    private void sendRegistrationToServer(final String token) {
-        // sending gcm token to server
-        Log.e(TAG, "sendRegistrationToServer: " + token);
-    }
 
     private void storeRegIdInPref(String token) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("regId", token);
+        editor.putString("isRegIdSaved", null);
         editor.commit();
     }
 }

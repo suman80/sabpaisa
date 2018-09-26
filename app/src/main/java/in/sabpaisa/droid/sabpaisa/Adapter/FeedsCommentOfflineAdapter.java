@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -21,8 +20,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
-import in.sabpaisa.droid.sabpaisa.CommentAdapter;
-import in.sabpaisa.droid.sabpaisa.CommentData;
 import in.sabpaisa.droid.sabpaisa.Model.FeedCommentsOfflineModel;
 import in.sabpaisa.droid.sabpaisa.R;
 
@@ -118,6 +115,7 @@ public class FeedsCommentOfflineAdapter extends RecyclerView.Adapter<FeedsCommen
                 .inflate(R.layout.comment_list_item, parent, false);
         return new MyViewHolder(v);
     }
+
     //Code for fetching image from server
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;

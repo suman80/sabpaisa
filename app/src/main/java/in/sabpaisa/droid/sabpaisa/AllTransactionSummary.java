@@ -53,7 +53,7 @@ public class AllTransactionSummary extends AppCompatActivity {
     ArrayList<AllTransactiongettersetter> allTransactiongettersetters;
     ArrayList<AllTransactiongettersetter> allTransactiongettersettersForLocalDb;
     LinearLayout linearLayoutnoDataFound;
-    Toolbar toolbar;
+    android.support.v7.widget.Toolbar toolbar;
     ImageView back;
 
     /////////////DB///////////////////////
@@ -67,13 +67,26 @@ public class AllTransactionSummary extends AppCompatActivity {
         setContentView(R.layout.activity_all_transaction_summary);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        back = (ImageView) findViewById(R.id.bbck);
+
+        toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Transaction Report");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+
+        /*back = (ImageView) findViewById(R.id.bbck);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
-        });
+        });*/
 
 
         // Inflate the layout for this fragment
@@ -150,7 +163,7 @@ public class AllTransactionSummary extends AppCompatActivity {
                     allTransactiongettersetter.setUserAcceessToken(res.getString(5));
                     allTransactiongettersettersForLocalDb.add(allTransactiongettersetter);
 
-                    }
+                }
                 Log.d("getTransactionData", "-->" + stringBuffer);
                 Log.d("TransactionForLocalDb", "-->" + allTransactiongettersettersForLocalDb.get(0).getSpTranscationId());
                 Log.d("TransactionForLocalDb", "-->" + allTransactiongettersettersForLocalDb.get(0).getTranscationDate());
@@ -162,11 +175,11 @@ public class AllTransactionSummary extends AppCompatActivity {
                 recycler_view_Txn.setAdapter(allTransactionAdapter);
                 allTransactionAdapter.notifyDataSetChanged();
 
-            }else {
+            } else {
                 Log.d("AllTransactionLocalDb", "In Else Part");
-                Toast.makeText(AllTransactionSummary.this,"No Data Found !",Toast.LENGTH_SHORT).show();
+                Toast.makeText(AllTransactionSummary.this, "No Data Found !", Toast.LENGTH_SHORT).show();
             }
-            }
+        }
     }
 
     public void alltxnsummary(final String token) {
@@ -211,96 +224,96 @@ public class AllTransactionSummary extends AppCompatActivity {
         //clear table
         db.deleteAllTransactionData();
 
-            String url = AppConfig.Base_Url + "/SabPaisaResponseHandler/" + AppConfig.URL_AllTransactionReport;
-            // String url="https://portal.sabpaisa.in/SabPaisaResponseHandler/SPtranscationIds?token=";
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url + token, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
+        String url = AppConfig.Base_Url + "/SabPaisaResponseHandler/" + AppConfig.URL_AllTransactionReport;
+        // String url="https://portal.sabpaisa.in/SabPaisaResponseHandler/SPtranscationIds?token=";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url + token, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 
-                    Log.d("xyvhjkk.nk", "" + response);
-                    //progressBar.setVisibility(View.GONE);
-                    JSONObject object = null;
-                    try {
+                Log.d("xyvhjkk.nk", "" + response);
+                //progressBar.setVisibility(View.GONE);
+                JSONObject object = null;
+                try {
 
-                        allTransactiongettersetters = new ArrayList<>();
+                    allTransactiongettersetters = new ArrayList<>();
 
-                        object = new JSONObject(response.toString());
-
-
-                        String status = object.getString("status");
-                        String responsee = object.getString("response");
-
-                        Log.d("txnstatussum", "" + status);
-                        Log.d("txnstatussum", "" + responsee);
-
-                        if (status.equals("failure")) {
-
-                            linearLayoutnoDataFound.setVisibility(View.VISIBLE);
-                            recycler_view_Txn.setVisibility(View.GONE);
-
-                        }
-                        JSONArray jArray3 = object.getJSONArray("response");
-
-                        Log.d("txnarraysum", "" + jArray3);
-
-                        for (int i = 0; i < jArray3.length(); i++) {
-                            JSONObject object3 = jArray3.getJSONObject(i);
-
-                            AllTransactiongettersetter allTransactiongettersetter = new AllTransactiongettersetter();
-                            allTransactiongettersetter.setClientName(object3.getString("clientName"));
-                            allTransactiongettersetter.setId(object3.getString("id"));
-                            allTransactiongettersetter.setPaidAmount(object3.getString("paidAmount"));
-                            allTransactiongettersetter.setSpTranscationId(object3.getString("spTranscationId"));
-                            allTransactiongettersetter.setPaymentStatus(object3.getString("paymentStatus"));
-                            allTransactiongettersetter.setUserAcceessToken(object3.getString("userAcceessToken"));
-                            String datatime = object3.getString("transcationDate");
-                            String x = object3.getString("paymentStatus");
-                            Log.d("abcgshy", "dnjk" + datatime);
-                            Log.d("abcgshy", "dnjk" + x);
-
-                            allTransactiongettersetter.setTranscationDate(getDate(Long.parseLong(datatime)));
-
-                            //////////////////////////////LOCAL DB//////////////////////////////////////
-
-                            boolean isInserted = db.insertDataForTransaction(allTransactiongettersetter);
-                            if (isInserted == true) {
-
-                                //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
-
-                                Log.d("AllTransactionSummary", "LocalDBInIfPart" + isInserted);
-
-                            } else {
-                                Log.d("AllTransactionSummary", "LocalDBInElsePart" + isInserted);
-                                //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
-                            }
+                    object = new JSONObject(response.toString());
 
 
-                            allTransactiongettersetters.add(allTransactiongettersetter);
+                    String status = object.getString("status");
+                    String responsee = object.getString("response");
 
-                        }
-                        Log.d("ArrayListAfterParse", " " + allTransactiongettersetters.get(0).getSpTranscationId());
+                    Log.d("txnstatussum", "" + status);
+                    Log.d("txnstatussum", "" + responsee);
 
+                    if (status.equals("failure")) {
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        recycler_view_Txn.setVisibility(View.GONE);
+
                     }
+                    JSONArray jArray3 = object.getJSONArray("response");
 
-                    allTransactionAdapter = new AllTransactionAdapter(allTransactiongettersetters, getApplicationContext());
-                    recycler_view_Txn.setAdapter(allTransactionAdapter);
-                    allTransactionAdapter.notifyDataSetChanged();
+                    Log.d("txnarraysum", "" + jArray3);
+
+                    for (int i = 0; i < jArray3.length(); i++) {
+                        JSONObject object3 = jArray3.getJSONObject(i);
+
+                        AllTransactiongettersetter allTransactiongettersetter = new AllTransactiongettersetter();
+                        allTransactiongettersetter.setClientName(object3.getString("clientName"));
+                        allTransactiongettersetter.setId(object3.getString("id"));
+                        allTransactiongettersetter.setPaidAmount(object3.getString("paidAmount"));
+                        allTransactiongettersetter.setSpTranscationId(object3.getString("spTranscationId"));
+                        allTransactiongettersetter.setPaymentStatus(object3.getString("paymentStatus"));
+                        allTransactiongettersetter.setUserAcceessToken(object3.getString("userAcceessToken"));
+                        String datatime = object3.getString("transcationDate");
+                        String x = object3.getString("paymentStatus");
+                        Log.d("abcgshy", "dnjk" + datatime);
+                        Log.d("abcgshy", "dnjk" + x);
+
+                        allTransactiongettersetter.setTranscationDate(getDate(Long.parseLong(datatime)));
+
+                        //////////////////////////////LOCAL DB//////////////////////////////////////
+
+                        boolean isInserted = db.insertDataForTransaction(allTransactiongettersetter);
+                        if (isInserted == true) {
+
+                            //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                            Log.d("AllTransactionSummary", "LocalDBInIfPart" + isInserted);
+
+                        } else {
+                            Log.d("AllTransactionSummary", "LocalDBInElsePart" + isInserted);
+                            //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                        }
 
 
+                        allTransactiongettersetters.add(allTransactiongettersetter);
+
+                    }
+                    Log.d("ArrayListAfterParse", " " + allTransactiongettersetters.get(0).getSpTranscationId());
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
 
-                }
-            });
+                allTransactionAdapter = new AllTransactionAdapter(allTransactiongettersetters, getApplicationContext());
+                recycler_view_Txn.setAdapter(allTransactionAdapter);
+                allTransactionAdapter.notifyDataSetChanged();
 
-            AppController.getInstance().addToRequestQueue(stringRequest);
 
-       // } SQLite
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(stringRequest);
+
+        // } SQLite
 
     }
 

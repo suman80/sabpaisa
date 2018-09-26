@@ -2,11 +2,8 @@ package in.sabpaisa.droid.sabpaisa.Fragments;
 
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,33 +17,22 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.SharedGroupFragmentAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
-import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
-import in.sabpaisa.droid.sabpaisa.MainGroupAdapter1;
-import in.sabpaisa.droid.sabpaisa.Model.GroupDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
-
-import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_GROUPS;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,7 +65,7 @@ public class SharedGroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView =  inflater.inflate(R.layout.fragment_shared_group, container, false);
+        rootView = inflater.inflate(R.layout.fragment_shared_group, container, false);
 
         linearLayoutnoDataFound = (LinearLayout) rootView.findViewById(R.id.noDataFound);
         groupList = (ShimmerRecyclerView) rootView.findViewById(R.id.groupList);
@@ -185,7 +171,6 @@ public class SharedGroupFragment extends Fragment {
         // Adds the JSON arra   y request "arrayreq" to the request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
-
 
 
 }

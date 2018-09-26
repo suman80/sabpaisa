@@ -63,6 +63,8 @@ public class DisplayActivity extends AppCompatActivity {
 
     int camVal;
 
+    String feedId, groupId, groupName, feedName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +75,13 @@ public class DisplayActivity extends AppCompatActivity {
         commentEditText = (EditText) findViewById(R.id.commentEditText);
         progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        camVal = getIntent().getIntExtra("CAMVALUE",0);
+        camVal = getIntent().getIntExtra("CAMVALUE", 0);
+        feedId = getIntent().getStringExtra("feedId");
+        groupId = getIntent().getStringExtra("groupId");
+        feedName = getIntent().getStringExtra("feedName");
+        groupName = getIntent().getStringExtra("groupName");
 
-        Log.d("camVal"," "+camVal);
+        Log.d("camVal", " " + camVal);
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +92,7 @@ public class DisplayActivity extends AppCompatActivity {
 
                 final String userAccessToken = sharedPreferences.getString("response", "123");
 
-                if (camVal==1) {
+                if (camVal == 1) {
 
                     SharedPreferences prefs = getSharedPreferences(Proceed_Feed_FullScreen.MY_PREFS_FOR_FEED_ID, MODE_PRIVATE);
                     final String feedId = prefs.getString("feedId", null);
@@ -103,15 +109,14 @@ public class DisplayActivity extends AppCompatActivity {
                     String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
 
                     String commentText = commentEditText.getText().toString();
-                    String i= StringEscapeUtils.escapeJava(commentText);
-                    Log.d("commentText3","67667767 "+i);
+                    String i = StringEscapeUtils.escapeJava(commentText);
+                    Log.d("commentText3", "67667767 " + i);
 //        rv.smoothScrollBy(100,100);
 
-                    if (i.trim().length()==0)
-                    {
+                    if (i.trim().length() == 0) {
 
-                        Log.d("commentText2"," "+commentText);
-                        AlertDialog.Builder builder =new AlertDialog.Builder(DisplayActivity.this);
+                        Log.d("commentText2", " " + commentText);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(DisplayActivity.this);
                         builder.setTitle("Comment");
                         builder.setMessage("Hey,looks like you forgot to enter text.");
                         builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
@@ -123,31 +128,21 @@ public class DisplayActivity extends AppCompatActivity {
                         AlertDialog alertDialog = builder.create();
                         alertDialog.show();
 
-                    }
-                    else if(i.equals("%"))
+                    } else if (i.equals("%"))
 
                     {
                         commentText.replace("%", "%25");
                         Log.e("ctctcc ", "CommentData" + commentText);
-                        sendCommentFeed(feedId, userAccessToken, i,photo);
-                    }
-
-
-                    else if(i.equals("&"))
+                        sendCommentFeed(feedId, userAccessToken, i, photo);
+                    } else if (i.equals("&"))
 
                     {
                         commentText.replace("&", "%26");
                         Log.e("ctctcc ", "CommentData2 " + commentText);
-                        sendCommentFeed(feedId, userAccessToken, i,photo);
+                        sendCommentFeed(feedId, userAccessToken, i, photo);
 
-                    }
-
-
-
-
-                    else if(i.trim().length()>1999)
-                    {
-                        AlertDialog.Builder builder =new AlertDialog.Builder(DisplayActivity.this);
+                    } else if (i.trim().length() > 1999) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(DisplayActivity.this);
                         builder.setTitle("Comment");
                         builder.setMessage("Hey folk,It looks like you exceeded the text limit");
                         builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
@@ -165,17 +160,16 @@ public class DisplayActivity extends AppCompatActivity {
                     else {
 
 
-
-                        sendCommentFeed(feedId, userAccessToken, i,photo);
+                        sendCommentFeed(feedId, userAccessToken, i, photo);
                         Log.e("CommentDatafeeddetaida ", "CommentData " + commentText);
                     }
 
-                    Log.d("commentText3"," "+commentText);
+                    Log.d("commentText3", " " + commentText);
                     /////////////////////////////////////////////////////////////////////////
 
                     //sendCommentFeed(feedId, userAccessToken, comment, photo);
                 }
-                if (camVal == 2){
+                if (camVal == 2) {
 
                     SharedPreferences prefs = getSharedPreferences(Proceed_Group_FullScreen.MY_PREFS_FOR_GROUP_ID, MODE_PRIVATE);
                     final String groupId = prefs.getString("groupId", null);
@@ -192,15 +186,14 @@ public class DisplayActivity extends AppCompatActivity {
                     String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
 
                     String commentText = commentEditText.getText().toString();
-                    String i= StringEscapeUtils.escapeJava(commentText);
-                    Log.d("commentText3","67667767 "+i);
+                    String i = StringEscapeUtils.escapeJava(commentText);
+                    Log.d("commentText3", "67667767 " + i);
 //        rv.smoothScrollBy(100,100);
 
-                    if (i.trim().length()==0)
-                    {
+                    if (i.trim().length() == 0) {
 
-                        Log.d("commentText2"," "+commentText);
-                        AlertDialog.Builder builder =new AlertDialog.Builder(DisplayActivity.this);
+                        Log.d("commentText2", " " + commentText);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(DisplayActivity.this);
                         builder.setTitle("Comment");
                         builder.setMessage("Hey,looks like you forgot to enter text.");
                         builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
@@ -212,31 +205,21 @@ public class DisplayActivity extends AppCompatActivity {
                         AlertDialog alertDialog = builder.create();
                         alertDialog.show();
 
-                    }
-                    else if(i.equals("%"))
+                    } else if (i.equals("%"))
 
                     {
                         commentText.replace("%", "%25");
                         Log.e("ctctcc ", "CommentData" + commentText);
-                        sendCommentGroup(groupId, userAccessToken, i,photo);
-                    }
-
-
-                    else if(i.equals("&"))
+                        sendCommentGroup(groupId, userAccessToken, i, photo);
+                    } else if (i.equals("&"))
 
                     {
                         commentText.replace("&", "%26");
                         Log.e("ctctcc ", "CommentData2 " + commentText);
-                        sendCommentGroup(groupId, userAccessToken, i,photo);
+                        sendCommentGroup(groupId, userAccessToken, i, photo);
 
-                    }
-
-
-
-
-                    else if(i.trim().length()>1999)
-                    {
-                        AlertDialog.Builder builder =new AlertDialog.Builder(DisplayActivity.this);
+                    } else if (i.trim().length() > 1999) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(DisplayActivity.this);
                         builder.setTitle("Comment");
                         builder.setMessage("Hey folk,It looks like you exceeded the text limit");
                         builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
@@ -254,12 +237,11 @@ public class DisplayActivity extends AppCompatActivity {
                     else {
 
 
-
-                        sendCommentGroup(groupId, userAccessToken, i,photo);
+                        sendCommentGroup(groupId, userAccessToken, i, photo);
                         Log.e("CommentDatafeeddetaida ", "CommentData " + commentText);
                     }
 
-                    Log.d("commentText3"," "+commentText);
+                    Log.d("commentText3", " " + commentText);
                     /////////////////////////////////////////////////////////////////////////
 
 
@@ -291,10 +273,10 @@ public class DisplayActivity extends AppCompatActivity {
                     // Continue only if the File was successfully created
                     if (photoFile != null) {
 
-                        Uri photoURI=null;
+                        Uri photoURI = null;
 
                         try {
-                             photoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".my.package.name.provider", createImageFile());
+                            photoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".my.package.name.provider", createImageFile());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -311,15 +293,15 @@ public class DisplayActivity extends AppCompatActivity {
     }
 
 
-
-    /** The method is taking Bitmap as an argument
+    /**
+     * The method is taking Bitmap as an argument
      * then it will return the byte[] array for the given bitmap
      * and we will send this array to the server
      * here we are using JPEG Compression with 80% quality
      * you can give quality between 0 to 100
      * 0 means worse quality
      * 100 means best quality
-     * */
+     */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
@@ -327,16 +309,15 @@ public class DisplayActivity extends AppCompatActivity {
     }
 
 
-
-    protected void sendCommentFeed(final String feed_id, final String userAccessToken, final String comment_text ,final Bitmap image) {
+    protected void sendCommentFeed(final String feed_id, final String userAccessToken, final String comment_text, final Bitmap image) {
 
         Log.d("PVRA", "IMG_userAccessToken" + userAccessToken);
         //our custom volley request
 
-        Log.d("PVRAcomment_text"  ,"->"+  URLEncoder.encode(comment_text));
-        String url = AppConfig.Base_Url+AppConfig.App_api+ "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text="  +  URLEncoder.encode(comment_text.trim());
+        Log.d("PVRAcomment_text", "->" + URLEncoder.encode(comment_text));
+        String url = AppConfig.Base_Url + AppConfig.App_api + "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(comment_text.trim());
 
-        Log.d("URL_AT_PVRA"," "+url);
+        Log.d("URL_AT_PVRA", " " + url);
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
                 new Response.Listener<NetworkResponse>() {
@@ -351,21 +332,21 @@ public class DisplayActivity extends AppCompatActivity {
 
                             if (status.equals("success")) {
 
-                                Log.d("CommentPVRA","Success");
+                                Log.d("CommentPVRA", "Success");
 
                                 commentEditText.setText("");
 
                                 progress_bar.setVisibility(View.GONE);
 
-                                Intent intent = new Intent(DisplayActivity.this,Proceed_Feed_FullScreen.class);
-                                intent.putExtra("feedId",feed_id);
+                                Intent intent = new Intent(DisplayActivity.this, Proceed_Feed_FullScreen.class);
+                                intent.putExtra("feedId", feed_id);
                                 //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
 
                             } else {
 
-                                Log.d("CommentPVRA","Failed");
+                                Log.d("CommentPVRA", "Failed");
                                 //Toast.makeText(Proceed_Feed_FullScreen.this, "Image Upload Failed !", Toast.LENGTH_SHORT).show();
 
                             }
@@ -410,7 +391,7 @@ public class DisplayActivity extends AppCompatActivity {
 
                 params.put("commentFile", new DataPart(imagename + ".jpeg", getFileDataFromDrawable(image)));
 
-                Log.d("Image_At_PVRA",params.get("commentFile")+"");
+                Log.d("Image_At_PVRA", params.get("commentFile") + "");
 
                 return params;
             }
@@ -421,16 +402,15 @@ public class DisplayActivity extends AppCompatActivity {
     }
 
 
-
-    private void sendCommentGroup(final String GroupId, final String userAccessToken, final String comment_text,final Bitmap image) {
+    private void sendCommentGroup(final String GroupId, final String userAccessToken, final String comment_text, final Bitmap image) {
 
         Log.d("PVRA", "IMG_userAccessToken" + userAccessToken);
 
-        Log.d("PVRAcomment_text"  ,"->"+  URLEncoder.encode(comment_text));
+        Log.d("PVRAcomment_text", "->" + URLEncoder.encode(comment_text));
 
         String url = AppConfig.Base_Url + AppConfig.App_api + "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(comment_text.trim());
 
-        Log.d("URL_AT_PVRAG"," "+url);
+        Log.d("URL_AT_PVRAG", " " + url);
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
                 new Response.Listener<NetworkResponse>() {
@@ -446,21 +426,21 @@ public class DisplayActivity extends AppCompatActivity {
                             String status = obj.getString("status");
                             if (status.equals("success")) {
 
-                                Log.d("CommentPVRAG","Success");
+                                Log.d("CommentPVRAG", "Success");
 
                                 commentEditText.setText("");
 
                                 progress_bar.setVisibility(View.GONE);
 
-                                Intent intent = new Intent(DisplayActivity.this,Proceed_Group_FullScreen.class);
-                                intent.putExtra("groupId",GroupId);
+                                Intent intent = new Intent(DisplayActivity.this, Proceed_Group_FullScreen.class);
+                                intent.putExtra("groupId", GroupId);
 
                                 startActivity(intent);
                                 finish();
 
 
                             } else {
-                                Log.d("CommentPVRAG","Failed");
+                                Log.d("CommentPVRAG", "Failed");
                             }
 
                         } catch (JSONException e) {
@@ -506,7 +486,7 @@ public class DisplayActivity extends AppCompatActivity {
 
                 params.put("commentFile", new DataPart(imagename + ".jpeg", getFileDataFromDrawable(image)));
 
-                Log.d("Image_At_PVRAG",params.get("commentFile")+"");
+                Log.d("Image_At_PVRAG", params.get("commentFile") + "");
 
 
                 return params;
@@ -517,11 +497,7 @@ public class DisplayActivity extends AppCompatActivity {
         Volley.newRequestQueue(this).add(volleyMultipartRequest);
 
 
-
     }
-
-
-
 
 
     @Override
@@ -565,9 +541,37 @@ public class DisplayActivity extends AppCompatActivity {
 
             try {
                 photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath));
+                Log.d("DisplayActivity", "onActivityResult : " + photo);
                 imageView.setImageBitmap(photo);
             } catch (IOException e) {
+                Log.d("DisplayActivity", "onActivityResult EXC: " + photo);
+                Log.d("DisplayActivity", "exception :" + e.getMessage());
                 e.printStackTrace();
+            }
+
+        } else {
+            Log.d("DisplayActivity", "onActivityResult EXC: " + photo);
+
+            if (camVal == 1 && feedId != null) {
+
+                Intent intent = new Intent(DisplayActivity.this, Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedId", feedId);
+                intent.putExtra("feedName", feedName);
+                startActivity(intent);
+                finish();
+
+            } else if (camVal == 2 && groupId != null) {
+
+                Intent intent = new Intent(DisplayActivity.this, Proceed_Group_FullScreen.class);
+                intent.putExtra("groupId", groupId);
+                intent.putExtra("groupName", groupName);
+                startActivity(intent);
+                finish();
+
+            } else {
+
+                Log.d("DisplayActivity", "InElsePart");
+
             }
 
         }
@@ -576,6 +580,28 @@ public class DisplayActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+
+        if (camVal == 1 && feedId != null) {
+
+            Intent intent = new Intent(DisplayActivity.this, Proceed_Feed_FullScreen.class);
+            intent.putExtra("feedId", feedId);
+            intent.putExtra("feedName", feedName);
+            startActivity(intent);
+            finish();
+
+        } else if (camVal == 2 && groupId != null) {
+
+            Intent intent = new Intent(DisplayActivity.this, Proceed_Group_FullScreen.class);
+            intent.putExtra("groupId", groupId);
+            intent.putExtra("groupName", groupName);
+            startActivity(intent);
+            finish();
+
+        } else {
+
+            Log.d("DisplayActivity", "InElsePart");
+
+        }
+
     }
 }

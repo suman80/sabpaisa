@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -21,8 +20,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
-import in.sabpaisa.droid.sabpaisa.CommentAdapter;
-import in.sabpaisa.droid.sabpaisa.CommentData;
 import in.sabpaisa.droid.sabpaisa.Model.GroupsCommentOfflineModel;
 import in.sabpaisa.droid.sabpaisa.R;
 
@@ -54,8 +51,8 @@ public class GroupsCommentOfflineAdapter extends RecyclerView.Adapter<GroupsComm
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         GroupsCommentOfflineModel commentData = commentList.get(position);
-        Log.d("commentData"," "+commentData.getCommentByName());
-        Log.d("commentData"," "+commentData.getCommentText());
+        Log.d("commentData", " " + commentData.getCommentByName());
+        Log.d("commentData", " " + commentData.getCommentText());
         holder.main_feed_comment_username.setText(commentData.getCommentByName());
         holder.main_feed_creation_time.setText(commentData.getCommentDate());
         holder.main_feed_comment_image.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +115,7 @@ public class GroupsCommentOfflineAdapter extends RecyclerView.Adapter<GroupsComm
                 .inflate(R.layout.comment_list_item, parent, false);
         return new MyViewHolder(v);
     }
+
     //Code for fetching image from server
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;

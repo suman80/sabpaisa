@@ -57,27 +57,27 @@ import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 
 public class UIN extends AppCompatActivity {
-    String userAccessToken,response;
- String clientId ;
+    String userAccessToken, response;
+    String clientId;
 
     EditText uinnnumber;
     String userImageUrl;
     //TextView clientname;
     String clientname;
-   String m;
+    String m;
     TextView clientNAmeTextview;
-    ImageView clientImagePath,clientlogopath;
-    public  static  String MYSHAREDPREFUIN="mySharedPref11";
+    ImageView clientImagePath, clientlogopath;
+    public static String MYSHAREDPREFUIN = "mySharedPref11";
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-    public static String clientImageURLPath=null;
-    public static String clientLogoPath=null;
+    public static String clientImageURLPath = null;
+    public static String clientLogoPath = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-       // CommonUtils.setFullScreen(this);
+        // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_uin_verification);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setTheme(R.style.popupTheme);
@@ -85,29 +85,29 @@ public class UIN extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         uinnnumber = (EditText) findViewById(R.id.uiinnum);
-        clientImagePath=(ImageView)findViewById(R.id.institutepic);
-        clientlogopath=(ImageView)findViewById(R.id.institutelogo);
+        clientImagePath = (ImageView) findViewById(R.id.institutepic);
+        clientlogopath = (ImageView) findViewById(R.id.institutelogo);
 
 
-       //clientId=getIntent().getStringExtra("clientId");
-       // clientname=getIntent().getStringExtra("clientname");
-       // clientImageURLPath=getIntent().getStringExtra("clientImagePath");
-      //  clientLogoURLPath=getIntent().getStringExtra("clientLogoPath");
+        //clientId=getIntent().getStringExtra("clientId");
+        // clientname=getIntent().getStringExtra("clientname");
+        // clientImageURLPath=getIntent().getStringExtra("clientImagePath");
+        //  clientLogoURLPath=getIntent().getStringExtra("clientLogoPath");
 
-         clientNAmeTextview=(TextView)findViewById(R.id.InstitueNAme);
+        clientNAmeTextview = (TextView) findViewById(R.id.InstitueNAme);
 
         SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(FilterActivity.MySharedPreffilter, Context.MODE_PRIVATE);
-        clientId=sharedPreferences1.getString("clientId", "abc");
+        clientId = sharedPreferences1.getString("clientId", "abc");
         getClientsList(clientId);
 
-       // clientNAmeTextview.setText(clientname);
-        Log.d("ClientIduin","__>"+clientId);
-        Log.d("clientImageURLPathuin","__>"+clientImageURLPath);
-        Log.d("clientImageURLPathuin","__>"+clientLogoPath);
-        Log.d("clientImageURLPathuin","__>"+clientname);
-        Log.d("clientImageURLPathuin","__>"+clientNAmeTextview);
-       // new UIN.DownloadImageTask(clientImagePath).execute(clientImageURLPath);
-       // new UIN.DownloadImageTask(clientlogopath).execute(clientLogoURLPath);
+        // clientNAmeTextview.setText(clientname);
+        Log.d("ClientIduin", "__>" + clientId);
+        Log.d("clientImageURLPathuin", "__>" + clientImageURLPath);
+        Log.d("clientImageURLPathuin", "__>" + clientLogoPath);
+        Log.d("clientImageURLPathuin", "__>" + clientname);
+        Log.d("clientImageURLPathuin", "__>" + clientNAmeTextview);
+        // new UIN.DownloadImageTask(clientImagePath).execute(clientImageURLPath);
+        // new UIN.DownloadImageTask(clientlogopath).execute(clientLogoURLPath);
        /* Glide
                 .with(UIN.this)
                 .load(clientLogoPath)
@@ -132,18 +132,18 @@ public class UIN extends AppCompatActivity {
         Log.d("FFResponse11111", " " + response);
 
         getUserImage(userAccessToken);
-        m="abc";
-        SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFUIN,MODE_PRIVATE).edit();
-        editor.putString("clientId",clientId);
-        editor.putString("m",m);
-        editor.putString("userAccessToken",userAccessToken);
+        m = "abc";
+        SharedPreferences.Editor editor = getSharedPreferences(MYSHAREDPREFUIN, MODE_PRIVATE).edit();
+        editor.putString("clientId", clientId);
+        editor.putString("m", m);
+        editor.putString("userAccessToken", userAccessToken);
         editor.commit();
 
     }
 
     public void onVerifyBtn(View view) {
         if (!isOnline()
-                ){
+                ) {
 
             AlertDialog alertDialog = new AlertDialog.Builder(UIN.this, R.style.MyDialogTheme).create();
 
@@ -169,11 +169,8 @@ public class UIN extends AppCompatActivity {
             Log.v("Home", "############################You are not online!!!!");
 
             // Toast.makeText(OTPVarify.this, "first name field is empty", Toast.LENGTH_LONG).show();
-        }
-
-
-        else if(uinnnumber.getText().toString().equals("")){
-            AlertDialog.Builder builder =new AlertDialog.Builder(UIN.this);
+        } else if (uinnnumber.getText().toString().equals("")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(UIN.this);
             builder.setTitle("Empty UIN");
             builder.setMessage("Please Enter UIN Number");
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -183,20 +180,16 @@ public class UIN extends AppCompatActivity {
                 }
             });
             AlertDialog alertDialog = builder.create();
-            alertDialog.show(); Toast.makeText(UIN.this, "Enter Uin Number", Toast.LENGTH_LONG).show();
+            alertDialog.show();
+            Toast.makeText(UIN.this, "Enter Uin Number", Toast.LENGTH_LONG).show();
 
-        }
-
-        else if (!uinnnumber.getText().toString().equals("")) {
+        } else if (!uinnnumber.getText().toString().equals("")) {
 
             showpDialog(view);
-            callVerifyUINNumber(uinnnumber.getText().toString(),clientId,userAccessToken);
+            callVerifyUINNumber(uinnnumber.getText().toString(), clientId, userAccessToken);
 
 
-        }
-
-
-        else {
+        } else {
             Toast.makeText(UIN.this, "Enter Uin Number", Toast.LENGTH_LONG).show();
         }
     }
@@ -205,7 +198,7 @@ public class UIN extends AppCompatActivity {
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_VerifyUin+uinnnumber +"&client_Id="+clientId+"&aceesToken="+userAccessToken, new Response.Listener<String>()  {
+                AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_VerifyUin + uinnnumber + "&client_Id=" + clientId + "&aceesToken=" + userAccessToken, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -224,27 +217,27 @@ public class UIN extends AppCompatActivity {
                     //String response1 = response.getString("response");
                     // Log.i("status_UIN", "status=" + status);
                     Log.i("response_UIN", "Repsomse_UIN=" + response1);
-                    if (status.equals("success")&&response1.equals("UIN verified")) {
+                    if (status.equals("success") && response1.equals("UIN verified")) {
                         callMainScreen();
-                        Log.d("InIfPArt","UINVerifu");
-                    } else if (status.equals("success")&& response1.equals("Invalid UIN number")) {
+                        Log.d("InIfPArt", "UINVerifu");
+                    } else if (status.equals("success") && response1.equals("Invalid UIN number")) {
 
-                        Log.d("InelseIf1PArt","UINVerifu");
+                        Log.d("InelseIf1PArt", "UINVerifu");
 
                         AlertDialog alertDialog = new AlertDialog.Builder(UIN.this, R.style.MyDialogTheme).create();
 
-                            // Setting Dialog Title
-                            alertDialog.setTitle("UIN Does not match");
+                        // Setting Dialog Title
+                        alertDialog.setTitle("UIN Does not match");
 
-                            // Setting Dialog Message
-                            alertDialog.setMessage("Please Enter Correct UNI Number");
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Please Enter Correct UIN Number");
 
-                            // Setting Icon to Dialog
-                            //  alertDialog.setIcon(R.drawable.tick);
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
 
-                            // Setting OK Button
-                            alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
                                    /* SharedPreferences settings = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = settings.edit();
                                     editor.remove("m");
@@ -259,18 +252,17 @@ public class UIN extends AppCompatActivity {
 
                                     startActivity(intent);
 */
-                                    // Write your code here to execute after dialog closed
-                                    // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                                // Write your code here to execute after dialog closed
+                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-                            // Showing Alert Message
-                            alertDialog.show();
+                        // Showing Alert Message
+                        alertDialog.show();
 
-                        }
-                        else {
-                            callErrorPopup();
-                        Log.d("InelsePArt","UINVerifu");
+                    } else {
+                        callErrorPopup();
+                        Log.d("InelsePArt", "UINVerifu");
 
                     }
 
@@ -288,7 +280,7 @@ public class UIN extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(UIN.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -329,7 +321,7 @@ public class UIN extends AppCompatActivity {
             }
         });
         // Adds the JSON array request "arrayreq" to the request queue
-        AppController.getInstance().addToRequestQueue(strReq,tag_string_req);
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
         // AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
@@ -342,13 +334,14 @@ public class UIN extends AppCompatActivity {
                 && cm.getActiveNetworkInfo().isAvailable()
                 && cm.getActiveNetworkInfo().isConnected();
     }
+
     private void callErrorPopup() {
         UIN_Dialog uniErrorPopUp = new UIN_Dialog(this);
         uniErrorPopUp.show();
     }
 
     private void callMainScreen() {
-        Intent intent = new Intent(UIN.this,MainActivity.class);
+        Intent intent = new Intent(UIN.this, MainActivity.class);
         intent.putExtra("clientId", clientId);
         intent.putExtra("userImageUrl", userImageUrl);
 
@@ -440,17 +433,17 @@ public class UIN extends AppCompatActivity {
         }
 
     }
-    private void getUserImage(final  String token) {
 
-        String  tag_string_req = "req_clients";
+    private void getUserImage(final String token) {
 
-        StringRequest request=new StringRequest(Request.Method.GET,AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
+        String tag_string_req = "req_clients";
+
+        StringRequest request = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_Show_UserProfileImage + "?token=" + token, new Response.Listener<String>() {
 
             @Override
-            public void onResponse(String response1)
-            {
+            public void onResponse(String response1) {
 
-                Log.d("Particularclientimage","-->"+response1);
+                Log.d("Particularclientimage", "-->" + response1);
                 //parsing Json
                 JSONObject jsonObject = null;
 
@@ -459,14 +452,14 @@ public class UIN extends AppCompatActivity {
                     jsonObject = new JSONObject(response1.toString());
                     String response = jsonObject.getString("response");
                     String status = jsonObject.getString("status");
-                    Log.d("responsus",""+response);
-                    Log.d("statsus",""+status);
+                    Log.d("responsus", "" + response);
+                    Log.d("statsus", "" + status);
                     JSONObject jsonObject1 = new JSONObject(response);
-                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter = new FetchUserImageGetterSetter();
                     fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
-                    userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
+                    userImageUrl = fetchUserImageGetterSetter.getUserImageUrl().toString();
 
-                    Log.d("userImageUrlactivity",""+userImageUrl);
+                    Log.d("userImageUrlactivity", "" + userImageUrl);
              /*   ClientData clientData=new ClientData();
                 clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
                 clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
@@ -481,8 +474,7 @@ public class UIN extends AppCompatActivity {
                 Log.d("clientiooo","-->"+clientname11 );*/
 
 
-                }
-                catch(JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -491,7 +483,7 @@ public class UIN extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -532,16 +524,17 @@ public class UIN extends AppCompatActivity {
             }
 
 
-        }) ;
+        });
 
-        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
 
 
     }
+
     @Override
     public void onBackPressed() {
 
-            super.onBackPressed();
+        super.onBackPressed();
         SharedPreferences settings = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.remove("m");
@@ -552,28 +545,25 @@ public class UIN extends AppCompatActivity {
         editor.commit();
         finish();
 
-        Intent intent=new Intent( UIN.this, FilterActivity.class);
+        Intent intent = new Intent(UIN.this, FilterActivity.class);
 
         startActivity(intent);
 
-            finish();
-
-
+        finish();
 
 
     }
 
-    private void getClientsList(final  String clientId) {
+    private void getClientsList(final String clientId) {
 
-        String  tag_string_req = "req_clients";
+        String tag_string_req = "req_clients";
 
-        StringRequest request=new StringRequest(Request.Method.POST, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_ClientBasedOnClientId+clientId, new Response.Listener<String>(){
+        StringRequest request = new StringRequest(Request.Method.POST, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_ClientBasedOnClientId + clientId, new Response.Listener<String>() {
 
             @Override
-            public void onResponse(String response1)
-            {
+            public void onResponse(String response1) {
 
-                Log.d("Particularclient","-->"+response1);
+                Log.d("Particularclient", "-->" + response1);
                 //parsing Json
                 JSONObject jsonObject = null;
 
@@ -582,8 +572,8 @@ public class UIN extends AppCompatActivity {
                     jsonObject = new JSONObject(response1.toString());
                     String response = jsonObject.getString("response");
                     String status = jsonObject.getString("status");
-                    Log.d("responsus",""+response);
-                    Log.d("statsus",""+status);
+                    Log.d("responsus", "" + response);
+                    Log.d("statsus", "" + status);
 
                     if (status.equals("success")) {
 
@@ -611,15 +601,14 @@ public class UIN extends AppCompatActivity {
                         // clientname=clientData.getClientName().toString();
                         Log.d("clientlogooooo", "-->" + clientLogoPath);
                         Log.d("clientimageooo", "-->" + clientImagePath);
-                      //  Log.d("clientiooo", "-->" + clientname11);
+                        //  Log.d("clientiooo", "-->" + clientname11);
 
-                    }else if (status.equals("failure"))
-                    {Log.d("UIn","InElseIfPart"+response);}
-                    else {
-                        Log.d("UIn","InElsePart"+response);
+                    } else if (status.equals("failure")) {
+                        Log.d("UIn", "InElseIfPart" + response);
+                    } else {
+                        Log.d("UIn", "InElsePart" + response);
                     }
-                }
-                catch(JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -628,7 +617,7 @@ public class UIN extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -669,9 +658,9 @@ public class UIN extends AppCompatActivity {
             }
 
 
-        }) ;
+        });
 
-        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
 
 
     }

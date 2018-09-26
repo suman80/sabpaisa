@@ -1,7 +1,6 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -20,8 +18,6 @@ import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.FlagCallback;
-import in.sabpaisa.droid.sabpaisa.LogInActivity;
-import in.sabpaisa.droid.sabpaisa.MainGroupAdapter1;
 import in.sabpaisa.droid.sabpaisa.R;
 
 public class SharedGroupFragmentAdapter extends RecyclerView.Adapter<SharedGroupFragmentAdapter.MyViewHolder> {
@@ -53,27 +49,27 @@ public class SharedGroupFragmentAdapter extends RecyclerView.Adapter<SharedGroup
                 .into(holder.groupLogo);
 
 
-        if (c.getMemberStatus().equals("Approved")){
+        if (c.getMemberStatus().equals("Approved")) {
             holder.checkBox.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.checkBox.setVisibility(View.GONE);
         }
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (holder.checkBox.isChecked()){
-                    Log.d("checkBox.isChecked()"," "+holder.checkBox.isChecked());
+                if (holder.checkBox.isChecked()) {
+                    Log.d("checkBox.isChecked()", " " + holder.checkBox.isChecked());
                     selectedArrayList.add(c.getGroupId());
-                    for (String val:selectedArrayList) {
-                        Log.d("val_selectedArrayList"," "+val);
+                    for (String val : selectedArrayList) {
+                        Log.d("val_selectedArrayList", " " + val);
                     }
                     flagCallback.onSharedFragmentSetGroups(selectedArrayList);
-                }else {
+                } else {
                     selectedArrayList.remove(c.getGroupId());
                 }
 
-                if(selectedArrayList.isEmpty()){
+                if (selectedArrayList.isEmpty()) {
                     flagCallback.onSharedFragmentSetGroups(selectedArrayList);
                 }
 

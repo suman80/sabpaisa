@@ -10,6 +10,7 @@
             android:id="@+id/bbell"
             app:actionLayout="@layout/custom_notification_icon"
             android:orderInCategory="100"
+            android:visible="false"
             />
         <item android:icon="@drawable/notification"
             android:title="Notification"

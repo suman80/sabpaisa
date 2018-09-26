@@ -41,6 +41,7 @@ import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+import me.grantland.widget.AutofitTextView;
 
 /**
  * Created by rajdeeps on 12/28/17.
@@ -50,10 +51,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
     int count;
     ArrayList<Member_GetterSetter> memberGetterSetterArrayList;
     Context mContext;
-    String x,name,mobNumber;
+    String x, name, mobNumber;
     String useracesstoken;
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+
     @Override
     public MemberAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.member_custom, parent, false);
@@ -61,7 +63,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
     }
 
 
-    public MemberAdapter(ArrayList<Member_GetterSetter> memberGetterSetterArrayList , Context context) {
+    public MemberAdapter(ArrayList<Member_GetterSetter> memberGetterSetterArrayList, Context context) {
         this.memberGetterSetterArrayList = memberGetterSetterArrayList;
         this.mContext = context;
     }
@@ -71,7 +73,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
     public void setItems(ArrayList<Member_GetterSetter> memberDatas) {
         this.memberGetterSetterArrayList = memberDatas;
     }
-
 
 
     @Override
@@ -91,13 +92,13 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
             @Override
             public void onClick(View view) {
 
-                Log.d("POsitikon-",""+memberGetterSetterArrayList.get(position).getFullName().toString());
-                Log.d("POsitikon-",""+memberGetterSetterArrayList.get(position).getUserImageUrl().toString());
-                Intent intent = new Intent(mContext,MembersProfile.class);
-                intent.putExtra("name1",memberGetterSetterArrayList.get(position).getFullName().toString());
-                intent.putExtra("image1",memberGetterSetterArrayList.get(position).getUserImageUrl().toString());
-                intent.putExtra("emailid1",memberGetterSetterArrayList.get(position).getEmailId().toString());
-                intent.putExtra("mobNo1",memberGetterSetterArrayList.get(position).getPhoneNumber().toString());
+                Log.d("POsitikon-", "" + memberGetterSetterArrayList.get(position).getFullName().toString());
+                Log.d("POsitikon-", "" + memberGetterSetterArrayList.get(position).getUserImageUrl().toString());
+                Intent intent = new Intent(mContext, MembersProfile.class);
+                intent.putExtra("name1", memberGetterSetterArrayList.get(position).getFullName().toString());
+                intent.putExtra("image1", memberGetterSetterArrayList.get(position).getUserImageUrl().toString());
+                intent.putExtra("emailid1", memberGetterSetterArrayList.get(position).getEmailId().toString());
+                intent.putExtra("mobNo1", memberGetterSetterArrayList.get(position).getPhoneNumber().toString());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 mContext.startActivity(intent);
@@ -198,20 +199,20 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
         public ImageView memberImg;
         Button memberChat;
-        public TextView memberName;
+        public AutofitTextView memberName;
         TextView memberTimeStamp;
-        String response,userAccessToken;
+        String response, userAccessToken;
 
         MaterialRippleLayout rippleClick;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            memberImg = (ImageView) itemView .findViewById(R.id.memberImg);
-            memberName = (TextView)itemView.findViewById(R.id.memberName);
+            memberImg = (ImageView) itemView.findViewById(R.id.memberImg);
+            memberName = (AutofitTextView) itemView.findViewById(R.id.memberName);
             //memberChat = (Button) itemView.findViewById(R.id.groupmmbrchat);
             //memberTimeStamp = (TextView)itemView.findViewById(R.id.memberTimeStamp);
 
-            rippleClick = (MaterialRippleLayout)itemView.findViewById(R.id.rippleClick);
+            rippleClick = (MaterialRippleLayout) itemView.findViewById(R.id.rippleClick);
 
             SharedPreferences prefs = mContext.getSharedPreferences(LogInActivity.MySharedPrefLogin, 0);
           /*  response = prefs.getString("response", "123");
@@ -231,18 +232,19 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
             showProfileData();
 
-           }
+        }
     }
 
     @Override
     public int getItemCount() {
         return memberGetterSetterArrayList.size();
     }
+
     private void showProfileData() {
 
         String tag_string_req = "req_register";
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfile+"?token="+useracesstoken, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_Show_UserProfile + "?token=" + useracesstoken, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -252,33 +254,31 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
                     //progressBar.setVisibility(View.GONE);
                     JSONObject object = new JSONObject(response1);
                     String response = object.getString("response");
-                    String status =object.getString("status");
+                    String status = object.getString("status");
                     x = object.getJSONObject("response").getString("emailId").toString();
-                    name=object.getJSONObject("response").getString("fullName").toString();
+                    name = object.getJSONObject("response").getString("fullName").toString();
 
                     mobNumber = object.getJSONObject("response").getString("contactNumber").toString();
 
-                    if(x.equals("null"))
-                    {
-                        x="";
-                       // usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
+                    if (x.equals("null")) {
+                        x = "";
+                        // usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mailIdniv.setText("");
-                    }
-                    else   if (status.equals("success")) {
-                        name=object.getJSONObject("response").getString("fullName").toString();
+                    } else if (status.equals("success")) {
+                        name = object.getJSONObject("response").getString("fullName").toString();
                         x = object.getJSONObject("response").getString("emailId").toString();
 
-                       // usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
+                        // usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
 
-                       // mailIdniv.setText(x);
+                        // mailIdniv.setText(x);
                         //mailIdniv.setText(object.getJSONObject("response").getString("emailId").toString());
                         /// et_address.setText(object.getJSONObject("response").getString("address").toString());
                         //  et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
                       /*  Log.d("skipusername", "userName" + usernameniv);
                         Log.d("skipusermailid", "Mail" + mailIdniv);
 */
-                    }else {
+                    } else {
                         // Toast.makeText(getApplicationContext(),"Could  not able to load data",Toast.LENGTH_SHORT).show();
                     }
 

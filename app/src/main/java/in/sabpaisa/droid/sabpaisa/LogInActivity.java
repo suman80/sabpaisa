@@ -69,17 +69,17 @@ import static android.text.InputType.TYPE_CLASS_TEXT;
 import static in.sabpaisa.droid.sabpaisa.Util.TelephonyInfo.getOutput;
 
 @RuntimePermissions
-public class LogInActivity extends AppCompatActivity  {
+public class LogInActivity extends AppCompatActivity {
     private static final String TAG = LogInActivity.class.getSimpleName();
-    public static String mobileNo,password;
-    EditText et_phone_number,et_password;
+    public static String mobileNo, password;
+    EditText et_phone_number, et_password;
     RequestQueue requestQueue;
-    TextView forgotPassword,register;
+    TextView forgotPassword, register;
     Button login;
     Button passwordShow;
 
-    int MY_SOCKET_TIMEOUT_MS =100000;
-    public static String MySharedPrefLogin="mySharedPrefForlogin";
+    int MY_SOCKET_TIMEOUT_MS = 100000;
+    public static String MySharedPrefLogin = "mySharedPrefForlogin";
 
     public static final String PREFS_NAME = "LoginPrefs";
 
@@ -91,7 +91,7 @@ public class LogInActivity extends AppCompatActivity  {
 
         setContentView(R.layout.activity_login);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-         /*
+        /*
          * Check if we successfully logged in before.
          * If we did, redirect to home page
          */
@@ -103,168 +103,162 @@ public class LogInActivity extends AppCompatActivity  {
 
         }
         // password = (EditText)findViewById(R.id.et_password);
-            passwordShow = (Button) findViewById(R.id.tv_password_show);
-            forgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
-            et_phone_number = (EditText) findViewById(R.id.et_phone_number);
-            et_password = (EditText) findViewById(R.id.et_password);
-            register = (TextView) findViewById(R.id.tv_register);
-            login = (Button) findViewById(R.id.btn_login);
-            //DataBinding();
+        passwordShow = (Button) findViewById(R.id.tv_password_show);
+        forgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
+        et_phone_number = (EditText) findViewById(R.id.et_phone_number);
+        et_password = (EditText) findViewById(R.id.et_password);
+        register = (TextView) findViewById(R.id.tv_register);
+        login = (Button) findViewById(R.id.btn_login);
+        //DataBinding();
 //        password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
 
-            forgotPassword.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    startActivity(new Intent(LogInActivity.this, ForgotActivity.class));
+                startActivity(new Intent(LogInActivity.this, ForgotActivity.class));
 
-                }
-            });
-
-
-            final SharedPreferences sharedpreferences = getSharedPreferences("LoginData", Context.MODE_PRIVATE);
-
-            login.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    mobileNo = et_phone_number.getText().toString();
-                    password = et_password.getText().toString();
-                    Log.e(TAG, "response: " + mobileNo);
+            }
+        });
 
 
-                    if ((et_phone_number.length() == 0) || (et_phone_number.length() < 10)) {
+        final SharedPreferences sharedpreferences = getSharedPreferences("LoginData", Context.MODE_PRIVATE);
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mobileNo = et_phone_number.getText().toString();
+                password = et_password.getText().toString();
+                Log.e(TAG, "response: " + mobileNo);
+
+
+                if ((et_phone_number.length() == 0) || (et_phone_number.length() < 10)) {
 
 //                        et_phone_number.setError("Please make sure that You have entered 10 digit number");
-                        final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
-                        // Setting Dialog Title
-                        alertDialog.setTitle("Sign In Error");
+                    final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Sign In Error");
 
-                        // Setting Dialog Message
-                        alertDialog.setMessage("Please Check Your Credentials");
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Please Check Your Credentials");
 
-                        alertDialog.setCanceledOnTouchOutside(false);
+                    alertDialog.setCanceledOnTouchOutside(false);
 
-                        // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog closed
-                            }
-                        });
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog closed
+                        }
+                    });
 
-                        // Showing Alert Message
-                        alertDialog.show();
+                    // Showing Alert Message
+                    alertDialog.show();
 
-                    } else if ((et_password.length() == 0)) {
-                        AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
+                } else if ((et_password.length() == 0)) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
 
-                        // Setting Dialog Title
-                        alertDialog.setTitle("Missing Information");
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Missing Information");
 
-                        // Setting Dialog Message
-                        alertDialog.setMessage("Please enter your Correct Information to proceed further.");
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Please enter your Correct Information to proceed further.");
 
-                        // Setting Icon to Dialog
-                        //  alertDialog.setIcon(R.drawable.tick);
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
 
-                        // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog closed
-                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog closed
+                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-                        // Showing Alert Message
-                        alertDialog.show();
+                    // Showing Alert Message
+                    alertDialog.show();
 
-                    } else if ((et_phone_number.length() == 10) && (et_password != null) && isOnline())
+                } else if ((et_phone_number.length() == 10) && (et_password != null) && isOnline())
 
-                    {
-                        //Intent intent21 = new Intent(Name.this, Gender.class);
+                {
+                    //Intent intent21 = new Intent(Name.this, Gender.class);
 
-                        //startActivity(intent21);
-                        //launchAgeScreen();
-                        registerUser(mobileNo, password);
-                        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putString("logged", "logged");
-                        editor.commit();
+                    //startActivity(intent21);
+                    //launchAgeScreen();
+                    registerUser(mobileNo, password);
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("logged", "logged");
+                    editor.commit();
                    /* SharedPreferences.Editor editor = sharedpreferences.edit();
 
                     editor.putString("MobileNumber",mobileNo);
                     editor.putString("Password", password);
                     editor.commit();*/
-                        //sdkHandShake();
+                    //sdkHandShake();
 
-                    } else {
+                } else {
 
-                        AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
 
-                        // Setting Dialog Title
-                        alertDialog.setTitle("No Internet Connection");
+                    // Setting Dialog Title
+                    alertDialog.setTitle("No Internet Connection");
 
-                        // Setting Dialog Message
-                        alertDialog.setMessage("Please check internet connection and try again. Thank you.");
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Please check internet connection and try again. Thank you.");
 
-                        // Setting Icon to Dialog
-                        //  alertDialog.setIcon(R.drawable.tick);
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
 
-                        // Setting OK Button
-                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog closed
-                                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog closed
+                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-                        // Showing Alert Message
-                        alertDialog.show();
-                        Log.v("Home", "############################You are not online!!!!");
-                    }
-
-
-                    //LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
+                    // Showing Alert Message
+                    alertDialog.show();
+                    Log.v("Home", "############################You are not online!!!!");
                 }
 
 
-            });
+                //LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
+            }
 
 
-
-            register.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(LogInActivity.this, RegisterActivity.class);
-                    startActivity(intent);
-
-                    // LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
-                }
-            });
+        });
 
 
-            //tv_register
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LogInActivity.this, RegisterActivity.class);
+                startActivity(intent);
+
+                // LogInActivityPermissionsDispatcher.isDualSimOrNotWithCheck(LogInActivity.this);
+            }
+        });
+
+
+        //tv_register
 
         passwordShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (passwordShow.getText().toString().equals("Show")){
+                if (passwordShow.getText().toString().equals("Show")) {
                     passwordShow.setText("Hide");
 
                     et_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                }else
-                {
+                } else {
                     passwordShow.setText("Show");
                     et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
             }
         });
-        }
-
-
-
-
+    }
 
 
     public boolean isOnline() {
@@ -279,17 +273,18 @@ public class LogInActivity extends AppCompatActivity  {
             return false;
         }
     }
+
     private void DataBinding() {
         //phoneNumber = (EditText)findViewById(R.id.et_phone_number);
         //password = (EditText)findViewById(R.id.et_password);
         //passwordShow = (TextView)findViewById(R.id.tv_password_show);
-        forgotPassword = (TextView)findViewById(R.id.tv_forgot_password);
-        register = (TextView)findViewById(R.id.tv_register);
-        login = (Button)findViewById(R.id.btn_login);
+        forgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
+        register = (TextView) findViewById(R.id.tv_register);
+        login = (Button) findViewById(R.id.btn_login);
     }
 
     @NeedsPermission(Manifest.permission.READ_PHONE_STATE)
-    public void isDualSimOrNot(){
+    public void isDualSimOrNot() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View sheetView = this.getLayoutInflater().inflate(R.layout.bottomdialog_getting_sim_info, null);
         bottomSheetDialog.setContentView(sheetView);
@@ -300,15 +295,17 @@ public class LogInActivity extends AppCompatActivity  {
         String optName3 = getOutput(this, "SimOperatorName", 2);
         bottomSheetDialog.cancel();
 
-        Intent intent = new Intent(LogInActivity.this,VerifyMobile.class);
-        intent.putExtra("SIM1",optName1);
-        intent.putExtra("SIM2",optName2);
+        Intent intent = new Intent(LogInActivity.this, VerifyMobile.class);
+        intent.putExtra("SIM1", optName1);
+        intent.putExtra("SIM2", optName2);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
     }
 
-    private void registerUser(final String mobileNo , final String password) {
+    private void registerUser(final String mobileNo, final String password) {
 
+        //Added for SSL (17th Sep 2018)
+        // HttpsTrustManager.allowAllSSL();
 
         // Tag used to cancel the request
         String tag_string_req = "req_register";
@@ -316,9 +313,11 @@ public class LogInActivity extends AppCompatActivity  {
         //pDialog.setMessage("Registering ...");
         //showDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.Base_Url+AppConfig.App_api+  AppConfig.URL_LOGIN, new Response.Listener<String>() {
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_LOGIN;
+        Log.d("LoginURL", " " + url);
 
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response1) {
                 Log.d(TAG, "Register Response: " + response1.toString());
@@ -330,22 +329,20 @@ public class LogInActivity extends AppCompatActivity  {
                     String response = jObj.getString("response");
                     Log.d(TAG, "Register Response1: " + response);
 
-                    SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefLogin,MODE_PRIVATE).edit();
-                    editor.putString("response",response);
+                    SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefLogin, MODE_PRIVATE).edit();
+                    editor.putString("response", response);
                     editor.commit();
 
 
-                    String status =jObj.getString("status");
+                    String status = jObj.getString("status");
 
-                    if (status!=null && status.equals("success")){
+                    if (status != null && status.equals("success")) {
 
-                        Intent intent = new Intent(LogInActivity.this,FilterActivity.class);
+                        Intent intent = new Intent(LogInActivity.this, FilterActivity.class);
 
                         startActivity(intent);
 
-                    }
-
-                    else if((status.equals("failed")&&  response.equals("UserName or Current password is WRONG")  )) {
+                    } else if ((status.equals("failed") && response.equals("UserName or Current password is WRONG"))) {
 
 
                         final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
@@ -366,10 +363,7 @@ public class LogInActivity extends AppCompatActivity  {
 
                         // Showing Alert Message
                         alertDialog.show();
-                    }
-
-
-                    else if(response.equals("Deactivated User")  ) {
+                    } else if (response.equals("Deactivated User")) {
 
 
                         final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
@@ -390,9 +384,7 @@ public class LogInActivity extends AppCompatActivity  {
 
                         // Showing Alert Message
                         alertDialog.show();
-                    }
-
-                    else {
+                    } else {
 
                         final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
                         // Setting Dialog Title
@@ -429,7 +421,7 @@ public class LogInActivity extends AppCompatActivity  {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -467,7 +459,6 @@ public class LogInActivity extends AppCompatActivity  {
                 }
 
 
-
             }
         }) {
 
@@ -477,7 +468,6 @@ public class LogInActivity extends AppCompatActivity  {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("mobileNo", mobileNo);
                 params.put("password", password);
-
 
 
                 return params;
@@ -490,13 +480,6 @@ public class LogInActivity extends AppCompatActivity  {
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-
-
-
-
-
-
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
@@ -536,10 +519,11 @@ public class LogInActivity extends AppCompatActivity  {
             }
 
             // AppController.getInstance().addToRequestQueue(getApplicationContext(),stack);
-
+            Log.d("LoginTLS", "In If Part");
             requestQueue = Volley.newRequestQueue(getApplicationContext(), stack);
-        } else {
 
+        } else {
+            Log.d("LoginTLS", "In Else Part");
             requestQueue = Volley.newRequestQueue(getApplicationContext());
             //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
         }
@@ -754,7 +738,7 @@ public class LogInActivity extends AppCompatActivity  {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-finish();
+        finish();
         moveTaskToBack(true);
         System.exit(0);
 

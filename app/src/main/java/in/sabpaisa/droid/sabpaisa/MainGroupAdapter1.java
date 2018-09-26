@@ -1,31 +1,19 @@
 package in.sabpaisa.droid.sabpaisa;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -39,24 +27,23 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
-
 
 public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.MyViewHolder> {
+
     Context mContext;
     private List<GroupListData> countryList;
-      public Button joinmember;
+    public Button joinmember;
 
-String popup="Group";
-    public MainGroupAdapter1(List<GroupListData> countryList,Context context) {
+    String popup = "Group";
+
+    public MainGroupAdapter1(List<GroupListData> countryList, Context context) {
         this.countryList = countryList;
         this.mContext = context;
     }
@@ -84,9 +71,9 @@ String popup="Group";
                 .error(R.drawable.image_not_found)
                 .into(holder.Group_Image);
 
-        if (c.getMemberStatus().equals("Blocked")){
+        if (c.getMemberStatus().equals("Blocked")) {
 
-            Log.d("RajBhai","Checking fade effect");
+            Log.d("RajBhai", "Checking fade effect");
             holder.linearLayoutGroupItemList.setEnabled(false);
             holder.linearLayoutGroupItemList.setAlpha(.5f);
         }
@@ -202,19 +189,19 @@ String popup="Group";
 
                 String groupId = c.getGroupId().toString();
 
-                Log.d("tokenGRP"," "+token);
-                Log.d("groupIdGRP"," "+groupId);
+                Log.d("tokenGRP", " " + token);
+                Log.d("groupIdGRP", " " + groupId);
 
-                addMember(token,groupId,view,c);
+                addMember(token, groupId, view, c);
             }
         });
 
 
         holder.joinmember.setText(c.getMemberStatus());
-        if(c.getMemberStatus().equals("Approved")) {
+        if (c.getMemberStatus().equals("Approved")) {
             holder.joinmember.setVisibility(View.INVISIBLE);
         }
-        
+
         holder.joinmember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,14 +212,12 @@ String popup="Group";
 
                 String groupId = c.getGroupId().toString();
 
-                Log.d("tokenGRP"," "+token);
-                Log.d("groupIdGRP"," "+groupId);
+                Log.d("tokenGRP", " " + token);
+                Log.d("groupIdGRP", " " + groupId);
 
-                addMember(token,groupId,v,c);
+                addMember(token, groupId, v, c);
             }
         });
-
-
 
 
     }
@@ -270,15 +255,13 @@ String popup="Group";
             joinmember = (Button) view.findViewById(R.id.joinmember);
             Group_Logo = (ImageView) view.findViewById(R.id.Group_Logo);
             Group_Image = (ImageView) view.findViewById(R.id.Group_Image);
-            linearLayoutGroupItemList = (LinearLayout)view.findViewById(R.id.linearLayoutGroupItemList);
-            rippleClick = (MaterialRippleLayout)view.findViewById(R.id.rippleClick);
+            linearLayoutGroupItemList = (LinearLayout) view.findViewById(R.id.linearLayoutGroupItemList);
+            rippleClick = (MaterialRippleLayout) view.findViewById(R.id.rippleClick);
         }
     }
 
 
-
-    public void addMember (final String token , final String groupId , final View view , final GroupListData groupListData)
-    {
+    public void addMember(final String token, final String groupId, final View view, final GroupListData groupListData) {
 
 // Tag used to cancel the request
         String tag_string_req = "req_register";
@@ -287,7 +270,7 @@ String popup="Group";
         //showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_ADD_Member+"token="+token+"&"+"groupId="+groupId, new Response.Listener<String>() {
+                AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_ADD_Member + "token=" + token + "&" + "groupId=" + groupId, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -298,14 +281,14 @@ String popup="Group";
                     JSONObject jObj = new JSONObject(response1);
 
                     final String response = jObj.getString("response");
-            ////////16th  feb////////response==Member added successfully
-                    Log.d("MemberResponse"," "+response);
+                    ////////16th  feb////////response==Member added successfully
+                    Log.d("MemberResponse", " " + response);
 
-                    String status =jObj.getString("status");
+                    String status = jObj.getString("status");
 
-                    if (status!=null && status.equals("success")){
+                    if (status != null && status.equals("success")) {
 
-                        final AlertDialog alertDialog1 = new AlertDialog.Builder( view.getContext(), R.style.MyDialogTheme).create();
+                        final AlertDialog alertDialog1 = new AlertDialog.Builder(view.getContext(), R.style.MyDialogTheme).create();
                         // Setting Dialog Title
                         alertDialog1.setTitle("Group Member");
 
@@ -333,80 +316,70 @@ String popup="Group";
                         alertDialog1.show();
 
 
+                    } else if (response.equals("User already a member of the client with Status Approved")) {
+                        //joinmember.setVisibility(View.GONE);
+                        popup = "Groups";
+                        Intent intent = new Intent(view.getContext(), Proceed_Group_FullScreen.class);
+                        intent.putExtra("popup", popup);
+                        intent.putExtra("groupName", groupListData.getGroupName());
+                        intent.putExtra("groupText", groupListData.getGroupText());
+                        intent.putExtra("groupImage", groupListData.getImagePath());
+                        intent.putExtra("groupId", groupListData.getGroupId());
+                        view.getContext().startActivity(intent);
 
+
+                    } else if (response.equals("User already a member of the client with Status Blocked")) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(view.getContext(), R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Hey,looks like you are not Authorised to enter this group. Sorry!!!");
+
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+                    } else if (response.equals("User already a member of the client with Status Pending")) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(view.getContext(), R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Hey,Your request is pending.Wait for approval.");
+
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
                     }
 
-
-                    else if (response.equals("User already a member of the client with Status Approved")){
-                              //joinmember.setVisibility(View.GONE);
-                        popup="Groups";
-                                    Intent intent = new Intent(view.getContext(),Proceed_Group_FullScreen.class);
-                                    intent.putExtra("popup",popup);
-                                    intent.putExtra("groupName",groupListData.getGroupName());
-                                    intent.putExtra("groupText",groupListData.getGroupText());
-                                    intent.putExtra("groupImage",groupListData.getImagePath());
-                                    intent.putExtra("groupId",groupListData.getGroupId());
-                                    view.getContext().startActivity(intent);
-
-
-                                }
-
-                                else if(response.equals("User already a member of the client with Status Blocked"))
-                                {
-                                    AlertDialog alertDialog = new AlertDialog.Builder(view.getContext(), R.style.MyDialogTheme).create();
-
-                                    // Setting Dialog Title
-                                    alertDialog.setTitle("");
-
-                                    // Setting Dialog Message
-                                    alertDialog.setMessage("Hey,looks like you are not Authorised to enter this group. Sorry!!!");
-
-                                    // Setting Icon to Dialog
-                                    //  alertDialog.setIcon(R.drawable.tick);
-
-                                    // Setting OK Button
-                                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                        }
-                                    });
-
-                                    // Showing Alert Message
-                                    alertDialog.show();
-                                }
-                                else if(response.equals("User already a member of the client with Status Pending"))
-                                {
-                                    AlertDialog alertDialog = new AlertDialog.Builder(view.getContext(), R.style.MyDialogTheme).create();
-
-                                    // Setting Dialog Title
-                                    alertDialog.setTitle("");
-
-                                    // Setting Dialog Message
-                                    alertDialog.setMessage("Hey,Your request is pending.Wait for approval.");
-
-                                    // Setting Icon to Dialog
-                                    //  alertDialog.setIcon(R.drawable.tick);
-
-                                    // Setting OK Button
-                                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                        }
-                                    });
-
-                                    // Showing Alert Message
-                                    alertDialog.show();
-                                }
-
-                                ///////////////////////////////////////////////
-                                // Write your code here to execute after dialog closed
+                    ///////////////////////////////////////////////
+                    // Write your code here to execute after dialog closed
 //                                Intent intent = new Intent(view.getContext(),Proceed_Group_FullScreen.class);
 //                                intent.putExtra("groupName",groupListData.getGroupName());
 //                                intent.putExtra("groupText",groupListData.getGroupText());
 //                                intent.putExtra("groupImage",groupListData.getImagePath());
 //                                intent.putExtra("groupId",groupListData.getGroupId());
 //                                view.getContext().startActivity(intent);
-
 
 
                 } catch (JSONException e) {
@@ -422,7 +395,7 @@ String popup="Group";
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(view.getContext(), R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -460,7 +433,6 @@ String popup="Group";
                 }
 
 
-
             }
         }); /*{
 
@@ -483,27 +455,25 @@ String popup="Group";
 
     }
 
-public  void statusGroup(final  String clientId,final String token)
-{
-StringRequest stringRequest=new
-        StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "/memberStatusWithGroup?clientId=" + clientId + "&token=" + token, new Response.Listener<String>() {
-    @Override
-    public void onResponse(String response) {
+    public void statusGroup(final String clientId, final String token) {
+        StringRequest stringRequest = new
+                StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "/memberStatusWithGroup?clientId=" + clientId + "&token=" + token, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 
-        Log.d("StatusActiveornot",""+response);
+                Log.d("StatusActiveornot", "" + response);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(stringRequest);
 
     }
-}, new Response.ErrorListener() {
-    @Override
-    public void onErrorResponse(VolleyError error) {
-
-    }
-});
-
-AppController.getInstance().addToRequestQueue(stringRequest);
-
-}
-
 
 
 }

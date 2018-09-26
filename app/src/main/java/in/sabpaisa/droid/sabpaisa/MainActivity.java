@@ -130,6 +130,7 @@ import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import io.fabric.sdk.android.Fabric;
+import me.grantland.widget.AutofitTextView;
 
 import static com.mikepenz.materialize.util.UIUtils.convertDpToPixel;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
     Context context;
     int sumgroup = 0, sumfeeds = 0;
     String count, countfeeds, clntname;
-    TextView usernameniv, mailIdniv;
+    AutofitTextView usernameniv, mailIdniv;
     Toolbar toolbar;
     String n, m, name, mobNumber;
     private static int CODE = 1; //declare as FIELD
@@ -187,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
     ActionBarDrawerToggle toggle;
     //public  static String userImageUrl=null;
     HashMap<String, String> Hash_file_maps;
-//    private RapidFloatingActionLayout rfaLayout;
+    //    private RapidFloatingActionLayout rfaLayout;
 //    private RapidFloatingActionButton rfaBtn;
 //    private RapidFloatingActionHelper rfabHelper;
     Bundle bundle;
@@ -202,6 +203,8 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
     AppDbComments appDbComments;
 
     DrawerLayout drawer;
+
+    NavigationView navigationView;
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
@@ -260,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
 //        Timestamp t =  new Timestamp( Long.valueOf(posttime) );
 
-        Log.d("ArcPosttime", "" + posttime);
+//        Log.d("ArcPosttime", "" + posttime);
 
         //  Log.d("ArcPosttime11",""+posttime1);
         //      Log.d("ArcPosttime111",""+t);
@@ -301,6 +304,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
                 getApplicationContext().getTheme());
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -359,9 +365,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         navigationView.setItemIconTintList(null);
 
         niv = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_image);
-        usernameniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.username_nav);
+        usernameniv = (AutofitTextView) navigationView.getHeaderView(0).findViewById(R.id.username_nav);
         usernameniv.setText("");
-        mailIdniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_nav);
+        mailIdniv = (AutofitTextView) navigationView.getHeaderView(0).findViewById(R.id.email_nav);
 
         sendMoney = (ImageView) findViewById(R.id.ll_send);
         requestMoney = (ImageView) findViewById(R.id.ll_request);
@@ -376,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         /*rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.activity_main_rfal);
         rfaBtn = (RapidFloatingActionButton) findViewById(R.id.activity_main_rfab);*/
         //FabButtonCreate();
-        
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("SPApp");
         toolbar.setNavigationIcon(R.drawable.ic_navigation);
@@ -501,9 +507,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         ////////API CAlls////////////////////////////
 
-        if (isOnline()){
+        if (isOnline()) {
             getUserImage(userAccessToken);
-        }else{
+        } else {
 
             Cursor res = appDB.getParticularImageData(userAccessToken);
 
@@ -534,7 +540,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         if (isOnline()) {
             showProfileData();
-        }else {
+        } else {
 
             Cursor res = appDB.getParticularData(userAccessToken);
 
@@ -553,10 +559,10 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
                 Log.d("getParticularNum", "-->" + stringBuffer);
 
             } else {
-                Log.d("MainActivity","In Else Part");
+                Log.d("MainActivity", "In Else Part");
             }
 
-            }
+        }
         getClientsList(ClientId1);
         String y = x;
 
@@ -599,6 +605,8 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
             }
         });
+
+  /*      //Archana Code
         SharedPreferences sharedPreferences113 = getApplication().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
 
         posttime = sharedPreferences113.getString("ts", "123");
@@ -653,25 +661,27 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         Log.d("ArcFeedGroup", "" + feedstotal + "  " + grouptotal);
 
         Log.d("ArcPosttimeCount", "" + Commentcountgroups + "   " + CommentcountFeeds);
+
+*/
+
     }
-
-
-
 
 
     private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
+        String isRegIdSaved = pref.getString("isRegIdSaved", null);
         Log.d("Fbid", "Firebase reg id: " + regId);
 
-        if (!TextUtils.isEmpty(regId)) {
+        if (!TextUtils.isEmpty(regId) && (isRegIdSaved == null)) {
             //Toast.makeText(this, "Firebase Reg Id: " + regId, Toast.LENGTH_SHORT).show();
-        }
+            sendFCMTokenToDb(regId, userAccessToken);
 
-
-        //txtRegId.setText("Firebase Reg Id: " + regId);
-        else {
-
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("isRegIdSaved", "1");
+            editor.commit();
+        } else {
+            Log.d("FCM(regId)", "Is Empty");
             //Toast.makeText(this, "Firebase Reg Id is not received yet!" + regId, Toast.LENGTH_SHORT).show();
         }
     }
@@ -681,9 +691,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         if (this.drawer.isDrawerOpen(GravityCompat.START)) {
             this.drawer.closeDrawer(GravityCompat.START);
-            Log.d("Drawer","Closing");
+            Log.d("Drawer", "Closing");
         } else {
-            Log.d("Drawer","Closed");
+            Log.d("Drawer", "Closed");
             /*finish();
             moveTaskToBack(true);
             System.exit(0);
@@ -698,7 +708,6 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
             finish();
             System.exit(0);
         }
-
 
 
     }
@@ -1036,9 +1045,6 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
                 shareIntentSpecificApps();
 
 
-
-
-
             } catch (Exception e) {
 
 
@@ -1190,6 +1196,13 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         // clear the notification area when the app is opened
         NotificationUtils.clearNotifications(getApplicationContext());
+
+
+        for (int i = 0; i < navigationView.getMenu().size(); i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+
+
     }
 
     @Override
@@ -1199,6 +1212,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
     }
 
     private void getUserImage(final String token) {
+
+        //Added for SSL (17th Sep 2018)
+//        HttpsTrustManager.allowAllSSL();
 
         String tag_string_req = "req_clients";
 
@@ -1340,6 +1356,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
     }
 
     private void showProfileData() {
+
+        //Added for SSL (17th Sep 2018)
+//        HttpsTrustManager.allowAllSSL();
 
         String tag_string_req = "req_register";
 
@@ -1493,6 +1512,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
     private void getClientsList(final String clientId) {
 
+        //Added for SSL (17th Sep 2018)
+//        HttpsTrustManager.allowAllSSL();
+
         String tag_string_req = "req_clients";
 
         StringRequest request = new StringRequest(Request.Method.POST, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_ClientBasedOnClientId + clientId, new Response.Listener<String>() {
@@ -1600,7 +1622,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         AppController.getInstance().addToRequestQueue(request, tag_string_req);
     }
-
+/* //Archana Code
     public void Feedsnotification(final String client_Id, final String postTime, final String token) {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "notificationsForFeeds?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
             @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
@@ -1714,7 +1736,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         });
 
         AppController.getInstance().addToRequestQueue(stringRequest);
-    }
+    }*/
 
     @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
 
@@ -1777,6 +1799,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         notificationManager.notify(notification_id, noti);
     }
 
+    /* //Archana Code
     public void NotificationCount(final String client_Id, final String postTime, final String token) {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "notifications?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
             @Override
@@ -1907,8 +1930,8 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         Log.d("Strngrqst", "" + stringRequest);
         AppController.getInstance().addToRequestQueue(stringRequest);
     }
-
-    class abc extends AsyncTask<String, Void, Void> {
+*/
+   /* class abc extends AsyncTask<String, Void, Void> {
 
         @Override
         protected Void doInBackground(String... strings) {
@@ -1919,7 +1942,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
             return null;
         }
-    }
+    }*/
 
 
     public boolean isOnline() {
@@ -1934,7 +1957,6 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
             return false;
         }
     }
-
 
 
     public void shareIntentSpecificApps() {
@@ -1957,7 +1979,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
                         || packageName.contains("com.google.android.talk") || packageName.contains("com.slack")
                         || packageName.contains("com.google.android.gm") || packageName.contains("com.facebook.orca")
                         || packageName.contains("com.yahoo.mobile") || packageName.contains("com.skype.raider")
-                        || packageName.contains("com.android.mms")|| packageName.contains("com.linkedin.android")
+                        || packageName.contains("com.android.mms") || packageName.contains("com.linkedin.android")
                         || packageName.contains("com.google.android.apps.messaging")) {
                     Intent intent = new Intent();
 
@@ -1993,6 +2015,75 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
     }
 
 
+    private void sendFCMTokenToDb(final String fcmToken, final String userAccessToken) {
+
+        //Added for SSL (17th Sep 2018)
+//        HttpsTrustManager.allowAllSSL();
+
+        String tag_string_req = "req_clients";
+
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URl_FCM_TOKEN + "userToken=" + userAccessToken + "&fcmToken=" + fcmToken;
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                Log.d("MainActivityFCMTocken", "--> " + response);
+
+                try {
+
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    String status = jsonObject.getString("status");
+                    String returnResponse = jsonObject.getString("response");
+
+                    if (status.equals("success")) {
+
+
+                        Log.d("MainActvtyFCMTokenInIF", "Fcm Token Has Updated " + returnResponse);
+
+                    } else {
+
+                        Log.d("MainActvtyFCMTokenInEls", "Fcm Token Has Not Updated " + returnResponse);
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+
+                    Log.d("MainActivityFCMTocken", "onErrorResponse " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        });
+
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
+    }
 
 
 }

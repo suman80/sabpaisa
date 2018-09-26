@@ -6,21 +6,17 @@ import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -39,31 +35,21 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
-import in.sabpaisa.droid.sabpaisa.Adapter.ProceedFeedsFragmentsOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ProceedGroupsFragmentsOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
-import in.sabpaisa.droid.sabpaisa.FeedsFragments;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
-import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MainGroupAdapter1;
-import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Model.GroupDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.R;
-import in.sabpaisa.droid.sabpaisa.RecyclerItemClickListener;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
-import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
-import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME;
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_GROUPS;
 
 /**

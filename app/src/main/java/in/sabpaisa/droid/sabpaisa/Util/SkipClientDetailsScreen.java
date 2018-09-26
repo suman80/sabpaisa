@@ -1,16 +1,13 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,7 +20,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,21 +31,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.StringRequest;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
 import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
@@ -61,9 +49,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,23 +63,18 @@ import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.CommentAdapter;
 import in.sabpaisa.droid.sabpaisa.CommentData;
 import in.sabpaisa.droid.sabpaisa.FeedData;
-import in.sabpaisa.droid.sabpaisa.FeedDetails;
 import in.sabpaisa.droid.sabpaisa.FeedsFragments;
 import in.sabpaisa.droid.sabpaisa.FilterActivity;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
-import in.sabpaisa.droid.sabpaisa.LogInActivity;
-import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.Model.*;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.R;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.CommentAdapterDatabase;
-import in.sabpaisa.droid.sabpaisa.RegisterActivity;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
-import in.sabpaisa.droid.sabpaisa.SocialPayment;
 
 import static android.support.v4.widget.SwipeRefreshLayout.*;
 
@@ -101,26 +82,26 @@ import static android.support.v4.widget.SwipeRefreshLayout.*;
 
 /*implements SwipeRefreshLayout.OnRefreshListener*/
 
-public class SkipClientDetailsScreen extends AppCompatActivity implements OnFragmentInteractionListener,OnRefreshListener{
+public class SkipClientDetailsScreen extends AppCompatActivity implements OnFragmentInteractionListener, OnRefreshListener {
     ArrayList<SkipClientData> institutions;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-    String FeedId,FeedName,FeedDesc,FeedTime,FeedImage,clientName,state;
-    public static String clientImageURLPath=null;
-    public static String clientLogoURLPath=null;
+    String FeedId, FeedName, FeedDesc, FeedTime, FeedImage, clientName, state;
+    public static String clientImageURLPath = null;
+    public static String clientLogoURLPath = null;
     public static String clientId;
-    public  static  String MySharedPrefOnSkipClientDetailsScreen="mySharedPref";
+    public static String MySharedPrefOnSkipClientDetailsScreen = "mySharedPref";
     private ViewPager viewPager;
-    private Button btn_pay,btn_request;
-    TextView feedDeatilsTextView, feedNameTextView,feedTime;
-    ImageView feedImage,clientImagePath,clientLogoPath;
+    private Button btn_pay, btn_request;
+    TextView feedDeatilsTextView, feedNameTextView, feedTime;
+    ImageView feedImage, clientImagePath, clientLogoPath;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     SwipeRefreshLayout swipeRefreshLayout;
     EditText commentadd = null;
     ProgressDialog loading = null;
     ArrayList<CommentData> commentArrayList;
 
-    int lastSeq=0;
-    boolean loadMore=true;
+    int lastSeq = 0;
+    boolean loadMore = true;
     ShimmerRecyclerView rv;
     CommentAdapterDatabase ca;
     ProgressBar progressBar;
@@ -134,15 +115,16 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     private boolean isLastPage = false;
     private int currentPage = 1;
     LinearLayout chatbutton;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // CommonUtils.setFullScreen(this);
+        // CommonUtils.setFullScreen(this);
         setContentView(R.layout.skip_clientdetails);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setDisplayShowHomeEnabled(true);
        /* viewPager = (ViewPager) findViewById(R.id.viewpagerSkip);
         setupViewPager(viewPager);
@@ -156,7 +138,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 */
 
 
-       chatbutton = (LinearLayout)findViewById(R.id.chat);
+        chatbutton = (LinearLayout) findViewById(R.id.chat);
 
         ChatSDKUiHelper.initDefault();
 
@@ -174,70 +156,70 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         clientName = intent.getStringExtra("clientName");
         state = intent.getStringExtra("state");
         clientId = intent.getStringExtra("clientId");
-        clientImageURLPath= getIntent().getStringExtra("clientImagePath");
+        clientImageURLPath = getIntent().getStringExtra("clientImagePath");
         clientLogoURLPath = getIntent().getStringExtra("clientLogoPath");
-        Log.d("clientIdSCDS",""+clientId);
-        Log.d("clientImagePath",""+clientImageURLPath);
-        Log.d("clientLogoPath",""+clientLogoURLPath);
+        Log.d("clientIdSCDS", "" + clientId);
+        Log.d("clientImagePath", "" + clientImageURLPath);
+        Log.d("clientLogoPath", "" + clientLogoURLPath);
 
-        SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefOnSkipClientDetailsScreen,MODE_PRIVATE).edit();
-        editor.putString("clientId",clientId);
+        SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefOnSkipClientDetailsScreen, MODE_PRIVATE).edit();
+        editor.putString("clientId", clientId);
         editor.commit();
 
 
         TextView clientNameTextView = (TextView) findViewById(R.id.particular_client_name);
 
         btn_request = (Button) findViewById(R.id.btn_request);
-        btn_pay =(Button) findViewById(R.id.btn_pay);
+        btn_pay = (Button) findViewById(R.id.btn_pay);
 
         TextView stateTextView = (TextView) findViewById(R.id.particular_client_address);
 
-        clientImagePath = (ImageView)findViewById(R.id.particular_client_image);
+        clientImagePath = (ImageView) findViewById(R.id.particular_client_image);
         //clientLogoPath  = (ImageView)findViewById(R.id.particular_client_logo);
 
 
-btn_pay.setOnClickListener(new OnClickListener() {
-    @Override
-    public void onClick(View v) {
+        btn_pay.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
 
-        AlertDialog alertDialog = new AlertDialog.Builder(SkipClientDetailsScreen.this, R.style.MyDialogTheme).create();
+                AlertDialog alertDialog = new AlertDialog.Builder(SkipClientDetailsScreen.this, R.style.MyDialogTheme).create();
 
-        // Setting Dialog Title
-        alertDialog.setTitle("Pay");
+                // Setting Dialog Title
+                alertDialog.setTitle("Pay");
 
-        // Setting Dialog Message
-        alertDialog.setMessage("For Payment,Click on the Request Join Button ");
+                // Setting Dialog Message
+                alertDialog.setMessage("For Payment,Click on the Request Join Button ");
 
-        // Setting Icon to Dialog
-        //  alertDialog.setIcon(R.drawable.tick);
+                // Setting Icon to Dialog
+                //  alertDialog.setIcon(R.drawable.tick);
 
-        // Setting OK Button
-        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // Write your code here to execute after dialog closed
-                // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-            }
-        });
+                // Setting OK Button
+                alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog closed
+                        // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-        // Showing Alert Message
-        alertDialog.show();
-        Log.v("Home", "Payment");
+                // Showing Alert Message
+                alertDialog.show();
+                Log.v("Home", "Payment");
 
 
         /*Intent intent = new Intent(SkipClientDetailsScreen.this,SocialPayment.class);
         startActivity(intent);*/
 
 
-    }
-});
+            }
+        });
 
 
         btn_request.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(SkipClientDetailsScreen.this,FilterActivity.class);
+                Intent intent = new Intent(SkipClientDetailsScreen.this, FilterActivity.class);
                 startActivity(intent);
 
             }
@@ -245,14 +227,14 @@ btn_pay.setOnClickListener(new OnClickListener() {
         chatbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SkipClientDetailsScreen.this,ChatSDKLoginActivity.class);
+                Intent intent = new Intent(SkipClientDetailsScreen.this, ChatSDKLoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
             }
         });
 
 //       callFeedDeatilsByFeedId();
-        clientNameTextView.setText( clientName);
+        clientNameTextView.setText(clientName);
         stateTextView.setText(state);
         new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
         //new DownloadLogoTask(clientLogoPath).execute(clientLogoURLPath);
@@ -264,14 +246,9 @@ btn_pay.setOnClickListener(new OnClickListener() {
 
         commentArrayList = new ArrayList<CommentData>();
 
-        currentPage=1;
+        currentPage = 1;
         //loadComments();
     }
-
-
-
-
-
 
 
     //Code for fetching image from server
@@ -312,9 +289,9 @@ btn_pay.setOnClickListener(new OnClickListener() {
 
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FeedsFragments(),"Feeds");
-        adapter.addFragment(new GroupsFragments(),"Groups");
-        adapter.addFragment(new PayFragments(),"Make Payment");
+        adapter.addFragment(new FeedsFragments(), "Feeds");
+        adapter.addFragment(new GroupsFragments(), "Groups");
+        adapter.addFragment(new PayFragments(), "Make Payment");
         //adapter.addFragment(new GroupsFragments(),"Groups");
         //adapter.addFragment(new PayFragments(),"Make Payment");
         viewPager.setAdapter(adapter);
@@ -323,7 +300,6 @@ btn_pay.setOnClickListener(new OnClickListener() {
         //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
 
     }
-
 
 
     //Code for fetching image from server
@@ -361,9 +337,8 @@ btn_pay.setOnClickListener(new OnClickListener() {
     }
 
 
-
-    private void loadComments(final String feed_id,final  String userAccessToken, final String comment_text) {
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api + "getFeedsComments/" + "feed_id=1";
+    private void loadComments(final String feed_id, final String userAccessToken, final String comment_text) {
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getFeedsComments/" + "feed_id=1";
         final JsonArrayRequest request = new JsonArrayRequest(urlJsonObj, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -445,7 +420,7 @@ btn_pay.setOnClickListener(new OnClickListener() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("feed_id", feed_id);
                 params.put("userAccessToken", userAccessToken);
-                params.put("comment_text",comment_text);
+                params.put("comment_text", comment_text);
 
 
                 return params;
@@ -475,7 +450,7 @@ btn_pay.setOnClickListener(new OnClickListener() {
 
     public void callGetCommentList(final String feed_id) {
 
-        String urlJsonObj = AppConfig.Base_Url +AppConfig.App_api+ "getFeedsComments/" + "feed_id=1";
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getFeedsComments/" + "feed_id=1";
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
         // Creating the JsonArrayRequest class called arrayreq, passing the required parameters
         //JsonURL is the URL to be fetched from
@@ -555,7 +530,7 @@ btn_pay.setOnClickListener(new OnClickListener() {
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
-        CommentAdapter ca = new CommentAdapter(arrayList,getApplicationContext());
+        CommentAdapter ca = new CommentAdapter(arrayList, getApplicationContext());
         rv.setAdapter(ca);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -573,8 +548,8 @@ btn_pay.setOnClickListener(new OnClickListener() {
     }
 
     private void callCommentService(final String commentText) {
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+ "addFeedsComments/" +
-                "feed_id=1" + "/" + "userAccessToken=47DCC2AB8F1FEE94182E4426522C85D127A37404BE91FF13979B5DED7934EB49"+ "/" + "commentText=hi";
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "addFeedsComments/" +
+                "feed_id=1" + "/" + "userAccessToken=47DCC2AB8F1FEE94182E4426522C85D127A37404BE91FF13979B5DED7934EB49" + "/" + "commentText=hi";
         urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
@@ -587,8 +562,7 @@ btn_pay.setOnClickListener(new OnClickListener() {
                     // Parsing json object response
                     // response will be a json object
                     String status = response.getString("status");
-                    if (status.equals("success"))
-                    {
+                    if (status.equals("success")) {
                         commentadd.setText("");
                         Toast.makeText(SkipClientDetailsScreen.this, "Comment done.", Toast.LENGTH_SHORT).show();
 //                        ca.cleanUpAdapter();

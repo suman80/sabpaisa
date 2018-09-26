@@ -143,12 +143,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     private EndlessScrollListener scrollListener;
 
 
-    FrameLayout shareViewFrameLayout,ImageViewFrameLayout,DocViewFrameLayout;
-    ImageView attachmentFile,selectedImg,closeSelectedImage,selectedDoc,closeSelectedDoc,attachment_Image_Video_File;
+    FrameLayout shareViewFrameLayout, ImageViewFrameLayout, DocViewFrameLayout;
+    ImageView attachmentFile, selectedImg, closeSelectedImage, selectedDoc, closeSelectedDoc, attachment_Image_Video_File;
     TextView selectedDocName;
 
 
-    LinearLayout shareDocument,shareImage;
+    LinearLayout shareDocument, shareImage;
 
     String userImageUrl;
 
@@ -156,7 +156,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     File fileDoc;
 
-    public static String MY_PREFS_FOR_GROUP_ID="mySharedPrefForGroupId";
+    public static String MY_PREFS_FOR_GROUP_ID = "mySharedPrefForGroupId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,6 +232,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
         Log.d("PGFResponse", " " + response);
 
+        if (getIntent().getStringExtra("userAccessTokenFromNotification") != null) {
+            userAccessToken = getIntent().getStringExtra("userAccessTokenFromNotification");
+        }
 
 
         arrayList = new ArrayList<>();
@@ -318,17 +321,17 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         editor.apply();
 
         shareViewFrameLayout = (FrameLayout) findViewById(R.id.shareViewFrameLayout);
-        attachmentFile = (ImageView)findViewById(R.id.attachmentFile);
-        shareDocument = (LinearLayout)findViewById(R.id.shareDocument);
-        shareImage = (LinearLayout)findViewById(R.id.shareImage);
-        ImageViewFrameLayout = (FrameLayout)findViewById(R.id.ImageViewFrameLayout);
-        DocViewFrameLayout = (FrameLayout)findViewById(R.id.DocViewFrameLayout);
-        selectedImg = (ImageView)findViewById(R.id.selectedImg);
-        selectedDoc = (ImageView)findViewById(R.id.selectedDoc);
+        attachmentFile = (ImageView) findViewById(R.id.attachmentFile);
+        shareDocument = (LinearLayout) findViewById(R.id.shareDocument);
+        shareImage = (LinearLayout) findViewById(R.id.shareImage);
+        ImageViewFrameLayout = (FrameLayout) findViewById(R.id.ImageViewFrameLayout);
+        DocViewFrameLayout = (FrameLayout) findViewById(R.id.DocViewFrameLayout);
+        selectedImg = (ImageView) findViewById(R.id.selectedImg);
+        selectedDoc = (ImageView) findViewById(R.id.selectedDoc);
         selectedDocName = (TextView) findViewById(R.id.selectedDocName);
-        closeSelectedImage = (ImageView)findViewById(R.id.closeSelectedImage);
-        closeSelectedDoc = (ImageView)findViewById(R.id.closeSelectedDoc);
-        attachment_Image_Video_File = (ImageView)findViewById(R.id.attachment_Image_Video_File);
+        closeSelectedImage = (ImageView) findViewById(R.id.closeSelectedImage);
+        closeSelectedDoc = (ImageView) findViewById(R.id.closeSelectedDoc);
+        attachment_Image_Video_File = (ImageView) findViewById(R.id.attachment_Image_Video_File);
 
         attachmentFile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -365,16 +368,15 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         });
 
 
-
         shareDocument.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Proceed_Group_FullScreen.this,"Documents",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Proceed_Group_FullScreen.this, "Documents", Toast.LENGTH_SHORT).show();
 
-                if (isStoragePermissionGranted()){
+                if (isStoragePermissionGranted()) {
                     showFileChooser();
-                }else {
-                    Toast.makeText(Proceed_Group_FullScreen.this,"Permission Denied !",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(Proceed_Group_FullScreen.this, "Permission Denied !", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -383,7 +385,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         shareImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Proceed_Group_FullScreen.this,"Pick Image",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Proceed_Group_FullScreen.this, "Pick Image", Toast.LENGTH_SHORT).show();
                 pickImage();
             }
         });
@@ -392,8 +394,10 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(Proceed_Group_FullScreen.this,DisplayActivity.class);
-                intent.putExtra("CAMVALUE",2);
+                Intent intent = new Intent(Proceed_Group_FullScreen.this, DisplayActivity.class);
+                intent.putExtra("CAMVALUE", 2);
+                intent.putExtra("groupId", GroupId);
+                intent.putExtra("groupName", GroupsNm);
                 startActivity(intent);
                 finish();
 
@@ -440,7 +444,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
-        final CommentAdapter ca = new CommentAdapter(arrayList, getApplicationContext(),toolbar);
+        final CommentAdapter ca = new CommentAdapter(arrayList, getApplicationContext(), toolbar);
 
         rv.setAdapter(ca);
 
@@ -509,8 +513,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
 
-        }
-        else if (i.equals("%"))
+        } else if (i.equals("%"))
 
         {
             commentText.replace("%", "%25");
@@ -551,7 +554,6 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     }
 
 
-
     public void pickImage() {
 
         Intent intent = new Intent();
@@ -589,27 +591,26 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
                 Uri selectedimg = data.getData();
-                Log.d("SSSS ", selectedimg+"");
-                Log.d("SSSSSelectedFile ", selectedimg.getPath()+"");
+                Log.d("SSSS ", selectedimg + "");
+                Log.d("SSSSSelectedFile ", selectedimg.getPath() + "");
 
-                    shareViewFrameLayout.setVisibility(View.GONE);
-                    ImageViewFrameLayout.setVisibility(View.VISIBLE);
-                    closeSelectedImage.setVisibility(View.VISIBLE);
+                shareViewFrameLayout.setVisibility(View.GONE);
+                ImageViewFrameLayout.setVisibility(View.VISIBLE);
+                closeSelectedImage.setVisibility(View.VISIBLE);
 
-                    selectedImg.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
+                selectedImg.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
 
 
-                    commentFile = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
-                    Log.d("STTTTTTS ", selectedimg + "");
-                    Log.d("ChkCommentFile ", commentFile + "");
+                commentFile = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+                Log.d("STTTTTTS ", selectedimg + "");
+                Log.d("ChkCommentFile ", commentFile + "");
 
-                if (commentFile == null){
+                if (commentFile == null) {
                     shareViewFrameLayout.setVisibility(View.GONE);
                     ImageViewFrameLayout.setVisibility(View.GONE);
                     closeSelectedImage.setVisibility(View.GONE);
-                    Toast.makeText(Proceed_Group_FullScreen.this,"Invalid File Format",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Proceed_Group_FullScreen.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
                 }
-
 
 
             }
@@ -634,12 +635,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     fileDoc = new File(path);
 
 
-                    if ( fileDoc!=null && !(checkFileExtension(fileDoc))){
+                    if (fileDoc != null && !(checkFileExtension(fileDoc))) {
                         shareViewFrameLayout.setVisibility(View.GONE);
                         ImageViewFrameLayout.setVisibility(View.GONE);
                         closeSelectedDoc.setVisibility(View.GONE);
-                        Toast.makeText(Proceed_Group_FullScreen.this,"Invalid File Format",Toast.LENGTH_SHORT).show();
-                    }else {
+                        Toast.makeText(Proceed_Group_FullScreen.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                    } else {
 
                         shareViewFrameLayout.setVisibility(View.GONE);
                         DocViewFrameLayout.setVisibility(View.VISIBLE);
@@ -653,29 +654,27 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
         } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong : "+e.getMessage(), Toast.LENGTH_LONG)
+            Toast.makeText(this, "Something went wrong : " + e.getMessage(), Toast.LENGTH_LONG)
                     .show();
         }
 
     }
 
 
-
-    /** The method is taking Bitmap as an argument
+    /**
+     * The method is taking Bitmap as an argument
      * then it will return the byte[] array for the given bitmap
      * and we will send this array to the server
      * here we are using JPEG Compression with 80% quality
      * you can give quality between 0 to 100
      * 0 means worse quality
      * 100 means best quality
-     * */
+     */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
-
-
 
 
     private void callCommentService(final String GroupId, final String userAccessToken, final String comment_text) {
@@ -689,11 +688,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         Log.d("PGF", "IMG_userAccessToken" + userAccessToken);
         //our custom volley request
 
-        Log.d("comment_text <<<<<<<<< "  ,i+" <<<< "+  URLEncoder.encode(i.trim()));
+        Log.d("comment_text <<<<<<<<< ", i + " <<<< " + URLEncoder.encode(i.trim()));
 
         String url = AppConfig.Base_Url + AppConfig.App_api + "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(i.trim());
 
-        Log.d("URL_AT_PGF"," "+url);
+        Log.d("URL_AT_PGF", " " + url);
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
                 new Response.Listener<NetworkResponse>() {
@@ -777,21 +776,19 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 String imagename = "SabPaisa_CommentImage";
-                if(commentFile != null){
+                if (commentFile != null) {
                     params.put("commentFile", new DataPart(imagename + ".jpeg", getFileDataFromDrawable(commentFile)));
 
-                    Log.d("Image_At_PGF",params.get("commentFile")+"");
+                    Log.d("Image_At_PGF", params.get("commentFile") + "");
                 }
 
 
-                if (fileDoc != null){
+                if (fileDoc != null) {
 
 
+                    byte[] fileContent = readBytesFromFile(fileDoc.getAbsolutePath());
 
-                    byte [] fileContent = readBytesFromFile(fileDoc.getAbsolutePath());
-
-                    params.put("commentFile", new DataPart(fileDoc.getName(),fileContent));
-
+                    params.put("commentFile", new DataPart(fileDoc.getName(), fileContent));
 
 
                 }
@@ -803,7 +800,6 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
         //adding the request to volley
         Volley.newRequestQueue(this).add(volleyMultipartRequest);
-
 
 
     }
@@ -824,7 +820,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         //String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getGroupsComments?group_id=" + GropuId;
         String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getPageGroupsComments?group_id=" + GropuId + "&pageNo=" + count + "&rowLimit=25";
 
-        Log.d("URL_AT_PGF"," "+urlJsonObj);
+        Log.d("URL_AT_PGF", " " + urlJsonObj);
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 urlJsonObj, new Response.Listener<String>() {
 
@@ -1018,6 +1014,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             return false;
         }
     }
+/*
 
     @Override
     protected void onStart() {
@@ -1029,19 +1026,23 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         // Store our shared preference
         SharedPreferences.Editor editor = getSharedPreferences("GroupTime", MODE_PRIVATE).edit();
 
-       /* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
-        Editor ed = sp.edit();
        */
+/* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+        Editor ed = sp.edit();
+       *//*
+
         editor.putBoolean("active", true);
         Log.d("ARCOnStartgroup", "----");
         editor.commit();
     }
 
+*/
 /*public  void numberofgroupmember()
 {
     Intent intent=new Intent(this,NumberOfGroups.class);
     startActivity(intent);
-}*/
+}*//*
+
 
     @Override
     protected void onStop() {
@@ -1067,7 +1068,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         Log.d("ARCOnStopGroup", "--" + String.valueOf(Long.valueOf(time)));
         ed.commit();
 
-      /*  // Store our shared preference
+      */
+/*  // Store our shared preference
         SharedPreferences sp = getSharedPreferences(MySharedPRoceedGroupFullScreen, MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", false);
@@ -1078,10 +1080,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         Long tsLong = System.currentTimeMillis()/1000;
         ts = tsLong.toString();
         Log.d("ARCTimeGroup",""+ts);
-*/
+*//*
+
     }
 
 
+*/
 /*
 public void privatefeeds(final String groupId)
 {
@@ -1099,7 +1103,8 @@ public void privatefeeds(final String groupId)
 
         }
     });
-}*/
+}*//*
+
 
     @Override
     protected void onResume() {
@@ -1114,6 +1119,7 @@ public void privatefeeds(final String groupId)
         ed.commit();
 
     }
+*/
 
     //Code for fetching image from server
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -1212,7 +1218,6 @@ public void privatefeeds(final String groupId)
                 return true;
 
 
-
             case R.id.groupFeeds:
                 Intent intent1 = new Intent(Proceed_Group_FullScreen.this, PrivateGroupFeeds.class);
                 intent1.putExtra("GroupId", GroupId);
@@ -1225,15 +1230,13 @@ public void privatefeeds(final String groupId)
     }
 
 
-
-
     /**
      * Get a file path from a Uri. This will get the the path for Storage Access
      * Framework Documents, as well as the _data field for the MediaStore and
      * other file-based ContentProviders.
      *
      * @param context The context.
-     * @param uri The Uri to query.
+     * @param uri     The Uri to query.
      * @author paulburke
      */
     public static String getPath(final Context context, final Uri uri) {
@@ -1280,7 +1283,7 @@ public void privatefeeds(final String groupId)
                     }
 
                     final String selection = "_id=?";
-                    final String[] selectionArgs = new String[] {
+                    final String[] selectionArgs = new String[]{
                             split[1]
                     };
 
@@ -1304,9 +1307,9 @@ public void privatefeeds(final String groupId)
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
      *
-     * @param context The context.
-     * @param uri The Uri to query.
-     * @param selection (Optional) Filter used in the query.
+     * @param context       The context.
+     * @param uri           The Uri to query.
+     * @param selection     (Optional) Filter used in the query.
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
@@ -1359,11 +1362,6 @@ public void privatefeeds(final String groupId)
     }
 
 
-
-
-
-
-
     private static byte[] readBytesFromFile(String filePath) {
 
         FileInputStream fileInputStream = null;
@@ -1396,41 +1394,38 @@ public void privatefeeds(final String groupId)
     }
 
 
-
-    public  boolean isStoragePermissionGranted() {
+    public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.v("PFF","Permission is granted");
+                Log.v("PFF", "Permission is granted");
                 return true;
             } else {
 
-                Log.v("PFF","Permission is revoked");
+                Log.v("PFF", "Permission is revoked");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                 return false;
             }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            Log.v("PFF","Permission is granted");
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("PFF", "Permission is granted");
             return true;
         }
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            Log.v("PFF","Permission: "+permissions[0]+ "was "+grantResults[0]);
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.v("PFF", "Permission: " + permissions[0] + "was " + grantResults[0]);
             //resume tasks needing this permission
         }
     }
 
-    public boolean checkFileExtension (File file) {
+    public boolean checkFileExtension(File file) {
         if (file.getAbsolutePath().endsWith(".doc") || file.getAbsolutePath().endsWith(".docx")
                 || file.getAbsolutePath().endsWith(".pdf") || file.getAbsolutePath().endsWith(".xls")
-                || file.getAbsolutePath().endsWith(".xlsx")){
+                || file.getAbsolutePath().endsWith(".xlsx")) {
             return true;
         }
         return false;
@@ -1440,16 +1435,14 @@ public void privatefeeds(final String groupId)
     @Override
     public void onBackPressed() {
 
-        if (shareViewFrameLayout.getVisibility() == View.VISIBLE)
-        {
+        if (shareViewFrameLayout.getVisibility() == View.VISIBLE) {
             shareViewFrameLayout.setVisibility(View.GONE);
-        }else {
+        } else {
 
             finish();
 
         }
     }
-
 
 
 }

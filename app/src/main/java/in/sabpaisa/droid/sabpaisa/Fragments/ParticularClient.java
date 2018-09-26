@@ -52,6 +52,7 @@ import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ProceedInstitutionFragmentOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
+import in.sabpaisa.droid.sabpaisa.HttpsTrustManager;
 import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.ParticularClientModelForOffline;
@@ -85,8 +86,6 @@ public class ParticularClient extends Fragment {
     ArrayList<ParticularClientModelForOffline> clientArrayListForOffline;
 
 
-
-
     public ParticularClient() {
         // Required empty public constructor
     }
@@ -96,7 +95,7 @@ public class ParticularClient extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView= inflater.inflate(R.layout.fragment_particular_client, container, false);
+        rootView = inflater.inflate(R.layout.fragment_particular_client, container, false);
 
         linearLayoutnoDataFound = (LinearLayout) rootView.findViewById(R.id.noDataFound);
         shimmerRecyclerView = (ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
@@ -167,12 +166,14 @@ public class ParticularClient extends Fragment {
 
     private void getClientsList(final String clientId) {
 
+//Added for SSL (17th Sep 2018)
+        HttpsTrustManager.allowAllSSL();
 
         boolean checkDb = db.isTableExists(TABLE_Particular_Client);
 
-        Log.d("DbValuePC"," "+checkDb);
+        Log.d("DbValuePC", " " + checkDb);
 
-        if (checkDb == true){
+        if (checkDb == true) {
             db.deleteAllClientData();
         }
 
@@ -350,7 +351,6 @@ public class ParticularClient extends Fragment {
 //                        editor1.commit();
 
 
-
                     } else {
                         linearLayoutnoDataFound.setVisibility(View.VISIBLE);
                         shimmerRecyclerView.setVisibility(View.GONE);
@@ -415,7 +415,6 @@ public class ParticularClient extends Fragment {
 
 
     }
-
 
 
     public boolean isOnline() {

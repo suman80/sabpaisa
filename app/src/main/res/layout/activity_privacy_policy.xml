@@ -9,8 +9,6 @@
     <com.uncopt.android.widget.text.justify.JustifiedTextView
 
         android:id="@+id/privacy_content"
-        android:text="@string/privacy"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -23,4 +21,17 @@
         android:lineSpacingMultiplier="1.1"
 
         />
+
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:visibility="visible" />
+
+
+
+
 </FrameLayout>

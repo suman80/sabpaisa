@@ -62,6 +62,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.parse.signpost.http.HttpResponse;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,13 +100,14 @@ import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.FeedCommentsOfflineModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
+import in.sabpaisa.droid.sabpaisa.Util.HttpHandler;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
 public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     TextView feedsName, feed_description_details;
     ImageView feedImage;
-    EditText group_details_text_view ;
+    EditText group_details_text_view;
     CommentsDB dbHelper;
     private int TOTAL_PAGES = 3;
     String ts1;
@@ -126,7 +129,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     String dataTime;
     ScrollView scrollView;
     EndlessScrollListener scrollListener;
-    public static String MySharedPrefProceedFeedFullScreen="mySharedPrefFortime";
+    public static String MySharedPrefProceedFeedFullScreen = "mySharedPrefFortime";
 
     /////////Local Db//////////
     AppDbComments db;
@@ -136,7 +139,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     ArrayList<CommentData> commentArrayList;
     /////////////////END : by RaJ/////////////////
     boolean isScrolling = false;
-    int currentItems,totalItems,scrolledOutItems;
+    int currentItems, totalItems, scrolledOutItems;
     int count = 1;
 
     ProgressBar progress;
@@ -144,11 +147,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     //ImageView imageView2;
     CircleButton imageView2;
 
-    FrameLayout shareViewFrameLayout,ImageViewFrameLayout,DocViewFrameLayout;
-    ImageView attachmentFile,selectedImg,closeSelectedImage,selectedDoc,closeSelectedDoc,attachment_Image_Video_File;
+    FrameLayout shareViewFrameLayout, ImageViewFrameLayout, DocViewFrameLayout;
+    ImageView attachmentFile, selectedImg, closeSelectedImage, selectedDoc, closeSelectedDoc, attachment_Image_Video_File;
     TextView selectedDocName;
 
-    LinearLayout shareDocument,shareImage;
+    LinearLayout shareDocument, shareImage;
 
     String userImageUrl;
 
@@ -156,7 +159,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     File fileDoc;
 
-    public static String MY_PREFS_FOR_FEED_ID="mySharedPrefForFeedId";
+    public static String MY_PREFS_FOR_FEED_ID = "mySharedPrefForFeedId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +179,12 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         response = sharedPreferences.getString("response", "123");
 
         userAccessToken = response;
-        scrollView=(ScrollView)findViewById(R.id.scrollView);
+
+        if (getIntent().getStringExtra("userAccessTokenFromNotification") != null) {
+            userAccessToken = getIntent().getStringExtra("userAccessTokenFromNotification");
+        }
+
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
 
         Log.d("AccessToken", " " + userAccessToken);
 
@@ -188,15 +196,15 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         //imageView2 = (ImageView) findViewById(R.id.imageView2);
         imageView2 = (CircleButton) findViewById(R.id.imageView2);
 
-        swipeRefreshLayout= (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeRefreshLayout.setOnRefreshListener(this);
 
         FeedsNm = getIntent().getStringExtra("feedName");
         feedsDiscription = getIntent().getStringExtra("feedText");
-        value=getIntent().getStringExtra("value");
+        value = getIntent().getStringExtra("value");
         feedImg = getIntent().getStringExtra("feedImage");
         feed_id = getIntent().getStringExtra("feedId");
-        popup=getIntent().getStringExtra("popup");
+        popup = getIntent().getStringExtra("popup");
         Log.d("FeedsID", "" + feed_id);
         Log.d("ValUeAT FEED", "" + popup);
         Log.d("FeedsNmPFF", "" + FeedsNm);
@@ -219,7 +227,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         db = new AppDbComments(Proceed_Feed_FullScreen.this);
 
 
-        Log.d("Feedidproceed",""+feed_id);
+        Log.d("Feedidproceed", "" + feed_id);
         arrayList = new ArrayList<>();
         toolbar.setNavigationIcon(R.drawable.previousmoresmall);
 
@@ -235,12 +243,16 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         );
 
 
-
-
         if (isOnline()) {
             progress.setVisibility(View.VISIBLE);
             callGetCommentList(feed_id);
-        }else {
+
+            /*if (getIntent().getStringExtra("userAccessTokenFromNotification") != null) {
+                //API Call HttpGet
+                new getFeedComments().execute();
+            }*/
+
+        } else {
 
             Log.d("ProceedFeedFullSCR", "No Internet");
 
@@ -298,7 +310,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 }, 100L);
 
 
-            }else {
+            } else {
                 Log.d("PGFLocalDb", "In Else Part");
                 Toast.makeText(Proceed_Feed_FullScreen.this, "No Data Found !", Toast.LENGTH_SHORT).show();
             }
@@ -312,17 +324,17 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         editor.apply();
 
         shareViewFrameLayout = (FrameLayout) findViewById(R.id.shareViewFrameLayout);
-        attachmentFile = (ImageView)findViewById(R.id.attachmentFile);
-        shareDocument = (LinearLayout)findViewById(R.id.shareDocument);
-        shareImage = (LinearLayout)findViewById(R.id.shareImage);
-        ImageViewFrameLayout = (FrameLayout)findViewById(R.id.ImageViewFrameLayout);
-        DocViewFrameLayout = (FrameLayout)findViewById(R.id.DocViewFrameLayout);
-        selectedImg = (ImageView)findViewById(R.id.selectedImg);
-        selectedDoc = (ImageView)findViewById(R.id.selectedDoc);
+        attachmentFile = (ImageView) findViewById(R.id.attachmentFile);
+        shareDocument = (LinearLayout) findViewById(R.id.shareDocument);
+        shareImage = (LinearLayout) findViewById(R.id.shareImage);
+        ImageViewFrameLayout = (FrameLayout) findViewById(R.id.ImageViewFrameLayout);
+        DocViewFrameLayout = (FrameLayout) findViewById(R.id.DocViewFrameLayout);
+        selectedImg = (ImageView) findViewById(R.id.selectedImg);
+        selectedDoc = (ImageView) findViewById(R.id.selectedDoc);
         selectedDocName = (TextView) findViewById(R.id.selectedDocName);
-        closeSelectedImage = (ImageView)findViewById(R.id.closeSelectedImage);
-        closeSelectedDoc = (ImageView)findViewById(R.id.closeSelectedDoc);
-        attachment_Image_Video_File = (ImageView)findViewById(R.id.attachment_Image_Video_File);
+        closeSelectedImage = (ImageView) findViewById(R.id.closeSelectedImage);
+        closeSelectedDoc = (ImageView) findViewById(R.id.closeSelectedDoc);
+        attachment_Image_Video_File = (ImageView) findViewById(R.id.attachment_Image_Video_File);
 
         attachmentFile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -361,12 +373,12 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         shareDocument.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Proceed_Feed_FullScreen.this,"Documents",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Proceed_Feed_FullScreen.this, "Documents", Toast.LENGTH_SHORT).show();
 
-                if (isStoragePermissionGranted()){
+                if (isStoragePermissionGranted()) {
                     showFileChooser();
-                }else {
-                    Toast.makeText(Proceed_Feed_FullScreen.this,"Permission Denied !",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(Proceed_Feed_FullScreen.this, "Permission Denied !", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -375,7 +387,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         shareImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Proceed_Feed_FullScreen.this,"Pick Image",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Proceed_Feed_FullScreen.this, "Pick Image", Toast.LENGTH_SHORT).show();
                 pickImage();
             }
         });
@@ -385,25 +397,22 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(Proceed_Feed_FullScreen.this,DisplayActivity.class);
-                intent.putExtra("CAMVALUE",1);
+                Intent intent = new Intent(Proceed_Feed_FullScreen.this, DisplayActivity.class);
+                intent.putExtra("CAMVALUE", 1);
+                intent.putExtra("feedId", feed_id);
+                intent.putExtra("feedName", FeedsNm);
                 startActivity(intent);
                 finish();
 
             }
         });
 
-
-
-
     }
-
-
 
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {
         final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
-        final CommentAdapter ca = new CommentAdapter(arrayList,getApplicationContext(),toolbar);
+        final CommentAdapter ca = new CommentAdapter(arrayList, getApplicationContext(), toolbar);
         rv.setAdapter(ca);
 
         final LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -460,12 +469,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 //                }
 //
 //            }
-  //      });
+        //      });
 
         progress.setVisibility(View.GONE);
 
     }
-
 
 
     public void onClickSendComment(View view) {
@@ -481,15 +489,14 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
 
         commentText = group_details_text_view.getText().toString();
-        i= StringEscapeUtils.escapeJava(commentText);
-        Log.d("commentText3","67667767 "+i);
+        i = StringEscapeUtils.escapeJava(commentText);
+        Log.d("commentText3", "67667767 " + i);
 //        rv.smoothScrollBy(100,100);
 
-        if (i.trim().length()==0 && commentFile == null && fileDoc == null)
-        {
+        if (i.trim().length() == 0 && commentFile == null && fileDoc == null) {
 
-            Log.d("commentText2"," "+commentText);
-            AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
+            Log.d("commentText2", " " + commentText);
+            AlertDialog.Builder builder = new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
             builder.setTitle("Comment");
             builder.setMessage("Hey,looks like you forgot to enter text.");
             builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
@@ -501,31 +508,21 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
 
-        }
-        else if(i.equals("%"))
+        } else if (i.equals("%"))
 
         {
             commentText.replace("%", "%25");
             Log.e("ctctcc ", "CommentData" + commentText);
             callCommentService(feed_id, userAccessToken, commentText);
-        }
-
-
-        else if(i.equals("&"))
+        } else if (i.equals("&"))
 
         {
             commentText.replace("&", "%26");
             Log.e("ctctcc ", "CommentData2 " + commentText);
             callCommentService(feed_id, userAccessToken, commentText);
 
-        }
-
-
-
-
-        else if(i.trim().length()>1999)
-        {
-            AlertDialog.Builder builder =new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
+        } else if (i.trim().length() > 1999) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
             builder.setTitle("Comment");
             builder.setMessage("Hey folk,It looks like you exceeded the text limit");
             builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
@@ -549,7 +546,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             Log.e("CommentDatafeeddetaida ", "CommentData " + commentText);
         }
 
-        Log.d("commentText3"," "+commentText);
+        Log.d("commentText3", " " + commentText);
 
     }
 
@@ -591,9 +588,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
                 Uri selectedimg = data.getData();
-                Log.d("SSSSselectedimg ", selectedimg+"");
+                Log.d("SSSSselectedimg ", selectedimg + "");
 
-                Log.d("SSSSSelectedFile ", selectedimg.getPath()+"");
+                Log.d("SSSSSelectedFile ", selectedimg.getPath() + "");
 
                 shareViewFrameLayout.setVisibility(View.GONE);
                 ImageViewFrameLayout.setVisibility(View.VISIBLE);
@@ -606,13 +603,12 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 Log.d("STTTTTTS ", selectedimg + "");
                 Log.d("ChkCommentFile ", commentFile + "");
 
-                if (commentFile == null){
+                if (commentFile == null) {
                     shareViewFrameLayout.setVisibility(View.GONE);
                     ImageViewFrameLayout.setVisibility(View.GONE);
                     closeSelectedImage.setVisibility(View.GONE);
-                    Toast.makeText(Proceed_Feed_FullScreen.this,"Invalid File Format",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Proceed_Feed_FullScreen.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
                 }
-
 
 
             }
@@ -636,12 +632,12 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     Log.d("PFFfileDoc3", "File : " + fileDoc.getName());
                     Log.d("PFFfileDoc4", "File : " + fileDoc.getAbsolutePath());*/
 
-                    if ( fileDoc!=null && !(checkFileExtension(fileDoc))){
+                    if (fileDoc != null && !(checkFileExtension(fileDoc))) {
                         shareViewFrameLayout.setVisibility(View.GONE);
                         ImageViewFrameLayout.setVisibility(View.GONE);
                         closeSelectedDoc.setVisibility(View.GONE);
-                        Toast.makeText(Proceed_Feed_FullScreen.this,"Invalid File Format",Toast.LENGTH_SHORT).show();
-                    }else {
+                        Toast.makeText(Proceed_Feed_FullScreen.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                    } else {
 
                         shareViewFrameLayout.setVisibility(View.GONE);
                         DocViewFrameLayout.setVisibility(View.VISIBLE);
@@ -654,28 +650,27 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
         } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong : "+e.getMessage(), Toast.LENGTH_LONG)
+            Toast.makeText(this, "Something went wrong : " + e.getMessage(), Toast.LENGTH_LONG)
                     .show();
         }
 
     }
 
 
-
-    /** The method is taking Bitmap as an argument
+    /**
+     * The method is taking Bitmap as an argument
      * then it will return the byte[] array for the given bitmap
      * and we will send this array to the server
      * here we are using JPEG Compression with 80% quality
      * you can give quality between 0 to 100
      * 0 means worse quality
      * 100 means best quality
-     * */
+     */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
-
 
 
     protected void callCommentService(final String feed_id, final String userAccessToken, final String comment_text) {
@@ -688,10 +683,10 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         Log.d("PFF", "IMG_userAccessToken" + userAccessToken);
         //our custom volley request
 
-        Log.d("comment_text <<<<<<<<< "  ,i+" <<<< "+  URLEncoder.encode(i));
-        String url = AppConfig.Base_Url+AppConfig.App_api+ "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text="  +  URLEncoder.encode(i.trim());
+        Log.d("comment_text <<<<<<<<< ", i + " <<<< " + URLEncoder.encode(i));
+        String url = AppConfig.Base_Url + AppConfig.App_api + "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(i.trim());
 
-        Log.d("URL_AT_PFF"," "+url);
+        Log.d("URL_AT_PFF", " " + url);
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
                 new Response.Listener<NetworkResponse>() {
@@ -706,7 +701,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
                             if (status.equals("success")) {
 
-                                Log.d("Comment","Success");
+                                Log.d("Comment", "Success");
 
 
                                 imageView2.setVisibility(View.VISIBLE);
@@ -721,7 +716,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                                 fileDoc = null;
 
                                 commentArrayList.clear();
-                                count=1;
+                                count = 1;
                                 callGetCommentList(feed_id);
 
 
@@ -730,7 +725,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                                 imageView2.setVisibility(View.VISIBLE);
                                 spin_kit.setVisibility(View.GONE);
 
-                                Log.d("Comment","Failed");
+                                Log.d("Comment", "Failed");
                                 //Toast.makeText(Proceed_Feed_FullScreen.this, "Image Upload Failed !", Toast.LENGTH_SHORT).show();
                                 commentFile = null;
                                 fileDoc = null;
@@ -777,26 +772,25 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 String imagename = "SabPaisa_CommentImage";
-                if(commentFile != null){
+                if (commentFile != null) {
                     params.put("commentFile", new DataPart(imagename + ".jpeg", getFileDataFromDrawable(commentFile)));
 
-                    Log.d("Image_At_PFF",params.get("commentFile")+"");
+                    Log.d("Image_At_PFF", params.get("commentFile") + "");
                 }
 
-                if (fileDoc != null){
+                if (fileDoc != null) {
 
 
+                    byte[] fileContent = readBytesFromFile(fileDoc.getAbsolutePath());
 
-                        byte [] fileContent = readBytesFromFile(fileDoc.getAbsolutePath());
+                    if (fileContent == null || fileContent.length == 0)
+                        //Toast.makeText(Proceed_Feed_FullScreen.this, "File Path not choose from file Manager", Toast.LENGTH_SHORT).show();
 
-                        if(fileContent == null || fileContent.length == 0)
-                            //Toast.makeText(Proceed_Feed_FullScreen.this, "File Path not choose from file Manager", Toast.LENGTH_SHORT).show();
+                        Log.d("Doc_At_PFF", " File_Path_not_choose");
 
-                    Log.d("Doc_At_PFF"," File_Path_not_choose");
+                    params.put("commentFile", new DataPart(fileDoc.getName(), fileContent));
 
-                        params.put("commentFile", new DataPart(fileDoc.getName(),fileContent));
-
-                    Log.d("Doc_At_PFF",params.get("commentFile")+"");
+                    Log.d("Doc_At_PFF", params.get("commentFile") + "");
 
                 }
 
@@ -813,17 +807,18 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         db.deleteAllFeedCommentData();
 
-        String tag_string_req="req_register";
+        String tag_string_req = "req_register";
 
-        String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"/getPageFeedsComments?feed_id="+feed_id+"&pageNo="+count+"&rowLimit=25";
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "/getPageFeedsComments?feed_id=" + feed_id + "&pageNo=" + count + "&rowLimit=25";
 
-        Log.d("urlJsonObj  : ",urlJsonObj);
+        Log.d("urlJsonObj  : ", urlJsonObj);
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
-                urlJsonObj, new Response.Listener<String>(){
+                urlJsonObj, new Response.Listener<String>() {
 
             // Takes the response from the JSON request
             @Override
             public void onResponse(String response) {
+                Log.d("In_callGetCommentList", "RESPONSE");
                 try {
                     swipeRefreshLayout.setRefreshing(false);
 
@@ -832,8 +827,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     String status = jsonObject.getString("status");
 
                     String response1 = jsonObject.getString("response");
-                    Log.d("Re[spnsere"," "+response1);
-                    Log.d("Re[spnsere"," "+status);
+                    Log.d("Re[spnsere", " " + response1);
+                    Log.d("Re[spnsere", " " + status);
 
                     if (status.equals("success")) {
 
@@ -848,7 +843,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                             groupData.setCommentText(jsonObject1.getString("commentText"));
                             groupData.setCommentName(jsonObject1.getString("commentByName"));
                             groupData.setCommentImage(jsonObject1.getString("filePath"));
-                            Log.d("FILE_PATH_At_PFF"," "+jsonObject1.getString("filePath"));
+                            Log.d("FILE_PATH_At_PFF", " " + jsonObject1.getString("filePath"));
                             groupData.setCommentId(jsonObject1.getInt("commentId"));
 
                             dataTime1 = jsonObject1.getString("commentDate");
@@ -893,14 +888,17 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                         /////////////////
 
                         loadCommentListView(commentArrayList);
-                    }else {
+                    } else {
                         progress.setVisibility(View.GONE);
-                        Toast.makeText(Proceed_Feed_FullScreen.this,"No Record Found !",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Proceed_Feed_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();
                     }
                 }
                 // Try and catch are included to handle any errors due to JSON
                 catch (JSONException e) {
+
+                    Log.d("In_callGetCommentList", "Exception");
                     progress.setVisibility(View.GONE);
+
                     // If an error occurs, this prints the error to the log
                     e.printStackTrace();
 
@@ -912,6 +910,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     @Override
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
+
+                        Log.d("In_callGetCommentList", "EROORListener");
                         progress.setVisibility(View.GONE);
                         /*error.printStackTrace();
 
@@ -943,6 +943,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 }
         );
         // Adds the JSON array request "arrayreq" to the request queue
+
+//        Log.d("TTTTTTT","ASASAS");
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
 
@@ -964,7 +966,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     dataTime = colorObj.getString("commentDate");//.split(" ")[1].replace(".0", "");
                     groupData.setComment_date(dataTime);
 
-                    Log.d("ARCdatatime",""+dataTime);
+                    Log.d("ARCdatatime", "" + dataTime);
 
 // groupData.setPage(Integer.valueOf(String.valueOf(i/10+1)));
 
@@ -981,25 +983,26 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Log.d("ARcOnPReexecute","----");
+            Log.d("ARcOnPReexecute", "----");
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             swipeRefreshLayout.setRefreshing(false);
-            Log.d("ARcOnPReexecute","----");
+            Log.d("ARcOnPReexecute", "----");
             loadCommentListView(arrayList);
         }
 
 
     }
+
     private String getDate(long time) throws ParseException {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(time);
         String date = DateFormat.format("dd/MM HH:mm", cal).toString();
         date1 = DateFormat.format("dd/MM ", cal).toString();
-        Log.d("date11",""+date1);
+        Log.d("date11", "" + date1);
         return date;
     }
 
@@ -1009,23 +1012,28 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         if (isOnline()) {
             count++;
             callGetCommentList(feed_id);
-        }else {
+        } else {
             swipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(Proceed_Feed_FullScreen.this,"Seems that you are not connected to the internet \n Please connect your internet to load more data",Toast.LENGTH_SHORT).show();
+            Toast.makeText(Proceed_Feed_FullScreen.this, "Seems that you are not connected to the internet \n Please connect your internet to load more data", Toast.LENGTH_SHORT).show();
         }
     }
+
+/*
     @Override
     protected void onStart() {
         super.onStart();
         SharedPreferences preferences = getSharedPreferences(Proceed_Feed_FullScreen.MySharedPrefProceedFeedFullScreen, 0);
         preferences.edit().remove("ts").commit();
         // Store our shared preference
-        SharedPreferences.Editor editor = getSharedPreferences("OURINFO",MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences("OURINFO", MODE_PRIVATE).edit();
 
-       /* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
+       */
+/* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
         Editor ed = sp.edit();
-       */ editor.putBoolean("active", true);
-        Log.d("ARCOnStartFeed","----");
+       *//*
+
+        editor.putBoolean("active", true);
+        Log.d("ARCOnStartFeed", "----");
         editor.commit();
     }
 
@@ -1033,23 +1041,23 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     protected void onStop() {
         super.onStop();
         //Date object
-        Date date= new Date();
+        Date date = new Date();
         //getTime() returns current time in milliseconds
         long time = date.getTime();
         //Passed the milliseconds to constructor of Timestamp class
         ts = new Timestamp(time);
-        ts1= String.valueOf(ts);
-        System.out.println("Current Time Stamp: "+ts);
-        Log.d("ARCTimeFeed",""+time);
-        Log.d("ARCTimeFeedts1",""+ts1);
+        ts1 = String.valueOf(ts);
+        System.out.println("Current Time Stamp: " + ts);
+        Log.d("ARCTimeFeed", "" + time);
+        Log.d("ARCTimeFeedts1", "" + ts1);
 
         // Store our shared preference
         SharedPreferences sp = getSharedPreferences(MySharedPrefProceedFeedFullScreen, MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("activeFeed", false);
         ed.putString("ts", String.valueOf(Long.valueOf(time)));
-        Log.d("ARCTimeFeedts111",""+String.valueOf(ts));
-        Log.d("ARCOnStopFeed","--"+String.valueOf(Long.valueOf(time)));
+        Log.d("ARCTimeFeedts111", "" + String.valueOf(ts));
+        Log.d("ARCOnStopFeed", "--" + String.valueOf(Long.valueOf(time)));
         ed.commit();
     }
 
@@ -1061,10 +1069,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", false);
-        Log.d("ARCOnResumeFeed" ,"----");
+        Log.d("ARCOnResumeFeed", "----");
         ed.commit();
 
     }
+*/
 
 
     public boolean isOnline() {
@@ -1087,7 +1096,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
      * other file-based ContentProviders.
      *
      * @param context The context.
-     * @param uri The Uri to query.
+     * @param uri     The Uri to query.
      * @author paulburke
      */
     public static String getPath(final Context context, final Uri uri) {
@@ -1134,7 +1143,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     }
 
                     final String selection = "_id=?";
-                    final String[] selectionArgs = new String[] {
+                    final String[] selectionArgs = new String[]{
                             split[1]
                     };
 
@@ -1158,9 +1167,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
      *
-     * @param context The context.
-     * @param uri The Uri to query.
-     * @param selection (Optional) Filter used in the query.
+     * @param context       The context.
+     * @param uri           The Uri to query.
+     * @param selection     (Optional) Filter used in the query.
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
@@ -1215,7 +1224,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     private static byte[] readBytesFromFile(String filePath) {
 
-        Log.d("PFFfileDoc4","filePathInRBFF "+filePath);
+        Log.d("PFFfileDoc4", "filePathInRBFF " + filePath);
 
         FileInputStream fileInputStream = null;
         byte[] bytesArray = null;
@@ -1247,43 +1256,40 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     }
 
 
-
-    public  boolean isStoragePermissionGranted() {
+    public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.v("PFF","Permission is granted");
+                Log.v("PFF", "Permission is granted");
                 return true;
             } else {
 
-                Log.v("PFF","Permission is revoked");
+                Log.v("PFF", "Permission is revoked");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                 return false;
             }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            Log.v("PFF","Permission is granted");
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("PFF", "Permission is granted");
             return true;
         }
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            Log.v("PFF","Permission: "+permissions[0]+ "was "+grantResults[0]);
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.v("PFF", "Permission: " + permissions[0] + "was " + grantResults[0]);
             //resume tasks needing this permission
         }
 
     }
 
 
-    public boolean checkFileExtension (File file) {
+    public boolean checkFileExtension(File file) {
         if (file.getAbsolutePath().endsWith(".doc") || file.getAbsolutePath().endsWith(".docx")
                 || file.getAbsolutePath().endsWith(".pdf") || file.getAbsolutePath().endsWith(".xls")
-                || file.getAbsolutePath().endsWith(".xlsx")){
+                || file.getAbsolutePath().endsWith(".xlsx")) {
             return true;
         }
         return false;
@@ -1292,13 +1298,162 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     @Override
     public void onBackPressed() {
 
-        if (shareViewFrameLayout.getVisibility() == View.VISIBLE)
-        {
+        if (shareViewFrameLayout.getVisibility() == View.VISIBLE) {
             shareViewFrameLayout.setVisibility(View.GONE);
-        }else {
+        } else {
 
             finish();
 
         }
     }
+
+
+    /**
+     * Async task class to get json by making HTTP call
+     */
+   /* private class getFeedComments extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setRefreshing(false);
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            HttpHandler sh = new HttpHandler();
+
+            String url = AppConfig.Base_Url + AppConfig.App_api + "/getPageFeedsComments?feed_id=" + feed_id + "&pageNo=" + count + "&rowLimit=25";
+            // Making a request to url and getting response
+            String jsonStr = sh.makeServiceCall(url);
+
+            Log.e("ProceedFeedFullScr", "Response from url: " + jsonStr);
+
+            if (jsonStr != null) {
+                try {
+
+                    //swipeRefreshLayout.setRefreshing(false);
+
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+
+                    String status = jsonObj.getString("status");
+
+                    String response1 = jsonObj.getString("response");
+                    Log.d("PFF_Resp", " " + response1);
+                    Log.d("PFF_Status", " " + status);
+
+                    if (status.equals("success")) {
+
+                        JSONArray jsonArray = jsonObj.getJSONArray("response");
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            CommentData groupData = new CommentData();
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            String a = jsonObject1.getString("commentText");
+                            Log.d("CTadhkacka", " " + a);
+                            groupData.setCommentText(jsonObject1.getString("commentText"));
+                            groupData.setCommentName(jsonObject1.getString("commentByName"));
+                            groupData.setCommentImage(jsonObject1.getString("filePath"));
+                            Log.d("FILE_PATH_At_PFF", " " + jsonObject1.getString("filePath"));
+                            groupData.setCommentId(jsonObject1.getInt("commentId"));
+
+                            dataTime1 = jsonObject1.getString("commentDate");
+                            Log.d("dataTimePFF", " " + dataTime1);
+
+                            String str = jsonArray.getString(i);
+                            Log.d("444feed", str);
+                            String userImageUrl = jsonObject1.getString("userImageUrl");
+
+                            JSONObject jsonObject2 = new JSONObject(userImageUrl);
+                            groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
+                            String image = groupData.getUserImageUrl().toString();
+                            Log.d("imageuserfeed", " " + image);
+                            Log.d("imageuserfeed11", " " + userImageUrl);
+
+                            try {
+                                groupData.setComment_date(getDate(Long.parseLong(dataTime1)));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            commentArrayList.add(groupData);
+
+                            //////////////////////////////LOCAL DB//////////////////////////////////////
+
+                            boolean isInserted = db.insertFeedComments(groupData, feed_id);
+                            if (isInserted == true) {
+
+                                //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                                Log.d("PFF", "LocalDBInIfPart" + isInserted);
+
+                            } else {
+                                Log.d("PFF", "LocalDBInElsePart" + isInserted);
+                                //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        }
+                        /////Added By RAJ/////////
+                        Log.d("SIZZZZZZZZZZZZZZZZ : ", commentArrayList.size() + "");
+                        //if(count==1)
+                        /////////////////
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                loadCommentListView(commentArrayList);
+
+                            }
+                        });
+
+                    }else {
+                        Log.e("PFF_Catch", "No Record Found !");
+                       // progress.setVisibility(View.GONE);
+                        //Toast.makeText(Proceed_Feed_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();
+                }
+
+                }catch (final JSONException e) {
+                    Log.e("PFF_Catch", "Json parsing error: " + e.getMessage());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(),
+                                    "Json parsing error: " + e.getMessage(),
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    });
+
+                }
+
+            }
+
+            else {
+                Log.e("PFF_In_Else", "Couldn't get json from server.");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),
+                                "Couldn't get json from server. Check LogCat for possible errors!",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
+                });
+
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            progress.setVisibility(View.GONE);
+
+        }
+
+    }*/
 }
+

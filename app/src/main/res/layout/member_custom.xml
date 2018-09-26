@@ -2,6 +2,7 @@
 
 <com.balysv.materialripple.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:autofit="http://schemas.android.com/tools"
     android:id="@+id/rippleClick"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -27,7 +28,23 @@
            android:layout_height="61dp"
            android:orientation="horizontal">
 
-              <TextView
+              <me.grantland.widget.AutofitTextView
+                  android:id="@+id/memberName"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:singleLine="true"
+                  android:maxLines="2"
+                  autofit:minTextSize="16sp"
+                  android:layout_marginLeft="10dp"
+                  android:layout_marginTop="30dp"
+                  android:layout_weight="0.5"
+                  android:gravity="left"
+                  android:text="Name"
+                  android:textSize="16sp"
+                  android:textStyle="bold"
+                  />
+
+              <!--<TextView
                   android:id="@+id/memberName"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -38,7 +55,7 @@
                   android:gravity="left"
                   android:text="Name"
                   android:textSize="16sp"
-                  android:textStyle="bold" />
+                  android:textStyle="bold" />-->
 
              <!-- <Button
                   android:layout_width="27dp"
@@ -49,17 +66,6 @@
                   android:layout_marginTop="30dp"/>
 -->
        </LinearLayout>
-       <!-- <TextView
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:id="@+id/memberTimeStamp"
-         android:layout_weight="0.5"
-         android:layout_marginTop="30dp"
-         android:gravity="center"
-            android:text="Time"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            />-->
 
 </LinearLayout>
 

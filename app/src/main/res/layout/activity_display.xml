@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -26,17 +26,19 @@
         android:id="@+id/commentEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.2"
+        android:layout_weight="0.9"
         android:background="@drawable/background_edittext"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         />
 
-    <ImageView
+    <at.markushi.ui.CircleButton
         android:id="@+id/sendBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_weight="0.8"
-        android:src="@drawable/ic_action_send_commnt"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
+        android:src="@drawable/ic_send_white_24dp"
+        app:cb_color="@color/bg_orange"
+        app:cb_pressedRingWidth="8dip"
         android:clickable="true"
          />
 

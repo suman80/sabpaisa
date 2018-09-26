@@ -97,28 +97,28 @@ import in.sabpaisa.droid.sabpaisa.UIN;
 
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,OnFragmentInteractionListener,ProceedFeedsFragment.GetDataInterface,ProceedGroupsFragments.GetDataInterface,Members.GetDataInterface {
+public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, ProceedFeedsFragment.GetDataInterface, ProceedGroupsFragments.GetDataInterface, Members.GetDataInterface {
     ImageView clientImagePath;
-    String clientName,state,landingPage;
+    String clientName, state, landingPage;
     public static String ClientId;
-    public static String clientImageURLPath=null;
+    public static String clientImageURLPath = null;
     private ViewPager viewPager;
     TextView mSearchText;
-    String name,mobNumber;
-     static boolean active = false;
-     String Fts;
-Timestamp Fullviewts;
+    String name, mobNumber;
+    static boolean active = false;
+    String Fts;
+    Timestamp Fullviewts;
     ActionBarDrawerToggle toggle;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
-    public static String userImageUrl=null;
+    public static String userImageUrl = null;
     AppBarLayout appBarLayout;
-    TextView usernameniv,mailIdniv;
-    LinearLayout paymentButton,chatButton,memberButton;
+    TextView usernameniv, mailIdniv;
+    LinearLayout paymentButton, chatButton, memberButton;
     MaterialSearchView searchView;
     ArrayList<FeedData> feedData;
     NavigationView navigationView;
     String x;
-    String i,useracesstoken,response,response1;
+    String i, useracesstoken, response, response1;
     ImageView niv;
     ArrayList<FeedData> filteredfeedList;
     ArrayList<GroupListData> GroupData;
@@ -133,21 +133,21 @@ Timestamp Fullviewts;
 
     DrawerLayout drawer;
 
-    public static String MySharedPrefOnFullViewOfClientProceed="mySharedPrefForId";
+    public static String MySharedPrefOnFullViewOfClientProceed = "mySharedPrefForId";
 
     AppDB appDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // CommonUtils.setFullScreen(this);
+        // CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_nagationfullview);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        paymentButton = (LinearLayout)findViewById(R.id.payment_button);
+        paymentButton = (LinearLayout) findViewById(R.id.payment_button);
         //chatButton = (LinearLayout)findViewById(R.id.chat);
-        memberButton = (LinearLayout)findViewById(R.id.members);
+        memberButton = (LinearLayout) findViewById(R.id.members);
 
 
        /* //ChatSDKUiHelper.initDefault();
@@ -166,7 +166,7 @@ Timestamp Fullviewts;
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
         toggle.syncState();
@@ -178,7 +178,7 @@ Timestamp Fullviewts;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Sabpaisa");
         toolbar.setNavigationIcon(R.drawable.ic_navigation);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
@@ -205,23 +205,23 @@ Timestamp Fullviewts;
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
         tabLayout.getTabAt(3).setIcon(tabIcons[3]);
 
-        landingPage =getIntent().getStringExtra("landingPage");
-        Log.d("page",""+landingPage);
+        landingPage = getIntent().getStringExtra("landingPage");
+        Log.d("page", "" + landingPage);
 /*
         SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.MYSHAREDPREF, MODE_PRIVATE);
         userImageUrl=sharedPreferences.getString("userImageUrl","abc");
         //Log.d("userImageUrlFrag","-->"+userImageUrl);
         Log.d("userImageUrl_FVOCL"," "+userImageUrl);*/
 
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         clientName = intent.getStringExtra("clientName");
         state = intent.getStringExtra("state");
-        clientImageURLPath= getIntent().getStringExtra("clientImagePath");
+        clientImageURLPath = getIntent().getStringExtra("clientImagePath");
 
-        ClientId=getIntent().getStringExtra("clientId");
+        ClientId = getIntent().getStringExtra("clientId");
         //userImageUrl=getIntent().getStringExtra("userImageUrl");
-        Log.d("ClientId_FVOCL"," "+ClientId);
-        Log.d("userImageUrl_FVOCL"," "+userImageUrl);
+        Log.d("ClientId_FVOCL", " " + ClientId);
+        Log.d("userImageUrl_FVOCL", " " + userImageUrl);
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
         response = sharedPreferences.getString("response", "123");
@@ -237,29 +237,28 @@ Timestamp Fullviewts;
 
         ClientId = response1;
 
-        Log.d("fullviewclientid",""+ClientId);
+        Log.d("fullviewclientid", "" + ClientId);
 
 
+        niv = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+        usernameniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.username_nav);
+        mailIdniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_nav);
 
-        niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
-        usernameniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.username_nav);
-        mailIdniv = (TextView)navigationView.getHeaderView(0).findViewById(R.id.email_nav);
 
-
-mailIdniv.setText(x);
+        mailIdniv.setText(x);
         usernameniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value=3;
+                int value = 3;
 
-                Intent intent=new Intent(FullViewOfClientsProceed.this,ProfileNavigationActivity.class);
-                intent.putExtra("ClientId",ClientId);
-                intent.putExtra("state",state);
-                intent.putExtra("clientName",clientName);
+                Intent intent = new Intent(FullViewOfClientsProceed.this, ProfileNavigationActivity.class);
+                intent.putExtra("ClientId", ClientId);
+                intent.putExtra("state", state);
+                intent.putExtra("clientName", clientName);
 
 
-                intent.putExtra("clientImagePath",clientImageURLPath);
-                intent.putExtra("valueProfile",value);
+                intent.putExtra("clientImagePath", clientImageURLPath);
+                intent.putExtra("valueProfile", value);
 
                 startActivity(intent);
 
@@ -269,16 +268,16 @@ mailIdniv.setText(x);
         niv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value=3;
+                int value = 3;
 
-                Intent intent=new Intent(FullViewOfClientsProceed.this,ProfileNavigationActivity.class);
-                intent.putExtra("ClientId",ClientId);
-                intent.putExtra("state",state);
-                intent.putExtra("clientName",clientName);
+                Intent intent = new Intent(FullViewOfClientsProceed.this, ProfileNavigationActivity.class);
+                intent.putExtra("ClientId", ClientId);
+                intent.putExtra("state", state);
+                intent.putExtra("clientName", clientName);
 
 
-                intent.putExtra("clientImagePath",clientImageURLPath);
-                intent.putExtra("valueProfile",value);
+                intent.putExtra("clientImagePath", clientImageURLPath);
+                intent.putExtra("valueProfile", value);
 
                 startActivity(intent);
 
@@ -288,16 +287,16 @@ mailIdniv.setText(x);
         mailIdniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value=3;
+                int value = 3;
 
-                Intent intent=new Intent(FullViewOfClientsProceed.this,ProfileNavigationActivity.class);
-                intent.putExtra("ClientId",ClientId);
-                intent.putExtra("state",state);
-                intent.putExtra("clientName",clientName);
+                Intent intent = new Intent(FullViewOfClientsProceed.this, ProfileNavigationActivity.class);
+                intent.putExtra("ClientId", ClientId);
+                intent.putExtra("state", state);
+                intent.putExtra("clientName", clientName);
 
 
-                intent.putExtra("clientImagePath",clientImageURLPath);
-                intent.putExtra("valueProfile",value);
+                intent.putExtra("clientImagePath", clientImageURLPath);
+                intent.putExtra("valueProfile", value);
 
                 startActivity(intent);
 
@@ -311,7 +310,7 @@ mailIdniv.setText(x);
 
             getUserImage(useracesstoken);
 
-        }else {
+        } else {
 
             Cursor res = appDB.getParticularImageData(useracesstoken);
 
@@ -341,9 +340,9 @@ mailIdniv.setText(x);
         }
 
 
-        if (isOnline()){
+        if (isOnline()) {
             showProfileData();
-        }else {
+        } else {
 
             Cursor res = appDB.getParticularData(useracesstoken);
 
@@ -362,7 +361,7 @@ mailIdniv.setText(x);
                 Log.d("getParticularNum", "-->" + stringBuffer);
 
             } else {
-                Log.d("FVOCP","In Else Part");
+                Log.d("FVOCP", "In Else Part");
             }
 
         }
@@ -375,11 +374,11 @@ mailIdniv.setText(x);
                 .into(niv);
 */
 
-        SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefOnFullViewOfClientProceed,MODE_PRIVATE).edit();
-        editor.putString("clientId",ClientId);
-        editor.putString("clientName",clientName);  //21st March,2018
-        editor.putString("state",state);    //21st March,2018
-        editor.putString("clientImageURLPath",clientImageURLPath);  //21st March,2018
+        SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefOnFullViewOfClientProceed, MODE_PRIVATE).edit();
+        editor.putString("clientId", ClientId);
+        editor.putString("clientName", clientName);  //21st March,2018
+        editor.putString("state", state);    //21st March,2018
+        editor.putString("clientImageURLPath", clientImageURLPath);  //21st March,2018
         editor.commit();
 
         TextView clientNameTextView = (TextView) findViewById(R.id.particular_client_name_proceed);
@@ -387,8 +386,8 @@ mailIdniv.setText(x);
         TextView stateTextView = (TextView) findViewById(R.id.particular_client_address_proceed);
 
 
-        clientImagePath = (ImageView)findViewById(R.id.ClientImagePRoceed);
-        clientNameTextView.setText( clientName);
+        clientImagePath = (ImageView) findViewById(R.id.ClientImagePRoceed);
+        clientNameTextView.setText(clientName);
         stateTextView.setText(state);
         //new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
         Glide.with(FullViewOfClientsProceed.this)
@@ -444,15 +443,15 @@ mailIdniv.setText(x);
         adapter.addFragment(membersFragment,"Members");*/
 
         feedsFragments = new ProceedFeedsFragment();
-        adapter.addFragment(feedsFragments,""); //changing here creating different frags
+        adapter.addFragment(feedsFragments, ""); //changing here creating different frags
 
         groupsFragments = new ProceedGroupsFragments();
-        adapter.addFragment(groupsFragments,"");//changing here creating different frags
+        adapter.addFragment(groupsFragments, "");//changing here creating different frags
 
-        adapter.addFragment(new PayFragments(),"");
+        adapter.addFragment(new PayFragments(), "");
 
-        membersFragment=new Members();
-        adapter.addFragment(membersFragment,"");
+        membersFragment = new Members();
+        adapter.addFragment(membersFragment, "");
 
         viewPager.setAdapter(adapter);
 
@@ -480,31 +479,49 @@ mailIdniv.setText(x);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (query.length()==0){
+                if (query.length() == 0) {
 
-                    if (feedData!=null){filteredfeedList = feedData;feedsFragments.getDataFromActivity();}
-                    else {}
+                    if (feedData != null) {
+                        filteredfeedList = feedData;
+                        feedsFragments.getDataFromActivity();
+                    } else {
+                    }
 
-                    if (GroupData!=null){filteredGroupList = GroupData;groupsFragments.getDataFromActivity();}
-                    else {}
+                    if (GroupData != null) {
+                        filteredGroupList = GroupData;
+                        groupsFragments.getDataFromActivity();
+                    } else {
+                    }
 
-                    if (memberData!=null){ filteredmemberData= memberData; membersFragment.getDataFromActivity();}
-                    else {}
+                    if (memberData != null) {
+                        filteredmemberData = memberData;
+                        membersFragment.getDataFromActivity();
+                    } else {
+                    }
 
 
                     InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                     imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 }
-                if (query.length() > 0 ) {
+                if (query.length() > 0) {
 
-                    if (feedData!=null){filteredfeedList = filterFeed(feedData, query);feedsFragments.getDataFromActivity();}
-                    else {}
+                    if (feedData != null) {
+                        filteredfeedList = filterFeed(feedData, query);
+                        feedsFragments.getDataFromActivity();
+                    } else {
+                    }
 
-                    if (GroupData!=null){filteredGroupList = filterGroup(GroupData, query);groupsFragments.getDataFromActivity();}
-                    else {}
+                    if (GroupData != null) {
+                        filteredGroupList = filterGroup(GroupData, query);
+                        groupsFragments.getDataFromActivity();
+                    } else {
+                    }
 
-                    if (memberData!=null){filteredmemberData = filterMember(memberData, query);membersFragment.getDataFromActivity();}
-                    else {}
+                    if (memberData != null) {
+                        filteredmemberData = filterMember(memberData, query);
+                        membersFragment.getDataFromActivity();
+                    } else {
+                    }
 
                     Log.wtf("FilteredList", String.valueOf(filteredfeedList));
 
@@ -516,31 +533,48 @@ mailIdniv.setText(x);
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.length()==0){
+                if (newText.length() == 0) {
 
-                    if (feedData!=null){filteredfeedList = feedData;feedsFragments.getDataFromActivity();}
-                    else{}
+                    if (feedData != null) {
+                        filteredfeedList = feedData;
+                        feedsFragments.getDataFromActivity();
+                    } else {
+                    }
 
-                    if (GroupData!=null){filteredGroupList = GroupData;groupsFragments.getDataFromActivity();}
-                    else{}
+                    if (GroupData != null) {
+                        filteredGroupList = GroupData;
+                        groupsFragments.getDataFromActivity();
+                    } else {
+                    }
 
                     Log.wtf("filteredfeedList ", String.valueOf(filteredfeedList));
 
-                    if (memberData != null){filteredmemberData = memberData;membersFragment.getDataFromActivity();}
-                    else{}
+                    if (memberData != null) {
+                        filteredmemberData = memberData;
+                        membersFragment.getDataFromActivity();
+                    } else {
+                    }
 
 
-                }
-                else if (newText.length() > 0 ) {
+                } else if (newText.length() > 0) {
 
-                    if (feedData!=null){filteredfeedList = filterFeed(feedData, newText);feedsFragments.getDataFromActivity();}
-                    else {}
+                    if (feedData != null) {
+                        filteredfeedList = filterFeed(feedData, newText);
+                        feedsFragments.getDataFromActivity();
+                    } else {
+                    }
 
-                    if (GroupData!=null){filteredGroupList = filterGroup(GroupData, newText);groupsFragments.getDataFromActivity();}
-                    else {}
+                    if (GroupData != null) {
+                        filteredGroupList = filterGroup(GroupData, newText);
+                        groupsFragments.getDataFromActivity();
+                    } else {
+                    }
 
-                    if (memberData!=null){filteredmemberData = filterMember(memberData, newText);membersFragment.getDataFromActivity();}
-                    else {}
+                    if (memberData != null) {
+                        filteredmemberData = filterMember(memberData, newText);
+                        membersFragment.getDataFromActivity();
+                    } else {
+                    }
 
                     Log.wtf("FilteredList", String.valueOf(filteredfeedList));
 
@@ -574,14 +608,23 @@ mailIdniv.setText(x);
                 appBarLayout.setLayoutParams(params);
                 appBarLayout.setExpanded(true, false);//Do some magic
 
-                if (feedData!=null){filteredfeedList = feedData;feedsFragments.getDataFromActivity();}
-                else {}
+                if (feedData != null) {
+                    filteredfeedList = feedData;
+                    feedsFragments.getDataFromActivity();
+                } else {
+                }
 
-                if (GroupData!=null){filteredGroupList = GroupData;groupsFragments.getDataFromActivity();}
-                else {}
+                if (GroupData != null) {
+                    filteredGroupList = GroupData;
+                    groupsFragments.getDataFromActivity();
+                } else {
+                }
 
-                if (memberData!=null){filteredmemberData = memberData;membersFragment.getDataFromActivity();}
-                else {}
+                if (memberData != null) {
+                    filteredmemberData = memberData;
+                    membersFragment.getDataFromActivity();
+                } else {
+                }
 
             }
         });
@@ -613,7 +656,7 @@ mailIdniv.setText(x);
         filteredList.clear();
         for (GroupListData item : mList) {
             if (item.groupName.toLowerCase().contains(query) || item.groupText.toLowerCase().contains(query)
-                    || item.createdDate.toLowerCase().contains(query)||item.groupId.toLowerCase().contains(query)) {
+                    || item.createdDate.toLowerCase().contains(query) || item.groupId.toLowerCase().contains(query)) {
                 filteredList.add(item);
             }
         }
@@ -657,7 +700,6 @@ mailIdniv.setText(x);
     }
 
 
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         return super.onPrepareOptionsMenu(menu);
@@ -673,7 +715,7 @@ mailIdniv.setText(x);
 */
 //Search,Notification ends
 
-    public boolean      onQueryTextSubmit      (String query) {
+    public boolean onQueryTextSubmit(String query) {
         //Toast.makeText(this, "Searching for: " + query + "...", Toast.LENGTH_SHORT).show();
         mSearchText.setText("Searching for: " + query + "...");
         mSearchText.setTextColor(Color.RED);
@@ -718,14 +760,14 @@ mailIdniv.setText(x);
     public void onBackPressed() {
         if (searchView.isSearchOpen()) {
             searchView.closeSearch();
-        }else if (this.drawer.isDrawerOpen(GravityCompat.START)) {
+        } else if (this.drawer.isDrawerOpen(GravityCompat.START)) {
             this.drawer.closeDrawer(GravityCompat.START);
-            Log.d("Drawer","Closing_FVCP");
+            Log.d("Drawer", "Closing_FVCP");
         } else {
             super.onBackPressed();
 
-            Intent intent=new Intent(FullViewOfClientsProceed.this,MainActivity.class);
-            intent.putExtra("clientId",ClientId);
+            Intent intent = new Intent(FullViewOfClientsProceed.this, MainActivity.class);
+            intent.putExtra("clientId", ClientId);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
@@ -759,16 +801,16 @@ mailIdniv.setText(x);
         int id = item.getItemId();
 
         if (id == R.id.nav_Profile) {
-            int value=3;
+            int value = 3;
 
-            Intent intent=new Intent(FullViewOfClientsProceed.this, ProfileNavigationActivity.class);
-            intent.putExtra("ClientId",ClientId);
-            intent.putExtra("state",state);
-            intent.putExtra("clientName",clientName);
+            Intent intent = new Intent(FullViewOfClientsProceed.this, ProfileNavigationActivity.class);
+            intent.putExtra("ClientId", ClientId);
+            intent.putExtra("state", state);
+            intent.putExtra("clientName", clientName);
 
 
-            intent.putExtra("clientImagePath",clientImageURLPath);
-            intent.putExtra("valueProfile",value);
+            intent.putExtra("clientImagePath", clientImageURLPath);
+            intent.putExtra("valueProfile", value);
 
             startActivity(intent);
             // Handle the camera action
@@ -779,21 +821,14 @@ mailIdniv.setText(x);
 
             startActivity(intent);
 
-        }*/
+        }*/ else if (id == R.id.nav_TransactionReport) {
 
-
-
-        else if(id==R.id.nav_TransactionReport){
-
-        } else  if(id == R.id.nav_ChangePassword)
-        {
-            Intent intent=new Intent(FullViewOfClientsProceed.this, ForgotActivity.class);
+        } else if (id == R.id.nav_ChangePassword) {
+            Intent intent = new Intent(FullViewOfClientsProceed.this, ForgotActivity.class);
 
             startActivity(intent);
-        }
-        else  if(id == R.id.nav_Privacy_Policy)
-        {
-            Intent intent=new Intent(FullViewOfClientsProceed.this, PrivacyPolicyActivity.class);
+        } else if (id == R.id.nav_Privacy_Policy) {
+            Intent intent = new Intent(FullViewOfClientsProceed.this, PrivacyPolicyActivity.class);
 
             startActivity(intent);
         }
@@ -808,7 +843,7 @@ mailIdniv.setText(x);
 
         else if (id == R.id.nav_logout) {
 
-            AlertDialog.Builder builder=new AlertDialog.Builder(FullViewOfClientsProceed.this); //Home is name of the activity
+            AlertDialog.Builder builder = new AlertDialog.Builder(FullViewOfClientsProceed.this); //Home is name of the activity
             builder.setMessage("Do you want to Logout?");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -819,10 +854,9 @@ mailIdniv.setText(x);
                     editor.remove("logged");
                     editor.commit();
                     finish();
-                    Intent intent=new Intent(FullViewOfClientsProceed.this, LogInActivity.class);
+                    Intent intent = new Intent(FullViewOfClientsProceed.this, LogInActivity.class);
 
                     startActivity(intent);
-
 
 
                 }
@@ -835,22 +869,18 @@ mailIdniv.setText(x);
                 }
             });
 
-            AlertDialog alert=builder.create();
+            AlertDialog alert = builder.create();
             alert.show();
 
 
+        } else if (id == R.id.nav_txnhistory) {
 
-        }
-
-        else if(id==R.id.nav_txnhistory){
-
-            Intent intent=new Intent( FullViewOfClientsProceed.this, AllTransactionSummary.class);
+            Intent intent = new Intent(FullViewOfClientsProceed.this, AllTransactionSummary.class);
 
             startActivity(intent);
 
-        }        else if(id==R.id.nav_clean_data)
-        {
-            AlertDialog.Builder builder=new AlertDialog.Builder(FullViewOfClientsProceed.this); //Home is name of the activity
+        } else if (id == R.id.nav_clean_data) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(FullViewOfClientsProceed.this); //Home is name of the activity
             builder.setMessage("For selecting other Institute/client.Press OK. ");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -867,7 +897,7 @@ mailIdniv.setText(x);
                     editor.commit();
                     finish();
 
-                    Intent intent=new Intent( FullViewOfClientsProceed.this, FilterActivity.class);
+                    Intent intent = new Intent(FullViewOfClientsProceed.this, FilterActivity.class);
 
                     startActivity(intent);
 
@@ -892,20 +922,17 @@ mailIdniv.setText(x);
                 }
             });
 
-            AlertDialog alert=builder.create();
+            AlertDialog alert = builder.create();
             alert.show();
 
-        }
-
-        else if(id==R.id.nav_Contacts){
+        } else if (id == R.id.nav_Contacts) {
 
 
-            Intent intent=new Intent( FullViewOfClientsProceed.this, AllContacts.class);
+            Intent intent = new Intent(FullViewOfClientsProceed.this, AllContacts.class);
 
             startActivity(intent);
 
-        }
-        else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share) {
             /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
 
             startActivity(intent);*/
@@ -919,7 +946,6 @@ mailIdniv.setText(x);
                 startActivity(Intent.createChooser(i, "Complete action using "));*/
 
                 shareIntentSpecificApps();
-
 
 
             } catch (Exception e) {
@@ -942,7 +968,6 @@ mailIdniv.setText(x);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 
     //Code for fetching image from server
@@ -979,8 +1004,6 @@ mailIdniv.setText(x);
         }
 
     }
-
-
 
 
     /* @Override
@@ -1029,17 +1052,17 @@ mailIdniv.setText(x);
     public void onFragmentSetClients(ArrayList<SkipClientData> clientData) {
 
     }
-    private String getUserImage(final  String token) {
 
-        String  tag_string_req = "req_clients";
+    private String getUserImage(final String token) {
 
-        StringRequest request=new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfileImage+"?token="+token, new Response.Listener<String>(){
+        String tag_string_req = "req_clients";
+
+        StringRequest request = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_Show_UserProfileImage + "?token=" + token, new Response.Listener<String>() {
 
             @Override
-            public void onResponse(String response1)
-            {
+            public void onResponse(String response1) {
 
-                Log.d("Particularclientimage","-->"+response1);
+                Log.d("Particularclientimage", "-->" + response1);
                 //parsing Json
                 JSONObject jsonObject = null;
 
@@ -1048,16 +1071,17 @@ mailIdniv.setText(x);
                     jsonObject = new JSONObject(response1.toString());
                     String response = jsonObject.getString("response");
                     String status = jsonObject.getString("status");
-                    Log.d("responsefilter",""+response);
-                    Log.d("statusfilter",""+status);
+                    Log.d("responsefilter", "" + response);
+                    Log.d("statusfilter", "" + status);
                     JSONObject jsonObject1 = new JSONObject(response);
-                    FetchUserImageGetterSetter fetchUserImageGetterSetter=new FetchUserImageGetterSetter();fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
-                    userImageUrl=fetchUserImageGetterSetter.getUserImageUrl().toString();
-                    i= userImageUrl;
-                    Log.d("check123",""+i);
-                    ImageView niv = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter = new FetchUserImageGetterSetter();
+                    fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                    userImageUrl = fetchUserImageGetterSetter.getUserImageUrl().toString();
+                    i = userImageUrl;
+                    Log.d("check123", "" + i);
+                    ImageView niv = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_image);
 
-                    Glide.with( getApplicationContext())
+                    Glide.with(getApplicationContext())
                             .load(i)
                             .error(R.drawable.default_users)
                             .into(niv);
@@ -1075,8 +1099,7 @@ mailIdniv.setText(x);
                     Log.d("clientiooo","-->"+clientname11 );*/
 
 
-                }
-                catch(JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -1085,7 +1108,7 @@ mailIdniv.setText(x);
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
@@ -1127,9 +1150,9 @@ mailIdniv.setText(x);
             }
 
 
-        }) ;
+        });
 
-        AppController.getInstance().addToRequestQueue(request,tag_string_req);
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
 
 
         return tag_string_req;
@@ -1139,7 +1162,7 @@ mailIdniv.setText(x);
 
         String tag_string_req = "req_register";
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfile+"?token="+useracesstoken, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_Show_UserProfile + "?token=" + useracesstoken, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -1149,21 +1172,19 @@ mailIdniv.setText(x);
                     //progressBar.setVisibility(View.GONE);
                     JSONObject object = new JSONObject(response1);
                     String response = object.getString("response");
-                    String status =object.getString("status");
+                    String status = object.getString("status");
                     x = object.getJSONObject("response").getString("emailId").toString();
                     mobNumber = object.getJSONObject("response").getString("contactNumber").toString();
 
 
-                    if(x.equals("null"))
-{
-    usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
-mailIdniv.setText("");
-}
-                  else   if (status.equals("success")) {
+                    if (x.equals("null")) {
+                        usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
+                        mailIdniv.setText("");
+                    } else if (status.equals("success")) {
 
-                        name=object.getJSONObject("response").getString("fullName").toString();
-                        Log.d("namemainFull",""+name);
-                        Log.d("namemainFull",""+mobNumber);
+                        name = object.getJSONObject("response").getString("fullName").toString();
+                        Log.d("namemainFull", "" + name);
+                        Log.d("namemainFull", "" + mobNumber);
 
                         usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
@@ -1175,7 +1196,7 @@ mailIdniv.setText("");
                         Log.d("skipusername", "userName" + usernameniv);
                         Log.d("skipusermailid", "Mail" + mailIdniv);
 
-                    }else {
+                    } else {
                         // Toast.makeText(getApplicationContext(),"Could  not able to load data",Toast.LENGTH_SHORT).show();
                     }
 
@@ -1250,12 +1271,13 @@ mailIdniv.setText("");
         preferences.edit().remove("Groupts").commit();
 
         // Store our shared preference
-        SharedPreferences.Editor editor = getSharedPreferences("FullTime",MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences("FullTime", MODE_PRIVATE).edit();
 
        /* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
         Editor ed = sp.edit();
-       */ editor.putBoolean("active", true);
-        Log.d("ARCOnStartgroup","----");
+       */
+        editor.putBoolean("active", true);
+        Log.d("ARCOnStartgroup", "----");
         editor.commit();
     }
 
@@ -1263,23 +1285,23 @@ mailIdniv.setText("");
     protected void onStop() {
         super.onStop();
 
-        Date date= new Date();
+        Date date = new Date();
         //getTime() returns current time in milliseconds
         long time = date.getTime();
         //Passed the milliseconds to constructor of Timestamp class
         Fullviewts = new Timestamp(time);
-        Fts= String.valueOf(Fullviewts);
-        System.out.println("Current Time Stamp: "+Fts);
-        Log.d("ARCTimefull",""+time);
-        Log.d("ARCTimeFullts1",""+Fts);
+        Fts = String.valueOf(Fullviewts);
+        System.out.println("Current Time Stamp: " + Fts);
+        Log.d("ARCTimefull", "" + time);
+        Log.d("ARCTimeFullts1", "" + Fts);
 
         // Store our shared preference
         SharedPreferences sp = getSharedPreferences(MySharedPrefOnFullViewOfClientProceed, MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", false);
-        ed.putString("FullViewts",String.valueOf(Long.valueOf(time)));
-        Log.d("ARCTimeFullts111",""+String.valueOf(Fts));
-        Log.d("ARCOnStopFull","--"+String.valueOf(Long.valueOf(time)));
+        ed.putString("FullViewts", String.valueOf(Long.valueOf(time)));
+        Log.d("ARCTimeFullts111", "" + String.valueOf(Fts));
+        Log.d("ARCOnStopFull", "--" + String.valueOf(Long.valueOf(time)));
         ed.commit();
 
       /*  // Store our shared preference
@@ -1304,9 +1326,13 @@ mailIdniv.setText("");
         SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", false);
-        Log.d("ARCOnResumFullViewClnt" ,"----");
+        Log.d("ARCOnResumFullViewClnt", "----");
 
         ed.commit();
+
+        for (int i = 0; i < navigationView.getMenu().size(); i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
 
     }
 
@@ -1323,7 +1349,6 @@ mailIdniv.setText("");
             return false;
         }
     }
-
 
 
     public void shareIntentSpecificApps() {
@@ -1346,7 +1371,7 @@ mailIdniv.setText("");
                         || packageName.contains("com.google.android.talk") || packageName.contains("com.slack")
                         || packageName.contains("com.google.android.gm") || packageName.contains("com.facebook.orca")
                         || packageName.contains("com.yahoo.mobile") || packageName.contains("com.skype.raider")
-                        || packageName.contains("com.android.mms")|| packageName.contains("com.linkedin.android")
+                        || packageName.contains("com.android.mms") || packageName.contains("com.linkedin.android")
                         || packageName.contains("com.google.android.apps.messaging")) {
                     Intent intent = new Intent();
 
@@ -1382,10 +1407,7 @@ mailIdniv.setText("");
     }
 
 
-
-
-
 }
 
 
-    /*END methods for implementations*/
+/*END methods for implementations*/
