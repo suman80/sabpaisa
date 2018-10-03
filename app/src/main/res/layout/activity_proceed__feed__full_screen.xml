@@ -171,7 +171,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
             android:maxHeight="25dp"
-            android:maxLines="2" />
+            android:maxLines="2"
+            android:text="test"
+            android:background="#AA000000"
+            android:textColor="#fff"
+            />
 
 
         <ImageView

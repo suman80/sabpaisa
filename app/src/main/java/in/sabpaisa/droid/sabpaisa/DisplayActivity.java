@@ -32,6 +32,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONException;
@@ -109,11 +110,11 @@ public class DisplayActivity extends AppCompatActivity {
                     String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
 
                     String commentText = commentEditText.getText().toString();
-                    String i = StringEscapeUtils.escapeJava(commentText);
+                    String i = StringEscapeUtils.escapeJava(commentText.trim());
                     Log.d("commentText3", "67667767 " + i);
 //        rv.smoothScrollBy(100,100);
 
-                    if (i.trim().length() == 0) {
+                   /* if (i.trim().length() == 0) {
 
                         Log.d("commentText2", " " + commentText);
                         AlertDialog.Builder builder = new AlertDialog.Builder(DisplayActivity.this);
@@ -128,7 +129,8 @@ public class DisplayActivity extends AppCompatActivity {
                         AlertDialog alertDialog = builder.create();
                         alertDialog.show();
 
-                    } else if (i.equals("%"))
+                    } else*/
+                   if (i.equals("%"))
 
                     {
                         commentText.replace("%", "%25");
@@ -186,11 +188,11 @@ public class DisplayActivity extends AppCompatActivity {
                     String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
 
                     String commentText = commentEditText.getText().toString();
-                    String i = StringEscapeUtils.escapeJava(commentText);
+                    String i = StringEscapeUtils.escapeJava(commentText.trim());
                     Log.d("commentText3", "67667767 " + i);
 //        rv.smoothScrollBy(100,100);
 
-                    if (i.trim().length() == 0) {
+                    /*if (i.trim().length() == 0) {
 
                         Log.d("commentText2", " " + commentText);
                         AlertDialog.Builder builder = new AlertDialog.Builder(DisplayActivity.this);
@@ -205,7 +207,8 @@ public class DisplayActivity extends AppCompatActivity {
                         AlertDialog alertDialog = builder.create();
                         alertDialog.show();
 
-                    } else if (i.equals("%"))
+                    } else*/
+                    if (i.equals("%"))
 
                     {
                         commentText.replace("%", "%25");
@@ -315,6 +318,9 @@ public class DisplayActivity extends AppCompatActivity {
         //our custom volley request
 
         Log.d("PVRAcomment_text", "->" + URLEncoder.encode(comment_text));
+
+        Log.d("DisplayActivityLen", "->" + URLEncoder.encode(comment_text).length());
+
         String url = AppConfig.Base_Url + AppConfig.App_api + "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(comment_text.trim());
 
         Log.d("URL_AT_PVRA", " " + url);

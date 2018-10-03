@@ -32,6 +32,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 
 import android.util.Log;
@@ -407,6 +409,31 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             }
         });
 
+        shareViewFrameLayout.bringToFront();
+        ImageViewFrameLayout.bringToFront();
+        DocViewFrameLayout.bringToFront();
+
+        group_details_text_view = (EditText) findViewById(R.id.commentadd);
+
+        group_details_text_view.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                shareViewFrameLayout.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
     }
 
 
@@ -489,8 +516,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         String fromServerUnicodeDecoded = StringEscapeUtils.unescapeJava(serverResponse);
 
         commentText = group_details_text_view.getText().toString();
-        i = StringEscapeUtils.escapeJava(commentText);
-        Log.d("commentText3", "67667767 " + i);
+        i = StringEscapeUtils.escapeJava(commentText.trim());
+        Log.d("commentText3", "67667767 " + i + " "+commentText.trim().length());
 //        rv.smoothScrollBy(100,100);
 
         if (i.trim().length() == 0 && commentFile == null && fileDoc == null) {

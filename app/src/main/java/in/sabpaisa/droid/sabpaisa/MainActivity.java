@@ -136,41 +136,30 @@ import static com.mikepenz.materialize.util.UIUtils.convertDpToPixel;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class MainActivity extends AppCompatActivity implements /*AppBarLayout.OnOffsetChangedListener,*/ /*RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/ NavigationView.OnNavigationItemSelectedListener, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
-    private int notification_id;
+
     private SliderLayout mHeaderSlider;
     ArrayList<Integer> headerList = new ArrayList<>();
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     AppBarLayout appBarLayout;
-    private RemoteViews remoteViews;
-    NotificationManager notificationManager;
-    int feedstotal, grouptotal;
     RecyclerView recyclerView;
-    String Commentcountgroups;
-    String CommentcountFeeds;
-    private CustomViewPager viewPager;
-    int sum;
-    String posttime1;
-    static ArrayList<NotificationModelClass> notificationModelClassArrayList;
 
-    NotificationModelClass notificationModelClass;
-    NotificationAdapter notificationAdapter;
+    private CustomViewPager viewPager;
+
     private TabLayout tabLayout;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    String posttimeFeed, posttimeGroup;
+
     ImageView niv, bell, bell1;
     TextView notificationNumber, notificationNumberFeed;
-    String total;
-    int total1;
-    String posttime;
+
     String time;
     View menu_bell, menu_bell_feed;
-    String timefeed, timeGroup;
+
     String img, imglogo, orgname, state;
     RequestQueue requestQueue;
-    int temp = 0, tempfeeds = 0;
+
     String ts;
     Context context;
-    int sumgroup = 0, sumfeeds = 0;
+
     String count, countfeeds, clntname;
     AutofitTextView usernameniv, mailIdniv;
     Toolbar toolbar;
@@ -182,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
     String response, response1, userAccessToken;
     ImageView sendMoney, requestMoney, socialPayment, transaction, profile, bank, UpibankList, mPinInfo, mPinInfo2;
     LinearLayout paymentButton, chatButton, memberButton;
-    int isMpinSet = 1;
+
     FloatingActionButton fab;
     int MY_SOCKET_TIMEOUT_MS = 100000;
     ActionBarDrawerToggle toggle;
@@ -206,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
     NavigationView navigationView;
 
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
     ////Testing
     @SuppressLint("MissingPermission")
@@ -259,14 +247,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         Log.d("SQLITE_DB_MAIN", " " + appDB + " " + appDbComments);
 ////////////////////////////////////////////////////////////////////////////////////////
 
-        /////  Long posttime1= Long.valueOf(posttime);
 
-//        Timestamp t =  new Timestamp( Long.valueOf(posttime) );
-
-//        Log.d("ArcPosttime", "" + posttime);
-
-        //  Log.d("ArcPosttime11",""+posttime1);
-        //      Log.d("ArcPosttime111",""+t);
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
         response = sharedPreferences.getString("response", "123");
         if (response != null) {
@@ -605,64 +586,6 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
             }
         });
-
-  /*      //Archana Code
-        SharedPreferences sharedPreferences113 = getApplication().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
-
-        posttime = sharedPreferences113.getString("ts", "123");
-        final String timefull = posttime;
-
-        SharedPreferences sharedPreferences11 = getApplication().getSharedPreferences(Proceed_Feed_FullScreen.MySharedPrefProceedFeedFullScreen, Context.MODE_PRIVATE);
-
-        posttimeFeed = sharedPreferences11.getString("ts", "123");
-        timefeed = posttimeFeed;
-        SharedPreferences sharedPreferences112 = getApplication().getSharedPreferences(Proceed_Group_FullScreen.MySharedPRoceedGroupFullScreen, Context.MODE_PRIVATE);
-        posttimeGroup = sharedPreferences112.getString("Groupts", "123");
-        timeGroup = posttimeGroup;
-
-
-        Log.d("ArcPosttimeFeed", "" + posttimeFeed);
-        Log.d("ArcPosttimeGroup", "" + posttimeGroup);
-        Log.d("ArcPosttimeGroup11", "" + timeGroup);
-        Log.d("ArcPosttimeGroup11", "" + timefull);
-
-        final long tGroup = Long.parseLong(timeGroup);
-        final long tFeeds = Long.parseLong(timefeed);
-
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Do something after 20 seconds
-
-                if (tGroup > tFeeds) {
-                    posttime1 = timeGroup;
-                    NotificationCount(ClientId1, timeGroup, userAccessToken);
-                } else {
-                    posttime1 = timefeed;
-                    NotificationCount(ClientId1, timefeed, userAccessToken);
-                }
-                handler.postDelayed(this, 1000);
-            }
-        }, 1000);
-
-
-        if (tGroup > tFeeds) {
-            posttime1 = timeGroup;
-            Feedsnotification(ClientId1, timeGroup, userAccessToken);//// used for notification in notification bar as  if we used  this in handler then the notification are comi
-            Groupsnotification(ClientId1, timeGroup, userAccessToken);/// used for notification in notification bar
-        } else {
-            posttime1 = timefeed;
-            Feedsnotification(ClientId1, timefeed, userAccessToken);//// used for notification in notification bar as  if we used  this in handler then the notification are comi
-            Groupsnotification(ClientId1, timefeed, userAccessToken);/// used for notification in notification bar
-        }
-
-        Log.d("ArcFeedGroup", "" + feedstotal + "  " + grouptotal);
-
-        Log.d("ArcPosttimeCount", "" + Commentcountgroups + "   " + CommentcountFeeds);
-
-*/
 
     }
 
@@ -1145,24 +1068,6 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
     }
 
-    public void initToolBar(String title) {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(title);
-
-
-        setSupportActionBar(toolbar);
-
-        toolbar.setNavigationIcon(R.drawable.threelines);
-        toolbar.setNavigationOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-        );
-    }
 
     //Firebase Notification
 
@@ -1184,6 +1089,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
     @Override
     protected void onResume() {
         super.onResume();
+
+        //Api For userName and email at navigation header
+        showProfileData();
 
         // register GCM registration complete receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
@@ -1622,328 +1530,6 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         AppController.getInstance().addToRequestQueue(request, tag_string_req);
     }
-/* //Archana Code
-    public void Feedsnotification(final String client_Id, final String postTime, final String token) {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "notificationsForFeeds?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
-            @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(String s) {
-                Log.d("ARCResponseFeeds", "Notification" + s);
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(s);
-                    String response = jsonObject.getString("response");
-                    String status = jsonObject.getString("status");
-                    Log.d("CountResponseFeeds", "-->" + response);
-                    Log.d("CountstatusFeeds", "-->" + status);
-                    JSONObject object = new JSONObject(response.toString());
-                    String NoofFeeds = object.getString("Nooffeeds");
-                    CommentcountFeeds = object.getString("Commentcount");
-                    Log.d("ARcNOOfFEEDs", "-->" + NoofFeeds);
-                    Log.d("ARCCommentscountFeeds", "-->" + CommentcountFeeds);
-                    feedstotal = Integer.parseInt(CommentcountFeeds);
-                    Log.d("ARCCommentscfeeds", "-->" + feedstotal);
-
-                    if (CommentcountFeeds.equals("0")) {
-                        Log.d("0 feeds Commnents", "-->");
-                    } else {
-//.setText(CommentcountFeeds);
-                        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                        remoteViews = new RemoteViews(getPackageName(), R.layout.custom_notification);
-                        //remoteViews.setImageViewResource(R.id.app12,R.drawable.sabpaisa1234);
-                        remoteViews.setTextViewText(R.id.text12, CommentcountFeeds + "  " + "Notification from Feeds");
-
-                        notification_id = (int) System.currentTimeMillis();
-                        Intent b_intent = new Intent("button_Clicked");
-                        b_intent.putExtra("id", notification_id);
-                        b_intent.putExtra("clientId", ClientId1);
-
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 123, b_intent, 0);
-                        remoteViews.setOnClickPendingIntent(R.id.text12, pendingIntent);
-                        createNotification();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-
-            }
-        });
-        AppController.getInstance().addToRequestQueue(stringRequest);
-
-    }
-
-    public void Groupsnotification(final String client_Id, final String postTime, final String token) {
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "notificationsForGroups?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
-            @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(String s) {
-                Log.d("ARCResponseGroups", "Notification" + s);
-
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(s);
-                    String response = jsonObject.getString("response");
-                    String status = jsonObject.getString("status");
-                    Log.d("CountResponseGroups", "-->" + response);
-                    Log.d("CountstatusGroups", "-->" + status);
-                    JSONObject jsonObject1 = new JSONObject(response);
-                    String NoofJoinedGroups = jsonObject1.getString("NoofJoinedGroups");
-                    Commentcountgroups = jsonObject1.getString("Commentcount");
-                    Log.d("ARcNOOfJoinedGroups", "-->" + NoofJoinedGroups);
-                    Log.d("ARCCommentscountGroups", "-->" + Commentcountgroups);
-                    grouptotal = Integer.parseInt(Commentcountgroups);
-                    Log.d("ARCCommentoups11", "-->" + grouptotal);
-
-                    if (Commentcountgroups.equals("0"))
-
-                    {
-
-
-                    } else {
-                        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                        remoteViews = new RemoteViews(getPackageName(), R.layout.custom_notification);
-                        //  remoteViews.setImageViewResource(R.id.app12,R.drawable.sabpais
-                        // a1234);
-                        remoteViews.setTextViewText(R.id.text12, Commentcountgroups + "  " + "Notification from Groups");
-
-                        notification_id = (int) System.currentTimeMillis();
-                        Intent b_intent = new Intent("button_Clicked");
-                        b_intent.putExtra("id", notification_id);
-                        b_intent.putExtra("clientId", ClientId1);
-
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 123, b_intent, 0);
-                        remoteViews.setOnClickPendingIntent(R.id.text12, pendingIntent);
-                        createNotification();
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(stringRequest);
-    }*/
-
-    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
-
-    public void createNotification() {
-        // Prepare intent which is triggered if the
-        // notification is selected
-        Intent intent = new Intent(MainActivity.this, FullViewOfClientsProceed.class);
-        intent.putExtra("From", "notifyFrag");
-        intent.putExtra("clientId", ClientId1);
-        intent.putExtra("clientImagePath", img);
-        intent.putExtra("state", state);
-        intent.putExtra("clientName", clntname);
-        PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // define sound URI, the sound to be played when there's a notification
-
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder builder = null;
-
-
-        // Build notification
-        Notification noti = new Notification.Builder(this)
-                .setAutoCancel(true)
-//                .setCustomBigContentView(remoteViews)
-                .setSmallIcon(R.drawable.sabpaisa1234)
-                .setContentIntent(pIntent)
-                .setSound(soundUri)
-                .build();
-
-
-        noti.contentView = remoteViews;
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= 16) {
-// Inflate and set the layout for the expanded notification view
-            noti.bigContentView = remoteViews;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(String.valueOf(notification_id),
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-            // Build notification
-            Notification noti1 = new Notification.Builder(this)
-                    .setAutoCancel(true)
-                    //.setCustomBigContentView(remoteViews)
-                    .setSmallIcon(R.drawable.sabpaisa1234)
-                    .setContentIntent(pIntent)
-                    //.setSound(soundUri)
-                    .setCustomBigContentView(remoteViews)
-                    .setChannelId(String.valueOf(notification_id))
-                    .build();
-            notificationManager.notify(notification_id, noti1);
-
-        }
-
-        // hide the notification after its selected
-        noti.flags |= Notification.FLAG_AUTO_CANCEL;
-
-        notificationManager.notify(notification_id, noti);
-    }
-
-    /* //Archana Code
-    public void NotificationCount(final String client_Id, final String postTime, final String token) {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + "notifications?client_Id=" + client_Id + "&postTime=" + postTime + "&token=" + token, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                Log.d("NotifactionCount", "-->" + s);
-                JSONObject object = null;
-                String result;
-                JSONArray feeds = null;
-                JSONObject data = null;
-                JSONObject data1 = null;
-                JSONArray groups = null;
-                String groupname, groupdescription, grouimage, countfeeds;
-                int sumgroup = 0, sumfeed = 0;
-                String name, image, description, id, groupid, groupcount = null;
-
-
-                try {
-                    object = new JSONObject(s);
-                    String response = object.getString("response");
-                    String status = object.getString("status");
-                    Log.d("CountResponse", "-->" + response);
-                    Log.d("Countstatus", "-->" + status);
-
-                    JSONObject object1 = new JSONObject(response);
-
-                    notificationModelClassArrayList = new ArrayList<NotificationModelClass>();
-                    if (!(object1.isNull("groups"))) {
-
-                        groups = object1.getJSONArray("groups");
-                        Log.d("CountGroups", "-->" + groups);
-                        for (int i = 0; i < groups.length(); i++) {
-                            notificationModelClass = new NotificationModelClass();
-                            data1 = groups.getJSONObject(i);
-                            grouimage = data1.getString("imagePath");
-                            groupid = data1.getString("id");
-                            groupcount = data1.getString("count");
-                            sumgroup = sumgroup + Integer.parseInt(groupcount);
-                            groupname = data1.getString("name");
-                            groupdescription = data1.getString("description");
-                            Log.d("countgroupsSum", "" + grouimage + "--" + groupdescription + " -----" + groupname + "---" + groupid);
-                            notificationModelClass.setCount(data1.getString("count"));
-                            notificationModelClass.setName(data1.getString("name"));
-                            notificationModelClass.setIdentify("Group");
-                            notificationModelClass.setId(data1.getString("id"));
-                            notificationModelClass.setDescription(data1.getString("description"));
-                            notificationModelClass.setImagePath(data1.getString("imagePath"));
-                            notificationModelClassArrayList.add(notificationModelClass);
-                        }
-
-                        Log.d("CountresultGroup", "-->" + groups);
-                    }
-                    if (!(object1.isNull("feeds"))) {
-                        feeds = object1.getJSONArray("feeds");
-                        Log.d("CountFeeds", "-->" + feeds);
-                        for (int i = 0; i < feeds.length(); i++) {
-                            notificationModelClass = new NotificationModelClass();
-
-                            data = feeds.getJSONObject(i);
-                            countfeeds = data.getString("count");
-                            sumfeed = sumfeed + Integer.parseInt(countfeeds);
-                            name = data.getString("name");
-                            Log.d("countfeedsSum", "" + countfeeds + "--" + name);
-                            Log.d("Countdata", "" + data.getString("id") + "=" + data.getString("count"));
-                            notificationModelClass.setCount(data.getString("count"));
-                            notificationModelClass.setName(data.getString("name"));
-                            notificationModelClass.setIdentify("Feed");
-                            notificationModelClass.setDescription(data.getString("description"));
-                            notificationModelClass.setId(data.getString("id"));
-
-                            notificationModelClass.setImagePath(data.getString("imagePath"));
-
-                            notificationModelClassArrayList.add(notificationModelClass);
-
-                        }
-
-                        Log.d("notificationMogrp", "" + notificationModelClassArrayList.size());
-                        Log.d("CountGroupselse", "-->" + notificationModelClassArrayList);
-
-                    }
-
-                    Log.d("notificationMogrp", "" + notificationModelClassArrayList.size());
-                    if (notificationModelClassArrayList.size() > 0) {
-                        sum = sumfeed + sumgroup;
-                        notificationNumber.setText(String.valueOf(sum));
-                        //    menu_bell.setClickable(true);
-                        menu_bell.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(MainActivity.this, NotificationPopUPActivity.class);
-
-                                intent.putExtra("clientId", ClientId1);
-                                intent.putExtra("useraccesstoken", userAccessToken);
-                                intent.putExtra("grouptime", timeGroup);
-                                intent.putExtra("feedtime", timefeed);
-                                intent.putExtra("clientImagePath", img);
-                                intent.putExtra("state", state);
-                                intent.putExtra("clientName", clntname);
-                                startActivity(intent);
-                            }
-                        });
-                        Log.d("SCOUNRHKDMain", "==" + sum + "  " + sumfeed + "  " + sumgroup);
-
-                    } else {
-                        //   menu_bell.setClickable(false);
-                        notificationNumber.setText("");
-                        menu_bell.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-
-                                Toast.makeText(getApplicationContext(), "No comments to read ", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-
-                    }
-
-                } catch (Exception e) {
-
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-
-            }
-        });
-        Log.d("Strngrqst", "" + stringRequest);
-        AppController.getInstance().addToRequestQueue(stringRequest);
-    }
-*/
-   /* class abc extends AsyncTask<String, Void, Void> {
-
-        @Override
-        protected Void doInBackground(String... strings) {
-            Long previousDate = new Long(System.currentTimeMillis());
-            Log.d("doInBackground", "PreviousDate [" + previousDate + "]");
-            Long intervall = new Long(System.currentTimeMillis());
-            Log.d("doInBackground", "intervall [" + intervall + "]");
-
-            return null;
-        }
-    }*/
-
 
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

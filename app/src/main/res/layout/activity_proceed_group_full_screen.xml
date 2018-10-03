@@ -184,6 +184,8 @@
             android:layout_marginTop="80dp"
             android:maxLines="2"
             android:maxHeight="25dp"
+            android:background="#AA000000"
+            android:textColor="#fff"
             />
 
         <ImageView

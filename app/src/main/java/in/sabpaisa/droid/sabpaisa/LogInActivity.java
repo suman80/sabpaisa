@@ -187,10 +187,7 @@ public class LogInActivity extends AppCompatActivity {
                     //startActivity(intent21);
                     //launchAgeScreen();
                     registerUser(mobileNo, password);
-                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putString("logged", "logged");
-                    editor.commit();
+
                    /* SharedPreferences.Editor editor = sharedpreferences.edit();
 
                     editor.putString("MobileNumber",mobileNo);
@@ -337,6 +334,11 @@ public class LogInActivity extends AppCompatActivity {
                     String status = jObj.getString("status");
 
                     if (status != null && status.equals("success")) {
+
+                        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                        SharedPreferences.Editor editor1 = settings.edit();
+                        editor1.putString("logged", "logged");
+                        editor1.commit();
 
                         Intent intent = new Intent(LogInActivity.this, FilterActivity.class);
 

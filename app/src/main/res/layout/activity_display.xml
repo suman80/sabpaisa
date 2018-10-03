@@ -14,7 +14,7 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY" />
 
-    <LinearLayout
+  <!--  <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -40,9 +40,77 @@
         app:cb_color="@color/bg_orange"
         app:cb_pressedRingWidth="8dip"
         android:clickable="true"
+        android:layout_marginEnd="10dp"
          />
 
-    </LinearLayout>
+    </LinearLayout>-->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#fff">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:layout_weight="1"
+                android:background="@drawable/chat_edit_text_background"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                >
+
+                <io.github.rockerhieu.emojicon.EmojiconEditText
+                    android:id="@+id/commentEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/background_edittext_empty"
+                    android:gravity="top|left"
+                    android:hint="Add Comment"
+                    android:imeOptions="actionSend"
+                    android:inputType="textMultiLine|textAutoCorrect"
+                    android:maxLines="7"
+                    android:scrollbars="vertical"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black_50"
+                    android:textSize="@dimen/text_size_small" />
+
+
+            </LinearLayout>
+
+            <at.markushi.ui.CircleButton
+                android:id="@+id/sendBtn"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:src="@drawable/ic_send_white_24dp"
+                app:cb_color="@color/bg_orange"
+                app:cb_pressedRingWidth="8dip"
+                android:onClick="onClickSendComment"
+                android:visibility="visible"
+                android:layout_gravity="center_vertical"
+                />
+
+
+
+        </LinearLayout>
+
+
+    </FrameLayout>
 
     <ProgressBar
         android:layout_width="wrap_content"
