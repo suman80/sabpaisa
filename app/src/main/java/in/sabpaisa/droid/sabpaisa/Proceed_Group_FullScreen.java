@@ -190,6 +190,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        MainGroupAdapter1.isClicked=false;
+
                         onBackPressed();
                         //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
                     }
@@ -1465,7 +1468,7 @@ public void privatefeeds(final String groupId)
         if (shareViewFrameLayout.getVisibility() == View.VISIBLE) {
             shareViewFrameLayout.setVisibility(View.GONE);
         } else {
-
+            MainGroupAdapter1.isClicked=false;
             finish();
 
         }

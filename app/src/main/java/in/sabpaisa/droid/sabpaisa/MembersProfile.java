@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 
+import in.sabpaisa.droid.sabpaisa.Adapter.MemberAdapter;
+
 public class MembersProfile extends AppCompatActivity {
 String name,image,emailid,mobno;
 
@@ -28,7 +30,10 @@ ImageView userimage,coverpic;
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                onBackPressed();            }
+                Log.d(" cvxcfgbfhg","549");
+                MemberAdapter.isClicked =false;
+                onBackPressed();
+            }
         });
 
         name_Tv=(TextView)findViewById(R.id.UserName);
@@ -71,5 +76,12 @@ ImageView userimage,coverpic;
                 .load(image)
                 .error(R.drawable.default_users)
                 .into(coverpic);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("onBackPressed","549");
+        MemberAdapter.isClicked =false;
+        super.onBackPressed();
     }
 }

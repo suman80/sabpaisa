@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
+    public static boolean isClicked=false;
+
     @Override
     public MemberAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.member_custom, parent, false);
@@ -92,6 +95,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
             @Override
             public void onClick(View view) {
 
+
+
                 Log.d("POsitikon-", "" + memberGetterSetterArrayList.get(position).getFullName().toString());
                 Log.d("POsitikon-", "" + memberGetterSetterArrayList.get(position).getUserImageUrl().toString());
                 Intent intent = new Intent(mContext, MembersProfile.class);
@@ -101,7 +106,10 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
                 intent.putExtra("mobNo1", memberGetterSetterArrayList.get(position).getPhoneNumber().toString());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                mContext.startActivity(intent);
+                if (!isClicked) {
+                    isClicked = !isClicked;
+                    mContext.startActivity(intent);
+                }
 
             }
         });
@@ -195,7 +203,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 */
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
 
         public ImageView memberImg;
         Button memberChat;
@@ -232,7 +240,23 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
             showProfileData();
 
+            String test = "test";
+//            if(test.isEmpty())
+            itemView.setOnCreateContextMenuListener(this);
+
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            Log.d("onCreateContextMenu","Member");
+
+            contextMenu.setHeaderTitle("Select The Action");
+            contextMenu.add(this.getAdapterPosition(), view.getId(), 0, "Delete Member");//groupId, itemId, order, title
+
+
+
+        }
+
     }
 
     @Override

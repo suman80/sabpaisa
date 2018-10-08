@@ -177,14 +177,12 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".Util.FullViewOfClientsProceed"></activity>
         -->
-        <activity android:name=".Proceed_Feed_FullScreen"
-            android:parentActivityName=".MainActivity"
-            >
-        </activity>
-        <activity android:name=".Proceed_Group_FullScreen"
-            android:parentActivityName=".MainActivity"
-            >
-        </activity>
+        <activity
+            android:name=".Proceed_Feed_FullScreen"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Proceed_Group_FullScreen"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".TransactionReportNav" />
         <activity android:name=".Report" />
         <activity android:name=".UPIActivationActivity" />
@@ -253,7 +251,10 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".DisplayActivity"></activity>
+        <activity android:name=".DisplayActivity" />
+        <activity android:name=".AddFeed" />
+        <activity android:name=".AddGroup" />
+        <activity android:name=".AddMember"></activity>
     </application>
 
 </manifest>

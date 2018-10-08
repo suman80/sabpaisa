@@ -237,6 +237,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        MainFeedAdapter.isClicked=false;
+
                         onBackPressed();
                         //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
                     }
@@ -446,57 +449,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
         llm.setReverseLayout(true);
-
-//       scrollListener=new EndlessScrollListener(llm) {
-//            @Override
-//            public void onLoadMore(int page, int totalItemsCount) {
-//                callGetCommentList(feed_id);
-//            }
-//        };
-//        rv.addOnScrollListener(scrollListener);
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
         rv.setLayoutManager(llm);
         rv.setNestedScrollingEnabled(false);
-//        scrollView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                //replace this line to scroll up or down
-//                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-//            }
-//        }, 100L);
-        //////////////////Rajdeep///////////////////////////////////////////////
-//        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//
-//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
-//                    isScrolling = true;
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//
-//                currentItems = llm.getChildCount();
-//                totalItems =   llm.getItemCount();
-//                scrolledOutItems = llm.findFirstVisibleItemPosition();
-//
-//                Log.d("onScrolled_WeGet"," "+currentItems+" "+totalItems+" "+scrolledOutItems);
-//
-//                if (isScrolling &&(currentItems + scrolledOutItems == totalItems)){
-//                    //Data Fetch
-//                    isScrolling = false;
-//                    //FetchData
-//                    //count++;
-//                    Log.d("Hellio","TESTTTTTTTTTTTTTTTTTTTTTT");
-//                    callGetCommentList(feed_id);
-//                }
-//
-//            }
-        //      });
 
         progress.setVisibility(View.GONE);
 
@@ -1328,6 +1283,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         if (shareViewFrameLayout.getVisibility() == View.VISIBLE) {
             shareViewFrameLayout.setVisibility(View.GONE);
         } else {
+
+            MainFeedAdapter.isClicked=false;
 
             finish();
 

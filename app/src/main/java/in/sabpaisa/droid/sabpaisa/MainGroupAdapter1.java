@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,8 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
     public Button joinmember;
 
     String popup = "Group";
+
+    public static boolean isClicked=false;
 
     public MainGroupAdapter1(List<GroupListData> countryList, Context context) {
         this.countryList = countryList;
@@ -216,6 +219,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 Log.d("groupIdGRP", " " + groupId);
 
                 addMember(token, groupId, v, c);
+
             }
         });
 
@@ -238,7 +242,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
     /**
      * View holder class
      */
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
         public TextView Group_name;
         public TextView Group_description;
         public ImageView Group_Logo;
@@ -257,7 +261,27 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
             Group_Image = (ImageView) view.findViewById(R.id.Group_Image);
             linearLayoutGroupItemList = (LinearLayout) view.findViewById(R.id.linearLayoutGroupItemList);
             rippleClick = (MaterialRippleLayout) view.findViewById(R.id.rippleClick);
+
+            // String test = "test";
+            //  if(test.isEmpty())
+            view.setOnCreateContextMenuListener(this);
+
         }
+
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            Log.d("onCreateContextMenu","FEED");
+
+            contextMenu.setHeaderTitle("Select The Action");
+            contextMenu.add(this.getAdapterPosition(), view.getId(), 0, "Delete Group");//groupId, itemId, order, title
+
+
+
+        }
+
+
+
     }
 
 
@@ -325,7 +349,11 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                         intent.putExtra("groupText", groupListData.getGroupText());
                         intent.putExtra("groupImage", groupListData.getImagePath());
                         intent.putExtra("groupId", groupListData.getGroupId());
-                        view.getContext().startActivity(intent);
+                        if (!isClicked) {
+                            isClicked = !isClicked;
+                            view.getContext().startActivity(intent);
+
+                        }
 
 
                     } else if (response.equals("User already a member of the client with Status Blocked")) {
@@ -474,6 +502,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }
+
+
+
 
 
 }

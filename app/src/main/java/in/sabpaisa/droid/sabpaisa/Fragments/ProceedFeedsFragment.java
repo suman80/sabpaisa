@@ -3,6 +3,8 @@ package in.sabpaisa.droid.sabpaisa.Fragments;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,18 +13,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -38,6 +45,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ProceedFeedsFragmentsOfflineAdapter;
+import in.sabpaisa.droid.sabpaisa.AddFeed;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.FeedData;
@@ -78,6 +86,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
     AppDbComments db;
 
 
+    MaterialRippleLayout rippleClickAdd;
 
 
     public ProceedFeedsFragment() {
@@ -92,11 +101,13 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
         recyclerView = (ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_feeds);
 
+        rippleClickAdd = (MaterialRippleLayout) rootView.findViewById(R.id.rippleClickAdd);
+
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         recyclerView.setLayoutManager(llm);
-
+        recyclerView.setMotionEventSplittingEnabled(false);
 
         linearLayoutnoDataFound = (LinearLayout) rootView.findViewById(R.id.noDataFound);
 
@@ -156,7 +167,12 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
         Log.d("sGetDataInterface", "" + sGetDataInterface);
 
-
+        rippleClickAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().startActivity(new Intent(getContext(), AddFeed.class));
+            }
+        });
 
 
         return rootView;
@@ -424,6 +440,29 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
             Log.v("PFF", "Internet Connection Not Present");
             return false;
         }
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        /*int groupId =item.getGroupId();
+        int groupId1 =item.getItemId();
+        ContextMenu.ContextMenuInfo groupId2 =item.getMenuInfo();*/
+        CharSequence title =item.getTitle();
+
+        Log.d("onContextItemSelected","PFF"/*+groupId +" "+groupId1+" "+groupId2+" "*/+title);
+
+        if (title.equals("Delete Feed")){
+
+            Toast.makeText(getContext(),item.getTitle(),Toast.LENGTH_SHORT).show();
+
+        }/*else if (title.equals("SMS")){
+            Toast.makeText(getContext(),item.getTitle(),Toast.LENGTH_SHORT).show();
+        }*/
+
+        return super.onContextItemSelected(item);
+
     }
 
 }

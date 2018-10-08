@@ -189,6 +189,8 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
                     selectedComment = Item.getCommentText();
                     String sharedUrl = Item.getCommentImage();
                     Log.d("sharedUrl"," "+sharedUrl);
+                    if(sharedUrl == null || sharedUrl.equals("null") || sharedUrl.trim().isEmpty())
+                        sharedUrl = null;
 
                     if (feedDataForShare.size() > 0) {
 
@@ -224,7 +226,10 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
 
     private void sendFeedComments(final String feed_id, final String userAccessToken, final String commentData , final String sharedPath) {
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(commentData) + "&sharedPath="+sharedPath;
+
+        String url = AppConfig.Base_Url + AppConfig.App_api + "addFeedsComments?feed_id=" + feed_id + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(commentData);
+        if(sharedPath != null)
+            url += "&sharedPath="+sharedPath;
 
         Log.d("urlSendFeed"," "+url);
 
@@ -298,7 +303,10 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
 
     private void sendGroupComments(final String GroupId, final String userAccessToken, final String commentData , final String sharedPath) {
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(commentData) +"&sharedPath="+sharedPath;
+        String url = AppConfig.Base_Url + AppConfig.App_api + "/addGroupsComments?group_id=" + GroupId + "&userAccessToken=" + userAccessToken + "&comment_text=" + URLEncoder.encode(commentData);
+
+        if(sharedPath != null)
+            url += "&sharedPath="+sharedPath;
 
         Log.d("urlSendGrp"," "+url);
 

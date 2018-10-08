@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,18 +38,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragment;
 import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 
 
-public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyViewHolder> {
+public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyViewHolder>  {
 
     private ArrayList<FeedData> mainFeedDataList;
     ImageLoader imageLoader;
     Context context;
     String popup="Feeds";
 
+    public static boolean isClicked=false;
 
     public MainFeedAdapter(ArrayList<FeedData> countryList, Context context) {
         this.mainFeedDataList = countryList;
@@ -155,7 +158,12 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 intent.putExtra("feedImage", mainFeedData.getImagePath());
                 intent.putExtra("feedLogo", mainFeedData.getLogoPath());
                 intent.putExtra("feedId", mainFeedData.getFeedId());
-                view.getContext().startActivity(intent);
+
+                if (!isClicked) {
+                    isClicked = !isClicked;
+                    view.getContext().startActivity(intent);
+
+                }
             }
         });
 
@@ -179,7 +187,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
     /**
      * View holder class
      */
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public  class MyViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         public TextView main_feed_description, main_feed_name, main_feed_creation_time;
         ImageView client_Image, cilent_Logo;
         LinearLayout linearLayout_feed;
@@ -194,8 +202,26 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             cilent_Logo = (ImageView) view.findViewById(R.id.client_Logo);
             linearLayout_feed = (LinearLayout)view.findViewById(R.id.linearLayout_feed);
             rippleClick = (MaterialRippleLayout)view.findViewById(R.id.rippleClick);
+
+//            String test = "test";
+//            if(test.isEmpty())
+               view.setOnCreateContextMenuListener(this);
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            Log.d("onCreateContextMenu","FEED");
+
+            contextMenu.setHeaderTitle("Select The Action");
+            contextMenu.add(this.getAdapterPosition(), view.getId(), 0, "Delete Feed");//groupId, itemId, order, title
+
+
+
+        }
+
+
     }
+
 
 
 }

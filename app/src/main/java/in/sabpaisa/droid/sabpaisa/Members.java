@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -22,6 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -67,6 +70,8 @@ public class Members extends Fragment {
     AppDbComments db;
     ArrayList<MemberOfflineDataModel> memberOfflineDataModelArrayList;
 
+    MaterialRippleLayout rippleClickAdd;
+
     public Members() {
         // Required empty public cons
         // tructor
@@ -80,10 +85,13 @@ public class Members extends Fragment {
         rootView= inflater.inflate(R.layout.fragment_members, container, false);
         linearLayoutnoDataFound = (LinearLayout)rootView.findViewById(R.id.noDataFound);
         recycler_view_Member = (ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_Member);
+        rippleClickAdd = (MaterialRippleLayout)rootView.findViewById(R.id.rippleClickAdd);
+
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recycler_view_Member.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         recycler_view_Member.setLayoutManager(llm);
+        recycler_view_Member.setMotionEventSplittingEnabled(false);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");
@@ -127,6 +135,14 @@ public class Members extends Fragment {
 
 
         }
+
+
+        rippleClickAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().startActivity(new Intent(getContext(),AddMember.class));
+            }
+        });
 
         return rootView;
     }
@@ -344,6 +360,29 @@ public class Members extends Fragment {
             Log.v("PGF", "Internet Connection Not Present");
             return false;
         }
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        /*int groupId =item.getGroupId();
+        int groupId1 =item.getItemId();
+        ContextMenu.ContextMenuInfo groupId2 =item.getMenuInfo();*/
+        CharSequence title =item.getTitle();
+
+        Log.d("onContextItemSelected","Member"/*+groupId +" "+groupId1+" "+groupId2+" "*/+title);
+
+        if (title.equals("Delete Member")){
+
+            Toast.makeText(getContext(),item.getTitle(),Toast.LENGTH_SHORT).show();
+
+        }/*else if (title.equals("SMS")){
+            Toast.makeText(getContext(),item.getTitle(),Toast.LENGTH_SHORT).show();
+        }*/
+
+        return super.onContextItemSelected(item);
+
     }
 
 

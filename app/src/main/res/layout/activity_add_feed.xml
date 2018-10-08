@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".AddFeed">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Add Feeds"
+            android:textColor="@color/bg_orange"
+            android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feed Name :"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/editText_FeedName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_edittext"
+            android:hint="Feed Name"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            android:layout_marginLeft="7dp"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        >
+
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="Feed Description :"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editText_FeedDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_edittext"
+            android:singleLine="true"
+            android:hint="Feed Description"
+            android:inputType="textPersonName"
+            android:layout_marginTop="10dp"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.5"
+            >
+
+            <ImageView
+                android:id="@+id/img_FeedImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/textView7"
+                app:srcCompat="@drawable/appicon"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Feed Image"
+                android:textColor="@color/bg_orange"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.5"
+            >
+
+            <ImageView
+                android:id="@+id/img_FeedLogo"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/textView7"
+                app:srcCompat="@drawable/appicon"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Feed Logo"
+                android:textColor="@color/bg_orange"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp"
+        >
+
+        <Button
+            android:id="@+id/btn_Cancel"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_button"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            android:layout_weight="0.5"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            />
+
+        <Button
+            android:id="@+id/btn_Save"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_button"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:layout_weight="0.5"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            />
+
+
+    </LinearLayout>
+
+
+    </LinearLayout>

@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa.Fragments;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -23,6 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -38,6 +41,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ProceedGroupsFragmentsOfflineAdapter;
+import in.sabpaisa.droid.sabpaisa.AddGroup;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
@@ -84,6 +88,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         // Required empty public constructor
     }
 
+    MaterialRippleLayout rippleClickAdd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,10 +101,14 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         rootView = inflater.inflate(R.layout.fragments_groups, container, false);
         linearLayoutnoDataFound = (LinearLayout) rootView.findViewById(R.id.noDataFound);
         groupList = (ShimmerRecyclerView) rootView.findViewById(R.id.groupList);
+
+        rippleClickAdd = (MaterialRippleLayout) rootView.findViewById(R.id.rippleClickAdd);
+
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         groupList.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         groupList.setLayoutManager(llm);
+        groupList.setMotionEventSplittingEnabled(false);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId = sharedPreferences.getString("clientId", "abc");
@@ -165,6 +174,13 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
 
         }
+
+        rippleClickAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().startActivity(new Intent(getContext(), AddGroup.class));
+            }
+        });
 
         return rootView;
     }
@@ -457,6 +473,29 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
             Log.v("PGF", "Internet Connection Not Present");
             return false;
         }
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        /*int groupId =item.getGroupId();
+        int groupId1 =item.getItemId();
+        ContextMenu.ContextMenuInfo groupId2 =item.getMenuInfo();*/
+        CharSequence title =item.getTitle();
+
+        Log.d("onContextItemSelected","PFF"/*+groupId +" "+groupId1+" "+groupId2+" "*/+title);
+
+        if (title.equals("Delete Group")){
+
+            Toast.makeText(getContext(),item.getTitle(),Toast.LENGTH_SHORT).show();
+
+        }/*else if (title.equals("SMS")){
+            Toast.makeText(getContext(),item.getTitle(),Toast.LENGTH_SHORT).show();
+        }*/
+
+        return super.onContextItemSelected(item);
+
     }
 
 
