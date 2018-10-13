@@ -78,6 +78,8 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
 
     String userAccessToken;
 
+    //test
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
