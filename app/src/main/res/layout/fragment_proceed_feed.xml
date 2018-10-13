@@ -29,10 +29,13 @@
 
 
     <FrameLayout
+        android:id="@+id/framelayoutAddFeed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:layout_behavior="in.sabpaisa.droid.sabpaisa.Util.BottomNavigationBehavior">
+        app:layout_behavior="in.sabpaisa.droid.sabpaisa.Util.BottomNavigationBehavior"
+        android:visibility="gone"
+        >
 
         <com.balysv.materialripple.MaterialRippleLayout
             android:layout_width="match_parent"

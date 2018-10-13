@@ -3,7 +3,9 @@ package in.sabpaisa.droid.sabpaisa;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,15 +26,29 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHolder> {
 
@@ -52,6 +68,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
             multiSelect = true;
             menu.add("Share");
+
+            SharedPreferences sharedPreferencesRole = mContext.getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
+
+            String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
+
+            if (roleValue.equals("1") || roleValue.equals("2")) {
+                menu.add("Delete");
+            }
+
             return true;
         }
 
@@ -69,16 +94,64 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
             }*/
 
-            Log.d("selectedItems", " " + selectedItems);
+            CharSequence title = item.getTitle();
 
-            Intent intent = new Intent(mContext, SharingActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("SELECTED_LIST", selectedItems);
-            intent.putExtras(bundle);
-            mContext.startActivity(intent);
+            Log.d("CommentAdapter","onActionItemClicked "+title);
+
+
+            if (title.equals("Share")) {
+                Log.d("selectedItems", " " + selectedItems);
+                Intent intent = new Intent(mContext, SharingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("SELECTED_LIST", selectedItems);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
+
+            }
+
+
+            if (title.equals("Delete")){
+
+                item.setVisible(true);
+
+                Log.d("CommentAdapter", "InDeletePart");
+
+                SharedPreferences sharedPreferences1 = mContext.getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+                String userAccessToken = sharedPreferences1.getString("response", "123");
+
+                SharedPreferences sharedPreferences2 = mContext.getSharedPreferences(Proceed_Feed_FullScreen.MY_PREFS_FOR_FEED_ID, Context.MODE_PRIVATE);
+
+                String feed_id = sharedPreferences2.getString("feedId", null);
+
+                SharedPreferences sharedPreferences3 = mContext.getSharedPreferences(Proceed_Group_FullScreen.MY_PREFS_FOR_GROUP_ID, Context.MODE_PRIVATE);
+
+                String groupId = sharedPreferences3.getString("groupId", null);
+
+                if (feed_id != null && !feed_id.equals("") && !feed_id.isEmpty()) {
+
+                    for (CommentData commentData : selectedItems) {
+                        Log.d("CommentAdapterF", "InDeletePartComntId " + commentData.getCommentId());
+                        deleteFeedCommentData(commentData.getCommentId() + "", userAccessToken,feed_id);
+                    }
+
+                }
+
+                if (groupId != null && !groupId.equals("") && !groupId.isEmpty()) {
+
+                    for (CommentData commentData : selectedItems) {
+                        Log.d("CommentAdapterG", "InDeletePartComntId " + commentData.getCommentId());
+                        deleteGroupCommentData(commentData.getCommentId() + "", userAccessToken,groupId);
+                    }
+
+                }
+
+
+            }
 
             toolbar.setVisibility(View.VISIBLE);
             mode.finish();
+
             return true;
         }
 
@@ -636,6 +709,203 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
             Log.d("ActivityNotFndException", " " + e);
             Toast.makeText(mContext, "No application found which can open the file", Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    private void deleteFeedCommentData(final String commentId, final String userAccessToken,final String feed_id) {
+
+        String tag_string_req = "req_clients";
+
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_deleteFeedComments + "?comment_id=" + commentId +"&admin="+userAccessToken;
+
+        Log.d("CommentAdapter","deleteFeedDataURL : "+url);
+
+        StringRequest request = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+
+                Log.d("CommentAdapterFeedData", "-->" + response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1);
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("CommentAdapterResp", "" + response);
+                    Log.d("CommentAdapterStatus", "" + status);
+
+                    if (status.equals("success")){
+                        Log.d("CommentAdapterFeedData","InIfPart");
+
+
+
+                        Intent intent = new Intent(mContext,Proceed_Feed_FullScreen.class);
+                        intent.putExtra("feedId",feed_id);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        mContext.startActivity(intent);
+
+
+                    }else {
+                        Log.d("CommentAdapterFeedData","InElsePart");
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(mContext, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        });
+
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
+
+
+    }
+
+
+    private void deleteGroupCommentData(final String commentId, final String userAccessToken , final String groupId) {
+
+        String tag_string_req = "req_clients";
+
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_deleteGroupComments + "?comment_id=" + commentId +"&admin="+userAccessToken;
+
+        Log.d("CommentAdapter","deleteGRPDataURL : "+url);
+
+        StringRequest request = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+
+                Log.d("CommentAdapterGRPData", "-->" + response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1);
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("CommentAdapterResp", "" + response);
+                    Log.d("CommentAdapterStatus", "" + status);
+
+                    if (status.equals("success")){
+                        Log.d("CommentAdapterGRPData","InIfPart");
+
+
+                        Intent intent = new Intent(mContext,Proceed_Group_FullScreen.class);
+                        intent.putExtra("groupId",groupId);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        mContext.startActivity(intent);
+
+
+                    }else {
+                        Log.d("CommentAdapterGRPData","InElsePart");
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(mContext, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        });
+
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
+
+
     }
 
 }

@@ -2,10 +2,13 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.mikepenz.fastadapter.commons.utils.FastAdapterUIUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
@@ -41,6 +46,11 @@ public class AddFeed extends AppCompatActivity {
     Button btn_Cancel,btn_Save;
 
     String imageUrl;
+
+    String clientId;
+    String userAccessToken;
+
+    Bitmap feedImage,feedLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +76,48 @@ public class AddFeed extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 pickLogo();
+            }
+        });
+
+        clientId = getIntent().getStringExtra("CLIENT_ID");
+
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+        userAccessToken = sharedPreferences.getString("response", "123");
+
+        btn_Save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String feedNm = editText_FeedName.getText().toString();
+                String feedDesc = editText_FeedDescription.getText().toString();
+
+                if (feedNm == null || feedNm.equals("") || feedNm.isEmpty()){
+                    editText_FeedName.setError("Please enter the Feed Name");
+                }else if (feedDesc == null || feedDesc.equals("") || feedDesc.isEmpty()){
+                    editText_FeedDescription.setError("Please enter the Feed Description");
+                }else if (!isOnline()){
+                    AlertDialog alertDialog = new AlertDialog.Builder(AddFeed.this, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("No Internet Connection");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Please check internet connection and try again. Thank you.");
+
+
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                }else {
+                    uploadFeedData(feedImage,feedLogo,feedNm,feedDesc);
+                }
+
             }
         });
 
@@ -107,9 +159,9 @@ public class AddFeed extends AppCompatActivity {
 
                 //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                 img_FeedImage.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
-                Bitmap userImg = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
-                uploadBitmap(userImg);
+                feedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+
 
             }else if (requestCode == 300 && resultCode == RESULT_OK && data != null){
 
@@ -117,65 +169,56 @@ public class AddFeed extends AppCompatActivity {
 
                     //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                 img_FeedLogo.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
-                Bitmap userImg = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
-                uploadBitmap(userImg);
+                feedLogo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+
+
 
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
         }
 
 
     }
 
 
-    private void uploadBitmap(final Bitmap bitmap) {
+    private void uploadFeedData(final Bitmap feed_image,final Bitmap feed_logo,final String feedName,final String feedText) {
 
-        //Log.d("AddFeed", "IMG_userAccessToken" + userAccessToken);
-        //our custom volley request
-        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_UserProfileImageUpdate + "?token=" /*+ userAccessToken*/,
-                new Response.Listener<NetworkResponse>() {
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_addParticularClientsFeeds + "?client_Id="+clientId+"&feed_text="+feedText+"&feed_name="+feedName+"&admin="+userAccessToken;
+
+        Log.d("AddFeed","_URL "+url);
+
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        Log.d("AddFeed", "IMG_Res" + response);
+                        Log.d("AddFeed", "Res_" + response);
                         try {
 
                             JSONObject obj = new JSONObject(new String(response.data));
-                            Log.d("AddFeed", "IMG_Res" + obj);
+
+                            Log.d("AddFeed", "ResJsonObj_" + obj);
+
                             final String status = obj.getString("status");
 
                             if (status.equals("success")) {
 
+                                Log.d("AddFeed","InIfPart");
 
-                                AlertDialog alertDialog = new AlertDialog.Builder(AddFeed.this, R.style.MyDialogTheme).create();
+                                Toast.makeText(AddFeed.this,"Feed has been added",Toast.LENGTH_SHORT).show();
 
-                                // Setting Dialog Title
-                                alertDialog.setTitle("User Image Update");
+                                String clientImageURLPath = FullViewOfClientsProceed.clientImageURLPath;
 
-                                // Setting Dialog Message
-                                alertDialog.setMessage("Your Image Has Been Updated successfully !");
+                                Log.d("MainFeedAdapter","clientImageURLPath "+clientImageURLPath);
 
-                                // Setting Icon to Dialog
-                                //  alertDialog.setIcon(R.drawable.tick);
+                                Intent intent = new Intent(AddFeed.this,FullViewOfClientsProceed.class);
+                                intent.putExtra("clientImagePath",clientImageURLPath);
+                                startActivity(intent);
 
-                                // Setting OK Button
-                                alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent();
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                                      /*  Intent intent = new Intent(AddFeed.this,AddFeed.class);
-                                        startActivity(intent);*/
-                                    }
-                                });
-
-                                // Showing Alert Message
-                                alertDialog.show();
 
                             } else {
-                                Toast.makeText(AddFeed.this, "Image Upload Failed !", Toast.LENGTH_SHORT).show();
+
+                                Log.d("AddFeed","InElsePart");
 
                             }
 
@@ -189,7 +232,7 @@ public class AddFeed extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Error In Upoload", error.toString());
 
-                        Toast.makeText(AddFeed.this, "Image Upload Failed !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddFeed.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
                 }) {
 
@@ -212,8 +255,19 @@ public class AddFeed extends AppCompatActivity {
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
-                String imagename = "SabPaisa_UserImage";
-                params.put("userImage", new DataPart(imagename + ".jpeg", getFileDataFromDrawable(bitmap)));
+                String feedImage = "SabPaisa_FeedImage";
+                String feedLogo = "SabPaisa_FeedLogo";
+
+                if (feed_image != null)
+                    params.put("feed_image", new DataPart(feedImage + ".jpeg", getFileDataFromDrawable(feed_image)));
+//                else{
+//                    params.put("feed_image",null);
+//                }
+                if(feed_logo != null)
+                     params.put("feed_logo", new DataPart(feedLogo + ".jpeg", getFileDataFromDrawable(feed_logo)));
+//                else{
+//                    params.put("feed_logo",null);
+//                }
                 return params;
             }
         };
@@ -237,6 +291,21 @@ public class AddFeed extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("AddFeed", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
 
 
 }

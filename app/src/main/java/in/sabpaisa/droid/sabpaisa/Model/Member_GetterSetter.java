@@ -8,10 +8,12 @@ public class Member_GetterSetter {
    public String id,userId,groupId,timestampOfJoining,status,fullName,
             emailId,phoneNumber,deviceId,userImageUrl,uin,CONTACT_NUMBER;
 
+   boolean isSelected = false;
+
     public Member_GetterSetter() {
     }
 
-    public Member_GetterSetter(String id, String userId, String groupId, String timestampOfJoining, String status, String fullName, String emailId, String phoneNumber, String deviceId, String userImageUrl, String uin, String CONTACT_NUMBER) {
+   /* public Member_GetterSetter(String id, String userId, String groupId, String timestampOfJoining, String status, String fullName, String emailId, String phoneNumber, String deviceId, String userImageUrl, String uin, String CONTACT_NUMBER) {
         this.id = id;
         this.userId = userId;
         this.groupId = groupId;
@@ -25,7 +27,23 @@ public class Member_GetterSetter {
         this.uin = uin;
         this.CONTACT_NUMBER = CONTACT_NUMBER;
     }
+*/
 
+    public Member_GetterSetter(String id, String userId, String groupId, String timestampOfJoining, String status, String fullName, String emailId, String phoneNumber, String deviceId, String userImageUrl, String uin, String CONTACT_NUMBER, boolean isSelected) {
+        this.id = id;
+        this.userId = userId;
+        this.groupId = groupId;
+        this.timestampOfJoining = timestampOfJoining;
+        this.status = status;
+        this.fullName = fullName;
+        this.emailId = emailId;
+        this.phoneNumber = phoneNumber;
+        this.deviceId = deviceId;
+        this.userImageUrl = userImageUrl;
+        this.uin = uin;
+        this.CONTACT_NUMBER = CONTACT_NUMBER;
+        this.isSelected = isSelected;
+    }
 
     public String getId() {
         return id;
@@ -121,5 +139,13 @@ public class Member_GetterSetter {
 
     public void setCONTACT_NUMBER(String CONTACT_NUMBER) {
         this.CONTACT_NUMBER = CONTACT_NUMBER;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

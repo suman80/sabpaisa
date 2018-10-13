@@ -21,12 +21,19 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.balysv.materialripple.MaterialRippleLayout;
@@ -50,10 +57,12 @@ import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MainFeedAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
+import in.sabpaisa.droid.sabpaisa.UIN;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
@@ -88,11 +97,15 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
     MaterialRippleLayout rippleClickAdd;
 
+    FrameLayout framelayoutAddFeed;
+
+    String feedId;
+    
+
 
     public ProceedFeedsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -103,6 +116,8 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
         rippleClickAdd = (MaterialRippleLayout) rootView.findViewById(R.id.rippleClickAdd);
 
+        framelayoutAddFeed = (FrameLayout) rootView.findViewById(R.id.framelayoutAddFeed);
+
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
@@ -110,6 +125,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
         recyclerView.setMotionEventSplittingEnabled(false);
 
         linearLayoutnoDataFound = (LinearLayout) rootView.findViewById(R.id.noDataFound);
+
 
         ///////////////////////DB/////////////////////////////////
         db = new AppDbComments(getContext());
@@ -167,12 +183,24 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
         Log.d("sGetDataInterface", "" + sGetDataInterface);
 
+        SharedPreferences sharedPreferencesRole = getContext().getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
+
+        String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
+
+        if (roleValue.equals("1")) {
+
+            framelayoutAddFeed.setVisibility(View.VISIBLE);
+        }
+
         rippleClickAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().startActivity(new Intent(getContext(), AddFeed.class));
+                Intent intent = new Intent(getContext(),AddFeed.class);
+                intent.putExtra("CLIENT_ID",clientId);
+                getActivity().startActivity(intent);
             }
         });
+
 
 
         return rootView;
@@ -224,6 +252,9 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                             final FeedData feedData = new FeedData();
                             feedData.setClientId(jsonObject1.getString("clientId"));
                             feedData.setFeedId(jsonObject1.getString("feedId"));
+
+                            feedId = jsonObject1.getString("feedId");
+
                             feedData.setFeedName(jsonObject1.getString("feedName"));
                             feedData.setFeedText(jsonObject1.getString("feedText"));
                             feedData.setCreatedDate(jsonObject1.getString("createdDate"));
@@ -443,26 +474,6 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
     }
 
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
 
-        /*int groupId =item.getGroupId();
-        int groupId1 =item.getItemId();
-        ContextMenu.ContextMenuInfo groupId2 =item.getMenuInfo();*/
-        CharSequence title =item.getTitle();
-
-        Log.d("onContextItemSelected","PFF"/*+groupId +" "+groupId1+" "+groupId2+" "*/+title);
-
-        if (title.equals("Delete Feed")){
-
-            Toast.makeText(getContext(),item.getTitle(),Toast.LENGTH_SHORT).show();
-
-        }/*else if (title.equals("SMS")){
-            Toast.makeText(getContext(),item.getTitle(),Toast.LENGTH_SHORT).show();
-        }*/
-
-        return super.onContextItemSelected(item);
-
-    }
 
 }

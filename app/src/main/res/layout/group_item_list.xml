@@ -71,11 +71,20 @@
                     android:layout_weight="1"
                     android:background="@drawable/background_button"
                     android:text="Join / Enter"
-
                     android:textAllCaps="false"
-
                     android:textColor="#fff" />
-                <!--</LinearLayout>-->
+
+                <ImageView
+                    android:id="@+id/imgPopUpMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_more_vert"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    />
+
+
+                </LinearLayout>
 
 
             </LinearLayout>
@@ -117,6 +126,4 @@
 
         </LinearLayout>
 
-
-    </LinearLayout>
 </com.balysv.materialripple.MaterialRippleLayout>

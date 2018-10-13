@@ -72,6 +72,7 @@ public class UIN extends AppCompatActivity {
     public static String clientImageURLPath = null;
     public static String clientLogoPath = null;
 
+    public static String SHARED_PREF_FOR_CHECK_USER = "checkUserForAdmin";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +140,11 @@ public class UIN extends AppCompatActivity {
         editor.putString("userAccessToken", userAccessToken);
         editor.commit();
 
+        checkUserForAdmin(userAccessToken,clientId);
+
     }
+
+
 
     public void onVerifyBtn(View view) {
         if (!isOnline()
@@ -366,73 +371,6 @@ public class UIN extends AppCompatActivity {
         loading.show();
     }
 
-    private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadLogoTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
-    }
-
-
-    //Code for fetching image from server
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
-    }
 
     private void getUserImage(final String token) {
 
@@ -664,6 +602,104 @@ public class UIN extends AppCompatActivity {
 
 
     }
+
+
+    private void checkUserForAdmin(String userAccessToken, String clientId) {
+
+        String tag_string_req = "req_clients";
+
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_UserRole + "?token=" + userAccessToken +"&clientId="+clientId;
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+
+                Log.d("checkUserForAdmin", "-->" + response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1);
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("checkUserForAdminResp", "" + response);
+                    Log.d("checkUserForAdminStatus", "" + status);
+
+                    if (status.equals("success")){
+
+
+                        Log.d("UIN_CheckForAdmin","InIfPart");
+
+                        SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREF_FOR_CHECK_USER, MODE_PRIVATE).edit();
+                        editor.putString("USER_ROLE", response);
+                        editor.commit();
+
+                    }else {
+                        Log.d("UIN_CheckForAdmin","InElsePart");
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        });
+
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
+
+    }
+
+
+
+
 }
 
 

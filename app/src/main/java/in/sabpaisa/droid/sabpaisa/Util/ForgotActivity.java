@@ -50,6 +50,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
@@ -58,11 +59,7 @@ import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.RegisterActivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
@@ -75,122 +72,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.facebook.LoginActivity;
 import com.goodiebag.pinview.Pinview;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.security.ProviderInstaller;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
-
-import android.Manifest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.provider.Settings;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.telephony.TelephonyManager;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.facebook.LoginActivity;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
-
-import android.Manifest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 import in.sabpaisa.droid.sabpaisa.TLSSocketFactory;
-import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
-import in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference;
-import in.sabpaisa.droid.sabpaisa.Util.OtpDialog;
-import in.sabpaisa.droid.sabpaisa.Util.SharedPref;
-import in.sabpaisa.droid.sabpaisa.Util.SmsListener;
-import in.sabpaisa.droid.sabpaisa.Util.SmsReceiver;
-
-import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
-import in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference;
-import in.sabpaisa.droid.sabpaisa.Util.OtpDialog;
-import in.sabpaisa.droid.sabpaisa.Util.SharedPref;
-import in.sabpaisa.droid.sabpaisa.Util.SmsListener;
-import in.sabpaisa.droid.sabpaisa.Util.SmsReceiver;
 
 public class ForgotActivity extends AppCompatActivity {
     private static final String TAG = ForgotActivity.class.getSimpleName();

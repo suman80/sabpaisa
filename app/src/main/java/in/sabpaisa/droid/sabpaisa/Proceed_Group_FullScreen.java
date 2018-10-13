@@ -73,7 +73,7 @@ import com.braunster.chatsdk.network.BNetworkManager;
 import com.bumptech.glide.Glide;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.olive.upi.transport.model.lib.NameValuePair;
-import com.parse.signpost.http.HttpResponse;
+
 import com.rockerhieu.emojicon.EmojiconEditText;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -324,6 +324,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_FOR_GROUP_ID, MODE_PRIVATE).edit();
         editor.putString("groupId", GroupId);
         editor.apply();
+
+        SharedPreferences.Editor editor1 = getSharedPreferences(Proceed_Feed_FullScreen.MY_PREFS_FOR_FEED_ID, MODE_PRIVATE).edit();
+        editor1.clear();
+        editor1.commit();
+
+        Log.d("editor1"," "+editor1);
 
         shareViewFrameLayout = (FrameLayout) findViewById(R.id.shareViewFrameLayout);
         attachmentFile = (ImageView) findViewById(R.id.attachmentFile);

@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ import in.sabpaisa.droid.sabpaisa.MainGroupAdapter1;
 import in.sabpaisa.droid.sabpaisa.Model.GroupDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
+import in.sabpaisa.droid.sabpaisa.UIN;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
@@ -90,6 +92,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
     MaterialRippleLayout rippleClickAdd;
 
+    FrameLayout framelayoutAddGroup;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +107,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         groupList = (ShimmerRecyclerView) rootView.findViewById(R.id.groupList);
 
         rippleClickAdd = (MaterialRippleLayout) rootView.findViewById(R.id.rippleClickAdd);
+        framelayoutAddGroup = (FrameLayout) rootView.findViewById(R.id.framelayoutAddGroup);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -175,10 +180,22 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
         }
 
+        SharedPreferences sharedPreferencesRole = getContext().getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
+
+        String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
+
+        if (roleValue.equals("1")) {
+
+            framelayoutAddGroup.setVisibility(View.VISIBLE);
+        }
+
+
         rippleClickAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().startActivity(new Intent(getContext(), AddGroup.class));
+                Intent intent = new Intent(getContext(),AddGroup.class);
+                intent.putExtra("CLIENT_ID",clientId);
+                getActivity().startActivity(intent);
             }
         });
 
@@ -476,27 +493,6 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     }
 
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-
-        /*int groupId =item.getGroupId();
-        int groupId1 =item.getItemId();
-        ContextMenu.ContextMenuInfo groupId2 =item.getMenuInfo();*/
-        CharSequence title =item.getTitle();
-
-        Log.d("onContextItemSelected","PFF"/*+groupId +" "+groupId1+" "+groupId2+" "*/+title);
-
-        if (title.equals("Delete Group")){
-
-            Toast.makeText(getContext(),item.getTitle(),Toast.LENGTH_SHORT).show();
-
-        }/*else if (title.equals("SMS")){
-            Toast.makeText(getContext(),item.getTitle(),Toast.LENGTH_SHORT).show();
-        }*/
-
-        return super.onContextItemSelected(item);
-
-    }
 
 
 }

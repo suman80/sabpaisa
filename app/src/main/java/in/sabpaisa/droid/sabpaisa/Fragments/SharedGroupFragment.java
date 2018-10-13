@@ -133,7 +133,8 @@ public class SharedGroupFragment extends Fragment {
                             groupListData.setImagePath(jsonObject1.getString("imagePath"));
                             groupListData.setLogoPath(jsonObject1.getString("logoPath"));
                             groupListData.setMemberStatus(jsonObjectX.getString("memberStatus"));
-                            groupArrayList.add(groupListData);
+                            if(groupListData.getMemberStatus().equals("Approved"))
+                                    groupArrayList.add(groupListData);
 
                         }
                         Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());

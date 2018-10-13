@@ -12,11 +12,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -71,6 +73,7 @@ public class Members extends Fragment {
     ArrayList<MemberOfflineDataModel> memberOfflineDataModelArrayList;
 
     MaterialRippleLayout rippleClickAdd;
+    FrameLayout framelayoutAdd;
 
     public Members() {
         // Required empty public cons
@@ -87,11 +90,32 @@ public class Members extends Fragment {
         recycler_view_Member = (ShimmerRecyclerView) rootView.findViewById(R.id.recycler_view_Member);
         rippleClickAdd = (MaterialRippleLayout)rootView.findViewById(R.id.rippleClickAdd);
 
+        framelayoutAdd = (FrameLayout)rootView.findViewById(R.id.framelayoutAdd);
+
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recycler_view_Member.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         recycler_view_Member.setLayoutManager(llm);
         recycler_view_Member.setMotionEventSplittingEnabled(false);
+
+
+        //For Show and Hide add button fragment (Checks the pos of recycler view)
+       /* recycler_view_Member.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(-1)) {
+                    //Toast.makeText(getContext(), "Last", Toast.LENGTH_LONG).show();
+                    framelayoutAdd.setVisibility(View.VISIBLE);
+
+                }else if (!recyclerView.canScrollVertically(1)){
+                    framelayoutAdd.setVisibility(View.GONE);
+                }
+            }
+        });
+*/
+
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");

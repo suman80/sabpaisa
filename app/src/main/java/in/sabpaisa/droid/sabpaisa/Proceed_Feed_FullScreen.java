@@ -38,6 +38,7 @@ import android.text.format.DateFormat;
 
 import android.util.Log;
 
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,11 +52,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 
 import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
@@ -64,7 +70,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.github.ybq.android.spinkit.SpinKitView;
-import com.parse.signpost.http.HttpResponse;
+
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
@@ -328,6 +334,12 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         editor.putString("feedId", feed_id);
         editor.apply();
 
+        SharedPreferences.Editor editor1 = getSharedPreferences(Proceed_Group_FullScreen.MY_PREFS_FOR_GROUP_ID, MODE_PRIVATE).edit();
+        editor1.clear();
+        editor1.commit();
+
+        Log.d("editor1"," "+editor1);
+
         shareViewFrameLayout = (FrameLayout) findViewById(R.id.shareViewFrameLayout);
         attachmentFile = (ImageView) findViewById(R.id.attachmentFile);
         shareDocument = (LinearLayout) findViewById(R.id.shareDocument);
@@ -440,7 +452,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     }
 
 
-    private void loadCommentListView(ArrayList<CommentData> arrayList) {
+    /*private*/protected void loadCommentListView(ArrayList<CommentData> arrayList) {
         final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
         final CommentAdapter ca = new CommentAdapter(arrayList, getApplicationContext(), toolbar);
         rv.setAdapter(ca);
@@ -1439,5 +1451,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         }
 
     }*/
+
+
+
 }
 

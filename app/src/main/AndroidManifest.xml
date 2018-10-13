@@ -254,7 +254,8 @@
         <activity android:name=".DisplayActivity" />
         <activity android:name=".AddFeed" />
         <activity android:name=".AddGroup" />
-        <activity android:name=".AddMember"></activity>
+        <activity android:name=".AddMember" />
+        <activity android:name=".AddMemberTo_A_Group"></activity>
     </application>
 
 </manifest>

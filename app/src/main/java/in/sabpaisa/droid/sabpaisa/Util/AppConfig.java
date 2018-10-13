@@ -38,4 +38,14 @@ public class AppConfig {
     public static String URl_PayMesage = "paymentQueryMessage?token=";
     public static String URl_FCM_TOKEN = "FCMToken?";
 
+    public static String URL_UserRole = "role";
+    public static String URL_addParticularClientsFeeds = "addParticularClientsFeeds";
+    public static String URL_deleteFeed = "deleteFeed";
+    public static String URL_deleteFeedComments = "deleteFeedComments";
+    public static String URL_addParticularClientsGroups = "addParticularClientsGroups";
+    public static String URL_deleteGroup = "deleteGroup";
+    public static String URL_deleteGroupComments = "deleteGroupComments";
+    public static String URL_addMemberList = "addMemberList";
+    public static String URL_addMember = "addMember";
+
 }

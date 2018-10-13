@@ -50,7 +50,7 @@
             android:gravity="center|left"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -58,7 +58,7 @@
 
                 <TextView
                     android:id="@+id/main_feed_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
@@ -68,10 +68,22 @@
                     android:text="Group Name"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_small" />
+                    android:textSize="@dimen/text_size_small"
+                    android:layout_weight="0.2"
+                    />
+
+                <ImageView
+                    android:id="@+id/imgPopUpMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_more_vert"
+                    android:layout_gravity="end"
+                    android:layout_weight="0.8"
+                    android:visibility="gone"
+                    />
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
