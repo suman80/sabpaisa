@@ -6,30 +6,19 @@ package in.sabpaisa.droid.sabpaisa.Model;
 
 public class Member_GetterSetter {
    public String id,userId,groupId,timestampOfJoining,status,fullName,
-            emailId,phoneNumber,deviceId,userImageUrl,uin,CONTACT_NUMBER;
+            emailId,phoneNumber,deviceId,userImageUrl,uin,CONTACT_NUMBER,userAccessToken;
 
-   boolean isSelected = false;
+   boolean isSelected ;
+
+   boolean checked;
+
+   public String uin_Role,roleId,roleName;
 
     public Member_GetterSetter() {
     }
 
-   /* public Member_GetterSetter(String id, String userId, String groupId, String timestampOfJoining, String status, String fullName, String emailId, String phoneNumber, String deviceId, String userImageUrl, String uin, String CONTACT_NUMBER) {
-        this.id = id;
-        this.userId = userId;
-        this.groupId = groupId;
-        this.timestampOfJoining = timestampOfJoining;
-        this.status = status;
-        this.fullName = fullName;
-        this.emailId = emailId;
-        this.phoneNumber = phoneNumber;
-        this.deviceId = deviceId;
-        this.userImageUrl = userImageUrl;
-        this.uin = uin;
-        this.CONTACT_NUMBER = CONTACT_NUMBER;
-    }
-*/
 
-    public Member_GetterSetter(String id, String userId, String groupId, String timestampOfJoining, String status, String fullName, String emailId, String phoneNumber, String deviceId, String userImageUrl, String uin, String CONTACT_NUMBER, boolean isSelected) {
+    public Member_GetterSetter(String id, String userId, String groupId, String timestampOfJoining, String status, String fullName, String emailId, String phoneNumber, String deviceId, String userImageUrl, String uin, String CONTACT_NUMBER, String userAccessToken, boolean isSelected, boolean checked, String uin_Role, String roleId, String roleName) {
         this.id = id;
         this.userId = userId;
         this.groupId = groupId;
@@ -42,7 +31,12 @@ public class Member_GetterSetter {
         this.userImageUrl = userImageUrl;
         this.uin = uin;
         this.CONTACT_NUMBER = CONTACT_NUMBER;
+        this.userAccessToken = userAccessToken;
         this.isSelected = isSelected;
+        this.checked = checked;
+        this.uin_Role = uin_Role;
+        this.roleId = roleId;
+        this.roleName = roleName;
     }
 
     public String getId() {
@@ -147,5 +141,47 @@ public class Member_GetterSetter {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public String getUserAccessToken() {
+        return userAccessToken;
+    }
+
+    public void setUserAccessToken(String userAccessToken) {
+        this.userAccessToken = userAccessToken;
+    }
+
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+
+    public String getUin_Role() {
+        return uin_Role;
+    }
+
+    public void setUin_Role(String uin_Role) {
+        this.uin_Role = uin_Role;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 }

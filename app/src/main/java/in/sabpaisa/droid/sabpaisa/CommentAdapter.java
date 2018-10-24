@@ -105,6 +105,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("SELECTED_LIST", selectedItems);
                 intent.putExtras(bundle);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
 
             }
@@ -740,16 +741,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                     if (status.equals("success")){
                         Log.d("CommentAdapterFeedData","InIfPart");
 
-
+                        String FeedsNm = Proceed_Feed_FullScreen.FeedsNm;
 
                         Intent intent = new Intent(mContext,Proceed_Feed_FullScreen.class);
                         intent.putExtra("feedId",feed_id);
+                        intent.putExtra("feedName",FeedsNm);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
 
 
                     }else {
                         Log.d("CommentAdapterFeedData","InElsePart");
+                        Toast.makeText(mContext,response,Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -839,15 +843,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                     if (status.equals("success")){
                         Log.d("CommentAdapterGRPData","InIfPart");
 
+                        String GroupsNm = Proceed_Group_FullScreen.GroupsNm;
 
                         Intent intent = new Intent(mContext,Proceed_Group_FullScreen.class);
                         intent.putExtra("groupId",groupId);
+                        intent.putExtra("groupName",GroupsNm);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
 
 
                     }else {
                         Log.d("CommentAdapterGRPData","InElsePart");
+                        Toast.makeText(mContext,response,Toast.LENGTH_SHORT).show();
                     }
 
 

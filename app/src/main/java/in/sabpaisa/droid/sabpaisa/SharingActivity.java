@@ -213,6 +213,8 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
                 if (groupDataForShare.size() + feedDataForShare.size() > 0) {
                     Intent intent = new Intent(SharingActivity.this, FullViewOfClientsProceed.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    MainFeedAdapter.isClicked=false;
+                    MainGroupAdapter1.isClicked=false;
                     startActivity(intent);
                 }
 

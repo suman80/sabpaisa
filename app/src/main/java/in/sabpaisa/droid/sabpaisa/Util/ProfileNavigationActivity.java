@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -25,6 +26,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -752,8 +754,22 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                         }
                     });
 
-                    // Showing Alert Message
-                    alertDialog.show();
+                    //Added on 24 oct 2018
+
+                    try {
+
+                        //show dialog
+
+                        // Showing Alert Message
+
+                        alertDialog.show();
+
+                    }catch (WindowManager.BadTokenException e){
+                        Log.d("PNA","WindowManager "+e);
+                    }
+
+
+
                     Log.e(TAG, "Update Error: " + error.getMessage());
 
                 } else if (error instanceof AuthFailureError) {

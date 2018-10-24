@@ -137,6 +137,9 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
     AppDB appDB;
 
+
+    String position;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,6 +167,10 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
 */
 
+       //24th oct 2018
+       //https://stackoverflow.com/questions/33627106/how-to-open-a-specific-fragment-page-in-viewpager-from-another-activity-button-c
+        //position = getIntent().getStringExtra("deleteFrmGrp");
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -190,6 +197,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        //viewPager.setCurrentItem(Integer.parseInt(position));
 
         //////////////////Code for adding image and text on tab bar ///////////////////////////////////////////////
 

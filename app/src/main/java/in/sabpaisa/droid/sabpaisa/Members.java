@@ -75,6 +75,8 @@ public class Members extends Fragment {
     MaterialRippleLayout rippleClickAdd;
     FrameLayout framelayoutAdd;
 
+    LinearLayout linearLayoutAddMemberWhenNoData;
+
     public Members() {
         // Required empty public cons
         // tructor
@@ -91,6 +93,8 @@ public class Members extends Fragment {
         rippleClickAdd = (MaterialRippleLayout)rootView.findViewById(R.id.rippleClickAdd);
 
         framelayoutAdd = (FrameLayout)rootView.findViewById(R.id.framelayoutAdd);
+
+        linearLayoutAddMemberWhenNoData = (LinearLayout)rootView.findViewById(R.id.linearLayoutAddMemberWhenNoData);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -115,6 +119,17 @@ public class Members extends Fragment {
             }
         });
 */
+
+
+        SharedPreferences sharedPreferencesRole = getContext().getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
+
+        String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
+
+        if (roleValue.equals("1")) {
+
+            framelayoutAdd.setVisibility(View.VISIBLE);
+        }
+
 
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
@@ -168,6 +183,13 @@ public class Members extends Fragment {
             }
         });
 
+        linearLayoutAddMemberWhenNoData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().startActivity(new Intent(getContext(),AddMember.class));
+            }
+        });
+
         return rootView;
     }
 
@@ -208,7 +230,10 @@ public class Members extends Fragment {
 
                         //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
 
-                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        //linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        linearLayoutAddMemberWhenNoData.setVisibility(View.VISIBLE);
+                        framelayoutAdd.setVisibility(View.GONE);
+
                         recycler_view_Member.setVisibility(View.GONE);
 
                     }else {
@@ -229,6 +254,8 @@ public class Members extends Fragment {
                             member_getterSetter.setUserId(jsonObject1.getString("userId"));
                             member_getterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
                             member_getterSetter.setFullName(jsonObject1.getString("fullName"));
+                            member_getterSetter.setUserAccessToken(jsonObject1.getString("userAccessToken"));
+                            member_getterSetter.setUin_Role(jsonObject1.getString("uin_Role"));
 
 
                             member_getterSetterArrayList.add(member_getterSetter);
@@ -387,27 +414,27 @@ public class Members extends Fragment {
     }
 
 
-    @Override
+    /*@Override
     public boolean onContextItemSelected(MenuItem item) {
 
-        /*int groupId =item.getGroupId();
+        *//*int groupId =item.getGroupId();
         int groupId1 =item.getItemId();
-        ContextMenu.ContextMenuInfo groupId2 =item.getMenuInfo();*/
+        ContextMenu.ContextMenuInfo groupId2 =item.getMenuInfo();*//*
         CharSequence title =item.getTitle();
 
-        Log.d("onContextItemSelected","Member"/*+groupId +" "+groupId1+" "+groupId2+" "*/+title);
+        Log.d("onContextItemSelected","Member"*//*+groupId +" "+groupId1+" "+groupId2+" "*//*+title);
 
         if (title.equals("Delete Member")){
 
             Toast.makeText(getContext(),item.getTitle(),Toast.LENGTH_SHORT).show();
 
-        }/*else if (title.equals("SMS")){
+        }*//*else if (title.equals("SMS")){
             Toast.makeText(getContext(),item.getTitle(),Toast.LENGTH_SHORT).show();
-        }*/
+        }*//*
 
         return super.onContextItemSelected(item);
 
-    }
+    }*/
 
 
 

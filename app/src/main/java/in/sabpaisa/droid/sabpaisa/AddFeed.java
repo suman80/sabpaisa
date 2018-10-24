@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +55,8 @@ public class AddFeed extends AppCompatActivity {
 
     Bitmap feedImage,feedLogo;
 
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +69,18 @@ public class AddFeed extends AppCompatActivity {
         img_FeedLogo = (ImageView)findViewById(R.id.img_FeedLogo);
         btn_Cancel = (Button)findViewById(R.id.btn_Cancel);
         btn_Save = (Button)findViewById(R.id.btn_Save);
+
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+
+        toolbar.setTitle("Add Feeds");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         img_FeedImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +138,13 @@ public class AddFeed extends AppCompatActivity {
             }
         });
 
+        btn_Cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
 
     }
 
@@ -157,10 +181,19 @@ public class AddFeed extends AppCompatActivity {
 
                 Uri selectedimg = data.getData();
 
-                //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                img_FeedImage.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
+                Log.d("AddFeed", "selectedimg_ " + selectedimg);
 
-                feedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+                    //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                    img_FeedImage.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
+
+                    feedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+
+                    Log.d("feedImageBitMap"," "+feedImage);
+
+                    if (feedImage == null){
+                        Toast.makeText(AddFeed.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                        img_FeedImage.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                    }
 
 
             }else if (requestCode == 300 && resultCode == RESULT_OK && data != null){
@@ -172,6 +205,12 @@ public class AddFeed extends AppCompatActivity {
 
                 feedLogo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
+                Log.d("feedImageBitMap"," "+feedLogo);
+
+                if (feedLogo == null){
+                    Toast.makeText(AddFeed.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                    img_FeedLogo.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                }
 
 
             }
@@ -185,7 +224,7 @@ public class AddFeed extends AppCompatActivity {
 
     private void uploadFeedData(final Bitmap feed_image,final Bitmap feed_logo,final String feedName,final String feedText) {
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_addParticularClientsFeeds + "?client_Id="+clientId+"&feed_text="+feedText+"&feed_name="+feedName+"&admin="+userAccessToken;
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_addParticularClientsFeeds + "?client_Id="+clientId+"&feed_text="+URLEncoder.encode(feedText)+"&feed_name="+URLEncoder.encode(feedName)+"&admin="+userAccessToken;
 
         Log.d("AddFeed","_URL "+url);
 
@@ -200,6 +239,7 @@ public class AddFeed extends AppCompatActivity {
                             Log.d("AddFeed", "ResJsonObj_" + obj);
 
                             final String status = obj.getString("status");
+                            final String returnResponse = obj.getString("response");
 
                             if (status.equals("success")) {
 
@@ -216,7 +256,10 @@ public class AddFeed extends AppCompatActivity {
                                 startActivity(intent);
 
 
-                            } else {
+                            }else if (status.equals("failed")){
+                                Toast.makeText(AddFeed.this,returnResponse,Toast.LENGTH_SHORT).show();
+                            }
+                            else {
 
                                 Log.d("AddFeed","InElsePart");
 
@@ -232,7 +275,7 @@ public class AddFeed extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Error In Upoload", error.toString());
 
-                        Toast.makeText(AddFeed.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(AddFeed.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
                 }) {
 
@@ -306,6 +349,15 @@ public class AddFeed extends AppCompatActivity {
         }
     }
 
+
+
+    public boolean checkFileExtension(String file) {
+        if (file.endsWith(".jpg") || file.endsWith(".jpeg")
+                || file.endsWith(".png") ) {
+            return true;
+        }
+        return false;
+    }
 
 
 }

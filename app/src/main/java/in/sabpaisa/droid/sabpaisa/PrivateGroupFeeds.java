@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -32,12 +33,24 @@ public class PrivateGroupFeeds extends AppCompatActivity {
     ArrayList<FeedData> feedArrayList = new ArrayList<FeedData>();
     MainFeedAdapter mainFeedAdapter;/*Globally Declared Adapter*/
 
-
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private_group_feeds);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+
         GroupId=getIntent().getStringExtra("GroupId");
         Log.d("PrivateGroupFeedsId",GroupId);
 

@@ -130,7 +130,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     ArrayList<CommentData> arrayList;
     String commentText;
     String date1;
-    String FeedsNm, feedsDiscription, feedImg, response, feed_id, userAccessToken;
+    String feedsDiscription, feedImg, response, feed_id, userAccessToken;
+    public static String FeedsNm;
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView rv;
     Toolbar toolbar;

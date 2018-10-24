@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import in.sabpaisa.droid.sabpaisa.Interfaces.AddMemberCallBack;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
@@ -26,15 +28,22 @@ import in.sabpaisa.droid.sabpaisa.R;
 import me.grantland.widget.AutofitTextView;
 
 public class AddMemberTo_A_GroupAdapter extends RecyclerView.Adapter<AddMemberTo_A_GroupAdapter.MyViewHolder> {
+
     ArrayList<Member_GetterSetter> memberGetterSetterArrayList;
+    ArrayList<Member_GetterSetter> memberGetterSetterArrayList1 = new ArrayList<>();
+
     Context mContext;
+
     ArrayList<String> selectedData = new ArrayList<>();
+
     static AddMemberCallBack addMemberCallBack;
+
 
     public AddMemberTo_A_GroupAdapter(ArrayList<Member_GetterSetter> memberGetterSetterArrayList, Context context) {
         this.memberGetterSetterArrayList = memberGetterSetterArrayList;
         this.mContext = context;
         this.addMemberCallBack = (AddMemberCallBack) context;
+
     }
 
 
@@ -56,31 +65,33 @@ public class AddMemberTo_A_GroupAdapter extends RecyclerView.Adapter<AddMemberTo
                 .error(R.drawable.default_users)
                 .into(holder.memberImg);
 
-//        holder.addMemberCheckBox.setOnCheckedChangeListener(null);
-//        holder.addMemberCheckBox.setSelected( /*memberGetterSetterArrayList.get(position)*/member_getterSetter.isSelected());
-//
-//
-//
-//        holder.addMemberCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                /*memberGetterSetterArrayList.get(holder.getAdapterPosition())*/member_getterSetter.setSelected(b);
-//                if (holder.addMemberCheckBox.isChecked()){
-//                    selectedData.add(member_getterSetter.getPhoneNumber());
-//                    for (String val:selectedData) {
-//                        Log.d("addMemberCheckBox","selectedData : "+val);
-//                    }
-//                    addMemberCallBack.setMemberData(selectedData);
-//                }else {
-//                    selectedData.remove(member_getterSetter.getPhoneNumber());
-//                }
-//            }
-//        });
 
 
-        //holder.setIsRecyclable(false);
 
-        holder.addMemberCheckBox.setOnClickListener(new View.OnClickListener() {
+        holder.addMemberCheckBox.setChecked(member_getterSetter.isSelected());
+
+
+        holder.setItemClickListener(new MyViewHolder.ItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+                CheckBox myCheckBox= (CheckBox) v;
+
+                if(myCheckBox.isChecked()) {
+                    member_getterSetter.setSelected(true);
+                    memberGetterSetterArrayList1.add(member_getterSetter);
+                    selectedData.add(member_getterSetter.getPhoneNumber());
+                    addMemberCallBack.setMemberData(selectedData);
+                }
+                else if(!myCheckBox.isChecked()) {
+                    member_getterSetter.setSelected(false);
+                    memberGetterSetterArrayList1.remove(member_getterSetter);
+                    selectedData.remove(member_getterSetter.getPhoneNumber());
+                }
+            }
+        });
+
+
+        /*holder.addMemberCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -95,7 +106,7 @@ public class AddMemberTo_A_GroupAdapter extends RecyclerView.Adapter<AddMemberTo
                 }
 
             }
-        });
+        });*/
 
 
     }
@@ -105,7 +116,7 @@ public class AddMemberTo_A_GroupAdapter extends RecyclerView.Adapter<AddMemberTo
         return memberGetterSetterArrayList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView memberImg;
 
@@ -113,6 +124,7 @@ public class AddMemberTo_A_GroupAdapter extends RecyclerView.Adapter<AddMemberTo
 
         CheckBox addMemberCheckBox;
 
+        ItemClickListener itemClickListener;
 
         MaterialRippleLayout rippleClick;
 
@@ -122,9 +134,25 @@ public class AddMemberTo_A_GroupAdapter extends RecyclerView.Adapter<AddMemberTo
             memberName = (AutofitTextView) itemView.findViewById(R.id.memberName);
             rippleClick = (MaterialRippleLayout) itemView.findViewById(R.id.rippleClick);
             addMemberCheckBox = (CheckBox) itemView.findViewById(R.id.addMemberCheckBox);
-            //this.setIsRecyclable(false);
+
+            addMemberCheckBox.setOnClickListener(this);
 
         }
+
+
+        public void setItemClickListener(ItemClickListener ic)
+        {
+            this.itemClickListener=ic;
+        }
+        @Override
+        public void onClick(View v) {
+            this.itemClickListener.onItemClick(v,getLayoutPosition());
+        }
+        interface ItemClickListener {
+
+            void onItemClick(View v,int pos);
+        }
+
 
     }
 

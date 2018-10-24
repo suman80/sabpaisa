@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +51,8 @@ public class AddGroup extends AppCompatActivity {
 
     Bitmap groupImage,groupLogo;
 
+    Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,21 @@ public class AddGroup extends AppCompatActivity {
         img_GroupLogo = (ImageView)findViewById(R.id.img_GroupLogo);
         btn_Cancel = (Button)findViewById(R.id.btn_Cancel);
         btn_Save = (Button)findViewById(R.id.btn_Save);
+
+
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+
+        toolbar.setTitle("Add Groups");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+
 
         clientId = getIntent().getStringExtra("CLIENT_ID");
 
@@ -121,6 +140,14 @@ public class AddGroup extends AppCompatActivity {
         });
 
 
+        btn_Cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+
 
     }
 
@@ -162,6 +189,11 @@ public class AddGroup extends AppCompatActivity {
                 groupImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedGrpImg);
 
 
+                if (groupImage == null){
+                    Toast.makeText(AddGroup.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                    img_GroupImage.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                }
+
 
             }else if (requestCode == 300 && resultCode == RESULT_OK && data != null){
 
@@ -172,6 +204,10 @@ public class AddGroup extends AppCompatActivity {
 
                 groupLogo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedGrpLogo);
 
+                if (groupLogo == null){
+                    Toast.makeText(AddGroup.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                    img_GroupLogo.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                }
 
             }
         } catch (Exception e) {
@@ -185,7 +221,7 @@ public class AddGroup extends AppCompatActivity {
 
     private void uploadGroupData(final Bitmap group_image,final Bitmap group_logo,final String groupName,final String groupText) {
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_addParticularClientsGroups + "?client_Id="+clientId+"&group_text="+groupText+"&group_name="+groupName+"&admin="+userAccessToken;
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_addParticularClientsGroups + "?client_Id="+clientId+"&group_text="+URLEncoder.encode(groupText)+"&group_name="+URLEncoder.encode(groupName)+"&admin="+userAccessToken;
 
         Log.d("Addgroup","_URL "+url);
 
@@ -200,6 +236,7 @@ public class AddGroup extends AppCompatActivity {
                     Log.d("Addgroup", "ResJsonObj_" + obj);
 
                     final String status = obj.getString("status");
+                    final String returnResponse = obj.getString("response");
 
                     if (status.equals("success")) {
 
@@ -215,7 +252,9 @@ public class AddGroup extends AppCompatActivity {
                         intent.putExtra("clientImagePath",clientImageURLPath);
                         startActivity(intent);
 
-                    } else {
+                    } else if (status.equals("failed")){
+                        Toast.makeText(AddGroup.this,returnResponse,Toast.LENGTH_SHORT).show();
+                    }else {
 
                         Log.d("Addgroup","InElsePart");
 
@@ -231,7 +270,7 @@ public class AddGroup extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Error In Upoload", error.toString());
 
-                        Toast.makeText(AddGroup.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(AddGroup.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
                 }) {
 

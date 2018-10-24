@@ -1,94 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddMember">
+    tools:context=".AddMember"
+    android:orientation="vertical"
+    >
 
-    <RelativeLayout
-        android:id="@+id/relativeLayoutMemberName"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/memberImg"
-        android:layout_margin="10dp"
-        >
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/bg_screen"
+        app:subtitleTextColor="@color/white"
+        app:titleTextColor="@color/white" />
 
-        <TextView
-            android:id="@+id/tv_memberName"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Member Name :"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            />
-
-        <EditText
-            android:id="@+id/memberNameEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/tv_memberName"
-            android:background="@drawable/background_edittext"
-            android:singleLine="true"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical"
-            />
+    <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+         android:id="@+id/linearLayoutParent"
+         >
 
 
-    </RelativeLayout>
+     </LinearLayout>
 
-
-    <RelativeLayout
-        android:id="@+id/relativeLayoutMemberPhone"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/relativeLayoutMemberName"
-        android:layout_margin="10dp"
-        >
-
-        <TextView
-            android:id="@+id/tv_memberNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Ph No. :"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="57dp"
-            />
-
-        <EditText
-            android:id="@+id/memberNumberEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/tv_memberNumber"
-            android:background="@drawable/background_edittext"
-            android:singleLine="true"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical"
-            android:inputType="number"
-            android:maxLength="15"
-            />
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/relativeLayoutMemberContactChooser"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_below="@+id/relativeLayoutMemberPhone"
-        android:gravity="center_horizontal"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
         >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            >
 
         <TextView
             android:id="@+id/tv_Or"
@@ -108,15 +66,7 @@
             android:layout_marginLeft="10dp"
             />
 
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeLayoutMemberContactChooser"
-        android:layout_marginTop="10dp"
-        >
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -124,36 +74,33 @@
             android:orientation="horizontal"
             >
 
-            <Button
-                android:id="@+id/btn_Cancel"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_button"
-                android:text="Cancel"
-                android:textColor="@color/white"
-                android:layout_weight="0.5"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnCancel"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            android:layout_weight="0.5"
+            android:background="@drawable/background_button"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
 
-            <Button
-                android:id="@+id/btn_Save"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_button"
-                android:text="Save"
-                android:textColor="@color/white"
-                android:layout_weight="0.5"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
-                />
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:textColor="@color/white"
+            android:layout_weight="0.5"
+            android:background="@drawable/background_button"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
-
-
-</RelativeLayout>
-
+    </LinearLayout>
 </ScrollView>

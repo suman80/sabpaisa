@@ -126,7 +126,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     String date1;
     String i, Gts;
     Timestamp Groupts;
-    String GroupsNm, GroupsDiscription, GroupsImg, GroupId, userAccessToken, response;
+    String GroupsDiscription, GroupsImg, GroupId, userAccessToken, response;
+    public static String GroupsNm;
     ArrayList<CommentData> arrayList, feedArrayList;
     SwipeRefreshLayout swipeRefreshLayout;
     Toolbar toolbar;

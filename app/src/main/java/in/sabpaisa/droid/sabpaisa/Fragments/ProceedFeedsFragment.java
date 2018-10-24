@@ -99,6 +99,8 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
     FrameLayout framelayoutAddFeed;
 
+    LinearLayout linearLayoutAddFeedWhenNoData;
+
     String feedId;
     
 
@@ -125,6 +127,8 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
         recyclerView.setMotionEventSplittingEnabled(false);
 
         linearLayoutnoDataFound = (LinearLayout) rootView.findViewById(R.id.noDataFound);
+
+        linearLayoutAddFeedWhenNoData = (LinearLayout) rootView.findViewById(R.id.linearLayoutAddFeedWhenNoData);
 
 
         ///////////////////////DB/////////////////////////////////
@@ -193,6 +197,16 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
         }
 
         rippleClickAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),AddFeed.class);
+                intent.putExtra("CLIENT_ID",clientId);
+                getActivity().startActivity(intent);
+            }
+        });
+
+
+        linearLayoutAddFeedWhenNoData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(),AddFeed.class);
@@ -395,7 +409,9 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                         recyclerView.setAdapter(mainFeedAdapter);
 
                     } else {
-                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        //linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        linearLayoutAddFeedWhenNoData.setVisibility(View.VISIBLE);
+                        framelayoutAddFeed.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.GONE);
                     }
 

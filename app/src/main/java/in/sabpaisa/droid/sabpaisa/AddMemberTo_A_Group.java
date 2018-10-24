@@ -121,6 +121,8 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
         String tag_string_req = "req_register";
         String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_addMemberList+"?clientId="+clientId+"&groupId="+groupId;
 
+        Log.d("AddMemberToaGrp", "Member_URL: " + url);
+
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>(){
 
@@ -141,7 +143,7 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
 
                     if (status.equals("failure")) {
 
-                        //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddMemberTo_A_Group.this,"No Result Found",Toast.LENGTH_SHORT).show();
 
                         recycler_view_Member.setVisibility(View.GONE);
 
@@ -207,6 +209,13 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.sharing_menu, menu);
         item = menu.findItem(R.id.shareOk);
+
+       /* if (memberNumberArraylist.size() > 0)
+        {
+            item.setVisible(true);
+        }else {
+            item.setVisible(false);
+        }*/
 
 
         return true;
@@ -300,7 +309,7 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(getApplicationContext(), R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");

@@ -93,6 +93,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     MaterialRippleLayout rippleClickAdd;
 
     FrameLayout framelayoutAddGroup;
+    LinearLayout linearLayoutAddGrpWhenNoData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,6 +109,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
         rippleClickAdd = (MaterialRippleLayout) rootView.findViewById(R.id.rippleClickAdd);
         framelayoutAddGroup = (FrameLayout) rootView.findViewById(R.id.framelayoutAddGroup);
+
+        linearLayoutAddGrpWhenNoData = (LinearLayout) rootView.findViewById(R.id.linearLayoutAddGrpWhenNoData);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -198,6 +201,16 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                 getActivity().startActivity(intent);
             }
         });
+
+        linearLayoutAddGrpWhenNoData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),AddGroup.class);
+                intent.putExtra("CLIENT_ID",clientId);
+                getActivity().startActivity(intent);
+            }
+        });
+
 
         return rootView;
     }
@@ -414,7 +427,9 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                         groupList.setAdapter(mainGroupAdapter1);
 
                     } else {
-                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        //linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        linearLayoutAddGrpWhenNoData.setVisibility(View.VISIBLE);
+                        framelayoutAddGroup.setVisibility(View.GONE);
                         groupList.setVisibility(View.GONE);
                     }
                 }

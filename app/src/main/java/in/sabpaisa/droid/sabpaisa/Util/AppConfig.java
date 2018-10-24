@@ -47,5 +47,11 @@ public class AppConfig {
     public static String URL_deleteGroupComments = "deleteGroupComments";
     public static String URL_addMemberList = "addMemberList";
     public static String URL_addMember = "addMember";
+    public static String URL_updateUINStatus = "updateUINStatus";
+    public static String URL_clientAdmin = "clientAdmin";
+    public static String URL_removeUserfromGroup = "removeUserfromGroup";
+    public static String URL_groupAdmin = "groupAdmin";
+    public static String URL_tableFields = "tableFields";
+    public static String URL_saveUINtableData = "saveUINtableData";
 
 }

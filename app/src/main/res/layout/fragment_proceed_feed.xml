@@ -9,7 +9,10 @@
     <com.cooltechworks.views.shimmer.ShimmerRecyclerView
         android:id="@+id/recycler_view_feeds"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingBottom="30dp"
+        >
 
     </com.cooltechworks.views.shimmer.ShimmerRecyclerView>
 
@@ -19,11 +22,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <include layout="@layout/no_data_found">
 
         </include>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutAddFeedWhenNoData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_add"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Feeds"
+            android:textSize="18sp"
+            android:textColor="@color/bg_orange"
+            android:layout_gravity="center"
+            />
 
     </LinearLayout>
 

@@ -86,6 +86,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
             Log.d("RajBhai", "Checking fade effect");
             holder.linearLayoutGroupItemList.setEnabled(false);
             holder.linearLayoutGroupItemList.setAlpha(.5f);
+
+            holder.imgPopUpMenu.setVisibility(View.GONE);
+
         }
 
 
@@ -369,10 +372,12 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
                         Intent intent = new Intent(mContext,FullViewOfClientsProceed.class);
                         intent.putExtra("clientImagePath",clientImageURLPath);
+                        //intent.putExtra("deleteFrmGrp","1");
                         mContext.startActivity(intent);
 
                     }else {
                         Log.d("MainFeedAdapter1","InElsePart");
+                        Toast.makeText(mContext,response,Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -499,8 +504,13 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                         intent.putExtra("groupText", groupListData.getGroupText());
                         intent.putExtra("groupImage", groupListData.getImagePath());
                         intent.putExtra("groupId", groupListData.getGroupId());
+
+                        Log.d("MainGRPADA","isClicked_ "+isClicked);
+
                         if (!isClicked) {
+
                             isClicked = !isClicked;
+
                             view.getContext().startActivity(intent);
 
                         }

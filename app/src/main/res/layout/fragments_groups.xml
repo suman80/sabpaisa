@@ -10,13 +10,15 @@
 
    <LinearLayout
        android:layout_width="match_parent"
-       android:layout_height="480dp"
+       android:layout_height="wrap_content"
        android:orientation="vertical"
        >
    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:id="@+id/groupList"
+       android:clipToPadding="false"
+       android:paddingBottom="30dp"
        >
 
    </com.cooltechworks.views.shimmer.ShimmerRecyclerView>
@@ -36,6 +38,32 @@
           >
 
       </include>
+   </LinearLayout>
+
+   <LinearLayout
+       android:id="@+id/linearLayoutAddGrpWhenNoData"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:visibility="gone"
+       >
+
+      <ImageView
+          android:layout_width="65dp"
+          android:layout_height="65dp"
+          android:layout_gravity="center"
+          android:src="@drawable/ic_add"
+          />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Add Groups"
+          android:textSize="18sp"
+          android:textColor="@color/bg_orange"
+          android:layout_gravity="center"
+          />
+
    </LinearLayout>
 
    <FrameLayout

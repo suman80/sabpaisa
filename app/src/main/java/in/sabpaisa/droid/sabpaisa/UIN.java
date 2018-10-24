@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -265,7 +266,26 @@ public class UIN extends AppCompatActivity {
                         // Showing Alert Message
                         alertDialog.show();
 
-                    } else {
+                    } else if (status.equals("failed") && response1.equals("User is Blocked")){
+
+                        Log.d("InElsePart", "UINVerifu");
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(UIN.this, R.style.MyDialogTheme).create();
+
+                        alertDialog.setTitle("UIN");
+
+                        alertDialog.setMessage(response1);
+
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+                    }else {
                         callErrorPopup();
                         Log.d("InelsePArt", "UINVerifu");
 
@@ -440,9 +460,17 @@ public class UIN extends AppCompatActivity {
                         }
                     });
 
-                    // Showing Alert Message
-                    alertDialog.show();
-                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+                    try {
+
+                        //show dialog
+
+                        // Showing Alert Message
+
+                        alertDialog.show();
+
+                    }catch (WindowManager.BadTokenException e){
+                        Log.d("UIN","WindowManager "+e);
+                    }
 
                 } else if (error instanceof AuthFailureError) {
 

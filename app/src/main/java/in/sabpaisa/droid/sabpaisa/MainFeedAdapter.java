@@ -126,7 +126,12 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 intent.putExtra("feedLogo", mainFeedData.getLogoPath());
                 intent.putExtra("feedId", mainFeedData.getFeedId());
 
+                Log.d("MainFeedADAClick"," "+isClicked);
+
                 if (!isClicked) {
+
+
+
                     isClicked = !isClicked;
                     view.getContext().startActivity(intent);
 
@@ -265,6 +270,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
                     }else {
                         Log.d("MainFeedAdapter","InElsePart");
+                        Toast.makeText(context,response,Toast.LENGTH_SHORT).show();
                     }
 
 

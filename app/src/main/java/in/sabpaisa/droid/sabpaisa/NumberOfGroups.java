@@ -140,9 +140,22 @@ public class NumberOfGroups extends AppCompatActivity {
                             member_getterSetter.setFullName(jsonObject1.getString("fullName"));
                             member_getterSetter.setPhoneNumber(jsonObject1.getString("phoneNumber"));
                             member_getterSetter.setEmailId(jsonObject1.getString("emailId"));
+                            member_getterSetter.setUserAccessToken(jsonObject1.getString("userAccessToken"));
+                            member_getterSetter.setGroupId(jsonObject1.getString("groupId"));
+                            member_getterSetter.setUserId(jsonObject1.getString("userId"));
 
-                            Log.d("MMBRNAME", "" + jsonObject1.getString("fullName"));
-                            Log.d("MMBRIMAGE", "" + jsonObject1.getString("userImageUrl"));
+                            if (!jsonObject1.getString("lookupRole").equals("null")) {
+
+                                member_getterSetter.setUin_Role(jsonObject1.getString("uin_Role"));
+                                member_getterSetter.setRoleId(jsonObject1.getJSONObject("lookupRole").optString("roleId"));
+                                member_getterSetter.setRoleName(jsonObject1.getJSONObject("lookupRole").optString("roleName"));
+
+//                            Log.d("MMBRNAME", "" + jsonObject1.getString("fullName"));
+//                            Log.d("MMBRIMAGE", "" + jsonObject1.getString("userImageUrl"));
+                                Log.d("NOG_", "uin_Role" + jsonObject1.getString("uin_Role"));
+                                Log.d("NOG_", "roleId" + jsonObject1.getJSONObject("lookupRole").optString("roleId"));
+                                Log.d("NOG_", "roleName" + jsonObject1.getJSONObject("lookupRole").optString("roleName"));
+                            }
 
                             member_getterSetterArrayList.add(member_getterSetter);
 
