@@ -87,8 +87,6 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
             holder.linearLayoutGroupItemList.setEnabled(false);
             holder.linearLayoutGroupItemList.setAlpha(.5f);
 
-            holder.imgPopUpMenu.setVisibility(View.GONE);
-
         }
 
 
@@ -237,8 +235,8 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
         String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
 
-        if (roleValue.equals("1")) {
-
+        if ((roleValue.equals("1") || c.getMemberGroupRole().equals("2")) && c.getMemberStatus().equals("Approved")) {
+            Log.d(roleValue, "  "+c.getMemberGroupRole()+" >>>>>>>>>>>>> ");
             holder.imgPopUpMenu.setVisibility(View.VISIBLE);
         }
 
@@ -504,6 +502,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                         intent.putExtra("groupText", groupListData.getGroupText());
                         intent.putExtra("groupImage", groupListData.getImagePath());
                         intent.putExtra("groupId", groupListData.getGroupId());
+                        intent.putExtra("memberGroupRole", groupListData.getMemberGroupRole());
 
                         Log.d("MainGRPADA","isClicked_ "+isClicked);
 

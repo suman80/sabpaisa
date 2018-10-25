@@ -49,6 +49,8 @@ public class NumberOfGroups extends AppCompatActivity {
     String GroupId;
     Toolbar toolbar;
 
+    public static String memberGroupRole;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +93,13 @@ public class NumberOfGroups extends AppCompatActivity {
         Log.d("NumerOFGroup", "" + clientId);
         Intent intent = getIntent();
         GroupId = intent.getStringExtra("GroupId");
+
         Log.d("NumerOFGroup", "" + GroupId);
+
+        memberGroupRole = intent.getStringExtra("memberGroupRole");
+
+        Log.d("NumerOFGroup", "memberGroupRole" + memberGroupRole);
+
         NoOfGRPMembers(clientId, GroupId, "Approved");
 
     }

@@ -88,7 +88,7 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
         recycler_view_Member = (ShimmerRecyclerView)findViewById(R.id.recycler_view_Member);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Add Member");
+        getSupportActionBar().setTitle("Add Member");
 
         LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);

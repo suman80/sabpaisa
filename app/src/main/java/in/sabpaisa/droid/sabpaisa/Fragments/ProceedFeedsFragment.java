@@ -102,6 +102,8 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
     LinearLayout linearLayoutAddFeedWhenNoData;
 
     String feedId;
+
+    String roleValue;
     
 
 
@@ -189,7 +191,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
         SharedPreferences sharedPreferencesRole = getContext().getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
 
-        String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
+        roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
 
         if (roleValue.equals("1")) {
 
@@ -409,10 +411,20 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                         recyclerView.setAdapter(mainFeedAdapter);
 
                     } else {
-                        //linearLayoutnoDataFound.setVisibility(View.VISIBLE);
-                        linearLayoutAddFeedWhenNoData.setVisibility(View.VISIBLE);
-                        framelayoutAddFeed.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.GONE);
+                        //
+
+                        if (roleValue.equals("1")){
+                            linearLayoutAddFeedWhenNoData.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                            framelayoutAddFeed.setVisibility(View.GONE);
+                            linearLayoutnoDataFound.setVisibility(View.GONE);
+                        }else {
+                            linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                            framelayoutAddFeed.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.GONE);
+                            linearLayoutAddFeedWhenNoData.setVisibility(View.GONE);
+                        }
+
                     }
 
                 }

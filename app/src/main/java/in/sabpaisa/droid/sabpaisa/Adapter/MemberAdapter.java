@@ -355,6 +355,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
             showProfileData();
 
+            this.setIsRecyclable(false);
+
 //            String test = "test";
 ////            if(test.isEmpty())
 //            itemView.setOnCreateContextMenuListener(this);
@@ -377,6 +379,16 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
     @Override
     public int getItemCount() {
         return memberGetterSetterArrayList.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     private void showProfileData() {

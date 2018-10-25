@@ -6,12 +6,13 @@ package in.sabpaisa.droid.sabpaisa;
 
 public class GroupListData {
 
-    public String groupId,groupText,groupName,clientId,createdDate,imagePath,logoPath,status,memberStatus;
+    public String groupId,groupText,groupName,clientId,createdDate,imagePath,logoPath,status,memberStatus,
+            memberGroupRole;
 
     public GroupListData() {
     }
 
-    public GroupListData(String groupId, String groupText, String groupName, String clientId, String createdDate, String imagePath, String logoPath, String status, String memberStatus) {
+    public GroupListData(String groupId, String groupText, String groupName, String clientId, String createdDate, String imagePath, String logoPath, String status, String memberStatus, String memberGroupRole) {
         this.groupId = groupId;
         this.groupText = groupText;
         this.groupName = groupName;
@@ -21,8 +22,8 @@ public class GroupListData {
         this.logoPath = logoPath;
         this.status = status;
         this.memberStatus = memberStatus;
+        this.memberGroupRole = memberGroupRole;
     }
-
 
     public String getGroupId() {
         return groupId;
@@ -94,6 +95,14 @@ public class GroupListData {
 
     public void setMemberStatus(String memberStatus) {
         this.memberStatus = memberStatus;
+    }
+
+    public String getMemberGroupRole() {
+        return memberGroupRole;
+    }
+
+    public void setMemberGroupRole(String memberGroupRole) {
+        this.memberGroupRole = memberGroupRole;
     }
 }
 

@@ -161,6 +161,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     public static String MY_PREFS_FOR_GROUP_ID = "mySharedPrefForGroupId";
 
+    String memberGroupRole;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -175,10 +177,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         GroupsNm = getIntent().getStringExtra("groupName");
         GroupsDiscription = getIntent().getStringExtra("groupText");
         GroupsImg = getIntent().getStringExtra("groupImage");
+        memberGroupRole = getIntent().getStringExtra("memberGroupRole");
         Log.d("NamemPGFS", "" + GroupsNm);
         Log.d("DiscriptionPGFS", "" + GroupsDiscription);
         Log.d("GroupImgPGFS", "" + GroupsImg);
         Log.d("GroupID_PGFS", "" + GroupId);
+        Log.d("memberGroupRole_PGFS", "" + memberGroupRole);
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbarPGF);
@@ -1251,6 +1255,7 @@ public void privatefeeds(final String groupId)
             case R.id.groupMembers:
                 Intent intent = new Intent(Proceed_Group_FullScreen.this, NumberOfGroups.class);
                 intent.putExtra("GroupId", GroupId);
+                intent.putExtra("memberGroupRole", memberGroupRole);
                 startActivity(intent);
                 return true;
 

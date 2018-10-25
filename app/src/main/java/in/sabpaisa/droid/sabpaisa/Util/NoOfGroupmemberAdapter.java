@@ -63,6 +63,8 @@ public class NoOfGroupmemberAdapter extends RecyclerView.Adapter<NoOfGroupmember
 
     String userAccessToken;
 
+    int countforAdmin = 0;
+
     @Override
     public NoOfGroupmemberAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.member_custom, parent, false);
@@ -73,6 +75,10 @@ public class NoOfGroupmemberAdapter extends RecyclerView.Adapter<NoOfGroupmember
     public void onBindViewHolder(MyViewHolder myViewHolder, final int i) {
 
         final Member_GetterSetter member_getterSetter = memberGetterSetterArrayList.get(i);
+
+//        if (member_getterSetter.getUin_Role().equals("1")||member_getterSetter.getRoleId().equals("2")){
+//            countforAdmin++;
+//        }
 
         myViewHolder.memberName.setText(member_getterSetter.getFullName());
 
@@ -184,14 +190,14 @@ public class NoOfGroupmemberAdapter extends RecyclerView.Adapter<NoOfGroupmember
             }
         });
 
-        /*SharedPreferences sharedPreferencesRole = mContext.getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferencesRole = mContext.getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
 
         final String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
 
-        if (roleValue.equals("1")) {
+        if (roleValue.equals("1") || NumberOfGroups.memberGroupRole.equals("2")) {
 
             myViewHolder.imgPopUpMenu.setVisibility(View.VISIBLE);
-        }*/
+        }
 
         if ((!(member_getterSetter.getUin_Role()==null || member_getterSetter.getUin_Role().equals("null"))
                 && (member_getterSetter.getUin_Role().equals("1")))
@@ -199,18 +205,27 @@ public class NoOfGroupmemberAdapter extends RecyclerView.Adapter<NoOfGroupmember
         {
 
             myViewHolder.textViewAdmin.setVisibility(View.VISIBLE);
-
+            countforAdmin++;
             myViewHolder.textViewAdmin.setText("Admin");
+
+//            //Added on 25 Oct 2018
+//            myViewHolder.imgPopUpMenu.setVisibility(View.VISIBLE);
 
         }else if ( !(member_getterSetter.getRoleId() == null || member_getterSetter.getRoleId().equals("null"))
                 && member_getterSetter.getRoleId().equals("2")){
             myViewHolder.textViewAdmin.setVisibility(View.VISIBLE);
 
+//            //Added on 25 Oct 2018
+//            myViewHolder.imgPopUpMenu.setVisibility(View.VISIBLE);
+
+            countforAdmin++;
             myViewHolder.textViewAdmin.setText(member_getterSetter.getRoleName());
 
         }
             else{
             myViewHolder.textViewAdmin.setVisibility(View.GONE);
+//            //Added on 25 Oct 2018
+//            myViewHolder.imgPopUpMenu.setVisibility(View.VISIBLE);
         }
 
         SharedPreferences sharedPreferences1 = mContext.getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
@@ -254,8 +269,15 @@ public class NoOfGroupmemberAdapter extends RecyclerView.Adapter<NoOfGroupmember
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
-                        if (menuItem.getTitle().equals("Remove User From Group")){
-                            removeUserfromGroup(userAccessToken,member_getterSetter.getUserAccessToken(),member_getterSetter.getGroupId());
+                        if (menuItem.getTitle().equals("Remove User From Group")) {
+
+                            if (countforAdmin ==1 && (member_getterSetter.getUin_Role().equals("1") || member_getterSetter.getRoleId().equals("2"))) {
+                                Toast.makeText(mContext, "You cannot remove yourself !", Toast.LENGTH_SHORT).show();
+                            } else {
+
+                                removeUserfromGroup(userAccessToken, member_getterSetter.getUserAccessToken(), member_getterSetter.getGroupId());
+                                countforAdmin--;
+                            }
                         }
 
                         if (menuItem.getTitle().equals("Make a group admin")){
@@ -349,6 +371,17 @@ public void onBindViewHolder(MemberAdapter.MyViewHolder holder, int position) {
     @Override
     public int getItemCount() {
         return memberGetterSetterArrayList.size();
+    }
+
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
 
@@ -494,6 +527,8 @@ public void onBindViewHolder(MemberAdapter.MyViewHolder holder, int position) {
 
                         Intent intent = new Intent(mContext,NumberOfGroups.class);
                         intent.putExtra("GroupId",groupId);
+                        intent.putExtra("memberGroupRole",NumberOfGroups.memberGroupRole);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
 
@@ -590,6 +625,8 @@ public void onBindViewHolder(MemberAdapter.MyViewHolder holder, int position) {
                         Log.d("NoOfGRPMEMADAPMGA1","InIfPart");
                         Intent intent = new Intent(mContext,NumberOfGroups.class);
                         intent.putExtra("GroupId",groupId);
+                        intent.putExtra("memberGroupRole",NumberOfGroups.memberGroupRole);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
 

@@ -94,6 +94,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
     FrameLayout framelayoutAddGroup;
     LinearLayout linearLayoutAddGrpWhenNoData;
+    String roleValue;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -185,7 +186,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
         SharedPreferences sharedPreferencesRole = getContext().getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
 
-        String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
+        roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
 
         if (roleValue.equals("1")) {
 
@@ -260,6 +261,10 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                             groupListData.setImagePath(jsonObject1.getString("imagePath"));
                             groupListData.setLogoPath(jsonObject1.getString("logoPath"));
                             groupListData.setMemberStatus(jsonObjectX.getString("memberStatus"));
+                            groupListData.setMemberGroupRole(jsonObjectX.getString("memberGroupRole"));
+
+                            Log.d("ProceedGroupFragmGR"," "+jsonObjectX.getString("memberGroupRole"));
+
                             groupArrayList.add(groupListData);
 
 
@@ -427,10 +432,21 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                         groupList.setAdapter(mainGroupAdapter1);
 
                     } else {
-                        //linearLayoutnoDataFound.setVisibility(View.VISIBLE);
-                        linearLayoutAddGrpWhenNoData.setVisibility(View.VISIBLE);
-                        framelayoutAddGroup.setVisibility(View.GONE);
-                        groupList.setVisibility(View.GONE);
+
+
+                        if (roleValue.equals("1")) {
+
+                            linearLayoutAddGrpWhenNoData.setVisibility(View.VISIBLE);
+                            framelayoutAddGroup.setVisibility(View.GONE);
+                            groupList.setVisibility(View.GONE);
+                            linearLayoutnoDataFound.setVisibility(View.GONE);
+
+                        }else {
+                            linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                            framelayoutAddGroup.setVisibility(View.GONE);
+                            groupList.setVisibility(View.GONE);
+                            linearLayoutAddGrpWhenNoData.setVisibility(View.GONE);
+                        }
                     }
                 }
                 // Try and catch are included to handle any errors due to JSON
