@@ -57,6 +57,8 @@ public class AddFeed extends AppCompatActivity {
 
     Toolbar toolbar;
 
+    //Added on 26th oct 2018
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
