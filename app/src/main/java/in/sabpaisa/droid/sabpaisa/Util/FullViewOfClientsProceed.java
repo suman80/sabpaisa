@@ -857,7 +857,10 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
-
+                    SharedPreferences settings1 = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor1 = settings1.edit();
+                    editor1.remove("m");
+                    editor1.commit();
                     SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.remove("logged");
@@ -871,6 +874,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
                 }
             });
 
+
             builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
@@ -880,6 +884,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
             AlertDialog alert = builder.create();
             alert.show();
+
 
 
         } else if (id == R.id.nav_txnhistory) {

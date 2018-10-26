@@ -161,7 +161,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     public static String MY_PREFS_FOR_GROUP_ID = "mySharedPrefForGroupId";
 
-    String memberGroupRole;
+    public static String memberGroupRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -276,7 +276,7 @@ public class NoOfGroupmemberAdapter extends RecyclerView.Adapter<NoOfGroupmember
                             } else {
 
                                 removeUserfromGroup(userAccessToken, member_getterSetter.getUserAccessToken(), member_getterSetter.getGroupId());
-                                countforAdmin--;
+
                             }
                         }
 
@@ -524,7 +524,7 @@ public void onBindViewHolder(MemberAdapter.MyViewHolder holder, int position) {
 
                     if (status.equals("success")){
                         Log.d("NoOfGRPMEMADAP1","InIfPart");
-
+                        countforAdmin--;
                         Intent intent = new Intent(mContext,NumberOfGroups.class);
                         intent.putExtra("GroupId",groupId);
                         intent.putExtra("memberGroupRole",NumberOfGroups.memberGroupRole);

@@ -73,7 +73,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
             String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
 
-            if (roleValue.equals("1") || roleValue.equals("2")) {
+            if (roleValue.equals("1") || Proceed_Group_FullScreen.memberGroupRole.equals("2")) {
                 menu.add("Delete");
             }
 
@@ -848,6 +848,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                         Intent intent = new Intent(mContext,Proceed_Group_FullScreen.class);
                         intent.putExtra("groupId",groupId);
                         intent.putExtra("groupName",GroupsNm);
+                        intent.putExtra("memberGroupRole",Proceed_Group_FullScreen.memberGroupRole);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
