@@ -271,6 +271,8 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
                             feedId = jsonObject1.getString("feedId");
 
+                            Log.d("PFFfeedId_","feedId_"+feedId);
+
                             feedData.setFeedName(jsonObject1.getString("feedName"));
                             feedData.setFeedText(jsonObject1.getString("feedText"));
                             feedData.setCreatedDate(jsonObject1.getString("createdDate"));
@@ -406,6 +408,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
 
                         //*END listener for sending data to activity*//*
+
 
                         mainFeedAdapter = new MainFeedAdapter(feedArrayList, getContext());
                         recyclerView.setAdapter(mainFeedAdapter);

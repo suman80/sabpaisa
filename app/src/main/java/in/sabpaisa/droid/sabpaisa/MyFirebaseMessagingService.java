@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -7,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +16,8 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
@@ -36,6 +40,8 @@ import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Map;
 
+import in.sabpaisa.droid.sabpaisa.Interfaces.NotificationInterface;
+
 /**
  * Created by rajdeep on 16/9/18.
  */
@@ -45,6 +51,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "FirebaseMessagingService";
     String groupForNotification = "SpAppNotification";
     int notifyID = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
+
+    static NotificationInterface notificationInterface;
+
+    public MyFirebaseMessagingService() {
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -56,16 +67,58 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String title = dataMap.get("title");
         String userName = dataMap.get("userName");
         String userToken = dataMap.get("userToken");
-        String feedId = dataMap.get("feedId");
+        final String feedId = dataMap.get("feedId");
         String groupId = dataMap.get("groupId");
 
         Log.d("BackGroundNoti : ", body + " " + body.trim().length() + " " + title + " " + feedId + " " + groupId + " " + userName);
         Log.d("NotificationBody : ", StringEscapeUtils.unescapeJava(body));
 
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationForOreoAndAbove(title, body, feedId, groupId, userName);
+
+            if (feedId != null){
+
+                Log.d("PFF_notificationFlag", "InsideLoop");
+                Proceed_Feed_FullScreen.notificationFlag = feedId;
+
+                Log.d("PFF_notificationFlag"," "+Proceed_Feed_FullScreen.notificationFlag);
+
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        notificationInterface = new Proceed_Feed_FullScreen();
+
+                        notificationInterface.setMemberData(feedId);
+
+                    }
+                });
+
+            }
         } else {
             createNotification(title, body, feedId, groupId, userName);
+            if (feedId != null){
+
+                Log.d("PFF_notificationFlag", "InsideLoop");
+                Proceed_Feed_FullScreen.notificationFlag = feedId;
+
+                Log.d("PFF_notificationFlag"," "+Proceed_Feed_FullScreen.notificationFlag);
+
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        notificationInterface = new Proceed_Feed_FullScreen();
+
+                        notificationInterface.setMemberData(feedId);
+
+                    }
+                });
+
+
+            }
         }
 
 

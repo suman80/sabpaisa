@@ -255,7 +255,11 @@
         <activity android:name=".AddFeed" />
         <activity android:name=".AddGroup" />
         <activity android:name=".AddMember" />
-        <activity android:name=".AddMemberTo_A_Group"></activity>
+        <activity android:name=".AddMemberTo_A_Group" />
+        <activity android:name=".EditFeed" />
+        <activity android:name=".EditGroup" />
+        <activity android:name=".PendingListOfUsers" />
+        <activity android:name=".BlockedUserList"></activity>
     </application>
 
 </manifest>

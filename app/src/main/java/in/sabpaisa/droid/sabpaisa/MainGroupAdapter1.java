@@ -53,6 +53,8 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
     public static boolean isClicked=false;
 
+    MyViewHolder globalHolder;
+
     public MainGroupAdapter1(List<GroupListData> countryList, Context context) {
         this.countryList = countryList;
         this.mContext = context;
@@ -65,6 +67,8 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
+
+        globalHolder=holder;
 
         final GroupListData c = countryList.get(position);
         holder.Group_name.setText(c.getGroupName());
@@ -262,6 +266,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
                 menu.getMenu().add("Delete");
                 menu.getMenu().add("Add Member");
+                menu.getMenu().add("Pending List");
 
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -273,6 +278,13 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
                         if (menuItem.getTitle().equals("Add Member")){
                             Intent intent = new Intent(mContext,AddMemberTo_A_Group.class);
+                            intent.putExtra("groupId",groupId);
+                            mContext.startActivity(intent);
+                        }
+
+
+                        if (menuItem.getTitle().equals("Pending List")){
+                            Intent intent = new Intent(mContext,PendingListOfUsers.class);
                             intent.putExtra("groupId",groupId);
                             mContext.startActivity(intent);
                         }
@@ -380,7 +392,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
                         Intent intent = new Intent(mContext,FullViewOfClientsProceed.class);
                         intent.putExtra("clientImagePath",clientImageURLPath);
-                        //intent.putExtra("deleteFrmGrp","1");
+                        intent.putExtra("FRAGMENT_ID","1");
                         mContext.startActivity(intent);
 
                     }else {
@@ -489,6 +501,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                             public void onClick(DialogInterface dialog, int which) {
                                 // Write your code here to execute after dialog closed
 
+                                globalHolder.joinmember.setText("Pending");
 //                                Intent intent = new Intent(view.getContext(),Proceed_Group_FullScreen.class);
 //                                intent.putExtra("groupName",groupListData.getGroupName());
 //                                intent.putExtra("groupText",groupListData.getGroupText());
@@ -511,6 +524,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                         intent.putExtra("groupName", groupListData.getGroupName());
                         intent.putExtra("groupText", groupListData.getGroupText());
                         intent.putExtra("groupImage", groupListData.getImagePath());
+                        intent.putExtra("groupLogo", groupListData.getLogoPath());
                         intent.putExtra("groupId", groupListData.getGroupId());
                         intent.putExtra("memberGroupRole", groupListData.getMemberGroupRole());
 

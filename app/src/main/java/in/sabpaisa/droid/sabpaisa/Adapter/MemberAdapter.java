@@ -543,6 +543,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
                             Intent intent = new Intent(mContext,FullViewOfClientsProceed.class);
                             intent.putExtra("clientImagePath",clientImageURLPath);
+                            intent.putExtra("FRAGMENT_ID","3");
                             mContext.startActivity(intent);
 
 
@@ -615,6 +616,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
                         Intent intent = new Intent(mContext,FullViewOfClientsProceed.class);
                         intent.putExtra("clientImagePath",clientImageURLPath);
+                        intent.putExtra("FRAGMENT_ID","3");
                         mContext.startActivity(intent);
 
                     }else {

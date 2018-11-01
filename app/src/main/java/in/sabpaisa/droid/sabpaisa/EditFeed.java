@@ -1,7 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,55 +25,55 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.mikepenz.fastadapter.commons.utils.FastAdapterUIUtils;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
-import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
-public class AddFeed extends AppCompatActivity {
+public class EditFeed extends AppCompatActivity {
+
+    Toolbar toolbar;
+    String FeedsNm,feedsDiscription,feedImg,feedLogo,feed_id;
 
     EditText editText_FeedName,editText_FeedDescription;
+
     ImageView img_FeedImage,img_FeedLogo;
-    Button btn_Cancel,btn_Save;
 
     String imageUrl;
 
-    String clientId;
+    Bitmap feedImageBitMap,feedLogoBitMap;
+
     String userAccessToken;
 
-    Bitmap feedImage,feedLogo;
+    Button btn_Cancel,btn_Save;
 
-    Toolbar toolbar;
-
-    //Added on 26th oct 2018
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_feed);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setContentView(R.layout.activity_edit_feed);
 
-        editText_FeedName = (EditText)findViewById(R.id.editText_FeedName);
-        editText_FeedDescription = (EditText)findViewById(R.id.editText_FeedDescription);
-        img_FeedImage = (ImageView)findViewById(R.id.img_FeedImage);
-        img_FeedLogo = (ImageView)findViewById(R.id.img_FeedLogo);
-        btn_Cancel = (Button)findViewById(R.id.btn_Cancel);
-        btn_Save = (Button)findViewById(R.id.btn_Save);
+        FeedsNm = getIntent().getStringExtra("feedName");
+        feedsDiscription = getIntent().getStringExtra("feedText");
+        feedImg = getIntent().getStringExtra("feedImage");
+        feedLogo = getIntent().getStringExtra("feedLogo");
+        feed_id = getIntent().getStringExtra("feedId");
+
+        Log.d("EditFeed","IntentValues_"+FeedsNm+" "+feedsDiscription+" "+feedImg+" "+feedLogo+" "+feed_id);
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
 
-        toolbar.setTitle("Add Feeds");
+        toolbar.setTitle(FeedsNm);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -83,6 +82,27 @@ public class AddFeed extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        editText_FeedName = (EditText)findViewById(R.id.editText_FeedName);
+        editText_FeedDescription = (EditText)findViewById(R.id.editText_FeedDescription);
+        img_FeedImage = (ImageView)findViewById(R.id.img_FeedImage);
+        img_FeedLogo = (ImageView)findViewById(R.id.img_FeedLogo);
+        btn_Save = (Button)findViewById(R.id.btn_Save);
+        btn_Cancel = (Button)findViewById(R.id.btn_Cancel);
+
+        editText_FeedName.setText(FeedsNm);
+        editText_FeedDescription.setText(feedsDiscription);
+
+        Glide.with(getApplicationContext())
+                .load(feedImg)
+                .error(R.drawable.appicon)
+                .into(img_FeedImage);
+
+        Glide.with(getApplicationContext())
+                .load(feedLogo)
+                .error(R.drawable.appicon)
+                .into(img_FeedLogo);
+
 
         img_FeedImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,11 +118,10 @@ public class AddFeed extends AppCompatActivity {
             }
         });
 
-        clientId = getIntent().getStringExtra("CLIENT_ID");
-
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
         userAccessToken = sharedPreferences.getString("response", "123");
+
 
         btn_Save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +135,7 @@ public class AddFeed extends AppCompatActivity {
                 }else if (feedDesc == null || feedDesc.equals("") || feedDesc.isEmpty()){
                     editText_FeedDescription.setError("Please enter the Feed Description");
                 }else if (!isOnline()){
-                    AlertDialog alertDialog = new AlertDialog.Builder(AddFeed.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(EditFeed.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("No Internet Connection");
@@ -134,7 +153,7 @@ public class AddFeed extends AppCompatActivity {
                     // Showing Alert Message
                     alertDialog.show();
                 }else {
-                    uploadFeedData(feedImage,feedLogo,feedNm,feedDesc);
+                    updateFeed(feedImageBitMap,feedLogoBitMap,feedNm,feedDesc);
                 }
 
             }
@@ -146,6 +165,10 @@ public class AddFeed extends AppCompatActivity {
                 finish();
             }
         });
+
+
+
+
 
 
     }
@@ -174,7 +197,6 @@ public class AddFeed extends AppCompatActivity {
     }
 
 
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
@@ -183,34 +205,34 @@ public class AddFeed extends AppCompatActivity {
 
                 Uri selectedimg = data.getData();
 
-                Log.d("AddFeed", "selectedimg_ " + selectedimg);
+                Log.d("EditFeed", "selectedimg_ " + selectedimg);
 
-                    //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                    img_FeedImage.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
+                //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                img_FeedImage.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
 
-                    feedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+                feedImageBitMap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
-                    Log.d("feedImageBitMap"," "+feedImage);
+                Log.d("feedImageBitMap"," "+feedImageBitMap);
 
-                    if (feedImage == null){
-                        Toast.makeText(AddFeed.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
-                        img_FeedImage.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
-                    }
+                if (feedImageBitMap == null){
+                    Toast.makeText(EditFeed.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                    img_FeedImage.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                }
 
 
             }else if (requestCode == 300 && resultCode == RESULT_OK && data != null){
 
                 Uri selectedimg = data.getData();
 
-                    //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                 img_FeedLogo.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
 
-                feedLogo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+                feedLogoBitMap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
-                Log.d("feedImageBitMap"," "+feedLogo);
+                Log.d("feedImageBitMap"," "+feedLogoBitMap);
 
-                if (feedLogo == null){
-                    Toast.makeText(AddFeed.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                if (feedLogoBitMap == null){
+                    Toast.makeText(EditFeed.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
                     img_FeedLogo.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
                 }
 
@@ -224,61 +246,84 @@ public class AddFeed extends AppCompatActivity {
     }
 
 
-    private void uploadFeedData(final Bitmap feed_image,final Bitmap feed_logo,final String feedName,final String feedText) {
+    private void updateFeed(final Bitmap feed_image,final Bitmap feed_logo,final String feedName,final String feedText) {
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_addParticularClientsFeeds + "?client_Id="+clientId+"&feed_text="+URLEncoder.encode(feedText)+"&feed_name="+URLEncoder.encode(feedName)+"&admin="+userAccessToken;
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_updateFeed + "?feed_Id="+feed_id+"&feed_text="+URLEncoder.encode(feedText)+"&feed_name="+URLEncoder.encode(feedName)+"&admin="+userAccessToken;
 
-        Log.d("AddFeed","_URL "+url);
+        Log.d("EditFeed","_URL "+url);
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
-                    @Override
-                    public void onResponse(NetworkResponse response) {
-                        Log.d("AddFeed", "Res_" + response);
-                        try {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                Log.d("EditFeed", "Res_" + response);
+                try {
 
-                            JSONObject obj = new JSONObject(new String(response.data));
+                    JSONObject obj = new JSONObject(new String(response.data));
 
-                            Log.d("AddFeed", "ResJsonObj_" + obj);
+                    Log.d("EditFeed", "ResJsonObj_" + obj);
 
-                            final String status = obj.getString("status");
-                            final String returnResponse = obj.getString("response");
+                    final String status = obj.getString("status");
+                    final String returnResponse = obj.getString("response");
 
-                            if (status.equals("success")) {
+                    if (status.equals("success")) {
 
-                                Log.d("AddFeed","InIfPart");
+                        Log.d("EditFeed","InIfPart");
 
-                                Toast.makeText(AddFeed.this,"Feed has been added",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(EditFeed.this,"Feed has been Edited",Toast.LENGTH_SHORT).show();
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(EditFeed.this, R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Edit Feed");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Feed has been Edited");
+
+
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
 
                                 String clientImageURLPath = FullViewOfClientsProceed.clientImageURLPath;
 
-                                Log.d("MainFeedAdapter","clientImageURLPath "+clientImageURLPath);
+                                Log.d("EditFeed","clientImageURLPath "+clientImageURLPath);
 
-                                Intent intent = new Intent(AddFeed.this,FullViewOfClientsProceed.class);
+                                Intent intent = new Intent(EditFeed.this,FullViewOfClientsProceed.class);
                                 intent.putExtra("clientImagePath",clientImageURLPath);
                                 intent.putExtra("FRAGMENT_ID","0");
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                MainFeedAdapter.isClicked=false;
+
                                 startActivity(intent);
 
 
-                            }else if (status.equals("failed")){
-                                Toast.makeText(AddFeed.this,returnResponse,Toast.LENGTH_SHORT).show();
                             }
-                            else {
+                        });
 
-                                Log.d("AddFeed","InElsePart");
+                        // Showing Alert Message
+                        alertDialog.show();
 
-                            }
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                    }else if (status.equals("failed")){
+                        Toast.makeText(EditFeed.this,returnResponse,Toast.LENGTH_SHORT).show();
                     }
-                },
+                    else {
+
+                        Log.d("EditFeed","InElsePart");
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Error In Upoload", error.toString());
 
-                        //Toast.makeText(AddFeed.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(EditFeed.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
                 }) {
 
@@ -310,7 +355,7 @@ public class AddFeed extends AppCompatActivity {
 //                    params.put("feed_image",null);
 //                }
                 if(feed_logo != null)
-                     params.put("feed_logo", new DataPart(feedLogo + ".jpeg", getFileDataFromDrawable(feed_logo)));
+                    params.put("feed_logo", new DataPart(feedLogo + ".jpeg", getFileDataFromDrawable(feed_logo)));
 //                else{
 //                    params.put("feed_logo",null);
 //                }
@@ -347,20 +392,14 @@ public class AddFeed extends AppCompatActivity {
                 && cm.getActiveNetworkInfo().isConnected()) {
             return true;
         } else {
-            Log.v("AddFeed", "Internet Connection Not Present");
+            Log.v("EditFeed", "Internet Connection Not Present");
             return false;
         }
     }
 
 
 
-    public boolean checkFileExtension(String file) {
-        if (file.endsWith(".jpg") || file.endsWith(".jpeg")
-                || file.endsWith(".png") ) {
-            return true;
-        }
-        return false;
-    }
+
 
 
 }

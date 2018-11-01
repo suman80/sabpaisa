@@ -198,8 +198,6 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        //viewPager.setCurrentItem(Integer.parseInt(position));
-
         //////////////////Code for adding image and text on tab bar ///////////////////////////////////////////////
 
         int[] tabIcons = {
@@ -213,6 +211,14 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
         tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+
+        position = getIntent().getStringExtra("FRAGMENT_ID");
+
+        Log.d("FVOCP_pos","FRAGMENT_ID__"+position);
+
+        if (position != null){
+            viewPager.setCurrentItem(Integer.parseInt(position));
+        }
 
         landingPage = getIntent().getStringExtra("landingPage");
         Log.d("page", "" + landingPage);

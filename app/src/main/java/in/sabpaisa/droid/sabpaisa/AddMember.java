@@ -136,7 +136,7 @@ public class AddMember extends AppCompatActivity {
 
                     try {
 
-                        jsonObject.put(fieldvalueArrayList.get(count),URLEncoder.encode(id.getText().toString()));
+                        jsonObject.put(fieldvalueArrayList.get(count),id.getText().toString());
                         count++;
 
                     } catch (JSONException e) {
@@ -286,7 +286,7 @@ public class AddMember extends AppCompatActivity {
 
                             fieldvalueArrayList.add(fieldValue);
 
-                            if (fieldvalueArrayList.contains("id") && fieldvalueArrayList.contains("EmployeeId")
+                            if (fieldvalueArrayList.contains("id")/* && fieldvalueArrayList.contains("EmployeeId")*/
                                     && fieldvalueArrayList.contains("STATUS")&& fieldvalueArrayList.contains("role"))
                             {
                                 fieldvalueArrayList.remove("id");
@@ -434,13 +434,14 @@ public class AddMember extends AppCompatActivity {
                 if (status != null && status.equals("success")) {
 
                     Log.d("AddMember","InIFPart");
-
+                    Toast.makeText(AddMember.this,response1,Toast.LENGTH_SHORT).show();
                     String clientImageURLPath = FullViewOfClientsProceed.clientImageURLPath;
 
                     Log.d("AddMember","clientImageURLPath "+clientImageURLPath);
 
                     Intent intent = new Intent(AddMember.this,FullViewOfClientsProceed.class);
                     intent.putExtra("clientImagePath",clientImageURLPath);
+                    intent.putExtra("FRAGMENT_ID","3");
                     startActivity(intent);
 
 

@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -26,6 +27,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -126,7 +128,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     String date1;
     String i, Gts;
     Timestamp Groupts;
-    String GroupsDiscription, GroupsImg, GroupId, userAccessToken, response;
+    String GroupsDiscription, GroupsImg,groupLogo, GroupId, userAccessToken, response;
     public static String GroupsNm;
     ArrayList<CommentData> arrayList, feedArrayList;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -177,6 +179,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         GroupsNm = getIntent().getStringExtra("groupName");
         GroupsDiscription = getIntent().getStringExtra("groupText");
         GroupsImg = getIntent().getStringExtra("groupImage");
+        groupLogo = getIntent().getStringExtra("groupLogo");
         memberGroupRole = getIntent().getStringExtra("memberGroupRole");
         Log.d("NamemPGFS", "" + GroupsNm);
         Log.d("DiscriptionPGFS", "" + GroupsDiscription);
@@ -951,7 +954,13 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                         loadCommentListView(commentArrayList);
                     } else {
                         progress.setVisibility(View.GONE);
+
+                        if (count > 1){
+                            Toast.makeText(Proceed_Group_FullScreen.this, "No More Record Found !", Toast.LENGTH_SHORT).show();
+                        }
+
                         Toast.makeText(Proceed_Group_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();
+
                     }
 
                     Log.d("PGF", "  " + obj.toString());
@@ -1055,112 +1064,6 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             return false;
         }
     }
-/*
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        SharedPreferences preferences = getSharedPreferences(MySharedPRoceedGroupFullScreen, 0);
-        preferences.edit().remove("Groupts").commit();
-
-        // Store our shared preference
-        SharedPreferences.Editor editor = getSharedPreferences("GroupTime", MODE_PRIVATE).edit();
-
-       */
-/* SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
-        Editor ed = sp.edit();
-       *//*
-
-        editor.putBoolean("active", true);
-        Log.d("ARCOnStartgroup", "----");
-        editor.commit();
-    }
-
-*/
-/*public  void numberofgroupmember()
-{
-    Intent intent=new Intent(this,NumberOfGroups.class);
-    startActivity(intent);
-}*//*
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        Date date = new Date();
-        //getTime() returns current time in milliseconds
-        long time = date.getTime();
-        //Passed the milliseconds to constructor of Timestamp class
-        Groupts = new Timestamp(time);
-        Gts = String.valueOf(Groupts);
-        System.out.println("Current Time Stamp: " + Gts);
-        Log.d("ARCTimeGroup", "" + time);
-        Log.d("ARCTimeGroup", "" + Gts);
-
-        // Store our shared preference
-        SharedPreferences sp = getSharedPreferences(MySharedPRoceedGroupFullScreen, MODE_PRIVATE);
-        SharedPreferences.Editor ed = sp.edit();
-        ed.putBoolean("activeGroup", false);
-
-        ed.putString("Groupts", String.valueOf(Long.valueOf(time)));
-        Log.d("ARCTimeGroupts111", "" + String.valueOf(Gts));
-        Log.d("ARCOnStopGroup", "--" + String.valueOf(Long.valueOf(time)));
-        ed.commit();
-
-      */
-/*  // Store our shared preference
-        SharedPreferences sp = getSharedPreferences(MySharedPRoceedGroupFullScreen, MODE_PRIVATE);
-        SharedPreferences.Editor ed = sp.edit();
-        ed.putBoolean("active", false);
-        ed.putString("Groupts", ts);
-        Log.d("ARCOnStopGroup","--");
-
-        ed.commit();
-        Long tsLong = System.currentTimeMillis()/1000;
-        ts = tsLong.toString();
-        Log.d("ARCTimeGroup",""+ts);
-*//*
-
-    }
-
-
-*/
-/*
-public void privatefeeds(final String groupId)
-{
-
-    String Url=AppConfig.Base_Url+AppConfig.App_api+"privatefeed?groupId=";
-    StringRequest stringRequest=new StringRequest(Request.Method.GET,Url+Groupid ,new Response.Listener<String>() {
-        @Override
-        public void onResponse(String response) {
-           Log.d("Private_feeds",response);
-        }
-
-    }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-
-        }
-    });
-}*//*
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Store our shared preference
-        SharedPreferences sp = getSharedPreferences("OURINFO", MODE_PRIVATE);
-        SharedPreferences.Editor ed = sp.edit();
-        ed.putBoolean("active", false);
-        Log.d("ARCOnResumeGroup", "----");
-
-        ed.commit();
-
-    }
-*/
 
     //Code for fetching image from server
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -1241,10 +1144,21 @@ public void privatefeeds(final String groupId)
 
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.group_menu, menu);
+
+
+        MenuItem menuItem = menu.findItem(R.id.editFeedMenu);
+        menuItem.setVisible(false);
+
+        if(menu instanceof MenuBuilder){
+            MenuBuilder m = (MenuBuilder) menu;
+            m.setOptionalIconsVisible(true);
+        }
+
         return true;
     }
 
@@ -1264,6 +1178,23 @@ public void privatefeeds(final String groupId)
                 Intent intent1 = new Intent(Proceed_Group_FullScreen.this, PrivateGroupFeeds.class);
                 intent1.putExtra("GroupId", GroupId);
                 startActivity(intent1);
+                return true;
+
+            case R.id.editGroupMenu:
+                Intent intent2 = new Intent(Proceed_Group_FullScreen.this, EditGroup.class);
+                intent2.putExtra("groupName", GroupsNm);
+                intent2.putExtra("groupText", GroupsDiscription);
+                intent2.putExtra("groupImage", GroupsImg);
+                intent2.putExtra("groupLogo", groupLogo);
+                intent2.putExtra("groupId", GroupId);
+                startActivity(intent2);
+                return true;
+
+            case R.id.blockedUser:
+                Intent intent3 = new Intent(Proceed_Group_FullScreen.this, BlockedUserList.class);
+                intent3.putExtra("groupName", GroupsNm);
+                intent3.putExtra("GroupId", GroupId);
+                startActivity(intent3);
                 return true;
 
             default:

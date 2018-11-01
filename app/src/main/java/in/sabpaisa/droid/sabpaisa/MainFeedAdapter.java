@@ -266,6 +266,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
                         Intent intent = new Intent(context,FullViewOfClientsProceed.class);
                         intent.putExtra("clientImagePath",clientImageURLPath);
+                        intent.putExtra("FRAGMENT_ID","0");
                         context.startActivity(intent);
 
                     }else {

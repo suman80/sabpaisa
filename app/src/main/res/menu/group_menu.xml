@@ -13,5 +13,25 @@
         android:actionLayout="@layout/activity_proceed_group_full_screen"
         />
 
+
+    <item android:id="@+id/editFeedMenu"
+        android:title="Feed Info"
+        app:showAsAction="withText"
+        android:icon="@drawable/ic_inf0"
+        />
+
+    <item android:id="@+id/editGroupMenu"
+        android:title="Group Info"
+        app:showAsAction="withText"
+        android:icon="@drawable/ic_inf0"
+        />
+
+
+    <item android:id="@+id/blockedUser"
+        android:title="Blocked User"
+        app:showAsAction="never"
+        />
+
+
 </menu>
 
