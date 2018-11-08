@@ -126,6 +126,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
                 .into(holder.memberImg);
 
 
+
         holder.rippleClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,6 +176,10 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
             holder.memberName.setText("You");
         }
 
+        if (member_getterSetter.getUin_Status().equals("Blocked")){
+            holder.rippleClick.setAlpha(.5f);
+        }
+
 
         holder.imgPopUpMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,7 +196,14 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
                 }
 
                 if(! holder.textViewAdmin.getText().equals("Admin")){
-                menu.getMenu().add("Block Member");
+
+                    if (member_getterSetter.getUin_Status().equals("Blocked")){
+                        menu.getMenu().add("UnBlock Member");
+                    }
+                    if (!member_getterSetter.getUin_Status().equals("Blocked")){
+                        menu.getMenu().add("Block Member");
+                    }
+
                 //Removing Make Admin on 24th Oct 2018
                 //menu.getMenu().add("Make Admin");
                 }
@@ -201,7 +213,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
                         if (menuItem.getTitle().equals("Block Member")){
-                            delete_Or_Block_MemberData(clientId,userAccessToken,member_getterSetter.getPhoneNumber());
+                            clientMemberStatusUpdate(clientId,userAccessToken,member_getterSetter.getPhoneNumber(),"Blocked");
+                        }
+
+                        if (menuItem.getTitle().equals("UnBlock Member")){
+                            clientMemberStatusUpdate(clientId,userAccessToken,member_getterSetter.getPhoneNumber(),"Varified");
                         }
 
                         /*if (menuItem.getTitle().equals("Make Admin")){
@@ -498,10 +514,10 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
     }
 
 
-    private void delete_Or_Block_MemberData(String clientId, String userAccessToken , String phoneNo) {
+    private void clientMemberStatusUpdate(String clientId, String userAccessToken , String phoneNo,String status) {
 
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_updateUINStatus+ "?client_Id=" + clientId +"&admin="+userAccessToken +"&status="+"Blocked";
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_updateUINStatus+ "?client_Id=" + clientId +"&admin="+userAccessToken +"&status="+status;
 
         Log.d("MemberAdapterUrl", "URL-->" + url);
 

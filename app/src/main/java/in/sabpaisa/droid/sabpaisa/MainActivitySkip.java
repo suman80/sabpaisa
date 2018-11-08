@@ -89,6 +89,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -856,7 +857,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivitySkip.this); //Home is name of the activity
-            builder.setMessage("Do you want to Logout?");
+            builder.setMessage("Do you want to Exit the app?");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
@@ -865,10 +866,14 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
                     SharedPreferences.Editor editor = settings.edit();
                     editor.remove("logged");
                     editor.commit();
+                    clearApplicationData();
                     finish();
-                    Intent intent = new Intent(MainActivitySkip.this, LogInActivity.class);
+                    finishAffinity();
+                    /*Intent intent = new Intent(MainActivitySkip.this, LogInActivity.class);
 
-                    startActivity(intent);
+                    startActivity(intent);*/
+
+                    System.exit(0);
 
                 }
             });
@@ -1486,6 +1491,37 @@ mailIdniv.setText("");
         }
 //Check
 
+    }
+
+
+
+    public void clearApplicationData() {
+        File cacheDirectory = getCacheDir();
+        File applicationDirectory = new File(cacheDirectory.getParent());
+        if (applicationDirectory.exists()) {
+            String[] fileNames = applicationDirectory.list();
+            for (String fileName : fileNames) {
+                if (!fileName.equals("lib")) {
+                    deleteFile(new File(applicationDirectory, fileName));
+                }
+            }
+        }
+    }
+
+    public static boolean deleteFile(File file) {
+        boolean deletedAll = true;
+        if (file != null) {
+            if (file.isDirectory()) {
+                String[] children = file.list();
+                for (int i = 0; i < children.length; i++) {
+                    deletedAll = deleteFile(new File(file, children[i])) && deletedAll;
+                }
+            } else {
+                deletedAll = file.delete();
+            }
+        }
+
+        return deletedAll;
     }
 
 

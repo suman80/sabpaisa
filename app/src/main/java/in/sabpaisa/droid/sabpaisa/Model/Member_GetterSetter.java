@@ -6,7 +6,7 @@ package in.sabpaisa.droid.sabpaisa.Model;
 
 public class Member_GetterSetter {
    public String id,userId,groupId,timestampOfJoining,status,fullName,
-            emailId,phoneNumber,deviceId,userImageUrl,uin,CONTACT_NUMBER,userAccessToken;
+            emailId,phoneNumber,deviceId,userImageUrl,uin,CONTACT_NUMBER,userAccessToken,uin_Status;
 
    boolean isSelected ;
 
@@ -18,7 +18,7 @@ public class Member_GetterSetter {
     }
 
 
-    public Member_GetterSetter(String id, String userId, String groupId, String timestampOfJoining, String status, String fullName, String emailId, String phoneNumber, String deviceId, String userImageUrl, String uin, String CONTACT_NUMBER, String userAccessToken, boolean isSelected, boolean checked, String uin_Role, String roleId, String roleName) {
+    public Member_GetterSetter(String id, String userId, String groupId, String timestampOfJoining, String status, String fullName, String emailId, String phoneNumber, String deviceId, String userImageUrl, String uin, String CONTACT_NUMBER, String userAccessToken, String uin_Status, boolean isSelected, boolean checked, String uin_Role, String roleId, String roleName) {
         this.id = id;
         this.userId = userId;
         this.groupId = groupId;
@@ -32,6 +32,7 @@ public class Member_GetterSetter {
         this.uin = uin;
         this.CONTACT_NUMBER = CONTACT_NUMBER;
         this.userAccessToken = userAccessToken;
+        this.uin_Status = uin_Status;
         this.isSelected = isSelected;
         this.checked = checked;
         this.uin_Role = uin_Role;
@@ -183,5 +184,14 @@ public class Member_GetterSetter {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+
+    public String getUin_Status() {
+        return uin_Status;
+    }
+
+    public void setUin_Status(String uin_Status) {
+        this.uin_Status = uin_Status;
     }
 }

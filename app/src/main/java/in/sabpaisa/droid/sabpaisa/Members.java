@@ -206,7 +206,7 @@ public class Members extends Fragment {
         }
 
         String tag_string_req = "req_register";
-        String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_Member+"clientId="+clientId;
+        String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_Member+"clientId="+clientId+"&platForm=app";
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>(){
@@ -256,6 +256,7 @@ public class Members extends Fragment {
                             member_getterSetter.setFullName(jsonObject1.getString("fullName"));
                             member_getterSetter.setUserAccessToken(jsonObject1.getString("userAccessToken"));
                             member_getterSetter.setUin_Role(jsonObject1.getString("uin_Role"));
+                            member_getterSetter.setUin_Status(jsonObject1.getString("uin_Status"));
 
 
                             member_getterSetterArrayList.add(member_getterSetter);

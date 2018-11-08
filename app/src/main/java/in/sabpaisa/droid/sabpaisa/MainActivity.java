@@ -92,6 +92,8 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.firebase.analytics.FirebaseAnalytics;
 //import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessaging;
 //import com.wangjie.androidbucket.utils.ABTextUtil;
 //import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -104,6 +106,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -920,22 +924,32 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         } else if (id == R.id.nav_logout) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
-            builder.setMessage("Do you want to Logout?");
+            builder.setMessage("Do you want to Exit the app?");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
+                    Log.d("Mainctivity "," ***Logout******* ");
                     SharedPreferences settings1 = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor1 = settings1.edit();
                     editor1.remove("m");
                     editor1.commit();
+
                     SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.remove("logged");
-                    editor.commit();
-                    finish();
-                    Intent intent = new Intent(MainActivity.this, LogInActivity.class);
 
-                    startActivity(intent);
+                    editor.commit();
+                    clearApplicationData();
+                    finish();
+
+                    finishAffinity();
+                    /*Intent intent = new Intent(MainActivity.this, LogInActivity.class);
+
+
+                    startActivity(intent);*/
+
+                    System.exit(0);
+
 
 
                 }
@@ -1670,6 +1684,38 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         AppController.getInstance().addToRequestQueue(request, tag_string_req);
     }
+
+
+
+    public void clearApplicationData() {
+        File cacheDirectory = getCacheDir();
+        File applicationDirectory = new File(cacheDirectory.getParent());
+        if (applicationDirectory.exists()) {
+            String[] fileNames = applicationDirectory.list();
+            for (String fileName : fileNames) {
+                if (!fileName.equals("lib")) {
+                    deleteFile(new File(applicationDirectory, fileName));
+                }
+            }
+        }
+    }
+
+    public static boolean deleteFile(File file) {
+        boolean deletedAll = true;
+        if (file != null) {
+            if (file.isDirectory()) {
+                String[] children = file.list();
+                for (int i = 0; i < children.length; i++) {
+                    deletedAll = deleteFile(new File(file, children[i])) && deletedAll;
+                }
+            } else {
+                deletedAll = file.delete();
+            }
+        }
+
+        return deletedAll;
+    }
+
 
 
 }

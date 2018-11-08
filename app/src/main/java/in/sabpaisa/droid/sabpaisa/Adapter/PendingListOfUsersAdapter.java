@@ -102,7 +102,7 @@ public class PendingListOfUsersAdapter extends RecyclerView.Adapter<PendingListO
             public void onClick(View view) {
 
                 Log.d("PendingListADAP_ID"," "+member_getterSetter.getId());
-                decisionOnPendingRequest(member_getterSetter.getId(),"Blocked");
+                decisionOnPendingRequest(member_getterSetter.getId(),"Blocked",userAccessToken);
             }
         });
 
@@ -110,7 +110,7 @@ public class PendingListOfUsersAdapter extends RecyclerView.Adapter<PendingListO
             @Override
             public void onClick(View view) {
                 Log.d("PendingListADAP_ID"," "+member_getterSetter.getId());
-                decisionOnPendingRequest(member_getterSetter.getId(),"Approved");
+                decisionOnPendingRequest(member_getterSetter.getId(),"Approved",userAccessToken);
 
             }
         });
@@ -159,11 +159,11 @@ public class PendingListOfUsersAdapter extends RecyclerView.Adapter<PendingListO
     }
 
 
-    private void decisionOnPendingRequest(final String Id, final String status) {
+    private void decisionOnPendingRequest(final String Id, final String status,final String admin) {
 
         String tag_string_req = "req_clients";
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig. URL_decisionOnPendingRequest+ "?id=" + Id +"&status="+status ;
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig. URL_decisionOnPendingRequest+ "?id=" + Id +"&status="+status+"&admin="+admin;
 
         Log.d("PendingListAdapter", "PendingListAdapterURL-->" + url);
 

@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -98,6 +99,7 @@ public class LogInActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         if (settings.getString("logged", "").toString().equals("logged")) {
+            Log.d("NSDM "," TTTTTTTTT");
             Intent intent = new Intent(LogInActivity.this, FilterActivity.class);
             startActivity(intent);
 
@@ -339,6 +341,8 @@ public class LogInActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor1 = settings.edit();
                         editor1.putString("logged", "logged");
                         editor1.commit();
+
+//                        displayFirebaseRegId(response);
 
                         Intent intent = new Intent(LogInActivity.this, FilterActivity.class);
 
@@ -745,4 +749,103 @@ public class LogInActivity extends AppCompatActivity {
         System.exit(0);
 
     }
+
+
+    private void displayFirebaseRegId(String response) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+        String isRegIdSaved = pref.getString("isRegIdSaved", null);
+        Log.d("Fbid", "Firebase reg id: " + regId);
+
+        if (!TextUtils.isEmpty(regId) && (isRegIdSaved == null)) {
+            //Toast.makeText(this, "Firebase Reg Id: " + regId, Toast.LENGTH_SHORT).show();
+            sendFCMTokenToDb(regId, response);
+
+            SharedPreferences.Editor editor = pref.edit();
+            //editor.putString("isRegIdSaved", "1");
+            editor.commit();
+        } else {
+            Log.d("FCM(regId)", "Is Empty");
+            //Toast.makeText(this, "Firebase Reg Id is not received yet!" + regId, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
+    private void sendFCMTokenToDb(final String fcmToken, final String userAccessToken) {
+
+        //Added for SSL (17th Sep 2018)
+//        HttpsTrustManager.allowAllSSL();
+
+        String tag_string_req = "req_clients";
+
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URl_FCM_TOKEN + "userToken=" + userAccessToken + "&fcmToken=" + fcmToken;
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                Log.d("MainActivityFCMTocken", "--> " + response);
+
+                try {
+
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    String status = jsonObject.getString("status");
+                    String returnResponse = jsonObject.getString("response");
+
+                    if (status.equals("success")) {
+
+
+                        Log.d("MainActvtyFCMTokenInIF", "Fcm Token Has Updated " + returnResponse);
+
+                    } else {
+
+                        Log.d("MainActvtyFCMTokenInEls", "Fcm Token Has Not Updated " + returnResponse);
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+
+                    Log.d("MainActivityFCMTocken", "onErrorResponse " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        });
+
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
+    }
+
+
+
+
+
+
 }

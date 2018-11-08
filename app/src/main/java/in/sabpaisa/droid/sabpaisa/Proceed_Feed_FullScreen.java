@@ -178,6 +178,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     public static String notificationFlag;
 
+    String roleValue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,6 +204,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         if (getIntent().getStringExtra("userAccessTokenFromNotification") != null) {
             userAccessToken = getIntent().getStringExtra("userAccessTokenFromNotification");
         }
+
+
+        SharedPreferences sharedPreferencesRole = getApplicationContext().getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
+
+        roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
 
         scrollView = (ScrollView) findViewById(R.id.scrollView);
 
@@ -460,6 +467,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
             }
         });
+
+        Proceed_Group_FullScreen.memberGroupRole = null;
 
     }
 
@@ -899,6 +908,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
                         if (count > 1){
                             Toast.makeText(Proceed_Feed_FullScreen.this, "No More Record Found !", Toast.LENGTH_SHORT).show();
+
                         }
 
                         Toast.makeText(Proceed_Feed_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();
@@ -909,7 +919,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 catch (JSONException e) {
 
                     Log.d("In_callGetCommentList", "Exception");
-//                    progress.setVisibility(View.GONE);
+                    progress.setVisibility(View.GONE);
 
                     // If an error occurs, this prints the error to the log
                     e.printStackTrace();
@@ -924,7 +934,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     public void onErrorResponse(VolleyError error) {
 
                         Log.d("In_callGetCommentList", "EROORListener");
-//                        progress.setVisibility(View.GONE);
+                        progress.setVisibility(View.GONE);
                         /*error.printStackTrace();
 
                         Log.e("Feed", "FeedError");*/
@@ -1271,6 +1281,13 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.group_menu, menu);
+
+        MenuItem menuItem4 = menu.findItem(R.id.editFeedMenu);
+        if (roleValue.equals("1")) {
+            menuItem4.setVisible(true);
+        }else {
+            menuItem4.setVisible(false);
+        }
 
         MenuItem menuItem = menu.findItem(R.id.editGroupMenu);
         menuItem.setVisible(false);

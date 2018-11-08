@@ -42,6 +42,7 @@
             android:inputType="textPersonName"
             android:singleLine="true"
             android:layout_marginLeft="7dp"
+
             />
 
     </LinearLayout>

@@ -440,7 +440,8 @@ public class DisplayActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent(DisplayActivity.this, Proceed_Group_FullScreen.class);
                                 intent.putExtra("groupId", GroupId);
-
+                                intent.putExtra("memberGroupRole", Proceed_Group_FullScreen.memberGroupRole);
+                                intent.putExtra("groupName", Proceed_Group_FullScreen.GroupsNm);
                                 startActivity(intent);
                                 finish();
 

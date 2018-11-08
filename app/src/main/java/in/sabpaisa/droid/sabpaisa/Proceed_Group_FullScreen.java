@@ -165,6 +165,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     public static String memberGroupRole;
 
+    String roleValue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -248,6 +250,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         if (getIntent().getStringExtra("userAccessTokenFromNotification") != null) {
             userAccessToken = getIntent().getStringExtra("userAccessTokenFromNotification");
         }
+
+
+        SharedPreferences sharedPreferencesRole = getApplicationContext().getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
+
+        roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
 
 
         arrayList = new ArrayList<>();
@@ -1150,9 +1157,25 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.group_menu, menu);
 
+        if (memberGroupRole==null){
+            return false;
+        }
 
         MenuItem menuItem = menu.findItem(R.id.editFeedMenu);
         menuItem.setVisible(false);
+
+       MenuItem menuItem1 = menu.findItem(R.id.blockedUser);
+       MenuItem menuItem2 = menu.findItem(R.id.editGroupMenu);
+
+        if (roleValue.equals("1") || (memberGroupRole !=null && memberGroupRole.equals("2"))){
+
+            menuItem1.setVisible(true);
+
+            menuItem2.setVisible(true);
+        }else {
+            menuItem1.setVisible(false);
+            menuItem2.setVisible(false);
+        }
 
         if(menu instanceof MenuBuilder){
             MenuBuilder m = (MenuBuilder) menu;

@@ -141,9 +141,9 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
 
                     String response1 = jsonObject.getString("response");
 
-                    if (status.equals("failure")) {
+                    if (status.equals("success")&&response1.equals("No Record Found")) {
 
-                        Toast.makeText(AddMemberTo_A_Group.this,"No Result Found",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddMemberTo_A_Group.this,"No Record Found",Toast.LENGTH_SHORT).show();
 
                         recycler_view_Member.setVisibility(View.GONE);
 

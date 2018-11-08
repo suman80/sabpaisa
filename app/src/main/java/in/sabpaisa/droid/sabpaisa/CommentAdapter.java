@@ -73,7 +73,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
             String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
 
-            if (roleValue.equals("1") || Proceed_Group_FullScreen.memberGroupRole.equals("2")) {
+            Log.d("CommentAdapter","ProceedGRPSCRN_MEM_GRP_ROLE "+Proceed_Group_FullScreen.memberGroupRole);
+            Log.d("CommentAdapter","roleValue "+roleValue);
+
+            if (roleValue.equals("1") || (Proceed_Group_FullScreen.memberGroupRole != null && Proceed_Group_FullScreen.memberGroupRole.equals("2"))) {
                 menu.add("Delete");
             }
 
