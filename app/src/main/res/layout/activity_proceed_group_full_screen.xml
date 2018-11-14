@@ -94,10 +94,10 @@
 
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/recycler_view_feed_details_comment"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/comment"
-                                android:layout_marginBottom="350dp"
+                                android:layout_marginBottom="50dp"
                                 android:focusable="false"
                                 android:scrollbars="vertical" />
                         </FrameLayout>

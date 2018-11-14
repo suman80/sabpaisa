@@ -109,6 +109,7 @@ import java.util.StringTokenizer;
 import at.markushi.ui.CircleButton;
 import in.sabpaisa.droid.sabpaisa.Adapter.FeedsCommentOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.Interfaces.NotificationInterface;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.FeedCommentsOfflineModel;
@@ -116,6 +117,8 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
 import in.sabpaisa.droid.sabpaisa.Util.HttpHandler;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
+
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
 
 public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,NotificationInterface {
 
@@ -179,6 +182,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     public static String notificationFlag;
 
     String roleValue;
+
+    NotificationDB notificationDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -470,6 +475,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         Proceed_Group_FullScreen.memberGroupRole = null;
 
+
     }
 
 
@@ -485,6 +491,17 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
         rv.setLayoutManager(llm);
         rv.setNestedScrollingEnabled(false);
+
+
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //replace this line to scroll up or down
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 10L);
+
+
 
         progress.setVisibility(View.GONE);
 
@@ -1337,10 +1354,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         if (notificationData != null) {
 
-            /*onRefresh();*/
-            /*Intent intent = new Intent(Proceed_Feed_FullScreen.this, Proceed_Feed_FullScreen.class);
-            intent.putExtra("feedId", notificationData);
-            startActivity(intent);*/
+
 
 
         }

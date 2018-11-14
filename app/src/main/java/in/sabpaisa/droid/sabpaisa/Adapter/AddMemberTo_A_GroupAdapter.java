@@ -87,6 +87,13 @@ public class AddMemberTo_A_GroupAdapter extends RecyclerView.Adapter<AddMemberTo
                     memberGetterSetterArrayList1.remove(member_getterSetter);
                     selectedData.remove(member_getterSetter.getPhoneNumber());
                 }
+
+                if (selectedData.isEmpty()){
+                    addMemberCallBack.setMemberData(selectedData);
+                }
+
+
+
             }
         });
 

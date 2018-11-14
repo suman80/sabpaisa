@@ -14,12 +14,13 @@ public class FeedData {
     public String createdDate;
     String imagePath;
     String logoPath;
+    long feedRecentCommentTime;
 
     
     public FeedData() {
     }
 
-    public FeedData(String feedId, String clientId, String feedText, String feedName, String createdDate, String imagePath, String logoPath) {
+    public FeedData(String feedId, String clientId, String feedText, String feedName, String createdDate, String imagePath, String logoPath, long feedRecentCommentTime) {
         this.feedId = feedId;
         this.clientId = clientId;
         this.feedText = feedText;
@@ -27,11 +28,8 @@ public class FeedData {
         this.createdDate = createdDate;
         this.imagePath = imagePath;
         this.logoPath = logoPath;
+        this.feedRecentCommentTime = feedRecentCommentTime;
     }
-
-
-
-
 
     public String getFeedId() {
         return feedId;
@@ -89,7 +87,11 @@ public class FeedData {
         this.logoPath = logoPath;
     }
 
+    public long getFeedRecentCommentTime() {
+        return feedRecentCommentTime;
+    }
 
-
-
+    public void setFeedRecentCommentTime(long feedRecentCommentTime) {
+        this.feedRecentCommentTime = feedRecentCommentTime;
+    }
 }

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -26,6 +27,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,13 +62,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+import me.grantland.widget.AutofitTextView;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME;
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
 
 
 public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyViewHolder>  {
@@ -79,6 +84,8 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
     public static boolean isClicked=false;
 
     String userAccessToken;
+
+    NotificationDB db;
 
     public MainFeedAdapter(ArrayList<FeedData> countryList, Context context) {
         this.mainFeedDataList = countryList;
@@ -113,9 +120,74 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
         holder.main_feed_description.setText(mainFeedData.getFeedText());
 
 
+
+        db= new NotificationDB(context);
+        Cursor res = db.getParticularFeedNotificationData(mainFeedData.getFeedId());
+        if (res.getCount() > 0) {
+            StringBuffer stringBuffer = new StringBuffer();
+
+            int commentCounter = 0;
+            while (res.moveToNext()) {
+                stringBuffer.append(res.getString(0) + " ");
+                stringBuffer.append(res.getString(1) + " ");
+                stringBuffer.append(res.getString(2) + " ");
+                commentCounter = Integer.parseInt(res.getString(2));
+                stringBuffer.append(res.getString(3) + " ");
+                stringBuffer.append(res.getString(4) + " ");
+            }
+
+            Log.d("MainFeedAdapt","Notification "+stringBuffer);
+
+            if(commentCounter > 0) {
+                holder.relativeLayoutNotification.setVisibility(View.VISIBLE);
+                holder.notificationText.setText(String.valueOf(commentCounter));
+            }
+
+
+        }
+
+
+
+
         holder.rippleClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
+                //////////////Notification db//////////////////////////
+                //db = new NotificationDB(context);
+                if (db.isTableExists(TABLE_FEEDNOTIFICATION)){
+
+                    Cursor res = db.getParticularFeedNotificationData(mainFeedData.getFeedId());
+                    if (res.getCount() > 0) {
+                        StringBuffer stringBuffer = new StringBuffer();
+
+                        while (res.moveToNext()) {
+                            stringBuffer.append(res.getString(0) + " ");
+                            stringBuffer.append(res.getString(1) + " ");
+                            stringBuffer.append(res.getString(2) + " ");
+                            stringBuffer.append(res.getString(3) + " ");
+                            stringBuffer.append(res.getString(4) + " ");
+                        }
+
+                        Log.d("PFF_Notification","stringBuffer___ "+stringBuffer);
+
+                    }
+
+                    boolean isUpdated = db.updateFeedNotificationData(mainFeedData.getFeedId(),0,0, System.currentTimeMillis());
+                    if (isUpdated == true){
+                        Log.d("PFF_Notification","Updated "+isUpdated);
+                        holder.relativeLayoutNotification.setVisibility(View.GONE);
+                    }else {
+                        Log.d("PFF_Notification","NotUpdated "+isUpdated);
+                    }
+
+
+
+                }
+
+
 
                 Intent intent = new Intent(view.getContext(), Proceed_Feed_FullScreen.class);
                 intent.putExtra("feedName", mainFeedData.getFeedName());
@@ -189,8 +261,6 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
 
 
-
-
     }
 
 
@@ -214,6 +284,8 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
         LinearLayout linearLayout_feed;
         MaterialRippleLayout rippleClick;
         ImageView imgPopUpMenu;
+        RelativeLayout relativeLayoutNotification;
+        TextView notificationText;
 
         public MyViewHolder(View view) {
             super(view);
@@ -225,6 +297,8 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             linearLayout_feed = (LinearLayout)view.findViewById(R.id.linearLayout_feed);
             rippleClick = (MaterialRippleLayout)view.findViewById(R.id.rippleClick);
             imgPopUpMenu = (ImageView)view.findViewById(R.id.imgPopUpMenu);
+            relativeLayoutNotification = (RelativeLayout) view.findViewById(R.id.relativeLayoutNotification);
+            notificationText = (TextView) view.findViewById(R.id.notificationText);
 
         }
 

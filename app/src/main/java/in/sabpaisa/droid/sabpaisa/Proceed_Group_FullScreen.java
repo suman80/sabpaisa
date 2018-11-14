@@ -104,6 +104,7 @@ import at.markushi.ui.CircleButton;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import in.sabpaisa.droid.sabpaisa.Adapter.GroupsCommentOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.Model.FeedCommentsOfflineModel;
 import in.sabpaisa.droid.sabpaisa.Model.GroupsCommentOfflineModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -119,6 +120,8 @@ import java.util.Map;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_FEED_COMMENTS;
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_GROUP_COMMENTS;
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
 
 public class Proceed_Group_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnKeyListener {
 
@@ -166,6 +169,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     public static String memberGroupRole;
 
     String roleValue;
+
+    NotificationDB notificationDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -323,6 +328,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     public void run() {
                         //replace this line to scroll up or down
                         scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+
                     }
                 }, 10L);
 
@@ -456,6 +462,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         });
 
 
+
+
+
+
+
     }
 
     @Override
@@ -504,17 +515,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
         llm.setReverseLayout(true);
-//        scrollListener=new EndlessScrollListener(llm) {
-//            @Override
-//            public void onLoadMore(int page, int totalItemsCount) {
-//                callGetCommentList(GroupId);
-//            }
-//        };
-//        rv.addOnScrollListener(scrollListener);
+
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
         rv.setLayoutManager(llm);
         rv.setNestedScrollingEnabled(false);
-/*        scrollView.postDelayed(new Runnable() {
+        scrollView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 //replace this line to scroll up or down
@@ -522,7 +527,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             }
         }, 10L);
 
-        */
+
         progress.setVisibility(View.GONE);
     }
 
@@ -1200,6 +1205,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             case R.id.groupFeeds:
                 Intent intent1 = new Intent(Proceed_Group_FullScreen.this, PrivateGroupFeeds.class);
                 intent1.putExtra("GroupId", GroupId);
+                intent1.putExtra("memberGroupRole", memberGroupRole);
                 startActivity(intent1);
                 return true;
 

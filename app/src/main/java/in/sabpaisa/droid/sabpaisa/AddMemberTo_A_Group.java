@@ -6,6 +6,7 @@ import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -84,6 +85,8 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_member_to__a__group);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         recycler_view_Member = (ShimmerRecyclerView)findViewById(R.id.recycler_view_Member);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -204,19 +207,47 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
 
+
+
+    @Override
+    public void setMemberData(ArrayList<String> memberData) {
+        memberNumberArraylist = memberData;
+        for (String val:memberNumberArraylist) {
+            Log.d("AddMemToAGRP","memberNumberArraylist "+val);
+        }
+
+
+        Log.d("AddMemberToGrp_Menu","memberNumberArraylist_"+memberNumberArraylist.size());
+
+        if (memberNumberArraylist.size() > 0)
+        {
+            item.setVisible(true);
+        }else {
+
+
+            item.setVisible(false);
+        }
+
+
+    }
+
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.sharing_menu, menu);
         item = menu.findItem(R.id.shareOk);
 
-       /* if (memberNumberArraylist.size() > 0)
+        Log.d("AddMemberToGrp_Menu","memberNumberArraylist_"+memberNumberArraylist.size());
+
+        if (memberNumberArraylist.size() > 0)
         {
             item.setVisible(true);
         }else {
             item.setVisible(false);
-        }*/
-
+        }
 
         return true;
     }
@@ -246,13 +277,7 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
     }
 
 
-    @Override
-    public void setMemberData(ArrayList<String> memberData) {
-        memberNumberArraylist = memberData;
-        for (String val:memberNumberArraylist) {
-            Log.d("AddMemToAGRP","memberNumberArraylist "+val);
-        }
-    }
+
 
 
 

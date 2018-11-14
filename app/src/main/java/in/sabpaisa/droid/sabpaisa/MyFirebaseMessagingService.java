@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -40,7 +41,11 @@ import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Map;
 
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.Interfaces.NotificationInterface;
+import in.sabpaisa.droid.sabpaisa.Model.FeedCommentsOfflineModel;
+import in.sabpaisa.droid.sabpaisa.Model.FeedNotificatonModel;
+import in.sabpaisa.droid.sabpaisa.Model.GroupNotificationModel;
 
 /**
  * Created by rajdeep on 16/9/18.
@@ -53,6 +58,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     int notifyID = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
 
     static NotificationInterface notificationInterface;
+
+    NotificationDB db = new NotificationDB(this);
 
     public MyFirebaseMessagingService() {
     }
@@ -76,11 +83,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
             createNotificationForOreoAndAbove(title, body, feedId, groupId, userName);
 
             if (feedId != null){
 
-                Log.d("PFF_notificationFlag", "InsideLoop");
+                Log.d("MFMS","FEED_ID___"+feedId);
+
+                /*Log.d("PFF_notificationFlag", "InsideLoop");
                 Proceed_Feed_FullScreen.notificationFlag = feedId;
 
                 Log.d("PFF_notificationFlag"," "+Proceed_Feed_FullScreen.notificationFlag);
@@ -95,13 +105,133 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                     }
                 });
+*/
+
+                ////////////////Notification Db//////////////////////////////////////////
+
+                Cursor res = db.getParticularFeedNotificationData(feedId);
+                if (res.getCount() > 0) {
+                    StringBuffer stringBuffer = new StringBuffer();
+
+                    int commentCount = 0;
+
+                    while (res.moveToNext()) {
+                        stringBuffer.append(res.getString(0) + " ");
+                        stringBuffer.append(res.getString(1) + " ");
+                        stringBuffer.append(res.getString(2) + " ");
+                        commentCount = Integer.parseInt(res.getString(2));
+                        stringBuffer.append(res.getString(3) + " ");
+                        stringBuffer.append(res.getString(4) + " ");
+                    }
+
+
+                    boolean isUpdated = db.updateFeedNotificationData(feedId,commentCount+1,System.currentTimeMillis(), 0);
+
+                    if (isUpdated == true){
+                        Log.d("MyFirebMessServiceFeed","Updated "+isUpdated);
+                    }else {
+                        Log.d("MyFirebMessServiceFeed","NotUpdated "+isUpdated);
+                    }
+
+                    Log.d("MyFirebMessServiceFeed"," "+stringBuffer);
+
+
+                }else {
+
+                    FeedNotificatonModel feedNotificatonModel = new FeedNotificatonModel();
+                    feedNotificatonModel.setFeedId(feedId);
+                    feedNotificatonModel.setFeedNotificationCount(1);
+                    feedNotificatonModel.setFeedRecentCommentTimeStamp(System.currentTimeMillis());
+                    feedNotificatonModel.setFeedRecentOpenCommentTimeStamp(0);
+
+                    boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
+                    if (isInserted == true) {
+
+
+                        Log.d("MyFirebMessServiceFeed", "LocalDBInIfPart" + isInserted);
+
+                    } else {
+
+                        Log.d("MyFirebMessServiceFeed", "LocalDBInElsePart" + isInserted);
+
+                    }
+
+                }
+
+
 
             }
+
+            else if (groupId != null) {
+                Log.d("MFMS","GRP_ID___"+groupId);
+                ////////////////Notification Db//////////////////////////////////////////
+
+                Cursor res = db.getParticularGroupNotificationData(groupId);
+                if (res.getCount() > 0) {
+                    StringBuffer stringBuffer = new StringBuffer();
+
+                    int commentCount = 0;
+
+                    while (res.moveToNext()) {
+                        stringBuffer.append(res.getString(0) + " ");
+                        stringBuffer.append(res.getString(1) + " ");
+                        stringBuffer.append(res.getString(2) + " ");
+                        commentCount = Integer.parseInt(res.getString(2));
+                        stringBuffer.append(res.getString(3) + " ");
+                        stringBuffer.append(res.getString(4) + " ");
+                    }
+
+                    Log.d("MyFirebMessServiceGRP", "stringBuffer_ " + stringBuffer);
+
+                    boolean isUpdated = db.updateGroupNotificationData(groupId, commentCount + 1, System.currentTimeMillis(), 0);
+
+                    if (isUpdated == true) {
+                        Log.d("MyFirebMessServiceGRP", "Updated " + isUpdated);
+                    } else {
+                        Log.d("MyFirebMessServiceGRP", "NotUpdated " + isUpdated);
+                    }
+
+
+
+                } else {
+
+                    GroupNotificationModel groupNotificationModel = new GroupNotificationModel();
+                    groupNotificationModel.setGroupId(groupId);
+                    groupNotificationModel.setGroupNotificationCount(1);
+                    groupNotificationModel.setGroupRecentCommentTimeStamp(System.currentTimeMillis());
+                    groupNotificationModel.setGroupRecentOpenCommentTimeStamp(0);
+
+                    boolean isInserted = db.insertGroupNotificationData(groupNotificationModel);
+                    if (isInserted == true) {
+
+
+                        Log.d("MyFirebMessServiceGRP", "LocalDBInIfPart" + isInserted);
+
+                    } else {
+
+                        Log.d("MyFirebMessServiceGRP", "LocalDBInElsePart" + isInserted);
+
+                    }
+
+
+                }
+
+            }else {
+                Log.d("MyFirebMessService", "InElsePart_SmthngWrng");
+            }
+
+
+
+
+
         } else {
-            createNotification(title, body, feedId, groupId, userName);
-            if (feedId != null){
 
-                Log.d("PFF_notificationFlag", "InsideLoop");
+            createNotification(title, body, feedId, groupId, userName);
+
+
+            if (feedId != null){
+                Log.d("MFMS","FEED_ID___"+feedId);
+                /*Log.d("PFF_notificationFlag", "InsideLoop");
                 Proceed_Feed_FullScreen.notificationFlag = feedId;
 
                 Log.d("PFF_notificationFlag"," "+Proceed_Feed_FullScreen.notificationFlag);
@@ -115,10 +245,132 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         notificationInterface.setMemberData(feedId);
 
                     }
-                });
+                });*/
+
+
+                ////////////////Notification DbinsertGroupNotificationData//////////////////////////////////////////
+
+                Cursor res = db.getParticularFeedNotificationData(feedId);
+                if (res.getCount() > 0) {
+                    StringBuffer stringBuffer = new StringBuffer();
+
+                    int commentCount = 0;
+
+                    while (res.moveToNext()) {
+                        stringBuffer.append(res.getString(0) + " ");
+                        stringBuffer.append(res.getString(1) + " ");
+                        stringBuffer.append(res.getString(2) + " ");
+                        commentCount = Integer.parseInt(res.getString(2));
+                        stringBuffer.append(res.getString(3) + " ");
+                        stringBuffer.append(res.getString(4) + " ");
+                    }
+
+                    boolean isUpdated = db.updateFeedNotificationData(feedId,commentCount+1,System.currentTimeMillis(), 0);
+
+                    if (isUpdated == true){
+                        Log.d("MyFirebMessServiceFeed","Updated "+isUpdated);
+                    }else {
+                        Log.d("MyFirebMessServiceFeed","NotUpdated "+isUpdated);
+                    }
+
+                    Log.d("MyFirebMessServiceFeed"," "+stringBuffer);
+
+                }else {
+
+                    FeedNotificatonModel feedNotificatonModel = new FeedNotificatonModel();
+                    feedNotificatonModel.setFeedId(feedId);
+                    feedNotificatonModel.setFeedNotificationCount(1);
+                    feedNotificatonModel.setFeedRecentCommentTimeStamp(System.currentTimeMillis());
+                    feedNotificatonModel.setFeedRecentOpenCommentTimeStamp(0);
+
+                    boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
+                    if (isInserted == true) {
+
+
+                        Log.d("MyFirebMessServiceFeed", "LocalDBInIfPart" + isInserted);
+
+                    } else {
+
+                        Log.d("MyFirebMessServiceFeed", "LocalDBInElsePart" + isInserted);
+
+                    }
+
+
+
+
+
+                }
+
 
 
             }
+
+            else if (groupId != null){
+                Log.d("MFMS_Below_Oreo","GRP_ID___"+groupId);
+                ////////////////Notification Db//////////////////////////////////////////
+
+                Cursor res = db.getParticularGroupNotificationData(groupId);
+                if (res.getCount() > 0) {
+                    StringBuffer stringBuffer = new StringBuffer();
+
+                    int commentCount = 0;
+
+                    while (res.moveToNext()) {
+                        stringBuffer.append(res.getString(0) + " ");
+                        stringBuffer.append(res.getString(1) + " ");
+                        stringBuffer.append(res.getString(2) + " ");
+                        commentCount = Integer.parseInt(res.getString(2));
+                        stringBuffer.append(res.getString(3) + " ");
+                        stringBuffer.append(res.getString(4) + " ");
+                    }
+
+                    Log.d("MyFirebMessServiceGRP", "stringBuffer_ " + stringBuffer);
+
+                    boolean isUpdated = db.updateGroupNotificationData(groupId,commentCount+1,System.currentTimeMillis(), 0);
+
+                    if (isUpdated == true){
+                        Log.d("MyFirebMessServiceGRP","Updated "+isUpdated);
+                    }else {
+                        Log.d("MyFirebMessServiceGRP","NotUpdated "+isUpdated);
+                    }
+
+                }else {
+
+                    GroupNotificationModel groupNotificationModel = new GroupNotificationModel();
+                    groupNotificationModel.setGroupId(groupId);
+                    groupNotificationModel.setGroupNotificationCount(1);
+                    groupNotificationModel.setGroupRecentCommentTimeStamp(System.currentTimeMillis());
+                    groupNotificationModel.setGroupRecentOpenCommentTimeStamp(0);
+
+                    boolean isInserted = db.insertGroupNotificationData(groupNotificationModel);
+                    if (isInserted == true) {
+
+
+                        Log.d("MyFirebMessServiceGRP", "LocalDBInIfPart" + isInserted);
+
+                    } else {
+
+                        Log.d("MyFirebMessServiceGRP", "LocalDBInElsePart" + isInserted);
+
+                    }
+
+
+
+
+
+                }
+
+
+
+            }else {
+                Log.d("MyFirebMessService", "InElsePart_SmthngWrng");
+            }
+
+
+
+
+
+
         }
 
 

@@ -9,10 +9,12 @@ public class GroupListData {
     public String groupId,groupText,groupName,clientId,createdDate,imagePath,logoPath,status,memberStatus,
             memberGroupRole;
 
+    long groupRecentCommentTime;
+
     public GroupListData() {
     }
 
-    public GroupListData(String groupId, String groupText, String groupName, String clientId, String createdDate, String imagePath, String logoPath, String status, String memberStatus, String memberGroupRole) {
+    public GroupListData(String groupId, String groupText, String groupName, String clientId, String createdDate, String imagePath, String logoPath, String status, String memberStatus, String memberGroupRole, long groupRecentCommentTime) {
         this.groupId = groupId;
         this.groupText = groupText;
         this.groupName = groupName;
@@ -23,6 +25,7 @@ public class GroupListData {
         this.status = status;
         this.memberStatus = memberStatus;
         this.memberGroupRole = memberGroupRole;
+        this.groupRecentCommentTime = groupRecentCommentTime;
     }
 
     public String getGroupId() {
@@ -103,6 +106,15 @@ public class GroupListData {
 
     public void setMemberGroupRole(String memberGroupRole) {
         this.memberGroupRole = memberGroupRole;
+    }
+
+
+    public long getGroupRecentCommentTime() {
+        return groupRecentCommentTime;
+    }
+
+    public void setGroupRecentCommentTime(long groupRecentCommentTime) {
+        this.groupRecentCommentTime = groupRecentCommentTime;
     }
 }
 

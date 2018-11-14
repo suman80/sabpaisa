@@ -1,7 +1,9 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,6 +29,7 @@ import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 public class PrivateGroupFeeds extends AppCompatActivity {
 
@@ -34,6 +38,14 @@ public class PrivateGroupFeeds extends AppCompatActivity {
     MainFeedAdapter mainFeedAdapter;/*Globally Declared Adapter*/
 
     Toolbar toolbar;
+
+    FrameLayout framelayoutAddFeed;
+
+    String roleValue,memberGroupRole;
+
+    String clientId;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +61,24 @@ public class PrivateGroupFeeds extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+
+        framelayoutAddFeed = (FrameLayout)findViewById(R.id.framelayoutAddFeed);
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
+        clientId = sharedPreferences.getString("clientId", "abc");
+        Log.d("clientId_PFF", "" + clientId);
+
+        SharedPreferences sharedPreferencesRole = getApplicationContext().getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
+
+        roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
+
+        memberGroupRole = getIntent().getStringExtra("memberGroupRole");
+
+        if (roleValue.equals("1") || memberGroupRole.equals("2")) {
+
+            framelayoutAddFeed.setVisibility(View.VISIBLE);
+        }
 
 
         GroupId=getIntent().getStringExtra("GroupId");
@@ -82,16 +112,33 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
                     if (status.equals("success")&&response1.equals("No Record Found")) {
 
+                        framelayoutAddFeed.setVisibility(View.GONE);
+
                         android.app.AlertDialog.Builder builder =new android.app.AlertDialog.Builder(PrivateGroupFeeds.this);
                         builder.setTitle("");
-                        builder.setMessage("No Feed generated for this group till now.");
-                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        builder.setMessage("No feed generated for this group till now. \n Press add button to add feed");
+                        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
+                                /*onBackPressed();*/
+                                Intent intent = new Intent(PrivateGroupFeeds.this,AddFeed.class);
+                                intent.putExtra("FLAG","PrivateGroupFeeds");
+                                intent.putExtra("GROUP_ID",GroupId);
+                                intent.putExtra("CLIENT_ID",clientId);
+                                startActivity(intent);
+
+
+                            }
+                        });
+
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
                                 onBackPressed();
                             }
                         });
+
                         android.app.AlertDialog alertDialog = builder.create();
                         alertDialog.show();
 
@@ -152,8 +199,8 @@ public class PrivateGroupFeeds extends AppCompatActivity {
     private void loadFeedListView(ArrayList<FeedData> arrayList, final RecyclerView recyclerView) {
 
         mainFeedAdapter = new MainFeedAdapter(arrayList,getApplicationContext());
-        // recyclerView.setAdapter(mainFeedAdapter);
-        recyclerView.postDelayed(new Runnable() {
+        recyclerView.setAdapter(mainFeedAdapter);
+        /*recyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 recyclerView.setAdapter(mainFeedAdapter);
@@ -165,10 +212,10 @@ public class PrivateGroupFeeds extends AppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(( getApplicationContext()), FeedDetails.class);
-                       /* intent.putExtra("FeedId", feedArrayList.get(position).getFeedId());
+                       *//* intent.putExtra("FeedId", feedArrayList.get(position).getFeedId());
                         intent.putExtra("FeedName", feedArrayList.get(position).getFeedName());
                         intent.putExtra("FeedDeatils", feedArrayList.get(position).getFeedText());
-                        startActivity(intent);*/
+                        startActivity(intent);*//*
                     }
 
                     @Override
@@ -176,7 +223,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
                         // do whatever
                     }
                 })
-        );
+        );*/
         LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));

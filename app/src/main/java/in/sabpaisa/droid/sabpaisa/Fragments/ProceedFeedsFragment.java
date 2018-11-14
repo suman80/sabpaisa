@@ -50,12 +50,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ProceedFeedsFragmentsOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.AddFeed;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.FeedData;
+import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MainFeedAdapter;
@@ -67,6 +71,8 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME;
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -104,7 +110,8 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
     String feedId;
 
     String roleValue;
-    
+
+    NotificationDB notificationDB;
 
 
     public ProceedFeedsFragment() {
@@ -217,7 +224,8 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
             }
         });
 
-
+        //Notification db
+        notificationDB= new NotificationDB(getContext());
 
         return rootView;
     }
@@ -400,6 +408,37 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
 
 
+
+                            //////////////Notification db//////////////////////////
+
+                            if (notificationDB.isTableExists(TABLE_FEEDNOTIFICATION)) {
+
+                                Cursor res = notificationDB.getParticularFeedNotificationData(feedData.getFeedId());
+                                if (res.getCount() > 0) {
+                                    StringBuffer stringBuffer = new StringBuffer();
+
+                                    while (res.moveToNext()) {
+                                        stringBuffer.append(res.getString(0) + " ");
+                                        stringBuffer.append(res.getString(1) + " ");
+                                        stringBuffer.append(res.getString(2) + " ");
+                                        stringBuffer.append(res.getString(3) + " ");
+                                        feedData.setFeedRecentCommentTime(Long.parseLong(res.getString(3)));
+                                        stringBuffer.append(res.getString(4) + " ");
+                                    }
+
+                                    Log.d("PFF_Notification", "stringBuffer___ " + stringBuffer);
+                                    //Log.d("PGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+                                }
+
+                            }
+
+                            Log.d("PFF_Notification", "feedListDataVal____ " + feedData.getFeedRecentCommentTime());
+
+
+
+
+
                         }
                         Log.d("feedArrayListAfterParse", " " + feedArrayList.get(0).getFeedName());
                         //*START listener for sending data to activity*//*
@@ -408,6 +447,18 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
 
                         //*END listener for sending data to activity*//*
+
+
+                        Collections.sort(feedArrayList, new Comparator<FeedData>() {
+                            @Override
+                            public int compare(FeedData feedData, FeedData t1) {
+
+                                if (feedData.getFeedRecentCommentTime() >= t1.getFeedRecentCommentTime()){
+                                    return -1;
+                                }
+                                else return 1;
+                            }
+                        });
 
 
                         mainFeedAdapter = new MainFeedAdapter(feedArrayList, getContext());

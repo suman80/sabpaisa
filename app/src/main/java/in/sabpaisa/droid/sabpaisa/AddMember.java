@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -315,6 +316,11 @@ public class AddMember extends AppCompatActivity {
 
                                     et = new EditText(AddMember.this);
                                     et.setId(k);
+
+                                    if(fieldvalueArrayList.get(k).equals("CONTACT_NUMBER")){
+                                        et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                    }
+
                                     Log.d("EditText_","IDs_: "+et.getId());
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                         et.setBackground(getDrawable(R.drawable.background_edittext));

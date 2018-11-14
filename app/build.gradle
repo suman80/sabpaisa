@@ -8,8 +8,8 @@ android {
         applicationId "in.sabpaisa.droid.sabpaisa"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 19
-        versionName "1.4.5"
+        versionCode 20
+        versionName "1.4.6"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 //        vectorDrawables.useSupportLibrary = true

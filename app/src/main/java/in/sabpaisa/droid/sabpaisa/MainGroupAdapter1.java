@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,8 +40,11 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
 
 public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.MyViewHolder> {
 
@@ -53,7 +58,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
     public static boolean isClicked=false;
 
-    MyViewHolder globalHolder;
+    //MyViewHolder globalHolder;
+
+    NotificationDB db;
 
     public MainGroupAdapter1(List<GroupListData> countryList, Context context) {
         this.countryList = countryList;
@@ -68,7 +75,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
-        globalHolder=holder;
+        //globalHolder=holder;
 
         final GroupListData c = countryList.get(position);
         holder.Group_name.setText(c.getGroupName());
@@ -207,7 +214,8 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 Log.d("tokenGRP", " " + token);
                 Log.d("groupIdGRP", " " + groupId);
 
-                addMember(token, groupId, view, c);
+                addMember(token, groupId, view, c, holder);
+                holder.joinmember.setText("Pending");
             }
         });
 
@@ -230,7 +238,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 Log.d("tokenGRP", " " + token);
                 Log.d("groupIdGRP", " " + groupId);
 
-                addMember(token, groupId, v, c);
+                addMember(token, groupId, v, c, holder);
 
             }
         });
@@ -299,6 +307,36 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
         });
 
 
+
+        db= new NotificationDB(mContext);
+        Cursor res = db.getParticularGroupNotificationData(c.getGroupId());
+        if (res.getCount() > 0) {
+            StringBuffer stringBuffer = new StringBuffer();
+
+            int commentCounter = 0;
+            while (res.moveToNext()) {
+                stringBuffer.append(res.getString(0) + " ");
+                stringBuffer.append(res.getString(1) + " ");
+                stringBuffer.append(res.getString(2) + " ");
+                commentCounter = Integer.parseInt(res.getString(2));
+                stringBuffer.append(res.getString(3) + " ");
+                stringBuffer.append(res.getString(4) + " ");
+            }
+
+            Log.d("MainGrpAdapt","Notification "+stringBuffer);
+
+            if(commentCounter > 0) {
+                holder.relativeLayoutNotification.setVisibility(View.VISIBLE);
+                holder.notificationText.setText(String.valueOf(commentCounter));
+            }
+
+
+        }
+
+
+
+
+
     }
 
 
@@ -339,6 +377,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
         MaterialRippleLayout rippleClick;
         ImageView imgPopUpMenu;
 
+        RelativeLayout relativeLayoutNotification;
+        TextView notificationText;
+
         public MyViewHolder(View view) {
             super(view);
 
@@ -350,6 +391,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
             linearLayoutGroupItemList = (LinearLayout) view.findViewById(R.id.linearLayoutGroupItemList);
             rippleClick = (MaterialRippleLayout) view.findViewById(R.id.rippleClick);
             imgPopUpMenu = (ImageView)view.findViewById(R.id.imgPopUpMenu);
+
+            relativeLayoutNotification = (RelativeLayout) view.findViewById(R.id.relativeLayoutNotification);
+            notificationText = (TextView) view.findViewById(R.id.notificationText);
 
         }
 
@@ -460,7 +504,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
 
 
-    public void addMember(final String token, final String groupId, final View view, final GroupListData groupListData) {
+    public void addMember(final String token, final String groupId, final View view, final GroupListData groupListData, final MyViewHolder holder) {
 
 // Tag used to cancel the request
         String tag_string_req = "req_register";
@@ -501,7 +545,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                             public void onClick(DialogInterface dialog, int which) {
                                 // Write your code here to execute after dialog closed
 
-                                globalHolder.joinmember.setText("Pending");
+                                holder.joinmember.setText("Pending");
 //                                Intent intent = new Intent(view.getContext(),Proceed_Group_FullScreen.class);
 //                                intent.putExtra("groupName",groupListData.getGroupName());
 //                                intent.putExtra("groupText",groupListData.getGroupText());
@@ -518,6 +562,43 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
                     } else if (response.equals("User already a member of the client with Status Approved")) {
                         //joinmember.setVisibility(View.GONE);
+
+
+                        //////////////Notification db//////////////////////////
+                        //db = new NotificationDB(mContext);
+                        if (db.isTableExists(TABLE_GROUPNOTIFICATION)){
+
+                            Cursor res = db.getParticularGroupNotificationData(groupListData.getGroupId());
+                            if (res.getCount() > 0) {
+                                StringBuffer stringBuffer = new StringBuffer();
+
+                                while (res.moveToNext()) {
+                                    stringBuffer.append(res.getString(0) + " ");
+                                    stringBuffer.append(res.getString(1) + " ");
+                                    stringBuffer.append(res.getString(2) + " ");
+                                    stringBuffer.append(res.getString(3) + " ");
+                                    stringBuffer.append(res.getString(4) + " ");
+                                }
+
+                                Log.d("PGF_Notification","stringBuffer___ "+stringBuffer);
+
+                            }
+
+                            boolean isUpdated = db.updateGroupNotificationData(groupListData.getGroupId(),0,0, System.currentTimeMillis());
+                            if (isUpdated == true){
+                                Log.d("PGF_Notification","Updated "+isUpdated);
+                                holder.relativeLayoutNotification.setVisibility(View.GONE);
+                            }else {
+                                Log.d("PGF_Notification","NotUpdated "+isUpdated);
+                            }
+
+
+
+                        }
+
+
+
+
                         popup = "Groups";
                         Intent intent = new Intent(view.getContext(), Proceed_Group_FullScreen.class);
                         intent.putExtra("popup", popup);

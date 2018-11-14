@@ -40,11 +40,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ProceedGroupsFragmentsOfflineAdapter;
 import in.sabpaisa.droid.sabpaisa.AddGroup;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
@@ -57,6 +61,7 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_GROUPS;
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,10 +101,9 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     LinearLayout linearLayoutAddGrpWhenNoData;
     String roleValue;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    ArrayList<GroupListData> arrayListForApproved;
+
+    NotificationDB notificationDB;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -118,6 +122,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         groupList.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         groupList.setLayoutManager(llm);
         groupList.setMotionEventSplittingEnabled(false);
+
+        arrayListForApproved = new ArrayList<>();
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId = sharedPreferences.getString("clientId", "abc");
@@ -213,6 +219,10 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         });
 
 
+        //Notification db
+        notificationDB= new NotificationDB(getContext());
+
+
         return rootView;
     }
 
@@ -227,7 +237,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
             db.deleteAllGroupData();
         }
 
-        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "memberStatusWithGroup" + "?token=" + token + "&clientId=" + clientId;
+
+            String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "memberStatusWithGroup" + "?token=" + token + "&clientId=" + clientId;
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 urlJsonObj, new Response.Listener<String>() {
 
@@ -386,14 +397,41 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                             }, 2000);
 
 
-                        }
+
+                            //////////////Notification db//////////////////////////
+
+                            if (notificationDB.isTableExists(TABLE_GROUPNOTIFICATION)) {
+
+                                Cursor res = notificationDB.getParticularGroupNotificationData(groupListData.getGroupId());
+                                if (res.getCount() > 0) {
+                                    StringBuffer stringBuffer = new StringBuffer();
+
+                                    while (res.moveToNext()) {
+                                        stringBuffer.append(res.getString(0) + " ");
+                                        stringBuffer.append(res.getString(1) + " ");
+                                        stringBuffer.append(res.getString(2) + " ");
+                                        stringBuffer.append(res.getString(3) + " ");
+                                        groupListData.setGroupRecentCommentTime(Long.parseLong(res.getString(3)));
+                                        stringBuffer.append(res.getString(4) + " ");
+                                    }
+
+                                    Log.d("PGF_Notification", "stringBuffer___ " + stringBuffer);
+                                    //Log.d("PGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+                                }
+
+                            }
+
+                            Log.d("PGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+
+                            }
                         Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
                         /*START listener for sending data to activity*/
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetGroups(groupArrayList);
                         /*END listener for sending data to activity*/
 
-                        ArrayList<GroupListData> arrayListForApproved = new ArrayList<>();
 
                         for (GroupListData approvedValue:groupArrayList) {
                             if (approvedValue.getMemberStatus().contains("Approved")){
@@ -402,6 +440,18 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
                             }
                         }
+
+                        Collections.sort(arrayListForApproved, new Comparator<GroupListData>() {
+                            @Override
+                            public int compare(GroupListData groupListData, GroupListData t1) {
+
+                                if (groupListData.getGroupRecentCommentTime() >= t1.getGroupRecentCommentTime()){
+                                    return -1;
+                                }
+                                else return 1;
+                            }
+                        });
+
 
                         for (GroupListData approvedValue:groupArrayList) {
                             if (approvedValue.getMemberStatus().contains("Pending")){
@@ -522,7 +572,6 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
             return false;
         }
     }
-
 
 
 
