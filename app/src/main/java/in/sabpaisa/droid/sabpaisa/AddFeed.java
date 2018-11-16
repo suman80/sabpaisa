@@ -52,8 +52,9 @@ public class AddFeed extends AppCompatActivity {
 
     String imageUrl;
 
-    String clientId,FLAG,GROUP_ID;
+    String clientId,GROUP_ID;
     String userAccessToken;
+    String FLAG;
 
     Bitmap feedImage,feedLogo;
 
@@ -265,12 +266,14 @@ public class AddFeed extends AppCompatActivity {
 
                                 Log.d("AddFeed","InIfPart");
 
-                                if (FLAG != null && FLAG.equals("PrivateGroupFeeds")){
+                                if (GROUP_ID != null /*&& FLAG.equals("PrivateGroupFeeds")*/){
                                     Toast.makeText(AddFeed.this,"Private Feed has been added",Toast.LENGTH_SHORT).show();
                                     Intent intent1 = new Intent(AddFeed.this,PrivateGroupFeeds.class);
                                     intent1.putExtra("GroupId",GROUP_ID);
                                     intent1.putExtra("memberGroupRole",memberGroupRole);
+                                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent1);
+                                    finish();
 
                                 }else {
                                     Toast.makeText(AddFeed.this,"Feed has been added",Toast.LENGTH_SHORT).show();

@@ -168,8 +168,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
 */
 
-       //24th oct 2018
-       //https://stackoverflow.com/questions/33627106/how-to-open-a-specific-fragment-page-in-viewpager-from-another-activity-button-c
+        //24th oct 2018
+        //https://stackoverflow.com/questions/33627106/how-to-open-a-specific-fragment-page-in-viewpager-from-another-activity-button-c
         //position = getIntent().getStringExtra("deleteFrmGrp");
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

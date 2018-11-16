@@ -20,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.balysv.materialripple.MaterialRippleLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,17 +34,19 @@ import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 public class PrivateGroupFeeds extends AppCompatActivity {
 
-    String GroupId;
+    public static String GroupId;
     ArrayList<FeedData> feedArrayList = new ArrayList<FeedData>();
     MainFeedAdapter mainFeedAdapter;/*Globally Declared Adapter*/
 
     Toolbar toolbar;
 
-    FrameLayout framelayoutAddFeed;
+    FrameLayout framelayoutAddPrivateFeed;
+    MaterialRippleLayout rippleClickAdd;
 
-    String roleValue,memberGroupRole;
+    public static String roleValue,memberGroupRole;
 
     String clientId;
+    public static String FLAG /*= "PrivateGroupFeeds"*/;
 
 
     @Override
@@ -59,11 +62,16 @@ public class PrivateGroupFeeds extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+                FLAG = null;
             }
         });
 
-
-        framelayoutAddFeed = (FrameLayout)findViewById(R.id.framelayoutAddFeed);
+        Log.d("Before : ",FLAG+"");
+        FLAG = "PrivateGroupFeeds";
+        Log.d("After : ",FLAG);
+        framelayoutAddPrivateFeed = (FrameLayout)findViewById(R.id.framelayoutAddPrivateFeed);
+        rippleClickAdd = (MaterialRippleLayout) findViewById(R.id.rippleClickAdd);
+        Log.d("framePrivateFeed", framelayoutAddPrivateFeed+"");
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId = sharedPreferences.getString("clientId", "abc");
@@ -75,14 +83,33 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
         memberGroupRole = getIntent().getStringExtra("memberGroupRole");
 
+
+        GroupId=getIntent().getStringExtra("GroupId");
+        if (GroupId != null)
+        Log.d("PrivateGroupFeedsId",GroupId);
+
+
+
         if (roleValue.equals("1") || memberGroupRole.equals("2")) {
 
-            framelayoutAddFeed.setVisibility(View.VISIBLE);
+            framelayoutAddPrivateFeed.setVisibility(View.VISIBLE);
         }
 
 
-        GroupId=getIntent().getStringExtra("GroupId");
-        Log.d("PrivateGroupFeedsId",GroupId);
+        rippleClickAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("AddPrivateFeed","Clicked");
+                Intent intent = new Intent(PrivateGroupFeeds.this,AddFeed.class);
+                intent.putExtra("FLAG",FLAG);
+                intent.putExtra("GROUP_ID",GroupId);
+                intent.putExtra("CLIENT_ID",clientId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
+
 
         callFeedDataList(GroupId);
 
@@ -112,7 +139,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
                     if (status.equals("success")&&response1.equals("No Record Found")) {
 
-                        framelayoutAddFeed.setVisibility(View.GONE);
+                        framelayoutAddPrivateFeed.setVisibility(View.GONE);
 
                         android.app.AlertDialog.Builder builder =new android.app.AlertDialog.Builder(PrivateGroupFeeds.this);
                         builder.setTitle("");
@@ -123,9 +150,10 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
                                 /*onBackPressed();*/
                                 Intent intent = new Intent(PrivateGroupFeeds.this,AddFeed.class);
-                                intent.putExtra("FLAG","PrivateGroupFeeds");
+                                intent.putExtra("FLAG",FLAG);
                                 intent.putExtra("GROUP_ID",GroupId);
                                 intent.putExtra("CLIENT_ID",clientId);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
 
 
@@ -231,5 +259,9 @@ public class PrivateGroupFeeds extends AppCompatActivity {
     }
 
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        FLAG = null;
+    }
 }

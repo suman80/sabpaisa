@@ -181,6 +181,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         setContentView(R.layout.activity_proceed_group_full_screen);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        PrivateGroupFeeds.FLAG = null;
 
         GroupId = getIntent().getStringExtra("groupId");
         GroupsNm = getIntent().getStringExtra("groupName");
@@ -1165,6 +1166,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         if (memberGroupRole==null){
             return false;
         }
+
 
         MenuItem menuItem = menu.findItem(R.id.editFeedMenu);
         menuItem.setVisible(false);

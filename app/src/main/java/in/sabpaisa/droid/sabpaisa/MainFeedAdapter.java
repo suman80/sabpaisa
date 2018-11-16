@@ -140,7 +140,12 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
             if(commentCounter > 0) {
                 holder.relativeLayoutNotification.setVisibility(View.VISIBLE);
-                holder.notificationText.setText(String.valueOf(commentCounter));
+
+                if (commentCounter <= 9) {
+                    holder.notificationText.setText(String.valueOf(commentCounter));
+                }else {
+                    holder.notificationText.setText(String.valueOf("9+"));
+                }
             }
 
 
@@ -334,14 +339,28 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                     if (status.equals("success")){
                         Log.d("MainFeedAdapter","InIfPart");
 
-                        String clientImageURLPath = FullViewOfClientsProceed.clientImageURLPath;
 
-                        Log.d("MainFeedAdapter","clientImageURLPath "+clientImageURLPath);
+                        if (PrivateGroupFeeds.FLAG != null){
+                            MainGroupAdapter1.isClicked=false;
+                            Intent intent = new Intent(context,PrivateGroupFeeds.class);
+                            intent.putExtra("GroupId",PrivateGroupFeeds.GroupId);
+                            intent.putExtra("",PrivateGroupFeeds.memberGroupRole);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            MainGroupAdapter1.isClicked = false;
+                            context.startActivity(intent);
 
-                        Intent intent = new Intent(context,FullViewOfClientsProceed.class);
-                        intent.putExtra("clientImagePath",clientImageURLPath);
-                        intent.putExtra("FRAGMENT_ID","0");
-                        context.startActivity(intent);
+                        }else {
+
+
+                            String clientImageURLPath = FullViewOfClientsProceed.clientImageURLPath;
+
+                            Log.d("MainFeedAdapter", "clientImageURLPath " + clientImageURLPath);
+
+                            Intent intent = new Intent(context, FullViewOfClientsProceed.class);
+                            intent.putExtra("clientImagePath", clientImageURLPath);
+                            intent.putExtra("FRAGMENT_ID", "0");
+                            context.startActivity(intent);
+                        }
 
                     }else {
                         Log.d("MainFeedAdapter","InElsePart");

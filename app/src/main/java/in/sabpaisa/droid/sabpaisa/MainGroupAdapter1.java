@@ -62,6 +62,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
     NotificationDB db;
 
+    public MainGroupAdapter1() {
+    }
+
     public MainGroupAdapter1(List<GroupListData> countryList, Context context) {
         this.countryList = countryList;
         this.mContext = context;
@@ -327,7 +330,12 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
             if(commentCounter > 0) {
                 holder.relativeLayoutNotification.setVisibility(View.VISIBLE);
-                holder.notificationText.setText(String.valueOf(commentCounter));
+
+                if (commentCounter <= 9) {
+                    holder.notificationText.setText(String.valueOf(commentCounter));
+                }else {
+                    holder.notificationText.setText(String.valueOf("9+"));
+                }
             }
 
 
