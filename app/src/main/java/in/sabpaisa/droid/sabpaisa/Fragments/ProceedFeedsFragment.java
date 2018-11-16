@@ -1,10 +1,12 @@
 package in.sabpaisa.droid.sabpaisa.Fragments;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,6 +14,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -58,6 +61,7 @@ import in.sabpaisa.droid.sabpaisa.AddFeed;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
+import in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
@@ -112,6 +116,8 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
     String roleValue;
 
     NotificationDB notificationDB;
+
+    BroadcastReceiver broadcastReceiver;
 
 
     public ProceedFeedsFragment() {
@@ -226,6 +232,36 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
         //Notification db
         notificationDB= new NotificationDB(getContext());
+
+
+
+        //////////////////////////Broadcast reciever for UI update/////////////////////////////
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                String groupId = intent.getStringExtra("GROUP_ID");
+
+                Log.d("BROADCAST_PFF","broadcastVal__"+groupId);
+
+                if (intent.getAction().equals(ConstantsForUIUpdates.FEED_UI)) {
+                    feedArrayList.clear();
+                    callFeedDataList(clientId);
+
+                    }
+
+
+                }
+
+        };
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.FEED_UI));
+
+
+
+
+
 
         return rootView;
     }

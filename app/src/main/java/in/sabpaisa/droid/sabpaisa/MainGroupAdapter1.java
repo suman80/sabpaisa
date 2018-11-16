@@ -1,11 +1,14 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -61,6 +64,8 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
     //MyViewHolder globalHolder;
 
     NotificationDB db;
+
+    BroadcastReceiver broadcastReceiver;
 
     public MainGroupAdapter1() {
     }
@@ -341,7 +346,58 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
         }
 
+        /*//////////////////////////Broadcast reciever for UI update/////////////////////////////
 
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                String groupId = intent.getStringExtra("GROUP_ID");
+
+                Log.d("MGA_GRP","broadcastVal__"+groupId);
+
+                if (intent.getAction().equals(ConstantsForUIUpdates.GROUP_UI)){
+
+                    db= new NotificationDB(mContext);
+                    Cursor res = db.getParticularGroupNotificationData(c.getGroupId());
+                    if (res.getCount() > 0) {
+                        StringBuffer stringBuffer = new StringBuffer();
+
+                        int commentCounter = 0;
+                        while (res.moveToNext()) {
+                            stringBuffer.append(res.getString(0) + " ");
+                            stringBuffer.append(res.getString(1) + " ");
+                            stringBuffer.append(res.getString(2) + " ");
+                            commentCounter = Integer.parseInt(res.getString(2));
+                            stringBuffer.append(res.getString(3) + " ");
+                            stringBuffer.append(res.getString(4) + " ");
+                        }
+
+                        Log.d("MainGrpAdapt","Notification "+stringBuffer);
+
+                        if(commentCounter > 0) {
+                            holder.relativeLayoutNotification.setVisibility(View.VISIBLE);
+
+                            if (commentCounter <= 9) {
+                                holder.notificationText.setText(String.valueOf(commentCounter));
+                            }else {
+                                holder.notificationText.setText(String.valueOf("9+"));
+                            }
+                        }
+
+
+                    }
+
+
+                }
+
+
+            }
+        };
+
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.GROUP_UI));
+
+*/
 
 
 

@@ -159,6 +159,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
 
 
+                ///////////Update UI//////////////////////////////
+
+                Intent feedUI = new Intent(ConstantsForUIUpdates.FEED_UI);
+                feedUI.putExtra("FEED_ID", feedId);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(feedUI);
+
 
             }
 
@@ -215,6 +221,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
                 }
+
+
+                ///////////Update UI//////////////////////////////
+
+                Intent groupUI = new Intent(ConstantsForUIUpdates.GROUP_UI);
+                groupUI.putExtra("GROUP_ID", groupId);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(groupUI);
+
 
             }else {
                 Log.d("MyFirebMessService", "InElsePart_SmthngWrng");
@@ -301,6 +315,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 }
 
+                ///////////Update UI//////////////////////////////
+
+                Intent feedUI = new Intent(ConstantsForUIUpdates.FEED_UI);
+                feedUI.putExtra("FEED_ID", feedId);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(feedUI);
+
 
 
             }
@@ -360,6 +380,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 }
 
+
+                ///////////Update UI//////////////////////////////
+
+                Intent groupUI = new Intent(ConstantsForUIUpdates.GROUP_UI);
+                groupUI.putExtra("GROUP_ID", groupId);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(groupUI);
 
 
             }else {

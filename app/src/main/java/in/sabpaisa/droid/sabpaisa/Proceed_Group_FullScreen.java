@@ -4,11 +4,13 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -24,6 +26,7 @@ import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -170,7 +173,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     String roleValue;
 
-    NotificationDB notificationDB;
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -462,6 +465,24 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             }
         });
 
+
+
+// Update UI
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String groupId = intent.getStringExtra("GROUP_ID");
+
+                Log.d("PGF_GRP","broadcastVal__"+groupId);
+
+                commentArrayList.clear();
+                //API
+                callGetCommentList(GroupId);
+
+            }
+        };
+
+        LocalBroadcastManager.getInstance(Proceed_Group_FullScreen.this).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.GROUP_UI));
 
 
 

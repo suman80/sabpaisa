@@ -27,6 +27,7 @@ import android.provider.MediaStore;
 
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -183,7 +184,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     String roleValue;
 
-    NotificationDB notificationDB;
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -474,6 +475,29 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         });
 
         Proceed_Group_FullScreen.memberGroupRole = null;
+
+
+        // Update UI
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String feedId = intent.getStringExtra("FEED_ID");
+
+                Log.d("PFF_FEED","broadcastVal__"+feedId);
+
+                commentArrayList.clear();
+                //API
+                callGetCommentList(feed_id);
+
+            }
+        };
+
+        LocalBroadcastManager.getInstance(Proceed_Feed_FullScreen.this).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.FEED_UI));
+
+
+
+
+
 
 
     }

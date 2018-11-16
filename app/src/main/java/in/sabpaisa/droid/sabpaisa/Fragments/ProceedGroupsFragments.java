@@ -1,9 +1,11 @@
 package in.sabpaisa.droid.sabpaisa.Fragments;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -50,6 +53,7 @@ import in.sabpaisa.droid.sabpaisa.AddGroup;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
+import in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
@@ -105,6 +109,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     ArrayList<GroupListData> arrayListForApproved;
 
     NotificationDB notificationDB;
+
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -222,6 +228,31 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
         //Notification db
         notificationDB= new NotificationDB(getContext());
+
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                String groupId = intent.getStringExtra("GROUP_ID");
+
+                Log.d("BROADCAST_PGF","broadcastVal__"+groupId);
+
+                if (intent.getAction().equals(ConstantsForUIUpdates.GROUP_UI)) {
+                    groupArrayList.clear();
+                    arrayListForApproved.clear();
+                    callGroupDataList(token, clientId);
+
+                }
+
+
+            }
+
+        };
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.GROUP_UI));
+
+
 
 
         return rootView;
@@ -428,10 +459,6 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
                             }
                         Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
-                        /*START listener for sending data to activity*/
-                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
-                        listener.onFragmentSetGroups(groupArrayList);
-                        /*END listener for sending data to activity*/
 
 
                         for (GroupListData approvedValue:groupArrayList) {
@@ -477,6 +504,12 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
                             }
                         }
+
+
+                        /*START listener for sending data to activity*/
+                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                        listener.onFragmentSetGroups(arrayListForApproved);
+                        /*END listener for sending data to activity*/
 
                         //mainGroupAdapter1 = new MainGroupAdapter1(groupArrayList, getContext());
                         mainGroupAdapter1 = new MainGroupAdapter1(arrayListForApproved, getContext());
@@ -546,8 +579,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
     public void getDataFromActivity() {
         if (sGetDataInterface != null) {
-            this.groupArrayList = sGetDataInterface.getGroupDataList();
-            mainGroupAdapter1.setItems(this.groupArrayList);
+            this.arrayListForApproved = sGetDataInterface.getGroupDataList();
+            mainGroupAdapter1.setItems(this.arrayListForApproved);
             mainGroupAdapter1.notifyDataSetChanged();
         }
 

@@ -1,9 +1,11 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -15,6 +17,7 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -87,6 +90,8 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
     NotificationDB db;
 
+    BroadcastReceiver broadcastReceiver;
+
     public MainFeedAdapter(ArrayList<FeedData> countryList, Context context) {
         this.mainFeedDataList = countryList;
         this.context = context;
@@ -150,6 +155,63 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
 
         }
+
+
+
+
+        /*//////////////////////////Broadcast reciever for UI update/////////////////////////////
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                String groupId = intent.getStringExtra("GROUP_ID");
+
+                Log.d("MGA_GRP","broadcastVal__"+groupId);
+
+                if (intent.getAction().equals(ConstantsForUIUpdates.FEED_UI)) {
+
+                    db= new NotificationDB(context);
+                    Cursor res = db.getParticularFeedNotificationData(mainFeedData.getFeedId());
+                    if (res.getCount() > 0) {
+                        StringBuffer stringBuffer = new StringBuffer();
+
+                        int commentCounter = 0;
+                        while (res.moveToNext()) {
+                            stringBuffer.append(res.getString(0) + " ");
+                            stringBuffer.append(res.getString(1) + " ");
+                            stringBuffer.append(res.getString(2) + " ");
+                            commentCounter = Integer.parseInt(res.getString(2));
+                            stringBuffer.append(res.getString(3) + " ");
+                            stringBuffer.append(res.getString(4) + " ");
+                        }
+
+                        Log.d("MainFeedAdapt","Notification "+stringBuffer);
+
+                        if(commentCounter > 0) {
+                            holder.relativeLayoutNotification.setVisibility(View.VISIBLE);
+
+                            if (commentCounter <= 9) {
+                                holder.notificationText.setText(String.valueOf(commentCounter));
+                            }else {
+                                holder.notificationText.setText(String.valueOf("9+"));
+                            }
+                        }
+
+
+                    }
+
+
+                }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(context).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.FEED_UI));
+
+*/
+
+
+
 
 
 
