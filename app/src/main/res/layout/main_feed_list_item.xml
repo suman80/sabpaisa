@@ -114,7 +114,7 @@
                             android:layout_gravity="end"
                             android:layout_weight="0.8"
                             android:src="@drawable/ic_more_vert"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
 
 
                     </LinearLayout>

@@ -44,6 +44,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
+import in.sabpaisa.droid.sabpaisa.Model.GroupNotificationModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
@@ -329,6 +330,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 commentCounter = Integer.parseInt(res.getString(2));
                 stringBuffer.append(res.getString(3) + " ");
                 stringBuffer.append(res.getString(4) + " ");
+                stringBuffer.append(res.getString(5) + " ");
             }
 
             Log.d("MainGrpAdapt","Notification "+stringBuffer);
@@ -636,25 +638,56 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                             if (res.getCount() > 0) {
                                 StringBuffer stringBuffer = new StringBuffer();
 
-                                while (res.moveToNext()) {
-                                    stringBuffer.append(res.getString(0) + " ");
-                                    stringBuffer.append(res.getString(1) + " ");
-                                    stringBuffer.append(res.getString(2) + " ");
-                                    stringBuffer.append(res.getString(3) + " ");
-                                    stringBuffer.append(res.getString(4) + " ");
+//                                while (res.moveToNext()) {
+//                                    stringBuffer.append(res.getString(0) + " ");
+//                                    stringBuffer.append(res.getString(1) + " ");
+//                                    stringBuffer.append(res.getString(2) + " ");
+//                                    stringBuffer.append(res.getString(3) + " ");
+//                                    stringBuffer.append(res.getString(4) + " ");
+//                                    stringBuffer.append(res.getString(5) + " ");
+//                                }
+
+                                //Log.d("PGF_Notification","stringBuffer___ "+stringBuffer);
+
+                                boolean isUpdated = db.updateGroupNotificationData(groupListData.getGroupId(),0,0, System.currentTimeMillis(),true);
+                                if (isUpdated == true){
+                                    Log.d("PGF_Notification","Updated "+isUpdated);
+                                    holder.relativeLayoutNotification.setVisibility(View.GONE);
+                                }else {
+                                    Log.d("PGF_Notification","NotUpdated "+isUpdated);
+                                }
+                            }
+                            //////////////////////////////////////////////////////
+                            else{
+                                GroupNotificationModel groupNotificationModel = new GroupNotificationModel();
+                                groupNotificationModel.setGroupId(groupListData.getGroupId());
+                                groupNotificationModel.setGroupNotificationCount(0);
+                                groupNotificationModel.setGroupRecentCommentTimeStamp(0);
+                                groupNotificationModel.setGroupRecentOpenCommentTimeStamp(System.currentTimeMillis());
+                                groupNotificationModel.setGroupOpen(true);
+
+                                boolean isInserted = db.insertGroupNotificationData(groupNotificationModel);
+                                if (isInserted == true) {
+
+
+                                    Log.d("PGF_Notification", "Notification Insert : " + isInserted);
+
+                                } else {
+
+                                    Log.d("PGF_Notification", "Notification Insert : " + isInserted);
+
                                 }
 
-                                Log.d("PGF_Notification","stringBuffer___ "+stringBuffer);
-
                             }
+                            ///////////////////////////////////////////////////////
 
-                            boolean isUpdated = db.updateGroupNotificationData(groupListData.getGroupId(),0,0, System.currentTimeMillis());
-                            if (isUpdated == true){
-                                Log.d("PGF_Notification","Updated "+isUpdated);
-                                holder.relativeLayoutNotification.setVisibility(View.GONE);
-                            }else {
-                                Log.d("PGF_Notification","NotUpdated "+isUpdated);
-                            }
+//                            boolean isUpdated = db.updateGroupNotificationData(groupListData.getGroupId(),0,0, System.currentTimeMillis(),true);
+//                            if (isUpdated == true){
+//                                Log.d("PGF_Notification","Updated "+isUpdated);
+//                                holder.relativeLayoutNotification.setVisibility(View.GONE);
+//                            }else {
+//                                Log.d("PGF_Notification","NotUpdated "+isUpdated);
+//                            }
 
 
 

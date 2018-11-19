@@ -6,18 +6,19 @@ public class FeedNotificatonModel {
     int feedNotificationCount;
     long feedRecentCommentTimeStamp;
     long feedRecentOpenCommentTimeStamp;
+    boolean feedIsOpen;
 
 
     public FeedNotificatonModel() {
     }
 
-    public FeedNotificatonModel(String feedId, int feedNotificationCount, long feedRecentCommentTimeStamp, long feedRecentOpenCommentTimeStamp) {
+    public FeedNotificatonModel(String feedId, int feedNotificationCount, long feedRecentCommentTimeStamp, long feedRecentOpenCommentTimeStamp, boolean feedIsOpen) {
         this.feedId = feedId;
         this.feedNotificationCount = feedNotificationCount;
         this.feedRecentCommentTimeStamp = feedRecentCommentTimeStamp;
         this.feedRecentOpenCommentTimeStamp = feedRecentOpenCommentTimeStamp;
+        this.feedIsOpen = feedIsOpen;
     }
-
 
     public String getFeedId() {
         return feedId;
@@ -49,5 +50,14 @@ public class FeedNotificatonModel {
 
     public void setFeedRecentOpenCommentTimeStamp(long feedRecentOpenCommentTimeStamp) {
         this.feedRecentOpenCommentTimeStamp = feedRecentOpenCommentTimeStamp;
+    }
+
+
+    public boolean isFeedIsOpen() {
+        return feedIsOpen;
+    }
+
+    public void setFeedIsOpen(boolean feedIsOpen) {
+        this.feedIsOpen = feedIsOpen;
     }
 }

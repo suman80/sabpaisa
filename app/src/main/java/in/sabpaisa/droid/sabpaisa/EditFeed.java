@@ -267,7 +267,7 @@ public class EditFeed extends AppCompatActivity {
 
                     if (status.equals("success")) {
 
-                        Log.d("EditFeed","InIfPart");
+                        Log.d("EditFeed", "InIfPart");
 
                         //Toast.makeText(EditFeed.this,"Feed has been Edited",Toast.LENGTH_SHORT).show();
 
@@ -284,24 +284,39 @@ public class EditFeed extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
 
 
-                                String clientImageURLPath = FullViewOfClientsProceed.clientImageURLPath;
+                                if (PrivateGroupFeeds.FLAG != null) {
 
-                                Log.d("EditFeed","clientImageURLPath "+clientImageURLPath);
 
-                                Intent intent = new Intent(EditFeed.this,FullViewOfClientsProceed.class);
-                                intent.putExtra("clientImagePath",clientImageURLPath);
-                                intent.putExtra("FRAGMENT_ID","0");
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                MainFeedAdapter.isClicked=false;
+                                    Intent intent = new Intent(EditFeed.this,PrivateGroupFeeds.class);
+                                    intent.putExtra("GroupId",PrivateGroupFeeds.GroupId);
+                                    intent.putExtra("",PrivateGroupFeeds.memberGroupRole);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    MainGroupAdapter1.isClicked = false;
+                                    startActivity(intent);
 
-                                startActivity(intent);
 
+                                } else {
+
+
+                                    String clientImageURLPath = FullViewOfClientsProceed.clientImageURLPath;
+
+                                    Log.d("EditFeed", "clientImageURLPath " + clientImageURLPath);
+
+                                    Intent intent = new Intent(EditFeed.this, FullViewOfClientsProceed.class);
+                                    intent.putExtra("clientImagePath", clientImageURLPath);
+                                    intent.putExtra("FRAGMENT_ID", "0");
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    MainFeedAdapter.isClicked = false;
+
+                                    startActivity(intent);
+                                }
 
                             }
                         });
 
                         // Showing Alert Message
                         alertDialog.show();
+
 
 
                     }else if (status.equals("failed")){

@@ -116,6 +116,7 @@ import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.FeedCommentsOfflineModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.HttpHandler;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
@@ -185,6 +186,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     String roleValue;
 
     BroadcastReceiver broadcastReceiver;
+
+    NotificationDB notificationDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -270,6 +273,19 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                     public void onClick(View v) {
 
                         MainFeedAdapter.isClicked=false;
+                        FullViewOfClientsProceed.isFragmentOpen = true;
+
+
+                        boolean isUpdated = notificationDB.updateFeedNotificationData(feed_id,0,0, System.currentTimeMillis(),false);
+
+                        if (isUpdated == true){
+                            Log.d("PFF_NotiDB","Updated "+isUpdated);
+                        }else {
+                            Log.d("PFF_NotiDB","NotUpdated "+isUpdated);
+                        }
+
+
+
 
                         onBackPressed();
                         //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
@@ -495,8 +511,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         LocalBroadcastManager.getInstance(Proceed_Feed_FullScreen.this).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.FEED_UI));
 
 
+        FullViewOfClientsProceed.isFragmentOpen = false;
 
 
+
+        notificationDB = new NotificationDB(Proceed_Feed_FullScreen.this);
 
 
 
@@ -1310,6 +1329,16 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         } else {
 
             MainFeedAdapter.isClicked=false;
+            FullViewOfClientsProceed.isFragmentOpen = true;
+
+            boolean isUpdated = notificationDB.updateFeedNotificationData(feed_id,0,0, System.currentTimeMillis(),false);
+
+            if (isUpdated == true){
+                Log.d("PFF_NotiDB","Updated "+isUpdated);
+            }else {
+                Log.d("PFF_NotiDB","NotUpdated "+isUpdated);
+            }
+
 
             finish();
 

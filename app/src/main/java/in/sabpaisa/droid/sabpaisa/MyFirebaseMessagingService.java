@@ -108,7 +108,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 */
 
                 ////////////////Notification Db//////////////////////////////////////////
-
+                boolean isFeedOpen = false;
                 Cursor res = db.getParticularFeedNotificationData(feedId);
                 if (res.getCount() > 0) {
                     StringBuffer stringBuffer = new StringBuffer();
@@ -122,10 +122,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         commentCount = Integer.parseInt(res.getString(2));
                         stringBuffer.append(res.getString(3) + " ");
                         stringBuffer.append(res.getString(4) + " ");
+                        stringBuffer.append(res.getString(5) + " ");
+                        if(res.getString(5).equals("1")){
+                            isFeedOpen = true;
+                        }
                     }
 
 
-                    boolean isUpdated = db.updateFeedNotificationData(feedId,commentCount+1,System.currentTimeMillis(), 0);
+                    boolean isUpdated = db.updateFeedNotificationData(feedId,commentCount+1,System.currentTimeMillis(), 0,isFeedOpen);
 
                     if (isUpdated == true){
                         Log.d("MyFirebMessServiceFeed","Updated "+isUpdated);
@@ -143,6 +147,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     feedNotificatonModel.setFeedNotificationCount(1);
                     feedNotificatonModel.setFeedRecentCommentTimeStamp(System.currentTimeMillis());
                     feedNotificatonModel.setFeedRecentOpenCommentTimeStamp(0);
+                    feedNotificatonModel.setFeedIsOpen(false);
 
                     boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
                     if (isInserted == true) {
@@ -160,10 +165,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
                 ///////////Update UI//////////////////////////////
+                if(isFeedOpen) {
+                    Intent feedUI = new Intent(ConstantsForUIUpdates.FEED_UI);
+                    feedUI.putExtra("FEED_ID", feedId);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(feedUI);
+                }
 
-                Intent feedUI = new Intent(ConstantsForUIUpdates.FEED_UI);
-                feedUI.putExtra("FEED_ID", feedId);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(feedUI);
+                Intent feedFrag = new Intent(ConstantsForUIUpdates.IS_FEED_FRAG_OPEN);
+                feedFrag.putExtra("FEED_ID", feedId);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(feedFrag);
 
 
             }
@@ -171,7 +181,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             else if (groupId != null) {
                 Log.d("MFMS","GRP_ID___"+groupId);
                 ////////////////Notification Db//////////////////////////////////////////
-
+                boolean isGroupOpen = false;
                 Cursor res = db.getParticularGroupNotificationData(groupId);
                 if (res.getCount() > 0) {
                     StringBuffer stringBuffer = new StringBuffer();
@@ -185,11 +195,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         commentCount = Integer.parseInt(res.getString(2));
                         stringBuffer.append(res.getString(3) + " ");
                         stringBuffer.append(res.getString(4) + " ");
+                        stringBuffer.append(res.getString(5) + " ");
+                        //isGroupOpen = Boolean.valueOf(res.getString(5));
+                        if(res.getString(5).equals("1")){
+                            isGroupOpen = true;
+                        }
+
                     }
 
                     Log.d("MyFirebMessServiceGRP", "stringBuffer_ " + stringBuffer);
 
-                    boolean isUpdated = db.updateGroupNotificationData(groupId, commentCount + 1, System.currentTimeMillis(), 0);
+                    boolean isUpdated = db.updateGroupNotificationData(groupId, commentCount + 1, System.currentTimeMillis(), 0,isGroupOpen);
 
                     if (isUpdated == true) {
                         Log.d("MyFirebMessServiceGRP", "Updated " + isUpdated);
@@ -206,6 +222,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     groupNotificationModel.setGroupNotificationCount(1);
                     groupNotificationModel.setGroupRecentCommentTimeStamp(System.currentTimeMillis());
                     groupNotificationModel.setGroupRecentOpenCommentTimeStamp(0);
+                    groupNotificationModel.setGroupOpen(false);
 
                     boolean isInserted = db.insertGroupNotificationData(groupNotificationModel);
                     if (isInserted == true) {
@@ -224,11 +241,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
                 ///////////Update UI//////////////////////////////
+                if(isGroupOpen) {
+                    Intent groupUI = new Intent(ConstantsForUIUpdates.GROUP_UI);
+                    groupUI.putExtra("GROUP_ID", groupId);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(groupUI);
+                }
 
-                Intent groupUI = new Intent(ConstantsForUIUpdates.GROUP_UI);
-                groupUI.putExtra("GROUP_ID", groupId);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(groupUI);
-
+                Intent groupFrag = new Intent(ConstantsForUIUpdates.IS_GROUP_FRAG_OPEN);
+                groupFrag.putExtra("GROUP_ID", groupId);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(groupFrag);
 
             }else {
                 Log.d("MyFirebMessService", "InElsePart_SmthngWrng");
@@ -263,7 +284,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
                 ////////////////Notification DbinsertGroupNotificationData//////////////////////////////////////////
-
+                boolean isFeedOpen = false;
                 Cursor res = db.getParticularFeedNotificationData(feedId);
                 if (res.getCount() > 0) {
                     StringBuffer stringBuffer = new StringBuffer();
@@ -277,9 +298,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         commentCount = Integer.parseInt(res.getString(2));
                         stringBuffer.append(res.getString(3) + " ");
                         stringBuffer.append(res.getString(4) + " ");
+                        stringBuffer.append(res.getString(5) + " ");
+                        //isFeedOpen = Boolean.valueOf(res.getString(5));
+                        if(res.getString(5).equals("1")){
+                            isFeedOpen = true;
+                        }
+                        Log.d("MyFirebMessServiceFeed","Updated "+isFeedOpen);
                     }
 
-                    boolean isUpdated = db.updateFeedNotificationData(feedId,commentCount+1,System.currentTimeMillis(), 0);
+                    boolean isUpdated = db.updateFeedNotificationData(feedId,commentCount+1,System.currentTimeMillis(), 0,isFeedOpen);
 
                     if (isUpdated == true){
                         Log.d("MyFirebMessServiceFeed","Updated "+isUpdated);
@@ -296,6 +323,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     feedNotificatonModel.setFeedNotificationCount(1);
                     feedNotificatonModel.setFeedRecentCommentTimeStamp(System.currentTimeMillis());
                     feedNotificatonModel.setFeedRecentOpenCommentTimeStamp(0);
+                    feedNotificatonModel.setFeedIsOpen(false);
 
                     boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
                     if (isInserted == true) {
@@ -316,11 +344,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
 
                 ///////////Update UI//////////////////////////////
+                if(isFeedOpen) {
+                    Intent feedUI = new Intent(ConstantsForUIUpdates.FEED_UI);
+                    feedUI.putExtra("FEED_ID", feedId);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(feedUI);
+                }
 
-                Intent feedUI = new Intent(ConstantsForUIUpdates.FEED_UI);
-                feedUI.putExtra("FEED_ID", feedId);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(feedUI);
-
+                Intent feedFrag = new Intent(ConstantsForUIUpdates.IS_FEED_FRAG_OPEN);
+                feedFrag.putExtra("FEED_ID", feedId);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(feedFrag);
 
 
             }
@@ -328,7 +360,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             else if (groupId != null){
                 Log.d("MFMS_Below_Oreo","GRP_ID___"+groupId);
                 ////////////////Notification Db//////////////////////////////////////////
-
+                boolean isGroupOpen = false;
                 Cursor res = db.getParticularGroupNotificationData(groupId);
                 if (res.getCount() > 0) {
                     StringBuffer stringBuffer = new StringBuffer();
@@ -342,11 +374,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         commentCount = Integer.parseInt(res.getString(2));
                         stringBuffer.append(res.getString(3) + " ");
                         stringBuffer.append(res.getString(4) + " ");
+                        stringBuffer.append(res.getString(5) + " ");
+                        //isGroupOpen = Boolean.valueOf(res.getString(5));
+                        if(res.getString(5).equals("1")){
+                            isGroupOpen = true;
+                        }
                     }
 
                     Log.d("MyFirebMessServiceGRP", "stringBuffer_ " + stringBuffer);
 
-                    boolean isUpdated = db.updateGroupNotificationData(groupId,commentCount+1,System.currentTimeMillis(), 0);
+                    boolean isUpdated = db.updateGroupNotificationData(groupId,commentCount+1,System.currentTimeMillis(), 0,isGroupOpen);
 
                     if (isUpdated == true){
                         Log.d("MyFirebMessServiceGRP","Updated "+isUpdated);
@@ -361,6 +398,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     groupNotificationModel.setGroupNotificationCount(1);
                     groupNotificationModel.setGroupRecentCommentTimeStamp(System.currentTimeMillis());
                     groupNotificationModel.setGroupRecentOpenCommentTimeStamp(0);
+                    groupNotificationModel.setGroupOpen(false);
 
                     boolean isInserted = db.insertGroupNotificationData(groupNotificationModel);
                     if (isInserted == true) {
@@ -383,10 +421,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 ///////////Update UI//////////////////////////////
 
-                Intent groupUI = new Intent(ConstantsForUIUpdates.GROUP_UI);
-                groupUI.putExtra("GROUP_ID", groupId);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(groupUI);
+                if(isGroupOpen) {
+                    Intent groupUI = new Intent(ConstantsForUIUpdates.GROUP_UI);
+                    groupUI.putExtra("GROUP_ID", groupId);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(groupUI);
+                }
 
+                Intent groupFrag = new Intent(ConstantsForUIUpdates.IS_GROUP_FRAG_OPEN);
+                groupFrag.putExtra("FEED_ID", groupId);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(groupFrag);
 
             }else {
                 Log.d("MyFirebMessService", "InElsePart_SmthngWrng");

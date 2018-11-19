@@ -141,6 +141,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
     String position;
 
+    public static boolean isFragmentOpen;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -438,6 +440,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
             }
         });*/
 
+
+        isFragmentOpen = true;
 
     }
 
@@ -781,6 +785,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
             Log.d("Drawer", "Closing_FVCP");
         } else {
             super.onBackPressed();
+
+            isFragmentOpen = false;
 
             Intent intent = new Intent(FullViewOfClientsProceed.this, MainActivity.class);
             intent.putExtra("clientId", ClientId);

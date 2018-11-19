@@ -241,11 +241,11 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                String groupId = intent.getStringExtra("GROUP_ID");
+                String FId = intent.getStringExtra("FEED_ID");
 
-                Log.d("BROADCAST_PFF","broadcastVal__"+groupId);
+                Log.d("BROADCAST_PFF","broadcastVal__"+FId);
 
-                if (intent.getAction().equals(ConstantsForUIUpdates.FEED_UI)) {
+                if (intent.getAction().equals(ConstantsForUIUpdates.IS_FEED_FRAG_OPEN) && FullViewOfClientsProceed.isFragmentOpen) {
                     feedArrayList.clear();
                     callFeedDataList(clientId);
 
@@ -256,7 +256,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
         };
 
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.FEED_UI));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.IS_FEED_FRAG_OPEN));
 
 
 

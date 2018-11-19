@@ -238,7 +238,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
                 Log.d("BROADCAST_PGF","broadcastVal__"+groupId);
 
-                if (intent.getAction().equals(ConstantsForUIUpdates.GROUP_UI)) {
+                if (intent.getAction().equals(ConstantsForUIUpdates.IS_GROUP_FRAG_OPEN) && FullViewOfClientsProceed.isFragmentOpen) {
                     groupArrayList.clear();
                     arrayListForApproved.clear();
                     callGroupDataList(token, clientId);
@@ -250,7 +250,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
         };
 
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.GROUP_UI));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.IS_GROUP_FRAG_OPEN));
 
 
 

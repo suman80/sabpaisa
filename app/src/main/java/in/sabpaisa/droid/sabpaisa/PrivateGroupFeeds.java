@@ -1,10 +1,13 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +31,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
@@ -48,6 +52,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
     String clientId;
     public static String FLAG /*= "PrivateGroupFeeds"*/;
 
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +118,8 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
         callFeedDataList(GroupId);
 
+
+
     }
 
     public void callFeedDataList(final String groupId) {
@@ -141,34 +148,57 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
                         framelayoutAddPrivateFeed.setVisibility(View.GONE);
 
-                        android.app.AlertDialog.Builder builder =new android.app.AlertDialog.Builder(PrivateGroupFeeds.this);
-                        builder.setTitle("");
-                        builder.setMessage("No feed generated for this group till now. \n Press add button to add feed");
-                        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                        if (roleValue.equals("1") || memberGroupRole.equals("2")){
+                            android.app.AlertDialog.Builder builder =new android.app.AlertDialog.Builder(PrivateGroupFeeds.this);
+                            builder.setTitle("");
+                            builder.setMessage("No feed generated for this group till now. \n Press add button to add feed");
+                            builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                /*onBackPressed();*/
-                                Intent intent = new Intent(PrivateGroupFeeds.this,AddFeed.class);
-                                intent.putExtra("FLAG",FLAG);
-                                intent.putExtra("GROUP_ID",GroupId);
-                                intent.putExtra("CLIENT_ID",clientId);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                    /*onBackPressed();*/
+                                    Intent intent = new Intent(PrivateGroupFeeds.this,AddFeed.class);
+                                    intent.putExtra("FLAG",FLAG);
+                                    intent.putExtra("GROUP_ID",GroupId);
+                                    intent.putExtra("CLIENT_ID",clientId);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
 
 
-                            }
-                        });
+                                }
+                            });
 
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                onBackPressed();
-                            }
-                        });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    onBackPressed();
+                                }
+                            });
 
-                        android.app.AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
+                            android.app.AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+                        }else {
+
+                            android.app.AlertDialog.Builder builder =new android.app.AlertDialog.Builder(PrivateGroupFeeds.this);
+                            builder.setTitle("");
+                            builder.setMessage("No feed generated for this group till now.");
+                            builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    onBackPressed();
+
+
+                                }
+                            });
+
+
+                            android.app.AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+
+                        }
+
+
 
                         //Toast.makeText(getApplicationContext(),"No Result Found",Toast.LENGTH_SHORT).show();
 

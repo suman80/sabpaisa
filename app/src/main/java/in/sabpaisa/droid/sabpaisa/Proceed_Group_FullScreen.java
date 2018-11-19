@@ -175,6 +175,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     BroadcastReceiver broadcastReceiver;
 
+    NotificationDB notificationDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -211,6 +213,15 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     public void onClick(View v) {
 
                         MainGroupAdapter1.isClicked=false;
+                        FullViewOfClientsProceed.isFragmentOpen = true;
+
+                        boolean isUpdated = notificationDB.updateGroupNotificationData(GroupId,0,0, System.currentTimeMillis(),false);
+
+                        if (isUpdated == true){
+                            Log.d("PGF_NotiGrp","Updated "+isUpdated);
+                        }else {
+                            Log.d("PGF_NotiGrp","NotUpdated "+isUpdated);
+                        }
 
                         onBackPressed();
                         //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
@@ -486,7 +497,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
 
+        FullViewOfClientsProceed.isFragmentOpen = false;
 
+        notificationDB = new NotificationDB(Proceed_Group_FullScreen.this);
 
 
     }
@@ -1463,7 +1476,19 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         if (shareViewFrameLayout.getVisibility() == View.VISIBLE) {
             shareViewFrameLayout.setVisibility(View.GONE);
         } else {
+
             MainGroupAdapter1.isClicked=false;
+
+            FullViewOfClientsProceed.isFragmentOpen = true;
+
+            boolean isUpdated = notificationDB.updateGroupNotificationData(GroupId,0,0, System.currentTimeMillis(),false);
+
+            if (isUpdated == true){
+                Log.d("PGF_NotiGrp","Updated "+isUpdated);
+            }else {
+                Log.d("PGF_NotiGrp","NotUpdated "+isUpdated);
+            }
+
             finish();
 
         }

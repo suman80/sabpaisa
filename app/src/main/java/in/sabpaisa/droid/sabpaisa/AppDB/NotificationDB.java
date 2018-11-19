@@ -25,6 +25,7 @@ public class NotificationDB extends SQLiteOpenHelper {
     public static final String Col_FEED_NOTIFICATION_COUNT = "FeedNotificationCount";
     public static final String Col_FEED_RECENT_COMMENT_TIMESTAMP = "FeedRecentCommentTimestamp";
     public static final String Col_FEED_RECENT_OPEN_COMMENT_TIMESTAMP = "FeedRecentOpenCommentTimestamp";
+    public static final String Col_FEED_IS_OPEN = "FeedIsOpen";
 
     // Column names for Group Notification
     public static final String TABLE_GROUPNOTIFICATION = "GroupNotification";
@@ -35,7 +36,7 @@ public class NotificationDB extends SQLiteOpenHelper {
     public static final String Col_GROUP_NOTIFICATION_COUNT = "GroupNotificationCount";
     public static final String Col_GROUP_RECENT_COMMENT_TIMESTAMP = "GroupRecentCommentTimestamp";
     public static final String Col_GROUP_RECENT_OPEN_COMMENT_TIMESTAMP = "GroupRecentOpenCommentTimestamp";
-
+    public static final String Col_GROUP_IS_OPEN = "GroupIsOpen";
 
     public NotificationDB(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -49,7 +50,8 @@ public class NotificationDB extends SQLiteOpenHelper {
                 +Col_FEED_ID+" TEXT,"
                 +Col_FEED_NOTIFICATION_COUNT+" INT,"
                 +Col_FEED_RECENT_COMMENT_TIMESTAMP+" LONG,"
-                +Col_FEED_RECENT_OPEN_COMMENT_TIMESTAMP+" LONG"
+                +Col_FEED_RECENT_OPEN_COMMENT_TIMESTAMP+" LONG,"
+                +Col_FEED_IS_OPEN+" BOOLEAN"
                 +")";
 
 
@@ -58,7 +60,8 @@ public class NotificationDB extends SQLiteOpenHelper {
                 +Col_GROUP_ID+" TEXT,"
                 +Col_GROUP_NOTIFICATION_COUNT+" INT,"
                 +Col_GROUP_RECENT_COMMENT_TIMESTAMP+" LONG,"
-                +Col_GROUP_RECENT_OPEN_COMMENT_TIMESTAMP+" LONG"
+                +Col_GROUP_RECENT_OPEN_COMMENT_TIMESTAMP+" LONG,"
+                +Col_GROUP_IS_OPEN+" BOOLEAN"
                 +")";
 
 
@@ -87,6 +90,7 @@ public class NotificationDB extends SQLiteOpenHelper {
         contentValues.put(Col_FEED_NOTIFICATION_COUNT, feedNotificatonModel.getFeedNotificationCount());
         contentValues.put(Col_FEED_RECENT_COMMENT_TIMESTAMP, feedNotificatonModel.getFeedRecentCommentTimeStamp());
         contentValues.put(Col_FEED_RECENT_OPEN_COMMENT_TIMESTAMP, feedNotificatonModel.getFeedRecentOpenCommentTimeStamp());
+        contentValues.put(Col_FEED_IS_OPEN, feedNotificatonModel.isFeedIsOpen());
 
         result = db.insert(TABLE_FEEDNOTIFICATION, null, contentValues);
 
@@ -98,15 +102,19 @@ public class NotificationDB extends SQLiteOpenHelper {
 
     }
 
-    public boolean updateFeedNotificationData(final String feedId , final int count , final long feedRecentCommentTimestamp , final long feedRecentOpenCommentTimestamp) {
+    public boolean updateFeedNotificationData(final String feedId , final int count , final long feedRecentCommentTimestamp , final long feedRecentOpenCommentTimestamp ,final boolean feedIsOpen) {
 
         final SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Col_FEED_NOTIFICATION_COUNT, count);
-        if(feedRecentCommentTimestamp > 0)
-        contentValues.put(Col_FEED_RECENT_COMMENT_TIMESTAMP, feedRecentCommentTimestamp);
-        if(feedRecentOpenCommentTimestamp > 0)
+        if(feedRecentCommentTimestamp > 0) {
+            contentValues.put(Col_FEED_RECENT_COMMENT_TIMESTAMP, feedRecentCommentTimestamp);
+        }
+        if(feedRecentOpenCommentTimestamp > 0) {
             contentValues.put(Col_FEED_RECENT_OPEN_COMMENT_TIMESTAMP, feedRecentOpenCommentTimestamp);
+        }
+
+        contentValues.put(Col_FEED_IS_OPEN, feedIsOpen);
 
         int effectedRow = db.update(TABLE_FEEDNOTIFICATION, contentValues ,Col_FEED_ID + "=?",new String[]{feedId});
         //result = db.update(TABLE_FEEDNOTIFICATION, contentValues ,Col_FEED_ID + "=?" +feedId,null);
@@ -137,6 +145,7 @@ public class NotificationDB extends SQLiteOpenHelper {
         contentValues.put(Col_GROUP_NOTIFICATION_COUNT, groupNotificatonModel.getGroupNotificationCount());
         contentValues.put(Col_GROUP_RECENT_COMMENT_TIMESTAMP, groupNotificatonModel.getGroupRecentCommentTimeStamp());
         contentValues.put(Col_GROUP_RECENT_OPEN_COMMENT_TIMESTAMP, groupNotificatonModel.getGroupRecentOpenCommentTimeStamp());
+        contentValues.put(Col_GROUP_IS_OPEN, groupNotificatonModel.isGroupOpen());
 
         result = db.insert(TABLE_GROUPNOTIFICATION, null, contentValues);
 
@@ -149,15 +158,19 @@ public class NotificationDB extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateGroupNotificationData(final String groupId , final int count , final long groupRecentCommentTimestamp , final long groupRecentOpenCommentTimestamp) {
+    public boolean updateGroupNotificationData(final String groupId , final int count , final long groupRecentCommentTimestamp , final long groupRecentOpenCommentTimestamp , final boolean isGroupOpen) {
 
         final SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Col_GROUP_NOTIFICATION_COUNT, count);
-        if(groupRecentCommentTimestamp > 0)
-        contentValues.put(Col_GROUP_RECENT_COMMENT_TIMESTAMP, groupRecentCommentTimestamp);
-        if(groupRecentOpenCommentTimestamp > 0)
+        if(groupRecentCommentTimestamp > 0) {
+            contentValues.put(Col_GROUP_RECENT_COMMENT_TIMESTAMP, groupRecentCommentTimestamp);
+        }
+        if(groupRecentOpenCommentTimestamp > 0) {
             contentValues.put(Col_GROUP_RECENT_OPEN_COMMENT_TIMESTAMP, groupRecentOpenCommentTimestamp);
+        }
+
+        contentValues.put(Col_GROUP_IS_OPEN, isGroupOpen);
 
         int effectedRow = db.update(TABLE_GROUPNOTIFICATION, contentValues ,Col_GROUP_ID + "=?",new String[]{groupId});
         //result = db.update(TABLE_FEEDNOTIFICATION, contentValues ,Col_FEED_ID + "=?" +feedId,null);

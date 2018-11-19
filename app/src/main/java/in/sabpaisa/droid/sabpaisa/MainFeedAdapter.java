@@ -69,6 +69,7 @@ import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
+import in.sabpaisa.droid.sabpaisa.Model.FeedNotificatonModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import me.grantland.widget.AutofitTextView;
@@ -90,7 +91,6 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
     NotificationDB db;
 
-    BroadcastReceiver broadcastReceiver;
 
     public MainFeedAdapter(ArrayList<FeedData> countryList, Context context) {
         this.mainFeedDataList = countryList;
@@ -125,8 +125,8 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
         holder.main_feed_description.setText(mainFeedData.getFeedText());
 
 
-
         db= new NotificationDB(context);
+
         Cursor res = db.getParticularFeedNotificationData(mainFeedData.getFeedId());
         if (res.getCount() > 0) {
             StringBuffer stringBuffer = new StringBuffer();
@@ -139,82 +139,23 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 commentCounter = Integer.parseInt(res.getString(2));
                 stringBuffer.append(res.getString(3) + " ");
                 stringBuffer.append(res.getString(4) + " ");
+                stringBuffer.append(res.getString(5) + " ");
             }
 
-            Log.d("MainFeedAdapt","Notification "+stringBuffer);
+            Log.d("MainFeedAdapt", "Notification " + stringBuffer);
 
-            if(commentCounter > 0) {
+            if (commentCounter > 0) {
                 holder.relativeLayoutNotification.setVisibility(View.VISIBLE);
 
                 if (commentCounter <= 9) {
                     holder.notificationText.setText(String.valueOf(commentCounter));
-                }else {
+                } else {
                     holder.notificationText.setText(String.valueOf("9+"));
                 }
             }
 
 
         }
-
-
-
-
-        /*//////////////////////////Broadcast reciever for UI update/////////////////////////////
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                String groupId = intent.getStringExtra("GROUP_ID");
-
-                Log.d("MGA_GRP","broadcastVal__"+groupId);
-
-                if (intent.getAction().equals(ConstantsForUIUpdates.FEED_UI)) {
-
-                    db= new NotificationDB(context);
-                    Cursor res = db.getParticularFeedNotificationData(mainFeedData.getFeedId());
-                    if (res.getCount() > 0) {
-                        StringBuffer stringBuffer = new StringBuffer();
-
-                        int commentCounter = 0;
-                        while (res.moveToNext()) {
-                            stringBuffer.append(res.getString(0) + " ");
-                            stringBuffer.append(res.getString(1) + " ");
-                            stringBuffer.append(res.getString(2) + " ");
-                            commentCounter = Integer.parseInt(res.getString(2));
-                            stringBuffer.append(res.getString(3) + " ");
-                            stringBuffer.append(res.getString(4) + " ");
-                        }
-
-                        Log.d("MainFeedAdapt","Notification "+stringBuffer);
-
-                        if(commentCounter > 0) {
-                            holder.relativeLayoutNotification.setVisibility(View.VISIBLE);
-
-                            if (commentCounter <= 9) {
-                                holder.notificationText.setText(String.valueOf(commentCounter));
-                            }else {
-                                holder.notificationText.setText(String.valueOf("9+"));
-                            }
-                        }
-
-
-                    }
-
-
-                }
-            }
-        };
-
-        LocalBroadcastManager.getInstance(context).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.FEED_UI));
-
-*/
-
-
-
-
-
-
 
         holder.rippleClick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,25 +171,57 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                     if (res.getCount() > 0) {
                         StringBuffer stringBuffer = new StringBuffer();
 
-                        while (res.moveToNext()) {
-                            stringBuffer.append(res.getString(0) + " ");
-                            stringBuffer.append(res.getString(1) + " ");
-                            stringBuffer.append(res.getString(2) + " ");
-                            stringBuffer.append(res.getString(3) + " ");
-                            stringBuffer.append(res.getString(4) + " ");
+//                        while (res.moveToNext()) {
+//                            stringBuffer.append(res.getString(0) + " ");
+//                            stringBuffer.append(res.getString(1) + " ");
+//                            stringBuffer.append(res.getString(2) + " ");
+//                            stringBuffer.append(res.getString(3) + " ");
+//                            stringBuffer.append(res.getString(4) + " ");
+//                        }
+
+//                        Log.d("PFF_Notification","stringBuffer___ "+stringBuffer);
+                        boolean isUpdated = db.updateFeedNotificationData(mainFeedData.getFeedId(),0,0, System.currentTimeMillis(),true);
+                        if (isUpdated == true){
+                            Log.d("PFF_Notification","Updated "+isUpdated);
+                            holder.relativeLayoutNotification.setVisibility(View.GONE);
+                        }else {
+                            Log.d("PFF_Notification","NotUpdated "+isUpdated);
+                        }
+                    }
+                    else{
+
+                        FeedNotificatonModel feedNotificatonModel = new FeedNotificatonModel();
+                        feedNotificatonModel.setFeedId(mainFeedData.getFeedId());
+                        feedNotificatonModel.setFeedNotificationCount(0);
+                        feedNotificatonModel.setFeedRecentCommentTimeStamp(0);
+                        feedNotificatonModel.setFeedRecentOpenCommentTimeStamp(System.currentTimeMillis());
+                        feedNotificatonModel.setFeedIsOpen(true);
+
+                        boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
+                        if (isInserted == true) {
+
+
+                            Log.d("PFF_Notification", "Notification Insert : " + isInserted);
+
+                        } else {
+
+                            Log.d("PFF_Notification", "Notification Insert : " + isInserted);
+
                         }
 
-                        Log.d("PFF_Notification","stringBuffer___ "+stringBuffer);
+
+
+
 
                     }
 
-                    boolean isUpdated = db.updateFeedNotificationData(mainFeedData.getFeedId(),0,0, System.currentTimeMillis());
-                    if (isUpdated == true){
-                        Log.d("PFF_Notification","Updated "+isUpdated);
-                        holder.relativeLayoutNotification.setVisibility(View.GONE);
-                    }else {
-                        Log.d("PFF_Notification","NotUpdated "+isUpdated);
-                    }
+//                    boolean isUpdated = db.updateFeedNotificationData(mainFeedData.getFeedId(),0,0, System.currentTimeMillis(),true);
+//                    if (isUpdated == true){
+//                        Log.d("PFF_Notification","Updated "+isUpdated);
+//                        holder.relativeLayoutNotification.setVisibility(View.GONE);
+//                    }else {
+//                        Log.d("PFF_Notification","NotUpdated "+isUpdated);
+//                    }
 
 
 
@@ -282,7 +255,10 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
         String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
 
-        if (roleValue.equals("1")) {
+        String memberGroupRole = PrivateGroupFeeds.memberGroupRole;
+
+
+        if (roleValue.equals("1") || (PrivateGroupFeeds.FLAG != null && (memberGroupRole != null) && memberGroupRole.equals("2"))) {
 
             holder.imgPopUpMenu.setVisibility(View.VISIBLE);
         }
@@ -335,6 +311,17 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
     public int getItemCount() {
         return mainFeedDataList.size();
     }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -403,7 +390,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
 
                         if (PrivateGroupFeeds.FLAG != null){
-                            MainGroupAdapter1.isClicked=false;
+
                             Intent intent = new Intent(context,PrivateGroupFeeds.class);
                             intent.putExtra("GroupId",PrivateGroupFeeds.GroupId);
                             intent.putExtra("",PrivateGroupFeeds.memberGroupRole);
