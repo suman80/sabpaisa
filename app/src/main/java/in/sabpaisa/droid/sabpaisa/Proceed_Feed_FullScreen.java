@@ -189,6 +189,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     NotificationDB notificationDB;
 
+    String memberGroupRole;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -241,11 +243,13 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         feedLogo = getIntent().getStringExtra("feedLogo");
         feed_id = getIntent().getStringExtra("feedId");
         popup = getIntent().getStringExtra("popup");
+        //memberGroupRole = getIntent().getStringExtra("memberGroupRole");
         Log.d("FeedsID", "" + feed_id);
         Log.d("ValUeAT FEED", "" + popup);
         Log.d("FeedsNmPFF", "" + FeedsNm);
         Log.d("feedsDiscriptionPFF", "" + feedsDiscription);
         Log.d("feedImgPFF", "" + feedImg);
+        //Log.d("memberGroupRole", "memberGroupRole_____ " + memberGroupRole);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(FeedsNm);
         setSupportActionBar(toolbar);
@@ -490,8 +494,15 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             }
         });
 
-        Proceed_Group_FullScreen.memberGroupRole = null;
+        //Log.d("PFF_memberGroupRole","Before"+Proceed_Group_FullScreen.memberGroupRole);
 
+        if (PrivateGroupFeeds.FLAG == null){
+            Proceed_Group_FullScreen.memberGroupRole = null;
+        }
+
+        memberGroupRole = Proceed_Group_FullScreen.memberGroupRole;
+
+        Log.d("PFF_memberGroupRole","After"+Proceed_Group_FullScreen.memberGroupRole);
 
         // Update UI
         broadcastReceiver = new BroadcastReceiver() {
@@ -1339,7 +1350,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 Log.d("PFF_NotiDB","NotUpdated "+isUpdated);
             }
 
-
             finish();
 
         }
@@ -1353,7 +1363,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         inflater.inflate(R.menu.group_menu, menu);
 
         MenuItem menuItem4 = menu.findItem(R.id.editFeedMenu);
-        if (roleValue.equals("1")) {
+        if (roleValue.equals("1") || ( memberGroupRole != null && memberGroupRole.equals("2"))) {
             menuItem4.setVisible(true);
         }else {
             menuItem4.setVisible(false);
@@ -1414,6 +1424,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
     }
+
 
 
 

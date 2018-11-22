@@ -241,7 +241,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                 if (intent.getAction().equals(ConstantsForUIUpdates.IS_GROUP_FRAG_OPEN) && FullViewOfClientsProceed.isFragmentOpen) {
                     groupArrayList.clear();
                     arrayListForApproved.clear();
-                    callGroupDataList(token, clientId);
+                    callGroupDataList1(token, clientId,context);
 
                 }
 
@@ -558,6 +558,316 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         // Adds the JSON arra   y request "arrayreq" to the request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
+
+
+
+
+    public void callGroupDataList1(final String token, final String clientId , final Context context) {
+
+
+        boolean checkDb = db.isTableExists(TABLE_NAME_GROUPS);
+
+        Log.d("DbValuePGF"," "+checkDb);
+
+        if (checkDb == true){
+            db.deleteAllGroupData();
+        }
+
+
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "memberStatusWithGroup" + "?token=" + token + "&clientId=" + clientId;
+        StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
+                urlJsonObj, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    groupArrayList = new ArrayList<GroupListData>();
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    Log.d(TAG, "PGD_RESP: " + response);
+
+                    String status = jsonObject.getString("status");
+
+                    String response1 = jsonObject.getString("response");
+
+                    JSONArray jsonArray = null;
+                    Object obj = jsonObject.get("response");
+                    if (obj instanceof JSONArray) {
+                        jsonArray = (JSONArray) obj;
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                            JSONObject jsonObjectX = jsonArray.getJSONObject(i);
+                            JSONObject jsonObject1 = jsonObjectX.getJSONObject("clientGroup");
+                            final GroupListData groupListData = new GroupListData();
+                            groupListData.setClientId(jsonObject1.getString("clientId"));
+                            groupListData.setGroupId(jsonObject1.getString("groupId"));
+                            groupListData.setGroupName(jsonObject1.getString("groupName"));
+                            groupListData.setGroupText(jsonObject1.getString("groupText"));
+                            groupListData.setCreatedDate(jsonObject1.getString("createdDate"));
+                            groupListData.setImagePath(jsonObject1.getString("imagePath"));
+                            groupListData.setLogoPath(jsonObject1.getString("logoPath"));
+                            groupListData.setMemberStatus(jsonObjectX.getString("memberStatus"));
+                            groupListData.setMemberGroupRole(jsonObjectX.getString("memberGroupRole"));
+
+                            Log.d("ProceedGroupFragmGR"," "+jsonObjectX.getString("memberGroupRole"));
+
+                            groupArrayList.add(groupListData);
+
+
+                            /////////////////////Saving To Internal Storage/////////////////////////////////////////
+
+
+                            final GroupDataForOffLine groupDataForOffLine = new GroupDataForOffLine();
+                            groupDataForOffLine.setClientId(jsonObject1.getString("clientId"));
+                            groupDataForOffLine.setGroupId(jsonObject1.getString("groupId"));
+                            groupDataForOffLine.setGroupName(jsonObject1.getString("groupName"));
+                            groupDataForOffLine.setGroupText(jsonObject1.getString("groupText"));
+                            groupDataForOffLine.setMemberStatus(jsonObjectX.getString("memberStatus"));
+
+
+                            Glide.with(context)
+                                    .load(groupListData.getLogoPath())
+                                    .asBitmap()
+                                    .into(new SimpleTarget<Bitmap>(100, 100) {
+                                        @Override
+                                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                            Log.d("LogoBitmap", " " + resource);
+                                            //saveLogoToInternalStorage(resource,groupListData.getGroupId());
+
+                                            ContextWrapper cw = new ContextWrapper(context);
+                                            // path to /data/data/yourapp/app_data/imageDir
+                                            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                            // Create imageDir
+                                            File mypath = new File(directory, groupDataForOffLine.getGroupId() + "groupLogo.jpg");
+
+                                            Log.d("mypath", "mypath  " + mypath);
+
+                                            String logoPath = mypath.toString();
+
+                                            FileOutputStream fos = null;
+                                            try {
+                                                fos = new FileOutputStream(mypath);
+                                                // Use the compress method on the BitMap object to write image to the OutputStream
+                                                resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                try {
+                                                    fos.close();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            groupDataForOffLine.setGroupLogo(logoPath);
+
+                                        }
+                                    });
+
+
+                            Glide.with(context)
+                                    .load(groupListData.getImagePath())
+                                    .asBitmap()
+                                    .into(new SimpleTarget<Bitmap>(100, 100) {
+                                        @Override
+                                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                            Log.d("ImgBitmap", " " + resource);
+                                            //saveImageToInternalStorage(resource,groupListData.getGroupId());
+
+                                            ContextWrapper cw = new ContextWrapper(context);
+                                            // path to /data/data/yourapp/app_data/imageDir
+                                            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                            // Create imageDir
+                                            File mypath = new File(directory, groupDataForOffLine.getGroupId() + "groupImage.jpg");
+
+                                            Log.d("mypathImg", "mypathImg  " + mypath);
+
+                                            String imagePath = mypath.toString();
+
+                                            FileOutputStream fos = null;
+                                            try {
+                                                fos = new FileOutputStream(mypath);
+                                                // Use the compress method on the BitMap object to write image to the OutputStream
+                                                resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                try {
+                                                    fos.close();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                            groupDataForOffLine.setGroupImage(imagePath);
+
+                                        }
+                                    });
+
+
+                            //////////////////////////////LOCAL DB//////////////////////////////////////
+
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //Do something after 3000ms
+
+                                    Log.d("logoPath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupLogo());
+                                    Log.d("imagePath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupImage());
+
+                                    boolean isInserted = db.insertGroupData(groupDataForOffLine, token);
+
+                                    if (isInserted == true) {
+
+                                        //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                                        Log.d("PGF", "LocalDBInIfPart" + isInserted);
+
+                                    } else {
+                                        Log.d("PGF", "LocalDBInElsePart" + isInserted);
+                                        //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            }, 2000);
+
+
+
+                            //////////////Notification db//////////////////////////
+
+                            if (notificationDB.isTableExists(TABLE_GROUPNOTIFICATION)) {
+
+                                Cursor res = notificationDB.getParticularGroupNotificationData(groupListData.getGroupId());
+                                if (res.getCount() > 0) {
+                                    StringBuffer stringBuffer = new StringBuffer();
+
+                                    while (res.moveToNext()) {
+                                        stringBuffer.append(res.getString(0) + " ");
+                                        stringBuffer.append(res.getString(1) + " ");
+                                        stringBuffer.append(res.getString(2) + " ");
+                                        stringBuffer.append(res.getString(3) + " ");
+                                        groupListData.setGroupRecentCommentTime(Long.parseLong(res.getString(3)));
+                                        stringBuffer.append(res.getString(4) + " ");
+                                    }
+
+                                    Log.d("PGF_Notification", "stringBuffer___ " + stringBuffer);
+                                    //Log.d("PGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+                                }
+
+                            }
+
+                            Log.d("PGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+
+                        }
+                        Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
+
+
+                        for (GroupListData approvedValue:groupArrayList) {
+                            if (approvedValue.getMemberStatus().contains("Approved")){
+
+                                arrayListForApproved.add(approvedValue);
+
+                            }
+                        }
+
+                        Collections.sort(arrayListForApproved, new Comparator<GroupListData>() {
+                            @Override
+                            public int compare(GroupListData groupListData, GroupListData t1) {
+
+                                if (groupListData.getGroupRecentCommentTime() >= t1.getGroupRecentCommentTime()){
+                                    return -1;
+                                }
+                                else return 1;
+                            }
+                        });
+
+
+                        for (GroupListData approvedValue:groupArrayList) {
+                            if (approvedValue.getMemberStatus().contains("Pending")){
+
+                                arrayListForApproved.add(approvedValue);
+
+                            }
+                        }
+
+                        for (GroupListData approvedValue:groupArrayList) {
+                            if (approvedValue.getMemberStatus().contains("Blocked")){
+
+                                arrayListForApproved.add(approvedValue);
+
+                            }
+                        }
+
+                        for (GroupListData approvedValue:groupArrayList) {
+                            if (approvedValue.getMemberStatus().contains("Not joined")){
+
+                                arrayListForApproved.add(approvedValue);
+
+                            }
+                        }
+
+
+                        /*START listener for sending data to activity*/
+                        /*OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                        listener.onFragmentSetGroups(arrayListForApproved);*/
+                        /*END listener for sending data to activity*/
+
+                        //mainGroupAdapter1 = new MainGroupAdapter1(groupArrayList, getContext());
+                        mainGroupAdapter1 = new MainGroupAdapter1(arrayListForApproved, context);
+                        groupList.setAdapter(mainGroupAdapter1);
+
+                    } else {
+
+
+                        if (roleValue.equals("1")) {
+
+                            linearLayoutAddGrpWhenNoData.setVisibility(View.VISIBLE);
+                            framelayoutAddGroup.setVisibility(View.GONE);
+                            groupList.setVisibility(View.GONE);
+                            linearLayoutnoDataFound.setVisibility(View.GONE);
+
+                        }else {
+                            linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                            framelayoutAddGroup.setVisibility(View.GONE);
+                            groupList.setVisibility(View.GONE);
+                            linearLayoutAddGrpWhenNoData.setVisibility(View.GONE);
+                        }
+                    }
+                }
+                // Try and catch are included to handle any errors due to JSON
+                catch (JSONException e) {
+                    // If an error occurs, this prints the error to the log
+                    e.printStackTrace();
+                    callGroupDataList(token, clientId);
+                }
+
+            }
+
+        },
+                // The final parameter overrides the method onErrorResponse() and passes VolleyError
+                //as a parameter
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        callGroupDataList(token, clientId);
+                        Log.e("Group fragments", "Group fragments Error");
+                    }
+                }
+        );
+        // Adds the JSON arra   y request "arrayreq" to the request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
+    }
+
+
+
+
+
+
 
 
     /*START onRefresh() for SwipeRefreshLayout*/

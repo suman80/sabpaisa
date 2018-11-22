@@ -591,6 +591,13 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
             }
         });
 
+
+
+        FullViewOfClientsProceed.isFragmentOpen = false;
+
+
+
+
     }
 
 

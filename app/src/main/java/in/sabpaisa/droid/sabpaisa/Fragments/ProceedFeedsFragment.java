@@ -246,8 +246,9 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                 Log.d("BROADCAST_PFF","broadcastVal__"+FId);
 
                 if (intent.getAction().equals(ConstantsForUIUpdates.IS_FEED_FRAG_OPEN) && FullViewOfClientsProceed.isFragmentOpen) {
-                    feedArrayList.clear();
-                    callFeedDataList(clientId);
+                    //feedArrayList.clear();
+                    callFeedDataList1(clientId,context);
+
 
                     }
 
@@ -541,6 +542,288 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
         // Adds the JSON array request "arrayreq" to the request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
+
+
+
+
+    public void callFeedDataList1(final String clientId , final Context context) {
+
+        boolean checkDb = db.isTableExists(TABLE_NAME);
+
+        Log.d("DbValuePFF"," "+checkDb);
+
+        if (checkDb == true){
+            db.deleteAllFeedData();
+        }
+
+        String tag_string_req = "req_register";
+
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getParticularClientsFeeds/" + "?client_Id=" + clientId;
+
+
+        StringRequest jsonObjReq = new StringRequest(Request.Method.POST,
+                urlJsonObj, new Response.Listener<String>() {
+
+            // Takes the response from the JSON request
+            @Override
+            public void onResponse(String response) {
+                try {
+                    //    swipeRefreshLayout.setRefreshing(false);
+                    Log.d(TAG, "profeed1: " + response);
+                    //swipeRefreshLayout.setRefreshing(false);
+                    feedArrayList = new ArrayList<FeedData>();
+
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    String status = jsonObject.getString("status");
+
+                    String response1 = jsonObject.getString("response");
+
+                    JSONArray jsonArray = null;
+                    Object obj = jsonObject.get("response");
+                    if (obj instanceof JSONArray) {
+                        jsonArray = (JSONArray) obj;
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            final FeedData feedData = new FeedData();
+                            feedData.setClientId(jsonObject1.getString("clientId"));
+                            feedData.setFeedId(jsonObject1.getString("feedId"));
+
+                            feedId = jsonObject1.getString("feedId");
+
+                            Log.d("PFFfeedId_","feedId_"+feedId);
+
+                            feedData.setFeedName(jsonObject1.getString("feedName"));
+                            feedData.setFeedText(jsonObject1.getString("feedText"));
+                            feedData.setCreatedDate(jsonObject1.getString("createdDate"));
+                            feedData.setLogoPath(jsonObject1.getString("logoPath"));
+                            feedData.setImagePath(jsonObject1.getString("imagePath"));
+                            feedArrayList.add(feedData);
+
+
+                            /////////////////////Saving To Internal Storage/////////////////////////////////////////
+
+                            final FeedDataForOffLine feedDataForOffLine = new FeedDataForOffLine();
+                            feedDataForOffLine.setClientId(jsonObject1.getString("clientId"));
+                            feedDataForOffLine.setFeedId(jsonObject1.getString("feedId"));
+                            feedDataForOffLine.setFeedName(jsonObject1.getString("feedName"));
+                            feedDataForOffLine.setFeedText(jsonObject1.getString("feedText"));
+
+                            Glide.with(context)
+                                    .load(feedData.getLogoPath())
+                                    .asBitmap()
+                                    .into(new SimpleTarget<Bitmap>(100, 100) {
+                                        @Override
+                                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                            Log.d("LogoBitmap", " " + resource);
+                                            //saveLogoToInternalStorage(resource , feedData.getFeedId());
+
+
+                                            ContextWrapper cw = new ContextWrapper(context);
+                                            // path to /data/data/yourapp/app_data/imageDir
+                                            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                            // Create imageDir
+                                            File mypath = new File(directory, feedData.getFeedId() + "feedLogo.jpg");
+
+                                            Log.d("mypath", "mypath  " + mypath);
+
+                                            String logoPath = mypath.toString();
+
+
+                                            FileOutputStream fos = null;
+                                            try {
+                                                fos = new FileOutputStream(mypath);
+                                                // Use the compress method on the BitMap object to write image to the OutputStream
+                                                resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                try {
+                                                    fos.close();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            feedDataForOffLine.setLogoPath(logoPath);
+
+                                        }
+                                    });
+
+
+                            Glide.with(context)
+                                    .load(feedData.getImagePath())
+                                    .asBitmap()
+                                    .into(new SimpleTarget<Bitmap>(100, 100) {
+                                        @Override
+                                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                            Log.d("ImgBitmap", " " + resource);
+                                            //saveImageToInternalStorage(resource , feedData.getFeedId());
+
+
+                                            ContextWrapper cw = new ContextWrapper(context);
+                                            // path to /data/data/yourapp/app_data/imageDir
+                                            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                            // Create imageDir
+                                            File mypath = new File(directory, feedData.getFeedId() + "feedImage.jpg");
+
+                                            Log.d("mypathImg", "mypathImg  " + mypath);
+
+                                            String imagePath = mypath.toString();
+
+                                            FileOutputStream fos = null;
+                                            try {
+                                                fos = new FileOutputStream(mypath);
+                                                // Use the compress method on the BitMap object to write image to the OutputStream
+                                                resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                try {
+                                                    fos.close();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            feedDataForOffLine.setImagePath(imagePath);
+                                        }
+                                    });
+
+
+                            //////////////////////////////LOCAL DB//////////////////////////////////////
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //Do something after 3000ms
+
+                                    Log.d("logoPath_PFF", "IntoLocalDb " + feedDataForOffLine.getLogoPath());
+                                    Log.d("imagePath_PFF", "IntoLocalDb " + feedDataForOffLine.getImagePath());
+
+
+                                    boolean isInserted = db.insertFeedData(feedDataForOffLine);
+                                    if (isInserted == true) {
+
+                                        //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                                        Log.d("PFF", "LocalDBInIfPart" + isInserted);
+
+                                    } else {
+                                        Log.d("PFF", "LocalDBInElsePart" + isInserted);
+                                        //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                                    }
+
+
+                                }
+                            }, 2000);
+
+
+
+
+                            //////////////Notification db//////////////////////////
+
+                            if (notificationDB.isTableExists(TABLE_FEEDNOTIFICATION)) {
+
+                                Cursor res = notificationDB.getParticularFeedNotificationData(feedData.getFeedId());
+                                if (res.getCount() > 0) {
+                                    StringBuffer stringBuffer = new StringBuffer();
+
+                                    while (res.moveToNext()) {
+                                        stringBuffer.append(res.getString(0) + " ");
+                                        stringBuffer.append(res.getString(1) + " ");
+                                        stringBuffer.append(res.getString(2) + " ");
+                                        stringBuffer.append(res.getString(3) + " ");
+                                        feedData.setFeedRecentCommentTime(Long.parseLong(res.getString(3)));
+                                        stringBuffer.append(res.getString(4) + " ");
+                                    }
+
+                                    Log.d("PFF_Notification", "stringBuffer___ " + stringBuffer);
+                                    //Log.d("PGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+                                }
+
+                            }
+
+                            Log.d("PFF_Notification", "feedListDataVal____ " + feedData.getFeedRecentCommentTime());
+
+
+
+
+
+                        }
+                        Log.d("feedArrayListAfterParse", " " + feedArrayList.get(0).getFeedName());
+                        //*START listener for sending data to activity*//*
+                        /*OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                        listener.onFragmentSetFeeds(feedArrayList);*/
+
+
+                        //*END listener for sending data to activity*//*
+
+
+                        Collections.sort(feedArrayList, new Comparator<FeedData>() {
+                            @Override
+                            public int compare(FeedData feedData, FeedData t1) {
+
+                                if (feedData.getFeedRecentCommentTime() >= t1.getFeedRecentCommentTime()){
+                                    return -1;
+                                }
+                                else return 1;
+                            }
+                        });
+
+
+                        mainFeedAdapter = new MainFeedAdapter(feedArrayList, context);
+                        recyclerView.setAdapter(mainFeedAdapter);
+
+                    } else {
+                        //
+
+                        if (roleValue.equals("1")){
+                            linearLayoutAddFeedWhenNoData.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                            framelayoutAddFeed.setVisibility(View.GONE);
+                            linearLayoutnoDataFound.setVisibility(View.GONE);
+                        }else {
+                            linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                            framelayoutAddFeed.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.GONE);
+                            linearLayoutAddFeedWhenNoData.setVisibility(View.GONE);
+                        }
+
+                    }
+
+                }
+                // Try and catch are included to handle any errors due to JSON
+                catch (JSONException e) {
+                    // If an error occurs, this prints the error to the log
+                    e.printStackTrace();
+                    callFeedDataList(clientId);
+                }
+            }
+        },
+                // The final parameter overrides the method onErrorResponse() and passes VolleyError
+                //as a parameter
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        callFeedDataList(clientId);
+                        Log.e("Feed", "FeedError");
+                    }
+                }
+        );
+        // Adds the JSON array request "arrayreq" to the request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
+    }
+
+
+
+
+
 
 
     @Override

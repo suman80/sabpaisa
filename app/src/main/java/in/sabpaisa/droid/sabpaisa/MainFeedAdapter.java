@@ -232,11 +232,11 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 Intent intent = new Intent(view.getContext(), Proceed_Feed_FullScreen.class);
                 intent.putExtra("feedName", mainFeedData.getFeedName());
                 intent.putExtra("popup",popup);
-
                 intent.putExtra("feedText", mainFeedData.getFeedText());
                 intent.putExtra("feedImage", mainFeedData.getImagePath());
                 intent.putExtra("feedLogo", mainFeedData.getLogoPath());
                 intent.putExtra("feedId", mainFeedData.getFeedId());
+//                intent.putExtra("memberGroupRole", PrivateGroupFeeds.memberGroupRole);
 
                 Log.d("MainFeedADAClick"," "+isClicked);
 
@@ -396,6 +396,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                             intent.putExtra("",PrivateGroupFeeds.memberGroupRole);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             MainGroupAdapter1.isClicked = false;
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent);
 
                         }else {
