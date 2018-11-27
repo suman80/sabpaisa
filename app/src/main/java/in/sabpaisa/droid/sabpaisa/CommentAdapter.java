@@ -104,12 +104,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
             if (title.equals("Share")) {
                 Log.d("selectedItems", " " + selectedItems);
-                Intent intent = new Intent(mContext, SharingActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("SELECTED_LIST", selectedItems);
-                intent.putExtras(bundle);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
+                //////////////////////////////////////////
+                if(selectedItems.size()>3) {
+                    Toast.makeText(mContext, "You can select at max 3 comment to share", Toast.LENGTH_SHORT).show();
+                }
+                ////////////////////////////////////////////////
+                else {
+                    Intent intent = new Intent(mContext, SharingActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("SELECTED_LIST", selectedItems);
+                    intent.putExtras(bundle);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
+                }
 
             }
 
@@ -745,10 +752,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                         Log.d("CommentAdapterFeedData","InIfPart");
 
                         String FeedsNm = Proceed_Feed_FullScreen.FeedsNm;
+                        String FeedDiscription = Proceed_Feed_FullScreen.feedsDiscription;
+                        String FeedImg = Proceed_Feed_FullScreen.feedImg;
+                        String FeedLogo = Proceed_Feed_FullScreen.feedLogo;
 
                         Intent intent = new Intent(mContext,Proceed_Feed_FullScreen.class);
                         intent.putExtra("feedId",feed_id);
                         intent.putExtra("feedName",FeedsNm);
+                        intent.putExtra("feedText",FeedDiscription);
+                        intent.putExtra("feedImage",FeedImg);
+                        intent.putExtra("feedLogo",FeedLogo);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
@@ -847,11 +860,17 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                         Log.d("CommentAdapterGRPData","InIfPart");
 
                         String GroupsNm = Proceed_Group_FullScreen.GroupsNm;
+                        String GroupsDiscription = Proceed_Group_FullScreen.GroupsDiscription;
+                        String GroupsImg = Proceed_Group_FullScreen.GroupsImg;
+                        String GroupsLogo = Proceed_Group_FullScreen.groupLogo;
 
                         Intent intent = new Intent(mContext,Proceed_Group_FullScreen.class);
                         intent.putExtra("groupId",groupId);
                         intent.putExtra("groupName",GroupsNm);
                         intent.putExtra("memberGroupRole",Proceed_Group_FullScreen.memberGroupRole);
+                        intent.putExtra("groupText",GroupsDiscription);
+                        intent.putExtra("groupImage",GroupsImg);
+                        intent.putExtra("groupLogo",GroupsLogo);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);

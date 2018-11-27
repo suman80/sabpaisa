@@ -46,6 +46,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -141,8 +142,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
     ArrayList<CommentData> arrayList;
     String commentText;
     String date1;
-    String feedsDiscription, feedImg,feedLogo, response, feed_id, userAccessToken;
-    public static String FeedsNm;
+    String   response, feed_id, userAccessToken;
+    public static String FeedsNm , feedsDiscription , feedImg , feedLogo;
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView rv;
     Toolbar toolbar;
@@ -463,6 +464,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 intent.putExtra("CAMVALUE", 1);
                 intent.putExtra("feedId", feed_id);
                 intent.putExtra("feedName", FeedsNm);
+                intent.putExtra("feedText", feedsDiscription);
                 startActivity(intent);
                 finish();
 
@@ -504,23 +506,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         Log.d("PFF_memberGroupRole","After"+Proceed_Group_FullScreen.memberGroupRole);
 
-        // Update UI
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String feedId = intent.getStringExtra("FEED_ID");
-
-                Log.d("PFF_FEED","broadcastVal__"+feedId);
-
-                commentArrayList.clear();
-                //API
-                callGetCommentList(feed_id);
-
-            }
-        };
-
-        LocalBroadcastManager.getInstance(Proceed_Feed_FullScreen.this).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.FEED_UI));
-
 
         FullViewOfClientsProceed.isFragmentOpen = false;
 
@@ -532,6 +517,34 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        // Update UI
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String feedId = intent.getStringExtra("FEED_ID");
+
+                Log.d("PFF_FEED","broadcastVal__"+feedId);
+
+                commentArrayList.clear();
+                count = 1;
+                //API
+                callGetCommentList(feed_id);
+
+            }
+        };
+
+        LocalBroadcastManager.getInstance(Proceed_Feed_FullScreen.this).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.FEED_UI));
+
+
+
+
+    }
 
     /*private*/protected void loadCommentListView(ArrayList<CommentData> arrayList) {
         final RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
@@ -627,9 +640,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
             imageView2.setVisibility(View.GONE);
             spin_kit.setVisibility(View.VISIBLE);
-
             callCommentService(feed_id, userAccessToken, commentText);
             Log.e("CommentDatafeeddetaida ", "CommentData " + commentText);
+
         }
 
         Log.d("commentText3", " " + commentText);
@@ -723,6 +736,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                         ImageViewFrameLayout.setVisibility(View.GONE);
                         closeSelectedDoc.setVisibility(View.GONE);
                         Toast.makeText(Proceed_Feed_FullScreen.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                        fileDoc = null;
                     } else {
 
                         shareViewFrameLayout.setVisibility(View.GONE);
@@ -804,6 +818,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                                 commentArrayList.clear();
                                 count = 1;
                                 callGetCommentList(feed_id);
+
 
 
                             } else {
@@ -982,7 +997,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
                         }
 
-                        Toast.makeText(Proceed_Feed_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Proceed_Feed_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();
 
                     }
                 }

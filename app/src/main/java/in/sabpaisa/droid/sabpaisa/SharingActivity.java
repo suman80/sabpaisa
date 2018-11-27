@@ -139,7 +139,11 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
         Log.d("onSharedFragmentSetFeed", " " + feedData);
 
         feedDataForShare = feedData;
-        if (feedDataForShare.size() > 0 || groupDataForShare.size() > 0) {
+        if (feedDataForShare.size() + groupDataForShare.size() > 3 ){
+            item.setVisible(false);
+            Toast.makeText(SharingActivity.this,"Sharing limit exceeds ! You can share upto 3 limit ",Toast.LENGTH_SHORT).show();
+        }
+        else if (feedDataForShare.size() > 0 || groupDataForShare.size() > 0) {
             item.setVisible(true);
         } else {
             item.setVisible(false);
@@ -151,8 +155,11 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
         Log.d("onSharedFragmentSetGrp", " " + groupData);
 
         groupDataForShare = groupData;
-
-        if (feedDataForShare.size() > 0 || groupDataForShare.size() > 0) {
+        if (feedDataForShare.size() + groupDataForShare.size() > 3 ){
+            item.setVisible(false);
+            Toast.makeText(SharingActivity.this,"Sharing limit exceeds ! You can share upto 3 limit ",Toast.LENGTH_SHORT).show();
+        }
+        else if (feedDataForShare.size() > 0 || groupDataForShare.size() > 0) {
             item.setVisible(true);
         } else {
             item.setVisible(false);
@@ -166,12 +173,16 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
         inflater.inflate(R.menu.sharing_menu, menu);
         item = menu.findItem(R.id.shareOk);
 
-
-        if (feedDataForShare.size() > 0 || groupDataForShare.size() > 0) {
+        if (feedDataForShare.size() + groupDataForShare.size() > 3 ){
+            item.setVisible(false);
+            Toast.makeText(SharingActivity.this,"Sharing limit exceeds ! You can share upto 3 limit ",Toast.LENGTH_SHORT).show();
+        }
+        else if (feedDataForShare.size() > 0 || groupDataForShare.size() > 0) {
             item.setVisible(true);
-        } else {
+        }else {
             item.setVisible(false);
         }
+
 
         return true;
     }

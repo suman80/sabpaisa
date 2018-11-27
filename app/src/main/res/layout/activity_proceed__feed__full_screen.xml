@@ -232,7 +232,9 @@
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black_50"
-                    android:textSize="@dimen/text_size_small" />
+                    android:textSize="@dimen/text_size_small"
+                    android:cursorVisible="true"
+                    />
 
 
                 <ImageView

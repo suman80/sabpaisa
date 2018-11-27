@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,11 +31,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
 
 public class PrivateGroupFeeds extends AppCompatActivity {
 
@@ -54,6 +59,10 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
     BroadcastReceiver broadcastReceiver;
 
+    static boolean active = false;
+
+    NotificationDB notificationDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +77,8 @@ public class PrivateGroupFeeds extends AppCompatActivity {
             public void onClick(View v) {
                 onBackPressed();
                 FLAG = null;
+                active = false;
+                MainGroupAdapter1.isClicked=false;
             }
         });
 
@@ -114,13 +125,56 @@ public class PrivateGroupFeeds extends AppCompatActivity {
             }
         });
 
+        //Notification db
+        notificationDB= new NotificationDB(PrivateGroupFeeds.this);
+
 
 
         callFeedDataList(GroupId);
 
+        active = true;
+
 
 
     }
+
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        active = true;
+
+        // Update UI
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String feedId = intent.getStringExtra("FEED_ID");
+
+                Log.d("PFF_FEED","broadcastVal__"+feedId);
+
+                //API
+
+                if (active == true) {
+
+                    callFeedDataList(GroupId);
+                }
+
+            }
+        };
+
+        LocalBroadcastManager.getInstance(PrivateGroupFeeds.this).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.IS_FEED_FRAG_OPEN));
+
+
+
+
+    }
+
+
+
+
 
     public void callFeedDataList(final String groupId) {
         String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"privatefeed"+"?groupId="+groupId;
@@ -218,6 +272,38 @@ public class PrivateGroupFeeds extends AppCompatActivity {
                             feedData.setLogoPath(jsonObject1.getString("logoPath"));
                             feedArrayList.add(feedData);
 
+
+                            //////////////Notification db//////////////////////////
+
+                            if (notificationDB.isTableExists(TABLE_FEEDNOTIFICATION)) {
+
+                                Cursor res = notificationDB.getParticularFeedNotificationData(feedData.getFeedId());
+                                if (res.getCount() > 0) {
+                                    StringBuffer stringBuffer = new StringBuffer();
+
+                                    while (res.moveToNext()) {
+                                        stringBuffer.append(res.getString(0) + " ");
+                                        stringBuffer.append(res.getString(1) + " ");
+                                        stringBuffer.append(res.getString(2) + " ");
+                                        stringBuffer.append(res.getString(3) + " ");
+                                        feedData.setFeedRecentCommentTime(Long.parseLong(res.getString(3)));
+                                        stringBuffer.append(res.getString(4) + " ");
+                                    }
+
+                                    Log.d("PFF_Notification", "stringBuffer___ " + stringBuffer);
+                                    //Log.d("PGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+                                }
+
+                            }
+
+                            Log.d("PFF_Notification", "feedListDataVal____ " + feedData.getFeedRecentCommentTime());
+
+
+
+
+
+
                         }
                         Log.d("feedArrayListAfterParse", " " + feedArrayList.get(0).getFeedName());
                         Log.d("feedClintId", " " + feedArrayList.get(0).getClientId());
@@ -226,6 +312,28 @@ public class PrivateGroupFeeds extends AppCompatActivity {
                 /*        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetFeeds(feedArrayList);*/
                             /*END listener for sending data to activity*/
+
+
+
+
+                        Collections.sort(feedArrayList, new Comparator<FeedData>() {
+                            @Override
+                            public int compare(FeedData feedData, FeedData t1) {
+
+                                if (feedData.getFeedRecentCommentTime() > t1.getFeedRecentCommentTime()){
+                                    return -1;
+                                }
+                                else if (feedData.getFeedRecentCommentTime() < t1.getFeedRecentCommentTime()){
+                                    return 1;
+                                }
+                                else return 0;
+                            }
+                        });
+
+
+
+
+
                         loadFeedListView(feedArrayList, (RecyclerView) findViewById(R.id.recycler_view_feeds));
                     }
 
@@ -293,5 +401,8 @@ public class PrivateGroupFeeds extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         FLAG = null;
+        MainGroupAdapter1.isClicked=false;
+        active = false;
+
     }
 }

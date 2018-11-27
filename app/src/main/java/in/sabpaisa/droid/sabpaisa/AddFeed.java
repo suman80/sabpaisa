@@ -289,7 +289,7 @@ public class AddFeed extends AppCompatActivity {
                                 }
 
 
-                            }else if (status.equals("failed")){
+                            }else if (status.equals("failure")){
                                 Toast.makeText(AddFeed.this,returnResponse,Toast.LENGTH_SHORT).show();
                             }
                             else {

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -60,11 +61,20 @@ public class SharedGroupFragmentAdapter extends RecyclerView.Adapter<SharedGroup
             public void onClick(View view) {
                 if (holder.checkBox.isChecked()) {
                     Log.d("checkBox.isChecked()", " " + holder.checkBox.isChecked());
-                    selectedArrayList.add(c.getGroupId());
-                    for (String val : selectedArrayList) {
-                        Log.d("val_selectedArrayList", " " + val);
+
+                    if (selectedArrayList.size() < 3) {
+
+                        selectedArrayList.add(c.getGroupId());
+                        for (String val : selectedArrayList) {
+                            Log.d("val_selectedArrayList", " " + val);
+                        }
+                        flagCallback.onSharedFragmentSetGroups(selectedArrayList);
+                    }else {
+                        Toast.makeText(mContext,"You cannot select more than 3 feeds/groups",Toast.LENGTH_SHORT).show();
+                        holder.checkBox.setChecked(false);
                     }
-                    flagCallback.onSharedFragmentSetGroups(selectedArrayList);
+
+
                 } else {
                     selectedArrayList.remove(c.getGroupId());
                 }

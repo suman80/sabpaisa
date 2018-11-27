@@ -235,6 +235,15 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
 
 
+        return rootView;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
         //////////////////////////Broadcast reciever for UI update/////////////////////////////
 
         broadcastReceiver = new BroadcastReceiver() {
@@ -246,14 +255,14 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                 Log.d("BROADCAST_PFF","broadcastVal__"+FId);
 
                 if (intent.getAction().equals(ConstantsForUIUpdates.IS_FEED_FRAG_OPEN) && FullViewOfClientsProceed.isFragmentOpen) {
-                    //feedArrayList.clear();
+                    feedArrayList.clear();
                     callFeedDataList1(clientId,context);
 
 
-                    }
-
-
                 }
+
+
+            }
 
         };
 
@@ -262,11 +271,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
 
 
-
-
-        return rootView;
     }
-
 
     public void callFeedDataList(final String clientId) {
 
@@ -490,10 +495,13 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                             @Override
                             public int compare(FeedData feedData, FeedData t1) {
 
-                                if (feedData.getFeedRecentCommentTime() >= t1.getFeedRecentCommentTime()){
+                                if (feedData.getFeedRecentCommentTime() > t1.getFeedRecentCommentTime()){
                                     return -1;
                                 }
-                                else return 1;
+                                else if (feedData.getFeedRecentCommentTime() < t1.getFeedRecentCommentTime()){
+                                    return 1;
+                                }
+                                else return 0;
                             }
                         });
 

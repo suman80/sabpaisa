@@ -273,6 +273,9 @@ public class EditGroup extends AppCompatActivity {
                         // Setting Dialog Message
                         alertDialog.setMessage("Group has been Edited");
 
+                        alertDialog.setCancelable(false);
+
+                        alertDialog.setCanceledOnTouchOutside(false);
 
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -295,7 +298,7 @@ public class EditGroup extends AppCompatActivity {
                         alertDialog.show();
 
 
-                    } else if (status.equals("failed")){
+                    } else if (status.equals("failure")){
                         Toast.makeText(EditGroup.this,returnResponse,Toast.LENGTH_SHORT).show();
                     }else {
 

@@ -85,7 +85,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
     String tag_string_req = "req_register";
     SwipeRefreshLayout swipeRefreshLayout;
-    ArrayList<GroupListData> groupArrayList;
+    ArrayList<GroupListData> groupArrayList ;
     ArrayList<GroupDataForOffLine> groupArrayListForOffline;
     MainGroupAdapter1 mainGroupAdapter1;
 
@@ -106,7 +106,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     LinearLayout linearLayoutAddGrpWhenNoData;
     String roleValue;
 
-    ArrayList<GroupListData> arrayListForApproved;
+    ArrayList<GroupListData> arrayListForApproved ;
 
     NotificationDB notificationDB;
 
@@ -129,8 +129,6 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         groupList.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         groupList.setLayoutManager(llm);
         groupList.setMotionEventSplittingEnabled(false);
-
-        arrayListForApproved = new ArrayList<>();
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId = sharedPreferences.getString("clientId", "abc");
@@ -230,6 +228,16 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         notificationDB= new NotificationDB(getContext());
 
 
+
+        return rootView;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -255,7 +263,6 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
 
 
-        return rootView;
     }
 
     public void callGroupDataList(final String token, final String clientId) {
@@ -278,6 +285,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
             public void onResponse(String response) {
                 try {
                     groupArrayList = new ArrayList<GroupListData>();
+                    arrayListForApproved = new ArrayList<GroupListData>();
                     JSONObject jsonObject = new JSONObject(response);
 
                     Log.d(TAG, "PGD_RESP: " + response);
@@ -582,6 +590,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
             public void onResponse(String response) {
                 try {
                     groupArrayList = new ArrayList<GroupListData>();
+                    arrayListForApproved = new ArrayList<GroupListData>();
                     JSONObject jsonObject = new JSONObject(response);
 
                     Log.d(TAG, "PGD_RESP: " + response);
@@ -777,10 +786,13 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                             @Override
                             public int compare(GroupListData groupListData, GroupListData t1) {
 
-                                if (groupListData.getGroupRecentCommentTime() >= t1.getGroupRecentCommentTime()){
+                                if (groupListData.getGroupRecentCommentTime() > t1.getGroupRecentCommentTime()){
                                     return -1;
                                 }
-                                else return 1;
+                                else if (groupListData.getGroupRecentCommentTime() < t1.getGroupRecentCommentTime()){
+                                    return 1;
+                                }
+                                else return 0;
                             }
                         });
 

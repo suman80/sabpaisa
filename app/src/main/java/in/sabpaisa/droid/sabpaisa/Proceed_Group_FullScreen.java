@@ -50,6 +50,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -134,8 +135,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     String date1;
     String i, Gts;
     Timestamp Groupts;
-    String GroupsDiscription, GroupsImg,groupLogo, GroupId, userAccessToken, response;
-    public static String GroupsNm;
+    String  GroupId, userAccessToken, response;
+    public static String GroupsNm , GroupsDiscription , GroupsImg,groupLogo;
     ArrayList<CommentData> arrayList, feedArrayList;
     SwipeRefreshLayout swipeRefreshLayout;
     Toolbar toolbar;
@@ -238,6 +239,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         spin_kit = (SpinKitView) findViewById(R.id.spin_kit);
         //imageView2 = (ImageView) findViewById(R.id.imageView2);
         imageView2 = (CircleButton) findViewById(R.id.imageView2);
+
 
         commentArrayList = new ArrayList<CommentData>();
 
@@ -445,6 +447,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 intent.putExtra("CAMVALUE", 2);
                 intent.putExtra("groupId", GroupId);
                 intent.putExtra("groupName", GroupsNm);
+                intent.putExtra("groupText", GroupsDiscription);
                 startActivity(intent);
                 finish();
 
@@ -478,7 +481,22 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
 
 
-// Update UI
+
+
+        FullViewOfClientsProceed.isFragmentOpen = false;
+
+        notificationDB = new NotificationDB(Proceed_Group_FullScreen.this);
+
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        // Update UI
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -487,6 +505,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 Log.d("PGF_GRP","broadcastVal__"+groupId);
 
                 commentArrayList.clear();
+                count = 1;
                 //API
                 callGetCommentList(GroupId);
 
@@ -496,10 +515,6 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         LocalBroadcastManager.getInstance(Proceed_Group_FullScreen.this).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.GROUP_UI));
 
 
-
-        FullViewOfClientsProceed.isFragmentOpen = false;
-
-        notificationDB = new NotificationDB(Proceed_Group_FullScreen.this);
 
 
     }
@@ -731,6 +746,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                         ImageViewFrameLayout.setVisibility(View.GONE);
                         closeSelectedDoc.setVisibility(View.GONE);
                         Toast.makeText(Proceed_Group_FullScreen.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                        fileDoc = null;
                     } else {
 
                         shareViewFrameLayout.setVisibility(View.GONE);
@@ -816,6 +832,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                                 commentArrayList.clear();
                                 count = 1;
                                 callGetCommentList(GroupId);
+
 
                             } else if (status.equals("failed")) {
                                 commentFile = null;
@@ -1002,11 +1019,11 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     } else {
                         progress.setVisibility(View.GONE);
 
-                        if (count > 1){
+                        if (count > 1 ){
                             Toast.makeText(Proceed_Group_FullScreen.this, "No More Record Found !", Toast.LENGTH_SHORT).show();
                         }
 
-                        Toast.makeText(Proceed_Group_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Proceed_Group_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();
 
                     }
 

@@ -64,7 +64,7 @@ public class DisplayActivity extends AppCompatActivity {
 
     int camVal;
 
-    String feedId, groupId, groupName, feedName;
+    String feedId, groupId, groupName, feedName,feedsDiscription,groupDiscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +80,9 @@ public class DisplayActivity extends AppCompatActivity {
         feedId = getIntent().getStringExtra("feedId");
         groupId = getIntent().getStringExtra("groupId");
         feedName = getIntent().getStringExtra("feedName");
+        feedsDiscription = getIntent().getStringExtra("feedText");
         groupName = getIntent().getStringExtra("groupName");
+        groupDiscription = getIntent().getStringExtra("groupText");
 
         Log.d("camVal", " " + camVal);
 
@@ -346,6 +348,8 @@ public class DisplayActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent(DisplayActivity.this, Proceed_Feed_FullScreen.class);
                                 intent.putExtra("feedId", feed_id);
+                                intent.putExtra("feedName", feedName);
+                                intent.putExtra("feedText", feedsDiscription);
                                 //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
@@ -442,6 +446,7 @@ public class DisplayActivity extends AppCompatActivity {
                                 intent.putExtra("groupId", GroupId);
                                 intent.putExtra("memberGroupRole", Proceed_Group_FullScreen.memberGroupRole);
                                 intent.putExtra("groupName", Proceed_Group_FullScreen.GroupsNm);
+                                intent.putExtra("groupText", groupDiscription);
                                 startActivity(intent);
                                 finish();
 
@@ -564,6 +569,7 @@ public class DisplayActivity extends AppCompatActivity {
                 Intent intent = new Intent(DisplayActivity.this, Proceed_Feed_FullScreen.class);
                 intent.putExtra("feedId", feedId);
                 intent.putExtra("feedName", feedName);
+                intent.putExtra("feedText", feedsDiscription);
                 startActivity(intent);
                 finish();
 
@@ -572,6 +578,8 @@ public class DisplayActivity extends AppCompatActivity {
                 Intent intent = new Intent(DisplayActivity.this, Proceed_Group_FullScreen.class);
                 intent.putExtra("groupId", groupId);
                 intent.putExtra("groupName", groupName);
+                intent.putExtra("groupText", groupDiscription);
+                intent.putExtra("memberGroupRole", Proceed_Group_FullScreen.memberGroupRole);
                 startActivity(intent);
                 finish();
 
@@ -593,6 +601,7 @@ public class DisplayActivity extends AppCompatActivity {
             Intent intent = new Intent(DisplayActivity.this, Proceed_Feed_FullScreen.class);
             intent.putExtra("feedId", feedId);
             intent.putExtra("feedName", feedName);
+            intent.putExtra("feedText", feedsDiscription);
             startActivity(intent);
             finish();
 
@@ -601,6 +610,9 @@ public class DisplayActivity extends AppCompatActivity {
             Intent intent = new Intent(DisplayActivity.this, Proceed_Group_FullScreen.class);
             intent.putExtra("groupId", groupId);
             intent.putExtra("groupName", groupName);
+            intent.putExtra("groupText", groupDiscription);
+            intent.putExtra("groupText", groupDiscription);
+            intent.putExtra("memberGroupRole", Proceed_Group_FullScreen.memberGroupRole);
             startActivity(intent);
             finish();
 

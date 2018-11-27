@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.bumptech.glide.Glide;
@@ -61,13 +62,21 @@ public class SharedFeedFragmentAdapter extends RecyclerView.Adapter<SharedFeedFr
             public void onClick(View view) {
                 if (holder.checkBox.isChecked()){
                     Log.d("checkBox.isChecked()"," "+holder.checkBox.isChecked());
-                    selectedArrayList.add(mainFeedData.getFeedId());
 
-                    for (String val:selectedArrayList) {
-                        Log.d("val_selectedArrayList"," "+val);
+                    if (selectedArrayList.size() < 3) {
+
+                        selectedArrayList.add(mainFeedData.getFeedId());
+
+                        for (String val : selectedArrayList) {
+                            Log.d("val_selectedArrayList", " " + val);
+                        }
+
+                        flagCallback.onSharedFragmentSetFeeds(selectedArrayList);
+
+                    }else {
+                        Toast.makeText(context,"You cannot select more than 3 feeds/groups",Toast.LENGTH_SHORT).show();
+                        holder.checkBox.setChecked(false);
                     }
-
-                    flagCallback.onSharedFragmentSetFeeds(selectedArrayList);
 
                 }else {
                     selectedArrayList.remove(mainFeedData.getFeedId());

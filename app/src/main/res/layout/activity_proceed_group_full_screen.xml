@@ -258,6 +258,7 @@
                     android:textColorHint="@color/black_50"
                     android:textSize="@dimen/text_size_small"
                     android:layout_weight="0.2"
+                    android:cursorVisible="true"
                     />
 
 

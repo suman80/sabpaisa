@@ -253,7 +253,7 @@ public class AddGroup extends AppCompatActivity {
                         intent.putExtra("FRAGMENT_ID","1");
                         startActivity(intent);
 
-                    } else if (status.equals("failed")){
+                    } else if (status.equals("failure")){
                         Toast.makeText(AddGroup.this,returnResponse,Toast.LENGTH_SHORT).show();
                     }else {
 

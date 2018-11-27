@@ -279,6 +279,9 @@ public class EditFeed extends AppCompatActivity {
                         // Setting Dialog Message
                         alertDialog.setMessage("Feed has been Edited");
 
+                        alertDialog.setCancelable(false);
+
+                        alertDialog.setCanceledOnTouchOutside(false);
 
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -289,9 +292,10 @@ public class EditFeed extends AppCompatActivity {
 
                                     Intent intent = new Intent(EditFeed.this,PrivateGroupFeeds.class);
                                     intent.putExtra("GroupId",PrivateGroupFeeds.GroupId);
-                                    intent.putExtra("",PrivateGroupFeeds.memberGroupRole);
+                                    intent.putExtra("memberGroupRole",PrivateGroupFeeds.memberGroupRole);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     MainGroupAdapter1.isClicked = false;
+                                    MainFeedAdapter.isClicked = false;
                                     startActivity(intent);
 
 
@@ -306,8 +310,8 @@ public class EditFeed extends AppCompatActivity {
                                     intent.putExtra("clientImagePath", clientImageURLPath);
                                     intent.putExtra("FRAGMENT_ID", "0");
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    MainGroupAdapter1.isClicked = false;
                                     MainFeedAdapter.isClicked = false;
-
                                     startActivity(intent);
                                 }
 
@@ -319,7 +323,7 @@ public class EditFeed extends AppCompatActivity {
 
 
 
-                    }else if (status.equals("failed")){
+                    }else if (status.equals("failure")){
                         Toast.makeText(EditFeed.this,returnResponse,Toast.LENGTH_SHORT).show();
                     }
                     else {
