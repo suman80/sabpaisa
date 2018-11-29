@@ -595,7 +595,10 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         FullViewOfClientsProceed.isFragmentOpen = false;
 
+        // setting false for clicks in feeds and groups
 
+        MainGroupAdapter1.isClicked=false;
+        MainFeedAdapter.isClicked=false;
 
 
     }

@@ -75,10 +75,13 @@ public class PrivateGroupFeeds extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+
                 FLAG = null;
                 active = false;
                 MainGroupAdapter1.isClicked=false;
+
+                onBackPressed();
+
             }
         });
 
@@ -144,7 +147,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        Log.d("onResume","onResumeCalled");
         active = true;
 
         // Update UI

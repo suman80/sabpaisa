@@ -528,12 +528,13 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             @Override
             public void onReceive(Context context, Intent intent) {
                 String feedId = intent.getStringExtra("FEED_ID");
-
-                Log.d("PFF_FEED","broadcastVal__"+feedId);
+                feed_id = feedId;
+                Log.d("PFF_FEED","broadcastVal__"+feedId +" RR "+feed_id);
 
                 commentArrayList.clear();
                 count = 1;
                 //API
+
                 callGetCommentList(feed_id);
 
             }
