@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
@@ -62,6 +63,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     String alreadyExistFile;
     ArrayList<String> arrayListAlreadyExistFile = new ArrayList<>();
     ArrayList<Long> list = new ArrayList<>();
+
+
+    /*ColorGenerator generator = ColorGenerator.MATERIAL;
+    String letter;*/
 
     private android.support.v7.view.ActionMode.Callback actionModeCallbacks = new android.support.v7.view.ActionMode.Callback() {
         @Override
@@ -195,23 +200,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         Log.d("commentData", " " + commentData.getCommentText());
         holder.main_feed_comment_username.setText(commentData.getCommentName());
         holder.main_feed_creation_time.setText(commentData.getComment_date());
-        holder.main_feed_comment_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*Intent intent = new Intent(mContext,MembersProfile.class);
 
-                //intent.putExtra("",member_getterSetter.getFullName());
-                mContext.startActivity(intent);*/
-            }
-        });
+        //Gmail like round colorful round icon with 1 char name letter
+        /*letter = String.valueOf(commentData.getCommentName().charAt(0));
 
-        holder.main_feed_comment_username.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*Intent intent = new Intent(mContext,MembersProfile.class);
-                mContext.startActivity(intent);*/
-            }
-        });
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound(letter, generator.getRandomColor());
+
+        holder.main_feed_comment_image.setImageDrawable(drawable);
+*/
+
 
         holder.main_feed_group_description.setText(StringEscapeUtils.unescapeJava(commentData.getCommentText()));
 
@@ -512,20 +510,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         });
 
 
+        //Loading user image
+
         Glide.with(mContext)
                 .load(commentData.getUserImageUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.default_users)
                 .into(holder.main_feed_comment_image);
-        // holder.main_feed_comment_image.setImageUrl(commentData.getUserImageUrl(),imageloader);
-        holder.main_feed_comment_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*Intent intent = new Intent(mContext,MembersProfile.class);
-                mContext.startActivity(intent);
-*/
-            }
-        });
+
 
         holder.update(commentList.get(position));
 
@@ -535,6 +527,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     public int getItemCount() {
         return commentList.size();
     }
+
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

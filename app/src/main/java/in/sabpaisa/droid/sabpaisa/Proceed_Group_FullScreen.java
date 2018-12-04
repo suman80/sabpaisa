@@ -1496,6 +1496,10 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
             MainGroupAdapter1.isClicked=false;
 
+            if (MainGroupAdapter1.progressDialog.isShowing()){
+                MainGroupAdapter1.progressDialog.dismiss();
+            }
+
             FullViewOfClientsProceed.isFragmentOpen = true;
 
             boolean isUpdated = notificationDB.updateGroupNotificationData(GroupId,0,0, System.currentTimeMillis(),false);

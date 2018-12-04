@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -79,6 +80,8 @@ public class AddMember extends AppCompatActivity {
 
     Toolbar toolbar;
 
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +95,8 @@ public class AddMember extends AppCompatActivity {
         btnCancel = (Button)findViewById(R.id.btnCancel);
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
+
+        progressDialog = new ProgressDialog(AddMember.this,R.style.DialogTheme);
 
         toolbar.setTitle("Add Member");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -127,6 +132,9 @@ public class AddMember extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                progressDialog.setMessage("Please wait !");
+                progressDialog.show();
 
                 int count = 0;
                 JSONObject jsonObject = new JSONObject();
@@ -426,6 +434,10 @@ public class AddMember extends AppCompatActivity {
 
                 Log.d("AddMember", response.toString() );
 
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+
                 String status = null;
                 String response1 = null;
                 try {
@@ -463,6 +475,11 @@ public class AddMember extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d("AddMember", "Error: " + error.getMessage());
                 VolleyLog.d("AddMember", "Error: " + error.getMessage());
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+
             }
         }) {
 

@@ -18,7 +18,7 @@
        android:layout_height="wrap_content"
        android:id="@+id/groupList"
        android:clipToPadding="false"
-       android:paddingBottom="30dp"
+       android:paddingBottom="40dp"
        >
 
    </com.cooltechworks.views.shimmer.ShimmerRecyclerView>

@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -68,6 +69,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
     BroadcastReceiver broadcastReceiver;
 
+    public static ProgressDialog progressDialog;
+
+
     public MainGroupAdapter1() {
     }
 
@@ -89,17 +93,17 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
         final GroupListData c = countryList.get(position);
         holder.Group_name.setText(c.getGroupName());
         holder.Group_description.setText(c.getGroupText());
-       /* new DownloadLogoTask(holder.Group_Logo).execute(c.getLogoPath());
-        new DownloadImageTask(holder.Group_Image).execute(c.getImagePath());*/
+
         Glide.with(mContext)
                 .load(c.getLogoPath())
                 .error(R.drawable.image_not_found)
                 .into(holder.Group_Logo);
 
-        Glide.with(mContext)
+        // Commenting on 29th Nov 2018 for banner image
+       /* Glide.with(mContext)
                 .load(c.getImagePath())
                 .error(R.drawable.image_not_found)
-                .into(holder.Group_Image);
+                .into(holder.Group_Image);*/
 
         if (c.getMemberStatus().equals("Blocked")) {
 
@@ -109,107 +113,6 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
         }
 
-
-/*
-        holder.Group_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sharedPreferences = v.getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
-
-                String token = sharedPreferences.getString("response", "123");
-
-                String groupId = c.getGroupId().toString();
-
-                Log.d("tokenGRP"," "+token);
-                Log.d("groupIdGRP"," "+groupId);
-
-                addMember(token,groupId,v,c);
-
-                *//*Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
-                intent.putExtra("groupName",c.getGroupName());
-                intent.putExtra("groupText",c.getGroupText());
-                intent.putExtra("groupImage",c.getImagePath());
-                intent.putExtra("groupId",c.getGroupId());
-                v.getContext().startActivity(intent);*//*
-            }
-        });
-
-        holder.Group_description.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sharedPreferences = v.getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
-
-                String token = sharedPreferences.getString("response", "123");
-
-                String groupId = c.getGroupId().toString();
-
-                Log.d("tokenGRP"," "+token);
-                Log.d("groupIdGRP"," "+groupId);
-
-                addMember(token,groupId,v,c);
-
-               *//* Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
-                intent.putExtra("groupName",c.getGroupName());
-                intent.putExtra("groupText",c.getGroupText());
-                intent.putExtra("groupImage",c.getImagePath());
-                intent.putExtra("groupId",c.getGroupId());
-                v.getContext().startActivity(intent);*//*
-            }
-        });
-
-        holder.Group_Image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                    SharedPreferences sharedPreferences = v.getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
-
-                    String token = sharedPreferences.getString("response", "123");
-
-                    String groupId = c.getGroupId().toString();
-
-                    Log.d("tokenGRP", " " + token);
-                    Log.d("groupIdGRP", " " + groupId);
-
-                    addMember(token, groupId, v, c);
-
-
-                    *//*Intent intent = new Intent(v.getContext(), Proceed_Group_FullScreen.class);
-                    intent.putExtra("groupName", c.getGroupName());
-                    intent.putExtra("groupText", c.getGroupText());
-                    intent.putExtra("groupImage", c.getImagePath());
-                    intent.putExtra("groupId", c.getGroupId());
-                    v.getContext().startActivity(intent);*//*
-
-            }
-        });
-
-        holder.Group_Logo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                SharedPreferences sharedPreferences = v.getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
-
-                String token = sharedPreferences.getString("response", "123");
-
-                String groupId = c.getGroupId().toString();
-
-                Log.d("tokenGRP"," "+token);
-                Log.d("groupIdGRP"," "+groupId);
-
-                addMember(token,groupId,v,c);
-
-                *//*Intent intent = new Intent(v.getContext(),Proceed_Group_FullScreen.class);
-                intent.putExtra("groupName",c.getGroupName());
-                intent.putExtra("groupText",c.getGroupText());
-                intent.putExtra("groupImage",c.getImagePath());
-                intent.putExtra("groupId",c.getGroupId());
-
-                v.getContext().startActivity(intent);*//*
-
-            }
-        });
-
-        */
 
         holder.rippleClick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,6 +126,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 Log.d("tokenGRP", " " + token);
                 Log.d("groupIdGRP", " " + groupId);
 
+                progressDialog.setMessage("Please wait !");
+                progressDialog.show();
+
                 addMember(token, groupId, view, c, holder);
                 holder.joinmember.setText("Pending");
             }
@@ -231,7 +137,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
         holder.joinmember.setText(c.getMemberStatus());
         if (c.getMemberStatus().equals("Approved")) {
-            holder.joinmember.setVisibility(View.INVISIBLE);
+            holder.joinmember.setVisibility(View.GONE);
         }
 
         holder.joinmember.setOnClickListener(new View.OnClickListener() {
@@ -290,6 +196,10 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
                         if (menuItem.getTitle().equals("Delete")){
+
+                            progressDialog.setMessage("Please wait !");
+                            progressDialog.show();
+
                             deleteGroupData(groupId,userAccessToken);
                         }
 
@@ -347,6 +257,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
 
         }
+
+
+
 
         /*//////////////////////////Broadcast reciever for UI update/////////////////////////////
 
@@ -438,7 +351,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
         public TextView Group_description;
         public ImageView Group_Logo;
         public ImageView Group_Image;
-        public Button joinmember;
+        public TextView joinmember;
         public LinearLayout linearLayoutGroupItemList;
         MaterialRippleLayout rippleClick;
         ImageView imgPopUpMenu;
@@ -451,15 +364,17 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
             Group_name = (TextView) view.findViewById(R.id.Group_name);
             Group_description = (TextView) view.findViewById(R.id.Group_description);
-            joinmember = (Button) view.findViewById(R.id.joinmember);
+            joinmember = (TextView) view.findViewById(R.id.joinmember);
             Group_Logo = (ImageView) view.findViewById(R.id.Group_Logo);
-            Group_Image = (ImageView) view.findViewById(R.id.Group_Image);
+            //Group_Image = (ImageView) view.findViewById(R.id.Group_Image);
             linearLayoutGroupItemList = (LinearLayout) view.findViewById(R.id.linearLayoutGroupItemList);
             rippleClick = (MaterialRippleLayout) view.findViewById(R.id.rippleClick);
             imgPopUpMenu = (ImageView)view.findViewById(R.id.imgPopUpMenu);
 
             relativeLayoutNotification = (RelativeLayout) view.findViewById(R.id.relativeLayoutNotification);
             notificationText = (TextView) view.findViewById(R.id.notificationText);
+
+            progressDialog = new ProgressDialog(mContext,R.style.DialogTheme);
 
         }
 
@@ -484,6 +399,10 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 Log.d("MainFeedAdapter1", "-->" + response1);
                 //parsing Json
                 JSONObject jsonObject = null;
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
 
                 try {
 
@@ -519,6 +438,10 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
 
                 if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(mContext, R.style.MyDialogTheme).create();
@@ -585,6 +508,10 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
             public void onResponse(String response1) {
 
 //                hideDialog();
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
 
                 try {
                     JSONObject jObj = new JSONObject(response1);
@@ -783,6 +710,10 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
 
                 if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(view.getContext(), R.style.MyDialogTheme).create();

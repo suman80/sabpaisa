@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -54,6 +55,8 @@ public class EditGroup extends AppCompatActivity {
 
     String userAccessToken;
 
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,8 @@ public class EditGroup extends AppCompatActivity {
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
 
+        progressDialog = new ProgressDialog(EditGroup.this,R.style.DialogTheme);
+
         toolbar.setTitle(GroupsNm);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
@@ -83,7 +88,7 @@ public class EditGroup extends AppCompatActivity {
 
         editText_GroupName = (EditText)findViewById(R.id.editText_GroupName);
         editText_GroupDescription = (EditText)findViewById(R.id.editText_GroupDescription);
-        img_GroupImage = (ImageView)findViewById(R.id.img_GroupImage);
+        //img_GroupImage = (ImageView)findViewById(R.id.img_GroupImage);
         img_GroupLogo = (ImageView)findViewById(R.id.img_GroupLogo);
         btn_Cancel = (Button)findViewById(R.id.btn_Cancel);
         btn_Save = (Button)findViewById(R.id.btn_Save);
@@ -91,10 +96,10 @@ public class EditGroup extends AppCompatActivity {
         editText_GroupName.setText(GroupsNm);
         editText_GroupDescription.setText(GroupsDiscription);
 
-        Glide.with(getApplicationContext())
+        /*Glide.with(getApplicationContext())
                 .load(GroupsImg)
                 .error(R.drawable.appicon)
-                .into(img_GroupImage);
+                .into(img_GroupImage);*/
 
         Glide.with(getApplicationContext())
                 .load(groupLogo)
@@ -106,12 +111,12 @@ public class EditGroup extends AppCompatActivity {
         userAccessToken = sharedPreferences.getString("response", "123");
 
 
-        img_GroupImage.setOnClickListener(new View.OnClickListener() {
+        /*img_GroupImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pickImage();
             }
-        });
+        });*/
 
         img_GroupLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +155,10 @@ public class EditGroup extends AppCompatActivity {
                     // Showing Alert Message
                     alertDialog.show();
                 }else {
+
+                    progressDialog.setMessage("Please wait !");
+                    progressDialog.show();
+
                     updateGroup(groupImageBitMap,groupLogoBitMap,groupNm,groupDesc);
                 }
 
@@ -250,6 +259,11 @@ public class EditGroup extends AppCompatActivity {
             @Override
             public void onResponse(NetworkResponse response) {
                 Log.d("EditGroup", "Res_" + response);
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+
                 try {
 
                     JSONObject obj = new JSONObject(new String(response.data));
@@ -316,6 +330,10 @@ public class EditGroup extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Error In Upoload", error.toString());
 
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
                         //Toast.makeText(EditGroup.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
                 }) {
@@ -372,7 +390,7 @@ public class EditGroup extends AppCompatActivity {
      * */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 

@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -93,6 +94,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
     public static boolean isClicked=false;
 
     String userAccessToken,clientId;
+
+    ProgressDialog progressDialog;
 
     @Override
     public MemberAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -213,10 +216,16 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
                         if (menuItem.getTitle().equals("Block Member")){
+
+                            progressDialog.setMessage("Please wait !");
+                            progressDialog.show();
                             clientMemberStatusUpdate(clientId,userAccessToken,member_getterSetter.getPhoneNumber(),"Blocked");
                         }
 
                         if (menuItem.getTitle().equals("UnBlock Member")){
+
+                            progressDialog.setMessage("Please wait !");
+                            progressDialog.show();
                             clientMemberStatusUpdate(clientId,userAccessToken,member_getterSetter.getPhoneNumber(),"Varified");
                         }
 
@@ -376,6 +385,9 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 //            String test = "test";
 ////            if(test.isEmpty())
 //            itemView.setOnCreateContextMenuListener(this);
+
+            progressDialog = new ProgressDialog(mContext,R.style.DialogTheme);
+
 
         }
 
@@ -538,6 +550,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
                         Log.d("MemberAdapter", response.toString() );
 
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
+
                         String status = null;
                         String response1 = null;
                         try {
@@ -572,6 +589,12 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+
+
                 Log.d("MemberAdapter", "Error: " + error.getMessage());
                 VolleyLog.d("MemberAdapter", "Error: " + error.getMessage());
             }

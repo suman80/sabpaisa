@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
             android:clipToPadding="false"
-            android:paddingBottom="30dp"
+            android:paddingBottom="40dp"
             />
 
     </LinearLayout>

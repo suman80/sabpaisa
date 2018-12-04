@@ -82,11 +82,11 @@ public void setItems(ArrayList<FeedData> feedDatas) {
 //        holder.client_Image.setImageResource(R.drawable.offline);
 //        holder.cilent_Logo.setImageResource(R.drawable.offline);
 
-
-        Glide.with(context)
+        // Commenting on 29th Nov 2018 for banner image
+        /*Glide.with(context)
                 .load(feedDataForOffLine.getImagePath())
                 .error(R.drawable.offline)
-                .into(holder.client_Image);
+                .into(holder.client_Image);*/
 
 
         Glide.with(context)
@@ -175,7 +175,7 @@ public void setItems(ArrayList<FeedData> feedDatas) {
             main_feed_description = (TextView) view.findViewById(R.id.main_feed_description);
             main_feed_name = (TextView) view.findViewById(R.id.main_feed_name);
             main_feed_creation_time = (TextView) view.findViewById(R.id.main_feed_creation_time);
-            client_Image = (ImageView) view.findViewById(R.id.client_Image);
+            //client_Image = (ImageView) view.findViewById(R.id.client_Image);
             cilent_Logo = (ImageView) view.findViewById(R.id.client_Logo);
             linearLayout_feed = (LinearLayout)view.findViewById(R.id.linearLayout_feed);
             rippleClick = (MaterialRippleLayout)view.findViewById(R.id.rippleClick);

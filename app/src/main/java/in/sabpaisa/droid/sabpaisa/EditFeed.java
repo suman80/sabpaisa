@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -57,6 +58,8 @@ public class EditFeed extends AppCompatActivity {
 
     Button btn_Cancel,btn_Save;
 
+    ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,8 @@ public class EditFeed extends AppCompatActivity {
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
 
+        progressDialog = new ProgressDialog(EditFeed.this,R.style.DialogTheme);
+
         toolbar.setTitle(FeedsNm);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
@@ -86,7 +91,7 @@ public class EditFeed extends AppCompatActivity {
 
         editText_FeedName = (EditText)findViewById(R.id.editText_FeedName);
         editText_FeedDescription = (EditText)findViewById(R.id.editText_FeedDescription);
-        img_FeedImage = (ImageView)findViewById(R.id.img_FeedImage);
+        //img_FeedImage = (ImageView)findViewById(R.id.img_FeedImage);
         img_FeedLogo = (ImageView)findViewById(R.id.img_FeedLogo);
         btn_Save = (Button)findViewById(R.id.btn_Save);
         btn_Cancel = (Button)findViewById(R.id.btn_Cancel);
@@ -94,10 +99,10 @@ public class EditFeed extends AppCompatActivity {
         editText_FeedName.setText(FeedsNm);
         editText_FeedDescription.setText(feedsDiscription);
 
-        Glide.with(getApplicationContext())
+        /*Glide.with(getApplicationContext())
                 .load(feedImg)
                 .error(R.drawable.appicon)
-                .into(img_FeedImage);
+                .into(img_FeedImage);*/
 
         Glide.with(getApplicationContext())
                 .load(feedLogo)
@@ -105,12 +110,12 @@ public class EditFeed extends AppCompatActivity {
                 .into(img_FeedLogo);
 
 
-        img_FeedImage.setOnClickListener(new View.OnClickListener() {
+        /*img_FeedImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pickImage();
             }
-        });
+        });*/
 
         img_FeedLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +158,10 @@ public class EditFeed extends AppCompatActivity {
                     // Showing Alert Message
                     alertDialog.show();
                 }else {
+
+                    progressDialog.setMessage("Please wait !");
+                    progressDialog.show();
+
                     updateFeed(feedImageBitMap,feedLogoBitMap,feedNm,feedDesc);
                 }
 
@@ -256,6 +265,12 @@ public class EditFeed extends AppCompatActivity {
             @Override
             public void onResponse(NetworkResponse response) {
                 Log.d("EditFeed", "Res_" + response);
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+
+
                 try {
 
                     JSONObject obj = new JSONObject(new String(response.data));
@@ -342,6 +357,11 @@ public class EditFeed extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Error In Upoload", error.toString());
 
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
+
                         //Toast.makeText(EditFeed.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
                 }) {
@@ -398,7 +418,7 @@ public class EditFeed extends AppCompatActivity {
      * */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 

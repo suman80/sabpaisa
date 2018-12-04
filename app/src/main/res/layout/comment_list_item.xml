@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:padding="10dp">
+    android:padding="20dp">
 
 
     <TextView
@@ -38,16 +38,24 @@
         android:id="@+id/people_name_initial"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
         android:background="@drawable/img"
         android:gravity="center" />
+
+<!--Added on 29th Nov 2018-->
+   <!-- <ImageView
+        android:id="@+id/people_name_initial"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center" />-->
+
+
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
+
         android:layout_toRightOf="@+id/people_name_initial"
         android:gravity="center|left"
         android:orientation="vertical">

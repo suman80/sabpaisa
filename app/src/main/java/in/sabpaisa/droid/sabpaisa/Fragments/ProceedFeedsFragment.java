@@ -327,7 +327,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                             feedData.setFeedText(jsonObject1.getString("feedText"));
                             feedData.setCreatedDate(jsonObject1.getString("createdDate"));
                             feedData.setLogoPath(jsonObject1.getString("logoPath"));
-                            feedData.setImagePath(jsonObject1.getString("imagePath"));
+                            //feedData.setImagePath(jsonObject1.getString("imagePath"));
                             feedArrayList.add(feedData);
 
 
@@ -380,8 +380,9 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                                         }
                                     });
 
+                            // Commenting on 29th Nov 2018 for banner image
 
-                            Glide.with(getContext())
+                            /*Glide.with(getContext())
                                     .load(feedData.getImagePath())
                                     .asBitmap()
                                     .into(new SimpleTarget<Bitmap>(100, 100) {
@@ -420,7 +421,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                                         }
                                     });
 
-
+*/
                             //////////////////////////////LOCAL DB//////////////////////////////////////
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
@@ -429,7 +430,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                                     //Do something after 3000ms
 
                                     Log.d("logoPath_PFF", "IntoLocalDb " + feedDataForOffLine.getLogoPath());
-                                    Log.d("imagePath_PFF", "IntoLocalDb " + feedDataForOffLine.getImagePath());
+                                    //Log.d("imagePath_PFF", "IntoLocalDb " + feedDataForOffLine.getImagePath());
 
 
                                     boolean isInserted = db.insertFeedData(feedDataForOffLine);
@@ -607,7 +608,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                             feedData.setFeedText(jsonObject1.getString("feedText"));
                             feedData.setCreatedDate(jsonObject1.getString("createdDate"));
                             feedData.setLogoPath(jsonObject1.getString("logoPath"));
-                            feedData.setImagePath(jsonObject1.getString("imagePath"));
+                            //feedData.setImagePath(jsonObject1.getString("imagePath"));
                             feedArrayList.add(feedData);
 
 
@@ -660,6 +661,8 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                                         }
                                     });
 
+                            // Commenting on 29th Nov 2018 for banner image
+/*
 
                             Glide.with(context)
                                     .load(feedData.getImagePath())
@@ -700,6 +703,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                                         }
                                     });
 
+*/
 
                             //////////////////////////////LOCAL DB//////////////////////////////////////
                             final Handler handler = new Handler();
@@ -709,7 +713,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
                                     //Do something after 3000ms
 
                                     Log.d("logoPath_PFF", "IntoLocalDb " + feedDataForOffLine.getLogoPath());
-                                    Log.d("imagePath_PFF", "IntoLocalDb " + feedDataForOffLine.getImagePath());
+                                    //Log.d("imagePath_PFF", "IntoLocalDb " + feedDataForOffLine.getImagePath());
 
 
                                     boolean isInserted = db.insertFeedData(feedDataForOffLine);

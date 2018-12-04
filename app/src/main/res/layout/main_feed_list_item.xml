@@ -4,23 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:autofit="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/white"
     android:id="@+id/linearLayout_feed"
     android:clickable="true"
-    android:layout_marginBottom="20dp">
+    android:gravity="center">
 
     <com.balysv.materialripple.MaterialRippleLayout
         android:id="@+id/rippleClick"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:mrl_rippleHover="true"
         app:mrl_rippleOverlay="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/rl_view"
@@ -28,138 +24,126 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/client_Logo"
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="20dp"
-                    android:scaleType="fitXY" />
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_margin="10dp"
+                     />
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/people_name_initial"
-                    android:gravity="center|left"
                     android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:id="@+id/relativeLayoutNotification"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="end"
-                        android:layout_marginRight="50dp"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            android:src="@drawable/ic_ring" />
-
-                        <ImageView
-                            android:id="@+id/notificationBadge"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:src="@drawable/badge_bg_with_shadow"
-                            android:layout_alignParentRight="true"
-                            android:textAlignment="center"
-                            />
-
-                        <me.grantland.widget.AutofitTextView
-                            android:id="@+id/notificationText"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_alignParentRight="true"
-                            android:maxLines="1"
-                            android:text="100"
-                            android:textColor="#fff"
-                            android:textSize="8sp"
-                            android:gravity="center"
-                            />
-
-
-                    </RelativeLayout>
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        >
 
-                        <TextView
+
+                        <me.grantland.widget.AutofitTextView
                             android:id="@+id/main_feed_name"
-                            android:layout_width="match_parent"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerInParent="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="0.2"
                             android:text="Group Name"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_small"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:selectAllOnFocus="false"
+                            android:maxLines="3"
+                            autofit:minTextSize="12sp"
+                            />
 
+
+
+                        <!--Visibility gone-->
+
+                        <RelativeLayout
+                            android:id="@+id/relativeLayoutNotification"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="end"
+                            android:layout_marginLeft="10dp"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:src="@drawable/ic_ring" />
+
+                            <ImageView
+                                android:id="@+id/notificationBadge"
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:src="@drawable/badge_bg_with_shadow"
+                                android:layout_alignParentRight="true"
+                                android:textAlignment="center"
+                                />
+
+                            <me.grantland.widget.AutofitTextView
+                                android:id="@+id/notificationText"
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:layout_alignParentRight="true"
+                                android:maxLines="1"
+                                android:text="100"
+                                android:textColor="#fff"
+                                android:textSize="8sp"
+                                android:gravity="center"
+                                />
+
+
+                        </RelativeLayout>
+
+
+
+
+
+                        <!--Visibility gone-->
                         <ImageView
                             android:id="@+id/imgPopUpMenu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
-                            android:layout_weight="0.8"
                             android:src="@drawable/ic_more_vert"
                             android:visibility="gone" />
 
 
+
+
+
+
                     </LinearLayout>
 
+
+                    <me.grantland.widget.AutofitTextView
+                        android:id="@+id/main_feed_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="15dp"
+                        android:maxLines="5"
+                        android:text="Fractal landscape of Julian set of numbers by Wikimedia Commons user Gertbuschmann public domain here:"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_xsmall"
+                        app:minTextSize="12sp"
+                        android:autoSizeMaxTextSize="14sp"
+                        />
+
+
                 </LinearLayout>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/linerar1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/rl_view"
-                android:layout_marginTop="8dp"
-                android:elevation="50dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/main_feed_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="5dp"
-                    android:maxLines="2"
-                    android:text="Fractal landscape of Julian set of numbers by Wikimedia Commons user Gertbuschmann public domain here:"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_xsmall" />
-
-
-                <ImageView
-                    android:id="@+id/client_Image"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="8dp"
-                    android:scaleType="fitXY" />
 
 
             </LinearLayout>
 
-        </LinearLayout>
 
     </com.balysv.materialripple.MaterialRippleLayout>
 
 </LinearLayout>
-

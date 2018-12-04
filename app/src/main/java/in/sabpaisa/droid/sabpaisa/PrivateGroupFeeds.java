@@ -367,7 +367,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
     private void loadFeedListView(ArrayList<FeedData> arrayList, final RecyclerView recyclerView) {
 
-        mainFeedAdapter = new MainFeedAdapter(arrayList,getApplicationContext());
+        mainFeedAdapter = new MainFeedAdapter(arrayList,PrivateGroupFeeds.this);
         recyclerView.setAdapter(mainFeedAdapter);
         /*recyclerView.postDelayed(new Runnable() {
             @Override

@@ -74,6 +74,7 @@ public class UIN extends AppCompatActivity {
     public static String clientLogoPath = null;
 
     public static String SHARED_PREF_FOR_CHECK_USER = "checkUserForAdmin";
+    public static String SHARED_PREF_UIN_STATUS = "sharedPrefUinStatus";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,8 +149,7 @@ public class UIN extends AppCompatActivity {
 
 
     public void onVerifyBtn(View view) {
-        if (!isOnline()
-                ) {
+        if (!isOnline()) {
 
             AlertDialog alertDialog = new AlertDialog.Builder(UIN.this, R.style.MyDialogTheme).create();
 
@@ -226,6 +226,14 @@ public class UIN extends AppCompatActivity {
                     if (status.equals("success") && response1.equals("UIN verified")) {
                         callMainScreen();
                         Log.d("InIfPArt", "UINVerifu");
+
+
+                        SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREF_UIN_STATUS, MODE_PRIVATE).edit();
+                        editor.putString("UIN_STATUS", "UIN_VERIFIED");
+                        editor.commit();
+
+
+
                     } else if (status.equals("success") && response1.equals("Invalid UIN number")) {
 
                         Log.d("InelseIf1PArt", "UINVerifu");

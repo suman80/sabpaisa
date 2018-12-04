@@ -16,6 +16,86 @@
         app:subtitleTextColor="@color/white"
         app:titleTextColor="@color/white" />
 
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        >
+
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.5"
+            >
+
+            <ImageView
+                android:id="@+id/img_FeedImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/textView7"
+                app:srcCompat="@drawable/appicon"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Feed Image"
+                android:textColor="@color/bg_orange"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                />
+
+
+        </LinearLayout>-->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.5"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_FeedLogo"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/textView7"
+                app:srcCompat="@drawable/appicon"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Feed Logo"
+                android:textColor="@color/bg_orange"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,78 +160,7 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal"
-        >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="0.5"
-            >
-
-            <ImageView
-                android:id="@+id/img_FeedImage"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/textView7"
-                app:srcCompat="@drawable/appicon"
-                android:layout_gravity="center"
-                />
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Feed Image"
-                android:textColor="@color/bg_orange"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                />
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="0.5"
-            >
-
-            <ImageView
-                android:id="@+id/img_FeedLogo"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/textView7"
-                app:srcCompat="@drawable/appicon"
-                android:layout_gravity="center"
-                />
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Feed Logo"
-                android:textColor="@color/bg_orange"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                />
-
-
-        </LinearLayout>
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

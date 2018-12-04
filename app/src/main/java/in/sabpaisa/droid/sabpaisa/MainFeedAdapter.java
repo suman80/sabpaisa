@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -91,6 +92,8 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
     NotificationDB db;
 
+    public static ProgressDialog progressDialog;
+
 
     public MainFeedAdapter(ArrayList<FeedData> countryList, Context context) {
         this.mainFeedDataList = countryList;
@@ -113,10 +116,12 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 .error(R.drawable.image_not_found)
                 .into(holder.cilent_Logo);
 
-        Glide.with(context)
+        //Commenting on 29th Nov 2018 for banner image
+
+        /*Glide.with(context)
                 .load(mainFeedData.getImagePath())
                 .error(R.drawable.image_not_found)
-                .into(holder.client_Image);
+                .into(holder.client_Image);*/
 
 
 
@@ -161,7 +166,8 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             @Override
             public void onClick(View view) {
 
-
+                progressDialog.setMessage("Please wait !");
+                progressDialog.show();
 
                 //////////////Notification db//////////////////////////
                 //db = new NotificationDB(context);
@@ -289,6 +295,10 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
                         if (menuItem.getTitle().equals("Delete")){
+
+                            progressDialog.setMessage("Please wait !");
+                            progressDialog.show();
+
                             deleteFeedData(feedId,userAccessToken);
                         }
 
@@ -346,13 +356,15 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             main_feed_description = (TextView) view.findViewById(R.id.main_feed_description);
             main_feed_name = (TextView) view.findViewById(R.id.main_feed_name);
             main_feed_creation_time = (TextView) view.findViewById(R.id.main_feed_creation_time);
-            client_Image = (ImageView) view.findViewById(R.id.client_Image);
+            //client_Image = (ImageView) view.findViewById(R.id.client_Image);
             cilent_Logo = (ImageView) view.findViewById(R.id.client_Logo);
             linearLayout_feed = (LinearLayout)view.findViewById(R.id.linearLayout_feed);
             rippleClick = (MaterialRippleLayout)view.findViewById(R.id.rippleClick);
             imgPopUpMenu = (ImageView)view.findViewById(R.id.imgPopUpMenu);
             relativeLayoutNotification = (RelativeLayout) view.findViewById(R.id.relativeLayoutNotification);
             notificationText = (TextView) view.findViewById(R.id.notificationText);
+
+            progressDialog = new ProgressDialog(context,R.style.DialogTheme);
 
         }
 
@@ -376,6 +388,11 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 Log.d("MainFeedAdapter", "-->" + response1);
                 //parsing Json
                 JSONObject jsonObject = null;
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+
 
                 try {
 
@@ -426,6 +443,11 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+
 
                 if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(context, R.style.MyDialogTheme).create();

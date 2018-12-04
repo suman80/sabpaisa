@@ -309,7 +309,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                             groupListData.setGroupName(jsonObject1.getString("groupName"));
                             groupListData.setGroupText(jsonObject1.getString("groupText"));
                             groupListData.setCreatedDate(jsonObject1.getString("createdDate"));
-                            groupListData.setImagePath(jsonObject1.getString("imagePath"));
+                            //groupListData.setImagePath(jsonObject1.getString("imagePath"));
                             groupListData.setLogoPath(jsonObject1.getString("logoPath"));
                             groupListData.setMemberStatus(jsonObjectX.getString("memberStatus"));
                             groupListData.setMemberGroupRole(jsonObjectX.getString("memberGroupRole"));
@@ -369,6 +369,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                                         }
                                     });
 
+                            // Commenting on 29th Nov 2018 for banner image
+/*
 
                             Glide.with(getContext())
                                     .load(groupListData.getImagePath())
@@ -408,6 +410,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                                         }
                                     });
 
+*/
 
                             //////////////////////////////LOCAL DB//////////////////////////////////////
 
@@ -418,7 +421,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                                     //Do something after 3000ms
 
                                     Log.d("logoPath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupLogo());
-                                    Log.d("imagePath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupImage());
+                                    //Log.d("imagePath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupImage());
 
                                     boolean isInserted = db.insertGroupData(groupDataForOffLine, token);
 
@@ -481,13 +484,15 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                             @Override
                             public int compare(GroupListData groupListData, GroupListData t1) {
 
-                                if (groupListData.getGroupRecentCommentTime() >= t1.getGroupRecentCommentTime()){
+                                if (groupListData.getGroupRecentCommentTime() > t1.getGroupRecentCommentTime()){
                                     return -1;
                                 }
-                                else return 1;
+                                else if (groupListData.getGroupRecentCommentTime() < t1.getGroupRecentCommentTime()){
+                                    return 1;
+                                }
+                                else return 0;
                             }
                         });
-
 
                         for (GroupListData approvedValue:groupArrayList) {
                             if (approvedValue.getMemberStatus().contains("Pending")){
@@ -614,7 +619,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                             groupListData.setGroupName(jsonObject1.getString("groupName"));
                             groupListData.setGroupText(jsonObject1.getString("groupText"));
                             groupListData.setCreatedDate(jsonObject1.getString("createdDate"));
-                            groupListData.setImagePath(jsonObject1.getString("imagePath"));
+                            //groupListData.setImagePath(jsonObject1.getString("imagePath"));
                             groupListData.setLogoPath(jsonObject1.getString("logoPath"));
                             groupListData.setMemberStatus(jsonObjectX.getString("memberStatus"));
                             groupListData.setMemberGroupRole(jsonObjectX.getString("memberGroupRole"));
@@ -675,6 +680,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                                     });
 
 
+                            // Commenting on 29th Nov 2018 for banner image
+      /*
                             Glide.with(context)
                                     .load(groupListData.getImagePath())
                                     .asBitmap()
@@ -713,7 +720,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                                         }
                                     });
 
-
+*/
                             //////////////////////////////LOCAL DB//////////////////////////////////////
 
                             final Handler handler = new Handler();
@@ -723,7 +730,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                                     //Do something after 3000ms
 
                                     Log.d("logoPath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupLogo());
-                                    Log.d("imagePath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupImage());
+                                    //Log.d("imagePath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupImage());
 
                                     boolean isInserted = db.insertGroupData(groupDataForOffLine, token);
 

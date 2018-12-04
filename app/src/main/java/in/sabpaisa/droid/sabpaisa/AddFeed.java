@@ -60,6 +60,8 @@ public class AddFeed extends AppCompatActivity {
 
     Toolbar toolbar;
 
+    ProgressDialog progressDialog;
+
     //Added on 26th oct 2018
 
     @Override
@@ -67,16 +69,16 @@ public class AddFeed extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_feed);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         editText_FeedName = (EditText)findViewById(R.id.editText_FeedName);
         editText_FeedDescription = (EditText)findViewById(R.id.editText_FeedDescription);
-        img_FeedImage = (ImageView)findViewById(R.id.img_FeedImage);
+        //img_FeedImage = (ImageView)findViewById(R.id.img_FeedImage);
         img_FeedLogo = (ImageView)findViewById(R.id.img_FeedLogo);
         btn_Cancel = (Button)findViewById(R.id.btn_Cancel);
         btn_Save = (Button)findViewById(R.id.btn_Save);
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
 
+        progressDialog = new ProgressDialog(AddFeed.this,R.style.DialogTheme);
 
         clientId = getIntent().getStringExtra("CLIENT_ID");
         FLAG = getIntent().getStringExtra("FLAG");
@@ -97,12 +99,12 @@ public class AddFeed extends AppCompatActivity {
             }
         });
 
-        img_FeedImage.setOnClickListener(new View.OnClickListener() {
+        /*img_FeedImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pickImage();
             }
-        });
+        });*/
 
         img_FeedLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +149,10 @@ public class AddFeed extends AppCompatActivity {
                     // Showing Alert Message
                     alertDialog.show();
                 }else {
+
+                    progressDialog.setMessage("Please wait !");
+                    progressDialog.show();
+
                     if (GROUP_ID != null) {
                         uploadFeedData(feedImage, feedLogo, feedNm, feedDesc,GROUP_ID,"Private");
                     }else {
@@ -253,6 +259,11 @@ public class AddFeed extends AppCompatActivity {
                     @Override
                     public void onResponse(NetworkResponse response) {
                         Log.d("AddFeed", "Res_" + response);
+
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
                         try {
 
                             JSONObject obj = new JSONObject(new String(response.data));
@@ -307,6 +318,11 @@ public class AddFeed extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Error In Upoload", error.toString());
+
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
 
                         //Toast.makeText(AddFeed.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
@@ -364,7 +380,7 @@ public class AddFeed extends AppCompatActivity {
      * */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 

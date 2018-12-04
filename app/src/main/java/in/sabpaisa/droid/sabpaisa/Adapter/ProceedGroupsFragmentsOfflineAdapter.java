@@ -49,16 +49,18 @@ public class ProceedGroupsFragmentsOfflineAdapter extends RecyclerView.Adapter<P
 //        holder.Group_Image.setImageResource(R.drawable.offline);
 //        holder.Group_Logo.setImageResource(R.drawable.offline);
 
-        Glide.with(mContext)
+        // Commenting on 29th Nov 2018 for banner image
+        /*Glide.with(mContext)
                 .load(groupDataForOffLine.getGroupImage())
                 .error(R.drawable.offline)
-                .into(holder.Group_Image);
+                .into(holder.Group_Image);*/
 
 
         Glide.with(mContext)
                 .load(groupDataForOffLine.getGroupLogo())
                 .error(R.drawable.offline)
                 .into(holder.Group_Logo);
+
 
 /*
 
@@ -249,7 +251,7 @@ public class ProceedGroupsFragmentsOfflineAdapter extends RecyclerView.Adapter<P
         public TextView Group_description;
         public ImageView Group_Logo;
         public ImageView Group_Image;
-        public Button joinmember;
+        public TextView joinmember;
         public LinearLayout linearLayoutGroupItemList;
         MaterialRippleLayout rippleClick;
 
@@ -258,9 +260,9 @@ public class ProceedGroupsFragmentsOfflineAdapter extends RecyclerView.Adapter<P
 
             Group_name = (TextView) view.findViewById(R.id.Group_name);
             Group_description = (TextView) view.findViewById(R.id.Group_description);
-            joinmember = (Button) view.findViewById(R.id.joinmember);
+            joinmember = (TextView) view.findViewById(R.id.joinmember);
             Group_Logo = (ImageView) view.findViewById(R.id.Group_Logo);
-            Group_Image = (ImageView) view.findViewById(R.id.Group_Image);
+            //Group_Image = (ImageView) view.findViewById(R.id.Group_Image);
             linearLayoutGroupItemList = (LinearLayout) view.findViewById(R.id.linearLayoutGroupItemList);
 
             rippleClick = (MaterialRippleLayout) view.findViewById(R.id.rippleClick);

@@ -199,6 +199,8 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
     NavigationView navigationView;
 
+    String uinStatus;
+
 
     ////Testing
     @SuppressLint("MissingPermission")
@@ -231,6 +233,32 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         ClientId = ClientId1;
 
         context = this;
+
+        //Checking UIN Status
+
+        SharedPreferences sharedPreferencesCheckUIN = getApplication().getSharedPreferences(UIN.SHARED_PREF_UIN_STATUS, Context.MODE_PRIVATE);
+        uinStatus = sharedPreferencesCheckUIN.getString("UIN_STATUS", "abc");
+
+        if (!uinStatus.equals("UIN_VERIFIED")){
+
+            SharedPreferences settings = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.remove("m");
+            editor.remove("selectedstate");
+            editor.remove("selectedservice");
+            editor.remove("logged");
+            editor.clear();
+            editor.commit();
+            finish();
+
+            Intent intent = new Intent(MainActivity.this, FilterActivity.class);
+
+            startActivity(intent);
+
+
+        }
+
+
         SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(FilterActivity.MySharedPreffilter, Context.MODE_PRIVATE);
         stateName1 = sharedPreferences1.getString("selectedstate", "abc");
         stateName = stateName1;

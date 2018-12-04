@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
@@ -77,6 +78,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -204,7 +207,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 //        /////////////////////////////////
         commentArrayList = new ArrayList<CommentData>();
         /////////////////////////
-
 
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
@@ -808,7 +810,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                                 imageView2.setVisibility(View.VISIBLE);
                                 spin_kit.setVisibility(View.GONE);
 
-                                group_details_text_view = (EditText) findViewById(R.id.commentadd);
+                                //group_details_text_view = (EditText) findViewById(R.id.commentadd);
                                 group_details_text_view.setText("");
 
                                 //Toast.makeText(Proceed_Feed_FullScreen.this, "Image Upload Success !", Toast.LENGTH_SHORT).show();
@@ -1356,6 +1358,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         } else {
 
             MainFeedAdapter.isClicked=false;
+            if (MainFeedAdapter.progressDialog.isShowing()){
+                MainFeedAdapter.progressDialog.dismiss();
+            }
             FullViewOfClientsProceed.isFragmentOpen = true;
 
             boolean isUpdated = notificationDB.updateFeedNotificationData(feed_id,0,0, System.currentTimeMillis(),false);

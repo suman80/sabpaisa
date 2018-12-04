@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -40,7 +41,10 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
     ArrayList<Institution> institutions;
     Context context;
 
+    ProgressDialog progressDialog;
+
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_institutions_tab, parent, false);
@@ -98,6 +102,10 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
         holder.rippleClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                progressDialog.setMessage("Please wait !");
+                progressDialog.show();
+
                 Intent intent = new Intent(view.getContext(), FullViewOfClientsProceed.class);
                 intent.putExtra("clientName", mainFeedData.getOrganization_name());
                 intent.putExtra("state", mainFeedData.getOrgAddress());
@@ -107,6 +115,8 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
                 intent.putExtra("clientId", mainFeedData.getOrganizationId());
                 intent.putExtra("landing_page", mainFeedData.getOrgDesc());
                 view.getContext().startActivity(intent);
+
+
             }
         });
 
@@ -134,6 +144,8 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
             linearLayout_ParticularClient = (LinearLayout)itemView.findViewById(R.id.linearLayout_ParticularClient);
 
             rippleClick = (MaterialRippleLayout)itemView.findViewById(R.id.rippleClick);
+
+            progressDialog = new ProgressDialog(context,R.style.DialogTheme);
 
         }
     }

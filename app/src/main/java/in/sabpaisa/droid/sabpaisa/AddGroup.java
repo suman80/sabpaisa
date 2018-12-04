@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -53,6 +54,8 @@ public class AddGroup extends AppCompatActivity {
 
     Toolbar toolbar;
 
+    ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +65,15 @@ public class AddGroup extends AppCompatActivity {
 
         editText_GroupName = (EditText)findViewById(R.id.editText_GroupName);
         editText_GroupDescription = (EditText)findViewById(R.id.editText_GroupDescription);
-        img_GroupImage = (ImageView)findViewById(R.id.img_GroupImage);
+        //img_GroupImage = (ImageView)findViewById(R.id.img_GroupImage);
         img_GroupLogo = (ImageView)findViewById(R.id.img_GroupLogo);
         btn_Cancel = (Button)findViewById(R.id.btn_Cancel);
         btn_Save = (Button)findViewById(R.id.btn_Save);
 
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
+
+        progressDialog = new ProgressDialog(AddGroup.this,R.style.DialogTheme);
 
         toolbar.setTitle("Add Groups");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -88,12 +93,12 @@ public class AddGroup extends AppCompatActivity {
 
         userAccessToken = sharedPreferences.getString("response", "123");
 
-        img_GroupImage.setOnClickListener(new View.OnClickListener() {
+        /*img_GroupImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pickImage();
             }
-        });
+        });*/
 
         img_GroupLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +138,10 @@ public class AddGroup extends AppCompatActivity {
                     // Showing Alert Message
                     alertDialog.show();
                 }else {
+
+                    progressDialog.setMessage("Please wait !");
+                    progressDialog.show();
+
                     uploadGroupData(groupImage,groupLogo,groupNm,groupDesc);
                 }
 
@@ -229,6 +238,11 @@ public class AddGroup extends AppCompatActivity {
             @Override
             public void onResponse(NetworkResponse response) {
                 Log.d("Addgroup", "Res_" + response);
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+
                 try {
 
                     JSONObject obj = new JSONObject(new String(response.data));
@@ -270,6 +284,10 @@ public class AddGroup extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Error In Upoload", error.toString());
+
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
 
                         //Toast.makeText(AddGroup.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
@@ -327,7 +345,7 @@ public class AddGroup extends AppCompatActivity {
      * */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 
