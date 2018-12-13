@@ -8,6 +8,9 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -151,7 +154,15 @@ public class WebViewActivity extends AppCompatActivity {
         webView.addJavascriptInterface(new MyJavaScriptInterface(WebViewActivity.this), "HtmlViewer");
 
         webView.setWebViewClient(new WebViewClient() {
+
+
+
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
             @Override
             public void onPageFinished(WebView view, String url) {
 
@@ -231,6 +242,7 @@ public class WebViewActivity extends AppCompatActivity {
                 webView.loadUrl("javascript:window.HtmlViewer.showHTML" +
                         "('&lt;html&gt;'+document.getElementsByTagName('html')[0].innerHTML+'&lt;/html&gt;');");
 
+                findViewById(R.id.fab).setVisibility(View.VISIBLE);
 
             }
         });
@@ -252,6 +264,35 @@ public class WebViewActivity extends AppCompatActivity {
 
 
     }
+
+
+    //create a function to create the print job
+    private void createWebPrintJob(WebView webView) {
+
+        //create object of print manager in your device
+        PrintManager printManager = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
+
+
+            //create object of print adapter
+            PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
+
+            //provide name to your newly generated pdf file
+            String jobName = getString(R.string.app_name) + " Print Test";
+
+            //open print dialog
+            printManager.print(jobName, printAdapter, new PrintAttributes.Builder().build());
+
+        }
+
+    }
+
+    //perform click pdf creation operation on click of print button click
+    public void printPDF(View view) {
+        createWebPrintJob(webView);
+    }
+
 
 
     @Override

@@ -45,6 +45,7 @@ import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MembersProfile;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.NumberOfGroups;
+import in.sabpaisa.droid.sabpaisa.PrivateFeedMembersList;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.UIN;
 
@@ -72,7 +73,7 @@ public class NoOfGroupmemberAdapter extends RecyclerView.Adapter<NoOfGroupmember
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder myViewHolder, final int i) {
+    public void onBindViewHolder(final MyViewHolder myViewHolder, final int i) {
 
         final Member_GetterSetter member_getterSetter = memberGetterSetterArrayList.get(i);
 
@@ -242,14 +243,12 @@ public class NoOfGroupmemberAdapter extends RecyclerView.Adapter<NoOfGroupmember
             @Override
             public void onClick(View view) {
 
-
-
                 PopupMenu menu = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
                     menu = new PopupMenu(mContext,view,Gravity.CENTER);
                 }
 
-                menu.getMenu().add("Remove User From Group");
+                menu.getMenu().add("Remove");
 
                 if(member_getterSetter.getRoleId() ==null || member_getterSetter.getRoleId().equals("null") || !member_getterSetter.getRoleId().equals("2"))
                 {
@@ -269,14 +268,22 @@ public class NoOfGroupmemberAdapter extends RecyclerView.Adapter<NoOfGroupmember
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
-                        if (menuItem.getTitle().equals("Remove User From Group")) {
+                        if (menuItem.getTitle().equals("Remove")) {
 
-                            if (countforAdmin ==1 && (member_getterSetter.getUin_Role().equals("1") || member_getterSetter.getRoleId().equals("2"))) {
-                                Toast.makeText(mContext, "You cannot remove yourself !", Toast.LENGTH_SHORT).show();
-                            } else {
+                            if (PrivateFeedMembersList.Flag !=null && PrivateFeedMembersList.Flag.equals("PrivateFeedMembersList")){
+                                //Api
 
-                                removeUserfromGroup(userAccessToken, member_getterSetter.getUserAccessToken(), member_getterSetter.getGroupId());
+                                removeUserfromPrivateFeed(userAccessToken,member_getterSetter.getUserAccessToken(),PrivateFeedMembersList.feedId,myViewHolder.getAdapterPosition());
 
+                            }else {
+
+                                if (countforAdmin == 1 && (member_getterSetter.getUin_Role().equals("1") || member_getterSetter.getRoleId().equals("2"))) {
+                                    Toast.makeText(mContext, "You cannot remove yourself !", Toast.LENGTH_SHORT).show();
+                                } else {
+
+                                    removeUserfromGroup(userAccessToken, member_getterSetter.getUserAccessToken(), member_getterSetter.getGroupId(),myViewHolder.getAdapterPosition());
+
+                                }
                             }
                         }
 
@@ -497,7 +504,7 @@ public void onBindViewHolder(MemberAdapter.MyViewHolder holder, int position) {
     //  End 10-april-2018////////////////////////
 
 
-    public void removeUserfromGroup(final String userAccessToken , final String token , final String groupId){
+    public void removeUserfromGroup(final String userAccessToken , final String token , final String groupId,final int pos){
 
         String tag_string_req = "req_clients";
 
@@ -525,12 +532,15 @@ public void onBindViewHolder(MemberAdapter.MyViewHolder holder, int position) {
                     if (status.equals("success")){
                         Log.d("NoOfGRPMEMADAP1","InIfPart");
                         countforAdmin--;
-                        Intent intent = new Intent(mContext,NumberOfGroups.class);
+                        /*Intent intent = new Intent(mContext,NumberOfGroups.class);
                         intent.putExtra("GroupId",groupId);
                         intent.putExtra("memberGroupRole",NumberOfGroups.memberGroupRole);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(intent);
+                        mContext.startActivity(intent);*/
+                        memberGetterSetterArrayList.remove(pos);
+                        notifyItemRemoved(pos);
+                        notifyItemRangeChanged(pos, getItemCount() - pos);
 
                     }else {
                         Log.d("NoOfGRPMEMADAP1","InElsePart");
@@ -692,6 +702,105 @@ public void onBindViewHolder(MemberAdapter.MyViewHolder holder, int position) {
 
 
     }
+
+
+
+    public void removeUserfromPrivateFeed(final String userAccessToken , final String token , final String feedId,final int pos){
+
+        String tag_string_req = "req_clients";
+
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_privateFeedMemberDelete+ "?token=" + token +"&adminToken="+userAccessToken +"&feed_id="+feedId;
+
+        Log.d("removeUserfromPrvteFeed", "URL-->" + url);
+
+        StringRequest request = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+
+                Log.d("removeUserfromPrvteFeed", "-->" + response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1);
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("remvUserfrmPrvtFeedRsp", "" + response);
+                    Log.d("remvUserfrmPrvtFeedStus", "" + status);
+
+                    if (status.equals("success")){
+                        Log.d("removeUserfromPrvteFeed","InIfPart");
+
+                        memberGetterSetterArrayList.remove(pos);
+                        notifyItemRemoved(pos);
+                        notifyItemRangeChanged(pos, getItemCount() - pos);
+
+
+                    }else {
+                        Log.d("removeUserfromPrvteFeed","InElsePart");
+                        Toast.makeText(mContext,response,Toast.LENGTH_SHORT).show();
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(mContext, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        });
+
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
+
+
+    }
+
 
 
 

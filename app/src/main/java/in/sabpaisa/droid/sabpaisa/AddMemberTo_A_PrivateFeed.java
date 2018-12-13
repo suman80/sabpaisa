@@ -2,13 +2,10 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,7 +19,6 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -31,67 +27,56 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.AddMemberTo_A_GroupAdapter;
-import in.sabpaisa.droid.sabpaisa.Adapter.MemberAdapter;
+import in.sabpaisa.droid.sabpaisa.Adapter.AddMemberTo_A_PrvtFeedAdapter;
 import in.sabpaisa.droid.sabpaisa.Interfaces.AddMemberCallBack;
-import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
-import in.sabpaisa.droid.sabpaisa.Model.MemberOfflineDataModel;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
-import in.sabpaisa.droid.sabpaisa.Util.NoOfGroupmemberAdapter;
-import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
-import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_MEMBERS;
-
-public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberCallBack {
+public class AddMemberTo_A_PrivateFeed extends AppCompatActivity implements AddMemberCallBack {
 
     ShimmerRecyclerView recycler_view_Member;
     ArrayList<Member_GetterSetter> member_getterSetterArrayList;
-    public static String clientId;
 
-    AddMemberTo_A_GroupAdapter addMemberTo_a_groupAdapter;
-
-    String groupId;
+    String feedId;
 
     Toolbar toolbar;
 
-    MenuItem item;
+    String userAccessToken;
+
+    AddMemberTo_A_PrvtFeedAdapter addMemberToAPrvtFeedAdapter;
 
     ArrayList<String> memberNumberArraylist;
 
-    String userAccessToken;
+    MenuItem item;
 
-    //test
+    String GroupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_member_to__a__group);
+        setContentView(R.layout.activity_add_member_to__a__private_feed);
+
+        feedId = getIntent().getStringExtra("feedId");
+        GroupId = getIntent().getStringExtra("GroupId");
+        Log.d("AddMemToPrivtFeed","feedId__"+feedId);
+        Log.d("AddMemToPrivtFeed","GroupId__"+GroupId);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         recycler_view_Member = (ShimmerRecyclerView)findViewById(R.id.recycler_view_Member);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Add Member");
+        getSupportActionBar().setTitle("Add Member To Private Feed");
 
         LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -103,28 +88,22 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
 
         userAccessToken = sharedPreferences1.getString("response", "123");
 
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
-        clientId=sharedPreferences.getString("clientId","abc");
-        Log.d("clientId_MEMBERS",""+clientId);
 
-        groupId = getIntent().getStringExtra("groupId");
-
-        Log.d("AddMemberToGRP","GRP_ID "+groupId);
-
-        memberData(clientId,groupId);
-
+        memberData(feedId);
         memberNumberArraylist = new ArrayList<>();
 
     }
 
 
-    public void memberData (final String clientId,final String groupId)
+
+
+    public void memberData (final String feedId)
     {
 
         String tag_string_req = "req_register";
-        String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_addMemberList+"?clientId="+clientId+"&groupId="+groupId;
+        String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_privateFeedUnjoinedMember+"?feed_id="+feedId;
 
-        Log.d("AddMemberToaGrp", "Member_URL: " + url);
+        Log.d("AddMemberToPrvFeed", "_URL: " + url);
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>(){
@@ -134,7 +113,7 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
             public void onResponse(String response) {
                 try {
 
-                    Log.d("AddMemberToaGrp", "Member: " + response);
+                    Log.d("AddMemberToPrvFeed", "Resp_: " + response);
                     //swipeRefreshLayout.setRefreshing(false);
                     member_getterSetterArrayList = new ArrayList<>();
 
@@ -144,9 +123,9 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
 
                     String response1 = jsonObject.getString("response");
 
-                    if (status.equals("success")&&response1.equals("No Record Found")) {
+                    if (status.equals("failure")) {
 
-                        Toast.makeText(AddMemberTo_A_Group.this,"No Record Found",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddMemberTo_A_PrivateFeed.this,response1,Toast.LENGTH_SHORT).show();
 
                         recycler_view_Member.setVisibility(View.GONE);
 
@@ -174,11 +153,11 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
 
 
                         }
-                        Log.d("ArrayListAfterParse", " " + member_getterSetterArrayList.get(0).getFullName());
+                        Log.d("AddMemberToPrvFeed", "ArrayListAfterParse " + member_getterSetterArrayList.get(0).getFullName());
 
 
-                        addMemberTo_a_groupAdapter = new AddMemberTo_A_GroupAdapter(member_getterSetterArrayList,AddMemberTo_A_Group.this/*getApplicationContext()*/);
-                        recycler_view_Member.setAdapter(addMemberTo_a_groupAdapter);
+                        addMemberToAPrvtFeedAdapter = new AddMemberTo_A_PrvtFeedAdapter(member_getterSetterArrayList,AddMemberTo_A_PrivateFeed.this);
+                        recycler_view_Member.setAdapter(addMemberToAPrvtFeedAdapter);
 
                     }
 
@@ -199,7 +178,7 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
 
-                        Log.e("AddMemberToaGrp", "FeedError"+error);
+                        Log.e("AddMemberToPrvFeed", "Error_"+error);
                     }
                 }
         );
@@ -208,16 +187,15 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
     }
 
 
-
     @Override
     public void setMemberData(ArrayList<String> memberData) {
         memberNumberArraylist = memberData;
         for (String val:memberNumberArraylist) {
-            Log.d("AddMemToAGRP","memberNumberArraylist "+val);
+            Log.d("AddMemberToPrvFeed","memberNumberArraylist "+val);
         }
 
 
-        Log.d("AddMemberToGrp_Menu","memberNumberArraylist_"+memberNumberArraylist.size());
+        Log.d("AddMemberToPrvFeed","memberNumberArraylist_"+memberNumberArraylist.size());
 
         if (memberNumberArraylist.size() > 0)
         {
@@ -240,7 +218,7 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
         inflater.inflate(R.menu.sharing_menu, menu);
         item = menu.findItem(R.id.shareOk);
 
-        Log.d("AddMemberToGrp_Menu","memberNumberArraylist_"+memberNumberArraylist.size());
+        Log.d("AddMemberToPrvFeed","memberNumberArraylist_"+memberNumberArraylist.size());
 
         if (memberNumberArraylist.size() > 0)
         {
@@ -262,27 +240,15 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
 
                     for (String num: memberNumberArraylist) {
 
-                        addMemberData(groupId,userAccessToken,num);
+                       //Api
+                        addMemberToPrivateFeed(feedId,GroupId,userAccessToken,num);
 
                     }
 
                 }
 
-                if (memberNumberArraylist.size()>0){
-                    String clientImageURLPath = FullViewOfClientsProceed.clientImageURLPath;
 
-                    Log.d("MainFeedAdapter1","clientImageURLPath "+clientImageURLPath);
-
-                    Intent intent = new Intent(AddMemberTo_A_Group.this,FullViewOfClientsProceed.class);
-                    intent.putExtra("clientImagePath",clientImageURLPath);
-                    intent.putExtra("FRAGMENT_ID","1");
-                    startActivity(intent);
-                }
-
-
-
-
-                    return true;
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -291,14 +257,11 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
 
 
 
+    private void addMemberToPrivateFeed(final String feedId,final String groupId,final String userAccessToken,final String mobileNo) {
 
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_privateFeedMember + "?groupId="+groupId+"&adminToken="+userAccessToken+"&userContactNumber="+mobileNo+"&feed_id="+feedId;
 
-
-    private void addMemberData(final String groupId,final String userAccessToken,final String mobileNo) {
-
-        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_addMember + "?groupId="+groupId+"&admin="+userAccessToken+"&mobileNo="+mobileNo;
-
-        Log.d("AddMemberToAGRP","_URL "+url);
+        Log.d("AddMemberToPrvFeed","addMemberToPrivateFeed_URL "+url);
 
         String tag_string_req = "req_clients";
 
@@ -307,7 +270,7 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
             @Override
             public void onResponse(String response1) {
 
-                Log.d("AddMemberToAGRP", "-->" + response1);
+                Log.d("AddMemberToPrvFeed", "addMemberToPrivateFeed-->" + response1);
                 //parsing Json
                 JSONObject jsonObject = null;
 
@@ -316,31 +279,24 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
                     jsonObject = new JSONObject(response1);
                     String response = jsonObject.getString("response");
                     String status = jsonObject.getString("status");
-                    Log.d("checkUserForAdminResp", "" + response);
-                    Log.d("checkUserForAdminStatus", "" + status);
+                    Log.d("AddMemberToPrvFeed", "addMemberToPrivateFeedResp__" + response);
+                    Log.d("AddMemberToPrvFeed", "addMemberToPrivateFeedStatus___" + status);
 
                     if (status.equals("success")){
 
 
-                        Log.d("AddMemberToGRP","InIfPart");
+                        Log.d("addMemberToPrivateFeed","InIfPart");
 
-                        /*String clientImageURLPath = FullViewOfClientsProceed.clientImageURLPath;
-
-                        Log.d("MainFeedAdapter1","clientImageURLPath "+clientImageURLPath);
-
-                        Intent intent = new Intent(AddMemberTo_A_Group.this,FullViewOfClientsProceed.class);
-                        intent.putExtra("clientImagePath",clientImageURLPath);
-                        intent.putExtra("FRAGMENT_ID","1");
-                        startActivity(intent);*/
+                        Toast.makeText(AddMemberTo_A_PrivateFeed.this,"Member Added Successfully",Toast.LENGTH_SHORT).show();
 
 
-                        Toast.makeText(AddMemberTo_A_Group.this,"Member Added Successfully",Toast.LENGTH_SHORT).show();
+                        finish();
 
 
 
                     }else {
-                        Log.d("AddMemberToGRP","InElsePart");
-                        Toast.makeText(AddMemberTo_A_Group.this,"Member doesn't Added",Toast.LENGTH_SHORT).show();
+                        Log.d("addMemberToPrivateFeed","InElsePart");
+                        Toast.makeText(AddMemberTo_A_PrivateFeed.this,"Member doesn't Added",Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -402,6 +358,8 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
 
 
     }
+
+
 
 
 }

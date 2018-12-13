@@ -57,5 +57,9 @@ public class AppConfig {
     public static String URL_decisionOnPendingRequest = "decisionOnPendingRequest";
     public static String URL_updateFeed = "updateFeed";
     public static String URL_updateGroup = "updateGroup";
+    public static String URL_DynamicImages = "/clientOnBoarding/fetchOnGoingevent";
+    public static String URL_privateFeedUnjoinedMember = "privateFeedUnjoinedMember";
+    public static String URL_privateFeedMember = "privateFeedMember";
+    public static String URL_privateFeedMemberDelete = "privateFeedMember";
 
 }

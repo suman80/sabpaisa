@@ -259,7 +259,10 @@
         <activity android:name=".EditFeed" />
         <activity android:name=".EditGroup" />
         <activity android:name=".PendingListOfUsers" />
-        <activity android:name=".BlockedUserList"></activity>
+        <activity android:name=".BlockedUserList" />
+        <activity android:name=".FilterActivity1" />
+        <activity android:name=".AddMemberTo_A_PrivateFeed" />
+        <activity android:name=".PrivateFeedMembersList"></activity>
     </application>
 
 </manifest>

@@ -21,6 +21,11 @@
         android:icon="@drawable/ic_inf0"
         />
 
+    <item android:id="@+id/privateFeedMembers"
+        android:title="Private Feed Members"
+        app:showAsAction="withText"
+        />
+
     <item android:id="@+id/editGroupMenu"
         android:title="Group Info"
         app:showAsAction="withText"

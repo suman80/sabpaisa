@@ -63,6 +63,8 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
     NotificationDB notificationDB;
 
+    String userAccessToken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +93,12 @@ public class PrivateGroupFeeds extends AppCompatActivity {
         framelayoutAddPrivateFeed = (FrameLayout)findViewById(R.id.framelayoutAddPrivateFeed);
         rippleClickAdd = (MaterialRippleLayout) findViewById(R.id.rippleClickAdd);
         Log.d("framePrivateFeed", framelayoutAddPrivateFeed+"");
+
+
+        SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+        userAccessToken = sharedPreferences1.getString("response", "123");
+
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
         clientId = sharedPreferences.getString("clientId", "abc");
@@ -133,7 +141,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
 
 
-        callFeedDataList(GroupId);
+        callFeedDataList(GroupId,userAccessToken);
 
         active = true;
 
@@ -162,7 +170,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
                 if (active == true) {
 
-                    callFeedDataList(GroupId);
+                    callFeedDataList(GroupId,userAccessToken);
                 }
 
             }
@@ -179,9 +187,12 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
 
 
-    public void callFeedDataList(final String groupId) {
+    public void callFeedDataList(final String groupId , final  String userAccessToken) {
         String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"privatefeed"+"?groupId="+groupId;
 
+        if(!roleValue.equals("1")){
+            urlJsonObj += "&userToken="+userAccessToken;
+        }
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 urlJsonObj, new Response.Listener<String>(){
@@ -345,7 +356,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
                 catch (JSONException e) {
                     // If an error occurs, this prints the error to the log
                     e.printStackTrace();
-                    callFeedDataList(groupId);
+                    callFeedDataList(groupId,userAccessToken);
                 }
             }
         },
@@ -356,7 +367,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        callFeedDataList(groupId);
+                        callFeedDataList(groupId,userAccessToken);
                         Log.e("Feed", "FeedError");
                     }
                 }

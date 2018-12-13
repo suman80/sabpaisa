@@ -100,7 +100,7 @@ public class LogInActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         if (settings.getString("logged", "").toString().equals("logged")) {
             Log.d("NSDM "," TTTTTTTTT");
-            Intent intent = new Intent(LogInActivity.this, FilterActivity.class);
+            Intent intent = new Intent(LogInActivity.this, FilterActivity1.class);
             startActivity(intent);
 
         }
@@ -344,7 +344,7 @@ public class LogInActivity extends AppCompatActivity {
 
 //                        displayFirebaseRegId(response);
 
-                        Intent intent = new Intent(LogInActivity.this, FilterActivity.class);
+                        Intent intent = new Intent(LogInActivity.this, FilterActivity1.class);
 
                         startActivity(intent);
 

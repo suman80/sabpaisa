@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -92,12 +93,13 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
     NotificationDB db;
 
-    public static ProgressDialog progressDialog;
+    //public static ProgressDialog progressDialog;
 
 
     public MainFeedAdapter(ArrayList<FeedData> countryList, Context context) {
         this.mainFeedDataList = countryList;
         this.context = context;
+        //progressDialog = new ProgressDialog(context,R.style.DialogTheme);
     }
 
 
@@ -166,8 +168,8 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             @Override
             public void onClick(View view) {
 
-                progressDialog.setMessage("Please wait !");
-                progressDialog.show();
+               /* progressDialog.setMessage("Please wait !");
+                progressDialog.show();*/
 
                 //////////////Notification db//////////////////////////
                 //db = new NotificationDB(context);
@@ -249,7 +251,6 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 if (!isClicked) {
 
 
-
                     isClicked = !isClicked;
                     view.getContext().startActivity(intent);
 
@@ -289,6 +290,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 }
 
                 menu.getMenu().add("Delete");
+                menu.getMenu().add("Add Member");
 
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -296,11 +298,22 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
                         if (menuItem.getTitle().equals("Delete")){
 
-                            progressDialog.setMessage("Please wait !");
-                            progressDialog.show();
-
+                           /* progressDialog.setMessage("Please wait !");
+                            progressDialog.show();*/
                             deleteFeedData(feedId,userAccessToken);
                         }
+
+
+                        if (menuItem.getTitle().equals("Add Member")){
+                            /*if (progressDialog.isShowing()){
+                                progressDialog.dismiss();
+                            }*/
+                            Intent intent = new Intent(context,AddMemberTo_A_PrivateFeed.class);
+                            intent.putExtra("feedId",feedId);
+                            intent.putExtra("GroupId",PrivateGroupFeeds.GroupId);
+                            context.startActivity(intent);
+                        }
+
 
                         return true;
                     }
@@ -364,8 +377,6 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             relativeLayoutNotification = (RelativeLayout) view.findViewById(R.id.relativeLayoutNotification);
             notificationText = (TextView) view.findViewById(R.id.notificationText);
 
-            progressDialog = new ProgressDialog(context,R.style.DialogTheme);
-
         }
 
 
@@ -389,9 +400,9 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 //parsing Json
                 JSONObject jsonObject = null;
 
-                if (progressDialog.isShowing()){
+                /*if (progressDialog.isShowing()){
                     progressDialog.dismiss();
-                }
+                }*/
 
 
                 try {
@@ -444,9 +455,9 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (progressDialog.isShowing()){
+                /*if (progressDialog.isShowing()){
                     progressDialog.dismiss();
-                }
+                }*/
 
 
                 if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
@@ -496,6 +507,8 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
 
     }
+
+
 
 
 //    public void callFeedDataList(final String clientId) {

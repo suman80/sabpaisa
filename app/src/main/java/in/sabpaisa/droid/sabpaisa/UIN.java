@@ -99,7 +99,7 @@ public class UIN extends AppCompatActivity {
 
         clientNAmeTextview = (TextView) findViewById(R.id.InstitueNAme);
 
-        SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(FilterActivity.MySharedPreffilter, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
         clientId = sharedPreferences1.getString("clientId", "abc");
         getClientsList(clientId);
 
@@ -517,9 +517,20 @@ public class UIN extends AppCompatActivity {
         editor.remove("logged");
         editor.clear();
         editor.commit();
-        finish();
+        //finish();
 
-        Intent intent = new Intent(UIN.this, FilterActivity.class);
+        //Added on 5th dec 2018
+
+        SharedPreferences settings1 = getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor1 = settings1.edit();
+        editor1.remove("clientId");
+        editor1.remove("stateId");
+        editor1.clear();
+        editor1.commit();
+
+
+
+        Intent intent = new Intent(UIN.this, FilterActivity1.class);
 
         startActivity(intent);
 

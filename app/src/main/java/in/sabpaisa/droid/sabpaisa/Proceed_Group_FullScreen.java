@@ -978,6 +978,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
                             JSONObject jsonObject2 = new JSONObject(userImageUrl);
                             groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
+                            groupData.setUserId(jsonObject2.getString("userId"));
                             String image = groupData.getUserImageUrl().toString();
                             Log.d("imageuser", " " + image);
 
@@ -1221,6 +1222,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
         MenuItem menuItem = menu.findItem(R.id.editFeedMenu);
         menuItem.setVisible(false);
+
+        MenuItem menuItem3 = menu.findItem(R.id.privateFeedMembers);
+        menuItem3.setVisible(false);
 
        MenuItem menuItem1 = menu.findItem(R.id.blockedUser);
        MenuItem menuItem2 = menu.findItem(R.id.editGroupMenu);
@@ -1499,6 +1503,10 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             if (MainGroupAdapter1.progressDialog.isShowing()){
                 MainGroupAdapter1.progressDialog.dismiss();
             }
+
+           /* if (MainFeedAdapter.progressDialog.isShowing()){
+                MainFeedAdapter.progressDialog.dismiss();
+            }*/
 
             FullViewOfClientsProceed.isFragmentOpen = true;
 

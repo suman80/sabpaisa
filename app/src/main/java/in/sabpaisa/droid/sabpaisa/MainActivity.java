@@ -114,6 +114,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.NotificationAdapter;
@@ -123,6 +124,7 @@ import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ParticularClient;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
+import in.sabpaisa.droid.sabpaisa.Model.DynamicImagesModel;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.NotificationModelClass;
@@ -249,9 +251,21 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
             editor.remove("logged");
             editor.clear();
             editor.commit();
+
+
+            //Added on 5th dec 2018
+
+            SharedPreferences settings1 = getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor1 = settings1.edit();
+            editor1.remove("clientId");
+            editor1.remove("stateId");
+            editor1.clear();
+            editor1.commit();
+
+
             finish();
 
-            Intent intent = new Intent(MainActivity.this, FilterActivity.class);
+            Intent intent = new Intent(MainActivity.this, FilterActivity1.class);
 
             startActivity(intent);
 
@@ -259,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         }
 
 
-        SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(FilterActivity.MySharedPreffilter, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
         stateName1 = sharedPreferences1.getString("selectedstate", "abc");
         stateName = stateName1;
         serviceName1 = sharedPreferences1.getString("selectedservice", "123");
@@ -434,7 +448,10 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         editor.putString("clientId", ClientId);
         //editor.putString("userImageUrl",userImageUrl);
         editor.commit();
-        LoadHeaderImageList();
+        //LoadHeaderImageList();
+
+        getDynamicScreenImages();
+
         setHeaderImageList();
 
         sendMoney.setOnClickListener(new View.OnClickListener() {
@@ -789,7 +806,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 //        mHeaderSlider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
     }
 
-    private void LoadHeaderImageList() {
+/*    private void LoadHeaderImageList() {
 
 
         Hash_file_maps = new HashMap<String, String>();
@@ -818,7 +835,174 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         }
 
+    }*/
+
+
+    private void getDynamicScreenImages() {
+
+        //Added for SSL (17th Sep 2018)
+//        HttpsTrustManager.allowAllSSL();
+
+        String tag_string_req = "req_clients";
+
+        String url = AppConfig.Base_Url+AppConfig.URL_DynamicImages;
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                Log.d("MainActivity_DI", "DynamicImages___" + response);
+
+                try {
+                    Hash_file_maps = new HashMap<String, String>();
+
+                    JSONArray jsonArray = new JSONArray(response);
+
+                    for (int i = 0 ; i<jsonArray.length() ; i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        DynamicImagesModel dynamicImagesModel = new DynamicImagesModel();
+
+                        dynamicImagesModel.setEventSliedr(jsonObject.getString("eventSliedr"));
+                        dynamicImagesModel.setEventName(jsonObject.getString("eventName"));
+                        dynamicImagesModel.setEventDescription(jsonObject.getString("eventDescription"));
+                        dynamicImagesModel.setEventImagePath(jsonObject.getString("eventImagePath"));
+
+                        if (dynamicImagesModel.getEventSliedr().equals("Y")) {
+                            Hash_file_maps.put(dynamicImagesModel.getEventName(), AppConfig.Base_Url+"/"+dynamicImagesModel.getEventImagePath());
+                            /*name=dynamicImagesModel.getEventName();*/
+                            /*for (String name : Hash_file_maps.keySet()) {*/
+                                TextSliderView textSliderView = new TextSliderView(MainActivity.this);
+                                // initialize a SliderLayout
+                                textSliderView
+                                        .description(name)
+                                        .image(Hash_file_maps.get(name))
+                                        .setScaleType(BaseSliderView.ScaleType.Fit)
+                                        .setOnSliderClickListener(MainActivity.this);
+
+                                //add your extra information
+                                textSliderView.bundle(new Bundle());
+                                textSliderView.getBundle()
+                                        .putString("extra", name);
+
+                                mHeaderSlider.addSlider(textSliderView);
+
+
+//                            }
+
+                        }
+
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    // alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        });
+
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            try {
+                ProviderInstaller.installIfNeeded(getApplicationContext());
+            } catch (GooglePlayServicesRepairableException e) {
+                // Indicates that Google Play services is out of date, disabled, etc.
+                // Prompt the user to install/update/enable Google Play services.
+                GooglePlayServicesUtil.showErrorNotification(e.getConnectionStatusCode(), getApplicationContext());
+                // Notify the SyncManager that a soft error occurred.
+                //final SyncResult syncResult = null;
+                //syncResult.stats.numIOExceptions++;
+
+                // Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+                return;
+            } catch (GooglePlayServicesNotAvailableException e) {
+                // Indicates a non-recoverable error; the ProviderInstaller is not able
+                // to install an up-to-date Provider.
+                // Notify the SyncManager that a hard error occurred.
+                //syncResult.stats.numAuthExceptions++;
+                //Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            HttpStack stack = null;
+            try {
+                stack = new HurlStack(null, new TLSSocketFactory());
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            }
+
+            // AppController.getInstance().addToRequestQueue(getApplicationContext(),stack);
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext(), stack);
+        } else {
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+            //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
     }
+
 
     /*@Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -1055,7 +1239,16 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
                     editor.commit();
                     finish();
 
-                    Intent intent = new Intent(MainActivity.this, FilterActivity.class);
+                    //Added on 5th dec 2018
+
+                    SharedPreferences settings1 = getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor1 = settings1.edit();
+                    editor1.remove("clientId");
+                    editor1.remove("stateId");
+                    editor1.clear();
+                    editor1.commit();
+
+                    Intent intent = new Intent(MainActivity.this, FilterActivity1.class);
 
                     startActivity(intent);
 

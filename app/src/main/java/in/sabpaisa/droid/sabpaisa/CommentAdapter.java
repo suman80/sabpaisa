@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHolder> {
@@ -63,6 +65,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     String alreadyExistFile;
     ArrayList<String> arrayListAlreadyExistFile = new ArrayList<>();
     ArrayList<Long> list = new ArrayList<>();
+
+    AppDbComments db;
 
 
     /*ColorGenerator generator = ColorGenerator.MATERIAL;
@@ -185,12 +189,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         this.commentList = countryList;
         this.mContext = context;
         this.toolbar = toolbar;
+        db = new AppDbComments(context);
     }
 
     public CommentAdapter(List<CommentData> countryList, Context context) {
         this.commentList = countryList;
         this.mContext = context;
-
+        db = new AppDbComments(context);
     }
 
     @Override
@@ -512,11 +517,43 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
         //Loading user image
 
-        Glide.with(mContext)
+        /*Glide.with(mContext)
                 .load(commentData.getUserImageUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.default_users)
-                .into(holder.main_feed_comment_image);
+                .into(holder.main_feed_comment_image);*/
+
+
+        Log.d("commentAdapterUserID","___"+commentData.getUserId());
+
+        if (commentData.getUserId() != null || !commentData.getUserId().isEmpty() || !commentData.getUserId().equals("")) {
+
+            Cursor res = db.getParticularUserImageData(commentData.getUserId());
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0) + " ");
+                    stringBuffer.append(res.getString(1) + " ");
+                    stringBuffer.append(res.getString(2) + " ");
+
+                    Glide.with(mContext)
+                            .load(res.getString(2))
+                            .error(R.drawable.default_users)
+                            .into(holder.main_feed_comment_image);
+
+
+                }
+
+                Log.d("MemAdapterImgLocal", "stringBufferVal_ " + stringBuffer);
+            }
+
+        }else {
+            Glide.with(mContext)
+                    .load(R.drawable.default_users)
+                    .into(holder.main_feed_comment_image);
+        }
+
 
 
         holder.update(commentList.get(position));

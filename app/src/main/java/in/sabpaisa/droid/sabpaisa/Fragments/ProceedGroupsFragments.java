@@ -494,7 +494,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                             }
                         });
 
-                        for (GroupListData approvedValue:groupArrayList) {
+                        /*for (GroupListData approvedValue:groupArrayList) {
                             if (approvedValue.getMemberStatus().contains("Pending")){
 
                                 arrayListForApproved.add(approvedValue);
@@ -516,7 +516,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                                 arrayListForApproved.add(approvedValue);
 
                             }
-                        }
+                        }*/
 
 
                         /*START listener for sending data to activity*/

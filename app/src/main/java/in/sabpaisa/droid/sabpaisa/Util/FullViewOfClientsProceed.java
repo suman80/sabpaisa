@@ -83,6 +83,7 @@ import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FilterActivity;
 //import in.sabpaisa.droid.sabpaisa.Fragments.FeedFragments1;
+import in.sabpaisa.droid.sabpaisa.FilterActivity1;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedGroupsFragments;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
@@ -928,9 +929,19 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
                     editor.remove("logged");
                     editor.clear();
                     editor.commit();
+//                    finish();
+
+                    //Added on 5th dec 2018
+
+                    SharedPreferences settings1 = getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor1 = settings1.edit();
+                    editor1.remove("clientId");
+                    editor1.remove("stateId");
+                    editor1.clear();
+                    editor1.commit();
                     finish();
 
-                    Intent intent = new Intent(FullViewOfClientsProceed.this, FilterActivity.class);
+                    Intent intent = new Intent(FullViewOfClientsProceed.this, FilterActivity1.class);
 
                     startActivity(intent);
 

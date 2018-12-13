@@ -47,10 +47,12 @@ import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.MemberOfflineDataModel;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
+import in.sabpaisa.droid.sabpaisa.Model.UserImageModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_MEMBERS;
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_USER_IMAGE_DATA;
 
 
 /**
@@ -267,6 +269,135 @@ public class Members extends Fragment {
                             final MemberOfflineDataModel memberOfflineDataModel = new MemberOfflineDataModel();
                             memberOfflineDataModel.setFullName(jsonObject1.getString("fullName"));
 
+                            final UserImageModel userImageModel = new UserImageModel();
+                            userImageModel.setUserId(jsonObject1.getString("userId"));
+
+
+                            if (db.checkUserImageDataExist(member_getterSetter.getUserId())) {
+
+                                String originalFileINDB  = null;
+                                Cursor res = db.getParticularUserImageData(member_getterSetter.getUserId());
+                                if (res.getCount() > 0) {
+                                    StringBuffer stringBuffer = new StringBuffer();
+
+
+                                    while (res.moveToNext()) {
+                                        stringBuffer.append(res.getString(0) + " ");
+                                        stringBuffer.append(res.getString(1) + " ");
+                                        stringBuffer.append(res.getString(2) + " ");
+                                        originalFileINDB = res.getString(2);
+                                    }
+
+
+
+                                    Log.d("MemBers_UserIMG", "stringBufferVal_ " + stringBuffer);
+
+                                    ContextWrapper contextWrapper = new ContextWrapper(getContext());
+                                    File path = contextWrapper.getDir("imageDir", Context.MODE_PRIVATE);
+
+                                    Log.d("Mem_LocalPath", "path__" + path);
+
+                                    //Spliting Api Url
+
+                                    Log.d("GettingApiPath","__"+member_getterSetter.getUserImageUrl());
+
+                                    String arr[] = member_getterSetter.getUserImageUrl().split("/");
+
+                                    String filenameSplitter = arr[arr.length - 1];
+
+
+                                    //splited api url ie file name pass into File object
+                                    File file = new File(path.getPath() + "/" + filenameSplitter);
+
+                                    Log.d("Mem_LocalPath", "path+fileName__" + file);
+
+                                    //Spliting Local path and getting file name
+                                    String filenameSplitterInLocal = null;
+                                    if(originalFileINDB != null) {
+                                        String arrInLocal[] = /*file.getPath()*/originalFileINDB.split("/");
+
+                                        filenameSplitterInLocal = arrInLocal[arrInLocal.length - 1];
+                                    }
+                                    Log.d("filenameSplitterInLocal", "__" + filenameSplitterInLocal);
+
+                                    // checking api file name and local file name
+                                    if (/*file.exists()*/(filenameSplitter != null && filenameSplitterInLocal != null)&& filenameSplitter.equals(filenameSplitterInLocal)) {
+                                        //Do something
+
+                                        Log.d("Member", "File_is_located_at__" + file);
+
+                                    } else {
+                                        // Do something else.
+                                        if(member_getterSetter.getUserImageUrl() != null) {
+
+                                            Glide.with(getContext())
+                                                    .load(member_getterSetter.getUserImageUrl())
+                                                    .asBitmap()
+                                                    .into(new SimpleTarget<Bitmap>(100, 100) {
+                                                        @Override
+                                                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                                            Log.d("BitmapAtUpdate", " " + resource);
+
+                                                            String arr[] = member_getterSetter.getUserImageUrl().split("/");
+
+                                                            String filenameSplitter = arr[arr.length - 1];
+
+
+                                                            ContextWrapper cw = new ContextWrapper(getContext());
+                                                            // path to /data/data/yourapp/app_data/imageDir
+                                                            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                                            // Create imageDir
+                                                            File mypath = new File(directory, filenameSplitter);
+
+                                                            Log.d("userImage_mypath", "mypath  " + mypath);
+
+                                                            String imgPath = mypath.toString();
+
+                                                            FileOutputStream fos = null;
+                                                            try {
+                                                                fos = new FileOutputStream(mypath);
+                                                                // Use the compress method on the BitMap object to write image to the OutputStream
+                                                                resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                                            } catch (Exception e) {
+                                                                e.printStackTrace();
+                                                            } finally {
+                                                                try {
+                                                                    fos.close();
+                                                                } catch (IOException e) {
+                                                                    e.printStackTrace();
+                                                                }
+                                                            }
+
+                                                            userImageModel.setUserImage(imgPath);
+
+                                                        }
+                                                    });
+
+                                        }
+                                        final Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                //Do something after 3000ms
+
+                                                boolean isUpdated = db.updateParticularUserImageData(member_getterSetter.getUserId(), userImageModel.getUserImage());
+                                                if (isUpdated == true) {
+                                                    Log.d("MemBers_UserIMG_Update", "Updated " + isUpdated);
+                                                } else {
+                                                    Log.d("MemBers_UserIMG_Update", "NotUpdated " + isUpdated);
+                                                }
+
+                                            }
+                                        }, 2000);
+
+
+                                    }
+
+                                }
+
+
+                            } else if(member_getterSetter.getUserImageUrl() != null){
+
                             Glide.with(getContext())
                                     .load(member_getterSetter.getUserImageUrl())
                                     .asBitmap()
@@ -274,15 +405,19 @@ public class Members extends Fragment {
                                         @Override
                                         public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
                                             Log.d("LogoBitmap", " " + resource);
-                                            //saveLogoToInternalStorage(resource,groupListData.getGroupId());
+
+                                            String arr[] = member_getterSetter.getUserImageUrl().split("/");
+
+                                            String filenameSplitter = arr[arr.length - 1];
+
 
                                             ContextWrapper cw = new ContextWrapper(getContext());
                                             // path to /data/data/yourapp/app_data/imageDir
                                             File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
                                             // Create imageDir
-                                            File mypath = new File(directory, member_getterSetter.getUserId() + "memberImg.jpg");
+                                            File mypath = new File(directory, filenameSplitter);
 
-                                            Log.d("mypath", "mypath  " + mypath);
+                                            Log.d("userImage_mypath", "mypath  " + mypath);
 
                                             String imgPath = mypath.toString();
 
@@ -301,11 +436,38 @@ public class Members extends Fragment {
                                                 }
                                             }
 
-                                            memberOfflineDataModel.setUserImageUrl(imgPath);
+                                            userImageModel.setUserImage(imgPath);
 
                                         }
                                     });
 
+                                final Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //Do something after 3000ms
+
+
+
+                                        boolean isImageInserted = db.insertUserImageData(userImageModel);
+                                        if (isImageInserted == true) {
+
+                                            Log.d("userImage_PFF_InIfPart", "IntoLocalDb " + userImageModel.getUserImage());
+
+                                            Log.d("userImage_PFF", "LocalDBInIfPart" + isImageInserted);
+
+                                        } else {
+                                            Log.d("userImage_PFF", "LocalDBInElsePart" + isImageInserted);
+                                        }
+
+
+
+                                    }
+                                }, 2000);
+
+
+
+                            }
                             //////////////////////////////LOCAL DB//////////////////////////////////////
 
                             final Handler handler = new Handler();
@@ -314,7 +476,7 @@ public class Members extends Fragment {
                                 public void run() {
                                     //Do something after 3000ms
 
-                                    Log.d("imagePath_Member", "IntoLocalDb " + memberOfflineDataModel.getUserImageUrl());
+                                    //Log.d("imagePath_Member", "IntoLocalDb " + memberOfflineDataModel.getUserImageUrl());
 
                                     boolean isInserted = db.insertMembersData(clientId,memberOfflineDataModel);
 
@@ -328,6 +490,8 @@ public class Members extends Fragment {
                                         Log.d("Members", "LocalDBInElsePart" + isInserted);
                                         //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
                                     }
+
+
 
                                 }
                             }, 2000);
@@ -413,6 +577,7 @@ public class Members extends Fragment {
             return false;
         }
     }
+
 
 
     /*@Override

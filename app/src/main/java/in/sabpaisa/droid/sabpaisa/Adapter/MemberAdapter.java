@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -65,6 +66,7 @@ import java.util.Map;
 import in.sabpaisa.droid.sabpaisa.AddMemberTo_A_Group;
 import in.sabpaisa.droid.sabpaisa.AppController;
 
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.Members;
@@ -97,6 +99,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
     ProgressDialog progressDialog;
 
+    AppDbComments db;
+
     @Override
     public MemberAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.member_custom, parent, false);
@@ -107,6 +111,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
     public MemberAdapter(ArrayList<Member_GetterSetter> memberGetterSetterArrayList, Context context) {
         this.memberGetterSetterArrayList = memberGetterSetterArrayList;
         this.mContext = context;
+        db = new AppDbComments(context);
     }
 
 
@@ -123,10 +128,33 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
         holder.memberName.setText(member_getterSetter.getFullName());
         //holder.memberTimeStamp.setText(member_getterSetter.getTimestampOfJoining());
         //holder.memberImg.setImageUrl(member_getterSetter.getUserImageUrl(), imageLoader);
-        Glide.with(mContext)
+
+
+        Cursor res = db.getParticularUserImageData(member_getterSetter.getUserId());
+        if (res.getCount() > 0) {
+            StringBuffer stringBuffer = new StringBuffer();
+
+            while (res.moveToNext()) {
+                stringBuffer.append(res.getString(0) + " ");
+                stringBuffer.append(res.getString(1) + " ");
+                stringBuffer.append(res.getString(2) + " ");
+
+                Glide.with(mContext)
+                        .load(/*member_getterSetter.getUserImageUrl()*/res.getString(2))
+                        .error(R.drawable.default_users)
+                        .into(holder.memberImg);
+
+
+            }
+
+            Log.d("MemAdapterImgLocal", "stringBufferVal_ " + stringBuffer);
+        }
+
+
+        /*Glide.with(mContext)
                 .load(member_getterSetter.getUserImageUrl())
                 .error(R.drawable.default_users)
-                .into(holder.memberImg);
+                .into(holder.memberImg);*/
 
 
 

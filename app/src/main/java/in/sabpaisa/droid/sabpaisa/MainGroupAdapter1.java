@@ -189,7 +189,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
                 menu.getMenu().add("Delete");
                 menu.getMenu().add("Add Member");
-                menu.getMenu().add("Pending List");
+                //menu.getMenu().add("Pending List");
 
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -210,11 +210,11 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                         }
 
 
-                        if (menuItem.getTitle().equals("Pending List")){
+                        /*if (menuItem.getTitle().equals("Pending List")){
                             Intent intent = new Intent(mContext,PendingListOfUsers.class);
                             intent.putExtra("groupId",groupId);
                             mContext.startActivity(intent);
-                        }
+                        }*/
 
                         return true;
                     }

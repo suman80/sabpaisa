@@ -25,6 +25,7 @@ import in.sabpaisa.droid.sabpaisa.Model.GroupDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.MemberOfflineDataModel;
 import in.sabpaisa.droid.sabpaisa.Model.ParticularClientModelForOffline;
+import in.sabpaisa.droid.sabpaisa.Model.UserImageModel;
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 public class AppDbComments extends SQLiteOpenHelper {
@@ -99,6 +100,13 @@ public class AppDbComments extends SQLiteOpenHelper {
     public static final String Col_MEMBERS_IMG = "members_img";
 
 
+    // Column names for User Image
+
+    public static final String TABLE_USER_IMAGE_DATA = "userImageData";
+    public static final String Col_USER_AUTO_INCREMENT_ID = "Id";
+    public static final String Col_USER_ID = "userId";
+    public static final String Col_USER_IMAGE = "userImage";
+
 
 
 
@@ -172,6 +180,16 @@ public class AppDbComments extends SQLiteOpenHelper {
                 +")";
 
 
+
+        String sqlForUserImage = " CREATE TABLE " + TABLE_USER_IMAGE_DATA + "("
+                +Col_USER_AUTO_INCREMENT_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
+                +Col_USER_ID+" TEXT,"
+                +Col_USER_IMAGE+" TEXT"
+                +")";
+
+
+
+
         db.execSQL(sqlForClient);
 
         db.execSQL(sqlForFeeds);
@@ -183,6 +201,8 @@ public class AppDbComments extends SQLiteOpenHelper {
         db.execSQL(sqlForGroupComments);
 
         db.execSQL(sqlForMembers);
+
+        db.execSQL(sqlForUserImage);
 
     }
 
@@ -195,6 +215,7 @@ public class AppDbComments extends SQLiteOpenHelper {
         String sqlForGroups = "DROP TABLE IF EXISTS "+TABLE_NAME_GROUPS;
         String sqlForGroupComments = "DROP TABLE IF EXISTS "+TABLE_GROUP_COMMENTS;
         String sqlForMembers = "DROP TABLE IF EXISTS "+TABLE_NAME_MEMBERS;
+        String sqlForUserImage = "DROP TABLE IF EXISTS "+TABLE_USER_IMAGE_DATA;
 
         db.execSQL(sqlForClient);
 
@@ -207,6 +228,8 @@ public class AppDbComments extends SQLiteOpenHelper {
         db.execSQL(sqlForGroupComments);
 
         db.execSQL(sqlForMembers);
+
+        db.execSQL(sqlForUserImage);
 
     }
 
@@ -451,6 +474,76 @@ public class AppDbComments extends SQLiteOpenHelper {
         db.close();
     }
 
+
+
+    //User Image Data
+
+
+    public  boolean checkUserImageDataExist(String userId){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_USER_IMAGE_DATA + " WHERE " +
+                Col_USER_ID + "=?",new String[]{userId});
+
+        if (res.getCount()<=0){
+            res.close();
+            return false;
+        }
+        res.close();
+
+
+        return true;
+    }
+
+
+
+
+    public boolean insertUserImageData (final UserImageModel userImageModel){
+
+        final SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Col_USER_ID,userImageModel.getUserId());
+        contentValues.put(Col_USER_IMAGE,userImageModel.getUserImage());
+        result = db.insert(TABLE_USER_IMAGE_DATA,null,contentValues);
+
+        if (result == -1){
+            return false;
+        }else {
+            return true;
+        }
+
+    }
+
+
+    public Cursor getParticularUserImageData(String userId){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_USER_IMAGE_DATA + " WHERE " +
+                Col_USER_ID + "=?",new String[]{userId});
+        return res;
+    }
+
+
+
+    public boolean updateParticularUserImageData(final String userId , final String imagePath) {
+
+        final SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Col_USER_IMAGE, imagePath);
+        int effectedRow = db.update(TABLE_USER_IMAGE_DATA, contentValues ,Col_USER_ID + "=?",new String[]{userId});
+
+        if (effectedRow > 0) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+
+
+
     public boolean isTableExists(String tableName) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'", null);
@@ -463,12 +556,6 @@ public class AppDbComments extends SQLiteOpenHelper {
         }
         return false;
     }
-
-
-    //https://stackoverflow.com/questions/20415309/android-sqlite-how-to-check-if-a-record-exists
-
-    //https://stackoverflow.com/questions/3058909/how-does-one-check-if-a-table-exists-in-an-android-sqlite-database
-
 
 
 

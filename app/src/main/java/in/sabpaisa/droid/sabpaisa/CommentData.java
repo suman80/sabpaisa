@@ -9,6 +9,7 @@ public class  CommentData extends in.sabpaisa.droid.sabpaisa.Util.CommentData im
     String userImageUrl;
 
     String commentImage;
+    String userId;
 
     public String getCommentImage() {
         return commentImage;
@@ -72,5 +73,14 @@ public class  CommentData extends in.sabpaisa.droid.sabpaisa.Util.CommentData im
 
     public void setUserImageUrl(String userImageUrl) {
         this.userImageUrl = userImageUrl;
+    }
+
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

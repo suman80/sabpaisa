@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -77,6 +78,8 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -90,6 +93,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -118,12 +122,14 @@ import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.Interfaces.NotificationInterface;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.FeedCommentsOfflineModel;
+import in.sabpaisa.droid.sabpaisa.Model.UserImageModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.HttpHandler;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_USER_IMAGE_DATA;
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
 
 public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,NotificationInterface {
@@ -281,7 +287,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
                         MainFeedAdapter.isClicked=false;
                         FullViewOfClientsProceed.isFragmentOpen = true;
-
+                        /*if (MainFeedAdapter.progressDialog.isShowing()){
+                            MainFeedAdapter.progressDialog.dismiss();
+                        }*/
 
                         boolean isUpdated = notificationDB.updateFeedNotificationData(feed_id,0,0, System.currentTimeMillis(),false);
 
@@ -940,7 +948,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
 
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            CommentData groupData = new CommentData();
+                            final CommentData groupData = new CommentData();
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                             String a = jsonObject1.getString("commentText");
                             Log.d("CTadhkacka", " " + a);
@@ -958,6 +966,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                             String userImageUrl = jsonObject1.getString("userImageUrl");
 
                             JSONObject jsonObject2 = new JSONObject(userImageUrl);
+                            groupData.setUserId(jsonObject2.getString("userId"));
                             groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
                             String image = groupData.getUserImageUrl().toString();
                             Log.d("imageuserfeed", " " + image);
@@ -972,20 +981,28 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
                             //////////////////////////////LOCAL DB//////////////////////////////////////
 
-                            boolean isInserted = db.insertFeedComments(groupData, feed_id);
-                            if (isInserted == true) {
 
-                                //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
 
-                                Log.d("PFF", "LocalDBInIfPart" + isInserted);
+                                boolean isInserted = db.insertFeedComments(groupData, feed_id);
+                                if (isInserted == true) {
 
-                            } else {
-                                Log.d("PFF", "LocalDBInElsePart" + isInserted);
-                                //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
-                            }
+                                    //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                                    Log.d("PFF", "LocalDBInIfPart" + isInserted);
+
+                                } else {
+                                    Log.d("PFF", "LocalDBInElsePart" + isInserted);
+                                    //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                                }
+
+                                
 
 
                         }
+
+
+
+
                         /////Added By RAJ/////////
                         Log.d("SIZZZZZZZZZZZZZZZZ : ", commentArrayList.size() + "");
                         //if(count==1)
@@ -1358,9 +1375,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         } else {
 
             MainFeedAdapter.isClicked=false;
-            if (MainFeedAdapter.progressDialog.isShowing()){
+            /*if (MainFeedAdapter.progressDialog.isShowing()){
                 MainFeedAdapter.progressDialog.dismiss();
-            }
+            }*/
             FullViewOfClientsProceed.isFragmentOpen = true;
 
             boolean isUpdated = notificationDB.updateFeedNotificationData(feed_id,0,0, System.currentTimeMillis(),false);
@@ -1388,6 +1405,13 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             menuItem4.setVisible(true);
         }else {
             menuItem4.setVisible(false);
+        }
+
+        MenuItem menuItem5 = menu.findItem(R.id.privateFeedMembers);
+        if ((PrivateGroupFeeds.FLAG != null)) {
+            menuItem5.setVisible(true);
+        }else {
+            menuItem5.setVisible(false);
         }
 
         MenuItem menuItem = menu.findItem(R.id.editGroupMenu);
@@ -1424,6 +1448,20 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 intent.putExtra("feedId", feed_id);
                 startActivity(intent);
                 return true;
+
+
+            case R.id.privateFeedMembers:
+
+                Intent intent1 = new Intent(Proceed_Feed_FullScreen.this, PrivateFeedMembersList.class);
+                /*intent1.putExtra("feedName", FeedsNm);
+                intent1.putExtra("feedText", feedsDiscription);
+                intent1.putExtra("feedImage", feedImg);
+                intent1.putExtra("feedLogo", feedLogo);*/
+                intent1.putExtra("feedId", feed_id);
+                startActivity(intent1);
+                return true;
+
+
 
             default:
                 return super.onOptionsItemSelected(item);

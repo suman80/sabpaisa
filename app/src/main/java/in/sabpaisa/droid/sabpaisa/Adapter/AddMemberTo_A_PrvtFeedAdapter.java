@@ -1,33 +1,24 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import in.sabpaisa.droid.sabpaisa.Interfaces.AddMemberCallBack;
-import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.R;
 import me.grantland.widget.AutofitTextView;
 
-public class AddMemberTo_A_GroupAdapter extends RecyclerView.Adapter<AddMemberTo_A_GroupAdapter.MyViewHolder> {
+public class AddMemberTo_A_PrvtFeedAdapter extends RecyclerView.Adapter<AddMemberTo_A_PrvtFeedAdapter.MyViewHolder> {
 
     ArrayList<Member_GetterSetter> memberGetterSetterArrayList;
     ArrayList<Member_GetterSetter> memberGetterSetterArrayList1 = new ArrayList<>();
@@ -39,7 +30,7 @@ public class AddMemberTo_A_GroupAdapter extends RecyclerView.Adapter<AddMemberTo
     static AddMemberCallBack addMemberCallBack;
 
 
-    public AddMemberTo_A_GroupAdapter(ArrayList<Member_GetterSetter> memberGetterSetterArrayList, Context context) {
+    public AddMemberTo_A_PrvtFeedAdapter(ArrayList<Member_GetterSetter> memberGetterSetterArrayList, Context context) {
         this.memberGetterSetterArrayList = memberGetterSetterArrayList;
         this.mContext = context;
         this.addMemberCallBack = (AddMemberCallBack) context;
@@ -49,13 +40,13 @@ public class AddMemberTo_A_GroupAdapter extends RecyclerView.Adapter<AddMemberTo
 
 
     @Override
-    public AddMemberTo_A_GroupAdapter.MyViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
+    public AddMemberTo_A_PrvtFeedAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_member_to_grp_custom, parent, false);
-        return new AddMemberTo_A_GroupAdapter.MyViewHolder(v);
+        return new AddMemberTo_A_PrvtFeedAdapter.MyViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder( final AddMemberTo_A_GroupAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder( final AddMemberTo_A_PrvtFeedAdapter.MyViewHolder holder, int position) {
 
         final Member_GetterSetter member_getterSetter = memberGetterSetterArrayList.get(position);
         holder.memberName.setText(member_getterSetter.getFullName());
@@ -147,4 +138,4 @@ public class AddMemberTo_A_GroupAdapter extends RecyclerView.Adapter<AddMemberTo
     }
 
 
-    }
+}
