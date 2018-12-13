@@ -49,6 +49,8 @@ public class FilterActivity1 extends AppCompatActivity {
     String state,clientId,clientLogo,clientImage,clientName,stateId;
     String m,n;
 
+    //Test
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
