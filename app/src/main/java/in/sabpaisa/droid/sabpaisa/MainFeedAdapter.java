@@ -290,7 +290,12 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                 }
 
                 menu.getMenu().add("Delete");
-                menu.getMenu().add("Add Member");
+
+                if (PrivateGroupFeeds.FLAG != null) {
+
+                    menu.getMenu().add("Add Member");
+
+                }
 
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override

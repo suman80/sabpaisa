@@ -152,7 +152,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
                     for (CommentData commentData : selectedItems) {
                         Log.d("CommentAdapterF", "InDeletePartComntId " + commentData.getCommentId());
-                        deleteFeedCommentData(commentData.getCommentId() + "", userAccessToken,feed_id);
+                        deleteFeedCommentData(commentData.getCommentId() + "", userAccessToken,feed_id,commentData);
                     }
 
                 }
@@ -161,7 +161,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
                     for (CommentData commentData : selectedItems) {
                         Log.d("CommentAdapterG", "InDeletePartComntId " + commentData.getCommentId());
-                        deleteGroupCommentData(commentData.getCommentId() + "", userAccessToken,groupId);
+                        deleteGroupCommentData(commentData.getCommentId() + "", userAccessToken,groupId,commentData);
                     }
 
                 }
@@ -764,7 +764,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     }
 
 
-    private void deleteFeedCommentData(final String commentId, final String userAccessToken,final String feed_id) {
+    private void deleteFeedCommentData(final String commentId, final String userAccessToken,final String feed_id,final CommentData commentData) {
 
         String tag_string_req = "req_clients";
 
@@ -792,7 +792,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                     if (status.equals("success")){
                         Log.d("CommentAdapterFeedData","InIfPart");
 
-                        String FeedsNm = Proceed_Feed_FullScreen.FeedsNm;
+                        /*String FeedsNm = Proceed_Feed_FullScreen.FeedsNm;
                         String FeedDiscription = Proceed_Feed_FullScreen.feedsDiscription;
                         String FeedImg = Proceed_Feed_FullScreen.feedImg;
                         String FeedLogo = Proceed_Feed_FullScreen.feedLogo;
@@ -805,7 +805,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                         intent.putExtra("feedLogo",FeedLogo);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(intent);
+                        mContext.startActivity(intent);*/
+
+                        commentList.remove(commentData);
+                        notifyDataSetChanged();
 
 
                     }else {
@@ -872,7 +875,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     }
 
 
-    private void deleteGroupCommentData(final String commentId, final String userAccessToken , final String groupId) {
+    private void deleteGroupCommentData(final String commentId, final String userAccessToken , final String groupId,final CommentData commentData) {
 
         String tag_string_req = "req_clients";
 
@@ -900,7 +903,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                     if (status.equals("success")){
                         Log.d("CommentAdapterGRPData","InIfPart");
 
-                        String GroupsNm = Proceed_Group_FullScreen.GroupsNm;
+                        /*String GroupsNm = Proceed_Group_FullScreen.GroupsNm;
                         String GroupsDiscription = Proceed_Group_FullScreen.GroupsDiscription;
                         String GroupsImg = Proceed_Group_FullScreen.GroupsImg;
                         String GroupsLogo = Proceed_Group_FullScreen.groupLogo;
@@ -914,7 +917,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                         intent.putExtra("groupLogo",GroupsLogo);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(intent);
+                        mContext.startActivity(intent);*/
+
+                        commentList.remove(commentData);
+                        notifyDataSetChanged();
 
 
                     }else {
