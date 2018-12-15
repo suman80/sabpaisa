@@ -807,8 +807,35 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);*/
 
-                        commentList.remove(commentData);
-                        notifyDataSetChanged();
+                        if (commentData.getCommentImage() == null || commentData.getCommentImage().equals("") || commentData.getCommentImage().equals("null")){
+                            Log.d("CommentImageCheck","Reload_activity_InIf__"+commentData.getCommentImage());
+
+                            commentList.remove(commentData);
+                            selectedItems.clear();
+                            notifyDataSetChanged();
+
+
+                        }else {
+
+
+                            Log.d("CommentImageCheck","Reload_activity_InElse__"+commentData.getCommentImage());
+
+                            String FeedsNm = Proceed_Feed_FullScreen.FeedsNm;
+                            String FeedDiscription = Proceed_Feed_FullScreen.feedsDiscription;
+                            String FeedImg = Proceed_Feed_FullScreen.feedImg;
+                            String FeedLogo = Proceed_Feed_FullScreen.feedLogo;
+
+                            Intent intent = new Intent(mContext,Proceed_Feed_FullScreen.class);
+                            intent.putExtra("feedId",feed_id);
+                            intent.putExtra("feedName",FeedsNm);
+                            intent.putExtra("feedText",FeedDiscription);
+                            intent.putExtra("feedImage",FeedImg);
+                            intent.putExtra("feedLogo",FeedLogo);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(intent);
+
+                        }
 
 
                     }else {
@@ -919,8 +946,31 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);*/
 
-                        commentList.remove(commentData);
-                        notifyDataSetChanged();
+                        if (commentData.getCommentImage() == null || commentData.getCommentImage().equals("") || commentData.getCommentImage().equals("null")) {
+                            Log.d("CommentImageCheck", "Reload_activity_InIf__" + commentData.getCommentImage());
+                            commentList.remove(commentData);
+                            selectedItems.clear();
+                            notifyDataSetChanged();
+                        }else {
+
+                            Log.d("CommentImageCheck","Reload_activity_InElse__"+commentData.getCommentImage());
+
+                            String GroupsNm = Proceed_Group_FullScreen.GroupsNm;
+                            String GroupsDiscription = Proceed_Group_FullScreen.GroupsDiscription;
+                            String GroupsImg = Proceed_Group_FullScreen.GroupsImg;
+                            String GroupsLogo = Proceed_Group_FullScreen.groupLogo;
+
+                            Intent intent = new Intent(mContext,Proceed_Group_FullScreen.class);
+                            intent.putExtra("groupId",groupId);
+                            intent.putExtra("groupName",GroupsNm);
+                            intent.putExtra("memberGroupRole",Proceed_Group_FullScreen.memberGroupRole);
+                            intent.putExtra("groupText",GroupsDiscription);
+                            intent.putExtra("groupImage",GroupsImg);
+                            intent.putExtra("groupLogo",GroupsLogo);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(intent);
+                        }
 
 
                     }else {

@@ -26,6 +26,8 @@ public class NotificationDB extends SQLiteOpenHelper {
     public static final String Col_FEED_RECENT_COMMENT_TIMESTAMP = "FeedRecentCommentTimestamp";
     public static final String Col_FEED_RECENT_OPEN_COMMENT_TIMESTAMP = "FeedRecentOpenCommentTimestamp";
     public static final String Col_FEED_IS_OPEN = "FeedIsOpen";
+    public static final String Col_FEED_MODE = "FeedMode";
+    public static final String Col_FEED_GROUP_ID = "FeedGroupId";
 
     // Column names for Group Notification
     public static final String TABLE_GROUPNOTIFICATION = "GroupNotification";
@@ -51,7 +53,9 @@ public class NotificationDB extends SQLiteOpenHelper {
                 +Col_FEED_NOTIFICATION_COUNT+" INT,"
                 +Col_FEED_RECENT_COMMENT_TIMESTAMP+" LONG,"
                 +Col_FEED_RECENT_OPEN_COMMENT_TIMESTAMP+" LONG,"
-                +Col_FEED_IS_OPEN+" BOOLEAN"
+                +Col_FEED_IS_OPEN+" BOOLEAN,"
+                +Col_FEED_MODE+" TEXT,"
+                +Col_FEED_GROUP_ID+" TEXT"
                 +")";
 
 
@@ -91,6 +95,8 @@ public class NotificationDB extends SQLiteOpenHelper {
         contentValues.put(Col_FEED_RECENT_COMMENT_TIMESTAMP, feedNotificatonModel.getFeedRecentCommentTimeStamp());
         contentValues.put(Col_FEED_RECENT_OPEN_COMMENT_TIMESTAMP, feedNotificatonModel.getFeedRecentOpenCommentTimeStamp());
         contentValues.put(Col_FEED_IS_OPEN, feedNotificatonModel.isFeedIsOpen());
+        contentValues.put(Col_FEED_MODE, feedNotificatonModel.getFeedMode());
+        contentValues.put(Col_FEED_GROUP_ID, feedNotificatonModel.getFeedGroupId());
 
         result = db.insert(TABLE_FEEDNOTIFICATION, null, contentValues);
 
@@ -133,6 +139,19 @@ public class NotificationDB extends SQLiteOpenHelper {
 
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_FEEDNOTIFICATION + " WHERE " +
                 Col_FEED_ID + "=?",new String[]{feedId});
+        return res;
+    }
+
+
+    public Cursor getParticularPrivateFeedNotificationData(String groupId){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        /*Cursor res = db.rawQuery("SELECT * FROM " + TABLE_FEEDNOTIFICATION + " WHERE " +
+                Col_FEED_GROUP_ID + "=?",new String[]{groupId});*/
+
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_FEEDNOTIFICATION + " WHERE " +
+                Col_FEED_GROUP_ID + "=? AND "+Col_FEED_NOTIFICATION_COUNT + ">=?" ,new String[]{groupId, "0"});
+
         return res;
     }
 

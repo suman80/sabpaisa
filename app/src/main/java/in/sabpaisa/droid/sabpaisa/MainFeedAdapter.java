@@ -204,6 +204,13 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                         feedNotificatonModel.setFeedRecentCommentTimeStamp(0);
                         feedNotificatonModel.setFeedRecentOpenCommentTimeStamp(System.currentTimeMillis());
                         feedNotificatonModel.setFeedIsOpen(true);
+                        if (PrivateGroupFeeds.FLAG != null) {
+                            feedNotificatonModel.setFeedMode("Private");
+                            feedNotificatonModel.setFeedGroupId(PrivateGroupFeeds.GroupId);
+                        }else {
+                            feedNotificatonModel.setFeedMode("Public");
+                            feedNotificatonModel.setFeedGroupId(null);
+                        }
 
                         boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
                         if (isInserted == true) {

@@ -524,7 +524,6 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         notificationDB = new NotificationDB(Proceed_Feed_FullScreen.this);
 
 
-
     }
 
 

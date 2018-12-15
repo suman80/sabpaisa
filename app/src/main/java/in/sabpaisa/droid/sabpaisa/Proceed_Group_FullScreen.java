@@ -178,6 +178,10 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     NotificationDB notificationDB;
 
+    int notificationCount = 0;
+
+    MenuItem menuItem4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -486,6 +490,35 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         FullViewOfClientsProceed.isFragmentOpen = false;
 
         notificationDB = new NotificationDB(Proceed_Group_FullScreen.this);
+
+        if (notificationDB.isTableExists(TABLE_FEEDNOTIFICATION)) {
+
+            Cursor res = notificationDB.getParticularPrivateFeedNotificationData(GroupId);
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0) + " ");
+                    stringBuffer.append(res.getString(1) + " ");
+                    stringBuffer.append(res.getInt(2) + " ");
+                    stringBuffer.append(res.getString(3) + " ");
+//                    stringBuffer.append(res.getString(4) + " ");
+//                    stringBuffer.append(res.getString(5) + " ");
+//                    stringBuffer.append(res.getString(6) + " ");
+//                    stringBuffer.append(res.getString(7) + " ");
+
+                    notificationCount += res.getInt(2);
+                    break;
+
+                }
+
+                Log.d("PGF_Notification", "ForPrivateFeedStringBuffer___ " + stringBuffer);
+
+
+
+            }
+        }
+
 
 
     }
@@ -1219,6 +1252,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             return false;
         }
 
+        menuItem4 = menu.findItem(R.id.groupFeeds);
+        if (notificationCount>0) {
+            menuItem4.setIcon(R.drawable.ic_notifications_active);
+        }else {
+            menuItem4.setIcon(R.drawable.ic_rss_feed_black_24dp);
+        }
 
         MenuItem menuItem = menu.findItem(R.id.editFeedMenu);
         menuItem.setVisible(false);
@@ -1263,6 +1302,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 Intent intent1 = new Intent(Proceed_Group_FullScreen.this, PrivateGroupFeeds.class);
                 intent1.putExtra("GroupId", GroupId);
                 intent1.putExtra("memberGroupRole", memberGroupRole);
+                menuItem4.setIcon(R.drawable.ic_rss_feed_black_24dp);
                 startActivity(intent1);
                 return true;
 

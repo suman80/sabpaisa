@@ -76,9 +76,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String userToken = dataMap.get("userToken");
         final String feedId = dataMap.get("feedId");
         String groupId = dataMap.get("groupId");
+        String feedAccessMode = dataMap.get("feedAccessMode");
 
         Log.d("BackGroundNoti : ", body + " " + body.trim().length() + " " + title + " " + feedId + " " + groupId + " " + userName);
         Log.d("NotificationBody : ", StringEscapeUtils.unescapeJava(body));
+        Log.d("feedAccessMode : ", "___"+feedAccessMode);
 
 
 
@@ -148,6 +150,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     feedNotificatonModel.setFeedRecentCommentTimeStamp(System.currentTimeMillis());
                     feedNotificatonModel.setFeedRecentOpenCommentTimeStamp(0);
                     feedNotificatonModel.setFeedIsOpen(false);
+                    feedNotificatonModel.setFeedMode(feedAccessMode);
+                    feedNotificatonModel.setFeedGroupId(groupId);
 
                     boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
                     if (isInserted == true) {
@@ -324,6 +328,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     feedNotificatonModel.setFeedRecentCommentTimeStamp(System.currentTimeMillis());
                     feedNotificatonModel.setFeedRecentOpenCommentTimeStamp(0);
                     feedNotificatonModel.setFeedIsOpen(false);
+                    feedNotificatonModel.setFeedMode(feedAccessMode);
+                    feedNotificatonModel.setFeedGroupId(groupId);
 
                     boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
                     if (isInserted == true) {

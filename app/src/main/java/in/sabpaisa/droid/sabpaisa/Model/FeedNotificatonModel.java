@@ -7,17 +7,20 @@ public class FeedNotificatonModel {
     long feedRecentCommentTimeStamp;
     long feedRecentOpenCommentTimeStamp;
     boolean feedIsOpen;
+    String feedMode,feedGroupId;
 
 
     public FeedNotificatonModel() {
     }
 
-    public FeedNotificatonModel(String feedId, int feedNotificationCount, long feedRecentCommentTimeStamp, long feedRecentOpenCommentTimeStamp, boolean feedIsOpen) {
+    public FeedNotificatonModel(String feedId, int feedNotificationCount, long feedRecentCommentTimeStamp, long feedRecentOpenCommentTimeStamp, boolean feedIsOpen, String feedMode, String feedGroupId) {
         this.feedId = feedId;
         this.feedNotificationCount = feedNotificationCount;
         this.feedRecentCommentTimeStamp = feedRecentCommentTimeStamp;
         this.feedRecentOpenCommentTimeStamp = feedRecentOpenCommentTimeStamp;
         this.feedIsOpen = feedIsOpen;
+        this.feedMode = feedMode;
+        this.feedGroupId = feedGroupId;
     }
 
     public String getFeedId() {
@@ -59,5 +62,22 @@ public class FeedNotificatonModel {
 
     public void setFeedIsOpen(boolean feedIsOpen) {
         this.feedIsOpen = feedIsOpen;
+    }
+
+
+    public String getFeedMode() {
+        return feedMode;
+    }
+
+    public void setFeedMode(String feedMode) {
+        this.feedMode = feedMode;
+    }
+
+    public String getFeedGroupId() {
+        return feedGroupId;
+    }
+
+    public void setFeedGroupId(String feedGroupId) {
+        this.feedGroupId = feedGroupId;
     }
 }
