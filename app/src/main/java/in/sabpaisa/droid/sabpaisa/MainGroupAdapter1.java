@@ -69,7 +69,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
     BroadcastReceiver broadcastReceiver;
 
-    public static ProgressDialog progressDialog;
+    //public static ProgressDialog progressDialog;
 
 
     public MainGroupAdapter1() {
@@ -126,10 +126,10 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 Log.d("tokenGRP", " " + token);
                 Log.d("groupIdGRP", " " + groupId);
 
-                progressDialog.setMessage("Please wait !");
-                progressDialog.show();
+                /*progressDialog.setMessage("Please wait !");
+                progressDialog.show();*/
 
-                addMember(token, groupId, view, c, holder);
+                //addMember(token, groupId, view, c, holder);
                 holder.joinmember.setText("Pending");
             }
         });
@@ -153,7 +153,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 Log.d("tokenGRP", " " + token);
                 Log.d("groupIdGRP", " " + groupId);
 
-                addMember(token, groupId, v, c, holder);
+                //addMember(token, groupId, v, c, holder);
 
             }
         });
@@ -197,10 +197,10 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
                         if (menuItem.getTitle().equals("Delete")){
 
-                            progressDialog.setMessage("Please wait !");
-                            progressDialog.show();
+                            /*progressDialog.setMessage("Please wait !");
+                            progressDialog.show();*/
 
-                            deleteGroupData(groupId,userAccessToken);
+                            deleteGroupData(groupId,userAccessToken,holder.getAdapterPosition());
                         }
 
                         if (menuItem.getTitle().equals("Add Member")){
@@ -374,7 +374,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
             relativeLayoutNotification = (RelativeLayout) view.findViewById(R.id.relativeLayoutNotification);
             notificationText = (TextView) view.findViewById(R.id.notificationText);
 
-            progressDialog = new ProgressDialog(mContext,R.style.DialogTheme);
+            //progressDialog = new ProgressDialog(mContext,R.style.DialogTheme);
 
         }
 
@@ -383,7 +383,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
     }
 
 
-    private void deleteGroupData(String groupId, String userAccessToken) {
+    private void deleteGroupData(String groupId, String userAccessToken,final int pos) {
 
         String tag_string_req = "req_clients";
 
@@ -400,9 +400,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 //parsing Json
                 JSONObject jsonObject = null;
 
-                if (progressDialog.isShowing()){
+                /*if (progressDialog.isShowing()){
                     progressDialog.dismiss();
-                }
+                }*/
 
                 try {
 
@@ -415,14 +415,19 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                     if (status.equals("success")){
                         Log.d("MainFeedAdapter1","InIfPart");
 
-                        String clientImageURLPath = FullViewOfClientsProceed.clientImageURLPath;
+                        /*String clientImageURLPath = FullViewOfClientsProceed.clientImageURLPath;
 
                         Log.d("MainFeedAdapter1","clientImageURLPath "+clientImageURLPath);
 
                         Intent intent = new Intent(mContext,FullViewOfClientsProceed.class);
                         intent.putExtra("clientImagePath",clientImageURLPath);
                         intent.putExtra("FRAGMENT_ID","1");
-                        mContext.startActivity(intent);
+                        mContext.startActivity(intent);*/
+
+                        countryList.remove(pos);
+                        notifyItemRemoved(pos);
+                        notifyItemRangeChanged(pos, getItemCount() - pos);
+
 
                     }else {
                         Log.d("MainFeedAdapter1","InElsePart");
@@ -439,9 +444,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (progressDialog.isShowing()){
+                /*if (progressDialog.isShowing()){
                     progressDialog.dismiss();
-                }
+                }*/
 
                 if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(mContext, R.style.MyDialogTheme).create();
@@ -509,9 +514,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
 //                hideDialog();
 
-                if (progressDialog.isShowing()){
+                /*if (progressDialog.isShowing()){
                     progressDialog.dismiss();
-                }
+                }*/
 
                 try {
                     JSONObject jObj = new JSONObject(response1);
@@ -711,9 +716,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if (progressDialog.isShowing()){
+                /*if (progressDialog.isShowing()){
                     progressDialog.dismiss();
-                }
+                }*/
 
                 if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(view.getContext(), R.style.MyDialogTheme).create();

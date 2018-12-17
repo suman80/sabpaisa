@@ -103,7 +103,7 @@ public class EditGroup extends AppCompatActivity {
 
         Glide.with(getApplicationContext())
                 .load(groupLogo)
-                .error(R.drawable.appicon)
+                .error(R.drawable.ic_file_upload)
                 .into(img_GroupLogo);
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);

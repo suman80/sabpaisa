@@ -32,6 +32,7 @@
         android:layout_below="@+id/text_SearchClients"
         android:layout_marginTop="10dp"
         android:singleLine="true"
+        android:imeOptions="actionDone"
         />
 
 

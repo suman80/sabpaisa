@@ -1540,9 +1540,9 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
             MainGroupAdapter1.isClicked=false;
 
-            if (MainGroupAdapter1.progressDialog.isShowing()){
+            /*if (MainGroupAdapter1.progressDialog.isShowing()){
                 MainGroupAdapter1.progressDialog.dismiss();
-            }
+            }*/
 
            /* if (MainFeedAdapter.progressDialog.isShowing()){
                 MainFeedAdapter.progressDialog.dismiss();

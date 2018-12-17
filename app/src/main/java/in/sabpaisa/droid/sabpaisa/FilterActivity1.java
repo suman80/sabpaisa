@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,7 +10,9 @@ import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -66,8 +69,28 @@ public class FilterActivity1 extends AppCompatActivity {
         clientAutoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.clientAutoCompleteTextView);
         btn_Proceed = (Button) findViewById(R.id.btn_Proceed);
 
-        getClientsList();
+        if (isOnline()) {
 
+            getClientsList();
+        }else {
+            AlertDialog alertDialog = new AlertDialog.Builder(FilterActivity1.this, R.style.MyDialogTheme).create();
+
+            // Setting Dialog Title
+            alertDialog.setTitle("No Internet Connection");
+
+            // Setting Dialog Message
+            alertDialog.setMessage("Please check internet connection and try again. Thank you.");
+
+
+            alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            // Showing Alert Message
+            alertDialog.show();
+        }
 
         btn_Proceed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,11 +142,14 @@ public class FilterActivity1 extends AppCompatActivity {
                     editor.commit();
                 }
 
+
             }
         });
 
 
     }
+
+
 
 
     private void getClientsList() {
@@ -256,12 +282,16 @@ public class FilterActivity1 extends AppCompatActivity {
 
 
     public boolean checkArrayList(String clientName){
-        for (FilterClientModel filterClientModel:clientList) {
 
-            if (filterClientModel.getOrganization_name().equals(clientName)){
-                return true;
+        if (clientList != null && !clientList.isEmpty()) {
+
+            for (FilterClientModel filterClientModel : clientList) {
+
+                if (filterClientModel.getOrganization_name().equals(clientName)) {
+                    return true;
+                }
+
             }
-
         }
 
         return false;

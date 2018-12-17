@@ -106,7 +106,7 @@ public class EditFeed extends AppCompatActivity {
 
         Glide.with(getApplicationContext())
                 .load(feedLogo)
-                .error(R.drawable.appicon)
+                .error(R.drawable.ic_file_upload)
                 .into(img_FeedLogo);
 
 

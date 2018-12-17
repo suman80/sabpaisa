@@ -312,7 +312,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
                            /* progressDialog.setMessage("Please wait !");
                             progressDialog.show();*/
-                            deleteFeedData(feedId,userAccessToken);
+                            deleteFeedData(feedId,userAccessToken,holder.getAdapterPosition());
                         }
 
 
@@ -395,7 +395,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
     }
 
 
-    private void deleteFeedData(String feedId, String userAccessToken) {
+    private void deleteFeedData(String feedId, String userAccessToken,final int pos) {
 
         String tag_string_req = "req_clients";
 
@@ -429,7 +429,7 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                         Log.d("MainFeedAdapter","InIfPart");
 
 
-                        if (PrivateGroupFeeds.FLAG != null){
+                        /*if (PrivateGroupFeeds.FLAG != null){
 
                             Intent intent = new Intent(context,PrivateGroupFeeds.class);
                             intent.putExtra("GroupId",PrivateGroupFeeds.GroupId);
@@ -450,7 +450,13 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                             intent.putExtra("clientImagePath", clientImageURLPath);
                             intent.putExtra("FRAGMENT_ID", "0");
                             context.startActivity(intent);
-                        }
+                        }*/
+
+
+                        mainFeedDataList.remove(pos);
+                        notifyItemRemoved(pos);
+                        notifyItemRangeChanged(pos, getItemCount() - pos);
+
 
                     }else {
                         Log.d("MainFeedAdapter","InElsePart");
