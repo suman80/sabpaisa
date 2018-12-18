@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v4.content.IntentCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -80,6 +81,7 @@ import in.sabpaisa.droid.sabpaisa.UIN;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDB.TABLE_USER_IMG;
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_MEMBERS;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.R.color.black;
 
 public class ProfileNavigationActivity extends AppCompatActivity {
@@ -474,6 +476,11 @@ public class ProfileNavigationActivity extends AppCompatActivity {
 
                                 // Showing Alert Message
                                 alertDialog.show();
+
+
+                                LocalBroadcastManager.getInstance(ProfileNavigationActivity.this).sendBroadcast(new Intent(PROFILE_IMAGE));
+
+
 
                             } else {
                                 Toast.makeText(ProfileNavigationActivity.this, "Image Upload Failed !", Toast.LENGTH_SHORT).show();

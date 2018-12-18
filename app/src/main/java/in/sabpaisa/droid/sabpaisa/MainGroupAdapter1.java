@@ -50,6 +50,8 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.FEED_ARRAYLIST;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.GROUP_ARRAYLIST;
 
 public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.MyViewHolder> {
 
@@ -130,7 +132,98 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 progressDialog.show();*/
 
                 //addMember(token, groupId, view, c, holder);
-                holder.joinmember.setText("Pending");
+                //holder.joinmember.setText("Pending");
+
+                /////////////////////////////////////////////////////////////////////
+
+                //////////////Notification db//////////////////////////
+                //db = new NotificationDB(mContext);
+                if (db.isTableExists(TABLE_GROUPNOTIFICATION)){
+
+                    Cursor res = db.getParticularGroupNotificationData(groupId);
+                    if (res.getCount() > 0) {
+                        StringBuffer stringBuffer = new StringBuffer();
+
+//                                while (res.moveToNext()) {
+//                                    stringBuffer.append(res.getString(0) + " ");
+//                                    stringBuffer.append(res.getString(1) + " ");
+//                                    stringBuffer.append(res.getString(2) + " ");
+//                                    stringBuffer.append(res.getString(3) + " ");
+//                                    stringBuffer.append(res.getString(4) + " ");
+//                                    stringBuffer.append(res.getString(5) + " ");
+//                                }
+
+                        //Log.d("PGF_Notification","stringBuffer___ "+stringBuffer);
+
+                        boolean isUpdated = db.updateGroupNotificationData(groupId,0,0, System.currentTimeMillis(),true);
+                        if (isUpdated == true){
+                            Log.d("PGF_Notification","Updated "+isUpdated);
+                            holder.relativeLayoutNotification.setVisibility(View.GONE);
+                        }else {
+                            Log.d("PGF_Notification","NotUpdated "+isUpdated);
+                        }
+                    }
+                    //////////////////////////////////////////////////////
+                    else{
+                        GroupNotificationModel groupNotificationModel = new GroupNotificationModel();
+                        groupNotificationModel.setGroupId(groupId);
+                        groupNotificationModel.setGroupNotificationCount(0);
+                        groupNotificationModel.setGroupRecentCommentTimeStamp(0);
+                        groupNotificationModel.setGroupRecentOpenCommentTimeStamp(System.currentTimeMillis());
+                        groupNotificationModel.setGroupOpen(true);
+
+                        boolean isInserted = db.insertGroupNotificationData(groupNotificationModel);
+                        if (isInserted == true) {
+
+
+                            Log.d("PGF_Notification", "Notification Insert : " + isInserted);
+
+                        } else {
+
+                            Log.d("PGF_Notification", "Notification Insert : " + isInserted);
+
+                        }
+
+                    }
+                    ///////////////////////////////////////////////////////
+
+//                            boolean isUpdated = db.updateGroupNotificationData(groupListData.getGroupId(),0,0, System.currentTimeMillis(),true);
+//                            if (isUpdated == true){
+//                                Log.d("PGF_Notification","Updated "+isUpdated);
+//                                holder.relativeLayoutNotification.setVisibility(View.GONE);
+//                            }else {
+//                                Log.d("PGF_Notification","NotUpdated "+isUpdated);
+//                            }
+
+
+
+                }
+
+
+
+
+                popup = "Groups";
+                Intent intent = new Intent(view.getContext(), Proceed_Group_FullScreen.class);
+                intent.putExtra("popup", popup);
+                intent.putExtra("groupName", c.getGroupName());
+                intent.putExtra("groupText", c.getGroupText());
+                intent.putExtra("groupImage", c.getImagePath());
+                intent.putExtra("groupLogo", c.getLogoPath());
+                intent.putExtra("groupId", c.getGroupId());
+                intent.putExtra("memberGroupRole", c.getMemberGroupRole());
+
+                Log.d("MainGRPADA","isClicked_ "+isClicked);
+
+                if (!isClicked) {
+
+                    isClicked = !isClicked;
+
+                    view.getContext().startActivity(intent);
+
+                }
+        /////////////////////////////////////////////////////////////////////////////////////////////
+
+
             }
         });
 
@@ -140,7 +233,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
             holder.joinmember.setVisibility(View.GONE);
         }
 
-        holder.joinmember.setOnClickListener(new View.OnClickListener() {
+/*        holder.joinmember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -153,10 +246,10 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 Log.d("tokenGRP", " " + token);
                 Log.d("groupIdGRP", " " + groupId);
 
-                //addMember(token, groupId, v, c, holder);
+                addMember(token, groupId, v, c, holder);
 
             }
-        });
+        });*/
 
         SharedPreferences sharedPreferencesRole = mContext.getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
 
@@ -428,6 +521,11 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                         notifyItemRemoved(pos);
                         notifyItemRangeChanged(pos, getItemCount() - pos);
 
+                        //Update UI When No data found
+                        if (getItemCount() == 0){
+                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(GROUP_ARRAYLIST));
+                        }
+
 
                     }else {
                         Log.d("MainFeedAdapter1","InElsePart");
@@ -495,7 +593,6 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
 
     }
-
 
 
     public void addMember(final String token, final String groupId, final View view, final GroupListData groupListData, final MyViewHolder holder) {
@@ -799,6 +896,212 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }
+
+
+
+/*
+
+    public void addMember(final String token, final String groupId, final View view, final GroupListData groupListData, final MyViewHolder holder) {
+
+// Tag used to cancel the request
+        String tag_string_req = "req_register";
+
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_ADD_Member + "token=" + token + "&" + "groupId=" + groupId, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+
+//                hideDialog();
+
+                */
+/*if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }*//*
+
+
+                try {
+                    JSONObject jObj = new JSONObject(response1);
+
+                    final String response = jObj.getString("response");
+                    ////////16th  feb////////response==Member added successfully
+                    Log.d("MemberResponse", " " + response);
+
+                    String status = jObj.getString("status");
+
+              if (status != null && response.equals("User already a member of the client with Status Approved")) {
+                        //joinmember.setVisibility(View.GONE);
+
+
+                        //////////////Notification db//////////////////////////
+                        //db = new NotificationDB(mContext);
+                        if (db.isTableExists(TABLE_GROUPNOTIFICATION)){
+
+                            Cursor res = db.getParticularGroupNotificationData(groupListData.getGroupId());
+                            if (res.getCount() > 0) {
+                                StringBuffer stringBuffer = new StringBuffer();
+
+//                                while (res.moveToNext()) {
+//                                    stringBuffer.append(res.getString(0) + " ");
+//                                    stringBuffer.append(res.getString(1) + " ");
+//                                    stringBuffer.append(res.getString(2) + " ");
+//                                    stringBuffer.append(res.getString(3) + " ");
+//                                    stringBuffer.append(res.getString(4) + " ");
+//                                    stringBuffer.append(res.getString(5) + " ");
+//                                }
+
+                                //Log.d("PGF_Notification","stringBuffer___ "+stringBuffer);
+
+                                boolean isUpdated = db.updateGroupNotificationData(groupListData.getGroupId(),0,0, System.currentTimeMillis(),true);
+                                if (isUpdated == true){
+                                    Log.d("PGF_Notification","Updated "+isUpdated);
+                                    holder.relativeLayoutNotification.setVisibility(View.GONE);
+                                }else {
+                                    Log.d("PGF_Notification","NotUpdated "+isUpdated);
+                                }
+                            }
+                            //////////////////////////////////////////////////////
+                            else{
+                                GroupNotificationModel groupNotificationModel = new GroupNotificationModel();
+                                groupNotificationModel.setGroupId(groupListData.getGroupId());
+                                groupNotificationModel.setGroupNotificationCount(0);
+                                groupNotificationModel.setGroupRecentCommentTimeStamp(0);
+                                groupNotificationModel.setGroupRecentOpenCommentTimeStamp(System.currentTimeMillis());
+                                groupNotificationModel.setGroupOpen(true);
+
+                                boolean isInserted = db.insertGroupNotificationData(groupNotificationModel);
+                                if (isInserted == true) {
+
+
+                                    Log.d("PGF_Notification", "Notification Insert : " + isInserted);
+
+                                } else {
+
+                                    Log.d("PGF_Notification", "Notification Insert : " + isInserted);
+
+                                }
+
+                            }
+
+
+                        }
+
+
+
+
+                        popup = "Groups";
+                        Intent intent = new Intent(view.getContext(), Proceed_Group_FullScreen.class);
+                        intent.putExtra("popup", popup);
+                        intent.putExtra("groupName", groupListData.getGroupName());
+                        intent.putExtra("groupText", groupListData.getGroupText());
+                        intent.putExtra("groupImage", groupListData.getImagePath());
+                        intent.putExtra("groupLogo", groupListData.getLogoPath());
+                        intent.putExtra("groupId", groupListData.getGroupId());
+                        intent.putExtra("memberGroupRole", groupListData.getMemberGroupRole());
+
+                        Log.d("MainGRPADA","isClicked_ "+isClicked);
+
+                        if (!isClicked) {
+
+                            isClicked = !isClicked;
+
+                            view.getContext().startActivity(intent);
+
+                        }
+
+
+                    } else {
+
+
+                  AlertDialog alertDialog = new AlertDialog.Builder(view.getContext(), R.style.MyDialogTheme).create();
+
+                  // Setting Dialog Title
+                  alertDialog.setTitle("Groups");
+
+                  // Setting Dialog Message
+                  alertDialog.setMessage(response);
+
+                  // Setting Icon to Dialog
+                  //  alertDialog.setIcon(R.drawable.tick);
+
+                  // Setting OK Button
+                  alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                      public void onClick(DialogInterface dialog, int which) {
+
+                      }
+                  });
+
+                  // Showing Alert Message
+                  alertDialog.show();
+
+
+              }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    //Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                */
+/*if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }*//*
+
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(view.getContext(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+        });
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
+*/
 
 
 

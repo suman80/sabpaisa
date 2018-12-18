@@ -67,6 +67,8 @@ import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_GROUPS;
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.FEED_ARRAYLIST;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.GROUP_ARRAYLIST;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -110,7 +112,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
     NotificationDB notificationDB;
 
-    BroadcastReceiver broadcastReceiver;
+    BroadcastReceiver broadcastReceiver,receiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -226,6 +228,21 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
         //Notification db
         notificationDB= new NotificationDB(getContext());
+
+
+         receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                if (intent.getAction().equals(GROUP_ARRAYLIST)){
+                    callGroupDataList1(token, clientId,context);
+                }
+
+            }
+        };
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver,new IntentFilter(GROUP_ARRAYLIST));
+
 
 
 
@@ -883,11 +900,14 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
     }
 
 
+    @Override
+    public void onDestroy() {
 
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
 
-
-
-
+        super.onDestroy();
+    }
 
     /*START onRefresh() for SwipeRefreshLayout*/
     @Override

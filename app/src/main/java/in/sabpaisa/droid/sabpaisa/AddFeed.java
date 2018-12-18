@@ -217,7 +217,7 @@ public class AddFeed extends AppCompatActivity {
 
                     if (feedImage == null){
                         Toast.makeText(AddFeed.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
-                        img_FeedImage.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                        img_FeedImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
                     }
 
 
@@ -234,7 +234,7 @@ public class AddFeed extends AppCompatActivity {
 
                 if (feedLogo == null){
                     Toast.makeText(AddFeed.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
-                    img_FeedLogo.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                    img_FeedLogo.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
                 }
 
 

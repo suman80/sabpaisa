@@ -3,10 +3,12 @@ package in.sabpaisa.droid.sabpaisa.Util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -26,6 +28,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -80,6 +83,7 @@ import in.sabpaisa.droid.sabpaisa.AllContacts;
 import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
+import in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FilterActivity;
 //import in.sabpaisa.droid.sabpaisa.Fragments.FeedFragments1;
@@ -97,6 +101,7 @@ import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.UIN;
 
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, ProceedFeedsFragment.GetDataInterface, ProceedGroupsFragments.GetDataInterface, Members.GetDataInterface {
@@ -443,6 +448,21 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
 
         isFragmentOpen = true;
+
+        //Updating UI
+
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(PROFILE_IMAGE)){
+                    getUserImage(useracesstoken);
+                }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(FullViewOfClientsProceed.this).registerReceiver(receiver,new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
+
+
 
     }
 

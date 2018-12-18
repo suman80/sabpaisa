@@ -78,6 +78,7 @@ import me.grantland.widget.AutofitTextView;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME;
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.FEED_ARRAYLIST;
 
 
 public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyViewHolder>  {
@@ -456,6 +457,12 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                         mainFeedDataList.remove(pos);
                         notifyItemRemoved(pos);
                         notifyItemRangeChanged(pos, getItemCount() - pos);
+
+                        //Update UI When No data found
+                        if (getItemCount() == 0){
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(FEED_ARRAYLIST));
+                        }
+
 
 
                     }else {

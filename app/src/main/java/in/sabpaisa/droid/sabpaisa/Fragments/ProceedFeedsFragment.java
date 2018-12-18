@@ -77,6 +77,7 @@ import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME;
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.FEED_ARRAYLIST;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -117,7 +118,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
 
     NotificationDB notificationDB;
 
-    BroadcastReceiver broadcastReceiver;
+    BroadcastReceiver broadcastReceiver,receiver;
 
 
     public ProceedFeedsFragment() {
@@ -125,7 +126,7 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView =  inflater.inflate(R.layout.fragment_proceed_feed, container, false);
 
@@ -233,6 +234,19 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
         //Notification db
         notificationDB= new NotificationDB(getContext());
 
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                if (intent.getAction().equals(FEED_ARRAYLIST)){
+                    callFeedDataList1(clientId,context);
+                }
+
+            }
+        };
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver,new IntentFilter(FEED_ARRAYLIST));
 
 
         return rootView;
@@ -833,6 +847,14 @@ public class ProceedFeedsFragment extends Fragment implements SwipeRefreshLayout
     }
 
 
+    @Override
+    public void onDestroy() {
+
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+
+        super.onDestroy();
+    }
 
 
 

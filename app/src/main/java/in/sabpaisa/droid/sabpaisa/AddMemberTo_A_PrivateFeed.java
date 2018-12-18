@@ -153,7 +153,7 @@ public class AddMemberTo_A_PrivateFeed extends AppCompatActivity implements AddM
 
 
                         }
-                        Log.d("AddMemberToPrvFeed", "ArrayListAfterParse " + member_getterSetterArrayList.get(0).getFullName());
+                        //Log.d("AddMemberToPrvFeed", "ArrayListAfterParse " + member_getterSetterArrayList.get(0).getFullName());
 
 
                         addMemberToAPrvtFeedAdapter = new AddMemberTo_A_PrvtFeedAdapter(member_getterSetterArrayList,AddMemberTo_A_PrivateFeed.this);

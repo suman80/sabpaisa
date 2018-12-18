@@ -219,7 +219,7 @@ public class EditGroup extends AppCompatActivity {
 
                 if (groupImageBitMap == null){
                     Toast.makeText(EditGroup.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
-                    img_GroupImage.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                    img_GroupImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
                 }
 
 
@@ -236,7 +236,7 @@ public class EditGroup extends AppCompatActivity {
 
                 if (groupLogoBitMap == null){
                     Toast.makeText(EditGroup.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
-                    img_GroupLogo.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                    img_GroupLogo.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
                 }
 
 

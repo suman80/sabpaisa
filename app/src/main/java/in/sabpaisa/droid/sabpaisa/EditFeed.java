@@ -225,7 +225,7 @@ public class EditFeed extends AppCompatActivity {
 
                 if (feedImageBitMap == null){
                     Toast.makeText(EditFeed.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
-                    img_FeedImage.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                    img_FeedImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
                 }
 
 
@@ -242,7 +242,7 @@ public class EditFeed extends AppCompatActivity {
 
                 if (feedLogoBitMap == null){
                     Toast.makeText(EditFeed.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
-                    img_FeedLogo.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                    img_FeedLogo.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
                 }
 
 

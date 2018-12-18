@@ -195,7 +195,7 @@ public class NoOfGroupmemberAdapter extends RecyclerView.Adapter<NoOfGroupmember
 
         final String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
 
-        if (roleValue.equals("1") || NumberOfGroups.memberGroupRole.equals("2")) {
+        if (( roleValue.equals("1")) || (NumberOfGroups.memberGroupRole !=null && NumberOfGroups.memberGroupRole.equals("2"))) {
 
             myViewHolder.imgPopUpMenu.setVisibility(View.VISIBLE);
         }

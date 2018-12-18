@@ -139,6 +139,7 @@ import io.fabric.sdk.android.Fabric;
 import me.grantland.widget.AutofitTextView;
 
 import static com.mikepenz.materialize.util.UIUtils.convertDpToPixel;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class MainActivity extends AppCompatActivity implements /*AppBarLayout.OnOffsetChangedListener,*/ /*RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/ NavigationView.OnNavigationItemSelectedListener, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
@@ -448,9 +449,11 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         editor.putString("clientId", ClientId);
         //editor.putString("userImageUrl",userImageUrl);
         editor.commit();
-        //LoadHeaderImageList();
 
-        getDynamicScreenImages();
+
+        LoadHeaderImageList();
+
+        //getDynamicScreenImages();
 
         setHeaderImageList();
 
@@ -645,6 +648,18 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         MainGroupAdapter1.isClicked=false;
         MainFeedAdapter.isClicked=false;
 
+        //Updating UI
+
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(PROFILE_IMAGE)){
+                    getUserImage(userAccessToken);
+                }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(receiver,new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
 
     }
 
@@ -806,7 +821,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 //        mHeaderSlider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
     }
 
-/*    private void LoadHeaderImageList() {
+    private void LoadHeaderImageList() {
 
 
         Hash_file_maps = new HashMap<String, String>();
@@ -835,9 +850,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         }
 
-    }*/
+    }
 
-
+/*
     private void getDynamicScreenImages() {
 
         //Added for SSL (17th Sep 2018)
@@ -870,8 +885,8 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
                         if (dynamicImagesModel.getEventSliedr().equals("Y")) {
                             Hash_file_maps.put(dynamicImagesModel.getEventName(), AppConfig.Base_Url+"/"+dynamicImagesModel.getEventImagePath());
-                            /*name=dynamicImagesModel.getEventName();*/
-                            /*for (String name : Hash_file_maps.keySet()) {*/
+                            *//*name=dynamicImagesModel.getEventName();*//*
+                            *//*for (String name : Hash_file_maps.keySet()) {*//*
                                 TextSliderView textSliderView = new TextSliderView(MainActivity.this);
                                 // initialize a SliderLayout
                                 textSliderView
@@ -1001,7 +1016,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
             //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
         }
         AppController.getInstance().addToRequestQueue(request, tag_string_req);
-    }
+    }*/
 
 
     /*@Override
@@ -1946,6 +1961,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         return deletedAll;
     }
+
 
 
 

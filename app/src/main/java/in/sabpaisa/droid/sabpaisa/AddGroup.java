@@ -200,7 +200,7 @@ public class AddGroup extends AppCompatActivity {
 
                 if (groupImage == null){
                     Toast.makeText(AddGroup.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
-                    img_GroupImage.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                    img_GroupImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
                 }
 
 
@@ -215,7 +215,7 @@ public class AddGroup extends AppCompatActivity {
 
                 if (groupLogo == null){
                     Toast.makeText(AddGroup.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
-                    img_GroupLogo.setImageDrawable(getResources().getDrawable(R.drawable.appicon));
+                    img_GroupLogo.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
                 }
 
             }
