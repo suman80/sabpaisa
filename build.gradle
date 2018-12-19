@@ -6,12 +6,13 @@ buildscript {
         maven {
             url 'https://maven.google.com/'
             name 'Google'
-        }
+            }
 
         maven {
             url 'https://maven.fabric.io/public'
         }
 
+        /*maven { url 'http://dl.bintray.com/amulyakhare/maven' }*/
     }
     dependencies {
         //classpath 'com.google.firebase:firebase-plugins:1.1.5'
