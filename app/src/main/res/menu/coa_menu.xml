@@ -39,7 +39,7 @@
 
         <item
             android:id="@+id/action_searchSP"
-            android:icon="@drawable/ic_action_searchicon"
+            android:icon="@drawable/ic_search_new"
             android:orderInCategory="101"
             android:title="Search"
             app:showAsAction="collapseActionView|always" />

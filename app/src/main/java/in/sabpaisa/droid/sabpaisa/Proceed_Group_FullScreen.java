@@ -209,7 +209,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         toolbar = (Toolbar) findViewById(R.id.toolbarPGF);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationIcon(R.drawable.previousmoresmall);
+        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
         toolbar.setTitleMargin(11, 11, 11, 11);
         getSupportActionBar().setTitle(GroupsNm);
         toolbar.setNavigationOnClickListener(
@@ -489,7 +489,16 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
         FullViewOfClientsProceed.isFragmentOpen = false;
 
+        ///////////////////////////////////////////////////////////////////////////////////////
+
         notificationDB = new NotificationDB(Proceed_Group_FullScreen.this);
+
+        boolean isUpdated = notificationDB.updateGroupNotificationData(GroupId,0,0, System.currentTimeMillis(),true);
+        if (isUpdated == true){
+            Log.d("PGF_Notification","Updated "+isUpdated);
+        }else {
+            Log.d("PGF_Notification","NotUpdated "+isUpdated);
+        }
 
         if (notificationDB.isTableExists(TABLE_FEEDNOTIFICATION)) {
 
@@ -846,6 +855,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                             // response will be a json object
                             JSONObject obj = new JSONObject(new String(response.data));
                             String status = obj.getString("status");
+                            String returnResponse = obj.getString("response");
                             if (status.equals("success")) {
 
                                 imageView2.setVisibility(View.VISIBLE);
@@ -872,7 +882,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                                 fileDoc = null;
                                 imageView2.setVisibility(View.VISIBLE);
                                 spin_kit.setVisibility(View.GONE);
-                                Toast.makeText(getApplicationContext(), "Please Join the Group", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), returnResponse, Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {

@@ -17,11 +17,24 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     >
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <android.support.v7.widget.CardView
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        app:cardCornerRadius="45dp"
+        app:cardElevation="6dp"
+        android:id="@+id/fab"
+        android:background="@color/white"
+        >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:src="@drawable/default_users" />
+
+    </android.support.v7.widget.CardView>
 
    <!-- <TextView
         android:layout_width="wrap_content"

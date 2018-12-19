@@ -278,7 +278,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         Log.d("Feedidproceed", "" + feed_id);
         arrayList = new ArrayList<>();
-        toolbar.setNavigationIcon(R.drawable.previousmoresmall);
+        toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
 
         toolbar.setNavigationOnClickListener(
                 new View.OnClickListener() {
@@ -523,6 +523,14 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         notificationDB = new NotificationDB(Proceed_Feed_FullScreen.this);
 
+        ///////////////////////////////////////////////////////////////////////////////////////
+
+        boolean isUpdated = notificationDB.updateFeedNotificationData(feed_id,0,0, System.currentTimeMillis(),true);
+        if (isUpdated == true){
+            Log.d("PFF_Notification","Updated "+isUpdated);
+        }else {
+            Log.d("PFF_Notification","NotUpdated "+isUpdated);
+        }
 
     }
 

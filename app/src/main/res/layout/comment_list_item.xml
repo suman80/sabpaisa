@@ -34,12 +34,24 @@
             android:textColor="@android:color/darker_gray"
             android:textSize="12dp" />-->
 
+    <android.support.v7.widget.CardView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="3dp"
+        android:id="@+id/fab"
+        android:background="@color/white"
+        android:gravity="center"
+        >
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/people_name_initial"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/img"
-        android:gravity="center" />
+        android:layout_gravity="center"
+        />
+
+    </android.support.v7.widget.CardView>
 
 <!--Added on 29th Nov 2018-->
    <!-- <ImageView
@@ -55,8 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-
-        android:layout_toRightOf="@+id/people_name_initial"
+        android:layout_toRightOf="@+id/fab"
         android:gravity="center|left"
         android:orientation="vertical">
 
