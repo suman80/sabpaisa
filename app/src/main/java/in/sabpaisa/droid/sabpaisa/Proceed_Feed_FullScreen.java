@@ -312,7 +312,13 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         if (isOnline()) {
             progress.setVisibility(View.VISIBLE);
-            callGetCommentList(feed_id);
+
+
+            if (PrivateGroupFeeds.FLAG != null){
+                callGetCommentListForPrivateFeeds(feed_id,userAccessToken);
+            }else {
+                callGetCommentList(feed_id);
+            }
 
             /*if (getIntent().getStringExtra("userAccessTokenFromNotification") != null) {
                 //API Call HttpGet
@@ -361,7 +367,14 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 scrollListener = new EndlessScrollListener(llm) {
                     @Override
                     public void onLoadMore(int page, int totalItemsCount) {
-                        callGetCommentList(feed_id);
+                        //callGetCommentList(feed_id);
+
+                        if (PrivateGroupFeeds.FLAG != null){
+                            callGetCommentListForPrivateFeeds(feed_id,userAccessToken);
+                        }else {
+                            callGetCommentList(feed_id);
+                        }
+
                     }
                 };
                 rv.addOnScrollListener(scrollListener);
@@ -552,7 +565,13 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 count = 1;
                 //API
 
-                callGetCommentList(feed_id);
+                //callGetCommentList(feed_id);
+
+                if (PrivateGroupFeeds.FLAG != null){
+                    callGetCommentListForPrivateFeeds(feed_id,userAccessToken);
+                }else {
+                    callGetCommentList(feed_id);
+                }
 
             }
         };
@@ -835,8 +854,13 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
                                 commentArrayList.clear();
                                 count = 1;
-                                callGetCommentList(feed_id);
+                                //callGetCommentList(feed_id);
 
+                                if (PrivateGroupFeeds.FLAG != null){
+                                    callGetCommentListForPrivateFeeds(feed_id,userAccessToken);
+                                }else {
+                                    callGetCommentList(feed_id);
+                                }
 
 
                             } else {
@@ -1082,6 +1106,191 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 //        Log.d("TTTTTTT","ASASAS");
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
+
+
+
+
+
+    public void callGetCommentListForPrivateFeeds(final String feed_id,final String userAccessToken) {
+
+        db.deleteAllFeedCommentData();
+
+        String tag_string_req = "req_register";
+
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "/getPageFeedsComments?feed_id=" + feed_id + "&pageNo=" + count + "&rowLimit=25"+"&token="+userAccessToken;
+
+        Log.d("urlJsonObj  : ", urlJsonObj);
+        StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
+                urlJsonObj, new Response.Listener<String>() {
+
+            // Takes the response from the JSON request
+            @Override
+            public void onResponse(String response) {
+                Log.d("In_callGetCommentList", "RESPONSE");
+                try {
+                    swipeRefreshLayout.setRefreshing(false);
+
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    String status = jsonObject.getString("status");
+
+                    String response1 = jsonObject.getString("response");
+                    Log.d("Re[spnsere", " " + response1);
+                    Log.d("Re[spnsere", " " + status);
+
+                    if (status.equals("success")) {
+
+                        JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            final CommentData groupData = new CommentData();
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            String a = jsonObject1.getString("commentText");
+                            Log.d("CTadhkacka", " " + a);
+                            groupData.setCommentText(jsonObject1.getString("commentText"));
+                            groupData.setCommentName(jsonObject1.getString("commentByName"));
+                            groupData.setCommentImage(jsonObject1.getString("filePath"));
+                            Log.d("FILE_PATH_At_PFF", " " + jsonObject1.getString("filePath"));
+                            groupData.setCommentId(jsonObject1.getInt("commentId"));
+
+                            dataTime1 = jsonObject1.getString("commentDate");
+                            Log.d("dataTimePFF", " " + dataTime1);
+
+                            String str = jsonArray.getString(i);
+                            Log.d("444feed", str);
+                            String userImageUrl = jsonObject1.getString("userImageUrl");
+
+                            JSONObject jsonObject2 = new JSONObject(userImageUrl);
+                            groupData.setUserId(jsonObject2.getString("userId"));
+                            groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
+                            String image = groupData.getUserImageUrl().toString();
+                            Log.d("imageuserfeed", " " + image);
+                            Log.d("imageuserfeed11", " " + userImageUrl);
+
+                            try {
+                                groupData.setComment_date(getDate(Long.parseLong(dataTime1)));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            commentArrayList.add(groupData);
+
+                            //////////////////////////////LOCAL DB//////////////////////////////////////
+
+
+
+                            boolean isInserted = db.insertFeedComments(groupData, feed_id);
+                            if (isInserted == true) {
+
+                                //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+
+                                Log.d("PFF", "LocalDBInIfPart" + isInserted);
+
+                            } else {
+                                Log.d("PFF", "LocalDBInElsePart" + isInserted);
+                                //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                            }
+
+
+
+
+                        }
+
+
+
+
+                        /////Added By RAJ/////////
+                        Log.d("SIZZZZZZZZZZZZZZZZ : ", commentArrayList.size() + "");
+                        //if(count==1)
+                        /////////////////
+
+                        loadCommentListView(commentArrayList);
+                    } else if (status.equals("failure") && response1.equals("Not A Member")){
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
+                        builder.setTitle("Comment Service");
+                        builder.setMessage(response1.toString());
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.setCanceledOnTouchOutside(false);
+                        alertDialog.setCancelable(false);
+                        alertDialog.show();
+
+                    }else {
+                        progress.setVisibility(View.GONE);
+
+                        if (count > 1){
+                            Toast.makeText(Proceed_Feed_FullScreen.this, "No More Record Found !", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        //Toast.makeText(Proceed_Feed_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+                // Try and catch are included to handle any errors due to JSON
+                catch (JSONException e) {
+
+                    Log.d("In_callGetCommentList", "Exception");
+                    progress.setVisibility(View.GONE);
+
+                    // If an error occurs, this prints the error to the log
+                    e.printStackTrace();
+
+                }
+            }
+        },
+
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+
+                        Log.d("In_callGetCommentList", "EROORListener");
+                        progress.setVisibility(View.GONE);
+                        /*error.printStackTrace();
+
+                        Log.e("Feed", "FeedError");*/
+
+                        NetworkResponse response = error.networkResponse;
+                        if (error instanceof ServerError && response != null) {
+                            try {
+                                //Toast.makeText(Proceed_Feed_FullScreen.this, "error1!", Toast.LENGTH_SHORT).show();
+
+                                String res = new String(response.data,
+                                        HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                                // Now you can use any deserializer to make sense of data
+                                Log.d("EROOR RES : ", res);
+                                JSONObject obj = new JSONObject(res);
+                            } catch (UnsupportedEncodingException e1) {
+                                // Couldn't properly decode data to string
+                                e1.printStackTrace();
+                                // Toast.makeText(Proceed_Feed_FullScreen.this, "error2!", Toast.LENGTH_SHORT).show();
+
+                            } catch (JSONException e2) {
+                                //Toast.makeText(Proceed_Feed_FullScreen.this, "error3!", Toast.LENGTH_SHORT).show();
+
+                                // returned data is not JSONObject?
+                                e2.printStackTrace();
+                            }
+                        }
+                    }
+                }
+        );
+        // Adds the JSON array request "arrayreq" to the request queue
+
+//        Log.d("TTTTTTT","ASASAS");
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
+    }
+
+
+
 
 
     public class LoadDBfromAPI extends AsyncTask<JSONArray, Void, Void> {

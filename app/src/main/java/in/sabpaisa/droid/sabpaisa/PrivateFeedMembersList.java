@@ -55,6 +55,8 @@ public class PrivateFeedMembersList extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                privateMemberArrayList.clear();
+                Flag = null;
                 onBackPressed();
             }
         });
@@ -186,6 +188,10 @@ public class PrivateFeedMembersList extends AppCompatActivity {
     }
 
 
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        privateMemberArrayList.clear();
+        Flag = null;
+    }
 }

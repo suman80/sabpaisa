@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -293,7 +295,12 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                             /*progressDialog.setMessage("Please wait !");
                             progressDialog.show();*/
 
-                            deleteGroupData(groupId,userAccessToken,holder.getAdapterPosition());
+                            if (isNetworkAvailable()) {
+
+                                deleteGroupData(groupId, userAccessToken, holder.getAdapterPosition());
+                            }else {
+                                Toast.makeText(mContext,"Please check internet connection and try again. Thank you.",Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         if (menuItem.getTitle().equals("Add Member")){
@@ -1103,7 +1110,12 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
     }
 */
 
-
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 
 

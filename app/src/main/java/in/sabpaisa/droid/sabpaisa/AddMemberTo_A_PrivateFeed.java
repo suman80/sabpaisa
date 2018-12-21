@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -89,7 +90,11 @@ public class AddMemberTo_A_PrivateFeed extends AppCompatActivity implements AddM
         userAccessToken = sharedPreferences1.getString("response", "123");
 
 
-        memberData(feedId);
+        if (isOnline()) {
+            memberData(feedId);
+        }else {
+            Toast.makeText(AddMemberTo_A_PrivateFeed.this,"Please check internet connection and try again. Thank you.",Toast.LENGTH_SHORT).show();
+        }
         memberNumberArraylist = new ArrayList<>();
 
     }
@@ -241,7 +246,11 @@ public class AddMemberTo_A_PrivateFeed extends AppCompatActivity implements AddM
                     for (String num: memberNumberArraylist) {
 
                        //Api
-                        addMemberToPrivateFeed(feedId,GroupId,userAccessToken,num);
+                        if (isOnline()) {
+                            addMemberToPrivateFeed(feedId, GroupId, userAccessToken, num);
+                        }else {
+                            Toast.makeText(AddMemberTo_A_PrivateFeed.this,"Please check internet connection and try again. Thank you.",Toast.LENGTH_SHORT).show();
+                        }
 
                     }
 
@@ -358,6 +367,22 @@ public class AddMemberTo_A_PrivateFeed extends AppCompatActivity implements AddM
 
 
     }
+
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("Net Not Present", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
 
 
 

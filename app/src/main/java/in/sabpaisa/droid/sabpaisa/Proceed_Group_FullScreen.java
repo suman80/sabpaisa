@@ -292,7 +292,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         if (isOnline()) {
             progress.setVisibility(View.VISIBLE);
             //API
-            callGetCommentList(GroupId);
+            callGetCommentList(GroupId,userAccessToken);
         } else {
 
             Log.d("ProceedGroupFullSCR", "No Internet");
@@ -337,7 +337,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 scrollListener = new EndlessScrollListener(llm) {
                     @Override
                     public void onLoadMore(int page, int totalItemsCount) {
-                        callGetCommentList(GroupId);
+                        callGetCommentList(GroupId,userAccessToken);
                     }
                 };
                 rv.addOnScrollListener(scrollListener);
@@ -549,7 +549,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                 commentArrayList.clear();
                 count = 1;
                 //API
-                callGetCommentList(GroupId);
+                callGetCommentList(GroupId,userAccessToken);
 
             }
         };
@@ -874,7 +874,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                                 //Toast.makeText(Proceed_Group_FullScreen.this, "Group Comment has been save successfully.", Toast.LENGTH_SHORT).show();
                                 commentArrayList.clear();
                                 count = 1;
-                                callGetCommentList(GroupId);
+                                callGetCommentList(GroupId,userAccessToken);
 
 
                             } else if (status.equals("failed")) {
@@ -955,7 +955,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
     }
 
-    public void callGetCommentList(final String GropuId) {
+    public void callGetCommentList(final String GropuId,final String userAccessToken) {
 
 
         boolean checkDb = db.isTableExists(TABLE_GROUP_COMMENTS);
@@ -969,7 +969,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         //String urlJsonObj = AppConfiguration.MAIN_URL + "/getGroupsComments/" + GroupId;
         String tag_string_req = "req_register";
         //String urlJsonObj =AppConfig.Base_Url+AppConfig.App_api+ "getGroupsComments?group_id=" + GropuId;
-        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getPageGroupsComments?group_id=" + GropuId + "&pageNo=" + count + "&rowLimit=25";
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getPageGroupsComments?group_id=" + GropuId + "&pageNo=" + count + "&rowLimit=25"+"&token="+userAccessToken;
 
         Log.d("URL_AT_PGF", " " + urlJsonObj);
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
@@ -992,6 +992,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                     ///////////////////////////////
                     JSONArray jsonArray = null;
                     Object obj = jsonObject.get("response");
+
+                    String status = jsonObject.getString("status");
 
                     if (obj instanceof JSONArray) {
                         jsonArray = (JSONArray) obj;
@@ -1060,7 +1062,24 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
                         }
                         loadCommentListView(commentArrayList);
-                    } else {
+                    } else if (status.equals("failure") && obj.equals("Not A Member")){
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Proceed_Group_FullScreen.this);
+                        builder.setTitle("Comment Service");
+                        builder.setMessage(obj.toString());
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.setCanceledOnTouchOutside(false);
+                        alertDialog.setCancelable(false);
+                        alertDialog.show();
+
+                    }else {
                         progress.setVisibility(View.GONE);
 
                         if (count > 1 ){
@@ -1153,7 +1172,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         if (isOnline()) {
 
             count++;
-            callGetCommentList(GroupId);
+            callGetCommentList(GroupId,userAccessToken);
         } else {
             swipeRefreshLayout.setRefreshing(false);
             Toast.makeText(Proceed_Group_FullScreen.this, "Seems that you are not connected to the internet \n Please connect your internet to load more data", Toast.LENGTH_SHORT).show();

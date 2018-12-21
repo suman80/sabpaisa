@@ -1,10 +1,13 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -47,6 +50,7 @@ import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.NumberOfGroups;
 import in.sabpaisa.droid.sabpaisa.PrivateFeedMembersList;
 import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.RegisterActivity;
 import in.sabpaisa.droid.sabpaisa.UIN;
 
 /**
@@ -256,7 +260,7 @@ public class NoOfGroupmemberAdapter extends RecyclerView.Adapter<NoOfGroupmember
                     if ((member_getterSetter.getUin_Role()==null || member_getterSetter.getUin_Role().equals("null"))
                             || !(member_getterSetter.getUin_Role().equals("1"))) {
 
-
+                        if(PrivateFeedMembersList.Flag == null)
                             menu.getMenu().add("Make a group admin");
 
                     }
@@ -273,23 +277,41 @@ public class NoOfGroupmemberAdapter extends RecyclerView.Adapter<NoOfGroupmember
                             if (PrivateFeedMembersList.Flag !=null && PrivateFeedMembersList.Flag.equals("PrivateFeedMembersList")){
                                 //Api
 
-                                removeUserfromPrivateFeed(userAccessToken,member_getterSetter.getUserAccessToken(),PrivateFeedMembersList.feedId,myViewHolder.getAdapterPosition());
+                                if (isNetworkAvailable()) {
+                                    removeUserfromPrivateFeed(userAccessToken, member_getterSetter.getUserAccessToken(), PrivateFeedMembersList.feedId, myViewHolder.getAdapterPosition());
+                                }else {
 
+                                    Toast.makeText(mContext,"Please check internet connection and try again. Thank you.",Toast.LENGTH_SHORT).show();
+
+                                }
                             }else {
 
                                 if (countforAdmin == 1 && (member_getterSetter.getUin_Role().equals("1") || member_getterSetter.getRoleId().equals("2"))) {
                                     Toast.makeText(mContext, "You cannot remove yourself !", Toast.LENGTH_SHORT).show();
                                 } else {
 
-                                    removeUserfromGroup(userAccessToken, member_getterSetter.getUserAccessToken(), member_getterSetter.getGroupId(),myViewHolder.getAdapterPosition());
+                                    if (isNetworkAvailable()) {
+                                        removeUserfromGroup(userAccessToken, member_getterSetter.getUserAccessToken(), member_getterSetter.getGroupId(), myViewHolder.getAdapterPosition());
+                                    }else {
 
+                                        Toast.makeText(mContext,"Please check internet connection and try again. Thank you.",Toast.LENGTH_SHORT).show();
+
+                                    }
                                 }
                             }
                         }
 
                         if (menuItem.getTitle().equals("Make a group admin")){
-                            makeGroupAdmin(userAccessToken,member_getterSetter.getUserId(),member_getterSetter.getGroupId());
-                        }
+                            if (isNetworkAvailable()) {
+
+                                makeGroupAdmin(userAccessToken, member_getterSetter.getUserId(), member_getterSetter.getGroupId());
+
+                            }else {
+
+                                Toast.makeText(mContext,"Please check internet connection and try again. Thank you.",Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
 
                         return true;
                     }
@@ -799,6 +821,15 @@ public void onBindViewHolder(MemberAdapter.MyViewHolder holder, int position) {
         AppController.getInstance().addToRequestQueue(request, tag_string_req);
 
 
+    }
+
+
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 

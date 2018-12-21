@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
@@ -313,7 +314,12 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 
                            /* progressDialog.setMessage("Please wait !");
                             progressDialog.show();*/
-                            deleteFeedData(feedId,userAccessToken,holder.getAdapterPosition());
+                           if (isNetworkAvailable()) {
+                               deleteFeedData(feedId, userAccessToken, holder.getAdapterPosition());
+                           }else {
+                               Toast.makeText(context,"Please check internet connection and try again. Thank you.",Toast.LENGTH_SHORT).show();
+
+                           }
                         }
 
 
@@ -622,6 +628,13 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
 //        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
 //    }
 
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 
 }
