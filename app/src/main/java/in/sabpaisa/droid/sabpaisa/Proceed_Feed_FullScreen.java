@@ -1047,9 +1047,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                             Toast.makeText(Proceed_Feed_FullScreen.this, "No More Record Found !", Toast.LENGTH_SHORT).show();
 
                         }
-
-                        //Toast.makeText(Proceed_Feed_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();
-
+                        else {
+                            Toast.makeText(Proceed_Feed_FullScreen.this, response1, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
                 // Try and catch are included to handle any errors due to JSON
@@ -1205,14 +1205,29 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                         /////////////////
 
                         loadCommentListView(commentArrayList);
-                    } else if (status.equals("failure") && response1.equals("Not A Member")){
-
+                    } else if (status.equals("failure")) {
+                        if (response1.equals("Not A Member") || response1.equals("Feed is deactivated")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
                         builder.setTitle("Comment Service");
                         builder.setMessage(response1.toString());
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                MainFeedAdapter.isClicked = false;
+                                MainGroupAdapter1.isClicked = false;
+
+                                /*Intent feedUiRefresh = new Intent(ConstantsForUIUpdates.REFRESH_FEED_FRAGMENT);
+                                LocalBroadcastManager.getInstance(Proceed_Feed_FullScreen.this).sendBroadcast(feedUiRefresh);*/
+
+                                Intent intent = new Intent(Proceed_Feed_FullScreen.this, PrivateGroupFeeds.class);
+                                intent.putExtra("memberGroupRole", PrivateGroupFeeds.memberGroupRole);
+                                intent.putExtra("GroupId", PrivateGroupFeeds.GroupId);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                                startActivity(intent);
+
+                                FullViewOfClientsProceed.isFragmentOpen = true;
+
                                 finish();
                                 dialog.dismiss();
                             }
@@ -1222,6 +1237,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                         alertDialog.setCancelable(false);
                         alertDialog.show();
 
+                    }
                     }else {
                         progress.setVisibility(View.GONE);
 

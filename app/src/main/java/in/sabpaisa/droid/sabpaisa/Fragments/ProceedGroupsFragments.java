@@ -69,6 +69,7 @@ import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_GROUPS;
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.FEED_ARRAYLIST;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.GROUP_ARRAYLIST;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.REFRESH_GROUP_FRAGMENT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -238,10 +239,16 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                     callGroupDataList1(token, clientId,context);
                 }
 
+                if (intent.getAction().equals(REFRESH_GROUP_FRAGMENT)){
+                    callGroupDataList1(token, clientId,context);
+                }
+
+
             }
         };
 
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver,new IntentFilter(GROUP_ARRAYLIST));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver,new IntentFilter(REFRESH_GROUP_FRAGMENT));
 
 
 
@@ -276,8 +283,6 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
         };
 
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.IS_GROUP_FRAG_OPEN));
-
-
 
 
     }
@@ -821,7 +826,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                         });
 
 
-                        for (GroupListData approvedValue:groupArrayList) {
+                        /*for (GroupListData approvedValue:groupArrayList) {
                             if (approvedValue.getMemberStatus().contains("Pending")){
 
                                 arrayListForApproved.add(approvedValue);
@@ -844,7 +849,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
                             }
                         }
-
+*/
 
                         /*START listener for sending data to activity*/
                         /*OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();

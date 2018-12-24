@@ -40,6 +40,8 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.REFRESH_FEED_FRAGMENT;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.REFRESH_GROUP_FRAGMENT;
 
 public class PrivateGroupFeeds extends AppCompatActivity {
 
@@ -177,9 +179,6 @@ public class PrivateGroupFeeds extends AppCompatActivity {
         };
 
         LocalBroadcastManager.getInstance(PrivateGroupFeeds.this).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.IS_FEED_FRAG_OPEN));
-
-
-
 
     }
 
@@ -375,6 +374,8 @@ public class PrivateGroupFeeds extends AppCompatActivity {
         // Adds the JSON array request "arrayreq" to the request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
+
+
 
     private void loadFeedListView(ArrayList<FeedData> arrayList, final RecyclerView recyclerView) {
 

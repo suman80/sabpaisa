@@ -1070,6 +1070,13 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                MainFeedAdapter.isClicked = false;
+                                MainGroupAdapter1.isClicked = false;
+
+                                Intent groupUiRefresh = new Intent(ConstantsForUIUpdates.REFRESH_GROUP_FRAGMENT);
+                                LocalBroadcastManager.getInstance(Proceed_Group_FullScreen.this).sendBroadcast(groupUiRefresh);
+                                FullViewOfClientsProceed.isFragmentOpen = true;
+
                                 finish();
                                 dialog.dismiss();
                             }

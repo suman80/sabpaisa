@@ -231,7 +231,36 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         SharedPreferences sharedPreferences2 = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
         n = sharedPreferences2.getString("m", "xyz");
         m = n;
-        ClientId1 = sharedPreferences2.getString("clientId", "123");
+        ClientId1 = sharedPreferences2.getString("clientId", "abc");
+
+        if (ClientId1.equals("abc")){
+
+            SharedPreferences settings = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.remove("m");
+            editor.remove("selectedstate");
+            editor.remove("selectedservice");
+            editor.remove("logged");
+            editor.clear();
+            editor.commit();
+
+
+            //Added on 5th dec 2018
+
+            SharedPreferences settings1 = getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor1 = settings1.edit();
+            editor1.remove("clientId");
+            editor1.remove("stateId");
+            editor1.clear();
+            editor1.commit();
+
+
+            finish();
+
+            Intent intent = new Intent(MainActivity.this, FilterActivity1.class);
+
+            startActivity(intent);
+        }
 
         ClientId = ClientId1;
 

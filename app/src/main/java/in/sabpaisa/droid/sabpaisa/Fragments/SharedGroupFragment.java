@@ -137,7 +137,7 @@ public class SharedGroupFragment extends Fragment {
                                     groupArrayList.add(groupListData);
 
                         }
-                        Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
+                        //Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
 
                         sharedGroupFragmentAdapter = new SharedGroupFragmentAdapter(groupArrayList, getContext());
                         groupList.setAdapter(sharedGroupFragmentAdapter);

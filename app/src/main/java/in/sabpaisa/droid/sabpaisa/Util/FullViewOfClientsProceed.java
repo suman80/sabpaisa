@@ -103,6 +103,7 @@ import in.sabpaisa.droid.sabpaisa.UIN;
 
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
+import static in.sabpaisa.droid.sabpaisa.UIN.SHARED_PREF_UIN_STATUS;
 
 public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, ProceedFeedsFragment.GetDataInterface, ProceedGroupsFragments.GetDataInterface, Members.GetDataInterface {
     ImageView clientImagePath;
@@ -148,6 +149,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     String position;
 
     public static boolean isFragmentOpen;
+
+    String uinNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -462,6 +465,11 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
         LocalBroadcastManager.getInstance(FullViewOfClientsProceed.this).registerReceiver(receiver,new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
 
+        ////////////////////////////22nd Dec 2018///////////////////////////////////////////
+        SharedPreferences sharedPreferencesCheckUIN = getApplication().getSharedPreferences(UIN.SHARED_PREF_UIN_STATUS, Context.MODE_PRIVATE);
+        uinNumber = sharedPreferencesCheckUIN.getString("UIN_NUMBER", "abc");
+
+        callVerifyUINNumber(uinNumber,ClientId,useracesstoken);
 
 
     }
@@ -1399,6 +1407,134 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         }
 
     }
+
+
+
+
+    public void callVerifyUINNumber(String uinnnumber, String clientId, String userAccessToken) {
+        String tag_string_req = "req_register";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_VerifyUin + uinnnumber + "&client_Id=" + clientId + "&aceesToken=" + userAccessToken, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+
+                Log.d("Verify UINnhhhh", response.toString());
+
+                try {
+                    // Parsing json object response
+                    // response will be a json object
+                    JSONObject jObj = new JSONObject(response);
+
+                    String response1 = jObj.getString("response");
+                    //Log.d(TAG, "Register Response1: " + response);
+                    String status = jObj.getString("status");
+                    //String response1 = response.getString("response");
+                    // Log.i("status_UIN", "status=" + status);
+                    Log.i("response_UIN", "Repsomse_UIN=" + response1);
+                    if (status.equals("success") && response1.equals("UIN verified")) {
+
+                        Log.d("InIfPArt", "UINVerifu");
+
+
+                        /*SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREF_UIN_STATUS, MODE_PRIVATE).edit();
+                        editor.putString("UIN_STATUS", "UIN_VERIFIED");
+                        editor.commit();*/
+
+
+
+                    } else {
+
+                        //Added on 22nd dec 2018
+                        SharedPreferences settings = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.remove("m");
+                        editor.remove("selectedstate");
+                        editor.remove("selectedservice");
+                        editor.remove("logged");
+                        editor.clear();
+                        editor.commit();
+//                    finish();
+
+                        SharedPreferences settings1 = getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor1 = settings1.edit();
+                        editor1.remove("clientId");
+                        editor1.remove("stateId");
+                        editor1.clear();
+                        editor1.commit();
+                        finish();
+
+                        Intent intent = new Intent(FullViewOfClientsProceed.this, FilterActivity1.class);
+
+                        startActivity(intent);
+
+
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(FullViewOfClientsProceed.this, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog closed
+                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+
+                } else if (error instanceof AuthFailureError) {
+                    //TODO
+                } else if (error instanceof ServerError) {
+                    //TODO
+                } else if (error instanceof NetworkError) {
+                    //TODO
+                } else if (error instanceof ParseError) {
+                    //TODO
+                }
+               /* VolleyLog.d("eclipse", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();*/
+
+                // hide the progress dialog
+
+            }
+        });
+        // Adds the JSON array request "arrayreq" to the request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+        // AppController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+
 
 
     public boolean isOnline() {

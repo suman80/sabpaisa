@@ -598,6 +598,10 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MyViewHold
 
                             Log.d("MemberAdapter","InIFPart");
 
+
+
+
+
                             String clientImageURLPath = FullViewOfClientsProceed.clientImageURLPath;
 
                             Log.d("MemberAdapter","clientImageURLPath "+clientImageURLPath);

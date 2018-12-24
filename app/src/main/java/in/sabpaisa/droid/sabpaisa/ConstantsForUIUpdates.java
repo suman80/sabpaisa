@@ -9,5 +9,7 @@ public class ConstantsForUIUpdates {
     public static final String PROFILE_IMAGE = "profileImage";
     public static final String FEED_ARRAYLIST = "feedArraylist";
     public static final String GROUP_ARRAYLIST = "groupArraylist";
+    public static final String REFRESH_GROUP_FRAGMENT = "refreshGroupFragment";
+    public static final String REFRESH_FEED_FRAGMENT = "refreshFeedFragment";
 
 }

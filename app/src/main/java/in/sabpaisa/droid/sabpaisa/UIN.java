@@ -200,7 +200,7 @@ public class UIN extends AppCompatActivity {
         }
     }
 
-    public void callVerifyUINNumber(String uinnnumber, String clientId, String userAccessToken) {
+    public void callVerifyUINNumber(final String uinnnumber, String clientId, String userAccessToken) {
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -230,6 +230,7 @@ public class UIN extends AppCompatActivity {
 
                         SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREF_UIN_STATUS, MODE_PRIVATE).edit();
                         editor.putString("UIN_STATUS", "UIN_VERIFIED");
+                        editor.putString("UIN_NUMBER", uinnnumber);
                         editor.commit();
 
 
