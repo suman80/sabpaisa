@@ -131,7 +131,7 @@ dependencies {
 
     //compile project(path: ':chat-sdk-core')
     compile 'gun0912.ted:tedpermission:2.1.0'
-    compile 'com.android.support:multidex:1.0.0'
+    //compile 'com.android.support:multidex:1.0.0'
 
     // compile 'com.google.firebase:firebase-messaging:9.6.0'
 
