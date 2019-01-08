@@ -32,8 +32,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
-import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
-import com.braunster.chatsdk.activities.ChatSDKMainActivity;
+
 import com.bumptech.glide.Glide;
 
 import org.json.JSONException;

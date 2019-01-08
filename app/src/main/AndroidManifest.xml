@@ -29,21 +29,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-permission
-        android:name="android.permission.READ_SMS"
-        tools:node="remove" />
-
-    <uses-permission
-        android:name="android.permission.RECEIVE_SMS"
-        tools:node="remove" />
-
-    <uses-permission
-        android:name="android.permission.SEND_SMS"
-        tools:node="remove" />
-
-    <uses-permission
-        android:name="android.permission.WRITE_SMS"
-        tools:node="remove" />
 
     <application
         android:name=".AppController"
@@ -67,9 +52,9 @@
         <activity android:name=".LogInActivity" />
         <activity android:name=".VerifyMobile" />
         <activity android:name=".FilterActivity" />
-        <activity android:name=".UPIBankList" />
+        <!--<activity android:name=".UPIBankList" />-->
         <activity android:name=".UIN" />
-        <activity android:name="com.braunster.chatsdk.activities.ChatSDKLoginActivity" />
+        <!--<activity android:name="com.braunster.chatsdk.activities.ChatSDKLoginActivity" />-->
         <activity android:name=".Util.SkipClientDetailsScreen" />
         <activity android:name=".Util.FullViewOfClientsProceed">
             <intent-filter>
@@ -100,7 +85,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UpiSdkHandshake" />
+        <!--<activity android:name=".UpiSdkHandshake" />-->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivity" />
@@ -115,25 +100,25 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivityWithoutSharedPrefernce">
+       <!-- <activity android:name=".MainActivityWithoutSharedPrefernce">
             <intent-filter>
                 <action android:name="in.sabpaisa.droid.sabpaisa.MainActivityWithoutSharedPrefernce" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
+        </activity>-->
         <activity android:name=".AccountInfoActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".SetmPIN" />
         <activity android:name=".SuccessMPIN" />
-        <activity android:name=".SendMoneyActivity" />
-        <activity android:name=".RequestMoney" />
-        <activity
+        <!--<activity android:name=".SendMoneyActivity" />
+        <activity android:name=".RequestMoney" />-->
+        <!--<activity
             android:name=".BeneficiaryDetail"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".BeneficiaryRequestMoney"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize" />-->
         <activity android:name=".SendConfirmUPImPIN" />
         <activity android:name=".TransactionResult" />
         <activity android:name=".SendAccountIFSC" />
@@ -197,7 +182,7 @@
             android:parentActivityName=".MainActivity" />
         <activity android:name=".TransactionReportNav" />
         <activity android:name=".Report" />
-        <activity android:name=".UPIActivationActivity" />
+        <!--<activity android:name=".UPIActivationActivity" />-->
 
         <!-- Firebase Notifications -->
         <service android:name=".MyFirebaseMessagingService">

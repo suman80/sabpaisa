@@ -62,9 +62,9 @@ public class SendAccountIFSC extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//TODO API - Validate Address
-                Intent intent = new Intent(SendAccountIFSC.this,BeneficiaryDetail.class);
-                intent.putExtra("UPI",AccountNumber.getText().toString());
-                startActivity(intent);
+//                Intent intent = new Intent(SendAccountIFSC.this,BeneficiaryDetail.class);
+//                intent.putExtra("UPI",AccountNumber.getText().toString());
+//                startActivity(intent);
             }
         });
         relativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

@@ -34,7 +34,7 @@ android {
 
 dependencies {
 
-// Test
+    // Test
     compile 'com.crashlytics.sdk.android:crashlytics:2.9.1'
     compile 'com.mikepenz:materialdrawer:6.0.8'
     compile 'org.apache.commons:commons-lang3:3.4'
@@ -43,7 +43,7 @@ dependencies {
     //compile 'com.github.AdeelTariq:SuperNova-Emoji:1.0.2'
     compile 'hani.momanii.supernova_emoji_library:supernova-emoji-library:0.0.2'
 
-//
+    //
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -52,38 +52,41 @@ dependencies {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
-    /*Image Slider*/
-    /*Image Slider*/
-    //    compile 'com.github.clans:fab:1.6.4'
-    //    compile 'com.getbase:floatingactionbutton:1.10.1'
-    //
 
+    /*Image Slider*/
+
+    /*Image Slider*/
+
+    //    compile 'com.github.clans:fab:1.6.4'
+
+    //    compile 'com.getbase:floatingactionbutton:1.10.1'
+
+    //
     compile 'com.github.chrisbanes:PhotoView:2.1.4'
-    compile project(':secure-component-sdk')
     compile 'com.android.support:multidex:1.0.0'
+
     //compile 'com.weiwangcn.betterspinner:library:1.1.0'
     compile 'com.airbnb.android:lottie:2.1.2'
     compile 'com.google.firebase:firebase-invites:11.4.0'
+
     // compile 'com.github.santalu:respinner:1.0.1'
+
     //noinspection GradleCompatible
     compile 'com.google.android.gms:play-services-maps:11.4.0'
     compile 'com.google.android.gms:play-services-plus:11.4.0'
-//    compile 'com.jaredrummler:material-spinner:1.2.3'
+
+    //    compile 'com.jaredrummler:material-spinner:1.2.3'
     compile 'com.codesgood:justifiedtextview:1.0.2'
-    compile project(':securecomponent')
     compile 'com.github.sharish:ShimmerRecyclerView:v1.0.1'
     compile 'com.nineoldandroids:library:2.4.0'
+
     //compile 'com.nineoldandroids:library:2.4.0'
     compile 'me.grantland:autofittextview:0.2.+'
     compile 'com.android.volley:volley:1.1.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.uncopt:android.justified:1.0'
-
-
     compile 'org.jsoup:jsoup:1.11.2'
-
     compile 'com.google.firebase:firebase-auth:11.4.0'
-
     compile 'com.google.firebase:firebase-core:11.4.0'
     compile 'com.google.firebase:firebase-messaging:11.4.0'
     compile 'com.rockerhieu.emojicon:library:1.3.3'
@@ -97,12 +100,15 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v4:27.1.1'
     compile 'com.daimajia.slider:library:1.1.5@aar'
-//    compile 'com.github.wangjiegulu:RapidFloatingActionButton:1.0.3'
-//    compile 'com.github.wangjiegulu:AndroidBucket:1.0.4'
+
+    //    compile 'com.github.wangjiegulu:RapidFloatingActionButton:1.0.3'
+
+    //    compile 'com.github.wangjiegulu:AndroidBucket:1.0.4'
     compile 'com.layer-net:step-indicator:1.1.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
-    compile project(':OliveUpi_dcbV1.11')
+
+    //compile project(':OliveUpi_dcbV1.11')
     compile 'com.android.support:design:27.1.1'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
@@ -111,29 +117,35 @@ dependencies {
     compile 'commons-codec:commons-codec:1.9'
     compile 'com.android.support:cardview-v7:27.1.1'
     compile 'de.hdodenhof:circleimageview:1.2.1'
+
     //compile 'com.farbod.labelledspinner:labelledspinner:1.1.5'
     compile 'com.google.code.gson:gson:2.8.2'
 
     //compile 'com.jackandphantom.android:circularprogressbar:1.2.0'
-
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile project(path: ':sdk')
+
     //compile 'com.airbnb.android:lottie:2.1.2'
+
     //compile 'com.shitij.goyal:slide-button:1.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile project(path: ':firebase_plugin')
+
     //compile project(path: ':chat-sdk-core')
     compile 'gun0912.ted:tedpermission:2.1.0'
     compile 'com.android.support:multidex:1.0.0'
+
     // compile 'com.google.firebase:firebase-messaging:9.6.0'
+
     //compile 'com.google.firebase:firebase-messaging:11.8.0'
-//    compile 'com.google.firebase:firebase-crash:11.4.0'
+
+    //    compile 'com.google.firebase:firebase-crash:11.4.0'
     compile 'su.j2e:rv-joiner:1.0.3'
     compile 'com.github.GoodieBag:Pinview:v1.3'
     compile 'com.github.ybq:Android-SpinKit:1.1.0'
+
     //compile 'jp.wasabeef:blurry:2.1.1'
     compile 'com.github.markushi:circlebutton:1.1'
     compile 'com.balysv:material-ripple:1.0.2'
+
     // 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 }
 

@@ -2,36 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OliveUpi_dcbV1.11/OliveUpi_dcbV1.11.iml" filepath="$PROJECT_DIR$/OliveUpi_dcbV1.11/OliveUpi_dcbV1.11.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\OliveUpi_dcbV1.11\OliveUpi_dcbV1.11.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\OliveUpi_dcbV1.11\OliveUpi_dcbV1.11.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\SPApp.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\SPApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\app\app.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\app\app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/chat-sdk-core/chat-sdk-core.iml" filepath="$PROJECT_DIR$/chat-sdk-core/chat-sdk-core.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\chat-sdk-core\chat-sdk-core.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\chat-sdk-core\chat-sdk-core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/chat-sdk-firebase-adapter/chat-sdk-firebase-adapter.iml" filepath="$PROJECT_DIR$/chat-sdk-firebase-adapter/chat-sdk-firebase-adapter.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\chat-sdk-firebase-adapter\chat-sdk-firebase-adapter.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\chat-sdk-firebase-adapter\chat-sdk-firebase-adapter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/chat-sdk-firebase-file-storage/chat-sdk-firebase-file-storage.iml" filepath="$PROJECT_DIR$/chat-sdk-firebase-file-storage/chat-sdk-firebase-file-storage.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\chat-sdk-firebase-file-storage\chat-sdk-firebase-file-storage.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\chat-sdk-firebase-file-storage\chat-sdk-firebase-file-storage.iml" />
-      <module fileurl="file://$PROJECT_DIR$/chat-sdk-firebase-push/chat-sdk-firebase-push.iml" filepath="$PROJECT_DIR$/chat-sdk-firebase-push/chat-sdk-firebase-push.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\chat-sdk-firebase-push\chat-sdk-firebase-push.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\chat-sdk-firebase-push\chat-sdk-firebase-push.iml" />
-      <module fileurl="file://$PROJECT_DIR$/chat-sdk-firebase-social-login/chat-sdk-firebase-social-login.iml" filepath="$PROJECT_DIR$/chat-sdk-firebase-social-login/chat-sdk-firebase-social-login.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\chat-sdk-firebase-social-login\chat-sdk-firebase-social-login.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\chat-sdk-firebase-social-login\chat-sdk-firebase-social-login.iml" />
-      <module fileurl="file://$PROJECT_DIR$/chat-sdk-ui/chat-sdk-ui.iml" filepath="$PROJECT_DIR$/chat-sdk-ui/chat-sdk-ui.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\chat-sdk-ui\chat-sdk-ui.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\chat-sdk-ui\chat-sdk-ui.iml" />
-      <module fileurl="file://$PROJECT_DIR$/country_picker/country_picker.iml" filepath="$PROJECT_DIR$/country_picker/country_picker.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\country_picker\country_picker.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\country_picker\country_picker.iml" />
-      <module fileurl="file://$PROJECT_DIR$/facebook/facebook.iml" filepath="$PROJECT_DIR$/facebook/facebook.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\facebook\facebook.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\facebook\facebook.iml" />
-      <module fileurl="file://$PROJECT_DIR$/firebase_plugin/firebase_plugin.iml" filepath="$PROJECT_DIR$/firebase_plugin/firebase_plugin.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\firebase_plugin\firebase_plugin.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\firebase_plugin\firebase_plugin.iml" />
       <module fileurl="file://$PROJECT_DIR$/sabpaisa.iml" filepath="$PROJECT_DIR$/sabpaisa.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sdk/sdk.iml" filepath="$PROJECT_DIR$/sdk/sdk.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\sdk\sdk.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\sdk\sdk.iml" />
-      <module fileurl="file://$PROJECT_DIR$/secure-component-sdk/secure-component-sdk.iml" filepath="$PROJECT_DIR$/secure-component-sdk/secure-component-sdk.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\secure-component-sdk\secure-component-sdk.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\secure-component-sdk\secure-component-sdk.iml" />
-      <module fileurl="file://$PROJECT_DIR$/securecomponent/securecomponent.iml" filepath="$PROJECT_DIR$/securecomponent/securecomponent.iml" />
-      <module fileurl="file://C:\Users\Sankarshan Pandey\Desktop\sabpaisa\securecomponent\securecomponent.iml" filepath="C:\Users\Sankarshan Pandey\Desktop\sabpaisa\securecomponent\securecomponent.iml" />
     </modules>
   </component>
 </project>

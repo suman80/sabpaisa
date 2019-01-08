@@ -73,12 +73,10 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
-import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
-import com.braunster.chatsdk.network.BNetworkManager;
+
 import com.bumptech.glide.Glide;
 import com.github.ybq.android.spinkit.SpinKitView;
-import com.olive.upi.transport.model.lib.NameValuePair;
+
 
 import com.rockerhieu.emojicon.EmojiconEditText;
 
@@ -1090,6 +1088,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
                         progress.setVisibility(View.GONE);
 
                         if (count > 1 ){
+                            progress.setVisibility(View.GONE);
                             Toast.makeText(Proceed_Group_FullScreen.this, "No More Record Found !", Toast.LENGTH_SHORT).show();
                         }
 

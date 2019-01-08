@@ -1,1 +1,1 @@
-include ':app', ':chat-sdk-firebase-file-storage', ':chat-sdk-firebase-adapter', ':chat-sdk-ui', ':chat-sdk-firebase-push', ':chat-sdk-firebase-social-login', ':chat-sdk-core', ':firebase_plugin', ':sdk', ':facebook', ':country_picker', ':OliveUpi_dcbV1.11', ':secure-component-sdk', ':securecomponent'
+include ':app'

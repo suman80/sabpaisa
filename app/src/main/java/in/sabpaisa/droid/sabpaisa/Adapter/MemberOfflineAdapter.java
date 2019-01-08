@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
+
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;

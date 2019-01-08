@@ -1242,6 +1242,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                         progress.setVisibility(View.GONE);
 
                         if (count > 1){
+                            progress.setVisibility(View.GONE);
                             Toast.makeText(Proceed_Feed_FullScreen.this, "No More Record Found !", Toast.LENGTH_SHORT).show();
 
                         }

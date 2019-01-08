@@ -96,7 +96,7 @@
                 android:layout_alignParentRight="true"
                 android:text="8 Members"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_medium"
+                android:textSize="@dimen/text_size_xsmall"
                 android:textStyle="bold" />
 
         </RelativeLayout>

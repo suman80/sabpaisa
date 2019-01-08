@@ -38,10 +38,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
-import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
-import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
-import com.braunster.chatsdk.network.BNetworkManager;
+
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 //import com.squareup.picasso.Picasso;
 
@@ -140,16 +137,16 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
         chatbutton = (LinearLayout) findViewById(R.id.chat);
 
-        ChatSDKUiHelper.initDefault();
-
-        // Init the network manager
-        BNetworkManager.init(getApplicationContext());
-
-// Create a new adapter
-        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
-
-// Set the adapter
-        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
+//        ChatSDKUiHelper.initDefault();
+//
+//        // Init the network manager
+//        BNetworkManager.init(getApplicationContext());
+//
+//// Create a new adapter
+//        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
+//
+//// Set the adapter
+//        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
 
         Intent intent = getIntent();
 
@@ -224,14 +221,14 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
             }
         });
-        chatbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SkipClientDetailsScreen.this, ChatSDKLoginActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-            }
-        });
+//        chatbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(SkipClientDetailsScreen.this, ChatSDKLoginActivity.class);
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
+//            }
+//        });
 
 //       callFeedDeatilsByFeedId();
         clientNameTextView.setText(clientName);

@@ -69,4 +69,7 @@
     </style>
 
 
+    <style name="AppTheme.AppBarOverlay" parent="Theme.AppCompat.Light.DarkActionBar"/>
+
+
 </resources>

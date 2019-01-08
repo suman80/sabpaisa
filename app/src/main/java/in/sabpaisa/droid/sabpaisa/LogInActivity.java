@@ -43,11 +43,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.security.ProviderInstaller;
-import com.olive.upi.OliveUpiManager;
-import com.olive.upi.transport.OliveUpiEventListener;
-import com.olive.upi.transport.api.Result;
-import com.olive.upi.transport.api.UpiService;
-import com.olive.upi.transport.model.sdk.SDKHandshake;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
