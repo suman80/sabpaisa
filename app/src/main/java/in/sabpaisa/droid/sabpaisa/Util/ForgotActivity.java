@@ -154,11 +154,14 @@ public class ForgotActivity extends AppCompatActivity {
                 if (number.equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter Phone Number!", Toast.LENGTH_LONG).show();
                 } else if (isOnline()) {
-                    mBottomSheetDialog.setCancelable(true);//Added on 2nd Feb
+
+                    //Commenting on 2nd Jan 2019
+                    /*mBottomSheetDialog.setCancelable(true);//Added on 2nd Feb
                     mBottomSheetDialog.setCanceledOnTouchOutside(true);//Added on 2nd Feb
                     mBottomSheetDialog.show();
-                    callTimerCoundown();
+                    callTimerCoundown();*/
                     Log.d("Button : Test count : ", testcount++ +"");
+                    send_Otp.setVisibility(View.GONE);
                     sendOTPAPI(v, number);
                     // Toast.makeText(OTPVarify.this, "first name field is empty", Toast.LENGTH_LONG).show();
                 } else {
@@ -558,37 +561,41 @@ public class ForgotActivity extends AppCompatActivity {
                     if (status.equals("success")) {
 
                         //Toast.makeText(getApplicationContext(), "OTP sent", Toast.LENGTH_LONG).show();
-                        SmsReceiver.bindListener(new SmsListener() {
-                            @Override
-                            public void messageReceived(String messageText) {
-//                Toast.makeText(context, "Message: " + messageText, Toast.LENGTH_LONG).show();
-                                Log.i("OTP", "messageText=" + messageText);
 
-                                final String optSplit[] = messageText.split(":");
-                                if (optSplit[0].trim().equalsIgnoreCase(otpTag)) {
-                                    optEditText.setValue(optSplit[1]);
-                                    handler.postAtTime(new Runnable() {
-                                        @Override
-                                        public void run() {
+                        //Commenting on 2nd Jan 2019
 
-                                            /*if (countDownTimer != null) {
-                                                countDownTimer.cancel();
-                                            }*/
+//                        SmsReceiver.bindListener(new SmsListener() {
+//                            @Override
+//                            public void messageReceived(String messageText) {
+////                Toast.makeText(context, "Message: " + messageText, Toast.LENGTH_LONG).show();
+//                                Log.i("OTP", "messageText=" + messageText);
+//
+//                                final String optSplit[] = messageText.split(":");
+//                                if (optSplit[0].trim().equalsIgnoreCase(otpTag)) {
+//                                    optEditText.setValue(optSplit[1]);
+//                                    handler.postAtTime(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//
+//                                            /*if (countDownTimer != null) {
+//                                                countDownTimer.cancel();
+//                                            }*/
+//
+//                                            mBottomSheetDialog.hide();
+//                                            //veryfiOTP(number, optSplit[1]);
+//
+//                                            //  callVaryfyOTP(optSplit[1]);
+//                                        /*OtpDialog dialog = null;
+//                                        dialog = new OtpDialog(RegisterActivity.this,number);
+//                                        Bundle bundle = new Bundle();
+//                                        dialog.onCreate(bundle);
+//                                        dialog.dismiss();*/
+//                                        }
+//                                    }, 1000);
+//                                }
+//                            }
+//                        });
 
-                                            mBottomSheetDialog.hide();
-                                            //veryfiOTP(number, optSplit[1]);
-
-                                            //  callVaryfyOTP(optSplit[1]);
-                                        /*OtpDialog dialog = null;
-                                        dialog = new OtpDialog(RegisterActivity.this,number);
-                                        Bundle bundle = new Bundle();
-                                        dialog.onCreate(bundle);
-                                        dialog.dismiss();*/
-                                        }
-                                    }, 1000);
-                                }
-                            }
-                        });
 
                        /* if (!optEditText.getText().toString().equals("")) {
                             String optText = optEditText.getText().toString();
@@ -621,6 +628,7 @@ public class ForgotActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Write your code here to execute after dialog closed
                                 // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                                send_Otp.setVisibility(View.VISIBLE);
                             }
                         });
 

@@ -1,15 +1,12 @@
 package in.sabpaisa.droid.sabpaisa;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SyncResult;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,7 +40,6 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -55,8 +51,6 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.security.ProviderInstaller;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
 
 import android.Manifest;
 
@@ -65,20 +59,14 @@ import org.json.JSONObject;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.AppConfiguration;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
-import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference;
-import in.sabpaisa.droid.sabpaisa.Util.OtpDialog;
-import in.sabpaisa.droid.sabpaisa.Util.SharedPref;
-import in.sabpaisa.droid.sabpaisa.Util.SmsListener;
-import in.sabpaisa.droid.sabpaisa.Util.SmsReceiver;
+
 
 /**
  * Created by Rajdeep Singh on 26-10-2017.
@@ -209,10 +197,12 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please enter Phone Number!", Toast.LENGTH_LONG).show();
                 } else if (isOnline()) {
 
-                    mBottomSheetDialog.show();
+                    //Commenting on 2nd Jan 2019
+                    /*mBottomSheetDialog.show();
                     mBottomSheetDialog.setCanceledOnTouchOutside(true);
                     mBottomSheetDialog.setCancelable(true);
-                    callTimerCoundown();
+                    callTimerCoundown();*/
+                    send_Otp.setVisibility(View.GONE);
                     sendOTP(v, number);
                     // Toast.makeText(OTPVarify.this, "first name field is empty", Toast.LENGTH_LONG).show();
                 } else {
@@ -595,38 +585,42 @@ public class RegisterActivity extends AppCompatActivity {
                         //Toast.makeText(getApplicationContext(), "OTP sent", Toast.LENGTH_LONG).show();
 
 
-                        SmsReceiver.bindListener(new SmsListener() {
-                            @Override
-                            public void messageReceived(String messageText) {
-//                Toast.makeText(context, "Message: " + messageText, Toast.LENGTH_LONG).show();
-                                Log.i("OTP", "messageText=" + messageText);
+                        //Commenting on 2nd Jan 2019
 
-                                final String optSplit[] = messageText.split(":");
-                                if (optSplit[0].trim().equalsIgnoreCase(otpTag)) {
-                                    optEditText.setValue(optSplit[1]);
-                                    handler.postAtTime(new Runnable() {
-                                        @Override
-                                        public void run() {
+//                        SmsReceiver.bindListener(new SmsListener() {
+//                            @Override
+//                            public void messageReceived(String messageText) {
+////                Toast.makeText(context, "Message: " + messageText, Toast.LENGTH_LONG).show();
+//                                Log.i("OTP", "messageText=" + messageText);
+//
+//                                final String optSplit[] = messageText.split(":");
+//                                if (optSplit[0].trim().equalsIgnoreCase(otpTag)) {
+//                                    optEditText.setValue(optSplit[1]);
+//                                    handler.postAtTime(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//
+//                                            /*if (countDownTimer != null) {
+//                                                countDownTimer.cancel();
+//                                            }*/
+//
+//                                            mBottomSheetDialog.hide();
+//
+//                                            //veryfiOTP(number, optSplit[1]);
+//
+//                                            //  callVaryfyOTP(optSplit[1]);
+//                                        /*OtpDialog dialog = null;
+//                                        dialog = new OtpDialog(RegisterActivity.this,number);
+//                                        Bundle bundle = new Bundle();
+//                                        dialog.onCreate(bundle);
+//                                        dialog.dismiss();*/
+//                                        }
+//                                    }, 1000);
+//                                }
+//                            }
+//                        });
 
-                                            /*if (countDownTimer != null) {
-                                                countDownTimer.cancel();
-                                            }*/
 
-                                            mBottomSheetDialog.hide();
-
-                                            //veryfiOTP(number, optSplit[1]);
-
-                                            //  callVaryfyOTP(optSplit[1]);
-                                        /*OtpDialog dialog = null;
-                                        dialog = new OtpDialog(RegisterActivity.this,number);
-                                        Bundle bundle = new Bundle();
-                                        dialog.onCreate(bundle);
-                                        dialog.dismiss();*/
-                                        }
-                                    }, 1000);
-                                }
-                            }
-                        });
 
                        /* if (!optEditText.getText().toString().equals("")) {
                             String optText = optEditText.getText().toString();
@@ -664,6 +658,7 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Write your code here to execute after dialog closed
                                 // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                                send_Otp.setVisibility(View.VISIBLE);
                             }
                         });
 

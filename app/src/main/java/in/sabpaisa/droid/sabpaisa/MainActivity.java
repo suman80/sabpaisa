@@ -105,6 +105,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
@@ -140,6 +144,7 @@ import me.grantland.widget.AutofitTextView;
 
 import static com.mikepenz.materialize.util.UIUtils.convertDpToPixel;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
+import static in.sabpaisa.droid.sabpaisa.LogInActivity.APP_VERSION_SHARED_PREF;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class MainActivity extends AppCompatActivity implements /*AppBarLayout.OnOffsetChangedListener,*/ /*RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/ NavigationView.OnNavigationItemSelectedListener, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
@@ -203,6 +208,11 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
     NavigationView navigationView;
 
     String uinStatus;
+
+
+//    public static String APP_VERSION_SHARED_PREF = "AppVersionSharedPref";
+
+    String currentVersion;
 
 
     ////Testing
@@ -689,6 +699,32 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         };
 
         LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(receiver,new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
+
+
+/*
+
+        SharedPreferences.Editor editorVersionCode = getSharedPreferences(APP_VERSION_SHARED_PREF, MODE_PRIVATE).edit();
+        editorVersionCode.putInt("APP_VERSION", versionCode);
+        editorVersionCode.apply();
+
+        if (){
+
+        }
+*/
+
+
+    // Checking app version
+        try {
+            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        new GetVersionCode().execute();
+
+
+
+
 
     }
 
@@ -1989,6 +2025,130 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         }
 
         return deletedAll;
+    }
+
+
+
+    class GetVersionCode extends AsyncTask<Void, String, String> {
+
+        @Override
+
+        protected String doInBackground(Void... voids) {
+
+            String newVersion = null;
+
+            try {
+                Document document = Jsoup.connect("https://play.google.com/store/apps/details?id=" + MainActivity.this.getPackageName()  + "&hl=en")
+                        .timeout(30000)
+                        .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                        .referrer("http://www.google.com")
+                        .get();
+                if (document != null) {
+                    Elements element = document.getElementsContainingOwnText("Current Version");
+                    for (Element ele : element) {
+                        if (ele.siblingElements() != null) {
+                            Elements sibElemets = ele.siblingElements();
+                            for (Element sibElemet : sibElemets) {
+                                newVersion = sibElemet.text();
+                            }
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return newVersion;
+
+        }
+
+
+        @Override
+
+        protected void onPostExecute(String onlineVersion) {
+
+            super.onPostExecute(onlineVersion);
+
+            if (onlineVersion != null && !onlineVersion.isEmpty()) {
+
+                /*if (Float.valueOf(currentVersion) < Float.valueOf(onlineVersion)) {
+                    //show anything
+                }*/
+
+                final String currentVersionLocal = currentVersion.trim().replace(".","");
+                final String currentVersionOnline = onlineVersion.trim().replace(".","");
+
+
+                SharedPreferences prefs = getSharedPreferences(APP_VERSION_SHARED_PREF, MODE_PRIVATE);
+                int appVersion = prefs.getInt("APP_VERSION", 1);
+
+
+                if (/*Integer.parseInt(currentVersionLocal)*/ appVersion < Integer.parseInt(currentVersionOnline)){
+                    Log.d("MainActivity","AppVersion_IsLessThanOnline__(currentVersionLocal)___"+appVersion+"__&currentVersionOnline__"+currentVersionOnline);
+                    // Logout Operation
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
+                    builder.setMessage("New Updates are available at PlayStore. \nKindly update your app for better experience");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+
+
+                            SharedPreferences.Editor editor11 = getSharedPreferences(APP_VERSION_SHARED_PREF, MODE_PRIVATE).edit();
+                            editor11.putInt("APP_VERSION", Integer.parseInt(currentVersionOnline));
+                            editor11.apply();
+                            editor11.commit();
+
+
+
+                            Log.d("Mainctivity "," ***Logout******* ");
+                            SharedPreferences settings1 = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor1 = settings1.edit();
+                            editor1.remove("m");
+                            editor1.commit();
+
+                            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.remove("logged");
+
+                            editor.commit();
+                            clearApplicationData();
+                            finish();
+
+                            finishAffinity();
+                    /*Intent intent = new Intent(MainActivity.this, LogInActivity.class);
+
+
+                    startActivity(intent);*/
+
+                            System.exit(0);
+
+
+
+                        }
+                    });
+
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    alert.setCancelable(false);
+                    alert.setCanceledOnTouchOutside(false);
+
+
+
+
+                }else if (Integer.parseInt(currentVersionLocal) == Integer.parseInt(currentVersionOnline)){
+                    Log.d("MainActivity","AppVersion_IsEqualsToOnline__(currentVersionLocal)___"+currentVersionLocal+"__&currentVersionOnline__"+currentVersionOnline);
+                }else {
+                    Log.d("MainActivity_AppVersion","In Else Part");
+                }
+
+
+
+            }
+
+            //Log.d("AppVersionUpdate", "Current version " + currentVersion + "playstore version " + onlineVersion);
+
+        }
     }
 
 

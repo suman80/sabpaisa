@@ -37,20 +37,20 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
-       <!-- <in.sabpaisa.droid.sabpaisa.Util.PrefixEditText
-            android:imeOptions="actionNext"
-            android:id="@+id/et_phone_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="25dp"
-            android:maxLength="10"
-            android:background="@drawable/background_edittext"
-            android:drawableLeft="@drawable/ic_phone_black_24dp"
-            android:drawablePadding="10dp"
-            android:hint="@string/hint_phone"
-            android:inputType="phone" />   -->
+        <!-- <in.sabpaisa.droid.sabpaisa.Util.PrefixEditText
+             android:imeOptions="actionNext"
+             android:id="@+id/et_phone_number"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="20dp"
+             android:layout_marginRight="20dp"
+             android:layout_marginTop="25dp"
+             android:maxLength="10"
+             android:background="@drawable/background_edittext"
+             android:drawableLeft="@drawable/ic_phone_black_24dp"
+             android:drawablePadding="10dp"
+             android:hint="@string/hint_phone"
+             android:inputType="phone" />   -->
 
         <!--testing on master-->
 
@@ -71,7 +71,7 @@
             />
 
 
-       <FrameLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -160,5 +160,8 @@
                 android:textSize="25sp"
                 android:textStyle="bold" />
         </LinearLayout>
+
+
+
     </LinearLayout>
 </ScrollView>

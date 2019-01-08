@@ -50,11 +50,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
-import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference;
-import in.sabpaisa.droid.sabpaisa.Util.SmsListener;
-import in.sabpaisa.droid.sabpaisa.Util.SmsReceiver;
 
 public class ChangePassword extends AppCompatActivity {
     private static final String TAG = ChangePassword.class.getSimpleName();
@@ -125,10 +121,14 @@ public class ChangePassword extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(), "Please enter Phone Number!", Toast.LENGTH_LONG).show();
                 } else if (isOnline()) {
-                    mBottomSheetDialog.setCancelable(false);//Added on 2nd Feb
+
+                    //Commenting on 2nd Jan 2019
+
+                    /*mBottomSheetDialog.setCancelable(false);//Added on 2nd Feb
                     mBottomSheetDialog.setCanceledOnTouchOutside(false);//Added on 2nd Feb
                     mBottomSheetDialog.show();
-                    callTimerCoundown();
+                    callTimerCoundown();*/
+                    send_Otp.setVisibility(View.GONE);
                     sendOTP(v, number);
 
                 } else {
@@ -510,28 +510,32 @@ public class ChangePassword extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("success")) {
 
-                        SmsReceiver.bindListener(new SmsListener() {
-                            @Override
-                            public void messageReceived(String messageText) {
-                                Log.i("OTP", "messageText=" + messageText);
+                        //Commenting on 2nd Jan 2019
 
-                                final String optSplit[] = messageText.split(":");
-                                if (optSplit[0].trim().equalsIgnoreCase(otpTag)) {
-                                    optEditText.setText(optSplit[1]);
-                                    handler.postAtTime(new Runnable() {
-                                        @Override
-                                        public void run() {
+//                        SmsReceiver.bindListener(new SmsListener() {
+//                            @Override
+//                            public void messageReceived(String messageText) {
+//                                Log.i("OTP", "messageText=" + messageText);
+//
+//                                final String optSplit[] = messageText.split(":");
+//                                if (optSplit[0].trim().equalsIgnoreCase(otpTag)) {
+//                                    optEditText.setText(optSplit[1]);
+//                                    handler.postAtTime(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//
+//
+//                                            mBottomSheetDialog.hide();
+//
+//                                            veryfiOTP(number, optSplit[1]);
+//
+//                                        }
+//                                    }, 10000);
+//                                }
+//                            }
+//                        });
 
 
-                                            mBottomSheetDialog.hide();
-
-                                            veryfiOTP(number, optSplit[1]);
-
-                                        }
-                                    }, 10000);
-                                }
-                            }
-                        });
 
 
                     } else if (status.equals("failure")) {
@@ -552,6 +556,7 @@ public class ChangePassword extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Write your code here to execute after dialog closed
                                 // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                                send_Otp.setVisibility(View.VISIBLE);
                             }
                         });
 

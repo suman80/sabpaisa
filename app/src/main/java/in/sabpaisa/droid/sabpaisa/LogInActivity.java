@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.design.widget.BottomSheetDialog;
@@ -83,6 +84,9 @@ public class LogInActivity extends AppCompatActivity {
     public static String MySharedPrefLogin = "mySharedPrefForlogin";
 
     public static final String PREFS_NAME = "LoginPrefs";
+
+    public static String APP_VERSION_SHARED_PREF = "AppVersionSharedPref";
+    String currentVersion;
 
 
     @Override
@@ -257,6 +261,32 @@ public class LogInActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
+        // Checking app version
+        try {
+            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+        SharedPreferences.Editor editor11 = getSharedPreferences(APP_VERSION_SHARED_PREF, MODE_PRIVATE).edit();
+        editor11.putInt("APP_VERSION", Integer.parseInt(currentVersion.trim().replace(".","")));
+        editor11.apply();
+        editor11.commit();
+
+        //For testing
+
+        SharedPreferences prefs = getSharedPreferences(APP_VERSION_SHARED_PREF, MODE_PRIVATE);
+        int appVersion = prefs.getInt("APP_VERSION", 1);
+
+        Log.d("LogIn","appVersion__"+appVersion);
+
+
+
+
     }
 
 

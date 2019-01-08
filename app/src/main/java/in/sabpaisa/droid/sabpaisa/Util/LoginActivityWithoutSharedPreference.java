@@ -54,6 +54,7 @@ import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.FilterActivity;
+import in.sabpaisa.droid.sabpaisa.FilterActivity1;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.RegisterActivity;
 import in.sabpaisa.droid.sabpaisa.TLSSocketFactory;
@@ -333,7 +334,7 @@ public class LoginActivityWithoutSharedPreference extends AppCompatActivity {
 
                     if (status!=null && status.equals("success")){
 
-                        Intent intent = new Intent(LoginActivityWithoutSharedPreference.this,FilterActivity.class);
+                        Intent intent = new Intent(LoginActivityWithoutSharedPreference.this,FilterActivity1.class);
 
                         startActivity(intent);
 
