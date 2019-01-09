@@ -1206,6 +1206,9 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
                         loadCommentListView(commentArrayList);
                     } else if (status.equals("failure")) {
+
+                        progress.setVisibility(View.GONE);
+
                         if (response1.equals("Not A Member") || response1.equals("Feed is deactivated")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Proceed_Feed_FullScreen.this);
                         builder.setTitle("Comment Service");
