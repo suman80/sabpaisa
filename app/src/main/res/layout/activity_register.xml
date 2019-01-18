@@ -11,6 +11,16 @@
         android:orientation="vertical"
         tools:context="in.sabpaisa.droid.sabpaisa.LogInActivity">
 
+        <ProgressBar
+            android:id="@+id/progressbar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:max="100"
+            android:progress="0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            />
+
         <!--TODO SabPaisa logo will be placed here-->
         <TextView
             android:layout_width="wrap_content"
@@ -109,7 +119,6 @@
 
         </FrameLayout>
 
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,7 +139,36 @@
                 android:drawablePadding="10dp"
                 android:hint="@string/hint_fullname"
                 android:singleLine="true" />
+
         </FrameLayout>
+
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+
+            android:layout_marginTop="25dp">
+
+            <EditText
+                android:imeOptions="actionNext"
+                android:id="@+id/et_Email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="40"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/background_edittext"
+                android:drawableLeft="@drawable/ic_email_black_24dp"
+                android:drawablePadding="10dp"
+                android:hint="Email-Id"
+                android:singleLine="true" />
+
+        </FrameLayout>
+
+
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -186,4 +224,6 @@
 
 
     </LinearLayout>
+
+
 </ScrollView>

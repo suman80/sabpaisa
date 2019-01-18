@@ -47,6 +47,8 @@ import in.sabpaisa.droid.sabpaisa.Model.FeedCommentsOfflineModel;
 import in.sabpaisa.droid.sabpaisa.Model.FeedNotificatonModel;
 import in.sabpaisa.droid.sabpaisa.Model.GroupNotificationModel;
 
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.SEND_FEED_JSON;
+
 /**
  * Created by rajdeep on 16/9/18.
  */
@@ -74,14 +76,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String title = dataMap.get("title");
         String userName = dataMap.get("userName");
         String userToken = dataMap.get("userToken");
-        final String feedId = dataMap.get("feedId");
+        String feedId = dataMap.get("feedId");
         String groupId = dataMap.get("groupId");
         String feedAccessMode = dataMap.get("feedAccessMode");
 
-        Log.d("BackGroundNoti : ", body + " " + body.trim().length() + " " + title + " " + feedId + " " + groupId + " " + userName);
+        /*Log.d("BackGroundNoti : ", body + " " + body.trim().length() + " " + title + " " + feedId + " " + groupId + " " + userName);
         Log.d("NotificationBody : ", StringEscapeUtils.unescapeJava(body));
         Log.d("feedAccessMode : ", "___"+feedAccessMode);
-
+*/
+        Log.d("onMessageReceived", "___"+dataMap);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -170,8 +173,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 ///////////Update UI//////////////////////////////
                 if(isFeedOpen) {
+
+
+
                     Intent feedUI = new Intent(ConstantsForUIUpdates.FEED_UI);
                     feedUI.putExtra("FEED_ID", feedId);
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(dataMap.get("object"));
+
+                        feedUI.putExtra("FEED_JSON", jsonObject.toString());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     LocalBroadcastManager.getInstance(this).sendBroadcast(feedUI);
                 }
 
@@ -353,6 +368,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 if(isFeedOpen) {
                     Intent feedUI = new Intent(ConstantsForUIUpdates.FEED_UI);
                     feedUI.putExtra("FEED_ID", feedId);
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(dataMap.get("object"));
+
+                        feedUI.putExtra("FEED_JSON", jsonObject.toString());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                     LocalBroadcastManager.getInstance(this).sendBroadcast(feedUI);
                 }
 

@@ -2,10 +2,14 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
@@ -13,15 +17,19 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -47,10 +55,20 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.goodiebag.pinview.Pinview;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.credentials.Credential;
+import com.google.android.gms.auth.api.credentials.HintRequest;
+import com.google.android.gms.auth.api.phone.SmsRetriever;
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.security.ProviderInstaller;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import android.Manifest;
 
@@ -62,19 +80,24 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference;
+
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.FEED_ARRAYLIST;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.OTP_NOT_RECIEVED;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.SEND_OTP;
 
 
 /**
  * Created by Rajdeep Singh on 26-10-2017.
  */
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity  {
     private static final String TAG = RegisterActivity.class.getSimpleName();
-    EditText et_phone_number, et_FullName, et_password;
+    EditText et_phone_number, et_FullName, et_password,et_Email;
     private Button btn_register,sentOtpTest;
     private Button send_Otp;
     int MY_SOCKET_TIMEOUT_MS =100000;
@@ -102,6 +125,13 @@ public class RegisterActivity extends AppCompatActivity {
     String deviceId;
     Button passwordShow;
 
+    public static final int RESOLVE_HINT = 1;
+
+    public static ProgressDialog progressDialog;
+
+
+
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -128,6 +158,7 @@ public class RegisterActivity extends AppCompatActivity {
         et_FullName = (EditText) findViewById(R.id.et_FullName);
         //et_otp =(EditText) findViewById(R.id.et_otp);
         et_password = (EditText) findViewById(R.id.et_password);
+        et_Email = (EditText) findViewById(R.id.et_Email);
         //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         passwordShow=(Button) findViewById(R.id.tv_password_show1);
         //et_otp=(EditText)findViewById(R.id.optEditText);
@@ -142,7 +173,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         timerTextView = (TextView) sheetView.findViewById(R.id.timer_text_view);
 
-
+        progressDialog = new ProgressDialog(RegisterActivity.this,R.style.DialogTheme);
 
 
 
@@ -202,6 +233,12 @@ public class RegisterActivity extends AppCompatActivity {
                     mBottomSheetDialog.setCanceledOnTouchOutside(true);
                     mBottomSheetDialog.setCancelable(true);
                     callTimerCoundown();*/
+
+                    progressDialog.setMessage("Please wait for OTP Verification");
+                    progressDialog.show();
+                    /*progressDialog.setCancelable(false);
+                    progressDialog.setCanceledOnTouchOutside(false);*/
+
                     send_Otp.setVisibility(View.GONE);
                     sendOTP(v, number);
                     // Toast.makeText(OTPVarify.this, "first name field is empty", Toast.LENGTH_LONG).show();
@@ -271,6 +308,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 String contactNumber = et_phone_number.getText().toString();
                 String fullName = et_FullName.getText().toString();
+                String email = et_Email.getText().toString();
                 String otp=et_otp.getValue().toString();
 
                 // String dob =  et_phone_number.getText().toString();
@@ -296,6 +334,10 @@ public class RegisterActivity extends AppCompatActivity {
                 } else if (password.length() == 0) {
 
                     et_password.setError("Please set your Password");
+
+                }else if (isValidEmail(email)) {
+
+                    et_Email.setError("Please enter the correct email-id");
 
                 } else if (isOnline()) {
                     Log.e(TAG, "otp11 " +otp11);
@@ -329,7 +371,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     }
                     else   {
-                        registerUser(contactNumber, fullName, password, deviceId);
+                        registerUser(contactNumber, fullName, password, deviceId,email);
 
                     }
 
@@ -385,9 +427,72 @@ public class RegisterActivity extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
+        googleSmsRetrievalApi();
+
+
+        LocalBroadcastManager.getInstance(RegisterActivity.this).registerReceiver(broadcastReceiver,new IntentFilter(SEND_OTP));
+        LocalBroadcastManager.getInstance(RegisterActivity.this).registerReceiver(broadcastReceiverOtpRecieved,new IntentFilter(OTP_NOT_RECIEVED));
+
+
+
 
     }
 
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (intent.getAction().equals(SEND_OTP)){
+
+               String otp = intent.getStringExtra("OTP");
+
+               Log.d("Register","otpRecieved___"+otp);
+
+                optEditText.setValue(otp);
+
+            }
+
+        }
+    };
+
+    BroadcastReceiver broadcastReceiverOtpRecieved = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (intent.getAction().equals(OTP_NOT_RECIEVED)){
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+
+                AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this, R.style.MyDialogTheme).create();
+
+                alertDialog.setTitle("OTP Error!");
+
+                alertDialog.setMessage("OTP not recieved yet, kindly try again");
+
+                alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        send_Otp.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                alertDialog.show();
+
+
+            }
+
+        }
+    };
+
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiverOtpRecieved);
+        super.onDestroy();
+    }
 
     private void deviceId() {
         final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
@@ -484,16 +589,29 @@ public class RegisterActivity extends AppCompatActivity {
 
                     Log.d("Archana211111111",""+verifireponse);
                     if (status.equals("success")) {
+
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
                         otp11 = response.getString("otp");
                         Log.d("otp11","Value "+otp11);
                         send_Otp.setVisibility(View.INVISIBLE);
                         Toast.makeText(RegisterActivity.this,String.valueOf(verifireponse),Toast.LENGTH_SHORT).show();
                     } else if (status.equals("failed")){
+
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
                         Toast.makeText(RegisterActivity.this,String.valueOf(verifireponse),Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    if (progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                    }
                    // Toast.makeText(RegisterActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
                 //progressBarDismiss();
@@ -502,6 +620,9 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
                 //VolleyLog.d("OTP", "Error: " + error.getMessage());
               //  Toast.makeText(RegisterActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 // hide the progress dialog
@@ -792,7 +913,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-    private void registerUser(final String contactNumber,final String fullName,final String password, final String deviceId ) {
+    private void registerUser(final String contactNumber,final String fullName,final String password, final String deviceId ,final String email) {
 
 
         // Tag used to cancel the request
@@ -955,6 +1076,7 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("password", password);
                 // params.put("password", password);
                 params.put("deviceId", deviceId);
+                params.put("emailId", email);
                 // params.put("dob", dob );
 
 
@@ -1092,6 +1214,105 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+
+
+
+    public void googleSmsRetrievalApi(){
+
+
+        AppSignatureHelper appSignatureHelper = new AppSignatureHelper(RegisterActivity.this);
+        appSignatureHelper.getAppSignatures();
+
+
+        HintRequest hintRequest = new HintRequest.Builder()
+                .setPhoneNumberIdentifierSupported(true)
+                .build();
+
+
+
+        GoogleApiClient apiClient = new GoogleApiClient.Builder(RegisterActivity.this)
+                .addApi(Auth.CREDENTIALS_API).enableAutoManage(RegisterActivity.this, GoogleApiHelper
+                        .getSafeAutoManageId(), new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Log.e("RegisterActivity", "Client connection failed: " + connectionResult.getErrorMessage());
+                    }
+                }).build();
+
+
+
+
+        PendingIntent intent = Auth.CredentialsApi.getHintPickerIntent(apiClient, hintRequest);
+
+        try {
+            startIntentSenderForResult(intent.getIntentSender(), RESOLVE_HINT, null, 0, 0, 0);
+        } catch (IntentSender.SendIntentException e) {
+            e.printStackTrace();
+        }
+
+
+        // Get an instance of SmsRetrieverClient, used to start listening for a matching
+// SMS message.
+        SmsRetrieverClient client = SmsRetriever.getClient(this /* context */);
+
+// Starts SmsRetriever, which waits for ONE matching SMS message until timeout
+// (5 minutes). The matching SMS message will be sent via a Broadcast Intent with
+// action SmsRetriever#SMS_RETRIEVED_ACTION.
+        Task<Void> task = client.startSmsRetriever();
+
+// Listen for success/failure of the start Task. If in a background thread, this
+// can be made blocking using Tasks.await(task, [timeout]);
+        task.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // Successfully started retriever, expect broadcast intent
+                // ...
+
+                Log.d("onSuccess","__"+aVoid);
+
+            }
+        });
+
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Failed to start retriever, inspect Exception for more details
+                // ...
+            }
+        });
+
+    }
+
+
+
+    // Obtain the phone number from the result
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESOLVE_HINT) {
+            if (resultCode == RESULT_OK) {
+                Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
+                credential.getId();  //<-- will need to process phone number string
+                Log.d("onActivityResult","__"+credential.getId());
+
+
+                if (credential.getId().length() > 10){
+                    String number = credential.getId().substring(credential.getId().length()-10);
+                    et_phone_number.setText(number);
+                    send_Otp.setVisibility(View.VISIBLE);
+                }else {
+                    et_phone_number.setText(credential.getId().length());
+                    send_Otp.setVisibility(View.VISIBLE);
+                }
+
+            }
+        }
+    }
+
+
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
 
 
 }

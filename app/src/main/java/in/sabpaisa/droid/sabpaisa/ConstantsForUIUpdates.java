@@ -11,5 +11,8 @@ public class ConstantsForUIUpdates {
     public static final String GROUP_ARRAYLIST = "groupArraylist";
     public static final String REFRESH_GROUP_FRAGMENT = "refreshGroupFragment";
     public static final String REFRESH_FEED_FRAGMENT = "refreshFeedFragment";
+    public static final String SEND_OTP = "sendOtp";
+    public static final String OTP_NOT_RECIEVED = "otpNotRecieved";
+    public static final String SEND_FEED_JSON = "sendFeedJson";
 
 }

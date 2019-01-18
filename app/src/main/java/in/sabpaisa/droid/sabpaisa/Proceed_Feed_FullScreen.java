@@ -201,6 +201,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     String memberGroupRole;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -279,6 +281,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         Log.d("Feedidproceed", "" + feed_id);
         arrayList = new ArrayList<>();
         toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
+
+        rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
 
         toolbar.setNavigationOnClickListener(
                 new View.OnClickListener() {
@@ -545,7 +549,12 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             Log.d("PFF_Notification","NotUpdated "+isUpdated);
         }
 
+
+
+
     }
+
+
 
 
     @Override
@@ -561,6 +570,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                 feed_id = feedId;
                 Log.d("PFF_FEED","broadcastVal__"+feedId +" RR "+feed_id);
 
+                //////////////////////////////////////////////////////////////////////////////////
+
                 commentArrayList.clear();
                 count = 1;
                 //API
@@ -575,11 +586,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
             }
         };
-
         LocalBroadcastManager.getInstance(Proceed_Feed_FullScreen.this).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.FEED_UI));
-
-
-
 
     }
 
@@ -683,6 +690,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         }
 
         Log.d("commentText3", " " + commentText);
+
 
     }
 

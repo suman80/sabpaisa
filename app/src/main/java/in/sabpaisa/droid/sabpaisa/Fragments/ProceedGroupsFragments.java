@@ -445,19 +445,22 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                                     Log.d("logoPath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupLogo());
                                     //Log.d("imagePath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupImage());
 
-                                    boolean isInserted = db.insertGroupData(groupDataForOffLine, token);
+                                    if (groupDataForOffLine.getMemberStatus().equals("Approved")) {
 
-                                    if (isInserted == true) {
+                                        boolean isInserted = db.insertGroupData(groupDataForOffLine, token);
 
-                                        //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
+                                        if (isInserted == true) {
 
-                                        Log.d("PGF", "LocalDBInIfPart" + isInserted);
+                                            //Toast.makeText(AllTransactionSummary.this, "Data  Inserted", Toast.LENGTH_SHORT).show();
 
-                                    } else {
-                                        Log.d("PGF", "LocalDBInElsePart" + isInserted);
-                                        //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                                            Log.d("PGF", "LocalDBInIfPart" + isInserted);
+
+                                        } else {
+                                            Log.d("PGF", "LocalDBInElsePart" + isInserted);
+                                            //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
+                                        }
+
                                     }
-
                                 }
                             }, 2000);
 
@@ -754,6 +757,8 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                                     Log.d("logoPath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupLogo());
                                     //Log.d("imagePath_PGF", "IntoLocalDb " + groupDataForOffLine.getGroupImage());
 
+                                    if (groupDataForOffLine.getMemberStatus().equals("Approved")){
+
                                     boolean isInserted = db.insertGroupData(groupDataForOffLine, token);
 
                                     if (isInserted == true) {
@@ -767,6 +772,7 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                                         //Toast.makeText(AllTransactionSummary.this, "Data  Not Inserted", Toast.LENGTH_SHORT).show();
                                     }
 
+                                }
                                 }
                             }, 2000);
 

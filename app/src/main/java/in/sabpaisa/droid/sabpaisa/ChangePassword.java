@@ -3,19 +3,25 @@ package in.sabpaisa.droid.sabpaisa;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -26,6 +32,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +48,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.goodiebag.pinview.Pinview;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.credentials.Credential;
+import com.google.android.gms.auth.api.credentials.HintRequest;
+import com.google.android.gms.auth.api.phone.SmsRetriever;
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +68,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference;
+
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.SEND_OTP;
 
 public class ChangePassword extends AppCompatActivity {
     private static final String TAG = ChangePassword.class.getSimpleName();
@@ -59,13 +80,16 @@ public class ChangePassword extends AppCompatActivity {
     Handler handler = new Handler();
     String deviceId;
     String otpTag = "Please Use this OTP to verify your Mobile on SabPaisa App";
-    EditText optEditText = null;
+    Pinview optEditText = null;
     CountDownTimer countDownTimer = null;
     TextView timerTextView = null;
-    ProgressDialog progressBar = null;
+    ProgressDialog progressDialog;
     String otp11;
     BottomSheetDialog mBottomSheetDialog;
     private static final int REQUEST_READ_PERMISSION = 123;
+    public static final int RESOLVE_HINT = 1;
+
+    EditText et_phone_number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +97,12 @@ public class ChangePassword extends AppCompatActivity {
         //CommonUtils.setFullScreen(this);
         setContentView(R.layout.activity_forgot);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        final EditText et_phone_number = (EditText) findViewById(R.id.et_phone_number);
+        et_phone_number = (EditText) findViewById(R.id.et_phone_number);
         final EditText password = (EditText) findViewById(R.id.et_currentpass);
         final EditText curentpwd = (EditText) findViewById(R.id.et_mailId);
         Button btn_save = (Button) findViewById(R.id.btn_save);
         send_Otp = (Button) findViewById(R.id.send_Otp);
-        optEditText = (EditText) findViewById(R.id.optEditText);
+        optEditText = (Pinview) findViewById(R.id.optEditText);
         et_otp = (EditText) findViewById(R.id.optEditText);
         /*START Initiallizing BottomSheetDialog and giving its view in sheetView*/
         mBottomSheetDialog = new BottomSheetDialog(ChangePassword.this);
@@ -128,6 +152,7 @@ public class ChangePassword extends AppCompatActivity {
                     mBottomSheetDialog.setCanceledOnTouchOutside(false);//Added on 2nd Feb
                     mBottomSheetDialog.show();
                     callTimerCoundown();*/
+
                     send_Otp.setVisibility(View.GONE);
                     sendOTP(v, number);
 
@@ -159,6 +184,27 @@ public class ChangePassword extends AppCompatActivity {
 
             }
         });
+
+
+
+        optEditText.setPinViewEventListener(new Pinview.PinViewEventListener() {
+            @Override
+            public void onDataEntered(Pinview pinview, boolean fromUser) {
+                //Make api calls here or what not
+                //Toast.makeText(SignUpActivity.this, pinview.getValue(), Toast.LENGTH_SHORT).show();
+                if (et_phone_number.getText().length() == 0 || et_phone_number.getText().length() < 10){
+                    //et_phone_number.setError("Please Fill The Phone No. ");
+                    Toast.makeText(ChangePassword.this,"Please Fill The Phone No.",Toast.LENGTH_SHORT).show();
+                }else {
+                    String number = et_phone_number.getText().toString();
+                    Log.d(number + "  : ", pinview.getValue());
+
+                    veryfiOTP(number, pinview.getValue());
+                }
+            }
+        });
+
+
 
 
         if (CheckPermission(this, android.Manifest.permission.READ_PHONE_STATE)) {
@@ -220,7 +266,46 @@ public class ChangePassword extends AppCompatActivity {
 
 
         });
+
+
+
+        googleSmsRetrievalApi();
+
+
+        LocalBroadcastManager.getInstance(ChangePassword.this).registerReceiver(broadcastReceiver,new IntentFilter(SEND_OTP));
+
+
+
     }
+
+
+
+
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (intent.getAction().equals(SEND_OTP)){
+
+                String otp = intent.getStringExtra("OTP");
+
+                Log.d("Register","otpRecieved___"+otp);
+
+                optEditText.setValue(otp);
+
+            }
+
+        }
+    };
+
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        super.onDestroy();
+    }
+
 
 
     public boolean isOnline() {
@@ -686,5 +771,104 @@ public class ChangePassword extends AppCompatActivity {
         return ContextCompat.checkSelfPermission(context,
                 Permission) == PackageManager.PERMISSION_GRANTED;
     }
+
+
+
+
+    public void googleSmsRetrievalApi(){
+
+
+        AppSignatureHelper appSignatureHelper = new AppSignatureHelper(ChangePassword.this);
+        appSignatureHelper.getAppSignatures();
+
+
+        HintRequest hintRequest = new HintRequest.Builder()
+                .setPhoneNumberIdentifierSupported(true)
+                .build();
+
+
+
+        GoogleApiClient apiClient = new GoogleApiClient.Builder(ChangePassword.this)
+                .addApi(Auth.CREDENTIALS_API).enableAutoManage(ChangePassword.this, GoogleApiHelper
+                        .getSafeAutoManageId(), new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Log.e("ChangePassword", "Client connection failed: " + connectionResult.getErrorMessage());
+                    }
+                }).build();
+
+
+
+
+        PendingIntent intent = Auth.CredentialsApi.getHintPickerIntent(apiClient, hintRequest);
+
+        try {
+            startIntentSenderForResult(intent.getIntentSender(), RESOLVE_HINT, null, 0, 0, 0);
+        } catch (IntentSender.SendIntentException e) {
+            e.printStackTrace();
+        }
+
+
+        // Get an instance of SmsRetrieverClient, used to start listening for a matching
+// SMS message.
+        SmsRetrieverClient client = SmsRetriever.getClient(this /* context */);
+
+// Starts SmsRetriever, which waits for ONE matching SMS message until timeout
+// (5 minutes). The matching SMS message will be sent via a Broadcast Intent with
+// action SmsRetriever#SMS_RETRIEVED_ACTION.
+        Task<Void> task = client.startSmsRetriever();
+
+// Listen for success/failure of the start Task. If in a background thread, this
+// can be made blocking using Tasks.await(task, [timeout]);
+        task.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // Successfully started retriever, expect broadcast intent
+                // ...
+
+                Log.d("onSuccess","__"+aVoid);
+
+            }
+        });
+
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Failed to start retriever, inspect Exception for more details
+                // ...
+            }
+        });
+
+    }
+
+
+
+    // Obtain the phone number from the result
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESOLVE_HINT) {
+            if (resultCode == RESULT_OK) {
+                Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
+                credential.getId();  //<-- will need to process phone number string
+                Log.d("onActivityResult","__"+credential.getId());
+
+
+                if (credential.getId().length() > 10){
+                    String number = credential.getId().substring(credential.getId().length()-10);
+                    et_phone_number.setText(number);
+                    send_Otp.setVisibility(View.VISIBLE);
+                }else {
+                    et_phone_number.setText(credential.getId().length());
+                    send_Otp.setVisibility(View.VISIBLE);
+                }
+
+            }
+        }
+    }
+
+
+
+
 
 }

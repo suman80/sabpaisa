@@ -1089,7 +1089,17 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
                         if (count > 1 ){
                             progress.setVisibility(View.GONE);
-                            Toast.makeText(Proceed_Group_FullScreen.this, "No More Record Found !", Toast.LENGTH_SHORT).show();
+                /*     commentArrayList.clear();
+                count = 1;
+                //API
+
+                //callGetCommentList(feed_id);
+
+                if (PrivateGroupFeeds.FLAG != null){
+                    callGetCommentListForPrivateFeeds(feed_id,userAccessToken);
+                }else {
+                    callGetCommentList(feed_id);
+                }*/            Toast.makeText(Proceed_Group_FullScreen.this, "No More Record Found !", Toast.LENGTH_SHORT).show();
                         }
 
                         //Toast.makeText(Proceed_Group_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();

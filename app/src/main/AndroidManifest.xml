@@ -260,6 +260,19 @@
         <activity android:name=".FilterActivity1" />
         <activity android:name=".AddMemberTo_A_PrivateFeed" />
         <activity android:name=".PrivateFeedMembersList"></activity>
+
+
+
+        <receiver
+            android:name=".MySMSBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
+            </intent-filter>
+        </receiver>
+
+
+
     </application>
 
 </manifest>
