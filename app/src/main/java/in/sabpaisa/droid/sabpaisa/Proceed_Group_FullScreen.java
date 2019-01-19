@@ -544,10 +544,38 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
                 Log.d("PGF_GRP","broadcastVal__"+groupId);
 
-                commentArrayList.clear();
-                count = 1;
+                try {
+                    JSONObject jsonObject = new JSONObject(intent.getStringExtra("GROUP_JSON"));
+                    Log.d("RecievedJsonData_PGF"," "+jsonObject);
+                    CommentData groupData = new CommentData();
+
+                    groupData.setCommentText(jsonObject.getString("commentText"));
+
+                    groupData.setCommentName(jsonObject.getString("commentByName"));
+                    groupData.setUserImageUrl(jsonObject.getJSONObject("userImageUrl").getString("userImageUrl"));
+                    groupData.setCommentImage(jsonObject.getString("filePath"));
+                    String dataTime = jsonObject.getString("commentDate");
+                    groupData.setCommentId(jsonObject.getInt("commentId"));
+                    groupData.setUserId(jsonObject.getJSONObject("userImageUrl").getString("userId"));
+                    try {
+                        groupData.setComment_date(getDate(Long.parseLong(dataTime)));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    commentArrayList.add(0,groupData);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //commentArrayList.clear();
+                //count = 1;
                 //API
-                callGetCommentList(GroupId,userAccessToken);
+                //callGetCommentList(GroupId,userAccessToken);
+
+                loadCommentListView(commentArrayList);
 
             }
         };

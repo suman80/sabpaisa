@@ -263,6 +263,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 if(isGroupOpen) {
                     Intent groupUI = new Intent(ConstantsForUIUpdates.GROUP_UI);
                     groupUI.putExtra("GROUP_ID", groupId);
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(dataMap.get("object"));
+
+                        groupUI.putExtra("GROUP_JSON", jsonObject.toString());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     LocalBroadcastManager.getInstance(this).sendBroadcast(groupUI);
                 }
 
@@ -456,6 +465,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 if(isGroupOpen) {
                     Intent groupUI = new Intent(ConstantsForUIUpdates.GROUP_UI);
                     groupUI.putExtra("GROUP_ID", groupId);
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(dataMap.get("object"));
+
+                        groupUI.putExtra("GROUP_JSON", jsonObject.toString());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     LocalBroadcastManager.getInstance(this).sendBroadcast(groupUI);
                 }
 

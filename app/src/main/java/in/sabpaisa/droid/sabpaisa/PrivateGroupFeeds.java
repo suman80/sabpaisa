@@ -193,6 +193,8 @@ public class PrivateGroupFeeds extends AppCompatActivity {
             urlJsonObj += "&userToken="+userAccessToken;
         }
 
+        Log.d("PrivateFeed_URL","__"+urlJsonObj);
+
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 urlJsonObj, new Response.Listener<String>(){
 

@@ -105,6 +105,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -567,21 +568,61 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             @Override
             public void onReceive(Context context, Intent intent) {
                 String feedId = intent.getStringExtra("FEED_ID");
+
+//                ArrayList<CommentData> arr = new ArrayList<CommentData>();
+
+                try{
+
+                    JSONObject jsonObject = new JSONObject(intent.getStringExtra("FEED_JSON"));
+                    Log.d("RecievedJSONData",""+jsonObject);
+                    CommentData groupData = new CommentData();
+                    groupData.setCommentText(jsonObject.getString("commentText"));
+                    Log.d("RecievedBody",""+jsonObject.getString("commentText"));
+                    groupData.setCommentName(jsonObject.getString("commentByName"));
+                    groupData.setCommentImage(jsonObject.getString("filePath"));
+                    Log.d("FILE_PATH_At_PFF1", " " + jsonObject.getString("filePath"));
+                    groupData.setCommentId(jsonObject.getInt("commentId"));
+
+                    dataTime1 = jsonObject.getString("commentDate");
+                    Log.d("dataTimePFF1", " " + dataTime1);
+
+                    /*String userImageUrl*/ JSONObject jsonObject2 = jsonObject.getJSONObject("userImageUrl")/*.getString("userImageUrl")*/;
+
+//                    JSONObject jsonObject2 = new JSONObject(userImageUrl);
+                    groupData.setUserId(jsonObject2.getString("userId"));
+                    groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
+
+                    try {
+                        groupData.setComment_date(getDate(Long.parseLong(dataTime1)));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    /*arr.add(groupData);*/
+//                    arr.addAll(commentArrayList);
+                    commentArrayList.add(0, groupData);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 feed_id = feedId;
                 Log.d("PFF_FEED","broadcastVal__"+feedId +" RR "+feed_id);
 
                 //////////////////////////////////////////////////////////////////////////////////
-
-                commentArrayList.clear();
-                count = 1;
+//                    commentArrayList.clear();
+                    //count = 1;
                 //API
 
                 //callGetCommentList(feed_id);
 
                 if (PrivateGroupFeeds.FLAG != null){
-                    callGetCommentListForPrivateFeeds(feed_id,userAccessToken);
+                    //callGetCommentListForPrivateFeeds(feed_id,userAccessToken);
+                    loadCommentListView(commentArrayList);
                 }else {
-                    callGetCommentList(feed_id);
+
+//                    commentArrayList.addAll(arr);
+                    Log.d("ARR  ", " "+commentArrayList.size());
+                    loadCommentListView(commentArrayList);
+//                    callGetCommentList(feed_id);
                 }
 
             }
