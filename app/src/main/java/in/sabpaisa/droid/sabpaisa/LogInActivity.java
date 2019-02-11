@@ -98,9 +98,13 @@ public class LogInActivity extends AppCompatActivity {
          */
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        if (settings.getString("logged", "").toString().equals("logged")) {
+        if (settings.getString("logged", "").equals("logged")) {
             Log.d("NSDM "," TTTTTTTTT");
-            Intent intent = new Intent(LogInActivity.this, FilterActivity1.class);
+            // Changing From FilterActivity1 to MainActivityskip
+            /*Intent intent = new Intent(LogInActivity.this, FilterActivity1.class);
+            startActivity(intent);*/
+
+            Intent intent = new Intent(LogInActivity.this, MainActivitySkip.class);
             startActivity(intent);
 
         }
@@ -370,9 +374,15 @@ public class LogInActivity extends AppCompatActivity {
 
 //                        displayFirebaseRegId(response);
 
-                        Intent intent = new Intent(LogInActivity.this, FilterActivity1.class);
+                        /*Intent intent = new Intent(LogInActivity.this, FilterActivity1.class);
+
+                        startActivity(intent);*/
+
+                        Intent intent = new Intent(LogInActivity.this, MainActivitySkip.class);
 
                         startActivity(intent);
+
+
 
                     } else if ((status.equals("failed") && response.equals("UserName or Current password is WRONG"))) {
 

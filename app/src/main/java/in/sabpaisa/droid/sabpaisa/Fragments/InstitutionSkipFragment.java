@@ -2,6 +2,8 @@ package in.sabpaisa.droid.sabpaisa.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,13 +15,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,10 +36,13 @@ import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.SkipMainClientsAdapter;
+import in.sabpaisa.droid.sabpaisa.AddSpaceActivity;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
+import in.sabpaisa.droid.sabpaisa.Model.PersonalSpaceModel;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -46,9 +56,15 @@ public class InstitutionSkipFragment extends Fragment {
 
     SkipMainClientsAdapter skipMainClientsAdapter;
     //InstitutionAdapter institutionAdapter;
-    ArrayList<SkipClientData> institutions;
+    ArrayList<PersonalSpaceModel> institutions;
     /*START Interface for getting data from activity*/
     GetDataInterface sGetDataInterface;
+
+    //FrameLayout framelayoutAddFeed;
+
+    LinearLayout linearLayoutAddFeedWhenNoData;
+
+    String userAccessToken;
 
     public InstitutionSkipFragment() {
 
@@ -64,7 +80,12 @@ public class InstitutionSkipFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_institution_skip, container, false);
         recyclerViewInstitutions = (RecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
-        linearLayoutnoDataFound = (LinearLayout)rootView.findViewById(R.id.noDataFound);
+
+        //framelayoutAddFeed = (FrameLayout) rootView.findViewById(R.id.framelayoutAddFeed);
+        linearLayoutnoDataFound = (LinearLayout) rootView.findViewById(R.id.noDataFound);
+        linearLayoutAddFeedWhenNoData = (LinearLayout) rootView.findViewById(R.id.linearLayoutAddFeedWhenNoData);
+
+
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),10));
@@ -73,17 +94,25 @@ public class InstitutionSkipFragment extends Fragment {
         recyclerViewInstitutions.getRecycledViewPool().setMaxRecycledViews(0, 0);
 
 
-        //institutionAdapter = new InstitutionAdapter(institutions);
-        //recyclerViewInstitutions.setAdapter(institutionAdapter);
-        recyclerViewInstitutions.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        Log.d("sGetDataInterface", "" + sGetDataInterface);
 
 
-            }
-        },1000);
-        Log.d("sGetDataInterface",""+sGetDataInterface);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+        userAccessToken = sharedPreferences.getString("response", "123");
+
+
         getClientsList();
+
+
+        linearLayoutAddFeedWhenNoData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddSpaceActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         return rootView;
     }
@@ -93,57 +122,65 @@ public class InstitutionSkipFragment extends Fragment {
 
         String tag_string_req = "req_register";
 
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_spAppClient + "?admin=" + userAccessToken;
 
+        Log.d("ISF", "url___" + url);
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.url_clientsall, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
                 try {
-                    institutions = new ArrayList<SkipClientData>();
+                    institutions = new ArrayList<>();
                     JSONObject jsonObject = new JSONObject(response);
+
+                    Log.d("ISF__", "response___" + response);
 
                     String status = jsonObject.getString("status");
 
                     String response1 = jsonObject.getString("response");
 
-                    if (status.equals("success")&&response1.equals("No_Record_Found")) {
+                    Log.d("ISF__", "status__" + status);
+                    Log.d("ISF__", "response1__" + response1);
+
+                    if (status.equals("success") && response1.equals("No Record Found")) {
 
                         //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
 
-                        linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        //linearLayoutnoDataFound.setVisibility(View.VISIBLE);
                         recyclerViewInstitutions.setVisibility(View.GONE);
-                    }
-                    else {
+                        linearLayoutAddFeedWhenNoData.setVisibility(View.VISIBLE);
+                    } else {
                         JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                        JsonParser parser = new JsonParser();
+
+                        Gson gson = new Gson();
 
                         for (int i = 0; i < jsonArray.length(); i++) {
 
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                            SkipClientData institution = new SkipClientData();
+                            //PersonalSpaceModel personalSpaceModel = new PersonalSpaceModel();
 
-                            institution.setOrganizationId(jsonObject1.getString("clientId"));
-                            institution.setOrganization_name(jsonObject1.getString("clientName"));
-                            institution.setOrgLogo(jsonObject1.getString("clientLogoPath"));
-                            JSONObject jsonObject2 = jsonObject1.getJSONObject("lookupState");
-                            institution.setOrgAddress(jsonObject2.getString("stateName"));
 
-                            institution.setOrgWal(jsonObject1.getString("clientImagePath"));
-                            Log.d("institutionskip1","121");
-                            institutions.add(institution);
+                            JsonElement mJson =  parser.parse(jsonObject1.toString());
+
+                            PersonalSpaceModel object = gson.fromJson(mJson, PersonalSpaceModel.class);
+
+                            institutions.add(object);
                         }
 
-                       /*START listener for sending data to activity*/
+                        /*START listener for sending data to activity*/
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetClients(institutions);
-                            /*END listener for sending data to activity*/
+                        /*END listener for sending data to activity*/
                         //loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
-                        skipMainClientsAdapter =new SkipMainClientsAdapter(institutions);
+                        skipMainClientsAdapter = new SkipMainClientsAdapter(institutions,getContext());
                         recyclerViewInstitutions.setAdapter(skipMainClientsAdapter);
                     }
                 }
                 // Try and catch are included to handle any errors due to JSON
-                catch(JSONException e){
+                catch (JSONException e) {
                     // If an error occurs, this prints the error to the log
                     e.printStackTrace();
 
@@ -155,7 +192,7 @@ public class InstitutionSkipFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
             }
         });
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
@@ -167,29 +204,26 @@ public class InstitutionSkipFragment extends Fragment {
         super.onAttach(context);
 
         try {
-            sGetDataInterface= (GetDataInterface) getActivity();
+            sGetDataInterface = (GetDataInterface) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
         }
     }
 
     public void getDataFromActivity() {
-        if(sGetDataInterface != null){
+        if (sGetDataInterface != null) {
             this.institutions = sGetDataInterface.getClientDataList();
             skipMainClientsAdapter.setItems(this.institutions);
             skipMainClientsAdapter.notifyDataSetChanged();
         }
 
-        Log.d("Institution_I&A"," "+sGetDataInterface+"&"+institutions);
+        Log.d("Institution_I&A", " " + sGetDataInterface + "&" + institutions);
     }
     /*END Interface for getting data from activity*/
 
     public interface GetDataInterface {
-        ArrayList<SkipClientData> getClientDataList();
+        ArrayList<PersonalSpaceModel> getClientDataList();
     }
-
-
-
 
 
 }

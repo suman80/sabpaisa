@@ -83,7 +83,7 @@ public class GroupsFragments extends Fragment implements SwipeRefreshLayout.OnRe
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragments_groups, container, false);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreen, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreenForAppCid, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");
         Log.d("clientId_GF",""+clientId);
 

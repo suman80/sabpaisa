@@ -1,0 +1,216 @@
+package in.sabpaisa.droid.sabpaisa.Fragments;
+
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.balysv.materialripple.MaterialRippleLayout;
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import in.sabpaisa.droid.sabpaisa.Adapter.SkipMemberAdapter;
+import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.Model.MemberSpaceModel;
+import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class SkipMembersFragment extends Fragment {
+
+    ArrayList<MemberSpaceModel> memberSpaceModelArrayList;
+    String appCid;
+    LinearLayout linearLayoutnoDataFound;
+    ShimmerRecyclerView recycler_view_Member;
+    MaterialRippleLayout rippleClickAdd;
+    FrameLayout framelayoutAdd;
+
+    LinearLayout linearLayoutAddMemberWhenNoData;
+
+    SkipMemberAdapter skipMemberAdapter;
+
+    //Values get from SkipClient details screen
+    String clientName,clientLogoPath,clientImagePath,state;
+
+
+    public SkipMembersFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        clientName = getArguments().getString("clientName");
+        clientLogoPath = getArguments().getString("clientLogoPath");
+        clientImagePath = getArguments().getString("clientImagePath");
+        state = getArguments().getString("state");
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreenForAppCid, Context.MODE_PRIVATE);
+        appCid=sharedPreferences.getString("appCid","abc");
+        Log.d("clientId_MEMBERS",""+appCid);
+
+        Log.d("SkipMembersFrag","Recieved_Val_"+clientName+" "+clientLogoPath+" "+clientImagePath+" "+state+" "+appCid);
+
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_skip_members, container, false);
+
+        linearLayoutnoDataFound = (LinearLayout)view.findViewById(R.id.noDataFound);
+        recycler_view_Member = (ShimmerRecyclerView) view.findViewById(R.id.recycler_view_Member);
+        rippleClickAdd = (MaterialRippleLayout)view.findViewById(R.id.rippleClickAdd);
+
+        framelayoutAdd = (FrameLayout)view.findViewById(R.id.framelayoutAdd);
+
+        linearLayoutAddMemberWhenNoData = (LinearLayout)view.findViewById(R.id.linearLayoutAddMemberWhenNoData);
+
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recycler_view_Member.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+        recycler_view_Member.setLayoutManager(llm);
+        recycler_view_Member.setMotionEventSplittingEnabled(false);
+
+        framelayoutAdd.setVisibility(View.VISIBLE);
+
+        rippleClickAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FragmentManager fragmentManager = ((AppCompatActivity) getContext()).getSupportFragmentManager();
+                AddMemberToSpaceDialogFragment1 addMemberToSpaceDialogFragment = new AddMemberToSpaceDialogFragment1();
+                addMemberToSpaceDialogFragment.show(fragmentManager, "AddMemberDialogFragment");
+
+                Bundle bundle = new Bundle();
+                bundle.putString("appCid",appCid);
+                bundle.putString("clientName",clientName);
+                bundle.putString("clientLogoPath",clientLogoPath);
+                bundle.putString("clientImagePath",clientImagePath);
+                bundle.putString("state",state);
+                addMemberToSpaceDialogFragment.setArguments(bundle);
+
+
+            }
+        });
+
+        loadMemberData(appCid);
+
+        return view;
+    }
+
+
+    public void loadMemberData (final String appCid)
+    {
+
+
+        String tag_string_req = "req_register";
+        String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_membersOfSPappclient+"?appcid="+appCid;
+
+        StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
+                url, new Response.Listener<String>(){
+
+            // Takes the response from the JSON request
+            @Override
+            public void onResponse(String response) {
+                try {
+
+                    Log.d("SMCA", "Member: " + response);
+                    //swipeRefreshLayout.setRefreshing(false);
+                    memberSpaceModelArrayList = new ArrayList<>();
+
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    String status = jsonObject.getString("status");
+
+                    String response1 = jsonObject.getString("response");
+
+                    if (status.equals("failure")) {
+
+                        Log.d("SMF", "InFail: "+response1);
+
+                    }else {
+                        JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            final MemberSpaceModel memberSpaceModel = new MemberSpaceModel();
+                            memberSpaceModel.setMemberId(jsonObject1.getString("memberId"));
+                            memberSpaceModel.setRoleId(jsonObject1.getJSONObject("lookupRole").getString("roleId"));
+                            memberSpaceModel.setRoleName(jsonObject1.getJSONObject("lookupRole").getString("roleName"));
+                            memberSpaceModel.setUserId(jsonObject1.getJSONObject("usersMaster").getString("userId"));
+                            memberSpaceModel.setFullName(jsonObject1.getJSONObject("usersMaster").getString("fullName"));
+                            memberSpaceModel.setContactNumber(jsonObject1.getJSONObject("usersMaster").getString("contactNumber"));
+                            memberSpaceModel.setUserAccessToken(jsonObject1.getJSONObject("usersMaster").getString("userAccessToken"));
+                            memberSpaceModel.setEmailId(jsonObject1.getJSONObject("usersMaster").getString("emailId"));
+                            memberSpaceModel.setUserImageUrl(jsonObject1.getJSONObject("userImageUrl").getString("userImageUrl"));
+                            memberSpaceModel.setStatus(jsonObject1.getString("status"));//Outer status
+                            memberSpaceModelArrayList.add(memberSpaceModel);
+
+                        }
+
+                        Log.d("SMF","memberSpaceModelArrayList___"+memberSpaceModelArrayList.size());
+
+                        skipMemberAdapter = new SkipMemberAdapter(memberSpaceModelArrayList,getContext());
+                        recycler_view_Member.setAdapter(skipMemberAdapter);
+
+
+
+                    }
+
+                }
+                // Try and catch are included to handle any errors due to JSON
+                catch (JSONException e) {
+                    // If an error occurs, this prints the error to the log
+                    e.printStackTrace();
+
+                }
+            }
+        },
+                // The final parameter overrides the method onErrorResponse() and passes VolleyError
+                //as a parameter
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+
+                        Log.e("SMF", "onErrorResponse"+error);
+                    }
+                }
+        );
+        // Adds the JSON array request "arrayreq" to the request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
+    }
+
+
+}

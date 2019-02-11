@@ -61,5 +61,12 @@ public class AppConfig {
     public static String URL_privateFeedUnjoinedMember = "privateFeedUnjoinedMember";
     public static String URL_privateFeedMember = "privateFeedMember";
     public static String URL_privateFeedMemberDelete = "privateFeedMember";
+    public static String URL_addSpappclient = "addSpappclient";
+    public static String URL_updateSpappclient = "updateSpappclient";
+    public static String URL_spAppClient = "spAppClient";
+    public static String URL_addmemberToSpappClient = "addmemberToSpappClient";
+    public static String URL_addmembersToSpappClient = "addmembersToSpappClient";
+    public static String URL_membersOfSPappclient = "membersOfSPappclient";
+    public static String URL_removemembersToSpappClient = "removemembersToSpappClient";
 
 }

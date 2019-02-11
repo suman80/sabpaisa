@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.ClientFilterFragment">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".FilterActivity1">
+
+        <TextView
+            android:id="@+id/text_SearchClients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search Clients :"
+            android:textColor="@color/bg_orange"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            />
+
+
+        <AutoCompleteTextView
+            android:id="@+id/clientAutoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:completionThreshold="1"
+            android:hint="Enter Client Name"
+            android:textColorHint="@color/bg_orange"
+            android:background="@drawable/chat_edit_text_background"
+            android:padding="5dp"
+            android:drawableEnd="@drawable/autocomplete_search"
+            android:layout_below="@+id/text_SearchClients"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            />
+
+
+        <Button
+            android:id="@+id/btn_Proceed"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/background_button"
+            android:text="Proceed"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_below="@+id/clientAutoCompleteTextView"
+            android:layout_marginTop="100dp"
+            />
+
+
+
+    </RelativeLayout>
+
+
+
+</FrameLayout>

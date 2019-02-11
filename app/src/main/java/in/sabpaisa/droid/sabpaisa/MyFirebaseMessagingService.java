@@ -498,7 +498,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void createNotificationForOreoAndAbove(final String title, final String body, final String feedId, final String groupId, final String userName) {
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
-        String response = sharedPreferences.getString("response", "123");
+        String response = sharedPreferences.getString("response", /*"123"*/null);
         String userAccessToken = response;
 
         PendingIntent pendingIntent = null;
@@ -579,7 +579,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d("In_createNotification", "Title: " + title + " & \n Body :" + body);
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
-        String response = sharedPreferences.getString("response", "123");
+        String response = sharedPreferences.getString("response", null);
         String userAccessToken = response;
 
         PendingIntent pendingIntent = null;

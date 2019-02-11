@@ -228,6 +228,11 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             userAccessToken = getIntent().getStringExtra("userAccessTokenFromNotification");
         }
 
+        if(userAccessToken == null || userAccessToken.equals("123")) {
+            Intent intent = new Intent(Proceed_Feed_FullScreen.this, LogInActivity.class);
+            startActivity(intent);
+        }
+
 
         SharedPreferences sharedPreferencesRole = getApplicationContext().getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
 
@@ -731,6 +736,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
         }
 
         Log.d("commentText3", " " + commentText);
+
 
 
     }

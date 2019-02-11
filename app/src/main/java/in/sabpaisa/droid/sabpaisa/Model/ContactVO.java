@@ -10,6 +10,8 @@ public class ContactVO  {
     public String ContactNumber;
     public int InviteButtonVisibility;
 
+    boolean isSelected ;
+
     public int getInviteButtonVisibility() {
         return InviteButtonVisibility;
     }
@@ -40,5 +42,13 @@ public class ContactVO  {
 
     public void setContactNumber(String contactNumber) {
         ContactNumber = contactNumber;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

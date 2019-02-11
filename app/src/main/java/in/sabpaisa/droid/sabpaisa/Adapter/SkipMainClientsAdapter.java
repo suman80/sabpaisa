@@ -1,111 +1,169 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 //import com.github.chrisbanes.photoview.PhotoView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import in.sabpaisa.droid.sabpaisa.AddMemberTo_A_Group;
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.EditSpace;
+import in.sabpaisa.droid.sabpaisa.Fragments.AddMemberToSpaceDialogFragment;
+import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.LogInActivity;
+import in.sabpaisa.droid.sabpaisa.Model.MemberOfflineDataModel;
+import in.sabpaisa.droid.sabpaisa.Model.MemberSpaceModel;
+import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
+import in.sabpaisa.droid.sabpaisa.Model.PersonalSpaceModel;
+import in.sabpaisa.droid.sabpaisa.Model.UserImageModel;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
+import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
+
+import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_MEMBERS;
 
 //import com.elyeproj.loaderviewlibrary.LoaderImageView;
 public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClientsAdapter.MyViewHolder> {
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-    private ArrayList<SkipClientData> institutions;
+    private ArrayList<PersonalSpaceModel> institutions;
 
-    public SkipMainClientsAdapter(ArrayList<SkipClientData> institutions) {
+    ArrayList<MemberSpaceModel> memberSpaceModelArrayList;
+
+    Context context;
+
+    public SkipMainClientsAdapter(ArrayList<PersonalSpaceModel> institutions,Context context) {
         this.institutions = institutions;
+        this.context=context;
     }
 
     /*START Method to change data when put query in searchBar*/
-    public void setItems(ArrayList<SkipClientData> feedDatas) {
+    public void setItems(ArrayList<PersonalSpaceModel> feedDatas) {
         this.institutions = feedDatas;
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
-            final SkipClientData mainFeedData = institutions.get(position);
-            holder.instituteName.setText(mainFeedData.getOrganization_name());
-            holder.instituteLocation.setText(mainFeedData.getOrgAddress());
+            final PersonalSpaceModel mainFeedData = institutions.get(position);
+            holder.instituteName.setText(mainFeedData.getAppCname());
+            holder.instituteLocation.setText(mainFeedData.getAddress());
             //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
 
-        if (mainFeedData.getOrgLogo()==null)
+        if (mainFeedData.getClientImagePath()==null)
         {
             holder.thumbnail.setDefaultImageResId(R.drawable.image_not_found);
         }else {
-            holder.thumbnail.setImageUrl(mainFeedData.getOrgLogo(), imageLoader);
+            holder.thumbnail.setImageUrl(mainFeedData.getClientImagePath(), imageLoader);
         }
 
-        if (mainFeedData.getOrgLogo()==null)
+        if (mainFeedData.getClientLogoPath()==null)
         {
             holder.clinetbanner.setDefaultImageResId(R.drawable.image_not_found);
         }else {
-            holder.clinetbanner.setImageUrl(mainFeedData.getOrgWal(),imageLoader);
+            holder.clinetbanner.setImageUrl(mainFeedData.getClientLogoPath(),imageLoader);
         }
-
-/*
-           holder.clinetbanner.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   Intent intent = new Intent(v.getContext(), SkipClientDetailsScreen.class);
-                   intent.putExtra("clientName", mainFeedData.getOrganization_name());
-                   intent.putExtra("state", mainFeedData.getOrgAddress());
-                   intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
-                   intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
-                   intent.putExtra("clientId",mainFeedData.getOrganizationId());
-                   v.getContext().startActivity(intent);
-               }
-           });
-
-            holder.instituteLocation.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), SkipClientDetailsScreen.class);
-
-                    intent.putExtra("clientName", mainFeedData.getOrganization_name());
-                    intent.putExtra("state", mainFeedData.getOrgAddress());
-                    intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
-                    intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
-                    intent.putExtra("clientId",mainFeedData.getOrganizationId());
-                    v.getContext().startActivity(intent);
-                }
-            });*/
 
         holder.rippleClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), SkipClientDetailsScreen.class);
 
-                intent.putExtra("clientName", mainFeedData.getOrganization_name());
-                intent.putExtra("state", mainFeedData.getOrgAddress());
-                intent.putExtra("clientLogoPath", mainFeedData.getOrgLogo());
-                intent.putExtra("clientImagePath",mainFeedData.getOrgWal());
-                intent.putExtra("clientId",mainFeedData.getOrganizationId());
-                v.getContext().startActivity(intent);
+                //API to check member data
+
+                checkMemberData(mainFeedData.getAppCid(),mainFeedData);
+
+
             }
         });
+
+
+        holder.imgPopUpMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+
+                PopupMenu menu = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    menu = new PopupMenu(view.getContext(),view, Gravity.CENTER);
+                }
+
+                menu.getMenu().add("Edit");
+
+
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        if (menuItem.getTitle().equals("Edit")){
+
+                            Intent intent = new Intent(view.getContext(), EditSpace.class);
+                            intent.putExtra("SPACE_NAME",mainFeedData.getAppCname());
+                            intent.putExtra("SPACE_LOGO",mainFeedData.getClientLogoPath());
+                            intent.putExtra("SPACE_IMAGE",mainFeedData.getClientImagePath());
+                            intent.putExtra("SPACE_APP_CID",mainFeedData.getAppCid());
+                            intent.putExtra("SPACE_DESCRIPTION",mainFeedData.getDescription());
+                            view.getContext().startActivity(intent);
+
+
+                        }
+
+
+                        return true;
+                    }
+                });
+
+                menu.show();
+
+            }
+        });
+
+
+
 
     }
     /*END Method to change data when put query in searchBar*/
@@ -128,20 +186,18 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
         NetworkImageView thumbnail,clinetbanner;
         TextView instituteName,instituteLocation;
         MaterialRippleLayout rippleClick;
+        ImageView imgPopUpMenu;
         public MyViewHolder(View itemView) {
             super(itemView);
 
 
             thumbnail = (NetworkImageView) itemView .findViewById(R.id.thumbnail);
             clinetbanner =(NetworkImageView) itemView.findViewById(R.id.clinetbanner);
-            //instituteLogo = (ImageView)itemView.findViewById(R.id.iv_instituteLogo);
-            //institutePic = (ImageView)itemView.findViewById(R.id.iv_institutePic);
-            //thumbnail =(NetworkImageView)itemView.findViewById(R.id.thumbnail);
 
             instituteName = (TextView)itemView.findViewById(R.id.tv_instituteName);
             instituteLocation = (TextView)itemView.findViewById(R.id.tv_instituteLocation);
             rippleClick = (MaterialRippleLayout)itemView.findViewById(R.id.rippleClick);
-
+            imgPopUpMenu = (ImageView)itemView.findViewById(R.id.imgPopUpMenu);
         }
     }
     @Override
@@ -149,5 +205,107 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_institutions_tab, parent, false);
         return new MyViewHolder(v);
     }
+
+
+    public void checkMemberData (final String appCid,final PersonalSpaceModel personalSpaceModel)
+    {
+
+
+        String tag_string_req = "req_register";
+        String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_membersOfSPappclient+"?appcid="+appCid;
+
+        StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
+                url, new Response.Listener<String>(){
+
+            // Takes the response from the JSON request
+            @Override
+            public void onResponse(String response) {
+                try {
+
+                    Log.d("SMCA", "Member: " + response);
+                    //swipeRefreshLayout.setRefreshing(false);
+                    memberSpaceModelArrayList = new ArrayList<>();
+
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    String status = jsonObject.getString("status");
+
+                    String response1 = jsonObject.getString("response");
+
+                    if (status.equals("failure")) {
+
+                        Log.d("SMCA", "InFail: "+response1);
+
+                    }else {
+                        JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            final MemberSpaceModel memberSpaceModel = new MemberSpaceModel();
+                            memberSpaceModel.setMemberId(jsonObject1.getString("memberId"));
+                            memberSpaceModelArrayList.add(memberSpaceModel);
+
+                }
+
+                Log.d("SMCA","memberSpaceModelArrayList___"+memberSpaceModelArrayList.size());
+
+
+                        if (memberSpaceModelArrayList.size()>1) {
+
+                            Intent intent = new Intent(context, SkipClientDetailsScreen.class);
+                            intent.putExtra("clientName", personalSpaceModel.getAppCname());
+                            intent.putExtra("state", personalSpaceModel.getAddress());
+                            intent.putExtra("clientLogoPath", personalSpaceModel.getClientLogoPath());
+                            intent.putExtra("clientImagePath", personalSpaceModel.getClientImagePath());
+                            intent.putExtra("appCid", personalSpaceModel.getAppCid());
+                            context.startActivity(intent);
+
+                        }else {
+
+                            FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                            AddMemberToSpaceDialogFragment addMemberToSpaceDialogFragment = new AddMemberToSpaceDialogFragment();
+                            addMemberToSpaceDialogFragment.show(fragmentManager, "MemberDialogFragment");
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("appCid", personalSpaceModel.getAppCid());
+                            bundle.putString("state", personalSpaceModel.getAddress());
+                            bundle.putString("clientLogoPath", personalSpaceModel.getClientLogoPath());
+                            bundle.putString("clientImagePath", personalSpaceModel.getClientImagePath());
+                            bundle.putString("clientName", personalSpaceModel.getAppCname());
+                            addMemberToSpaceDialogFragment.setArguments(bundle);
+                        }
+
+
+
+                    }
+
+                }
+                // Try and catch are included to handle any errors due to JSON
+                catch (JSONException e) {
+                    // If an error occurs, this prints the error to the log
+                    e.printStackTrace();
+
+                }
+            }
+        },
+                // The final parameter overrides the method onErrorResponse() and passes VolleyError
+                //as a parameter
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+
+                        Log.e("SMCA", "onErrorResponse"+error);
+                    }
+                }
+        );
+        // Adds the JSON array request "arrayreq" to the request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
+    }
+
+
+
 
 }

@@ -97,12 +97,13 @@ import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
+import in.sabpaisa.droid.sabpaisa.Fragments.ClientFilterFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionSkipFragment;
-import in.sabpaisa.droid.sabpaisa.Fragments.OtherClientSkipFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
+import in.sabpaisa.droid.sabpaisa.Model.PersonalSpaceModel;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
@@ -111,7 +112,6 @@ import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 
-import static android.view.View.GONE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class MainActivitySkip extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener,/*AppBarLayout.OnOffsetChangedListener,*/ /*RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener,OnFragmentInteractionListener,InstitutionSkipFragment.GetDataInterface {
@@ -146,8 +146,8 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
     TextView mSearchText;
     MaterialSearchView searchView;
-    ArrayList<SkipClientData> clientData;
-    ArrayList<SkipClientData> filteredClientList;
+    ArrayList<PersonalSpaceModel> clientData;
+    ArrayList<PersonalSpaceModel> filteredClientList;
 
     InstitutionSkipFragment institutionSkipFragment;
 
@@ -204,23 +204,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         niv = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_image);
         usernameniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.username_nav);
         mailIdniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_nav);
-        //toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
 
-        //set the NAvigationImage header using glide
-
-
-      /*  //ChatSDKUiHelper.initDefault();
-
-        ChatSDKUiHelper.initDefault();
-
-        // Init the network manager
-        BNetworkManager.init(getApplicationContext());
-
-// Create a new adapter
-        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
-
-// Set the adapter
-        BNetworkManager.sharedManager().setNetworkAdapter(adapter);*/
 
         sendMoney = (ImageView) findViewById(R.id.ll_send);
         requestMoney = (ImageView) findViewById(R.id.ll_request);
@@ -231,10 +215,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         paymentButton = (LinearLayout) findViewById(R.id.payment_button);
         //chatButton = (LinearLayout) findViewById(R.id.chat);
         memberButton = (LinearLayout) findViewById(R.id.members);
-//        rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.activity_main_rfal);
-//        rfaBtn = (RapidFloatingActionButton) findViewById(R.id.activity_main_rfab);
-       // FabButtonCreate();
-        //fab = (FloatingActionButton)findViewById(R.id.fab_dashboard);
+
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("SPApp");
@@ -247,10 +228,13 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         //appBarLayout.addOnOffsetChangedListener(this);
 
+
+
+
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
-        viewPager.disableScroll(true);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+        viewPager.setOffscreenPageLimit(1);
         tabLayout.setupWithViewPager(viewPager);
 
         setSupportActionBar(toolbar);
@@ -541,8 +525,8 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
         institutionSkipFragment = new InstitutionSkipFragment();
 
-        adapter.addFragment(institutionSkipFragment, "Clients");
-        adapter.addFragment(new OtherClientSkipFragment(), "Other Clients");
+        adapter.addFragment(institutionSkipFragment, "Space");
+        adapter.addFragment(new ClientFilterFragment(), "Search Org. Space");
         //adapter.addFragment(new FormFragment(),"Forms");
         //adapter.addFragment(new InstitutionFragment(),"Groups");
         viewPager.setAdapter(adapter);
@@ -704,16 +688,16 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     /*END method to enable searchBar and define its action*/
 
     /*START method to search query in Feed List*/
-    private ArrayList<SkipClientData> filterClient(ArrayList<SkipClientData> mList, String query) { //TODO searchView
+    private ArrayList<PersonalSpaceModel> filterClient(ArrayList<PersonalSpaceModel> mList, String query) { //TODO searchView
         query = query.toLowerCase();
 
-        ArrayList<SkipClientData> filteredList = new ArrayList<>();
+        ArrayList<PersonalSpaceModel> filteredList = new ArrayList<>();
         filteredList.clear();
-        for (SkipClientData item : mList) {
-            if (item.organization_name.toLowerCase().contains(query) || item.organizationId.toLowerCase().contains(query)
+        for (PersonalSpaceModel item : mList) {
+            /*if (item.organization_name.toLowerCase().contains(query) || item.organizationId.toLowerCase().contains(query)
                     || item.orgAddress.toLowerCase().contains(query)) {
                 filteredList.add(item);
-            }
+            }*/
         }
 
         return filteredList;
@@ -788,10 +772,12 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
             Log.d("Drawer","Closing_Skip");
         }  else {
             super.onBackPressed();
-            Intent intent = new Intent(MainActivitySkip.this, FilterActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
             startActivity(intent);
-            this.finish();
+            finish();
+            System.exit(0);
 
         }
     }
@@ -1029,12 +1015,12 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     }
 
     @Override
-    public void onFragmentSetClients(ArrayList<SkipClientData> clientData) {
+    public void onFragmentSetClients(ArrayList<PersonalSpaceModel> clientData) {
         this.clientData = clientData;
     }
 
     @Override
-    public ArrayList<SkipClientData> getClientDataList() {
+    public ArrayList<PersonalSpaceModel> getClientDataList() {
         return filteredClientList;
     }
 
@@ -1521,7 +1507,14 @@ mailIdniv.setText("");
         return deletedAll;
     }
 
-
+    //Required for UI Update
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
 
 
 

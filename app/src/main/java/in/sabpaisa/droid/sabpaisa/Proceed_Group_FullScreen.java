@@ -275,6 +275,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             userAccessToken = getIntent().getStringExtra("userAccessTokenFromNotification");
         }
 
+        if(userAccessToken == null || userAccessToken.equals("123")) {
+            Intent intent = new Intent(Proceed_Group_FullScreen.this, LogInActivity.class);
+            startActivity(intent);
+        }
+
+
 
         SharedPreferences sharedPreferencesRole = getApplicationContext().getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
 

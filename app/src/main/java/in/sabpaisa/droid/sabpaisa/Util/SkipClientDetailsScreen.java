@@ -1,21 +1,31 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,6 +49,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import com.bumptech.glide.Glide;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 //import com.squareup.picasso.Picasso;
 
@@ -46,25 +57,36 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
+import in.sabpaisa.droid.sabpaisa.AllContacts;
+import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.CommentAdapter;
 import in.sabpaisa.droid.sabpaisa.CommentData;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FeedsFragments;
 import in.sabpaisa.droid.sabpaisa.FilterActivity;
+import in.sabpaisa.droid.sabpaisa.FilterActivity1;
+import in.sabpaisa.droid.sabpaisa.Fragments.SkipFeedFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.SkipGroupFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.SkipMembersFragment;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.MainActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Model.*;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
@@ -72,46 +94,40 @@ import in.sabpaisa.droid.sabpaisa.R;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.CommentAdapterDatabase;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
+import in.sabpaisa.droid.sabpaisa.UIN;
 
 import static android.support.v4.widget.SwipeRefreshLayout.*;
+import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 //This Activity has rolled back
 
 /*implements SwipeRefreshLayout.OnRefreshListener*/
 
-public class SkipClientDetailsScreen extends AppCompatActivity implements OnFragmentInteractionListener, OnRefreshListener {
-    ArrayList<SkipClientData> institutions;
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-    String FeedId, FeedName, FeedDesc, FeedTime, FeedImage, clientName, state;
+public class SkipClientDetailsScreen extends AppCompatActivity implements OnFragmentInteractionListener, OnRefreshListener,NavigationView.OnNavigationItemSelectedListener {
+
+    String FeedId, FeedName, FeedDesc, FeedTime, FeedImage, clientName, state,position;
     public static String clientImageURLPath = null;
     public static String clientLogoURLPath = null;
-    public static String clientId;
-    public static String MySharedPrefOnSkipClientDetailsScreen = "mySharedPref";
+    public static String appCid;
+    public static String MySharedPrefOnSkipClientDetailsScreenForAppCid = "MySharedPrefOnSkipClientDetailsScreenForAppCid";
     private ViewPager viewPager;
-    private Button btn_pay, btn_request;
-    TextView feedDeatilsTextView, feedNameTextView, feedTime;
-    ImageView feedImage, clientImagePath, clientLogoPath;
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
-    SwipeRefreshLayout swipeRefreshLayout;
-    EditText commentadd = null;
-    ProgressDialog loading = null;
-    ArrayList<CommentData> commentArrayList;
 
-    int lastSeq = 0;
-    boolean loadMore = true;
-    ShimmerRecyclerView rv;
-    CommentAdapterDatabase ca;
-    ProgressBar progressBar;
-    NestedScrollView nestedScroll;
-    int lastCommentId;
-    int totalComments = 0;
-    // Indicates if footer ProgressBar is shown (i.e. next page is loading)
     private boolean isLoading = false;
     private TabLayout tabLayout;
-    // If current page is the last page (Pagination will stop after this page load)
-    private boolean isLastPage = false;
-    private int currentPage = 1;
-    LinearLayout chatbutton;
+
+    TextView particular_client_name_proceed,particular_client_address_proceed;
+    Toolbar toolbar;
+    NavigationView navigationView;
+    DrawerLayout drawer;
+    ActionBarDrawerToggle toggle;
+
+    //Fragments Attached
+    SkipFeedFragment skipFeedFragment;
+    SkipGroupFragment skipGroupFragment;
+    SkipMembersFragment skipMembersFragment;
+
+    ImageView ClientImagePRoceed;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,320 +135,113 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         // CommonUtils.setFullScreen(this);
         setContentView(R.layout.skip_clientdetails);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
-       /* viewPager = (ViewPager) findViewById(R.id.viewpagerSkip);
+
+        Intent intent = getIntent();
+
+        clientName = intent.getStringExtra("clientName");
+        state = intent.getStringExtra("state");
+        appCid = intent.getStringExtra("appCid");
+        clientImageURLPath = getIntent().getStringExtra("clientImagePath");
+        clientLogoURLPath = getIntent().getStringExtra("clientLogoPath");
+        Log.d("clientIdSCDS", "" + appCid);
+        Log.d("clientImagePath", "" + clientImageURLPath);
+        Log.d("clientLogoPath", "" + clientLogoURLPath);
+
+        SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefOnSkipClientDetailsScreenForAppCid, MODE_PRIVATE).edit();
+        editor.putString("appCid", appCid);
+        editor.commit();
+
+
+        particular_client_name_proceed = (TextView)findViewById(R.id.particular_client_name_proceed);
+        particular_client_name_proceed.setText(clientName);
+        particular_client_address_proceed = (TextView)findViewById(R.id.particular_client_address_proceed);
+        particular_client_address_proceed.setText(state);
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         viewPager.setOffscreenPageLimit(3);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        setupViewPager(viewPager);
 
+        int[] tabIcons = {
+                R.drawable.feeds,
+                R.drawable.groups,
+                R.drawable.payments,
+                R.drawable.members,
+        };
 
-*/
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[3]);
 
+        position = getIntent().getStringExtra("FRAGMENT_ID");
 
-        chatbutton = (LinearLayout) findViewById(R.id.chat);
+        Log.d("SkipClientDetailScr","FRAGMENT_ID__"+position);
 
-//        ChatSDKUiHelper.initDefault();
-//
-//        // Init the network manager
-//        BNetworkManager.init(getApplicationContext());
-//
-//// Create a new adapter
-//        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
-//
-//// Set the adapter
-//        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
+        if (position != null){
+            viewPager.setCurrentItem(Integer.parseInt(position));
+        }
 
-        Intent intent = getIntent();
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
+        toggle.syncState();
 
-        clientName = intent.getStringExtra("clientName");
-        state = intent.getStringExtra("state");
-        clientId = intent.getStringExtra("clientId");
-        clientImageURLPath = getIntent().getStringExtra("clientImagePath");
-        clientLogoURLPath = getIntent().getStringExtra("clientLogoPath");
-        Log.d("clientIdSCDS", "" + clientId);
-        Log.d("clientImagePath", "" + clientImageURLPath);
-        Log.d("clientLogoPath", "" + clientLogoURLPath);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
+        toolbar.setNavigationIcon(R.drawable.ic_navigation);
 
-        SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefOnSkipClientDetailsScreen, MODE_PRIVATE).edit();
-        editor.putString("clientId", clientId);
-        editor.commit();
+        ClientImagePRoceed = (ImageView)findViewById(R.id.ClientImagePRoceed);
 
+        Glide.with(SkipClientDetailsScreen.this)/*//Added on 1st Feb*/
+                .load(clientLogoURLPath)
+                .error(R.drawable.image_not_found)
+                .into(ClientImagePRoceed);
 
-        TextView clientNameTextView = (TextView) findViewById(R.id.particular_client_name);
+    }
 
-        btn_request = (Button) findViewById(R.id.btn_request);
-        btn_pay = (Button) findViewById(R.id.btn_pay);
+    @Override
+    public void onRefresh() {
 
-        TextView stateTextView = (TextView) findViewById(R.id.particular_client_address);
-
-        clientImagePath = (ImageView) findViewById(R.id.particular_client_image);
-        //clientLogoPath  = (ImageView)findViewById(R.id.particular_client_logo);
-
-
-        btn_pay.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                AlertDialog alertDialog = new AlertDialog.Builder(SkipClientDetailsScreen.this, R.style.MyDialogTheme).create();
-
-                // Setting Dialog Title
-                alertDialog.setTitle("Pay");
-
-                // Setting Dialog Message
-                alertDialog.setMessage("For Payment,Click on the Request Join Button ");
-
-                // Setting Icon to Dialog
-                //  alertDialog.setIcon(R.drawable.tick);
-
-                // Setting OK Button
-                alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to execute after dialog closed
-                        // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                // Showing Alert Message
-                alertDialog.show();
-                Log.v("Home", "Payment");
-
-
-        /*Intent intent = new Intent(SkipClientDetailsScreen.this,SocialPayment.class);
-        startActivity(intent);*/
-
-
-            }
-        });
-
-
-        btn_request.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(SkipClientDetailsScreen.this, FilterActivity.class);
-                startActivity(intent);
-
-            }
-        });
-//        chatbutton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(SkipClientDetailsScreen.this, ChatSDKLoginActivity.class);
-//                startActivity(intent);
-//                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-//            }
-//        });
-
-//       callFeedDeatilsByFeedId();
-        clientNameTextView.setText(clientName);
-        stateTextView.setText(state);
-        new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
-        //new DownloadLogoTask(clientLogoPath).execute(clientLogoURLPath);
-
-        nestedScroll = (NestedScrollView) findViewById(R.id.nestedScroll);
-
-        rv = (ShimmerRecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
-//        rv.showShimmerAdapter();
-
-        commentArrayList = new ArrayList<CommentData>();
-
-        currentPage = 1;
-        //loadComments();
     }
 
 
-    //Code for fetching image from server
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
-    }
 
     private void setupViewPager(ViewPager viewPager) {
 
+        Bundle bundle = new Bundle();
+        bundle.putString("clientName",clientName);
+        bundle.putString("clientLogoPath",clientLogoURLPath);
+        bundle.putString("clientImagePath",clientImageURLPath);
+        bundle.putString("state",state);
+
+        skipFeedFragment = new SkipFeedFragment();
+        skipGroupFragment = new SkipGroupFragment();
+        skipMembersFragment = new SkipMembersFragment();
+
+        skipFeedFragment.setArguments(bundle);
+        skipGroupFragment.setArguments(bundle);
+        skipMembersFragment.setArguments(bundle);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FeedsFragments(), "Feeds");
-        adapter.addFragment(new GroupsFragments(), "Groups");
-        adapter.addFragment(new PayFragments(), "Make Payment");
+        adapter.addFragment(skipFeedFragment, "");
+        adapter.addFragment(skipGroupFragment, "");
+        adapter.addFragment(skipMembersFragment, "");
         //adapter.addFragment(new GroupsFragments(),"Groups");
         //adapter.addFragment(new PayFragments(),"Make Payment");
         viewPager.setAdapter(adapter);
 
 
-        //in.beginTransaction().replace(R.id.activity_main_rfab, instituteFragment).commit();
-
     }
 
-
-    //Code for fetching image from server
-    private class DownloadLogoTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            loading.show();
-        }
-
-        public DownloadLogoTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            //loading.dismiss();
-        }
-
-    }
-
-
-    private void loadComments(final String feed_id, final String userAccessToken, final String comment_text) {
-        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getFeedsComments/" + "feed_id=1";
-        final JsonArrayRequest request = new JsonArrayRequest(urlJsonObj, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                Log.wtf("Response", String.valueOf(response));
-                try {
-                    swipeRefreshLayout.setRefreshing(false);
-                    progressBar.setVisibility(View.GONE);
-                    final ArrayList<CommentData> commentArrayList = new ArrayList<CommentData>();
-                    /*if (i!=0) {
-                        ca.removeLoadingFooter();
-                    }*/
-                    for (int i = 0; i < response.length(); i++) {
-                        totalComments++;
-                        JSONObject colorObj = response.getJSONObject(i);
-//                                JSONObject colorObjBean = colorObj.getJSONObject("grpBean");
-                        CommentData groupData = new CommentData();
-                        groupData.setCommentText(colorObj.getString("comment_text"));
-                        Long dataTime = (colorObj.getLong("createdDate"));//.split(" ")[1].replace(".0", "");
-                        Timestamp timestamp = new Timestamp(dataTime);
-                        SimpleDateFormat fmt = new SimpleDateFormat("dd/MM HH:mm:ss");
-                        fmt.setTimeZone(TimeZone.getTimeZone("GMT"));
-                        Date date = new Date(timestamp.getTime());
-                        String time = String.valueOf(fmt.format(timestamp));
-                        groupData.setComment_date(time);
-                        groupData.setCommentId(colorObj.getInt("commentId"));
-                        groupData.setCommentName(colorObj.getString("comment_by_name"));
-                        commentArrayList.add(groupData);
-
-                    }
-                    loadCommentListView(commentArrayList);
-                    ca.addAll(commentArrayList);
-                    if (commentArrayList.size() == 10)
-                        ca.addLoadingFooter();
-                    /*else {
-                        isLastPage = true;
-                        int j;
-                        for (j=0;j<commentArrayList.size();j++){
-                        }
-                        lastCommentId= commentArrayList.get(j-1).getCommentId();
-//                        ca.removeLoadingFooter();
-                    }*/
-
-                   /* nestedScroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-                        @Override
-                        public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                            if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
-
-                                if (!isLastPage){
-                                    isLoading = true;
-                                    int i;
-                                    for (i=0;i<commentArrayList.size();i++){
-                                    }
-                                    int lastId = commentArrayList.get(i-1).getCommentId();
-//                                    currentPage += 1;
-                                    loadComments(String.valueOf(1));
-//                                    loadNextPage(getCommentList(dbHelper, currentPage));
-                                }
-                            }
-                        }
-                    });*/
-                }
-                // Try and catch are included to handle any errors due to JSON
-                catch (JSONException e) {
-                    // If an error occurs, this prints the error to the log
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
-
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("feed_id", feed_id);
-                params.put("userAccessToken", userAccessToken);
-                params.put("comment_text", comment_text);
-
-
-                return params;
-            }
-
-
-        };
-
-
-        AppController.getInstance().addToRequestQueue(request);
-    }
-
-    private String getTimeFormat(long timeStamp) {
-        return null;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -445,178 +254,144 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         }
     }
 
-    public void callGetCommentList(final String feed_id) {
 
-        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "getFeedsComments/" + "feed_id=1";
-        urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
-        // Creating the JsonArrayRequest class called arrayreq, passing the required parameters
-        //JsonURL is the URL to be fetched from
-        JsonArrayRequest arrayreq = new JsonArrayRequest(urlJsonObj,
-                // The second parameter Listener overrides the method onResponse() and passes
-                //JSONArray as a parameter
-                new Response.Listener<JSONArray>() {
-
-                    // Takes the response from the JSON request
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.wtf("FeedResponse", response.toString());
-                        try {
-                            swipeRefreshLayout.setRefreshing(false);
-
-                            if (response.length() < 10) {
-                                loadMore = false;
-                            }
-                            int i;
-                            for (i = 0; i < response.length(); i++) {
-                                JSONObject colorObj = response.getJSONObject(i);
-//                                JSONObject colorObjBean = colorObj.getJSONObject("grpBean");
-                                CommentData groupData = new CommentData();
-                                groupData.setCommentText(colorObj.getString("comment_text"));
-//                                String dataTime = colorObj.getString("comment_date").split(" ")[1].replace(".0", "");
-//                                groupData.setComment_date(dataTime);
-
-                                commentArrayList.add(groupData);
-                                lastSeq = colorObj.getInt("commentId");
-                            }
-                            ca.notifyItemChanged(commentArrayList.size() - 1);
-                            rv.scrollToPosition(commentArrayList.size() - 1);
-                            totalComments++;
-//                            loadCommentListView(commentArrayList);
-
-                        }
-                        // Try and catch are included to handle any errors due to JSON
-                        catch (JSONException e) {
-                            // If an error occurs, this prints the error to the log
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                // The final parameter overrides the method onErrorResponse() and passes VolleyError
-                //as a parameter
-                new Response.ErrorListener() {
-                    @Override
-                    // Handles errors that occur due to Volley
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-//                        callGroupDataList(listClick, GropuName);
-                        Log.e("CommentData ", "CommentData Error");
-                    }
-
-                })
-
-
-        {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("feed_id", feed_id);
-
-
-                return params;
-            }
-
-
-        };
-
-//        // Adds the JSON array request "arrayreq" to the request queue
-        AppController.getInstance().addToRequestQueue(arrayreq);
-
-    }
-
-    private void loadCommentListView(ArrayList<CommentData> arrayList) {
-        RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view_feed_details_comment);
-        CommentAdapter ca = new CommentAdapter(arrayList, getApplicationContext());
-        rv.setAdapter(ca);
-
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rv.addItemDecoration(new SimpleDividerItemDecoration(this));
-        rv.setLayoutManager(llm);
-        rv.setNestedScrollingEnabled(false);
-    }
-
-    public void onClickSendComment(View view) {
-        commentadd = (EditText) findViewById(R.id.commentadd);
-        String commentText = commentadd.getText().toString();
-        showpDialog(view);
-        callCommentService(commentText);
-    }
-
-    private void callCommentService(final String commentText) {
-        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "addFeedsComments/" +
-                "feed_id=1" + "/" + "userAccessToken=47DCC2AB8F1FEE94182E4426522C85D127A37404BE91FF13979B5DED7934EB49" + "/" + "commentText=hi";
-        urlJsonObj = urlJsonObj.trim().replace(" ", "%20");
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                urlJsonObj, null, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("AddCommentsToFeedByUSer", response.toString());
-
-                try {
-                    // Parsing json object response
-                    // response will be a json object
-                    String status = response.getString("status");
-                    if (status.equals("success")) {
-                        commentadd.setText("");
-                        Toast.makeText(SkipClientDetailsScreen.this, "Comment done.", Toast.LENGTH_SHORT).show();
-//                        ca.cleanUpAdapter();
-                        loadlatestComment();
-//                        loadComments(0);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),
-                            "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                }
-                hidepDialog();
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("Feed Details", "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
-                // hide the progress dialog
-                hidepDialog();
-            }
-        });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
-    }
-
-    private void loadlatestComment() {
-        ca.cleanUpAdapter();
-        //loadComments(String.valueOf(1));
-    }
-
-    private void hidepDialog() {
-        if (loading != null) {
-            loading.dismiss();
-        }
-    }
-
-    private void showpDialog(View v) {
-        loading = new ProgressDialog(v.getContext());
-        loading.setCancelable(true);
-        //loading.setMessage("OTP Checking....");
-        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        loading.show();
-    }
-
-    /*Start onRefresh() for SwipeRefreshLayout*/
     @Override
-    public void onRefresh() {
-        ca.cleanUpAdapter();
-//        loadComments(String.valueOf(1));
+    public boolean onNavigationItemSelected(MenuItem item) {
+        android.app.Fragment newFragment = null;
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_Profile) {
+            int value=2;
+            Intent intent = new Intent(SkipClientDetailsScreen.this, ProfileNavigationActivity.class);
+            //   intent.putExtra("ClientId",ClientId);
+            intent.putExtra("valueProfile",value);
+            startActivity(intent);
+            // Handle the camera action
+        } /*else if (id == R.id.nav_Chat) {
+
+        }*/ /*else if (id == R.id.nav_Settings) {
+            Intent intent=new Intent(MainActivitySkip.this, SettingsNavigationActivity.class);
+
+            startActivity(intent);
+
+        }*/ else if (id == R.id.nav_ChangePassword) {
+            Intent intent = new Intent(SkipClientDetailsScreen.this, ForgotActivity.class);
+
+            startActivity(intent);
+        } else if (id == R.id.nav_Privacy_Policy) {
+            Intent intent = new Intent(SkipClientDetailsScreen.this, PrivacyPolicyActivity.class);
+
+            startActivity(intent);
+        } else if (id == R.id.nav_logout) {
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(SkipClientDetailsScreen.this); //Home is name of the activity
+            builder.setMessage("Do you want to Exit the app?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove("logged");
+                    editor.commit();
+                    clearApplicationData();
+                    finish();
+                    finishAffinity();
+                    /*Intent intent = new Intent(MainActivitySkip.this, LogInActivity.class);
+
+                    startActivity(intent);*/
+
+                    System.exit(0);
+
+                }
+            });
+
+            builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+
+
+            // onLogoutClick(view);
+            /*SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+            SharedPreferences.Editor e=sp.edit();
+            e.clear();
+            e.commit();
+
+            startActivity(new Intent(Home.this,MainActivity.class));
+            finish();   //f
+
+            SharedPreferences settings = getSharedPreferences("your_preference_name", 0);
+            boolean isLoggedIn = settings.getBoolean("LoggedIn", false);
+
+            if(isLoggedIn )
+            {
+                //Go directly to Homescreen.
+            }
+           */
+
+
+        }
+
+        else if(id==R.id.nav_txnhistory){
+
+            Intent intent=new Intent( SkipClientDetailsScreen.this, AllTransactionSummary.class);
+
+            startActivity(intent);
+
+        }
+        else if(id==R.id.nav_Contacts){
+
+
+            Intent intent=new Intent( SkipClientDetailsScreen.this, AllContacts.class);
+
+            startActivity(intent);
+
+        }
+
+        else if (id == R.id.nav_share) {
+            /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
+
+            startActivity(intent);*/
+            try {
+                /*Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_SUBJECT, "SPApp");
+                String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
+                sAux = sAux + "https://play.google.com/store/apps/details?id=in.sabpaisa.droid.sabpaisa";
+                i.putExtra(Intent.EXTRA_TEXT, sAux);
+                startActivity(Intent.createChooser(i, "Complete action using "));*/
+
+                shareIntentSpecificApps();
+
+            }
+
+            catch (Exception e) {
+                //e.toString();
+            }
+
+
+        }
+//changes 25 april
+
+        else if(id==R.id.nav_TransactionReport){
+
+        }
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
-    /*End onRefresh() for SwipeRefreshLayout*/
+
 
 
     @Override
@@ -630,7 +405,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     }
 
     @Override
-    public void onFragmentSetClients(ArrayList<SkipClientData> clientData) {
+    public void onFragmentSetClients(ArrayList<PersonalSpaceModel> clientData) {
 
     }
 
@@ -644,6 +419,95 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     public void onFragmentSetMembers(ArrayList<Member_GetterSetter> memberData) {
 
     }
+
+
+    public void shareIntentSpecificApps() {
+
+
+        List<Intent> targetShareIntents = new ArrayList<Intent>();
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        PackageManager pm = SkipClientDetailsScreen.this.getPackageManager();
+        List<ResolveInfo> resInfos = pm.queryIntentActivities(shareIntent, 0);
+        if (!resInfos.isEmpty()) {
+            System.out.println("Have package");
+            for (ResolveInfo resInfo : resInfos) {
+                String packageName = resInfo.activityInfo.packageName;
+                Log.i("Package Name", packageName);
+
+                if (packageName.contains("com.twitter.android") || packageName.contains("com.facebook.katana")
+                        || packageName.contains("com.whatsapp") || packageName.contains("com.google.android.apps.plus")
+                        || packageName.contains("com.google.android.talk") || packageName.contains("com.slack")
+                        || packageName.contains("com.google.android.gm") || packageName.contains("com.facebook.orca")
+                        || packageName.contains("com.yahoo.mobile") || packageName.contains("com.skype.raider")
+                        || packageName.contains("com.android.mms") || packageName.contains("com.linkedin.android")
+                        || packageName.contains("com.google.android.apps.messaging")) {
+                    Intent intent = new Intent();
+
+                    String sAux = "\n Let me recommend you this application .\n this is the easy way to pay your fee\n It is very cool app try it once ,download it from the below link given... \n \n";
+                    sAux = sAux + "\n" + "https://play.google.com/store/apps/details?id=in.sabpaisa.droid.sabpaisa";
+
+                    intent.setComponent(new ComponentName(packageName, resInfo.activityInfo.name));
+                    intent.putExtra("AppName", resInfo.loadLabel(pm).toString());
+                    intent.setAction(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TEXT, sAux);
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "SPApp");
+                    intent.setPackage(packageName);
+                    targetShareIntents.add(intent);
+                }
+            }
+            if (!targetShareIntents.isEmpty()) {
+                Collections.sort(targetShareIntents, new Comparator<Intent>() {
+                    @Override
+                    public int compare(Intent o1, Intent o2) {
+                        return o1.getStringExtra("AppName").compareTo(o2.getStringExtra("AppName"));
+                    }
+                });
+                Intent chooserIntent = Intent.createChooser(targetShareIntents.remove(0), "Select app to share");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetShareIntents.toArray(new Parcelable[]{}));
+                startActivity(chooserIntent);
+            } else {
+                Toast.makeText(SkipClientDetailsScreen.this, "No app to share.", Toast.LENGTH_LONG).show();
+            }
+        }
+//Check
+
+    }
+
+
+
+    public void clearApplicationData() {
+        File cacheDirectory = getCacheDir();
+        File applicationDirectory = new File(cacheDirectory.getParent());
+        if (applicationDirectory.exists()) {
+            String[] fileNames = applicationDirectory.list();
+            for (String fileName : fileNames) {
+                if (!fileName.equals("lib")) {
+                    deleteFile(new File(applicationDirectory, fileName));
+                }
+            }
+        }
+    }
+
+    public static boolean deleteFile(File file) {
+        boolean deletedAll = true;
+        if (file != null) {
+            if (file.isDirectory()) {
+                String[] children = file.list();
+                for (int i = 0; i < children.length; i++) {
+                    deletedAll = deleteFile(new File(file, children[i])) && deletedAll;
+                }
+            } else {
+                deletedAll = file.delete();
+            }
+        }
+
+        return deletedAll;
+    }
+
+
 
 
 }

@@ -82,7 +82,7 @@ public class FeedsFragments extends Fragment implements SwipeRefreshLayout.OnRef
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragments_feeds, container, false);
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreen, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreenForAppCid, Context.MODE_PRIVATE);
         clientId=sharedPreferences.getString("clientId","abc");
         Log.d("clientId_FF",""+clientId);
         callFeedDataList(clientId);

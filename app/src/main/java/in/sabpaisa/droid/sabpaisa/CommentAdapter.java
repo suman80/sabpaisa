@@ -58,7 +58,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     ImageLoader imageloader = AppController.getInstance().getImageLoader();
     Context mContext;
     Toolbar toolbar;
-    private List<CommentData> commentList;
+    private  List<CommentData> commentList;
     private boolean multiSelect = false;
     private ArrayList<CommentData> selectedItems = new ArrayList<>();
 
@@ -197,6 +197,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         this.mContext = context;
         db = new AppDbComments(context);
     }
+
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
@@ -559,6 +560,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         holder.update(commentList.get(position));
 
     }
+
+
+
 
     @Override
     public int getItemCount() {

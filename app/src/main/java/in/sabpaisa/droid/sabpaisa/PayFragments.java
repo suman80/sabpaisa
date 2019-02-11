@@ -97,7 +97,7 @@ public class PayFragments extends Fragment {
         Log.d("strtext",""+strtext);*/
         /*viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
         setupViewPager(viewPager);*/
-        Button btn_pay = (Button) rootView.findViewById(R.id.btn_pay);
+        //Button btn_pay = (Button) rootView.findViewById(R.id.btn_pay);
 
 
         tabs = (TabLayout) rootView.findViewById(R.id.tabs);

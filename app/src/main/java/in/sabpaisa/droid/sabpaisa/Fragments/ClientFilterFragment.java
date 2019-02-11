@@ -1,18 +1,18 @@
-package in.sabpaisa.droid.sabpaisa;
+package in.sabpaisa.droid.sabpaisa.Fragments;
 
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -28,16 +28,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.AutoCompleteClientAdapter;
-import in.sabpaisa.droid.sabpaisa.Adapter.SkipMainClientsAdapter;
-import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.FilterActivity1;
 import in.sabpaisa.droid.sabpaisa.Model.FilterClientModel;
-import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
+import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.UIN;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
-public class FilterActivity1 extends AppCompatActivity {
+import static android.content.Context.MODE_PRIVATE;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ClientFilterFragment extends Fragment {
+
 
     ArrayList<FilterClientModel> clientList;
 
@@ -52,30 +58,28 @@ public class FilterActivity1 extends AppCompatActivity {
     String state,clientId,clientLogo,clientImage,clientName,stateId;
     String m,n;
 
+
+    public ClientFilterFragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filter1);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view =  inflater.inflate(R.layout.fragment_client_filter, container, false);
 
 
-        /*SharedPreferences sharedPreferences2 = getApplication().getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
-        n=sharedPreferences2.getString("m","xyz");
-        m=n;
 
-        if(m.equals("abc")){
-            Intent intent=new Intent(FilterActivity1.this,MainActivity.class);
-            startActivity(intent);
-        }*/
-
-
-        clientAutoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.clientAutoCompleteTextView);
-        btn_Proceed = (Button) findViewById(R.id.btn_Proceed);
+        clientAutoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.clientAutoCompleteTextView);
+        btn_Proceed = (Button)view.findViewById(R.id.btn_Proceed);
 
         if (isOnline()) {
 
             getClientsList();
         }else {
-            AlertDialog alertDialog = new AlertDialog.Builder(FilterActivity1.this, R.style.MyDialogTheme).create();
+            AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
 
             // Setting Dialog Title
             alertDialog.setTitle("No Internet Connection");
@@ -104,7 +108,7 @@ public class FilterActivity1 extends AppCompatActivity {
                 }else if (!checkArrayList(clientAutoCompleteTextView.getText().toString())){
                     clientAutoCompleteTextView.setError("No Record Found !");
                 }else if (!isOnline()){
-                    AlertDialog alertDialog = new AlertDialog.Builder(FilterActivity1.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("No Internet Connection");
@@ -127,7 +131,7 @@ public class FilterActivity1 extends AppCompatActivity {
                     Log.d("FilterActivity1", "ProceedBtn_Val___" + "State: " + state + "ClientId: " + clientId + "ClientLogo: " + clientLogo + "ClientImage: " + clientImage + "ClientName: " + clientName + "StateId: " + stateId);
 
 
-                    Intent intent = new Intent(FilterActivity1.this, UIN.class);
+                    Intent intent = new Intent(getContext(), UIN.class);
 
                     intent.putExtra("clientLogoPath", clientLogo);
                     intent.putExtra("clientImagePath", clientImage);
@@ -138,7 +142,7 @@ public class FilterActivity1 extends AppCompatActivity {
 
                     startActivity(intent);
 
-                    SharedPreferences.Editor editor = getSharedPreferences(MySharedPreffilter, MODE_PRIVATE).edit();
+                    SharedPreferences.Editor editor = getContext().getSharedPreferences(MySharedPreffilter, MODE_PRIVATE).edit();
                     editor.putString("clientId", clientId);
                     editor.putInt("stateId", Integer.parseInt(stateId));
                     editor.commit();
@@ -149,8 +153,10 @@ public class FilterActivity1 extends AppCompatActivity {
         });
 
 
-    }
 
+
+        return view;
+    }
 
 
 
@@ -180,7 +186,7 @@ public class FilterActivity1 extends AppCompatActivity {
 
                     if (status.equals("success")&&response1.equals("No_Record_Found")) {
 
-                        Toast.makeText(FilterActivity1.this,"No Result Found",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
 
                     }
                     else {
@@ -203,7 +209,7 @@ public class FilterActivity1 extends AppCompatActivity {
                         }
 
 
-                        autoCompleteClientAdapter = new AutoCompleteClientAdapter(FilterActivity1.this,clientList);
+                        autoCompleteClientAdapter = new AutoCompleteClientAdapter(getContext(),clientList);
                         clientAutoCompleteTextView.setAdapter(autoCompleteClientAdapter);
 
                         clientAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -249,30 +255,16 @@ public class FilterActivity1 extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(FilterActivity1.this, "Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
             }
         });
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
-        startActivity(intent);
-        finish();
-        System.exit(0);
-
-
-    }
-
-
 
     public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         // test for connection
         if (cm.getActiveNetworkInfo() != null
                 && cm.getActiveNetworkInfo().isAvailable()
@@ -300,6 +292,8 @@ public class FilterActivity1 extends AppCompatActivity {
 
         return false;
     }
+
+
 
 
 }

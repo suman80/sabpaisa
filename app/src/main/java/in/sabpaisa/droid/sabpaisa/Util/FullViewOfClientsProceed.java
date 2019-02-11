@@ -162,24 +162,6 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         memberButton = (LinearLayout) findViewById(R.id.members);
 
 
-       /* //ChatSDKUiHelper.initDefault();
-
-        ChatSDKUiHelper.initDefault();
-
-        // Init the network manager
-        BNetworkManager.init(getApplicationContext());
-
-// Create a new adapter
-        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
-
-// Set the adapter
-        BNetworkManager.sharedManager().setNetworkAdapter(adapter);
-*/
-
-        //24th oct 2018
-        //https://stackoverflow.com/questions/33627106/how-to-open-a-specific-fragment-page-in-viewpager-from-another-activity-button-c
-        //position = getIntent().getStringExtra("deleteFrmGrp");
-
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -1118,7 +1100,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     }
 
     @Override
-    public void onFragmentSetClients(ArrayList<SkipClientData> clientData) {
+    public void onFragmentSetClients(ArrayList<PersonalSpaceModel> clientData) {
 
     }
 
