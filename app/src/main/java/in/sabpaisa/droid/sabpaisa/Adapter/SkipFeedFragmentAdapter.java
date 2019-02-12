@@ -42,6 +42,7 @@ import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.FeedData;
+import in.sabpaisa.droid.sabpaisa.FeedSpaceCommentsActivity;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -128,6 +129,25 @@ public class SkipFeedFragmentAdapter extends RecyclerView.Adapter<SkipFeedFragme
 
             }
         });
+
+
+
+        holder.rippleClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, FeedSpaceCommentsActivity.class);
+                intent.putExtra("feedName",feedData.getFeedName());
+                intent.putExtra("feedText",feedData.getFeedText());
+                intent.putExtra("feedId",feedData.getFeedId());
+                intent.putExtra("feedImage",feedData.getImagePath());
+                intent.putExtra("feedLogo",feedData.getLogoPath());
+                intent.putExtra("clientId",feedData.getClientId());
+                context.startActivity(intent);
+
+            }
+        });
+
+
 
     }
 

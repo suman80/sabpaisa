@@ -36,7 +36,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,allowBackup">
-        <activity android:name=".AddSpaceFeed"></activity>
+        <activity android:name=".AddGroupSpace"></activity>
+        <activity android:name=".EditFeedSpace" />
+        <activity android:name=".FeedSpaceCommentsActivity" />
+        <activity android:name=".AddSpaceFeed" />
         <activity android:name=".EditSpace" />
         <activity android:name=".AddSpaceActivity" />
 

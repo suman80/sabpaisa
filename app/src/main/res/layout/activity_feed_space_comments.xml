@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/collapsingLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <FrameLayout
+            android:id="@+id/toolbar_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_collapseMode="pin">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/bg_screen"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:subtitleTextColor="@color/white"
+                app:titleTextAppearance="@style/toolBarStyle"
+                app:titleTextColor="@color/white" />
+        </FrameLayout>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbarThumbVertical="@drawable/scrollbar"
+            android:scrollbarTrackVertical="@drawable/scrallview_track"
+            android:fadeScrollbars="false"
+            android:scrollbarStyle="insideInset"
+            >
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/nestedScroll1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                >
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:text="Comments"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_normal"
+                        android:textStyle="bold|italic" />
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ProgressBar
+                                android:id="@+id/progress"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center"
+                                android:visibility="visible" />
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recycler_view_feed_details_comment"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/comment"
+                                android:layout_marginBottom="60dp"
+                                android:focusable="false"
+                                android:scrollbars="vertical"
+                                android:nestedScrollingEnabled="false"
+                                />
+                        </FrameLayout>
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </android.support.v4.widget.NestedScrollView>
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <FrameLayout
+        android:id="@+id/shareViewFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="40dp"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/share_view_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/ImageViewFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="60dp"
+        android:visibility="gone">
+
+
+        <ImageView
+            android:id="@+id/selectedImg"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="left"
+            android:scaleType="fitXY" />
+
+
+        <ImageView
+            android:id="@+id/closeSelectedImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="120dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_close_black_24dp" />
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/DocViewFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="60dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/selectedDoc"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="left"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/ic_sharedoc" />
+
+
+        <me.grantland.widget.AutofitTextView
+            android:id="@+id/selectedDocName"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:maxHeight="25dp"
+            android:maxLines="2"
+            android:text="test"
+            android:background="#AA000000"
+            android:textColor="#fff"
+            />
+
+
+        <ImageView
+            android:id="@+id/closeSelectedDoc"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="90dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_close_black_24dp" />
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="#fff">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:layout_weight="1"
+                android:background="@drawable/chat_edit_text_background"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                >
+
+                <io.github.rockerhieu.emojicon.EmojiconEditText
+                    android:id="@+id/commentadd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/background_edittext_empty"
+                    android:gravity="top|left"
+                    android:hint="Add Comment"
+                    android:imeOptions="actionSend"
+                    android:inputType="textMultiLine|textAutoCorrect"
+                    android:maxLines="7"
+                    android:scrollbars="vertical"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black_50"
+                    android:textSize="@dimen/text_size_small"
+                    android:cursorVisible="true"
+                    />
+
+
+                <ImageView
+                    android:id="@+id/attachmentFile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="0.8"
+                    android:clickable="true"
+                    app:srcCompat="@drawable/ic_attachment_file" />
+
+                <ImageView
+                    android:id="@+id/attachment_Image_Video_File"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.8"
+                    android:clickable="true"
+                    app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
+
+
+            </LinearLayout>
+
+            <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/spin_kit"
+                style="@style/SpinKitView.Large.Circle"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:SpinKit_Color="@color/colorAccent" />
+
+            <!--<ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_toEndOf="@+id/linearLayout"
+                android:background="@drawable/ic_action_send_commnt"
+                android:onClick="onClickSendComment"
+                android:visibility="visible" />-->
+
+
+            <at.markushi.ui.CircleButton
+                android:id="@+id/imageView2"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:src="@drawable/ic_send_white_24dp"
+                app:cb_color="@color/bg_orange"
+                app:cb_pressedRingWidth="8dip"
+                android:onClick="onClickSendComment"
+                android:visibility="visible"
+                android:layout_gravity="center_vertical"
+                />
+
+
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>
