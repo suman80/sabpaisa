@@ -64,7 +64,7 @@ public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFrag
 
 
 
-// test
+// test //
 
     public SkipGroupFragmentAdapter() {
     }
