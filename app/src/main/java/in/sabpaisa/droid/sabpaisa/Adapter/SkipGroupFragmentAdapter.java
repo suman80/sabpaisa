@@ -41,10 +41,13 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import in.sabpaisa.droid.sabpaisa.AddMemberTo_A_SpaceGroup;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
+import in.sabpaisa.droid.sabpaisa.GroupSpaceCommentActivity;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.UIN;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.GROUP_ARRAYLIST;
@@ -95,17 +98,16 @@ public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFrag
             public void onClick(View view) {
 
 
-                /*popup = "Groups";
-                Intent intent = new Intent(view.getContext(), Proceed_Group_FullScreen.class);
-                intent.putExtra("popup", popup);
+
+                Intent intent = new Intent(view.getContext(), GroupSpaceCommentActivity.class);
                 intent.putExtra("groupName", c.getGroupName());
                 intent.putExtra("groupText", c.getGroupText());
                 intent.putExtra("groupImage", c.getImagePath());
                 intent.putExtra("groupLogo", c.getLogoPath());
                 intent.putExtra("groupId", c.getGroupId());
                 intent.putExtra("memberGroupRole", c.getMemberGroupRole());
+                view.getContext().startActivity(intent);
 
-                Log.d("MainGRPADA","isClicked_ "+isClicked);*/
 
 
             }
@@ -117,8 +119,14 @@ public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFrag
             holder.joinmember.setVisibility(View.GONE);
         }
 
-        holder.imgPopUpMenu.setVisibility(View.VISIBLE);
+        SharedPreferences sharedPreferencesRole = mContext.getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
 
+        String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
+
+        if ((roleValue.equals("1") || c.getMemberGroupRole().equals("2")) && c.getMemberStatus().equals("Approved")) {
+            Log.d(roleValue, "  "+c.getMemberGroupRole()+" >>>>>>>>>>>>> ");
+            holder.imgPopUpMenu.setVisibility(View.VISIBLE);
+        }
 
         holder.imgPopUpMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,9 +171,9 @@ public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFrag
                         if (menuItem.getTitle().equals("Add Member")){
 
                             //TODO Add member
-                            /*Intent intent = new Intent(mContext,AddMemberTo_A_Group.class);
+                            Intent intent = new Intent(mContext, AddMemberTo_A_SpaceGroup.class);
                             intent.putExtra("groupId",groupId);
-                            mContext.startActivity(intent);*/
+                            mContext.startActivity(intent);
                         }
 
 

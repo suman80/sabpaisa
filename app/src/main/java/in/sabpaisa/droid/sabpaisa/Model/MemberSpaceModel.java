@@ -6,8 +6,9 @@ public class MemberSpaceModel {
             emailId,password,accessTokenFb,accessTokenGoogle,deviceId,userAccessToken,
             timestampOfRegistration,status,dobString,userImageUrl;
 
+    boolean isSelected;
 
-    public MemberSpaceModel(String memberId, String roleId, String roleName, String userId, String fullName, String address, String contactNumber, String dateOfBirth, String emailId, String password, String accessTokenFb, String accessTokenGoogle, String deviceId, String userAccessToken, String timestampOfRegistration, String status, String dobString, String userImageUrl) {
+    public MemberSpaceModel(String memberId, String roleId, String roleName, String userId, String fullName, String address, String contactNumber, String dateOfBirth, String emailId, String password, String accessTokenFb, String accessTokenGoogle, String deviceId, String userAccessToken, String timestampOfRegistration, String status, String dobString, String userImageUrl, boolean isSelected) {
         this.memberId = memberId;
         this.roleId = roleId;
         this.roleName = roleName;
@@ -26,6 +27,7 @@ public class MemberSpaceModel {
         this.status = status;
         this.dobString = dobString;
         this.userImageUrl = userImageUrl;
+        this.isSelected = isSelected;
     }
 
     public MemberSpaceModel() {
@@ -174,5 +176,13 @@ public class MemberSpaceModel {
 
     public void setUserImageUrl(String userImageUrl) {
         this.userImageUrl = userImageUrl;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

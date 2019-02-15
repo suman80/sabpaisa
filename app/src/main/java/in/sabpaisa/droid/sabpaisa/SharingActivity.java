@@ -41,17 +41,23 @@ import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedGroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Fragments.ShareFeedFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.ShareFeedSpaceFragment;
+import in.sabpaisa.droid.sabpaisa.Fragments.ShareGroupSpaceFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.SharedGroupFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.FlagCallback;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.AppDecideFlag;
+
 public class SharingActivity extends AppCompatActivity implements FlagCallback {
 
     ArrayList<CommentData> commentDataArrayList;
     ShareFeedFragment feedsFragments;
     SharedGroupFragment groupsFragments;
+    ShareFeedSpaceFragment shareFeedSpaceFragment;
+    ShareGroupSpaceFragment shareGroupSpaceFragment;
     ArrayList<String> feedDataForShare;
     ArrayList<String> groupDataForShare;
     MenuItem item;
@@ -121,15 +127,28 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
+        Log.d("AppDecideFlag","Value__"+AppDecideFlag);
 
-        feedsFragments = new ShareFeedFragment();
-        adapter.addFragment(feedsFragments, ""); //changing here creating different frags
+        if (AppDecideFlag){
 
-        groupsFragments = new SharedGroupFragment();
-        adapter.addFragment(groupsFragments, "");//changing here creating different frags
+            shareFeedSpaceFragment = new ShareFeedSpaceFragment();
+            adapter.addFragment(shareFeedSpaceFragment,"");
 
-        viewPager.setAdapter(adapter);
+            shareGroupSpaceFragment = new ShareGroupSpaceFragment();
+            adapter.addFragment(shareGroupSpaceFragment,"");
 
+            viewPager.setAdapter(adapter);
+
+        }else {
+
+            feedsFragments = new ShareFeedFragment();
+            adapter.addFragment(feedsFragments, ""); //changing here creating different frags
+
+            groupsFragments = new SharedGroupFragment();
+            adapter.addFragment(groupsFragments, "");//changing here creating different frags
+
+            viewPager.setAdapter(adapter);
+        }
 
     }
 
@@ -221,13 +240,13 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
                 }
 
 
-                if (groupDataForShare.size() + feedDataForShare.size() > 0) {
+                /*if (groupDataForShare.size() + feedDataForShare.size() > 0) {
                     Intent intent = new Intent(SharingActivity.this, FullViewOfClientsProceed.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     MainFeedAdapter.isClicked=false;
                     MainGroupAdapter1.isClicked=false;
                     startActivity(intent);
-                }
+                }*/
 
                 return true;
 

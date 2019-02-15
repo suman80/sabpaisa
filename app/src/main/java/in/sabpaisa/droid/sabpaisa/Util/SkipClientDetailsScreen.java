@@ -105,7 +105,7 @@ import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class SkipClientDetailsScreen extends AppCompatActivity implements OnFragmentInteractionListener, OnRefreshListener,NavigationView.OnNavigationItemSelectedListener {
 
-    String FeedId, FeedName, FeedDesc, FeedTime, FeedImage, clientName, state,position;
+    public static String clientName, state,position;
     public static String clientImageURLPath = null;
     public static String clientLogoURLPath = null;
     public static String appCid;

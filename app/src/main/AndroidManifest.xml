@@ -36,7 +36,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,allowBackup">
-        <activity android:name=".AddGroupSpace"></activity>
+        <activity android:name=".MembersOfAGroupSpace"></activity>
+        <activity android:name=".EditGroupSpace" />
+        <activity android:name=".AddMemberTo_A_SpaceGroup" />
+        <activity android:name=".GroupSpaceCommentActivity" />
+        <activity android:name=".AddGroupSpace" />
         <activity android:name=".EditFeedSpace" />
         <activity android:name=".FeedSpaceCommentsActivity" />
         <activity android:name=".AddSpaceFeed" />

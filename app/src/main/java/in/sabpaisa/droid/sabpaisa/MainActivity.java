@@ -146,6 +146,7 @@ import static com.mikepenz.materialize.util.UIUtils.convertDpToPixel;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.APP_VERSION_SHARED_PREF;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.AppDecideFlag;
 
 public class MainActivity extends AppCompatActivity implements /*AppBarLayout.OnOffsetChangedListener,*/ /*RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/ NavigationView.OnNavigationItemSelectedListener, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
@@ -723,6 +724,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         new GetVersionCode().execute();
 
 
+        //AppDecideFlag
+
+        AppDecideFlag = false;
 
 
 

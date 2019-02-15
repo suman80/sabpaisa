@@ -1,20 +1,11 @@
 package in.sabpaisa.droid.sabpaisa.Fragments;
 
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,43 +19,28 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
+import in.sabpaisa.droid.sabpaisa.Adapter.SharedGroupFragmentAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.SkipGroupFragmentAdapter;
-import in.sabpaisa.droid.sabpaisa.AddGroup;
-import in.sabpaisa.droid.sabpaisa.AddGroupSpace;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
-import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
-import in.sabpaisa.droid.sabpaisa.MainGroupAdapter1;
-import in.sabpaisa.droid.sabpaisa.Model.GroupDataForOffLine;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
-import in.sabpaisa.droid.sabpaisa.UIN;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
-import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_GROUPS;
-import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
-import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.GROUP_ARRAYLIST;
-import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.REFRESH_GROUP_FRAGMENT;
-
-public class SkipGroupFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ShareGroupSpaceFragment extends Fragment {
 
     String appCid,userAcessToken;
 
@@ -76,28 +52,23 @@ public class SkipGroupFragment extends Fragment {
     FrameLayout framelayoutAddGroup;
     LinearLayout linearLayoutAddGrpWhenNoData;
 
+    SharedGroupFragmentAdapter sharedGroupFragmentAdapter;
+
 
     //Values get from SkipClient details screen
     String clientName,clientLogoPath,clientImagePath,state;
 
-    SkipGroupFragmentAdapter skipGroupFragmentAdapter;
 
-    BroadcastReceiver broadcastReceiver,receiver;
-
-    public SkipGroupFragment() {
+    public ShareGroupSpaceFragment() {
         // Required empty public constructor
     }
 
 
-
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        clientName = getArguments().getString("clientName");
-        clientLogoPath = getArguments().getString("clientLogoPath");
-        clientImagePath = getArguments().getString("clientImagePath");
-        state = getArguments().getString("state");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view =  inflater.inflate(R.layout.fragment_share_group_space, container, false);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreenForAppCid, Context.MODE_PRIVATE);
         appCid=sharedPreferences.getString("appCid","abc");
@@ -109,17 +80,6 @@ public class SkipGroupFragment extends Fragment {
 
         Log.d("userAcessToken", " " + userAcessToken);
 
-        Log.d("SkipGroupFrag","Recieved_Val_"+clientName+" "+clientLogoPath+" "+clientImagePath+" "+state+" "+appCid);
-
-
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_skip_group, container, false);
 
         linearLayoutnoDataFound = (LinearLayout) view.findViewById(R.id.noDataFound);
         groupList = (ShimmerRecyclerView) view.findViewById(R.id.groupList);
@@ -143,56 +103,8 @@ public class SkipGroupFragment extends Fragment {
 
 
 
-        SharedPreferences sharedPreferencesRole = getContext().getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
-
-        String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
-
-        if (roleValue.equals("1")) {
-
-            framelayoutAddGroup.setVisibility(View.VISIBLE);
-        }
-
-        rippleClickAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AddGroupSpace.class);
-                intent.putExtra("appCid",appCid);
-                getActivity().startActivity(intent);
-            }
-        });
-
-        linearLayoutAddGrpWhenNoData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(),AddGroupSpace.class);
-                intent.putExtra("appCid",appCid);
-                getActivity().startActivity(intent);
-            }
-        });
-
-
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                if (intent.getAction().equals(GROUP_ARRAYLIST)){
-                    callGroupDataList(userAcessToken, appCid);
-                }
-
-            }
-        };
-
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver,new IntentFilter(GROUP_ARRAYLIST));
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver,new IntentFilter(REFRESH_GROUP_FRAGMENT));
-
-
-
-
         return view;
     }
-
-
-
 
 
     public void callGroupDataList(final String token, final String appCid) {
@@ -252,37 +164,12 @@ public class SkipGroupFragment extends Fragment {
                         Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
 
 
-                        /*START listener for sending data to activity*/
-                        /*OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
-                        listener.onFragmentSetGroups(arrayListForApproved);*/
-                        /*END listener for sending data to activity*/
-
-
-                        skipGroupFragmentAdapter = new SkipGroupFragmentAdapter(groupArrayList, getContext());
-                        groupList.setAdapter(skipGroupFragmentAdapter);
+                        sharedGroupFragmentAdapter = new SharedGroupFragmentAdapter(groupArrayList, getContext());
+                        groupList.setAdapter(sharedGroupFragmentAdapter);
 
                     } else {
 
-                        linearLayoutAddGrpWhenNoData.setVisibility(View.VISIBLE);
-                        framelayoutAddGroup.setVisibility(View.GONE);
-                        groupList.setVisibility(View.GONE);
-                        linearLayoutnoDataFound.setVisibility(View.GONE);
 
-
-
-                       /* if (roleValue.equals("1")) {
-
-                            linearLayoutAddGrpWhenNoData.setVisibility(View.VISIBLE);
-                            framelayoutAddGroup.setVisibility(View.GONE);
-                            groupList.setVisibility(View.GONE);
-                            linearLayoutnoDataFound.setVisibility(View.GONE);
-
-                        }else {
-                            linearLayoutnoDataFound.setVisibility(View.VISIBLE);
-                            framelayoutAddGroup.setVisibility(View.GONE);
-                            groupList.setVisibility(View.GONE);
-                            linearLayoutAddGrpWhenNoData.setVisibility(View.GONE);
-                        }*/
                     }
                 }
                 // Try and catch are included to handle any errors due to JSON
@@ -324,8 +211,6 @@ public class SkipGroupFragment extends Fragment {
             return false;
         }
     }
-
-
 
 
 }

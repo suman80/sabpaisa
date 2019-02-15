@@ -155,6 +155,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
     AppDB appDB;
 
+    public static boolean AppDecideFlag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -437,6 +438,13 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
             }
         });
+
+
+        // AppDecideFlag
+
+        AppDecideFlag = true;
+
+
 
     }
 /*

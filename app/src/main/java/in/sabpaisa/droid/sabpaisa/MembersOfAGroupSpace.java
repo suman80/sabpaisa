@@ -7,16 +7,15 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.support.v7.widget.Toolbar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
@@ -25,37 +24,32 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.Adapter.MembersOfAGroupSpaceAdapter;
+import in.sabpaisa.droid.sabpaisa.Model.MemberSpaceModel;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
-import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.NoOfGroupmemberAdapter;
-import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
-import retrofit2.http.GET;
+import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
-import static com.android.volley.Request.*;
+public class MembersOfAGroupSpace extends AppCompatActivity {
 
-public class NumberOfGroups extends AppCompatActivity {
-
-    public static String clientId;
     LinearLayout linearLayoutnoDataFound;
     ArrayList<Member_GetterSetter> member_getterSetterArrayList;
-    NoOfGroupmemberAdapter memberAdapter;
+    MembersOfAGroupSpaceAdapter memberAdapter;
     ShimmerRecyclerView recycler_view_Member;
 
     String GroupId;
     Toolbar toolbar;
 
-    public static String memberGroupRole;
+    String appCid;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CommonUtils.setFullScreen(this);
-        setContentView(R.layout.activity_number_of_groups);
+        setContentView(R.layout.activity_members_of_agroup_space);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -74,33 +68,31 @@ public class NumberOfGroups extends AppCompatActivity {
         recycler_view_Member.addItemDecoration(new SimpleDividerItemDecoration(this));
         recycler_view_Member.setLayoutManager(llm);
 
-
-        SharedPreferences sharedPreferences = getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
-        clientId = sharedPreferences.getString("clientId", "abc");
-        Log.d("NumerOFGroup", "" + clientId);
         Intent intent = getIntent();
         GroupId = intent.getStringExtra("GroupId");
 
         Log.d("NumerOFGroup", "" + GroupId);
 
-        memberGroupRole = intent.getStringExtra("memberGroupRole");
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreenForAppCid, Context.MODE_PRIVATE);
+        appCid=sharedPreferences.getString("appCid","abc");
+        Log.d("clientId_MEMBERS",""+appCid);
 
-        Log.d("NumerOFGroup", "memberGroupRole" + memberGroupRole);
-
-        NoOfGRPMembers(clientId, GroupId, "Approved");
+        membersOfAGropup(appCid,GroupId,"Approved");
 
     }
 
-    public void NoOfGRPMembers(final String clientid, final String Groupid, final String status) {
-        //StringRequest stringRequest=ne
-        //
-        // w StringRequest(Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_NoOFGroupMembeers+clientId+"&groupId="+Groupid+"&status="+status, new Response.Listener<String>() {
+
+
+    public void membersOfAGropup(final String appCid, final String Groupid, final String status) {
 
         String tag_string_req = "req_register";
-        ///String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_NoOFGroupMembeers+clientId+"&groupId="+Groupid+"&status="+status;
+
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_NoOFGroupMembersSpace + appCid + "&groupId=" + Groupid + "&status=" + status;
+
+        Log.d("MembersOfAGroupSpace","url__ "+url);
 
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
-                AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_NoOFGroupMembeers + clientid + "&groupId=" + Groupid + "&status=" + status, new Response.Listener<String>() {
+                url, new Response.Listener<String>() {
 
             // Takes the response from the JSON request
             @Override
@@ -130,39 +122,31 @@ public class NumberOfGroups extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); i++) {
 
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                            Member_GetterSetter member_getterSetter = new Member_GetterSetter();
+                            final Member_GetterSetter member_getterSetter = new Member_GetterSetter();
+                            member_getterSetter.setDeviceId(jsonObject1.getString("deviceId"));
+                            member_getterSetter.setEmailId(jsonObject1.getString("emailId"));
+                            member_getterSetter.setGroupId(jsonObject1.getString("groupId"));
+                            member_getterSetter.setId(jsonObject1.getString("id"));
+                            member_getterSetter.setPhoneNumber(jsonObject1.getString("phoneNumber"));
+                            member_getterSetter.setStatus(jsonObject1.getString("status"));
+                            member_getterSetter.setTimestampOfJoining(jsonObject1.getString("timestampOfJoining"));
+                            //member_getterSetter.setUin(jsonObject1.getString("uin"));
+                            member_getterSetter.setUserId(jsonObject1.getString("userId"));
                             member_getterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
                             member_getterSetter.setFullName(jsonObject1.getString("fullName"));
-                            member_getterSetter.setPhoneNumber(jsonObject1.getString("phoneNumber"));
-                            member_getterSetter.setEmailId(jsonObject1.getString("emailId"));
                             member_getterSetter.setUserAccessToken(jsonObject1.getString("userAccessToken"));
-                            member_getterSetter.setGroupId(jsonObject1.getString("groupId"));
-                            member_getterSetter.setUserId(jsonObject1.getString("userId"));
+                            member_getterSetter.setUin_Role(jsonObject1.getString("uin_Role"));
+                            member_getterSetter.setUin_Status(jsonObject1.getString("uin_Status"));
 
-                            if (!jsonObject1.getString("lookupRole").equals("null")) {
 
-                                member_getterSetter.setUin_Role(jsonObject1.getString("uin_Role"));
-                                member_getterSetter.setRoleId(jsonObject1.getJSONObject("lookupRole").optString("roleId"));
-                                member_getterSetter.setRoleName(jsonObject1.getJSONObject("lookupRole").optString("roleName"));
-
-//                            Log.d("MMBRNAME", "" + jsonObject1.getString("fullName"));
-//                            Log.d("MMBRIMAGE", "" + jsonObject1.getString("userImageUrl"));
-                                Log.d("NOG_", "uin_Role" + jsonObject1.getString("uin_Role"));
-                                Log.d("NOG_", "roleId" + jsonObject1.getJSONObject("lookupRole").optString("roleId"));
-                                Log.d("NOG_", "roleName" + jsonObject1.getJSONObject("lookupRole").optString("roleName"));
-                            }
 
                             member_getterSetterArrayList.add(member_getterSetter);
 
                         }
                         Log.d("ArrayListAfterParse", " " + member_getterSetterArrayList.get(0).getFullName());
 
-                        /*START listener for sending data to activity*/
-                       /* OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getApplication();
-                        listener.onFragmentSetMembers(member_getterSetterArrayList);
-                      */
-                        /*END listener for sending data to activity*/
-                        memberAdapter = new NoOfGroupmemberAdapter(member_getterSetterArrayList, getApplicationContext());
+
+                        memberAdapter = new MembersOfAGroupSpaceAdapter(member_getterSetterArrayList, MembersOfAGroupSpace.this);
                         recycler_view_Member.setAdapter(memberAdapter);
 
                     }
@@ -193,9 +177,5 @@ public class NumberOfGroups extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        member_getterSetterArrayList.clear();
-    }
+
 }

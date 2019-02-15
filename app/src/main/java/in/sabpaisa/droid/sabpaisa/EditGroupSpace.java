@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -40,44 +41,45 @@ import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
-public class EditFeedSpace extends AppCompatActivity {
+public class EditGroupSpace extends AppCompatActivity {
 
-    String feedName,feedText,feedLogo,feedId;
-
-    EditText editText_FeedName,editText_FeedDescription;
-
-    ImageView img_FeedImage,img_FeedLogo;
+    Toolbar toolbar;
+    String GroupsNm,GroupId,GroupsDiscription,GroupsImg,groupLogo;
+    EditText editText_GroupName,editText_GroupDescription;
+    ImageView img_GroupImage,img_GroupLogo;
 
     String imageUrl;
 
-    Bitmap feedImageBitMap,feedLogoBitMap;
-
-    String userAccessToken;
+    Bitmap groupImageBitMap,groupLogoBitMap;
 
     Button btn_Cancel,btn_Save;
 
+    String userAccessToken;
+
     ProgressDialog progressDialog;
 
-    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_feed_space);
+        setContentView(R.layout.activity_edit_group_space);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        feedName = getIntent().getStringExtra("feedName");
-        feedText = getIntent().getStringExtra("feedText");
-        feedLogo = getIntent().getStringExtra("feedLogo");
-        feedId = getIntent().getStringExtra("feedId");
 
-        Log.d("EditFeedSpace_","Recieved_Value__"+feedName+" "+feedText+" "+feedLogo+" "+feedId);
+        GroupsNm = getIntent().getStringExtra("groupName");
+        GroupId = getIntent().getStringExtra("groupId");
+        GroupsDiscription = getIntent().getStringExtra("groupText");
+        GroupsImg = getIntent().getStringExtra("groupImage");
+        groupLogo = getIntent().getStringExtra("groupLogo");
+
+        Log.d("EditGroupSpace","IntentValues_"+GroupsNm+" "+GroupId+" "+GroupsDiscription+" "+GroupsImg+" "+groupLogo);
 
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
 
-        progressDialog = new ProgressDialog(EditFeedSpace.this,R.style.DialogTheme);
+        progressDialog = new ProgressDialog(EditGroupSpace.this,R.style.DialogTheme);
 
-        toolbar.setTitle(feedName);
+        toolbar.setTitle(GroupsNm);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -87,58 +89,58 @@ public class EditFeedSpace extends AppCompatActivity {
             }
         });
 
-        editText_FeedName = (EditText)findViewById(R.id.editText_FeedName);
-        editText_FeedDescription = (EditText)findViewById(R.id.editText_FeedDescription);
-        //img_FeedImage = (ImageView)findViewById(R.id.img_FeedImage);
-        img_FeedLogo = (ImageView)findViewById(R.id.img_FeedLogo);
-        btn_Save = (Button)findViewById(R.id.btn_Save);
+        editText_GroupName = (EditText)findViewById(R.id.editText_GroupName);
+        editText_GroupDescription = (EditText)findViewById(R.id.editText_GroupDescription);
+        //img_GroupImage = (ImageView)findViewById(R.id.img_GroupImage);
+        img_GroupLogo = (ImageView)findViewById(R.id.img_GroupLogo);
         btn_Cancel = (Button)findViewById(R.id.btn_Cancel);
+        btn_Save = (Button)findViewById(R.id.btn_Save);
 
-        editText_FeedName.setText(feedName);
-        editText_FeedDescription.setText(feedText);
+        editText_GroupName.setText(GroupsNm);
+        editText_GroupDescription.setText(GroupsDiscription);
 
         /*Glide.with(getApplicationContext())
-                .load(feedImg)
+                .load(GroupsImg)
                 .error(R.drawable.appicon)
-                .into(img_FeedImage);*/
+                .into(img_GroupImage);*/
 
         Glide.with(getApplicationContext())
-                .load(feedLogo)
+                .load(groupLogo)
                 .error(R.drawable.ic_file_upload)
-                .into(img_FeedLogo);
+                .into(img_GroupLogo);
+
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+        userAccessToken = sharedPreferences.getString("response", "123");
 
 
-        /*img_FeedImage.setOnClickListener(new View.OnClickListener() {
+        /*img_GroupImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pickImage();
             }
         });*/
 
-        img_FeedLogo.setOnClickListener(new View.OnClickListener() {
+        img_GroupLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pickLogo();
             }
         });
 
-        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
-
-        userAccessToken = sharedPreferences.getString("response", "123");
-
         btn_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String feedNm = editText_FeedName.getText().toString().trim();
-                String feedDesc = editText_FeedDescription.getText().toString().trim();
+                String groupNm = editText_GroupName.getText().toString().trim();
+                String groupDesc = editText_GroupDescription.getText().toString().trim();
 
-                if (feedNm == null || feedNm.equals("") || feedNm.isEmpty()){
-                    editText_FeedName.setError("Please enter the Feed Name");
-                }else if (feedDesc == null || feedDesc.equals("") || feedDesc.isEmpty()){
-                    editText_FeedDescription.setError("Please enter the Feed Description");
+                if (groupNm == null || groupNm.equals("") || groupNm.isEmpty()){
+                    editText_GroupName.setError("Please enter the Group Name");
+                }else if (groupDesc == null || groupDesc.equals("") || groupDesc.isEmpty()){
+                    editText_GroupDescription.setError("Please enter the Group Description");
                 }else if (!isOnline()){
-                    AlertDialog alertDialog = new AlertDialog.Builder(EditFeedSpace.this, R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(EditGroupSpace.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("No Internet Connection");
@@ -160,11 +162,12 @@ public class EditFeedSpace extends AppCompatActivity {
                     progressDialog.setMessage("Please wait !");
                     progressDialog.show();
 
-                    updateFeed(feedImageBitMap,feedLogoBitMap,feedNm,feedDesc);
+                    updateGroup(groupImageBitMap,groupLogoBitMap,groupNm,groupDesc);
                 }
 
             }
         });
+
 
         btn_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,6 +180,17 @@ public class EditFeedSpace extends AppCompatActivity {
     }
 
 
+
+    public void pickImage() {
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.putExtra("userImageUrl", imageUrl);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 200);
+
+
+    }
 
     public void pickLogo() {
 
@@ -198,18 +212,18 @@ public class EditFeedSpace extends AppCompatActivity {
 
                 Uri selectedimg = data.getData();
 
-                Log.d("EditFeedSpace", "selectedimg_ " + selectedimg);
+                Log.d("EditFeed", "selectedimg_ " + selectedimg);
 
                 //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                img_FeedImage.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
+                img_GroupImage.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
 
-                feedImageBitMap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+                groupImageBitMap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
-                Log.d("feedImageBitMap"," "+feedImageBitMap);
+                Log.d("feedImageBitMap"," "+groupImageBitMap);
 
-                if (feedImageBitMap == null){
-                    Toast.makeText(EditFeedSpace.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
-                    img_FeedImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
+                if (groupImageBitMap == null){
+                    Toast.makeText(EditGroupSpace.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                    img_GroupImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
                 }
 
 
@@ -218,15 +232,15 @@ public class EditFeedSpace extends AppCompatActivity {
                 Uri selectedimg = data.getData();
 
                 //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                img_FeedLogo.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
+                img_GroupLogo.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
 
-                feedLogoBitMap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+                groupLogoBitMap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
-                Log.d("feedImageBitMap"," "+feedLogoBitMap);
+                Log.d("feedImageBitMap"," "+groupLogoBitMap);
 
-                if (feedLogoBitMap == null){
-                    Toast.makeText(EditFeedSpace.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
-                    img_FeedLogo.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
+                if (groupLogoBitMap == null){
+                    Toast.makeText(EditGroupSpace.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                    img_GroupLogo.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
                 }
 
 
@@ -239,44 +253,43 @@ public class EditFeedSpace extends AppCompatActivity {
     }
 
 
-    private void updateFeed(final Bitmap feed_image,final Bitmap feed_logo,final String feedName,final String feedText) {
+    private void updateGroup(final Bitmap group_image,final Bitmap group_logo,final String groupName,final String groupText) {
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_updateFeed + "?feed_Id="+feedId+"&feed_text="+ URLEncoder.encode(feedText)+"&feed_name="+URLEncoder.encode(feedName)+"&admin="+userAccessToken;
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_updateGroup + "?group_Id="+GroupId+"&group_text="+ URLEncoder.encode(groupText)+"&group_name="+URLEncoder.encode(groupName)+"&admin="+userAccessToken;
 
-        Log.d("EditFeedSpace","_URL "+url);
+        Log.d("EditGroup","_URL "+url);
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
-                Log.d("EditFeedSpace", "Res_" + response);
+                Log.d("EditGroup", "Res_" + response);
 
                 if (progressDialog.isShowing()){
                     progressDialog.dismiss();
                 }
 
-
                 try {
 
                     JSONObject obj = new JSONObject(new String(response.data));
 
-                    Log.d("EditFeedSpace", "ResJsonObj_" + obj);
+                    Log.d("EditGroupSpace", "ResJsonObj_" + obj);
 
                     final String status = obj.getString("status");
                     final String returnResponse = obj.getString("response");
 
                     if (status.equals("success")) {
 
-                        Log.d("EditFeedSpace", "InIfPart");
+                        Log.d("EditGroupSpace","InIfPart");
 
-                        //Toast.makeText(EditFeed.this,"Feed has been Edited",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(EditGroup.this,"Group has been Edited",Toast.LENGTH_SHORT).show();
 
-                        AlertDialog alertDialog = new AlertDialog.Builder(EditFeedSpace.this, R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(EditGroupSpace.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
-                        alertDialog.setTitle("Edit Feed");
+                        alertDialog.setTitle("Edit Group");
 
                         // Setting Dialog Message
-                        alertDialog.setMessage("Feed has been Edited");
+                        alertDialog.setMessage("Group has been Edited");
 
                         alertDialog.setCancelable(false);
 
@@ -284,8 +297,6 @@ public class EditFeedSpace extends AppCompatActivity {
 
                         alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-
-                                //Todo Refresh
 
                                 String clientName = SkipClientDetailsScreen.clientName;
                                 String clientImageURLPath = SkipClientDetailsScreen.clientImageURLPath;
@@ -295,7 +306,7 @@ public class EditFeedSpace extends AppCompatActivity {
 
                                 Log.d("AddMemToSpcGrp","RecievedVals__ "+clientImageURLPath+" "+clientName+" "+appCid+" "+state);
 
-                                Intent intent = new Intent(EditFeedSpace.this,SkipClientDetailsScreen.class);
+                                Intent intent = new Intent(EditGroupSpace.this,SkipClientDetailsScreen.class);
                                 intent.putExtra("clientName",clientName);
                                 intent.putExtra("clientImageURLPath",clientImageURLPath);
                                 intent.putExtra("clientLogoURLPath",clientLogoURLPath);
@@ -305,6 +316,9 @@ public class EditFeedSpace extends AppCompatActivity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
 
+
+
+                                startActivity(intent);
                             }
                         });
 
@@ -312,13 +326,11 @@ public class EditFeedSpace extends AppCompatActivity {
                         alertDialog.show();
 
 
+                    } else if (status.equals("failure")){
+                        Toast.makeText(EditGroupSpace.this,returnResponse,Toast.LENGTH_SHORT).show();
+                    }else {
 
-                    }else if (status.equals("failure")){
-                        Toast.makeText(EditFeedSpace.this,returnResponse,Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-
-                        Log.d("EditFeedSpace","InElsePart");
+                        Log.d("EditGroupSpace","InElsePart");
 
                     }
 
@@ -336,8 +348,7 @@ public class EditFeedSpace extends AppCompatActivity {
                             progressDialog.dismiss();
                         }
 
-
-                        //Toast.makeText(EditFeed.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(EditGroup.this, "Data Upload Failed !", Toast.LENGTH_SHORT).show();
                     }
                 }) {
 
@@ -360,16 +371,16 @@ public class EditFeedSpace extends AppCompatActivity {
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
-                String feedImage = "SabPaisa_FeedImage";
-                String feedLogo = "SabPaisa_FeedLogo";
+                String groupImage = "SabPaisa_GroupImage";
+                String groupLogo = "SabPaisa_GroupLogo";
 
-                if (feed_image != null)
-                    params.put("feed_image", new DataPart(feedImage + ".jpeg", getFileDataFromDrawable(feed_image)));
+                if (group_image != null)
+                    params.put("group_image", new DataPart(groupImage + ".jpeg", getFileDataFromDrawable(group_image)));
 //                else{
 //                    params.put("feed_image",null);
 //                }
-                if(feed_logo != null)
-                    params.put("feed_logo", new DataPart(feedLogo + ".jpeg", getFileDataFromDrawable(feed_logo)));
+                if(group_logo != null)
+                    params.put("group_logo", new DataPart(groupLogo + ".jpeg", getFileDataFromDrawable(group_logo)));
 //                else{
 //                    params.put("feed_logo",null);
 //                }
@@ -406,11 +417,10 @@ public class EditFeedSpace extends AppCompatActivity {
                 && cm.getActiveNetworkInfo().isConnected()) {
             return true;
         } else {
-            Log.v("EditFeedSpace", "Internet Connection Not Present");
+            Log.v("EditGroupSpace", "Internet Connection Not Present");
             return false;
         }
     }
-
 
 
 
