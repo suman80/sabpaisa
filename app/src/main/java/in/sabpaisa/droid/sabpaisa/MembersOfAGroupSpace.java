@@ -43,6 +43,8 @@ public class MembersOfAGroupSpace extends AppCompatActivity {
 
     String appCid;
 
+    public static String memberGroupRole;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,10 @@ public class MembersOfAGroupSpace extends AppCompatActivity {
         appCid=sharedPreferences.getString("appCid","abc");
         Log.d("clientId_MEMBERS",""+appCid);
 
+        memberGroupRole = intent.getStringExtra("memberGroupRole");
+
+        Log.d("MemberOfGroupSpace", "memberGroupRole___" + memberGroupRole);
+
         membersOfAGropup(appCid,GroupId,"Approved");
 
     }
@@ -99,7 +105,7 @@ public class MembersOfAGroupSpace extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
 
-                    Log.d("NoOfGRPMMBr", "Member " + response);
+                    Log.d("MembersOfAGroupSpace", "Resp__ " + response);
                     //swipeRefreshLayout.setRefreshing(false);
                     member_getterSetterArrayList = new ArrayList<>();
 
@@ -122,22 +128,27 @@ public class MembersOfAGroupSpace extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); i++) {
 
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                            final Member_GetterSetter member_getterSetter = new Member_GetterSetter();
-                            member_getterSetter.setDeviceId(jsonObject1.getString("deviceId"));
-                            member_getterSetter.setEmailId(jsonObject1.getString("emailId"));
-                            member_getterSetter.setGroupId(jsonObject1.getString("groupId"));
-                            member_getterSetter.setId(jsonObject1.getString("id"));
-                            member_getterSetter.setPhoneNumber(jsonObject1.getString("phoneNumber"));
-                            member_getterSetter.setStatus(jsonObject1.getString("status"));
-                            member_getterSetter.setTimestampOfJoining(jsonObject1.getString("timestampOfJoining"));
-                            //member_getterSetter.setUin(jsonObject1.getString("uin"));
-                            member_getterSetter.setUserId(jsonObject1.getString("userId"));
+                            Member_GetterSetter member_getterSetter = new Member_GetterSetter();
                             member_getterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
                             member_getterSetter.setFullName(jsonObject1.getString("fullName"));
+                            member_getterSetter.setPhoneNumber(jsonObject1.getString("phoneNumber"));
+                            member_getterSetter.setEmailId(jsonObject1.getString("emailId"));
                             member_getterSetter.setUserAccessToken(jsonObject1.getString("userAccessToken"));
-                            member_getterSetter.setUin_Role(jsonObject1.getString("uin_Role"));
-                            member_getterSetter.setUin_Status(jsonObject1.getString("uin_Status"));
+                            member_getterSetter.setGroupId(jsonObject1.getString("groupId"));
+                            member_getterSetter.setUserId(jsonObject1.getString("userId"));
 
+                            if (!jsonObject1.getString("lookupRole").equals("null")) {
+
+                                member_getterSetter.setUin_Role(jsonObject1.getString("uin_Role"));
+                                member_getterSetter.setRoleId(jsonObject1.getJSONObject("lookupRole").optString("roleId"));
+                                member_getterSetter.setRoleName(jsonObject1.getJSONObject("lookupRole").optString("roleName"));
+
+//                            Log.d("MMBRNAME", "" + jsonObject1.getString("fullName"));
+//                            Log.d("MMBRIMAGE", "" + jsonObject1.getString("userImageUrl"));
+                                Log.d("NOG_", "uin_Role" + jsonObject1.getString("uin_Role"));
+                                Log.d("NOG_", "roleId" + jsonObject1.getJSONObject("lookupRole").optString("roleId"));
+                                Log.d("NOG_", "roleName" + jsonObject1.getJSONObject("lookupRole").optString("roleName"));
+                            }
 
 
                             member_getterSetterArrayList.add(member_getterSetter);

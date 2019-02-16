@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -78,6 +79,7 @@ import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_GROUP_COMMENTS;
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
 
 public class GroupSpaceCommentActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
@@ -86,6 +88,7 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
 
     public static String GroupsNm , GroupsDiscription , GroupsImg,groupLogo;
     public static String memberGroupRole;
+    String roleValue;
     String  GroupId, userAccessToken, response;
     ArrayList<CommentData> arrayList, feedArrayList;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -186,6 +189,11 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
             Intent intent = new Intent(GroupSpaceCommentActivity.this, LogInActivity.class);
             startActivity(intent);
         }
+
+
+        SharedPreferences sharedPreferencesRole = getApplicationContext().getSharedPreferences(SUPER_ADMIN_SHAREDFREF, Context.MODE_PRIVATE);
+
+        roleValue = sharedPreferencesRole.getString("ROLE_VALUE", "abc");
 
         arrayList = new ArrayList<>();
 
@@ -862,12 +870,27 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
 
 
 
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.group_space_menu, menu);
 
+        MenuItem menuItemEditGroupSpaceMenu = menu.findItem(R.id.editGroupSpaceMenu);
+        MenuItem menuItemGroupSpaceMembers = menu.findItem(R.id.groupSpaceMembers);
 
+        if (roleValue.equals("1") || (memberGroupRole !=null && memberGroupRole.equals("2"))){
+            menuItemEditGroupSpaceMenu.setVisible(true);
+            menuItemGroupSpaceMembers.setVisible(true);
+        }else {
+            menuItemEditGroupSpaceMenu.setVisible(false);
+            menuItemGroupSpaceMembers.setVisible(false);
+        }
+
+        if(menu instanceof MenuBuilder){
+            MenuBuilder m = (MenuBuilder) menu;
+            m.setOptionalIconsVisible(true);
+        }
 
         return true;
     }
@@ -879,7 +902,7 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
             case R.id.groupSpaceMembers:
                 Intent intent = new Intent(GroupSpaceCommentActivity.this, MembersOfAGroupSpace.class);
                 intent.putExtra("GroupId", GroupId);
-                //intent.putExtra("memberGroupRole", memberGroupRole);
+                intent.putExtra("memberGroupRole", memberGroupRole);
                 startActivity(intent);
                 return true;
 

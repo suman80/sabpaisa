@@ -50,6 +50,8 @@ import in.sabpaisa.droid.sabpaisa.UIN;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.NoOfGroupmemberAdapter;
 
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
+
 public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfAGroupSpaceAdapter.MyViewHolder> {
     int count;
     ArrayList<Member_GetterSetter> memberGetterSetterArrayList;
@@ -62,6 +64,8 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
     String userAccessToken;
 
     int countforAdmin = 0;
+
+    String roleValue;
 
     public MembersOfAGroupSpaceAdapter(ArrayList<Member_GetterSetter> memberGetterSetterArrayList, Context context) {
         this.memberGetterSetterArrayList = memberGetterSetterArrayList;
@@ -100,6 +104,10 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
                 .error(R.drawable.default_users)
                 .into(myViewHolder.memberImg);
 
+        SharedPreferences sharedPreferencesRole = mContext.getSharedPreferences(SUPER_ADMIN_SHAREDFREF, Context.MODE_PRIVATE);
+
+        roleValue = sharedPreferencesRole.getString("ROLE_VALUE", "abc");
+
 
 
         SharedPreferences sharedPreferences1 = mContext.getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
@@ -111,7 +119,26 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
 
         }
 
-        myViewHolder.imgPopUpMenu.setVisibility(View.VISIBLE);
+
+        if (roleValue.equals("1")){
+            myViewHolder.textViewAdmin.setVisibility(View.VISIBLE);
+
+            myViewHolder.textViewAdmin.setText("Admin");
+        }else if ( !(member_getterSetter.getRoleId() == null || member_getterSetter.getRoleId().equals("null"))
+                && member_getterSetter.getRoleId().equals("2")){
+            myViewHolder.textViewAdmin.setVisibility(View.VISIBLE);
+
+            myViewHolder.textViewAdmin.setText(member_getterSetter.getRoleName());
+        }else{
+            myViewHolder.textViewAdmin.setVisibility(View.GONE);
+
+        }
+
+
+        if (( roleValue.equals("1")) || (MembersOfAGroupSpace.memberGroupRole !=null && MembersOfAGroupSpace.memberGroupRole.equals("2"))) {
+
+            myViewHolder.imgPopUpMenu.setVisibility(View.VISIBLE);
+        }
 
 
         myViewHolder.imgPopUpMenu.setOnClickListener(new View.OnClickListener() {
@@ -125,18 +152,15 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
 
                 menu.getMenu().add("Remove");
 
-               /* if(member_getterSetter.getRoleId() ==null || member_getterSetter.getRoleId().equals("null") || !member_getterSetter.getRoleId().equals("2"))
+                Log.d("MOAGSA","RoleId__"+member_getterSetter.getRoleId());
+
+                if(member_getterSetter.getRoleId() ==null || member_getterSetter.getRoleId().equals("null") || !member_getterSetter.getRoleId().equals("2"))
                 {
-
-                    if ((member_getterSetter.getUin_Role()==null || member_getterSetter.getUin_Role().equals("null"))
-                            || !(member_getterSetter.getUin_Role().equals("1"))) {
-
-                        if(PrivateFeedMembersList.Flag == null)
-                            menu.getMenu().add("Make a group admin");
-
+                    if (!roleValue.equals("1")){
+                        menu.getMenu().add("Make a group admin");
                     }
+                }
 
-                }*/
 
 
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -186,6 +210,7 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
             memberImg = (ImageView) itemView.findViewById(R.id.memberImg);
             memberName = (TextView) itemView.findViewById(R.id.memberName);
             imgPopUpMenu = (ImageView) itemView.findViewById(R.id.imgPopUpMenu);
+            textViewAdmin = (TextView)itemView.findViewById(R.id.textViewAdmin);
 
 
         }

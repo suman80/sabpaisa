@@ -63,6 +63,7 @@ import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_GROUPS;
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.GROUP_ARRAYLIST;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.REFRESH_GROUP_FRAGMENT;
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
 
 public class SkipGroupFragment extends Fragment {
 
@@ -83,6 +84,8 @@ public class SkipGroupFragment extends Fragment {
     SkipGroupFragmentAdapter skipGroupFragmentAdapter;
 
     BroadcastReceiver broadcastReceiver,receiver;
+
+    String roleValue;
 
     public SkipGroupFragment() {
         // Required empty public constructor
@@ -143,9 +146,9 @@ public class SkipGroupFragment extends Fragment {
 
 
 
-        SharedPreferences sharedPreferencesRole = getContext().getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferencesRole = getContext().getSharedPreferences(SUPER_ADMIN_SHAREDFREF, Context.MODE_PRIVATE);
 
-        String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
+        roleValue = sharedPreferencesRole.getString("ROLE_VALUE", "abc");
 
         if (roleValue.equals("1")) {
 
@@ -263,14 +266,8 @@ public class SkipGroupFragment extends Fragment {
 
                     } else {
 
-                        linearLayoutAddGrpWhenNoData.setVisibility(View.VISIBLE);
-                        framelayoutAddGroup.setVisibility(View.GONE);
-                        groupList.setVisibility(View.GONE);
-                        linearLayoutnoDataFound.setVisibility(View.GONE);
 
-
-
-                       /* if (roleValue.equals("1")) {
+                        if (roleValue.equals("1")) {
 
                             linearLayoutAddGrpWhenNoData.setVisibility(View.VISIBLE);
                             framelayoutAddGroup.setVisibility(View.GONE);
@@ -282,7 +279,8 @@ public class SkipGroupFragment extends Fragment {
                             framelayoutAddGroup.setVisibility(View.GONE);
                             groupList.setVisibility(View.GONE);
                             linearLayoutAddGrpWhenNoData.setVisibility(View.GONE);
-                        }*/
+                        }
+
                     }
                 }
                 // Try and catch are included to handle any errors due to JSON

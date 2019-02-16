@@ -157,6 +157,8 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
     public static boolean AppDecideFlag;
 
+    public static String SUPER_ADMIN_SHAREDFREF = "SUPER_ADMIN_SHAREDFREF";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -443,6 +445,12 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         // AppDecideFlag
 
         AppDecideFlag = true;
+
+        //Storing value for user role and setting default to 1 with token
+        SharedPreferences.Editor editor = getSharedPreferences(SUPER_ADMIN_SHAREDFREF, MODE_PRIVATE).edit();
+        editor.putString("userAccessToken", userAccessToken);
+        editor.putString("ROLE_VALUE", "1");
+        editor.apply();
 
 
 

@@ -51,6 +51,7 @@ import in.sabpaisa.droid.sabpaisa.UIN;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.GROUP_ARRAYLIST;
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
 
 public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFragmentAdapter.MyViewHolder> {
 
@@ -64,7 +65,7 @@ public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFrag
 
 
 
-// test //
+
 
     public SkipGroupFragmentAdapter() {
     }
@@ -119,9 +120,9 @@ public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFrag
             holder.joinmember.setVisibility(View.GONE);
         }
 
-        SharedPreferences sharedPreferencesRole = mContext.getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferencesRole = mContext.getSharedPreferences(SUPER_ADMIN_SHAREDFREF, Context.MODE_PRIVATE);
 
-        String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
+        String roleValue = sharedPreferencesRole.getString("ROLE_VALUE", "abc");
 
         if ((roleValue.equals("1") || c.getMemberGroupRole().equals("2")) && c.getMemberStatus().equals("Approved")) {
             Log.d(roleValue, "  "+c.getMemberGroupRole()+" >>>>>>>>>>>>> ");
