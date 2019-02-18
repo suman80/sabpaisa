@@ -87,6 +87,11 @@ public class SkipGroupFragment extends Fragment {
 
     String roleValue;
 
+    /*START Interface for getting data from activity*/
+    GetDataInterface sGetDataInterface;
+    /*START Interface for getting data from activity*/
+
+
     public SkipGroupFragment() {
         // Required empty public constructor
     }
@@ -256,8 +261,8 @@ public class SkipGroupFragment extends Fragment {
 
 
                         /*START listener for sending data to activity*/
-                        /*OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
-                        listener.onFragmentSetGroups(arrayListForApproved);*/
+                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                        listener.onFragmentSetGroups(groupArrayList);
                         /*END listener for sending data to activity*/
 
 
@@ -321,6 +326,32 @@ public class SkipGroupFragment extends Fragment {
             Log.v("SGF", "Internet Connection Not Present");
             return false;
         }
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            sGetDataInterface = (GetDataInterface) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
+        }
+    }
+
+    public void getDataFromActivity() {
+        if (sGetDataInterface != null) {
+            this.groupArrayList = sGetDataInterface.getGroupDataList();
+            skipGroupFragmentAdapter.setItems(this.groupArrayList);
+            skipGroupFragmentAdapter.notifyDataSetChanged();
+        }
+
+        Log.d("PGF_I&A", " " + sGetDataInterface + "&" + groupArrayList);
+    }
+
+
+    public interface GetDataInterface {
+        ArrayList<GroupListData> getGroupDataList();
     }
 
 

@@ -21,7 +21,7 @@
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             app:navigationIcon="@drawable/ic_action_previousback"
-            app:title="Contacts"
+            app:title="Members"
 
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:subtitleTextColor="@color/white"

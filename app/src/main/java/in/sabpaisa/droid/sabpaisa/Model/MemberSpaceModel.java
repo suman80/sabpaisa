@@ -2,7 +2,7 @@ package in.sabpaisa.droid.sabpaisa.Model;
 
 public class MemberSpaceModel {
 
-    String memberId,roleId,roleName,userId,fullName,address,contactNumber,dateOfBirth,
+    public String memberId,roleId,roleName,userId,fullName,address,contactNumber,dateOfBirth,
             emailId,password,accessTokenFb,accessTokenGoogle,deviceId,userAccessToken,
             timestampOfRegistration,status,dobString,userImageUrl;
 

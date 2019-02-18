@@ -76,9 +76,9 @@ public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFrag
     }
 
     /*START Method to change data when put query in searchBar*/
-    /*public void setItems(List<GroupListData> groupDatas) {
+    public void setItems(List<GroupListData> groupDatas) {
         this.countryList = groupDatas;
-    }*/
+    }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {

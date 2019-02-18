@@ -102,6 +102,7 @@ import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionSkipFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
+import in.sabpaisa.droid.sabpaisa.Model.MemberSpaceModel;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.PersonalSpaceModel;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
@@ -1027,6 +1028,11 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
     @Override
     public void onFragmentSetContacts(ArrayList<ContactList> contactLists) {
+
+    }
+
+    @Override
+    public void onFragmentSetMembersSpace(ArrayList<MemberSpaceModel> memberSpaceData) {
 
     }
 

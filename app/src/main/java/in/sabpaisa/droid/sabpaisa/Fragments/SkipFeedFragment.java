@@ -81,6 +81,9 @@ public class SkipFeedFragment extends Fragment {
 
     BroadcastReceiver broadcastReceiver,receiver;
 
+    /*START Interface for getting data from activity*/
+    GetDataInterface sGetDataInterface;
+
     public SkipFeedFragment() {
         // Required empty public constructor
     }
@@ -239,6 +242,10 @@ public class SkipFeedFragment extends Fragment {
 
                         }
 
+                        //*START listener for sending data to activity*//*
+                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                        listener.onFragmentSetFeeds(feedArrayList);
+
 
                         skipFeedFragmentAdapter = new SkipFeedFragmentAdapter(feedArrayList, getContext());
                         recyclerView.setAdapter(skipFeedFragmentAdapter);
@@ -286,6 +293,38 @@ public class SkipFeedFragment extends Fragment {
         );
         // Adds the JSON array request "arrayreq" to the request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
+    }
+
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            sGetDataInterface = (GetDataInterface) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
+        }
+    }
+
+
+
+    public void getDataFromActivity() {
+        if (sGetDataInterface != null) {
+            this.feedArrayList = sGetDataInterface.getFeedDataList();
+            skipFeedFragmentAdapter.setItems(this.feedArrayList);
+            skipFeedFragmentAdapter.notifyDataSetChanged();
+        }
+
+        Log.d("SkipFeedFrag_I&A", " " + sGetDataInterface + "&" + feedArrayList);
+    }
+
+
+    /*END Interface for getting data from activity*/
+
+    public interface GetDataInterface {
+        ArrayList<FeedData> getFeedDataList();
     }
 
 

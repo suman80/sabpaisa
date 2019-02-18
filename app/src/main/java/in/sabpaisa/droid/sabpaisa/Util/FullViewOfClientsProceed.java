@@ -1100,6 +1100,11 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     }
 
     @Override
+    public void onFragmentSetMembersSpace(ArrayList<MemberSpaceModel> memberSpaceData) {
+
+    }
+
+    @Override
     public void onFragmentSetClients(ArrayList<PersonalSpaceModel> clientData) {
 
     }

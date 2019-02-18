@@ -38,6 +38,7 @@ import com.bumptech.glide.Glide;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
@@ -58,6 +59,11 @@ public class SkipFeedFragmentAdapter extends RecyclerView.Adapter<SkipFeedFragme
     public SkipFeedFragmentAdapter(List<FeedData> arrayList, Context context) {
         this.feedDataList = arrayList;
         this.context = context;
+    }
+
+    /*START Method to change data when put query in searchBar*/
+    public void setItems(ArrayList<FeedData> feedDatas) {
+        this.feedDataList = feedDatas;
     }
 
     @Override

@@ -4,6 +4,7 @@ package in.sabpaisa.droid.sabpaisa.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.SkipMemberAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.MemberSpaceModel;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
@@ -57,6 +59,9 @@ public class SkipMembersFragment extends Fragment {
     //Values get from SkipClient details screen
     String clientName,clientLogoPath,clientImagePath,state;
 
+    /*START Interface for getting data from activity*/
+    GetDataInterface sGetDataInterface;
+    /*START Interface for getting data from activity*/
 
     public SkipMembersFragment() {
         // Required empty public constructor
@@ -180,6 +185,11 @@ public class SkipMembersFragment extends Fragment {
 
                         Log.d("SMF","memberSpaceModelArrayList___"+memberSpaceModelArrayList.size());
 
+                        /*START listener for sending data to activity*/
+                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                        listener.onFragmentSetMembersSpace(memberSpaceModelArrayList);
+                        /*END listener for sending data to activity*/
+
                         skipMemberAdapter = new SkipMemberAdapter(memberSpaceModelArrayList,getContext());
                         recycler_view_Member.setAdapter(skipMemberAdapter);
 
@@ -210,6 +220,48 @@ public class SkipMembersFragment extends Fragment {
         );
         // Adds the JSON array request "arrayreq" to the request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            sGetDataInterface= (GetDataInterface) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + "must implement GetDataInterface Interface");
+        }
+    }
+
+    public void getDataFromActivity() {
+        if(sGetDataInterface != null){
+            this.memberSpaceModelArrayList = sGetDataInterface.getMemberDataList();
+            skipMemberAdapter.setItems(this.memberSpaceModelArrayList);
+            skipMemberAdapter.notifyDataSetChanged();
+            Log.d("SMF_I&A_InIf"," "+sGetDataInterface+"&"+memberSpaceModelArrayList);
+        }else {
+            Log.d("SMF_I&A_InElse"," "+sGetDataInterface+"&"+memberSpaceModelArrayList);
+        }
+
+    }
+
+
+    public interface GetDataInterface {
+        ArrayList<MemberSpaceModel> getMemberDataList();
+    }
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("SMF", "Internet Connection Not Present");
+            return false;
+        }
     }
 
 

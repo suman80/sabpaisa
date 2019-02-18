@@ -6,6 +6,7 @@ import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
+import in.sabpaisa.droid.sabpaisa.Model.MemberSpaceModel;
 import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.PersonalSpaceModel;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
@@ -25,4 +26,5 @@ public interface OnFragmentInteractionListener {
     public void onFragmentSetMembers(ArrayList<Member_GetterSetter> memberData);
     public void onFragmentSetClients(ArrayList<PersonalSpaceModel> clientData);
     public void onFragmentSetContacts(ArrayList<ContactList> contactLists);
+    public void onFragmentSetMembersSpace(ArrayList<MemberSpaceModel> memberSpaceData);
 }

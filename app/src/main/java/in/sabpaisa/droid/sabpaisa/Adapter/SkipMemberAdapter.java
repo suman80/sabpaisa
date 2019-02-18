@@ -34,6 +34,7 @@ import com.bumptech.glide.Glide;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
@@ -49,12 +50,6 @@ public class SkipMemberAdapter extends RecyclerView.Adapter<SkipMemberAdapter.My
     private List<MemberSpaceModel> memberSpaceModelList;
     Context context;
 
-
-    public SkipMemberAdapter(List<MemberSpaceModel> arrayList, Context context) {
-        this.memberSpaceModelList = arrayList;
-        this.context = context;
-    }
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -62,6 +57,17 @@ public class SkipMemberAdapter extends RecyclerView.Adapter<SkipMemberAdapter.My
 
         return new MyViewHolder(itemView);
     }
+
+    public SkipMemberAdapter(List<MemberSpaceModel> arrayList, Context context) {
+        this.memberSpaceModelList = arrayList;
+        this.context = context;
+    }
+
+    /*START Method to change data when put query in searchBar*/
+    public void setItems(ArrayList<MemberSpaceModel> memberDatas) {
+        this.memberSpaceModelList = memberDatas;
+    }
+
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
