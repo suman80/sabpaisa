@@ -219,6 +219,9 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         navigationView.setItemIconTintList(null);
         toolbar.setNavigationIcon(R.drawable.ic_navigation);
 
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(R.id.nav_clean_data).setVisible(false);
+
         ClientImagePRoceed = (ImageView) findViewById(R.id.ClientImagePRoceed);
 
         Glide.with(SkipClientDetailsScreen.this)/*//Added on 1st Feb*/
@@ -815,4 +818,17 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     }
 
 
+    @Override
+    public void onBackPressed() {
+
+
+        if (searchView.isSearchOpen()) {
+            searchView.closeSearch();
+        } else if (this.drawer.isDrawerOpen(GravityCompat.START)) {
+            this.drawer.closeDrawer(GravityCompat.START);
+            Log.d("Drawer", "Closing_FVCP");
+        }else {
+            super.onBackPressed();
+        }
+    }
 }

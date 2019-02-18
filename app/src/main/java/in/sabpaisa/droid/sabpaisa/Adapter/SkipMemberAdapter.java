@@ -47,7 +47,7 @@ import me.grantland.widget.AutofitTextView;
 
 public class SkipMemberAdapter extends RecyclerView.Adapter<SkipMemberAdapter.MyViewHolder> {
 
-    private List<MemberSpaceModel> memberSpaceModelList;
+    public List<MemberSpaceModel> memberSpaceModelList;
     Context context;
 
     @Override
@@ -64,7 +64,7 @@ public class SkipMemberAdapter extends RecyclerView.Adapter<SkipMemberAdapter.My
     }
 
     /*START Method to change data when put query in searchBar*/
-    public void setItems(ArrayList<MemberSpaceModel> memberDatas) {
+    public void setItems(List<MemberSpaceModel> memberDatas) {
         this.memberSpaceModelList = memberDatas;
     }
 
@@ -130,7 +130,15 @@ public class SkipMemberAdapter extends RecyclerView.Adapter<SkipMemberAdapter.My
     public int getItemCount() {
         return memberSpaceModelList.size();
     }
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 

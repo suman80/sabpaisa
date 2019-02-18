@@ -197,7 +197,6 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         // get the userPRofileimage from filter activity
         Intent i = getIntent();
 
