@@ -75,8 +75,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import at.markushi.ui.CircleButton;
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
 public class FeedSpaceCommentsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
@@ -109,6 +111,10 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
 
     //Getting Values from feedskipfrag
     String feedId,feedName,feedText,feedLogo;
+
+    NotificationDB notificationDB;
+
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +169,15 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
                     @Override
                     public void onClick(View v) {
 
+                        SkipClientDetailsScreen.isFragmentOpen = true;
+
+                        boolean isUpdated = notificationDB.updateFeedNotificationData(feedId,0,0, System.currentTimeMillis(),false);
+
+                        if (isUpdated == true){
+                            Log.d("FSC_NotiDB","Updated "+isUpdated);
+                        }else {
+                            Log.d("FSC_NotiDB","NotUpdated "+isUpdated);
+                        }
 
                         onBackPressed();
                         //Toast.makeText(MainActivity.this, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
@@ -294,8 +309,21 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
                 callGetCommentList(feedId);
             }else {
             //Offline feature
+            Toast.makeText(FeedSpaceCommentsActivity.this,"No Internet Connection",Toast.LENGTH_SHORT).show();
         }
 
+        notificationDB = new NotificationDB(FeedSpaceCommentsActivity.this);
+
+        ///////////////////////////////////////////////////////////////////////////////////////
+
+        SkipClientDetailsScreen.isFragmentOpen = false;
+
+        boolean isUpdated = notificationDB.updateFeedNotificationData(feedId,0,0, System.currentTimeMillis(),true);
+        if (isUpdated == true){
+            Log.d("FSC_Notification","Updated "+isUpdated);
+        }else {
+            Log.d("FSC_Notification","NotUpdated "+isUpdated);
+        }
 
 
     }
@@ -307,6 +335,69 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
         super.onResume();
 
         // UI Update Code
+
+        // Update UI
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String feedId = intent.getStringExtra("FEED_ID");
+
+//                ArrayList<CommentData> arr = new ArrayList<CommentData>();
+
+                try{
+
+                    JSONObject jsonObject = new JSONObject(intent.getStringExtra("FEED_JSON"));
+                    Log.d("RecievedJSONData",""+jsonObject);
+                    CommentData groupData = new CommentData();
+                    groupData.setCommentText(jsonObject.getString("commentText"));
+                    Log.d("RecievedBody",""+jsonObject.getString("commentText"));
+                    groupData.setCommentName(jsonObject.getString("commentByName"));
+                    groupData.setCommentImage(jsonObject.getString("filePath"));
+                    Log.d("FILE_PATH_At_PFF1", " " + jsonObject.getString("filePath"));
+                    groupData.setCommentId(jsonObject.getInt("commentId"));
+
+                    dataTime1 = jsonObject.getString("commentDate");
+                    Log.d("dataTimePFF1", " " + dataTime1);
+
+                    /*String userImageUrl*/ JSONObject jsonObject2 = jsonObject.getJSONObject("userImageUrl")/*.getString("userImageUrl")*/;
+
+//                    JSONObject jsonObject2 = new JSONObject(userImageUrl);
+                    groupData.setUserId(jsonObject2.getString("userId"));
+                    groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
+
+                    try {
+                        groupData.setComment_date(getDate(Long.parseLong(dataTime1)));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    /*arr.add(groupData);*/
+//                    arr.addAll(commentArrayList);
+                    commentArrayList.add(0, groupData);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                feedId = feedId;
+                Log.d("PFF_FEED","broadcastVal__"+feedId +" RR "+feedId);
+
+/*
+
+                if (PrivateGroupFeeds.FLAG != null){
+                    //callGetCommentListForPrivateFeeds(feed_id,userAccessToken);
+                    loadCommentListView(commentArrayList);
+                }else {
+*/
+
+//                    commentArrayList.addAll(arr);
+                    Log.d("ARR  ", " "+commentArrayList.size());
+                    loadCommentListView(commentArrayList);
+//                    callGetCommentList(feed_id);
+                //}
+
+            }
+        };
+        LocalBroadcastManager.getInstance(FeedSpaceCommentsActivity.this).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.FEED_UI));
+
 
     }
 
@@ -1093,9 +1184,29 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
     }
 
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
+        if (shareViewFrameLayout.getVisibility() == View.VISIBLE) {
+            shareViewFrameLayout.setVisibility(View.GONE);
+        } else {
 
 
+            SkipClientDetailsScreen.isFragmentOpen = true;
 
+        boolean isUpdated = notificationDB.updateFeedNotificationData(feedId,0,0, System.currentTimeMillis(),false);
 
+        if (isUpdated == true){
+            Log.d("FSC_NotiDB","Updated "+isUpdated);
+        }else {
+            Log.d("FSC_NotiDB","NotUpdated "+isUpdated);
+        }
+
+        finish();
+
+    }
+
+    }
 
 }

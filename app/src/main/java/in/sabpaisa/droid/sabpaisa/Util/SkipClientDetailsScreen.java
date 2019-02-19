@@ -148,6 +148,8 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     ArrayList<MemberSpaceModel> memberData;
     ArrayList<MemberSpaceModel> filteredmemberData;
 
+    public static boolean isFragmentOpen;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -228,6 +230,8 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
                 .load(clientLogoURLPath)
                 .error(R.drawable.image_not_found)
                 .into(ClientImagePRoceed);
+
+        isFragmentOpen = true;
 
         // Searching functionality
         searchViewBar();
@@ -828,6 +832,9 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
             this.drawer.closeDrawer(GravityCompat.START);
             Log.d("Drawer", "Closing_FVCP");
         }else {
+
+            isFragmentOpen = false;
+
             super.onBackPressed();
         }
     }

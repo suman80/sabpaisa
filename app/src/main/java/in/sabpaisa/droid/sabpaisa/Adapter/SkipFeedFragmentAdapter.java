@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -42,18 +43,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FeedSpaceCommentsActivity;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
+import in.sabpaisa.droid.sabpaisa.Model.FeedNotificatonModel;
+import in.sabpaisa.droid.sabpaisa.PrivateGroupFeeds;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.FEED_ARRAYLIST;
 
 public class SkipFeedFragmentAdapter extends RecyclerView.Adapter<SkipFeedFragmentAdapter.MyViewHolder> {
 
     private List<FeedData> feedDataList;
     Context context;
+    NotificationDB db;
 
 
     public SkipFeedFragmentAdapter(List<FeedData> arrayList, Context context) {
@@ -94,6 +100,43 @@ public class SkipFeedFragmentAdapter extends RecyclerView.Adapter<SkipFeedFragme
 //        if (memberSpaceModel.getRoleId().equals("1")){
         holder.imgPopUpMenu.setVisibility(View.VISIBLE);
         // }
+
+
+
+        db= new NotificationDB(context);
+
+        Cursor res = db.getParticularFeedNotificationData(feedData.getFeedId());
+        if (res.getCount() > 0) {
+            StringBuffer stringBuffer = new StringBuffer();
+
+            int commentCounter = 0;
+            while (res.moveToNext()) {
+                stringBuffer.append(res.getString(0) + " ");
+                stringBuffer.append(res.getString(1) + " ");
+                stringBuffer.append(res.getString(2) + " ");
+                commentCounter = Integer.parseInt(res.getString(2));
+                stringBuffer.append(res.getString(3) + " ");
+                stringBuffer.append(res.getString(4) + " ");
+                stringBuffer.append(res.getString(5) + " ");
+            }
+
+            Log.d("MainFeedAdapt", "Notification " + stringBuffer);
+
+            if (commentCounter > 0) {
+                holder.relativeLayoutNotification.setVisibility(View.VISIBLE);
+
+                if (commentCounter <= 9) {
+                    holder.notificationText.setText(String.valueOf(commentCounter));
+                } else {
+                    holder.notificationText.setText(String.valueOf("9+"));
+                }
+            }
+
+
+        }
+
+
+
 
         holder.imgPopUpMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +184,71 @@ public class SkipFeedFragmentAdapter extends RecyclerView.Adapter<SkipFeedFragme
         holder.rippleClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                if (db.isTableExists(TABLE_FEEDNOTIFICATION)){
+
+                    Cursor res = db.getParticularFeedNotificationData(feedData.getFeedId());
+                    if (res.getCount() > 0) {
+                        StringBuffer stringBuffer = new StringBuffer();
+
+                        while (res.moveToNext()) {
+                            stringBuffer.append(res.getString(0) + " ");
+                            stringBuffer.append(res.getString(1) + " ");
+                            stringBuffer.append(res.getString(2) + " ");
+                            stringBuffer.append(res.getString(3) + " ");
+                            stringBuffer.append(res.getString(4) + " ");
+                        }
+
+                        Log.d("PFF_Notification","stringBuffer___ "+stringBuffer);
+
+                        boolean isUpdated = db.updateFeedNotificationData(feedData.getFeedId(),0,0, System.currentTimeMillis(),true);
+                        if (isUpdated == true){
+                            Log.d("SFFA_Notification","Updated "+isUpdated);
+                            holder.relativeLayoutNotification.setVisibility(View.GONE);
+                        }else {
+                            Log.d("SFFA_Notification","NotUpdated "+isUpdated);
+                        }
+                    }
+                    else{
+
+                        FeedNotificatonModel feedNotificatonModel = new FeedNotificatonModel();
+                        feedNotificatonModel.setFeedId(feedData.getFeedId());
+                        feedNotificatonModel.setFeedNotificationCount(0);
+                        feedNotificatonModel.setFeedRecentCommentTimeStamp(0);
+                        feedNotificatonModel.setFeedRecentOpenCommentTimeStamp(System.currentTimeMillis());
+                        feedNotificatonModel.setFeedIsOpen(true);
+                        /*if (PrivateGroupFeeds.FLAG != null) {
+                            feedNotificatonModel.setFeedMode("Private");
+                            feedNotificatonModel.setFeedGroupId(PrivateGroupFeeds.GroupId);
+                        }else {*/
+                            feedNotificatonModel.setFeedMode("Public");
+                            feedNotificatonModel.setFeedGroupId(null);
+                        //}
+
+                        boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
+                        if (isInserted == true) {
+
+
+                            Log.d("SFFA_Notification", "Notification Insert : " + isInserted);
+
+                        } else {
+
+                            Log.d("SFFA_Notification", "Notification Insert : " + isInserted);
+
+                        }
+
+
+
+
+
+                    }
+
+
+                }
+
+
+
                 Intent intent = new Intent(context, FeedSpaceCommentsActivity.class);
                 intent.putExtra("feedName",feedData.getFeedName());
                 intent.putExtra("feedText",feedData.getFeedText());

@@ -4,10 +4,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -74,11 +76,14 @@ import java.util.Locale;
 import java.util.Map;
 
 import at.markushi.ui.CircleButton;
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
+import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_GROUP_COMMENTS;
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
 import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
 
 public class GroupSpaceCommentActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
@@ -119,6 +124,9 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
 
     File fileDoc;
 
+    NotificationDB notificationDB;
+    BroadcastReceiver broadcastReceiver;
+    int notificationCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +156,16 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        SkipClientDetailsScreen.isFragmentOpen = true;
+
+                        boolean isUpdated = notificationDB.updateGroupNotificationData(GroupId,0,0, System.currentTimeMillis(),false);
+
+                        if (isUpdated == true){
+                            Log.d("PGF_NotiGrp","Updated "+isUpdated);
+                        }else {
+                            Log.d("PGF_NotiGrp","NotUpdated "+isUpdated);
+                        }
 
 
                         onBackPressed();
@@ -316,6 +334,48 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
             }
         });
 
+        SkipClientDetailsScreen.isFragmentOpen = false;
+
+        ///////////////////////////////////////////////////////////////////////////////////////
+
+        notificationDB = new NotificationDB(GroupSpaceCommentActivity.this);
+
+        boolean isUpdated = notificationDB.updateGroupNotificationData(GroupId,0,0, System.currentTimeMillis(),true);
+        if (isUpdated == true){
+            Log.d("PGF_Notification","Updated "+isUpdated);
+        }else {
+            Log.d("PGF_Notification","NotUpdated "+isUpdated);
+        }
+        if (notificationDB.isTableExists(TABLE_FEEDNOTIFICATION)) {
+
+            Cursor res = notificationDB.getParticularPrivateFeedNotificationData(GroupId);
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0) + " ");
+                    stringBuffer.append(res.getString(1) + " ");
+                    stringBuffer.append(res.getInt(2) + " ");
+                    stringBuffer.append(res.getString(3) + " ");
+//                    stringBuffer.append(res.getString(4) + " ");
+//                    stringBuffer.append(res.getString(5) + " ");
+//                    stringBuffer.append(res.getString(6) + " ");
+//                    stringBuffer.append(res.getString(7) + " ");
+
+                    notificationCount += res.getInt(2);
+                    break;
+
+                }
+
+                Log.d("GSCA_Notification", "ForPrivateFeedStringBuffer___ " + stringBuffer);
+
+
+
+            }
+        }
+
+
+
 
 
 
@@ -326,9 +386,58 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
     protected void onResume() {
         super.onResume();
 
-        // UI Update Code
+
+        // Update UI
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String groupId = intent.getStringExtra("GROUP_ID");
+
+                Log.d("PGF_GRP","broadcastVal__"+groupId);
+
+                try {
+                    JSONObject jsonObject = new JSONObject(intent.getStringExtra("GROUP_JSON"));
+                    Log.d("RecievedJsonData_PGF"," "+jsonObject);
+                    CommentData groupData = new CommentData();
+
+                    groupData.setCommentText(jsonObject.getString("commentText"));
+
+                    groupData.setCommentName(jsonObject.getString("commentByName"));
+                    groupData.setUserImageUrl(jsonObject.getJSONObject("userImageUrl").getString("userImageUrl"));
+                    groupData.setCommentImage(jsonObject.getString("filePath"));
+                    String dataTime = jsonObject.getString("commentDate");
+                    groupData.setCommentId(jsonObject.getInt("commentId"));
+                    groupData.setUserId(jsonObject.getJSONObject("userImageUrl").getString("userId"));
+                    try {
+                        groupData.setComment_date(getDate(Long.parseLong(dataTime)));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    commentArrayList.add(0,groupData);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //commentArrayList.clear();
+                //count = 1;
+                //API
+                //callGetCommentList(GroupId,userAccessToken);
+
+                loadCommentListView(commentArrayList);
+
+            }
+        };
+
+        LocalBroadcastManager.getInstance(GroupSpaceCommentActivity.this).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.GROUP_UI));
+
+
+
 
     }
+
 
 
     private void loadCommentListView(ArrayList<CommentData> arrayList) {

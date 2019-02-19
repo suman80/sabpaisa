@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -48,6 +49,8 @@ import in.sabpaisa.droid.sabpaisa.Adapter.SkipGroupFragmentAdapter;
 import in.sabpaisa.droid.sabpaisa.AddGroup;
 import in.sabpaisa.droid.sabpaisa.AddGroupSpace;
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
+import in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
@@ -57,6 +60,7 @@ import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 import in.sabpaisa.droid.sabpaisa.UIN;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_GROUPS;
@@ -91,6 +95,7 @@ public class SkipGroupFragment extends Fragment {
     GetDataInterface sGetDataInterface;
     /*START Interface for getting data from activity*/
 
+    NotificationDB notificationDB;
 
     public SkipGroupFragment() {
         // Required empty public constructor
@@ -143,10 +148,13 @@ public class SkipGroupFragment extends Fragment {
         groupList.setLayoutManager(llm);
         groupList.setMotionEventSplittingEnabled(false);
 
+
+
         if (isOnline()) {
             callGroupDataList(userAcessToken, appCid);
         } else {
             //Todo offline
+            Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
         }
 
 
@@ -179,13 +187,22 @@ public class SkipGroupFragment extends Fragment {
         });
 
 
+        //Notification db
+        notificationDB= new NotificationDB(getContext());
+
+
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 
                 if (intent.getAction().equals(GROUP_ARRAYLIST)){
-                    callGroupDataList(userAcessToken, appCid);
+                    callGroupDataList1(userAcessToken, appCid,context);
                 }
+
+                if (intent.getAction().equals(REFRESH_GROUP_FRAGMENT)){
+                    callGroupDataList1(userAcessToken, appCid,context);
+                }
+
 
             }
         };
@@ -198,6 +215,37 @@ public class SkipGroupFragment extends Fragment {
 
         return view;
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                String groupId = intent.getStringExtra("GROUP_ID");
+
+                Log.d("BROADCAST_PGF","broadcastVal__"+groupId);
+
+                if (intent.getAction().equals(ConstantsForUIUpdates.IS_GROUP_FRAG_OPEN) && SkipClientDetailsScreen.isFragmentOpen) {
+                    groupArrayList.clear();
+                    callGroupDataList1(userAcessToken, appCid,context);
+
+                }
+
+
+            }
+
+        };
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.IS_GROUP_FRAG_OPEN));
+
+
+    }
+
 
 
 
@@ -256,6 +304,37 @@ public class SkipGroupFragment extends Fragment {
 
                             }
 
+
+                            //////////////Notification db//////////////////////////
+
+                            if (notificationDB.isTableExists(TABLE_GROUPNOTIFICATION)) {
+
+                                Cursor res = notificationDB.getParticularGroupNotificationData(groupListData.getGroupId());
+                                if (res.getCount() > 0) {
+                                    StringBuffer stringBuffer = new StringBuffer();
+
+                                    while (res.moveToNext()) {
+                                        stringBuffer.append(res.getString(0) + " ");
+                                        stringBuffer.append(res.getString(1) + " ");
+                                        stringBuffer.append(res.getString(2) + " ");
+                                        stringBuffer.append(res.getString(3) + " ");
+                                        groupListData.setGroupRecentCommentTime(Long.parseLong(res.getString(3)));
+                                        stringBuffer.append(res.getString(4) + " ");
+                                    }
+
+                                    Log.d("SGF_Notification", "stringBuffer___ " + stringBuffer);
+                                    //Log.d("PGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+                                }
+
+                            }
+
+                            Log.d("SGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+
+
+
+
                         }
                         Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
 
@@ -264,6 +343,20 @@ public class SkipGroupFragment extends Fragment {
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetGroups(groupArrayList);
                         /*END listener for sending data to activity*/
+
+                        Collections.sort(groupArrayList, new Comparator<GroupListData>() {
+                            @Override
+                            public int compare(GroupListData groupListData, GroupListData t1) {
+
+                                if (groupListData.getGroupRecentCommentTime() > t1.getGroupRecentCommentTime()){
+                                    return -1;
+                                }
+                                else if (groupListData.getGroupRecentCommentTime() < t1.getGroupRecentCommentTime()){
+                                    return 1;
+                                }
+                                else return 0;
+                            }
+                        });
 
 
                         skipGroupFragmentAdapter = new SkipGroupFragmentAdapter(groupArrayList, getContext());
@@ -315,6 +408,168 @@ public class SkipGroupFragment extends Fragment {
     }
 
 
+
+    public void callGroupDataList1(final String token, final String appCid,final Context context) {
+
+        String tag_string_req = "tag_string_req";
+
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "memberStatusWithGroup" + "?token=" + token + "&appcid=" + appCid;
+
+        Log.d("SkipGroupSpace","url___"+urlJsonObj);
+
+        StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
+                urlJsonObj, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                try {
+
+                    groupArrayList = new ArrayList<GroupListData>();
+
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    Log.d("SkipGroupFrag", "PGD_RESP: " + response);
+
+                    String status = jsonObject.getString("status");
+
+                    String response1 = jsonObject.getString("response");
+
+                    JSONArray jsonArray = null;
+                    Object obj = jsonObject.get("response");
+                    if (obj instanceof JSONArray) {
+                        jsonArray = (JSONArray) obj;
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                            JSONObject jsonObjectX = jsonArray.getJSONObject(i);
+                            JSONObject jsonObject1 = jsonObjectX.getJSONObject("clientGroup");
+                            final GroupListData groupListData = new GroupListData();
+                            groupListData.setClientId(jsonObject1.getString("clientId"));
+                            groupListData.setGroupId(jsonObject1.getString("groupId"));
+                            groupListData.setGroupName(jsonObject1.getString("groupName"));
+                            groupListData.setGroupText(jsonObject1.getString("groupText"));
+                            groupListData.setCreatedDate(jsonObject1.getString("createdDate"));
+                            //groupListData.setImagePath(jsonObject1.getString("imagePath"));
+                            groupListData.setLogoPath(jsonObject1.getString("logoPath"));
+                            groupListData.setMemberStatus(jsonObjectX.getString("memberStatus"));
+                            groupListData.setMemberGroupRole(jsonObjectX.getString("memberGroupRole"));
+
+                            Log.d("ProceedGroupFragmGR"," "+jsonObjectX.getString("memberGroupRole"));
+
+                            if (groupListData.getMemberStatus().contains("Approved")) {
+
+                                groupArrayList.add(groupListData);
+
+                            }
+
+
+                            //////////////Notification db//////////////////////////
+
+                            if (notificationDB.isTableExists(TABLE_GROUPNOTIFICATION)) {
+
+                                Cursor res = notificationDB.getParticularGroupNotificationData(groupListData.getGroupId());
+                                if (res.getCount() > 0) {
+                                    StringBuffer stringBuffer = new StringBuffer();
+
+                                    while (res.moveToNext()) {
+                                        stringBuffer.append(res.getString(0) + " ");
+                                        stringBuffer.append(res.getString(1) + " ");
+                                        stringBuffer.append(res.getString(2) + " ");
+                                        stringBuffer.append(res.getString(3) + " ");
+                                        groupListData.setGroupRecentCommentTime(Long.parseLong(res.getString(3)));
+                                        stringBuffer.append(res.getString(4) + " ");
+                                    }
+
+                                    Log.d("SGF_Notification", "stringBuffer___ " + stringBuffer);
+                                    //Log.d("PGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+                                }
+
+                            }
+
+                            Log.d("SGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+
+
+
+
+                        }
+                        Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
+
+
+                        /*START listener for sending data to activity*/
+                        /*OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                        listener.onFragmentSetGroups(groupArrayList);*/
+                        /*END listener for sending data to activity*/
+
+                        Collections.sort(groupArrayList, new Comparator<GroupListData>() {
+                            @Override
+                            public int compare(GroupListData groupListData, GroupListData t1) {
+
+                                if (groupListData.getGroupRecentCommentTime() > t1.getGroupRecentCommentTime()){
+                                    return -1;
+                                }
+                                else if (groupListData.getGroupRecentCommentTime() < t1.getGroupRecentCommentTime()){
+                                    return 1;
+                                }
+                                else return 0;
+                            }
+                        });
+
+
+                        skipGroupFragmentAdapter = new SkipGroupFragmentAdapter(groupArrayList, context);
+                        groupList.setAdapter(skipGroupFragmentAdapter);
+
+                    } else {
+
+
+                        if (roleValue.equals("1")) {
+
+                            linearLayoutAddGrpWhenNoData.setVisibility(View.VISIBLE);
+                            framelayoutAddGroup.setVisibility(View.GONE);
+                            groupList.setVisibility(View.GONE);
+                            linearLayoutnoDataFound.setVisibility(View.GONE);
+
+                        }else {
+                            linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                            framelayoutAddGroup.setVisibility(View.GONE);
+                            groupList.setVisibility(View.GONE);
+                            linearLayoutAddGrpWhenNoData.setVisibility(View.GONE);
+                        }
+
+                    }
+                }
+                // Try and catch are included to handle any errors due to JSON
+                catch (JSONException e) {
+                    // If an error occurs, this prints the error to the log
+                    e.printStackTrace();
+                    callGroupDataList1(token, appCid,context);
+                }
+
+            }
+
+        },
+                // The final parameter overrides the method onErrorResponse() and passes VolleyError
+                //as a parameter
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        callGroupDataList1(token, appCid,context);
+                        Log.e("Group fragments", "Group fragments Error");
+                    }
+                }
+        );
+        // Adds the JSON arra   y request "arrayreq" to the request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
+    }
+
+
+
+
+
+
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         // test for connection
@@ -354,6 +609,14 @@ public class SkipGroupFragment extends Fragment {
         ArrayList<GroupListData> getGroupDataList();
     }
 
+    @Override
+    public void onDestroy() {
+
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+
+        super.onDestroy();
+    }
 
 
 

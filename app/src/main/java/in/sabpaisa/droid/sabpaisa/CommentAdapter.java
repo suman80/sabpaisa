@@ -274,17 +274,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
         }
 
+
+
         File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         //Log.d("FilesInDownload", "Path: " + directory);
         File file = new File(directory.getAbsolutePath());
         File[] files = file.listFiles();
-        //Log.d("Files", "Size: "+ files.length);
-        for (int i = 0; i < files.length; i++) {
-            Log.d("FilesInDownloadFolder", "FileName:" + files[i].getName());
-            alreadyExistFile = files[i].getName();
-            arrayListAlreadyExistFile.add(alreadyExistFile);
+        if(!(files == null || files.length == 0)) {
+            //Log.d("Files", "Size: "+ files.length);
+            for (int i = 0; i < files.length; i++) {
+                Log.d("FilesInDownloadFolder", "FileName:" + files[i].getName());
+                alreadyExistFile = files[i].getName();
+                arrayListAlreadyExistFile.add(alreadyExistFile);
+            }
         }
-
 //        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 //        Log.d("FilesInDownload", "Path: " + directory);
 //        //File file = new File(directory.getAbsolutePath());
