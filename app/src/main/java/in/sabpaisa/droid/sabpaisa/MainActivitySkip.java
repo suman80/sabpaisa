@@ -237,6 +237,9 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        tabLayout.setSmoothScrollingEnabled(true);
+
         viewPager.setOffscreenPageLimit(1);
         tabLayout.setupWithViewPager(viewPager);
 

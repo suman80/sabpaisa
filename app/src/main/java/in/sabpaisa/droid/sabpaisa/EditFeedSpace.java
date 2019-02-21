@@ -287,23 +287,37 @@ public class EditFeedSpace extends AppCompatActivity {
 
                                 //Todo Refresh
 
-                                String clientName = SkipClientDetailsScreen.clientName;
-                                String clientImageURLPath = SkipClientDetailsScreen.clientImageURLPath;
-                                String clientLogoURLPath = SkipClientDetailsScreen.clientLogoURLPath;
-                                String appCid = SkipClientDetailsScreen.appCid;
-                                String state = SkipClientDetailsScreen.state;
+                                if (PrivateGroupFeedSpace.FLAG != null) {
 
-                                Log.d("AddMemToSpcGrp","RecievedVals__ "+clientImageURLPath+" "+clientName+" "+appCid+" "+state);
 
-                                Intent intent = new Intent(EditFeedSpace.this,SkipClientDetailsScreen.class);
-                                intent.putExtra("clientName",clientName);
-                                intent.putExtra("clientImageURLPath",clientImageURLPath);
-                                intent.putExtra("clientLogoURLPath",clientLogoURLPath);
-                                intent.putExtra("appCid",appCid);
-                                intent.putExtra("state",state);
-                                intent.putExtra("FRAGMENT_ID","1");
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                    Intent intent = new Intent(EditFeedSpace.this,PrivateGroupFeedSpace.class);
+                                    intent.putExtra("GroupId",PrivateGroupFeedSpace.GroupId);
+                                    intent.putExtra("memberGroupRole",PrivateGroupFeedSpace.memberGroupRole);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+
+
+                                } else {
+
+                                    String clientName = SkipClientDetailsScreen.clientName;
+                                    String clientImageURLPath = SkipClientDetailsScreen.clientImageURLPath;
+                                    String clientLogoURLPath = SkipClientDetailsScreen.clientLogoURLPath;
+                                    String appCid = SkipClientDetailsScreen.appCid;
+                                    String state = SkipClientDetailsScreen.state;
+
+                                    Log.d("AddMemToSpcGrp", "RecievedVals__ " + clientImageURLPath + " " + clientName + " " + appCid + " " + state);
+
+                                    Intent intent = new Intent(EditFeedSpace.this, SkipClientDetailsScreen.class);
+                                    intent.putExtra("clientName", clientName);
+                                    intent.putExtra("clientImageURLPath", clientImageURLPath);
+                                    intent.putExtra("clientLogoURLPath", clientLogoURLPath);
+                                    intent.putExtra("appCid", appCid);
+                                    intent.putExtra("state", state);
+                                    intent.putExtra("FRAGMENT_ID", "0");
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+
+                                }
 
                             }
                         });

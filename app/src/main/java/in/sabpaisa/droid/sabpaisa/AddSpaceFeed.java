@@ -86,7 +86,16 @@ public class AddSpaceFeed extends AppCompatActivity {
         btn_Save = (Button)findViewById(R.id.btn_Save);
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("Add Space Feed");
+        clientId = getIntent().getStringExtra("CLIENT_ID");
+        FLAG = getIntent().getStringExtra("FLAG");
+        GROUP_ID = getIntent().getStringExtra("GROUP_ID");
+
+        if (FLAG != null && FLAG.equals("PrivateGroupFeeds")) {
+            toolbar.setTitle("Add Private Feeds");
+        }else {
+            toolbar.setTitle("Add Feeds");
+        }
+
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -140,7 +149,11 @@ public class AddSpaceFeed extends AppCompatActivity {
                     progressDialog.setMessage("Please wait !");
                     progressDialog.show();
 
+                    if (GROUP_ID != null) {
+                        uploadFeedData(feedImage, feedLogo, feedNm, feedDesc,GROUP_ID,"Private");
+                    }else {
                         uploadFeedData(feedImage, feedLogo, feedNm, feedDesc,null,"Public");
+                    }
 
                 }
 
@@ -236,8 +249,10 @@ public class AddSpaceFeed extends AppCompatActivity {
 
     private void uploadFeedData(final Bitmap feed_image,final Bitmap feed_logo,final String feedName,final String feedText,final String groupId,final String mode) {
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_addParticularClientsFeeds + "?appcid="+appCid+"&feed_text="+ URLEncoder.encode(feedText)+"&feed_name="+URLEncoder.encode(feedName)+"&admin="+userAccessToken+"&access_mode="+mode;
-
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_addParticularClientsFeeds + "?appcid="+appCid+"&feed_text="+URLEncoder.encode(feedText)+"&feed_name="+URLEncoder.encode(feedName)+"&admin="+userAccessToken+"&access_mode="+mode;
+        if(mode.equalsIgnoreCase("Private")){
+            url +="&groupId="+groupId;
+        }
         Log.d("AddSpaceFeed","_URL "+url);
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
@@ -262,17 +277,27 @@ public class AddSpaceFeed extends AppCompatActivity {
 
                         Log.d("AddSpaceFeed","InIfPart");
 
+                        if (GROUP_ID != null ){
+                            Toast.makeText(AddSpaceFeed.this,"Private Feed has been added",Toast.LENGTH_SHORT).show();
+                            Intent intent1 = new Intent(AddSpaceFeed.this,PrivateGroupFeedSpace.class);
+                            intent1.putExtra("GroupId",GROUP_ID);
+                            intent1.putExtra("memberGroupRole",memberGroupRole);
+                            intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent1);
+                            finish();
+
+                        }else {
                             Toast.makeText(AddSpaceFeed.this,"Feed has been added",Toast.LENGTH_SHORT).show();
-
                             Intent intent = new Intent(AddSpaceFeed.this, SkipClientDetailsScreen.class);
-                            intent.putExtra("clientName",clientName);
-                            intent.putExtra("state",state);
-                            intent.putExtra("appCid",appCid);
-                            intent.putExtra("clientImagePath",clientImagePath);
-                            intent.putExtra("clientLogoPath",clientLogoPath);
-                            intent.putExtra("FRAGMENT_ID","0");
+                            intent.putExtra("clientName", clientName);
+                            intent.putExtra("state", state);
+                            intent.putExtra("appCid", appCid);
+                            intent.putExtra("clientImagePath", clientImagePath);
+                            intent.putExtra("clientLogoPath", clientLogoPath);
+                            intent.putExtra("FRAGMENT_ID", "0");
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
-
+                        }
 
                     }else if (status.equals("failure")){
                         Toast.makeText(AddSpaceFeed.this,returnResponse,Toast.LENGTH_SHORT).show();

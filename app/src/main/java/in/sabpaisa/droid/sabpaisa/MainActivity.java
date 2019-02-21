@@ -471,6 +471,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         setupViewPager(viewPager);
         viewPager.disableScroll(true);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        tabLayout.setSmoothScrollingEnabled(true);
+
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.clients);
 //////////////////Code for adding image and text on tab bar ////////////////////////////////////////////////

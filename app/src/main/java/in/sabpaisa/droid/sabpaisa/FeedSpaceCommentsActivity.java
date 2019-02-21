@@ -81,6 +81,8 @@ import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 import in.sabpaisa.droid.sabpaisa.Util.VolleyMultipartRequest;
 
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
+
 public class FeedSpaceCommentsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
     EditText group_details_text_view;
@@ -115,6 +117,8 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
     NotificationDB notificationDB;
 
     BroadcastReceiver broadcastReceiver;
+
+    String roleValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,6 +207,13 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
             Intent intent = new Intent(FeedSpaceCommentsActivity.this, LogInActivity.class);
             startActivity(intent);
         }
+
+
+        SharedPreferences sharedPreferencesRole = getApplicationContext().getSharedPreferences(SUPER_ADMIN_SHAREDFREF, Context.MODE_PRIVATE);
+
+        roleValue = sharedPreferencesRole.getString("ROLE_VALUE", "abc");
+
+
 
         attachmentFile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -306,11 +317,27 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
         if (isOnline()) {
             progress.setVisibility(View.VISIBLE);
 
+            if (PrivateGroupFeedSpace.FLAG != null){
+                callGetCommentListForPrivateFeeds(feedId,userAccessToken);
+            }else {
                 callGetCommentList(feedId);
+            }
+
+
             }else {
             //Offline feature
             Toast.makeText(FeedSpaceCommentsActivity.this,"No Internet Connection",Toast.LENGTH_SHORT).show();
         }
+
+        if (PrivateGroupFeedSpace.FLAG == null){
+            GroupSpaceCommentActivity.memberGroupRole = null;
+        }
+
+        memberGroupRole = GroupSpaceCommentActivity.memberGroupRole;
+
+        Log.d("PFF_memberGroupRole","After"+Proceed_Group_FullScreen.memberGroupRole);
+
+
 
         notificationDB = new NotificationDB(FeedSpaceCommentsActivity.this);
 
@@ -380,19 +407,17 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
                 feedId = feedId;
                 Log.d("PFF_FEED","broadcastVal__"+feedId +" RR "+feedId);
 
-/*
 
-                if (PrivateGroupFeeds.FLAG != null){
+                if (PrivateGroupFeedSpace.FLAG != null){
                     //callGetCommentListForPrivateFeeds(feed_id,userAccessToken);
                     loadCommentListView(commentArrayList);
                 }else {
-*/
 
 //                    commentArrayList.addAll(arr);
                     Log.d("ARR  ", " "+commentArrayList.size());
                     loadCommentListView(commentArrayList);
 //                    callGetCommentList(feed_id);
-                //}
+                }
 
             }
         };
@@ -681,7 +706,11 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
                                 //callGetCommentList(feed_id);
 
 
+                                if (PrivateGroupFeedSpace.FLAG != null){
+                                    callGetCommentListForPrivateFeeds(feed_id,userAccessToken);
+                                }else {
                                     callGetCommentList(feed_id);
+                                }
 
 
 
@@ -906,6 +935,181 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
 //        Log.d("TTTTTTT","ASASAS");
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
     }
+
+
+
+
+
+    public void callGetCommentListForPrivateFeeds(final String feed_id,final String userAccessToken) {
+
+
+
+        String tag_string_req = "req_register";
+
+        String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "/getPageFeedsComments?feed_id=" + feed_id + "&pageNo=" + count + "&rowLimit=25"+"&token="+userAccessToken;
+
+        Log.d("urlJsonObj  : ", urlJsonObj);
+        StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
+                urlJsonObj, new Response.Listener<String>() {
+
+            // Takes the response from the JSON request
+            @Override
+            public void onResponse(String response) {
+                Log.d("In_callGetCommentList", "RESPONSE");
+                try {
+                    swipeRefreshLayout.setRefreshing(false);
+
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    String status = jsonObject.getString("status");
+
+                    String response1 = jsonObject.getString("response");
+                    Log.d("Re[spnsere", " " + response1);
+                    Log.d("Re[spnsere", " " + status);
+
+                    if (status.equals("success")) {
+
+                        JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            final CommentData groupData = new CommentData();
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            String a = jsonObject1.getString("commentText");
+                            Log.d("CTadhkacka", " " + a);
+                            groupData.setCommentText(jsonObject1.getString("commentText"));
+                            groupData.setCommentName(jsonObject1.getString("commentByName"));
+                            groupData.setCommentImage(jsonObject1.getString("filePath"));
+                            Log.d("FILE_PATH_At_PFF", " " + jsonObject1.getString("filePath"));
+                            groupData.setCommentId(jsonObject1.getInt("commentId"));
+
+                            dataTime1 = jsonObject1.getString("commentDate");
+                            Log.d("dataTimePFF", " " + dataTime1);
+
+                            String str = jsonArray.getString(i);
+                            Log.d("444feed", str);
+                            String userImageUrl = jsonObject1.getString("userImageUrl");
+
+                            JSONObject jsonObject2 = new JSONObject(userImageUrl);
+                            groupData.setUserId(jsonObject2.getString("userId"));
+                            groupData.setUserImageUrl(jsonObject2.getString("userImageUrl"));
+                            String image = groupData.getUserImageUrl().toString();
+                            Log.d("imageuserfeed", " " + image);
+                            Log.d("imageuserfeed11", " " + userImageUrl);
+
+                            try {
+                                groupData.setComment_date(getDate(Long.parseLong(dataTime1)));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            commentArrayList.add(groupData);
+
+                        }
+
+                        loadCommentListView(commentArrayList);
+                    } else if (status.equals("failed")) {
+
+                        progress.setVisibility(View.GONE);
+
+                        if (response1 != null) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(FeedSpaceCommentsActivity.this);
+                            builder.setTitle("Comment Service");
+                            builder.setMessage(response1.toString());
+                            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                /*Intent feedUiRefresh = new Intent(ConstantsForUIUpdates.REFRESH_FEED_FRAGMENT);
+                                LocalBroadcastManager.getInstance(Proceed_Feed_FullScreen.this).sendBroadcast(feedUiRefresh);*/
+
+                                    Intent intent = new Intent(FeedSpaceCommentsActivity.this, PrivateGroupFeedSpace.class);
+                                    intent.putExtra("memberGroupRole", PrivateGroupFeedSpace.memberGroupRole);
+                                    intent.putExtra("GroupId", PrivateGroupFeedSpace.GroupId);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                                    startActivity(intent);
+
+                                    SkipClientDetailsScreen.isFragmentOpen = true;
+
+                                    finish();
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.setCanceledOnTouchOutside(false);
+                            alertDialog.setCancelable(false);
+                            alertDialog.show();
+
+                        }
+                    }else {
+                        progress.setVisibility(View.GONE);
+
+                        if (count > 1){
+                            progress.setVisibility(View.GONE);
+                            Toast.makeText(FeedSpaceCommentsActivity.this, "No More Record Found !", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        //Toast.makeText(Proceed_Feed_FullScreen.this, "No Record Found !", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+                // Try and catch are included to handle any errors due to JSON
+                catch (JSONException e) {
+
+                    Log.d("In_callGetCommentList", "Exception");
+                    progress.setVisibility(View.GONE);
+
+                    // If an error occurs, this prints the error to the log
+                    e.printStackTrace();
+
+                }
+            }
+        },
+
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+
+                        Log.d("In_callGetCommentList", "EROORListener");
+                        progress.setVisibility(View.GONE);
+                        /*error.printStackTrace();
+
+                        Log.e("Feed", "FeedError");*/
+
+                        NetworkResponse response = error.networkResponse;
+                        if (error instanceof ServerError && response != null) {
+                            try {
+                                //Toast.makeText(Proceed_Feed_FullScreen.this, "error1!", Toast.LENGTH_SHORT).show();
+
+                                String res = new String(response.data,
+                                        HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                                // Now you can use any deserializer to make sense of data
+                                Log.d("EROOR RES : ", res);
+                                JSONObject obj = new JSONObject(res);
+                            } catch (UnsupportedEncodingException e1) {
+                                // Couldn't properly decode data to string
+                                e1.printStackTrace();
+                                // Toast.makeText(Proceed_Feed_FullScreen.this, "error2!", Toast.LENGTH_SHORT).show();
+
+                            } catch (JSONException e2) {
+                                //Toast.makeText(Proceed_Feed_FullScreen.this, "error3!", Toast.LENGTH_SHORT).show();
+
+                                // returned data is not JSONObject?
+                                e2.printStackTrace();
+                            }
+                        }
+                    }
+                }
+        );
+        // Adds the JSON array request "arrayreq" to the request queue
+
+//        Log.d("TTTTTTT","ASASAS");
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_string_req);
+    }
+
+
 
 
 
@@ -1175,6 +1379,13 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
                 intent.putExtra("feedLogo", feedLogo);
                 intent.putExtra("feedId", feedId);
                 startActivity(intent);
+                return true;
+
+            case R.id.privateFeedMembers:
+
+                Intent intent1 = new Intent(FeedSpaceCommentsActivity.this, PrivateFeedMembersList.class);
+                intent1.putExtra("feedId", feedId);
+                startActivity(intent1);
                 return true;
 
 

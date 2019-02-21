@@ -167,15 +167,14 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
 
                 if (item.getTitle().equals("OK")) {
 
-                    /*for (String val:memberNumberArraylist) {
-                        Log.d("AddMemberToPrsnlSpace","memberNumberArraylist "+val);
-                        //Todo API Integration
-                        addMemberToSpace(appCid,userAccessToken,val);
-                    }*/
 
                     if (isOnline()){
 
-                    addMemberToSpace(appCid,userAccessToken,memberNumberArraylist);
+                        if (memberNumberArraylist.size()>0) {
+                            addMemberToSpace(appCid, userAccessToken, memberNumberArraylist);
+                        }else {
+                            Toast.makeText(getContext(),"Please Add Members",Toast.LENGTH_SHORT).show();
+                        }
                     }else {
                         AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
 
@@ -219,6 +218,11 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
             }
         }).start();
         Log.d("BeforeFunction", "" + contactList);
+
+        if (memberNumberArraylist.size()>0) {
+
+            memberNumberArraylist.clear();
+        }
 
         return view;
     }

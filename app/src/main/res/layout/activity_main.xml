@@ -55,7 +55,7 @@
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbarlayout"
                 android:layout_width="match_parent"
-                android:layout_height="405dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:background="@color/white"
                 app:layout_scrollFlags="scroll|enterAlways">
@@ -67,10 +67,11 @@
                     app:layout_scrollFlags="scroll|enterAlways">
 
 
+                    <!--android:layout_height="350dp"-->
                     <RelativeLayout
                         android:id="@+id/coverLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="350dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="?attr/actionBarSize"
                         android:background="@color/white"
                         app:layout_scrollFlags="scroll|enterAlways">
@@ -101,7 +102,9 @@
                             android:layout_marginTop="250dp"
                             android:background="#ffffff"
                             android:orientation="vertical"
-                            app:layout_scrollFlags="scroll|enterAlways">
+                            app:layout_scrollFlags="scroll|enterAlways"
+                            android:visibility="gone"
+                            >
 
 
                             <TextView
@@ -124,6 +127,8 @@
 
 
                         </LinearLayout>
+
+
                     </RelativeLayout>
 
 

@@ -13,4 +13,13 @@
         app:showAsAction="withText"
         />
 
+
+    <item android:id="@+id/privateFeedSpace"
+        android:title="Group Feeds"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_rss_feed_black_24dp"
+        />
+
+
+
 </menu>

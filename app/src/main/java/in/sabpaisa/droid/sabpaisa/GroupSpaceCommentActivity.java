@@ -1027,6 +1027,14 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
                 return true;
 
 
+            case R.id.privateFeedSpace:
+                Intent intent1 = new Intent(GroupSpaceCommentActivity.this, PrivateGroupFeedSpace.class);
+                intent1.putExtra("GroupId", GroupId);
+                intent1.putExtra("memberGroupRole", memberGroupRole);
+                startActivity(intent1);
+                return true;
+
+
 
             default:
                 return super.onOptionsItemSelected(item);

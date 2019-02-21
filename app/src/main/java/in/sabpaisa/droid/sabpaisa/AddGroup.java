@@ -265,6 +265,7 @@ public class AddGroup extends AppCompatActivity {
                         Intent intent = new Intent(AddGroup.this,FullViewOfClientsProceed.class);
                         intent.putExtra("clientImagePath",clientImageURLPath);
                         intent.putExtra("FRAGMENT_ID","1");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
 
                     } else if (status.equals("failure")){

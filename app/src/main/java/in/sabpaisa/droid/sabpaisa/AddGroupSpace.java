@@ -264,6 +264,7 @@ public class AddGroupSpace extends AppCompatActivity {
                         intent.putExtra("clientImagePath",clientImagePath);
                         intent.putExtra("clientLogoPath",clientLogoPath);
                         intent.putExtra("FRAGMENT_ID","1");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
 
 

@@ -336,7 +336,7 @@ public class SkipGroupFragment extends Fragment {
 
 
                         }
-                        Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
+//                        Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
 
 
                         /*START listener for sending data to activity*/

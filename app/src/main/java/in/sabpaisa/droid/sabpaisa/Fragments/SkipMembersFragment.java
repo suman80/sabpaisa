@@ -177,7 +177,9 @@ public class SkipMembersFragment extends Fragment {
                             memberSpaceModel.setContactNumber(jsonObject1.getJSONObject("usersMaster").getString("contactNumber"));
                             memberSpaceModel.setUserAccessToken(jsonObject1.getJSONObject("usersMaster").getString("userAccessToken"));
                             memberSpaceModel.setEmailId(jsonObject1.getJSONObject("usersMaster").getString("emailId"));
-                            memberSpaceModel.setUserImageUrl(jsonObject1.getJSONObject("userImageUrl").getString("userImageUrl"));
+                            if (jsonObject1.has("userImageUrl") && !jsonObject1.isNull("userImageUrl")) {
+                                memberSpaceModel.setUserImageUrl(jsonObject1.getJSONObject("userImageUrl").getString("userImageUrl"));
+                            }
                             memberSpaceModel.setStatus(jsonObject1.getString("status"));//Outer status
                             memberSpaceModelArrayList.add(memberSpaceModel);
 

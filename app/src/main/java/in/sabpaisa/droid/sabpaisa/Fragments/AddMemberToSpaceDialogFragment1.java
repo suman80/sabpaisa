@@ -288,6 +288,7 @@ public class AddMemberToSpaceDialogFragment1 extends DialogFragment {
                             intent.putExtra("clientImagePath",clientImagePath);
                             intent.putExtra("clientName",clientName);
                             intent.putExtra("FRAGMENT_ID","2");
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
 
 
