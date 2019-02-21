@@ -466,11 +466,9 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                                 // Setting OK Button
                                 alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent();
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                                      /*  Intent intent = new Intent(ProfileNavigationActivity.this,ProfileNavigationActivity.class);
-                                        startActivity(intent);*/
+                                        showProfileImage();
+
                                     }
                                 });
 

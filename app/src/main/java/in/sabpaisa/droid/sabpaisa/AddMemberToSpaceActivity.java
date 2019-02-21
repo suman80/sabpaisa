@@ -1,9 +1,7 @@
-package in.sabpaisa.droid.sabpaisa.Fragments;
-
+package in.sabpaisa.droid.sabpaisa;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -12,27 +10,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -46,7 +40,6 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -63,21 +56,13 @@ import java.util.Map;
 import java.util.Set;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.MemberFragmentDialogAdapter;
-import in.sabpaisa.droid.sabpaisa.AddMemberTo_A_Group;
-import in.sabpaisa.droid.sabpaisa.AddMemberTo_A_PrivateFeed;
-import in.sabpaisa.droid.sabpaisa.AllContacts;
-import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.Fragments.AddMemberToSpaceDialogFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.AddMemberCallBack;
-import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.Model.ContactVO;
-import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class AddMemberToSpaceDialogFragment extends DialogFragment implements AddMemberCallBack {
+public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMemberCallBack {
 
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     private ShimmerRecyclerView mListView;
@@ -106,38 +91,24 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
 
     String appCid,userAccessToken,state,clientLogoPath,clientImagePath,clientName;
 
-
-    public AddMemberToSpaceDialogFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_member_to_space);
 
-        appCid=getArguments().getString("appCid");
-        state=getArguments().getString("state");
-        clientLogoPath=getArguments().getString("clientLogoPath");
-        clientImagePath=getArguments().getString("clientImagePath");
-        clientName=getArguments().getString("clientName");
-        Log.d("AMTPS_onCreate","recievedAppCid__"+appCid);
+        appCid=getIntent().getStringExtra("appCid");
+        state=getIntent().getStringExtra("state");
+        clientLogoPath=getIntent().getStringExtra("clientLogoPath");
+        clientImagePath=getIntent().getStringExtra("clientImagePath");
+        clientName=getIntent().getStringExtra("clientName");
 
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_member_to_space_dialog, container, false);
-
-        Log.d("AMTPS_onCreateView","recievedAppCid__"+appCid);
-
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
         userAccessToken = sharedPreferences.getString("response", "123");
 
 
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 //        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
@@ -146,11 +117,7 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag("MemberDialogFragment");
-                if (prev != null) {
-                    DialogFragment df = (DialogFragment) prev;
-                    df.dismiss();
-                }
+               finish();
             }
         });
 
@@ -173,10 +140,10 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
                         if (memberNumberArraylist.size()>0) {
                             addMemberToSpace(appCid, userAccessToken, memberNumberArraylist);
                         }else {
-                            Toast.makeText(getContext(),"Please Add Members",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddMemberToSpaceActivity.this,"Please Add Members",Toast.LENGTH_SHORT).show();
                         }
                     }else {
-                        AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(AddMemberToSpaceActivity.this, R.style.MyDialogTheme).create();
 
                         alertDialog.setTitle("Network/Connection Error");
 
@@ -199,13 +166,19 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
 
         toolbar.inflateMenu(R.menu.add_mem_personal_space);
 
-        pDialog = new ProgressDialog(getContext());
+        pDialog = new ProgressDialog(AddMemberToSpaceActivity.this);
         pDialog.setMessage("Reading contacts...");
 
 
         pDialog.setCancelable(false);
         pDialog.show();
-        mListView = (ShimmerRecyclerView) view.findViewById(R.id.rvContacts);
+        mListView = (ShimmerRecyclerView)findViewById(R.id.rvContacts);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mListView.setLayoutManager(mLayoutManager);
+        mListView.setItemAnimator(new DefaultItemAnimator());
+        mListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
 
         updateBarHandler = new Handler();
         // Since reading contacts takes more time, let's run it on a separate thread.
@@ -224,13 +197,15 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
             memberNumberArraylist.clear();
         }
 
-        return view;
+
+
     }
+
 
 
     private void showContacts() {
         // Check the SDK version and whether the permission is already granted or not.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getContext().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getApplicationContext().checkSelfPermission(android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
@@ -250,7 +225,7 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
                 // Permission is granted
                 showContacts();
             } else {
-                Toast.makeText(getContext(), "Until you grant the permission, we cannot display the names", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddMemberToSpaceActivity.this, "Until you grant the permission, we cannot display the names", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -279,7 +254,7 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
 
         StringBuffer output;
 
-        ContentResolver contentResolver = getContext().getContentResolver();
+        ContentResolver contentResolver = getApplicationContext().getContentResolver();
 
         cursor = contentResolver.query(CONTENT_URI, null, null, null, null);
 
@@ -493,13 +468,13 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
                         }
                     });*/
 
-                   /* Fragment fragment = new AddMemberToSpaceDialogFragment();
-                    adapter = new MemberFragmentDialogAdapter(contactVOList, getContext(),fragment);
-                    mListView.setAdapter(adapter);*/
+                    //Fragment fragment = new AddMemberToSpaceDialogFragment();
+                    adapter = new MemberFragmentDialogAdapter(contactVOList, AddMemberToSpaceActivity.this);
+                    mListView.setAdapter(adapter);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddMemberToSpaceActivity.this, "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -509,7 +484,7 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage() == null || error.getMessage() == null || error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(AddMemberToSpaceActivity.this, R.style.MyDialogTheme).create();
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");
                     // Setting Dialog Message
@@ -622,19 +597,22 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
 
                         Log.d("AddMemberToSpace","InIfPart");
 
-                        Toast.makeText(getContext(),"Member Added Successfully",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddMemberToSpaceActivity.this,"Member Added Successfully",Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(getContext(), SkipClientDetailsScreen.class);
+                        Intent intent = new Intent(AddMemberToSpaceActivity.this, SkipClientDetailsScreen.class);
                         intent.putExtra("appCid",appCid);
                         intent.putExtra("state",state);
                         intent.putExtra("clientLogoPath",clientLogoPath);
                         intent.putExtra("clientImagePath",clientImagePath);
                         intent.putExtra("clientName",clientName);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+
+                        finish();
 
                     }else {
                         Log.d("AddMemberToSpace","InElsePart");
-                        AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(AddMemberToSpaceActivity.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
                         alertDialog.setTitle("Add Member");
@@ -650,13 +628,16 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
                             public void onClick(DialogInterface dialog, int which) {
 
                                 if (Integer.parseInt(success)>0 && Integer.parseInt(failure)>0){
-                                    Intent intent = new Intent(getContext(), SkipClientDetailsScreen.class);
+                                    Intent intent = new Intent(AddMemberToSpaceActivity.this, SkipClientDetailsScreen.class);
                                     intent.putExtra("appCid",appCid);
                                     intent.putExtra("state",state);
                                     intent.putExtra("clientLogoPath",clientLogoPath);
                                     intent.putExtra("clientImagePath",clientImagePath);
                                     intent.putExtra("clientName",clientName);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
+
+                                    finish();
                                 }
 
                             }
@@ -678,7 +659,7 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
+                    AlertDialog alertDialog = new AlertDialog.Builder(AddMemberToSpaceActivity.this, R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");
@@ -749,7 +730,7 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
 
 
     public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         // test for connection
         if (cm.getActiveNetworkInfo() != null
                 && cm.getActiveNetworkInfo().isAvailable()
@@ -760,6 +741,9 @@ public class AddMemberToSpaceDialogFragment extends DialogFragment implements Ad
             return false;
         }
     }
+
+
+
 
 
 }

@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -51,6 +52,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import in.sabpaisa.droid.sabpaisa.AddMemberToSpaceActivity;
 import in.sabpaisa.droid.sabpaisa.AddMemberTo_A_Group;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.EditSpace;
@@ -263,17 +265,30 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
 
                         }else {
 
-                            FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                           /* FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
                             AddMemberToSpaceDialogFragment addMemberToSpaceDialogFragment = new AddMemberToSpaceDialogFragment();
-                            addMemberToSpaceDialogFragment.show(fragmentManager, "MemberDialogFragment");
 
-                            Bundle bundle = new Bundle();
+                            addMemberToSpaceDialogFragment.show(fragmentManager, "MemberDialogFragment");*/
+
+
+                            /*Bundle bundle = new Bundle();
                             bundle.putString("appCid", personalSpaceModel.getAppCid());
                             bundle.putString("state", personalSpaceModel.getAddress());
                             bundle.putString("clientLogoPath", personalSpaceModel.getClientLogoPath());
                             bundle.putString("clientImagePath", personalSpaceModel.getClientImagePath());
                             bundle.putString("clientName", personalSpaceModel.getAppCname());
-                            addMemberToSpaceDialogFragment.setArguments(bundle);
+                            addMemberToSpaceDialogFragment.setArguments(bundle);*/
+
+                            Intent intent = new Intent(context, AddMemberToSpaceActivity.class);
+                            intent.putExtra("appCid", personalSpaceModel.getAppCid());
+                            intent.putExtra("state", personalSpaceModel.getAddress());
+                            intent.putExtra("clientLogoPath", personalSpaceModel.getClientLogoPath());
+                            intent.putExtra("clientImagePath", personalSpaceModel.getClientImagePath());
+                            intent.putExtra("clientName", personalSpaceModel.getAppCname());
+                            context.startActivity(intent);
+
+
+
                         }
 
 

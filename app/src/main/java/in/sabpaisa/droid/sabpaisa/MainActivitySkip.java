@@ -3,10 +3,12 @@ package in.sabpaisa.droid.sabpaisa;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -30,6 +32,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -113,6 +116,7 @@ import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class MainActivitySkip extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener,/*AppBarLayout.OnOffsetChangedListener,*/ /*RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener,OnFragmentInteractionListener,InstitutionSkipFragment.GetDataInterface {
@@ -443,6 +447,19 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
             }
         });
+
+        //Updating UI
+
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(PROFILE_IMAGE)){
+                    getUserImage(userAccessToken);
+                }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(MainActivitySkip.this).registerReceiver(receiver,new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
 
 
         // AppDecideFlag

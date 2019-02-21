@@ -37,16 +37,22 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
     ArrayList<ContactVO> memberGetterSetterArrayList1 = new ArrayList<>();
 
 
-    public MemberFragmentDialogAdapter(ArrayList<ContactVO> contactVOList, Context mContext, Fragment fragment) {
+    /*public MemberFragmentDialogAdapter(ArrayList<ContactVO> contactVOList, Context mContext, Fragment fragment) {
         this.contactVOList = contactVOList;
         this.mContext = mContext;
         this.fragment=fragment;
         this.addMemberCallBack = (AddMemberCallBack) fragment;
+    }*/
+
+    public MemberFragmentDialogAdapter(ArrayList<ContactVO> contactVOList, Context mContext) {
+        this.contactVOList = contactVOList;
+        this.mContext = mContext;
+        this.addMemberCallBack = (AddMemberCallBack) mContext;
     }
 
     @Override
     public MemberFragmentDialogAdapter.ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.custom_member_frag_dialog, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_member_frag_dialog, null);
         MemberFragmentDialogAdapter.ContactViewHolder contactViewHolder = new MemberFragmentDialogAdapter.ContactViewHolder(view);
         return contactViewHolder;
     }
@@ -54,6 +60,8 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
     @Override
     public void onBindViewHolder(MemberFragmentDialogAdapter.ContactViewHolder holder, int position) {
        final ContactVO contactVO = contactVOList.get(position);
+
+        Log.d("contactVOListInsideAdpt", "SIZE:::" + contactVOList.size());
 
 
 
@@ -104,6 +112,17 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
     public int getItemCount() {
         return contactVOList.size();
     }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
