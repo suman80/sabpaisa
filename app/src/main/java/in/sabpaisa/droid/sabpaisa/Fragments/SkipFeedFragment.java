@@ -91,9 +91,13 @@ public class SkipFeedFragment extends Fragment {
 
     NotificationDB notificationDB;
 
+
+
     public SkipFeedFragment() {
         // Required empty public constructor
     }
+
+
 
 
     @Override
@@ -165,13 +169,19 @@ public class SkipFeedFragment extends Fragment {
             }
         });
 
-        if (isOnline()) {
-            callFeedDataList(appCid);
-        }else {
-            Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
-        }
+
         //Notification db
         notificationDB= new NotificationDB(getContext());
+
+
+        if (isOnline()) {
+
+            callFeedDataList(appCid);
+
+        } else {
+            //Todo offline
+            Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
+        }
 
 
         return view;

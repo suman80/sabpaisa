@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -63,9 +64,33 @@ public class SkipMembersFragment extends Fragment {
     GetDataInterface sGetDataInterface;
     /*START Interface for getting data from activity*/
 
+    private boolean _hasLoadedOnce= false; // your boolean field
+
     public SkipMembersFragment() {
         // Required empty public constructor
     }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isFragmentVisible_) {
+        super.setUserVisibleHint(true);
+
+
+        if (this.isVisible()) {
+            // we check that the fragment is becoming visible
+            if (isFragmentVisible_ && !_hasLoadedOnce) {
+                if (isOnline()) {
+                    loadMemberData(appCid);
+                } else {
+                    //Todo offline
+                    Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
+                }
+                _hasLoadedOnce = true;
+            }
+        }
+    }
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,7 +152,6 @@ public class SkipMembersFragment extends Fragment {
             }
         });
 
-        loadMemberData(appCid);
 
         return view;
     }

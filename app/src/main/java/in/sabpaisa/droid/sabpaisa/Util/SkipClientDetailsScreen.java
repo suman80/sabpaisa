@@ -377,7 +377,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
                     if (memberData != null) {
                         filteredmemberData = filterMember(memberData, newText);
-                        skipGroupFragment.getDataFromActivity();
+                        skipMembersFragment.getDataFromActivity();
                     } else {
                     }
 

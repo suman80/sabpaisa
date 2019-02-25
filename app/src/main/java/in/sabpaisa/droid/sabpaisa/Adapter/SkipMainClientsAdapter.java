@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -80,6 +81,8 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
 
     Context context;
 
+    ProgressDialog progressDialog;
+
     public SkipMainClientsAdapter(ArrayList<PersonalSpaceModel> institutions,Context context) {
         this.institutions = institutions;
         this.context=context;
@@ -117,6 +120,11 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
             public void onClick(View v) {
 
                 //API to check member data
+                progressDialog = new ProgressDialog(context,R.style.DialogTheme);
+                progressDialog.setMessage("Please Wait");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
 
                 checkMemberData(mainFeedData.getAppCid(),mainFeedData);
 
@@ -238,7 +246,13 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
 
                         Log.d("SMCA", "InFail: "+response1);
 
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
                     }else {
+
+
                         JSONArray jsonArray = jsonObject.getJSONArray("response");
 
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -254,6 +268,10 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
 
 
                         if (memberSpaceModelArrayList.size()>1) {
+
+                            if (progressDialog.isShowing()){
+                                progressDialog.dismiss();
+                            }
 
                             Intent intent = new Intent(context, SkipClientDetailsScreen.class);
                             intent.putExtra("clientName", personalSpaceModel.getAppCname());
@@ -278,6 +296,10 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
                             bundle.putString("clientImagePath", personalSpaceModel.getClientImagePath());
                             bundle.putString("clientName", personalSpaceModel.getAppCname());
                             addMemberToSpaceDialogFragment.setArguments(bundle);*/
+
+                            if (progressDialog.isShowing()){
+                                progressDialog.dismiss();
+                            }
 
                             Intent intent = new Intent(context, AddMemberToSpaceActivity.class);
                             intent.putExtra("appCid", personalSpaceModel.getAppCid());
@@ -310,6 +332,11 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
                     @Override
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
+
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
                         error.printStackTrace();
 
                         Log.e("SMCA", "onErrorResponse"+error);

@@ -97,10 +97,31 @@ public class SkipGroupFragment extends Fragment {
 
     NotificationDB notificationDB;
 
+    private boolean _hasLoadedOnce= false; // your boolean field
+
     public SkipGroupFragment() {
         // Required empty public constructor
     }
 
+
+    @Override
+    public void setUserVisibleHint(boolean isFragmentVisible_) {
+        super.setUserVisibleHint(true);
+
+
+        if (this.isVisible()) {
+            // we check that the fragment is becoming visible
+            if (isFragmentVisible_ && !_hasLoadedOnce) {
+                if (isOnline()) {
+                    callGroupDataList(userAcessToken, appCid);
+                } else {
+                    //Todo offline
+                    Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
+                }
+                _hasLoadedOnce = true;
+            }
+        }
+    }
 
 
     @Override
@@ -129,7 +150,7 @@ public class SkipGroupFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_skip_group, container, false);
@@ -150,12 +171,12 @@ public class SkipGroupFragment extends Fragment {
 
 
 
-        if (isOnline()) {
+       /* if (isOnline()) {
             callGroupDataList(userAcessToken, appCid);
         } else {
             //Todo offline
             Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
 
 
@@ -195,11 +216,15 @@ public class SkipGroupFragment extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
 
+                Log.d("Checking_Intent","__"+intent.getAction().toString());
+
                 if (intent.getAction().equals(GROUP_ARRAYLIST)){
+                    Log.d("Checking_Intent","GROUP_ARRAYLIST__"+intent.getAction().toString());
                     callGroupDataList1(userAcessToken, appCid,context);
                 }
 
                 if (intent.getAction().equals(REFRESH_GROUP_FRAGMENT)){
+                    Log.d("Checking_Intent","REFRESH_GROUP_FRAGMENT__"+intent.getAction().toString());
                     callGroupDataList1(userAcessToken, appCid,context);
                 }
 
@@ -494,7 +519,7 @@ public class SkipGroupFragment extends Fragment {
 
 
                         }
-                        Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
+                        //Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
 
 
                         /*START listener for sending data to activity*/
