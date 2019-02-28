@@ -28,13 +28,13 @@ import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.SavedUPI;
 import in.sabpaisa.droid.sabpaisa.R;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
+/*import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;*/
 
 /**
  * Created by abc on 16-06-2017.
  */
-@RuntimePermissions
+//@RuntimePermissions
 public class ContactListFragment extends Fragment {
     View rootView;
     RecyclerView recyclerViewInstitutions;
@@ -89,7 +89,7 @@ public class ContactListFragment extends Fragment {
         recyclerViewInstitutions.setLayoutManager(llm);
         contactLists = new ArrayList<>();
 
-        new ReadContacts().execute();
+        //new ReadContacts().execute();
 
         return rootView;
     }
@@ -105,7 +105,7 @@ public class ContactListFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            ContactListFragmentPermissionsDispatcher.loadArrayListWithCheck(ContactListFragment.this);
+            //ContactListFragmentPermissionsDispatcher.loadArrayListWithCheck(ContactListFragment.this);
             return null;
         }
 
@@ -119,7 +119,7 @@ public class ContactListFragment extends Fragment {
         }
     }
 
-    @NeedsPermission(Manifest.permission.READ_CONTACTS)
+    //@NeedsPermission(Manifest.permission.READ_CONTACTS)
     public void loadArrayList() {
         Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
         String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME;

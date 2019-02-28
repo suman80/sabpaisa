@@ -97,31 +97,11 @@ public class SkipGroupFragment extends Fragment {
 
     NotificationDB notificationDB;
 
-    private boolean _hasLoadedOnce= false; // your boolean field
 
     public SkipGroupFragment() {
         // Required empty public constructor
     }
 
-
-    @Override
-    public void setUserVisibleHint(boolean isFragmentVisible_) {
-        super.setUserVisibleHint(true);
-
-
-        if (this.isVisible()) {
-            // we check that the fragment is becoming visible
-            if (isFragmentVisible_ && !_hasLoadedOnce) {
-                if (isOnline()) {
-                    callGroupDataList(userAcessToken, appCid);
-                } else {
-                    //Todo offline
-                    Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
-                }
-                _hasLoadedOnce = true;
-            }
-        }
-    }
 
 
     @Override
@@ -210,6 +190,13 @@ public class SkipGroupFragment extends Fragment {
 
         //Notification db
         notificationDB= new NotificationDB(getContext());
+
+        if (isOnline()) {
+            callGroupDataList(userAcessToken, appCid);
+        } else {
+            //Todo offline
+            Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
+        }
 
 
         receiver = new BroadcastReceiver() {

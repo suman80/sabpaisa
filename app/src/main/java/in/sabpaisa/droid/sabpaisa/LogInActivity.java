@@ -60,13 +60,13 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.TelephonyInfo;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
+/*import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;*/
 
 import static android.text.InputType.TYPE_CLASS_TEXT;
 import static in.sabpaisa.droid.sabpaisa.Util.TelephonyInfo.getOutput;
 
-@RuntimePermissions
+//@RuntimePermissions
 public class LogInActivity extends AppCompatActivity {
     private static final String TAG = LogInActivity.class.getSimpleName();
     public static String mobileNo, password;
@@ -312,7 +312,7 @@ public class LogInActivity extends AppCompatActivity {
         login = (Button) findViewById(R.id.btn_login);
     }
 
-    @NeedsPermission(Manifest.permission.READ_PHONE_STATE)
+    //@NeedsPermission(Manifest.permission.READ_PHONE_STATE)
     public void isDualSimOrNot() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View sheetView = this.getLayoutInflater().inflate(R.layout.bottomdialog_getting_sim_info, null);

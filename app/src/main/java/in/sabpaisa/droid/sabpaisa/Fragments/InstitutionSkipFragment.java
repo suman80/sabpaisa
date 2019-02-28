@@ -4,6 +4,7 @@ package in.sabpaisa.droid.sabpaisa.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,6 +36,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
+import in.sabpaisa.droid.sabpaisa.Adapter.OtherSpaceAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.SkipMainClientsAdapter;
 import in.sabpaisa.droid.sabpaisa.AddSpaceActivity;
 import in.sabpaisa.droid.sabpaisa.AppController;
@@ -57,6 +59,7 @@ public class InstitutionSkipFragment extends Fragment {
     SkipMainClientsAdapter skipMainClientsAdapter;
     //InstitutionAdapter institutionAdapter;
     ArrayList<PersonalSpaceModel> institutions;
+    ArrayList<PersonalSpaceModel> institutions1;
     /*START Interface for getting data from activity*/
     GetDataInterface sGetDataInterface;
 
@@ -65,6 +68,10 @@ public class InstitutionSkipFragment extends Fragment {
     LinearLayout linearLayoutAddFeedWhenNoData;
 
     String userAccessToken;
+
+    RecyclerView recyclerViewOtherSpace;
+
+    OtherSpaceAdapter OtherSpaceAdapter;
 
     public InstitutionSkipFragment() {
 
@@ -80,6 +87,7 @@ public class InstitutionSkipFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_institution_skip, container, false);
         recyclerViewInstitutions = (RecyclerView) rootView.findViewById(R.id.recycler_view_institutions);
+        recyclerViewOtherSpace = (RecyclerView) rootView.findViewById(R.id.recyclerViewOtherSpace);
 
         //framelayoutAddFeed = (FrameLayout) rootView.findViewById(R.id.framelayoutAddFeed);
         linearLayoutnoDataFound = (LinearLayout) rootView.findViewById(R.id.noDataFound);
@@ -93,6 +101,16 @@ public class InstitutionSkipFragment extends Fragment {
 
         recyclerViewInstitutions.getRecycledViewPool().setMaxRecycledViews(0, 0);
 
+        //Other recyclerview
+
+        LinearLayoutManager llm1 = new LinearLayoutManager(getContext());
+        llm1.setOrientation(LinearLayoutManager.VERTICAL);
+//        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),10));
+        recyclerViewOtherSpace.setLayoutManager(llm1);
+
+        recyclerViewOtherSpace.getRecycledViewPool().setMaxRecycledViews(0, 0);
+
+
 
         Log.d("sGetDataInterface", "" + sGetDataInterface);
 
@@ -101,9 +119,17 @@ public class InstitutionSkipFragment extends Fragment {
 
         userAccessToken = sharedPreferences.getString("response", "123");
 
+        if (isOnline()) {
 
-        getClientsList();
+            getClientsList();
+            getOtherSpce();
 
+
+
+
+        }else {
+            Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
+        }
 
         linearLayoutAddFeedWhenNoData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,6 +225,93 @@ public class InstitutionSkipFragment extends Fragment {
     }
 
 
+
+    private void getOtherSpce() {
+
+
+        String tag_string_req = "req_register";
+
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_spAppClients + "?token=" + userAccessToken;
+
+        Log.d("ISF_Other", "url___" + url);
+
+        StringRequest strReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    institutions1 = new ArrayList<>();
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    Log.d("ISF_Other", "response___" + response);
+
+                    String status = jsonObject.getString("status");
+
+                    String response1 = jsonObject.getString("response");
+
+                    Log.d("ISF_Other", "status__" + status);
+                    Log.d("ISF_Other", "response1__" + response1);
+
+                    if (status.equals("failure") && response1.equals("No Record Found")) {
+
+                        //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
+
+                        //linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                        recyclerViewInstitutions.setVisibility(View.GONE);
+                        linearLayoutAddFeedWhenNoData.setVisibility(View.VISIBLE);
+                    } else {
+                        JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                        JsonParser parser = new JsonParser();
+
+                        Gson gson = new Gson();
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            //PersonalSpaceModel personalSpaceModel = new PersonalSpaceModel();
+
+
+                            JsonElement mJson =  parser.parse(jsonObject1.toString());
+
+                            PersonalSpaceModel object = gson.fromJson(mJson, PersonalSpaceModel.class);
+
+                            institutions1.add(object);
+                        }
+
+                        /*START listener for sending data to activity*/
+                       /* OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                        listener.onFragmentSetClients(institutions);*/
+                        /*END listener for sending data to activity*/
+                        //loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
+                        OtherSpaceAdapter = new OtherSpaceAdapter(institutions1,getContext());
+                        recyclerViewOtherSpace.setAdapter(OtherSpaceAdapter);
+                    }
+                }
+                // Try and catch are included to handle any errors due to JSON
+                catch (JSONException e) {
+                    // If an error occurs, this prints the error to the log
+                    e.printStackTrace();
+
+                }
+
+            }
+
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+
+
+
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -223,6 +336,20 @@ public class InstitutionSkipFragment extends Fragment {
 
     public interface GetDataInterface {
         ArrayList<PersonalSpaceModel> getClientDataList();
+    }
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("MainActivitySkip", "Internet Connection Not Present");
+            return false;
+        }
     }
 
 

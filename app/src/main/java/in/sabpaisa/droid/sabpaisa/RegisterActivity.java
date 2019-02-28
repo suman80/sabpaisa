@@ -335,7 +335,7 @@ public class RegisterActivity extends AppCompatActivity  {
 
                     et_password.setError("Please set your Password");
 
-                }else if (isValidEmail(email)) {
+                }else if (email.length()!=0 && isValidEmail(email)) {
 
                     et_Email.setError("Please enter the correct email-id");
 

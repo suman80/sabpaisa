@@ -11,8 +11,8 @@ import android.content.Context;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
+/*import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;*/
 
 
 public class TelephonyInfo {
@@ -30,7 +30,7 @@ public class TelephonyInfo {
 
     private TelephonyInfo() {
     }
-    @NeedsPermission(Manifest.permission.READ_PHONE_STATE)
+    //@NeedsPermission(Manifest.permission.READ_PHONE_STATE)
     public static TelephonyInfo getInstance(Context context) {
 
         if (telephonyInfo == null) {
@@ -39,7 +39,7 @@ public class TelephonyInfo {
 
             TelephonyManager telephonyManager = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE));
 
-            telephonyInfo.imeiSIM1 = telephonyManager.getDeviceId();
+            //telephonyInfo.imeiSIM1 = telephonyManager.getDeviceId();
             telephonyInfo.imeiSIM2 = null;
 
         }

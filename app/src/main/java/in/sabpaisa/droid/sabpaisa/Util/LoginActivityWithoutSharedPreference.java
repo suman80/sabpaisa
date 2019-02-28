@@ -59,11 +59,11 @@ import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.RegisterActivity;
 import in.sabpaisa.droid.sabpaisa.TLSSocketFactory;
 import in.sabpaisa.droid.sabpaisa.VerifyMobile;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
+/*import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;*/
 
 import static in.sabpaisa.droid.sabpaisa.Util.TelephonyInfo.getOutput;
-@RuntimePermissions
+//@RuntimePermissions
 public class LoginActivityWithoutSharedPreference extends AppCompatActivity {
 
     private static final String TAG = in.sabpaisa.droid.sabpaisa.LogInActivity.class.getSimpleName();
@@ -281,7 +281,7 @@ public class LoginActivityWithoutSharedPreference extends AppCompatActivity {
         login = (Button)findViewById(R.id.btn_login);
     }
 
-    @NeedsPermission(Manifest.permission.READ_PHONE_STATE)
+    //@NeedsPermission(Manifest.permission.READ_PHONE_STATE)
     public void isDualSimOrNot(){
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View sheetView = this.getLayoutInflater().inflate(R.layout.bottomdialog_getting_sim_info, null);
