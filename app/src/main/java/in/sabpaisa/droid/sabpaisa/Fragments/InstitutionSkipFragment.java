@@ -73,6 +73,8 @@ public class InstitutionSkipFragment extends Fragment {
 
     OtherSpaceAdapter OtherSpaceAdapter;
 
+    RelativeLayout relativeLayoutOther;
+
     public InstitutionSkipFragment() {
 
     }
@@ -109,6 +111,8 @@ public class InstitutionSkipFragment extends Fragment {
         recyclerViewOtherSpace.setLayoutManager(llm1);
 
         recyclerViewOtherSpace.getRecycledViewPool().setMaxRecycledViews(0, 0);
+
+        relativeLayoutOther = (RelativeLayout)rootView.findViewById(R.id.relativeLayoutOther);
 
 
 
@@ -254,11 +258,12 @@ public class InstitutionSkipFragment extends Fragment {
 
                     if (status.equals("failure") && response1.equals("No Record Found")) {
 
-                        //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
 
                         //linearLayoutnoDataFound.setVisibility(View.VISIBLE);
-                        recyclerViewInstitutions.setVisibility(View.GONE);
-                        linearLayoutAddFeedWhenNoData.setVisibility(View.VISIBLE);
+
+                        relativeLayoutOther.setVisibility(View.GONE);
+
                     } else {
                         JSONArray jsonArray = jsonObject.getJSONArray("response");
 

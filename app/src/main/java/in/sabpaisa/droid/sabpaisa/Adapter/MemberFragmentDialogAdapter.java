@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -71,9 +72,11 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
 
             holder.tvPhoneNumber.setText(contactVO.getContactNumber());
             Log.d("contactVO", String.valueOf(contactVO.getInviteButtonVisibility()));
-            Log.d("contactVOhuihu", String.valueOf(contactVO.getContactName()));
+            Log.d("contactVOhuihu", contactVO.getContactName() +" "+contactVO.getContactNumber());
 
 
+        }else {
+            holder.LinearLayoutContact.setVisibility(View.GONE);
         }
 
 
@@ -131,6 +134,7 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
         TextView tvPhoneNumber;
         CheckBox addMemberCheckBox;
         ItemClickListener itemClickListener;
+        LinearLayout LinearLayoutContact;
 
         public ContactViewHolder(View itemView) {
             super(itemView);
@@ -139,6 +143,7 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
             tvPhoneNumber = (TextView) itemView.findViewById(R.id.number);
             addMemberCheckBox = (CheckBox) itemView.findViewById(R.id.addMemberCheckBox);
             addMemberCheckBox.setOnClickListener(this);
+            LinearLayoutContact = (LinearLayout)itemView.findViewById(R.id.LinearLayoutContact);
 
 
         }

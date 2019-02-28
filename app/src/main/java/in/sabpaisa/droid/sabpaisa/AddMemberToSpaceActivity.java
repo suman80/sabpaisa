@@ -449,7 +449,9 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
 //                      }
                         contactVO.setContactName(mapNameNumber.get(key.toString()));
                         contactVO.setContactNumber(key.toString());
-                        contactVOList.add(contactVO);
+                        if (contactVO.getInviteButtonVisibility()==1) {
+                            contactVOList.add(contactVO);
+                        }
                         count++;
                         Log.d("contactVOList", "SIZE:::" + contactVOList.size());
 
