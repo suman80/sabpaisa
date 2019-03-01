@@ -70,7 +70,9 @@ import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
+import static android.content.Context.MODE_PRIVATE;
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_MEMBERS;
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
 
 //import com.elyeproj.loaderviewlibrary.LoaderImageView;
 public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClientsAdapter.MyViewHolder> {
@@ -82,6 +84,7 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
     Context context;
 
     ProgressDialog progressDialog;
+
 
     public SkipMainClientsAdapter(ArrayList<PersonalSpaceModel> institutions,Context context) {
         this.institutions = institutions;
@@ -279,6 +282,15 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
                             intent.putExtra("clientLogoPath", personalSpaceModel.getClientLogoPath());
                             intent.putExtra("clientImagePath", personalSpaceModel.getClientImagePath());
                             intent.putExtra("appCid", personalSpaceModel.getAppCid());
+
+
+                            //Storing value for user role and setting default to 1
+                            SharedPreferences.Editor editor = context.getSharedPreferences(SUPER_ADMIN_SHAREDFREF, MODE_PRIVATE).edit();
+                            editor.putString("ROLE_VALUE", "1");
+                            editor.apply();
+
+
+
                             context.startActivity(intent);
 
                         }else {
@@ -307,6 +319,13 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
                             intent.putExtra("clientLogoPath", personalSpaceModel.getClientLogoPath());
                             intent.putExtra("clientImagePath", personalSpaceModel.getClientImagePath());
                             intent.putExtra("clientName", personalSpaceModel.getAppCname());
+
+                            //Storing value for user role and setting default to 1 with token
+                            SharedPreferences.Editor editor = context.getSharedPreferences(SUPER_ADMIN_SHAREDFREF, MODE_PRIVATE).edit();
+                            editor.putString("ROLE_VALUE", "1");
+                            editor.apply();
+
+
                             context.startActivity(intent);
 
 

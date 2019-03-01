@@ -41,6 +41,8 @@ import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -64,6 +66,7 @@ public class SkipMembersFragment extends Fragment {
     GetDataInterface sGetDataInterface;
     /*START Interface for getting data from activity*/
 
+    String roleValue;
 
     public SkipMembersFragment() {
         // Required empty public constructor
@@ -89,6 +92,13 @@ public class SkipMembersFragment extends Fragment {
 
         Log.d("SkipMembersFrag","Recieved_Val_"+clientName+" "+clientLogoPath+" "+clientImagePath+" "+state+" "+appCid);
 
+        SharedPreferences sharedPreferencesRole = getContext().getSharedPreferences(SUPER_ADMIN_SHAREDFREF, Context.MODE_PRIVATE);
+
+        roleValue = sharedPreferencesRole.getString("ROLE_VALUE", "abc");
+
+        Log.d("roleValueSkipMemFrag"," "+roleValue);
+
+
 
     }
 
@@ -112,8 +122,6 @@ public class SkipMembersFragment extends Fragment {
         recycler_view_Member.setLayoutManager(llm);
         recycler_view_Member.setMotionEventSplittingEnabled(false);
 
-        framelayoutAdd.setVisibility(View.VISIBLE);
-
         rippleClickAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,6 +141,11 @@ public class SkipMembersFragment extends Fragment {
 
             }
         });
+
+
+        if (roleValue.equals("1")){
+            framelayoutAdd.setVisibility(View.VISIBLE);
+        }
 
 
         if (isOnline()) {
@@ -175,6 +188,8 @@ public class SkipMembersFragment extends Fragment {
                     if (status.equals("failure")) {
 
                         Log.d("SMF", "InFail: "+response1);
+
+
 
                     }else {
                         JSONArray jsonArray = jsonObject.getJSONArray("response");

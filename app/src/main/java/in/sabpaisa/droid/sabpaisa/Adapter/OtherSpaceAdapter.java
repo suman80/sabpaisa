@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa.Adapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,6 +32,9 @@ import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
+import static android.content.Context.MODE_PRIVATE;
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
+
 public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.MyViewHolder> {
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
     private ArrayList<PersonalSpaceModel> institutions;
@@ -40,6 +44,8 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
     Context context;
 
     ProgressDialog progressDialog;
+
+
 
     public OtherSpaceAdapter(ArrayList<PersonalSpaceModel> institutions,Context context) {
         this.institutions = institutions;
@@ -90,6 +96,15 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
                 intent.putExtra("clientLogoPath", mainFeedData.getClientLogoPath());
                 intent.putExtra("clientImagePath", mainFeedData.getClientImagePath());
                 intent.putExtra("appCid", mainFeedData.getAppCid());
+
+
+                //Storing value for user role and setting default to 1 with token
+                SharedPreferences.Editor editor = context.getSharedPreferences(SUPER_ADMIN_SHAREDFREF, MODE_PRIVATE).edit();
+                editor.putString("ROLE_VALUE", "3");
+                editor.apply();
+
+
+
                 context.startActivity(intent);
 
 

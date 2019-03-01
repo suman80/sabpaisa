@@ -63,6 +63,7 @@ import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME;
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.FEED_ARRAYLIST;
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
 
 public class SkipFeedFragment extends Fragment {
 
@@ -91,7 +92,7 @@ public class SkipFeedFragment extends Fragment {
 
     NotificationDB notificationDB;
 
-
+    String roleValue;
 
     public SkipFeedFragment() {
         // Required empty public constructor
@@ -114,6 +115,12 @@ public class SkipFeedFragment extends Fragment {
         Log.d("clientId_MEMBERS",""+appCid);
 
         Log.d("SkipFeedsFrag","Recieved_Val_"+clientName+" "+clientLogoPath+" "+clientImagePath+" "+state+" "+appCid);
+
+        SharedPreferences sharedPreferencesRole = getContext().getSharedPreferences(SUPER_ADMIN_SHAREDFREF, Context.MODE_PRIVATE);
+
+        roleValue = sharedPreferencesRole.getString("ROLE_VALUE", "abc");
+
+        Log.d("roleValueSkipFeedFrag"," "+roleValue);
 
 
 
@@ -142,6 +149,8 @@ public class SkipFeedFragment extends Fragment {
         linearLayoutAddFeedWhenNoData = (LinearLayout) view.findViewById(R.id.linearLayoutAddFeedWhenNoData);
 
         framelayoutAddFeed.setVisibility(View.VISIBLE);
+
+
 
         rippleClickAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -350,12 +359,8 @@ public class SkipFeedFragment extends Fragment {
                         recyclerView.setAdapter(skipFeedFragmentAdapter);
 
                     } else {
-                        //
-                        linearLayoutAddFeedWhenNoData.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.GONE);
-                        framelayoutAddFeed.setVisibility(View.GONE);
-                        linearLayoutnoDataFound.setVisibility(View.GONE);
-                        /*if (roleValue.equals("1")){
+
+                        if (roleValue.equals("1")){
                             linearLayoutAddFeedWhenNoData.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.GONE);
                             framelayoutAddFeed.setVisibility(View.GONE);
@@ -365,7 +370,7 @@ public class SkipFeedFragment extends Fragment {
                             framelayoutAddFeed.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.GONE);
                             linearLayoutAddFeedWhenNoData.setVisibility(View.GONE);
-                        }*/
+                        }
 
                     }
 
@@ -498,11 +503,11 @@ public class SkipFeedFragment extends Fragment {
 
                     } else {
                         //
-                        linearLayoutAddFeedWhenNoData.setVisibility(View.VISIBLE);
+                        /*linearLayoutAddFeedWhenNoData.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
                         framelayoutAddFeed.setVisibility(View.GONE);
-                        linearLayoutnoDataFound.setVisibility(View.GONE);
-                        /*if (roleValue.equals("1")){
+                        linearLayoutnoDataFound.setVisibility(View.GONE);*/
+                        if (roleValue.equals("1")){
                             linearLayoutAddFeedWhenNoData.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.GONE);
                             framelayoutAddFeed.setVisibility(View.GONE);
@@ -512,7 +517,7 @@ public class SkipFeedFragment extends Fragment {
                             framelayoutAddFeed.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.GONE);
                             linearLayoutAddFeedWhenNoData.setVisibility(View.GONE);
-                        }*/
+                        }
 
                     }
 

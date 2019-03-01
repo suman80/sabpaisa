@@ -990,11 +990,12 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
 
         if (roleValue.equals("1") || (memberGroupRole !=null && memberGroupRole.equals("2"))){
             menuItemEditGroupSpaceMenu.setVisible(true);
-            menuItemGroupSpaceMembers.setVisible(true);
         }else {
             menuItemEditGroupSpaceMenu.setVisible(false);
-            menuItemGroupSpaceMembers.setVisible(false);
         }
+
+        menuItemGroupSpaceMembers.setVisible(true);
+
 
         if(menu instanceof MenuBuilder){
             MenuBuilder m = (MenuBuilder) menu;

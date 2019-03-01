@@ -45,10 +45,14 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import me.grantland.widget.AutofitTextView;
 
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
+
 public class SkipMemberAdapter extends RecyclerView.Adapter<SkipMemberAdapter.MyViewHolder> {
 
     public List<MemberSpaceModel> memberSpaceModelList;
     Context context;
+
+    String roleValue;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -80,9 +84,17 @@ public class SkipMemberAdapter extends RecyclerView.Adapter<SkipMemberAdapter.My
 
         holder.memberName.setText(memberSpaceModel.getFullName());
 
-//        if (memberSpaceModel.getRoleId().equals("1")){
+
+        SharedPreferences sharedPreferencesRole = context.getSharedPreferences(SUPER_ADMIN_SHAREDFREF, Context.MODE_PRIVATE);
+
+        roleValue = sharedPreferencesRole.getString("ROLE_VALUE", "abc");
+
+        Log.d("roleValueSkipMemFrag"," "+roleValue);
+
+
+        if (memberSpaceModel.getRoleId().equals("2") || roleValue.equals("1")){
             holder.imgPopUpMenu.setVisibility(View.VISIBLE);
-       // }
+        }
 
         holder.imgPopUpMenu.setOnClickListener(new View.OnClickListener() {
             @Override

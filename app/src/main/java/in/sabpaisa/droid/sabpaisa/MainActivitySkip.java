@@ -39,6 +39,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -163,6 +164,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     public static boolean AppDecideFlag;
 
     public static String SUPER_ADMIN_SHAREDFREF = "SUPER_ADMIN_SHAREDFREF";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -466,12 +468,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
         AppDecideFlag = true;
 
-        //Storing value for user role and setting default to 1 with token
-        SharedPreferences.Editor editor = getSharedPreferences(SUPER_ADMIN_SHAREDFREF, MODE_PRIVATE).edit();
-        editor.putString("userAccessToken", userAccessToken);
-        editor.putString("ROLE_VALUE", "1");
-        editor.apply();
-
+        displayFirebaseRegId();
 
 
     }
@@ -739,6 +736,27 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         return filteredList;
     }
     /*END method to search query in Client List*/
+
+
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+        String isRegIdSaved = pref.getString("isRegIdSaved", null);
+        Log.d("Fbid", "Firebase reg id: " + regId);
+
+        if (!TextUtils.isEmpty(regId) && (isRegIdSaved == null)) {
+            //Toast.makeText(this, "Firebase Reg Id: " + regId, Toast.LENGTH_SHORT).show();
+            //sendFCMTokenToDb(regId, userAccessToken);
+
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("isRegIdSaved", "1");
+            editor.commit();
+        } else {
+            Log.d("FCM(regId)", "Is Empty");
+            //Toast.makeText(this, "Firebase Reg Id is not received yet!" + regId, Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 
     @Override
