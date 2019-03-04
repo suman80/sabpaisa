@@ -150,7 +150,7 @@ public class NotificationDB extends SQLiteOpenHelper {
                 Col_FEED_GROUP_ID + "=?",new String[]{groupId});*/
 
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_FEEDNOTIFICATION + " WHERE " +
-                Col_FEED_GROUP_ID + "=? AND "+Col_FEED_NOTIFICATION_COUNT + ">=?" ,new String[]{groupId, "0"});
+                Col_FEED_GROUP_ID + "=? AND "+Col_FEED_NOTIFICATION_COUNT + ">?" ,new String[]{groupId, "0"});
 
         return res;
     }

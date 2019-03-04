@@ -562,24 +562,6 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         });
 
 
-       /* chatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                int value = 1;
-
-                Intent intent = new Intent(MainActivity.this, ChatSDKLoginActivity.class);
-
-                intent.putExtra("userImageUrlMaim", userImageUrl);
-                intent.putExtra("usernameniv", usernameniv.getText().toString().trim());
-                intent.putExtra("VALUE", value);
-                intent.putExtra("xxxxx", mailIdniv.getText().toString().trim());
-                intent.putExtra("mobNumber", mobNumber);
-
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
-            }
-        });*/
 
         ////////API CAlls////////////////////////////
 
@@ -705,16 +687,6 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(receiver,new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
 
 
-/*
-
-        SharedPreferences.Editor editorVersionCode = getSharedPreferences(APP_VERSION_SHARED_PREF, MODE_PRIVATE).edit();
-        editorVersionCode.putInt("APP_VERSION", versionCode);
-        editorVersionCode.apply();
-
-        if (){
-
-        }
-*/
 
 
     // Checking app version

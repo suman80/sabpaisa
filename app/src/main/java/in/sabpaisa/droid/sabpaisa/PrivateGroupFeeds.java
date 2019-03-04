@@ -16,6 +16,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -25,6 +27,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.miguelcatalan.materialsearchview.SearchAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +71,8 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
     String userAccessToken;
 
+    MaterialSearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +82,10 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setTitle("Private Feeds");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,6 +156,72 @@ public class PrivateGroupFeeds extends AppCompatActivity {
         callFeedDataList(GroupId,userAccessToken);
 
         active = true;
+
+
+        searchView = (MaterialSearchView)findViewById(R.id.search_view);
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+
+                //if closed then listview will return default
+
+                if (!(feedArrayList == null || feedArrayList.isEmpty())) {
+                    loadFeedListView(feedArrayList, (RecyclerView) findViewById(R.id.recycler_view_feeds));
+                }else {
+//                    Toast.makeText(ClientList.this,"No Data Found !",Toast.LENGTH_SHORT).show();
+
+                    Log.d("Search","No Data");
+
+                }
+
+            }
+        });
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                if (newText != null && !newText.isEmpty()){
+
+                    ArrayList<FeedData> newArraylist = new ArrayList<>();
+
+                    for (FeedData items: feedArrayList){
+
+                        if (items.feedName.contains(newText.toLowerCase())){
+                            newArraylist.add(items);
+                        }
+
+                    }
+
+                    if (mainFeedAdapter.getItemCount() < 1){
+                        Log.d("Search","No data found");
+
+
+                    }else {
+
+                        loadFeedListView(newArraylist, (RecyclerView) findViewById(R.id.recycler_view_feeds));
+                    }
+
+
+                }else {
+                    // if search text is null then return default
+                    loadFeedListView(feedArrayList, (RecyclerView) findViewById(R.id.recycler_view_feeds));
+                }
+
+                return true;
+            }
+        });
 
 
 
@@ -422,4 +498,19 @@ public class PrivateGroupFeeds extends AppCompatActivity {
         active = false;
 
     }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu,menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+
+
+        return true;
+    }
+
+
+
 }

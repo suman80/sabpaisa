@@ -372,7 +372,7 @@ public class LogInActivity extends AppCompatActivity {
                         editor1.putString("logged", "logged");
                         editor1.commit();
 
-//                        displayFirebaseRegId(response);
+                        displayFirebaseRegId(response);
 
                         /*Intent intent = new Intent(LogInActivity.this, FilterActivity1.class);
 

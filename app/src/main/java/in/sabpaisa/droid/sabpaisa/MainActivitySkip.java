@@ -468,7 +468,6 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
         AppDecideFlag = true;
 
-        displayFirebaseRegId();
 
 
     }
@@ -737,25 +736,6 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     }
     /*END method to search query in Client List*/
 
-
-    private void displayFirebaseRegId() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
-        String regId = pref.getString("regId", null);
-        String isRegIdSaved = pref.getString("isRegIdSaved", null);
-        Log.d("Fbid", "Firebase reg id: " + regId);
-
-        if (!TextUtils.isEmpty(regId) && (isRegIdSaved == null)) {
-            //Toast.makeText(this, "Firebase Reg Id: " + regId, Toast.LENGTH_SHORT).show();
-            //sendFCMTokenToDb(regId, userAccessToken);
-
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("isRegIdSaved", "1");
-            editor.commit();
-        } else {
-            Log.d("FCM(regId)", "Is Empty");
-            //Toast.makeText(this, "Firebase Reg Id is not received yet!" + regId, Toast.LENGTH_SHORT).show();
-        }
-    }
 
 
 

@@ -51,6 +51,7 @@ import in.sabpaisa.droid.sabpaisa.Model.GroupNotificationModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.FEED_ARRAYLIST;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.GROUP_ARRAYLIST;
@@ -72,6 +73,8 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
     NotificationDB db;
 
     BroadcastReceiver broadcastReceiver;
+
+    int notificationCount;
 
     //public static ProgressDialog progressDialog;
 
@@ -326,8 +329,34 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
         });
 
 
-
         db= new NotificationDB(mContext);
+        if (db.isTableExists(TABLE_FEEDNOTIFICATION)) {
+
+            Cursor resCount = db.getParticularPrivateFeedNotificationData(c.getGroupId());
+            if (resCount.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while (resCount.moveToNext()) {
+                    stringBuffer.append(resCount.getString(0) + " ");
+                    stringBuffer.append(resCount.getString(1) + " ");
+                    stringBuffer.append(resCount.getInt(2) + " ");
+                    stringBuffer.append(resCount.getString(3) + " ");
+
+                    notificationCount += resCount.getInt(2);
+//                    break;
+
+                }
+
+                Log.d("PGF_Notification", "ForPrivateFeedStringBuffer___ " + stringBuffer);
+                Log.d("PGF_Notification", "notificationCount " + notificationCount);
+
+
+
+            }
+        }
+
+
+
         Cursor res = db.getParticularGroupNotificationData(c.getGroupId());
         if (res.getCount() > 0) {
             StringBuffer stringBuffer = new StringBuffer();
@@ -337,7 +366,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                 stringBuffer.append(res.getString(0) + " ");
                 stringBuffer.append(res.getString(1) + " ");
                 stringBuffer.append(res.getString(2) + " ");
-                commentCounter = Integer.parseInt(res.getString(2));
+                commentCounter = Integer.parseInt(res.getString(2))+notificationCount;
                 stringBuffer.append(res.getString(3) + " ");
                 stringBuffer.append(res.getString(4) + " ");
                 stringBuffer.append(res.getString(5) + " ");
@@ -413,6 +442,14 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
         LocalBroadcastManager.getInstance(mContext).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.GROUP_UI));
 
 */
+
+
+
+
+
+
+
+
 
 
 

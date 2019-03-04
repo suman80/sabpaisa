@@ -345,10 +345,10 @@ public class ChangePassword extends AppCompatActivity {
 
                     if (status.equals("success") && et_otp.getText().toString().equals(otp11)) {
 
-                        Intent intent = new Intent(ChangePassword.this, LoginActivityWithoutSharedPreference.class);
-                        startActivity(intent);
+
                         Log.e(TAG, "status: " + status);
                         finish();
+
                     } else if (!et_otp.getText().toString().equals(otp11)) {
 
 
