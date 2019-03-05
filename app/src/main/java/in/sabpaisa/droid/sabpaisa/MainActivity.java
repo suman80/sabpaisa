@@ -1196,7 +1196,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         // end
         else if (id == R.id.nav_ChangePassword) {
             Intent intent = new Intent(MainActivity.this, ForgotActivity.class);
-
+            intent.putExtra("FLAG","MainActivity");
             startActivity(intent);
         } else if (id == R.id.nav_Privacy_Policy) {
             Intent intent = new Intent(MainActivity.this, PrivacyPolicyActivity.class);

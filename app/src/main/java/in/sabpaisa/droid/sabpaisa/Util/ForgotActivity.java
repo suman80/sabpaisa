@@ -135,6 +135,8 @@ public class ForgotActivity extends AppCompatActivity {
     EditText et_phone_number;
     public static ProgressDialog progressDialog;
 
+    String Flag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,6 +159,11 @@ public class ForgotActivity extends AppCompatActivity {
         timerTextView = (TextView) sheetView.findViewById(R.id.timer_text_view);
 
         progressDialog = new ProgressDialog(ForgotActivity.this,R.style.DialogTheme);
+
+
+        Flag = getIntent().getStringExtra("FLAG");
+
+        Log.d("ForgotFlagVal","FLAG__"+Flag);
 
 
 //Code Added for visible and invisible of send_Otp
@@ -413,10 +420,22 @@ public class ForgotActivity extends AppCompatActivity {
 
                     if(status.equals("success") && et_otp.getValue().toString().equals(otp11)) {
 
-                        Intent intent = new Intent(ForgotActivity.this, LoginActivityWithoutSharedPreference.class);
-                        startActivity(intent);
-                        Log.e(TAG, "status: " + status);
-                        finish();
+                        /*Intent intent = new Intent(ForgotActivity.this, LoginActivityWithoutSharedPreference.class);
+                        startActivity(intent);*/
+
+
+                        Log.d(TAG, "status: " + status);
+
+                        if (Flag !=null && !Flag.isEmpty() && Flag.equals("MainActivity")){
+                            finish();
+                        }else {
+                            Intent intent = new Intent(ForgotActivity.this, LogInActivity.class);
+                            startActivity(intent);
+
+                            finish();
+                        }
+
+
                     }
                     //Log.e(TAG, "response2163123: " + userId);
                     else if(status.equals("failure")&&et_otp.getValue().toString().equals(otp11))

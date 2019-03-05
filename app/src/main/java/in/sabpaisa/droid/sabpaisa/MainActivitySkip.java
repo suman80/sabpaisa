@@ -726,10 +726,9 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         ArrayList<PersonalSpaceModel> filteredList = new ArrayList<>();
         filteredList.clear();
         for (PersonalSpaceModel item : mList) {
-            /*if (item.organization_name.toLowerCase().contains(query) || item.organizationId.toLowerCase().contains(query)
-                    || item.orgAddress.toLowerCase().contains(query)) {
+            if (item.appCname.toLowerCase().contains(query) ) {
                 filteredList.add(item);
-            }*/
+            }
         }
 
         return filteredList;
@@ -750,6 +749,8 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         Drawable dSearch = new BitmapDrawable(getResources(), newIconSearch); //Converting bitmap into drawable
 //        menu.getItem(1).setIcon(dSearch);
         searchView.setMenuItem(menu.getItem(0));  //TODO searchView
+
+        menu.getItem(0).setVisible(false);
 
 
         return true;
@@ -864,6 +865,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
         }*/ else if (id == R.id.nav_ChangePassword) {
             Intent intent = new Intent(MainActivitySkip.this, ForgotActivity.class);
+            intent.putExtra("FLAG","MainActivity");
 
             startActivity(intent);
         } else if (id == R.id.nav_Privacy_Policy) {

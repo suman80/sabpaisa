@@ -215,7 +215,7 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_institutions_tab, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_space_data, parent, false);
         return new MyViewHolder(v);
     }
 

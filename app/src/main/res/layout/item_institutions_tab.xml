@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
             android:src="@drawable/ic_more_vert"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_weight="0.7"
             />
 

@@ -2,8 +2,8 @@ package in.sabpaisa.droid.sabpaisa.Model;
 
 public class PersonalSpaceModel {
 
-    ProfileModel profileModel;
-    String appCid,appCname,contactNumber,emailId,address,description,clientLogoPath,clientImagePath;
+    public ProfileModel profileModel;
+    public String appCid,appCname,contactNumber,emailId,address,description,clientLogoPath,clientImagePath;
 
     public PersonalSpaceModel() {
     }
