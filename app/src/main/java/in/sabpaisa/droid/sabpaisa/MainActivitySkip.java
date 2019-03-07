@@ -750,7 +750,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 //        menu.getItem(1).setIcon(dSearch);
         searchView.setMenuItem(menu.getItem(0));  //TODO searchView
 
-        menu.getItem(0).setVisible(false);
+        //menu.getItem(0).setVisible(false);
 
 
         return true;

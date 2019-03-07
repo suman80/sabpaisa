@@ -214,6 +214,9 @@ public class MainFeedAdapter extends RecyclerView.Adapter<MainFeedAdapter.MyView
                             feedNotificatonModel.setFeedGroupId(null);
                         }
 
+                        feedNotificatonModel.setAppCid(null);
+                        feedNotificatonModel.setClientId(mainFeedData.getClientId());
+
                         boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
                         if (isInserted == true) {
 

@@ -51,6 +51,7 @@ import in.sabpaisa.droid.sabpaisa.Model.FeedNotificatonModel;
 import in.sabpaisa.droid.sabpaisa.PrivateGroupFeeds;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.FEED_ARRAYLIST;
@@ -225,6 +226,13 @@ public class SkipFeedFragmentAdapter extends RecyclerView.Adapter<SkipFeedFragme
                             feedNotificatonModel.setFeedMode("Public");
                             feedNotificatonModel.setFeedGroupId(null);
                         //}
+
+                        SharedPreferences sharedPreferences = context.getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreenForAppCid, Context.MODE_PRIVATE);
+                        String appCid=sharedPreferences.getString("appCid","abc");
+                        Log.d("SFFA",""+appCid);
+
+                        feedNotificatonModel.setAppCid(appCid);
+                        feedNotificatonModel.setClientId(null);
 
                         boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
                         if (isInserted == true) {

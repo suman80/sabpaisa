@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.Model.FeedNotificatonModel;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.FEED_ARRAYLIST;
@@ -158,6 +159,14 @@ public class PrivateGroupFeedSpaceAdapter extends RecyclerView.Adapter<PrivateGr
                             feedNotificatonModel.setFeedMode("Private");
                             feedNotificatonModel.setFeedGroupId(PrivateGroupFeedSpace.GroupId);
                         }
+
+                        SharedPreferences sharedPreferences = context.getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreenForAppCid, Context.MODE_PRIVATE);
+                        String appCid=sharedPreferences.getString("appCid","abc");
+                        Log.d("PGFSA",""+appCid);
+
+                        feedNotificatonModel.setAppCid(appCid);
+
+                        feedNotificatonModel.setClientId(null);
 
                         boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
                         if (isInserted == true) {

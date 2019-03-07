@@ -4,6 +4,7 @@ package in.sabpaisa.droid.sabpaisa.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,12 +35,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.OtherSpaceAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.SkipMainClientsAdapter;
 import in.sabpaisa.droid.sabpaisa.AddSpaceActivity;
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
+import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
@@ -48,6 +53,9 @@ import in.sabpaisa.droid.sabpaisa.Model.PersonalSpaceModel;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_FEEDNOTIFICATION;
+import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
 
 
 public class InstitutionSkipFragment extends Fragment {
@@ -75,6 +83,10 @@ public class InstitutionSkipFragment extends Fragment {
 
     RelativeLayout relativeLayoutOther;
 
+    NotificationDB notificationDB;
+
+    String appCid;
+
     public InstitutionSkipFragment() {
 
     }
@@ -82,6 +94,9 @@ public class InstitutionSkipFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        notificationDB = new NotificationDB(getContext());
+
     }
 
     @Nullable
@@ -198,12 +213,13 @@ public class InstitutionSkipFragment extends Fragment {
                             PersonalSpaceModel object = gson.fromJson(mJson, PersonalSpaceModel.class);
 
                             institutions.add(object);
+
                         }
 
-                        /*START listener for sending data to activity*/
+                       /* *//*START listener for sending data to activity*//*
                         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
                         listener.onFragmentSetClients(institutions);
-                        /*END listener for sending data to activity*/
+                        *//*END listener for sending data to activity*/
                         //loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
                         skipMainClientsAdapter = new SkipMainClientsAdapter(institutions,getContext());
                         recyclerViewInstitutions.setAdapter(skipMainClientsAdapter);
@@ -281,14 +297,100 @@ public class InstitutionSkipFragment extends Fragment {
 
                             PersonalSpaceModel object = gson.fromJson(mJson, PersonalSpaceModel.class);
 
+                            appCid = object.getAppCid();
+
                             institutions1.add(object);
+
+
+
+                            if (notificationDB.isTableExists(TABLE_FEEDNOTIFICATION)) {
+
+                                Cursor res = notificationDB.getSpaceNotificationFeed(object.getAppCid());
+                                if (res.getCount() > 0) {
+                                    StringBuffer stringBuffer = new StringBuffer();
+
+                                    while (res.moveToNext()) {
+                                        stringBuffer.append(res.getString(0) + " ");
+                                        stringBuffer.append(res.getString(1) + " ");
+                                        stringBuffer.append(res.getString(2) + " ");
+                                        stringBuffer.append(res.getString(3) + " ");
+                                        //feedData.setFeedRecentCommentTime(Long.parseLong(res.getString(3)));
+                                        stringBuffer.append(res.getString(4) + " ");
+                                        stringBuffer.append(res.getString(5) + " ");
+                                        stringBuffer.append(res.getString(6) + " ");
+                                        stringBuffer.append(res.getString(7) + " ");
+                                        stringBuffer.append(res.getString(8) + " ");
+                                        stringBuffer.append(res.getString(9) + " ");
+                                    }
+
+                                    Log.d("ISF_Notification", "stringBufferFEED___ " + stringBuffer);
+                                    //Log.d("PGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+                                }
+
+                            }
+
+
+
+
+                            if (notificationDB.isTableExists(TABLE_GROUPNOTIFICATION)) {
+
+                                Cursor res = notificationDB.getSpaceNotificationGroup(object.getAppCid());
+                                if (res.getCount() > 0) {
+                                    StringBuffer stringBuffer = new StringBuffer();
+
+                                    while (res.moveToNext()) {
+                                        stringBuffer.append(res.getString(0) + " ");
+                                        stringBuffer.append(res.getString(1) + " ");
+                                        stringBuffer.append(res.getString(2) + " ");
+                                        stringBuffer.append(res.getString(3) + " ");
+                                        //feedData.setFeedRecentCommentTime(Long.parseLong(res.getString(3)));
+                                        stringBuffer.append(res.getString(4) + " ");
+                                        stringBuffer.append(res.getString(5) + " ");
+                                        stringBuffer.append(res.getString(6) + " ");
+                                        stringBuffer.append(res.getString(7) + " ");
+
+                                    }
+
+                                    Log.d("ISF_Notification", "stringBufferGRP___ " + stringBuffer);
+                                    //Log.d("PGF_Notification", "grpListDataVal____ " + groupListData.getGroupRecentCommentTime());
+
+                                }
+
+                            }
+
+
+
+
                         }
 
                         /*START listener for sending data to activity*/
-                       /* OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
-                        listener.onFragmentSetClients(institutions);*/
+                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                        listener.onFragmentSetClients(institutions1);
                         /*END listener for sending data to activity*/
-                        //loadGroupListView(groupArrayList, (RecyclerView) rootView.findViewById(R.id.recycler_view_group));
+
+                        // Comparing timings with notification db
+
+                        if (notificationDB.isTableExists(TABLE_FEEDNOTIFICATION) && notificationDB.isTableExists(TABLE_GROUPNOTIFICATION)){
+                            Cursor resF,resG;
+                            resF = notificationDB.getMaxSpaceNotificationTime_Feed(appCid);
+
+                            resG = notificationDB.getMaxSpaceNotificationTime_Group(appCid);
+
+                            if (resF.getCount()>0 || resG.getCount()>0){
+
+                                long time_F = Long.parseLong(resF.getString(3));
+                                long time_G = Long.parseLong(resG.getString(3));
+
+                                //Collections.sort();
+
+
+                            }
+
+
+
+                        }
+
                         OtherSpaceAdapter = new OtherSpaceAdapter(institutions1,getContext());
                         recyclerViewOtherSpace.setAdapter(OtherSpaceAdapter);
                     }
@@ -330,9 +432,9 @@ public class InstitutionSkipFragment extends Fragment {
 
     public void getDataFromActivity() {
         if (sGetDataInterface != null) {
-            this.institutions = sGetDataInterface.getClientDataList();
-            skipMainClientsAdapter.setItems(this.institutions);
-            skipMainClientsAdapter.notifyDataSetChanged();
+            this.institutions1 = sGetDataInterface.getClientDataList();
+            OtherSpaceAdapter.setItems(this.institutions1);
+            OtherSpaceAdapter.notifyDataSetChanged();
         }
 
         Log.d("Institution_I&A", " " + sGetDataInterface + "&" + institutions);

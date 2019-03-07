@@ -28,6 +28,8 @@ public class NotificationDB extends SQLiteOpenHelper {
     public static final String Col_FEED_IS_OPEN = "FeedIsOpen";
     public static final String Col_FEED_MODE = "FeedMode";
     public static final String Col_FEED_GROUP_ID = "FeedGroupId";
+    public static final String Col_FEED_APP_CID_ID = "FeedAppCid";
+    public static final String Col_FEED_CLIENT_ID = "FeedClientId";
 
     // Column names for Group Notification
     public static final String TABLE_GROUPNOTIFICATION = "GroupNotification";
@@ -39,6 +41,9 @@ public class NotificationDB extends SQLiteOpenHelper {
     public static final String Col_GROUP_RECENT_COMMENT_TIMESTAMP = "GroupRecentCommentTimestamp";
     public static final String Col_GROUP_RECENT_OPEN_COMMENT_TIMESTAMP = "GroupRecentOpenCommentTimestamp";
     public static final String Col_GROUP_IS_OPEN = "GroupIsOpen";
+    public static final String Col_GROUP_APP_CID_ID = "GroupAppCid";
+    public static final String Col_GROUP_CLIENT_ID = "GroupClientId";
+
 
     public NotificationDB(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -55,7 +60,9 @@ public class NotificationDB extends SQLiteOpenHelper {
                 +Col_FEED_RECENT_OPEN_COMMENT_TIMESTAMP+" LONG,"
                 +Col_FEED_IS_OPEN+" BOOLEAN,"
                 +Col_FEED_MODE+" TEXT,"
-                +Col_FEED_GROUP_ID+" TEXT"
+                +Col_FEED_GROUP_ID+" TEXT,"
+                +Col_FEED_APP_CID_ID+" TEXT,"
+                +Col_FEED_CLIENT_ID+" TEXT"
                 +")";
 
 
@@ -65,7 +72,9 @@ public class NotificationDB extends SQLiteOpenHelper {
                 +Col_GROUP_NOTIFICATION_COUNT+" INT,"
                 +Col_GROUP_RECENT_COMMENT_TIMESTAMP+" LONG,"
                 +Col_GROUP_RECENT_OPEN_COMMENT_TIMESTAMP+" LONG,"
-                +Col_GROUP_IS_OPEN+" BOOLEAN"
+                +Col_GROUP_IS_OPEN+" BOOLEAN,"
+                +Col_GROUP_APP_CID_ID+" TEXT,"
+                +Col_GROUP_CLIENT_ID+" TEXT"
                 +")";
 
 
@@ -97,6 +106,8 @@ public class NotificationDB extends SQLiteOpenHelper {
         contentValues.put(Col_FEED_IS_OPEN, feedNotificatonModel.isFeedIsOpen());
         contentValues.put(Col_FEED_MODE, feedNotificatonModel.getFeedMode());
         contentValues.put(Col_FEED_GROUP_ID, feedNotificatonModel.getFeedGroupId());
+        contentValues.put(Col_FEED_APP_CID_ID, feedNotificatonModel.getAppCid());
+        contentValues.put(Col_FEED_CLIENT_ID, feedNotificatonModel.getClientId());
 
         result = db.insert(TABLE_FEEDNOTIFICATION, null, contentValues);
 
@@ -165,6 +176,8 @@ public class NotificationDB extends SQLiteOpenHelper {
         contentValues.put(Col_GROUP_RECENT_COMMENT_TIMESTAMP, groupNotificatonModel.getGroupRecentCommentTimeStamp());
         contentValues.put(Col_GROUP_RECENT_OPEN_COMMENT_TIMESTAMP, groupNotificatonModel.getGroupRecentOpenCommentTimeStamp());
         contentValues.put(Col_GROUP_IS_OPEN, groupNotificatonModel.isGroupOpen());
+        contentValues.put(Col_GROUP_APP_CID_ID, groupNotificatonModel.getAppCid());
+        contentValues.put(Col_GROUP_CLIENT_ID, groupNotificatonModel.getClientId());
 
         result = db.insert(TABLE_GROUPNOTIFICATION, null, contentValues);
 
@@ -211,6 +224,52 @@ public class NotificationDB extends SQLiteOpenHelper {
         Log.d("Groupdata_GrpId ", groupId);
         return res;
     }
+
+
+
+    public Cursor getSpaceNotificationFeed(String appCid){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Log.d("In Fetch GroupId ", appCid);
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_FEEDNOTIFICATION + " WHERE " +
+                Col_FEED_APP_CID_ID + "=?",new String[]{appCid});
+        Log.d("Groupdata_GrpId ", appCid);
+        return res;
+    }
+
+
+    public Cursor getSpaceNotificationGroup(String appCid){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Log.d("In Fetch GroupId ", appCid);
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_GROUPNOTIFICATION + " WHERE " +
+                Col_GROUP_APP_CID_ID + "=?",new String[]{appCid});
+        Log.d("Groupdata_GrpId ", appCid);
+        return res;
+    }
+
+
+    public Cursor getMaxSpaceNotificationTime_Feed(String appCid){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        Cursor res = db.rawQuery("SELECT MAX(Col_FEED_RECENT_COMMENT_TIMESTAMP) FROM " + TABLE_FEEDNOTIFICATION + " WHERE " +
+                Col_FEED_APP_CID_ID + "=?",new String[]{appCid});
+
+        return res;
+    }
+
+
+    public Cursor getMaxSpaceNotificationTime_Group(String appCid){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        Cursor res = db.rawQuery("SELECT MAX(Col_GROUP_RECENT_COMMENT_TIMESTAMP) FROM " + TABLE_GROUPNOTIFICATION + " WHERE " +
+                Col_GROUP_APP_CID_ID + "=?",new String[]{appCid});
+
+        return res;
+    }
+
 
 
 

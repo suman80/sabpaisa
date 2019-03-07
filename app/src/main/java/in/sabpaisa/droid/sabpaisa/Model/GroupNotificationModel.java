@@ -7,17 +7,20 @@ public class GroupNotificationModel {
     long groupRecentCommentTimeStamp;
     long groupRecentOpenCommentTimeStamp;
     boolean isGroupOpen;
+    String appCid,clientId;
 
     public GroupNotificationModel() {
     }
 
 
-    public GroupNotificationModel(String groupId, int groupNotificationCount, long groupRecentCommentTimeStamp, long groupRecentOpenCommentTimeStamp, boolean isGroupOpen) {
+    public GroupNotificationModel(String groupId, int groupNotificationCount, long groupRecentCommentTimeStamp, long groupRecentOpenCommentTimeStamp, boolean isGroupOpen, String appCid, String clientId) {
         this.groupId = groupId;
         this.groupNotificationCount = groupNotificationCount;
         this.groupRecentCommentTimeStamp = groupRecentCommentTimeStamp;
         this.groupRecentOpenCommentTimeStamp = groupRecentOpenCommentTimeStamp;
         this.isGroupOpen = isGroupOpen;
+        this.appCid = appCid;
+        this.clientId = clientId;
     }
 
     public String getGroupId() {
@@ -59,5 +62,22 @@ public class GroupNotificationModel {
 
     public void setGroupOpen(boolean groupOpen) {
         isGroupOpen = groupOpen;
+    }
+
+
+    public String getAppCid() {
+        return appCid;
+    }
+
+    public void setAppCid(String appCid) {
+        this.appCid = appCid;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 }

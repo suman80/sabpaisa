@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.EditSpace;
 import in.sabpaisa.droid.sabpaisa.Model.MemberSpaceModel;
 import in.sabpaisa.droid.sabpaisa.Model.PersonalSpaceModel;
@@ -45,18 +49,17 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
 
     ProgressDialog progressDialog;
 
-
+    NotificationDB db;
 
     public OtherSpaceAdapter(ArrayList<PersonalSpaceModel> institutions,Context context) {
         this.institutions = institutions;
         this.context=context;
     }
 
-    /*START Method to change data when put query in searchBar*/
-    /*public void setItems(ArrayList<PersonalSpaceModel> feedDatas) {
+    //START Method to change data when put query in searchBar
+    public void setItems(ArrayList<PersonalSpaceModel> feedDatas) {
         this.institutions = feedDatas;
     }
-*/
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
@@ -156,6 +159,77 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
 
 
 
+        db= new NotificationDB(context);
+
+        int commentCounterF = 0;
+
+        Cursor resF = db.getSpaceNotificationFeed(mainFeedData.getAppCid());
+        if (resF.getCount() > 0) {
+            StringBuffer stringBuffer = new StringBuffer();
+
+
+            while (resF.moveToNext()) {
+                stringBuffer.append(resF.getString(0) + " ");
+                stringBuffer.append(resF.getString(1) + " ");
+                stringBuffer.append(resF.getString(2) + " ");
+                commentCounterF = Integer.parseInt(resF.getString(2));
+                stringBuffer.append(resF.getString(3) + " ");
+                stringBuffer.append(resF.getString(4) + " ");
+                stringBuffer.append(resF.getString(5) + " ");
+            }
+
+            Log.d("SMCA", "Notification__F__ " + stringBuffer);
+
+
+
+        }
+
+        int commentCounterG = 0;
+
+
+        Cursor resG = db.getSpaceNotificationGroup(mainFeedData.getAppCid());
+        if (resG.getCount() > 0) {
+            StringBuffer stringBufferG = new StringBuffer();
+
+
+            while (resG.moveToNext()) {
+                stringBufferG.append(resG.getString(0) + " ");
+                stringBufferG.append(resG.getString(1) + " ");
+                stringBufferG.append(resG.getString(2) + " ");
+                commentCounterG = Integer.parseInt(resG.getString(2));
+                stringBufferG.append(resG.getString(3) + " ");
+                stringBufferG.append(resG.getString(4) + " ");
+                stringBufferG.append(resG.getString(5) + " ");
+            }
+
+            Log.d("SMCA", "Notification__G__ " + stringBufferG);
+
+
+        }
+
+
+        int totalNotification = commentCounterF + commentCounterG;
+
+        Log.d("totalNotification", "___" + totalNotification);
+
+
+        if (totalNotification > 0) {
+            holder.relativeLayoutNotification.setVisibility(View.VISIBLE);
+
+            if (totalNotification <= 9) {
+                holder.notificationText.setText(String.valueOf(totalNotification));
+            } else {
+                holder.notificationText.setText(String.valueOf("9+"));
+            }
+        }
+
+
+
+
+
+
+
+
     }
     /*END Method to change data when put query in searchBar*/
 
@@ -178,6 +252,10 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
         TextView instituteName,instituteLocation;
         MaterialRippleLayout rippleClick;
         ImageView imgPopUpMenu;
+
+        RelativeLayout relativeLayoutNotification;
+        TextView notificationText;
+
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -189,6 +267,10 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
             instituteLocation = (TextView)itemView.findViewById(R.id.tv_instituteLocation);
             rippleClick = (MaterialRippleLayout)itemView.findViewById(R.id.rippleClick);
             imgPopUpMenu = (ImageView)itemView.findViewById(R.id.imgPopUpMenu);
+
+            relativeLayoutNotification = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutNotification);
+            notificationText = (TextView) itemView.findViewById(R.id.notificationText);
+
         }
     }
     @Override

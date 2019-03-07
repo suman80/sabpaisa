@@ -79,6 +79,35 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String feedId = dataMap.get("feedId");
         String groupId = dataMap.get("groupId");
         String feedAccessMode = dataMap.get("feedAccessMode");
+        JSONObject clientJson = null;
+        JSONObject SpAppclientJson = null;
+
+        String client = dataMap.get("client");
+        String clientId = "";
+
+        String spAppclient = dataMap.get("spAppClient");
+        String appCid = "";
+
+        if(client != null){
+            try {
+                clientJson = new JSONObject(client);
+                clientId = clientJson.getString("clientId");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(spAppclient != null){
+            try {
+                SpAppclientJson = new JSONObject(spAppclient);
+                appCid = SpAppclientJson.getString("appCid");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
 
         /*Log.d("BackGroundNoti : ", body + " " + body.trim().length() + " " + title + " " + feedId + " " + groupId + " " + userName);
         Log.d("NotificationBody : ", StringEscapeUtils.unescapeJava(body));
@@ -155,6 +184,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     feedNotificatonModel.setFeedIsOpen(false);
                     feedNotificatonModel.setFeedMode(feedAccessMode);
                     feedNotificatonModel.setFeedGroupId(groupId);
+
+                    if (appCid!=null) {
+                        feedNotificatonModel.setAppCid(appCid);
+                    }else {
+                        feedNotificatonModel.setAppCid(null);
+                    }
+
+                    if (clientId !=null) {
+                        feedNotificatonModel.setClientId(clientId);
+                    }else {
+                        feedNotificatonModel.setClientId(null);
+                    }
 
                     boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
                     if (isInserted == true) {
@@ -242,6 +283,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     groupNotificationModel.setGroupRecentCommentTimeStamp(System.currentTimeMillis());
                     groupNotificationModel.setGroupRecentOpenCommentTimeStamp(0);
                     groupNotificationModel.setGroupOpen(false);
+
+                    if (appCid!=null){
+                        groupNotificationModel.setAppCid(appCid);
+                    }else {
+                        groupNotificationModel.setAppCid(null);
+                    }
+
+                    if (clientId!=null){
+                        groupNotificationModel.setClientId(clientId);
+                    }else {
+                        groupNotificationModel.setClientId(null);
+                    }
 
                     boolean isInserted = db.insertGroupNotificationData(groupNotificationModel);
                     if (isInserted == true) {
@@ -355,6 +408,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     feedNotificatonModel.setFeedMode(feedAccessMode);
                     feedNotificatonModel.setFeedGroupId(groupId);
 
+                    if (appCid!=null) {
+                        feedNotificatonModel.setAppCid(appCid);
+                    }else {
+                        feedNotificatonModel.setAppCid(null);
+                    }
+
+                    if (clientId !=null) {
+                        feedNotificatonModel.setClientId(clientId);
+                    }else {
+                        feedNotificatonModel.setClientId(null);
+                    }
+
                     boolean isInserted = db.insertFeedNotificationData(feedNotificatonModel);
                     if (isInserted == true) {
 
@@ -440,6 +505,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     groupNotificationModel.setGroupRecentCommentTimeStamp(System.currentTimeMillis());
                     groupNotificationModel.setGroupRecentOpenCommentTimeStamp(0);
                     groupNotificationModel.setGroupOpen(false);
+
+                    if (appCid!=null){
+                        groupNotificationModel.setAppCid(appCid);
+                    }else {
+                        groupNotificationModel.setAppCid(null);
+                    }
+
+                    if (clientId!=null){
+                        groupNotificationModel.setClientId(clientId);
+                    }else {
+                        groupNotificationModel.setClientId(null);
+                    }
+
 
                     boolean isInserted = db.insertGroupNotificationData(groupNotificationModel);
                     if (isInserted == true) {

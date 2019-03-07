@@ -177,6 +177,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                         groupNotificationModel.setGroupRecentOpenCommentTimeStamp(System.currentTimeMillis());
                         groupNotificationModel.setGroupOpen(true);
 
+                        groupNotificationModel.setAppCid(null);
+                        groupNotificationModel.setClientId(c.getClientId());
+
                         boolean isInserted = db.insertGroupNotificationData(groupNotificationModel);
                         if (isInserted == true) {
 
@@ -738,6 +741,10 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                                 groupNotificationModel.setGroupRecentCommentTimeStamp(0);
                                 groupNotificationModel.setGroupRecentOpenCommentTimeStamp(System.currentTimeMillis());
                                 groupNotificationModel.setGroupOpen(true);
+
+                                groupNotificationModel.setAppCid(null);
+                                groupNotificationModel.setClientId(groupListData.getClientId());
+
 
                                 boolean isInserted = db.insertGroupNotificationData(groupNotificationModel);
                                 if (isInserted == true) {

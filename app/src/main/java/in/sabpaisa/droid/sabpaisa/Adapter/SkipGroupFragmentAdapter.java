@@ -52,6 +52,7 @@ import in.sabpaisa.droid.sabpaisa.Model.GroupNotificationModel;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.UIN;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB.TABLE_GROUPNOTIFICATION;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.GROUP_ARRAYLIST;
@@ -127,6 +128,13 @@ public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFrag
                         groupNotificationModel.setGroupRecentCommentTimeStamp(0);
                         groupNotificationModel.setGroupRecentOpenCommentTimeStamp(System.currentTimeMillis());
                         groupNotificationModel.setGroupOpen(true);
+
+                        SharedPreferences sharedPreferences = mContext.getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreenForAppCid, Context.MODE_PRIVATE);
+                        String appCid=sharedPreferences.getString("appCid","abc");
+                        Log.d("SGFA",""+appCid);
+
+                        groupNotificationModel.setClientId(null);
+                        groupNotificationModel.setAppCid(appCid);
 
                         boolean isInserted = db.insertGroupNotificationData(groupNotificationModel);
                         if (isInserted == true) {

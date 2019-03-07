@@ -56,6 +56,7 @@ import java.util.Date;
 import in.sabpaisa.droid.sabpaisa.AddMemberToSpaceActivity;
 import in.sabpaisa.droid.sabpaisa.AddMemberTo_A_Group;
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.EditSpace;
 import in.sabpaisa.droid.sabpaisa.Fragments.AddMemberToSpaceDialogFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
@@ -84,6 +85,8 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
     Context context;
 
     ProgressDialog progressDialog;
+
+    NotificationDB db;
 
 
     public SkipMainClientsAdapter(ArrayList<PersonalSpaceModel> institutions,Context context) {
@@ -178,6 +181,76 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
 
 
 
+
+        db= new NotificationDB(context);
+
+        int commentCounterF = 0;
+
+        Cursor resF = db.getSpaceNotificationFeed(mainFeedData.getAppCid());
+        if (resF.getCount() > 0) {
+            StringBuffer stringBuffer = new StringBuffer();
+
+
+            while (resF.moveToNext()) {
+                stringBuffer.append(resF.getString(0) + " ");
+                stringBuffer.append(resF.getString(1) + " ");
+                stringBuffer.append(resF.getString(2) + " ");
+                commentCounterF = Integer.parseInt(resF.getString(2));
+                stringBuffer.append(resF.getString(3) + " ");
+                stringBuffer.append(resF.getString(4) + " ");
+                stringBuffer.append(resF.getString(5) + " ");
+            }
+
+            Log.d("SMCA", "Notification__F__ " + stringBuffer);
+
+
+
+            }
+
+        int commentCounterG = 0;
+
+
+        Cursor resG = db.getSpaceNotificationGroup(mainFeedData.getAppCid());
+        if (resG.getCount() > 0) {
+            StringBuffer stringBufferG = new StringBuffer();
+
+
+            while (resG.moveToNext()) {
+                stringBufferG.append(resG.getString(0) + " ");
+                stringBufferG.append(resG.getString(1) + " ");
+                stringBufferG.append(resG.getString(2) + " ");
+                commentCounterG = Integer.parseInt(resG.getString(2));
+                stringBufferG.append(resG.getString(3) + " ");
+                stringBufferG.append(resG.getString(4) + " ");
+                stringBufferG.append(resG.getString(5) + " ");
+            }
+
+            Log.d("SMCA", "Notification__G__ " + stringBufferG);
+
+
+        }
+
+
+        int totalNotification = commentCounterF + commentCounterG;
+
+        Log.d("totalNotification", "___" + totalNotification);
+
+
+             if (totalNotification > 0) {
+                holder.relativeLayoutNotification.setVisibility(View.VISIBLE);
+
+                if (totalNotification <= 9) {
+                    holder.notificationText.setText(String.valueOf(totalNotification));
+                } else {
+                    holder.notificationText.setText(String.valueOf("9+"));
+                }
+            }
+
+
+
+
+
+
     }
     /*END Method to change data when put query in searchBar*/
 
@@ -200,6 +273,8 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
         TextView instituteName,instituteLocation;
         MaterialRippleLayout rippleClick;
         ImageView imgPopUpMenu;
+        RelativeLayout relativeLayoutNotification;
+        TextView notificationText;
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -211,6 +286,8 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
             instituteLocation = (TextView)itemView.findViewById(R.id.tv_instituteLocation);
             rippleClick = (MaterialRippleLayout)itemView.findViewById(R.id.rippleClick);
             imgPopUpMenu = (ImageView)itemView.findViewById(R.id.imgPopUpMenu);
+            relativeLayoutNotification = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutNotification);
+            notificationText = (TextView) itemView.findViewById(R.id.notificationText);
         }
     }
     @Override
