@@ -253,7 +253,10 @@ public class NotificationDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
 
-        Cursor res = db.rawQuery("SELECT MAX(Col_FEED_RECENT_COMMENT_TIMESTAMP) FROM " + TABLE_FEEDNOTIFICATION + " WHERE " +
+        /*Cursor res = db.rawQuery("SELECT MAX(Col_FEED_RECENT_COMMENT_TIMESTAMP) FROM " + TABLE_FEEDNOTIFICATION + " WHERE " +
+                Col_FEED_APP_CID_ID + "=?",new String[]{appCid});*/
+
+        Cursor res = db.rawQuery("SELECT MAX ("+Col_FEED_RECENT_COMMENT_TIMESTAMP+") FROM " + TABLE_FEEDNOTIFICATION + " WHERE " +
                 Col_FEED_APP_CID_ID + "=?",new String[]{appCid});
 
         return res;
@@ -264,7 +267,10 @@ public class NotificationDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
 
-        Cursor res = db.rawQuery("SELECT MAX(Col_GROUP_RECENT_COMMENT_TIMESTAMP) FROM " + TABLE_GROUPNOTIFICATION + " WHERE " +
+     /*   Cursor res = db.rawQuery("SELECT MAX(Col_GROUP_RECENT_COMMENT_TIMESTAMP) FROM " + TABLE_GROUPNOTIFICATION + " WHERE " +
+                Col_GROUP_APP_CID_ID + "=?",new String[]{appCid});*/
+
+        Cursor res = db.rawQuery("SELECT MAX ("+Col_GROUP_RECENT_COMMENT_TIMESTAMP+") FROM " + TABLE_GROUPNOTIFICATION + " WHERE " +
                 Col_GROUP_APP_CID_ID + "=?",new String[]{appCid});
 
         return res;

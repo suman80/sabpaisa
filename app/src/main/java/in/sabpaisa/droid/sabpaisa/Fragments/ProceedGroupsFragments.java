@@ -300,6 +300,9 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
 
 
             String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "memberStatusWithGroup" + "?token=" + token + "&clientId=" + clientId;
+
+        Log.d("PGF_url","____"+urlJsonObj);
+
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 urlJsonObj, new Response.Listener<String>() {
 
@@ -505,6 +508,9 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                             }
                         }
 
+
+
+                        if(!(arrayListForApproved == null || arrayListForApproved.isEmpty())){
                         Collections.sort(arrayListForApproved, new Comparator<GroupListData>() {
                             @Override
                             public int compare(GroupListData groupListData, GroupListData t1) {
@@ -552,6 +558,22 @@ public class ProceedGroupsFragments extends Fragment implements SwipeRefreshLayo
                         //mainGroupAdapter1 = new MainGroupAdapter1(groupArrayList, getContext());
                         mainGroupAdapter1 = new MainGroupAdapter1(arrayListForApproved, getContext());
                         groupList.setAdapter(mainGroupAdapter1);
+
+                        }
+
+                        else if (roleValue.equals("1")) {
+
+                            linearLayoutAddGrpWhenNoData.setVisibility(View.VISIBLE);
+                            framelayoutAddGroup.setVisibility(View.GONE);
+                            groupList.setVisibility(View.GONE);
+                            linearLayoutnoDataFound.setVisibility(View.GONE);
+
+                        }else {
+                            linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                            framelayoutAddGroup.setVisibility(View.GONE);
+                            groupList.setVisibility(View.GONE);
+                            linearLayoutAddGrpWhenNoData.setVisibility(View.GONE);
+                        }
 
                     } else {
 

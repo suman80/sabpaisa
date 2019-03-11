@@ -127,8 +127,8 @@ public class EditSpace extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String spaceName = editText_SpaceName.getText().toString().trim();
-                String spaceDescription = editText_SpaceDescription.getText().toString().trim();
+                String spaceName = editText_SpaceName.getText().toString();
+                String spaceDescription = editText_SpaceDescription.getText().toString();
 
                 if (spaceName == null || spaceName.equals("") || spaceName.isEmpty()){
                     editText_SpaceName.setError("Please enter the Space Name");

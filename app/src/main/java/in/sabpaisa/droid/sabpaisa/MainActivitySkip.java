@@ -120,7 +120,7 @@ import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
-public class MainActivitySkip extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener,/*AppBarLayout.OnOffsetChangedListener,*/ /*RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/NavigationView.OnNavigationItemSelectedListener,BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener,OnFragmentInteractionListener,InstitutionSkipFragment.GetDataInterface {
+public class MainActivitySkip extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener,/*AppBarLayout.OnOffsetChangedListener,*/ /*RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/NavigationView.OnNavigationItemSelectedListener, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, OnFragmentInteractionListener, InstitutionSkipFragment.GetDataInterface {
 
     private SliderLayout mHeaderSlider;
     ArrayList<Integer> headerList = new ArrayList<>();
@@ -132,7 +132,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     Toolbar toolbar;
     RequestQueue requestQueue;
     String userImageUrl = null;
-    String name,mobNumber;
+    String name, mobNumber;
     ImageView niv;
     int value = 2;
     String x;
@@ -148,7 +148,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     private RapidFloatingActionHelper rfabHelper;*/
     private View view;
     Handler mHandler;
-    int MY_SOCKET_TIMEOUT_MS =100000;
+    int MY_SOCKET_TIMEOUT_MS = 100000;
 
     TextView mSearchText;
     MaterialSearchView searchView;
@@ -173,7 +173,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
         setContentView(R.layout.app_bar_nagationfullview);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-         //checkConnection();
+        //checkConnection();
         this.mHandler = new Handler();
         // m_Runnable.run();
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
@@ -238,8 +238,6 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         //appBarLayout.addOnOffsetChangedListener(this);
 
 
-
-
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -261,7 +259,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
         if (isOnline()) {
             getUserImage(userAccessToken);
-        }else {
+        } else {
 
             Cursor res = appDB.getParticularImageData(userAccessToken);
 
@@ -292,11 +290,11 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         }
 
 
-        if (isOnline()){
+        if (isOnline()) {
 
             showProfileData();
 
-        }else {
+        } else {
 
             Cursor res = appDB.getParticularData(userAccessToken);
 
@@ -315,7 +313,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
                 Log.d("getParticularNum", "-->" + stringBuffer);
 
             } else {
-                Log.d("MainActivitySkip","In Else Part");
+                Log.d("MainActivitySkip", "In Else Part");
             }
 
         }
@@ -417,9 +415,9 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         usernameniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value=2;
+                int value = 2;
                 Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivity.class);
-                intent.putExtra("valueProfile",value);
+                intent.putExtra("valueProfile", value);
                 startActivity(intent);
 
             }
@@ -428,9 +426,9 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         niv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value=2;
+                int value = 2;
                 Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivity.class);
-                intent.putExtra("valueProfile",value);
+                intent.putExtra("valueProfile", value);
 
                 startActivity(intent);
 
@@ -440,9 +438,9 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         mailIdniv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value=2;
+                int value = 2;
                 Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivity.class);
-                intent.putExtra("valueProfile",value);
+                intent.putExtra("valueProfile", value);
 
 
                 startActivity(intent);
@@ -455,19 +453,18 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(PROFILE_IMAGE)){
+                if (intent.getAction().equals(PROFILE_IMAGE)) {
                     getUserImage(userAccessToken);
                 }
             }
         };
 
-        LocalBroadcastManager.getInstance(MainActivitySkip.this).registerReceiver(receiver,new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
+        LocalBroadcastManager.getInstance(MainActivitySkip.this).registerReceiver(receiver, new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
 
 
         // AppDecideFlag
 
         AppDecideFlag = true;
-
 
 
     }
@@ -482,56 +479,56 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
     }*/
 
-   /* private void FabButtonCreate() {
-        RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(this);
-        rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
-//        rfaContent.setOnRapidFloatingActionContentListener(this);
-        List<RFACLabelItem> items = new ArrayList<>();
-        Bitmap send = BitmapFactory.decodeResource(getResources(),
-                R.drawable.send_icon);
-        items.add(new RFACLabelItem<Integer>()
-                .setResId(R.mipmap.ic_transactions_icon)
-                .setIconNormalColor(getResources().getColor(R.color.bg_orange))
-                .setIconPressedColor(getResources().getColor(R.color.bg_orange))
-                .setWrapper(1)
-        );
-        items.add(new RFACLabelItem<Integer>()
-                .setResId(R.mipmap.ic_request_icon)
-                .setIconNormalColor(getResources().getColor(R.color.bg_orange))
-                .setIconPressedColor(getResources().getColor(R.color.bg_orange))
-                .setWrapper(2)
-        );
-        items.add(new RFACLabelItem<Integer>()
-                .setResId(R.mipmap.ic_send_icon)
-                .setIconNormalColor(getResources().getColor(R.color.bg_orange))
-                .setIconPressedColor(getResources().getColor(R.color.bg_orange))
-                .setWrapper(3)
-        );
-        rfaContent
-                .setItems(items)
-                .setIconShadowRadius(ABTextUtil.dip2px(this, 5))
-                .setIconShadowColor(0xff888888)
-                .setIconShadowDy(ABTextUtil.dip2px(this, 5))
-        ;
-        rfabHelper = new RapidFloatingActionHelper(
-                this,
-                rfaLayout,
-                rfaBtn,
-                rfaContent
-        ).build();
-    }
+    /* private void FabButtonCreate() {
+         RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(this);
+         rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
+ //        rfaContent.setOnRapidFloatingActionContentListener(this);
+         List<RFACLabelItem> items = new ArrayList<>();
+         Bitmap send = BitmapFactory.decodeResource(getResources(),
+                 R.drawable.send_icon);
+         items.add(new RFACLabelItem<Integer>()
+                 .setResId(R.mipmap.ic_transactions_icon)
+                 .setIconNormalColor(getResources().getColor(R.color.bg_orange))
+                 .setIconPressedColor(getResources().getColor(R.color.bg_orange))
+                 .setWrapper(1)
+         );
+         items.add(new RFACLabelItem<Integer>()
+                 .setResId(R.mipmap.ic_request_icon)
+                 .setIconNormalColor(getResources().getColor(R.color.bg_orange))
+                 .setIconPressedColor(getResources().getColor(R.color.bg_orange))
+                 .setWrapper(2)
+         );
+         items.add(new RFACLabelItem<Integer>()
+                 .setResId(R.mipmap.ic_send_icon)
+                 .setIconNormalColor(getResources().getColor(R.color.bg_orange))
+                 .setIconPressedColor(getResources().getColor(R.color.bg_orange))
+                 .setWrapper(3)
+         );
+         rfaContent
+                 .setItems(items)
+                 .setIconShadowRadius(ABTextUtil.dip2px(this, 5))
+                 .setIconShadowColor(0xff888888)
+                 .setIconShadowDy(ABTextUtil.dip2px(this, 5))
+         ;
+         rfabHelper = new RapidFloatingActionHelper(
+                 this,
+                 rfaLayout,
+                 rfaBtn,
+                 rfaContent
+         ).build();
+     }
 
-    @Override
-    public void onRFACItemLabelClick(int position, RFACLabelItem item) {
-        Toast.makeText(this, "clicked label: " + position, Toast.LENGTH_SHORT).show();
-        rfabHelper.toggleContent();
-    }
+     @Override
+     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
+         Toast.makeText(this, "clicked label: " + position, Toast.LENGTH_SHORT).show();
+         rfabHelper.toggleContent();
+     }
 
-    @Override
-    public void onRFACItemIconClick(int position, RFACLabelItem item) {
-        if (position == 2) {
-            Toast.makeText(this, "Send Clicked", Toast.LENGTH_SHORT).show();
-            if (isMpinSet == 0) {             *//*TODO check if mpin is set or not, for now i am hardcoding it*//*
+     @Override
+     public void onRFACItemIconClick(int position, RFACLabelItem item) {
+         if (position == 2) {
+             Toast.makeText(this, "Send Clicked", Toast.LENGTH_SHORT).show();
+             if (isMpinSet == 0) {             *//*TODO check if mpin is set or not, for now i am hardcoding it*//*
                 Intent intent = new Intent(MainActivitySkip.this, AccountInfoActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
@@ -592,10 +589,10 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         Hash_file_maps = new HashMap<String, String>();
 
 
-        Hash_file_maps.put("SPApp Digitizing Cash", AppConfig.Base_Url+"/Docs/Images/HomeImage/sabpaisa.png");
-        Hash_file_maps.put("Payment & Transfer",AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_2.png");
-        Hash_file_maps.put("The Future Of Payments", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_image.jpg");
-        Hash_file_maps.put("UPI", AppConfig.Base_Url+"/Docs/Images/HomeImage/UPI_1.svg.png");
+        Hash_file_maps.put("SPApp Digitizing Cash", AppConfig.Base_Url + "/Docs/Images/HomeImage/sabpaisa.png");
+        Hash_file_maps.put("Payment & Transfer", AppConfig.Base_Url + "/Docs/Images/HomeImage/UPI_2.png");
+        Hash_file_maps.put("The Future Of Payments", AppConfig.Base_Url + "/Docs/Images/HomeImage/UPI_image.jpg");
+        Hash_file_maps.put("UPI", AppConfig.Base_Url + "/Docs/Images/HomeImage/UPI_1.svg.png");
         for (String name : Hash_file_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(this);
             // initialize a SliderLayout
@@ -726,7 +723,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         ArrayList<PersonalSpaceModel> filteredList = new ArrayList<>();
         filteredList.clear();
         for (PersonalSpaceModel item : mList) {
-            if (item.appCname.toLowerCase().contains(query) ) {
+            if (item.appCname.toLowerCase().contains(query)) {
                 filteredList.add(item);
             }
         }
@@ -734,8 +731,6 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         return filteredList;
     }
     /*END method to search query in Client List*/
-
-
 
 
     @Override
@@ -802,10 +797,10 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
     public void onBackPressed() {
         if (searchView.isSearchOpen()) {
             searchView.closeSearch();
-        }else if (this.drawer.isDrawerOpen(GravityCompat.START)) {
+        } else if (this.drawer.isDrawerOpen(GravityCompat.START)) {
             this.drawer.closeDrawer(GravityCompat.START);
-            Log.d("Drawer","Closing_Skip");
-        }  else {
+            Log.d("Drawer", "Closing_Skip");
+        } else {
             super.onBackPressed();
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
@@ -850,10 +845,10 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         int id = item.getItemId();
 
         if (id == R.id.nav_Profile) {
-            int value=2;
+            int value = 2;
             Intent intent = new Intent(MainActivitySkip.this, ProfileNavigationActivity.class);
-         //   intent.putExtra("ClientId",ClientId);
-            intent.putExtra("valueProfile",value);
+            //   intent.putExtra("ClientId",ClientId);
+            intent.putExtra("valueProfile", value);
             startActivity(intent);
             // Handle the camera action
         } /*else if (id == R.id.nav_Chat) {
@@ -865,7 +860,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
         }*/ else if (id == R.id.nav_ChangePassword) {
             Intent intent = new Intent(MainActivitySkip.this, ForgotActivity.class);
-            intent.putExtra("FLAG","MainActivity");
+            intent.putExtra("FLAG", "MainActivity");
 
             startActivity(intent);
         } else if (id == R.id.nav_Privacy_Policy) {
@@ -927,25 +922,20 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
            */
 
 
-        }
+        } else if (id == R.id.nav_txnhistory) {
 
-        else if(id==R.id.nav_txnhistory){
-
-            Intent intent=new Intent( MainActivitySkip.this, AllTransactionSummary.class);
+            Intent intent = new Intent(MainActivitySkip.this, AllTransactionSummary.class);
 
             startActivity(intent);
 
-        }
-        else if(id==R.id.nav_Contacts){
+        } else if (id == R.id.nav_Contacts) {
 
 
-            Intent intent=new Intent( MainActivitySkip.this, AllContacts.class);
+            Intent intent = new Intent(MainActivitySkip.this, AllContacts.class);
 
             startActivity(intent);
 
-        }
-
-        else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share) {
             /*Intent intent=new Intent(MainActivity.this, ShareActivity.class);
 
             startActivity(intent);*/
@@ -960,9 +950,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
                 shareIntentSpecificApps();
 
-            }
-
-            catch (Exception e) {
+            } catch (Exception e) {
                 //e.toString();
             }
 
@@ -970,7 +958,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         }
 //changes 25 april
 
-        else if(id==R.id.nav_TransactionReport){
+        else if (id == R.id.nav_TransactionReport) {
 
         }
         //// end
@@ -986,12 +974,12 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
                     .beginTransaction()
                     .replace(R.id.tt, newFragment)
                     .commit();*//*
-            *//*newFragment = new Ratefragment();
+         *//*newFragment = new Ratefragment();
             transaction.replace(R.id.tt, newFragment);
             transaction.addToBackStack(null);
             transaction.commit();*//*
 
-            *//*Fragment fragment = new Fragment();
+         *//*Fragment fragment = new Fragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.tt, fragment, fragment.getTag()).commit();
         *//*
@@ -1069,7 +1057,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
         String tag_string_req = "req_clients";
 
-        StringRequest request = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfileImage + "?token=" + token, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_Show_UserProfileImage + "?token=" + token, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -1216,19 +1204,13 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
         }
 
 
-
-
-
-
         AppController.getInstance().addToRequestQueue(request, tag_string_req);
 
 
     }
 
     private final Runnable m_Runnable = new Runnable() {
-        public void run()
-
-        {
+        public void run() {
             Toast.makeText(MainActivitySkip.this, "in runnable", Toast.LENGTH_SHORT).show();
 
             MainActivitySkip.this.mHandler.postDelayed(m_Runnable, 1000);
@@ -1241,7 +1223,7 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
 
         String tag_string_req = "req_register";
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_Show_UserProfile + "?token=" + userAccessToken, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_Show_UserProfile + "?token=" + userAccessToken, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response1) {
@@ -1256,15 +1238,13 @@ public class MainActivitySkip extends AppCompatActivity  implements Connectivity
                     mobNumber = object.getJSONObject("response").getString("contactNumber").toString();
 
 
-                    if(x.equals("null"))
-                    {
+                    if (x.equals("null")) {
                         usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
-mailIdniv.setText("");
-                    }
-                   else if (status.equals("success")) {
-                        name=object.getJSONObject("response").getString("fullName").toString();
-                        Log.d("namemainSKIP",""+name);
-                        Log.d("namemainSKIP",""+mobNumber);
+                        mailIdniv.setText("");
+                    } else if (status.equals("success")) {
+                        name = object.getJSONObject("response").getString("fullName").toString();
+                        Log.d("namemainSKIP", "" + name);
+                        Log.d("namemainSKIP", "" + mobNumber);
 
                         usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
                         //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
@@ -1392,7 +1372,6 @@ mailIdniv.setText("");
         }
 
 
-
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
@@ -1401,7 +1380,7 @@ mailIdniv.setText("");
     // Method to manually check connection status
     private void checkConnection() {
         boolean isConnected = ConnectivityReceiver.isConnected();
-       // showSnack(isConnected);
+        // showSnack(isConnected);
     }
 
     // Showing the status in Snackbar
@@ -1437,9 +1416,6 @@ mailIdniv.setText("");
      * Callback will be triggered when there is change in
      * network connection
      */
-
-
-
 
 
     @Override
@@ -1482,7 +1458,7 @@ mailIdniv.setText("");
                         || packageName.contains("com.google.android.talk") || packageName.contains("com.slack")
                         || packageName.contains("com.google.android.gm") || packageName.contains("com.facebook.orca")
                         || packageName.contains("com.yahoo.mobile") || packageName.contains("com.skype.raider")
-                        || packageName.contains("com.android.mms")|| packageName.contains("com.linkedin.android")
+                        || packageName.contains("com.android.mms") || packageName.contains("com.linkedin.android")
                         || packageName.contains("com.google.android.apps.messaging")) {
                     Intent intent = new Intent();
 
@@ -1518,7 +1494,6 @@ mailIdniv.setText("");
     }
 
 
-
     public void clearApplicationData() {
         File cacheDirectory = getCacheDir();
         File applicationDirectory = new File(cacheDirectory.getParent());
@@ -1550,13 +1525,11 @@ mailIdniv.setText("");
 
     //Required for UI Update
     @Override
-    public void onRestart()
-    {
+    public void onRestart() {
         super.onRestart();
         finish();
         startActivity(getIntent());
     }
-
 
 
 }

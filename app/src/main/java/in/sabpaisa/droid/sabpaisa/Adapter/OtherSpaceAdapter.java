@@ -172,7 +172,7 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
                 stringBuffer.append(resF.getString(0) + " ");
                 stringBuffer.append(resF.getString(1) + " ");
                 stringBuffer.append(resF.getString(2) + " ");
-                commentCounterF = Integer.parseInt(resF.getString(2));
+                commentCounterF += Integer.parseInt(resF.getString(2));
                 stringBuffer.append(resF.getString(3) + " ");
                 stringBuffer.append(resF.getString(4) + " ");
                 stringBuffer.append(resF.getString(5) + " ");
@@ -196,7 +196,7 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
                 stringBufferG.append(resG.getString(0) + " ");
                 stringBufferG.append(resG.getString(1) + " ");
                 stringBufferG.append(resG.getString(2) + " ");
-                commentCounterG = Integer.parseInt(resG.getString(2));
+                commentCounterG += Integer.parseInt(resG.getString(2));
                 stringBufferG.append(resG.getString(3) + " ");
                 stringBufferG.append(resG.getString(4) + " ");
                 stringBufferG.append(resG.getString(5) + " ");

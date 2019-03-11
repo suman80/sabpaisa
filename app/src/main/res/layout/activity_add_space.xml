@@ -19,65 +19,7 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        >
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Space Name:"
-            android:textColor="@color/bg_orange"
-            android:textSize="18sp"
-            />
-
-
-        <EditText
-            android:id="@+id/spaceNameEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_edittext"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            />
-
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        >
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Space\nDescription:"
-            android:textColor="@color/bg_orange"
-            android:textSize="18sp"
-            />
-
-
-        <EditText
-            android:id="@+id/spaceDescriptionEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_edittext"
-            android:layout_marginLeft="13dp"
-            android:layout_marginRight="5dp"
-            android:singleLine="true"
-            />
-
-
-
-    </LinearLayout>
 
 
     <LinearLayout
@@ -145,15 +87,75 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Space Name:"
+            android:textColor="@color/bg_orange"
+            android:textSize="18sp"
+            />
+
+
+        <EditText
+            android:id="@+id/spaceNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_edittext"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            />
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Space\nDescription:"
+            android:textColor="@color/bg_orange"
+            android:textSize="18sp"
+            />
+
+
+        <EditText
+            android:id="@+id/spaceDescriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_edittext"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="5dp"
+            android:singleLine="true"
+            />
+
+
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_Save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:background="@drawable/background_button"
         android:text="Save"
         android:textColor="#fff"
-        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         />
 
 

@@ -5,7 +5,23 @@ public class PersonalSpaceModel {
     public ProfileModel profileModel;
     public String appCid,appCname,contactNumber,emailId,address,description,clientLogoPath,clientImagePath;
 
+    public long recentCommentTime;
+
     public PersonalSpaceModel() {
+    }
+
+
+    public PersonalSpaceModel(ProfileModel profileModel, String appCid, String appCname, String contactNumber, String emailId, String address, String description, String clientLogoPath, String clientImagePath, long recentCommentTime) {
+        this.profileModel = profileModel;
+        this.appCid = appCid;
+        this.appCname = appCname;
+        this.contactNumber = contactNumber;
+        this.emailId = emailId;
+        this.address = address;
+        this.description = description;
+        this.clientLogoPath = clientLogoPath;
+        this.clientImagePath = clientImagePath;
+        this.recentCommentTime = recentCommentTime;
     }
 
     public PersonalSpaceModel(ProfileModel profileModel, String appCid, String appCname, String contactNumber, String emailId, String address, String description, String clientLogoPath, String clientImagePath) {
@@ -19,7 +35,6 @@ public class PersonalSpaceModel {
         this.clientLogoPath = clientLogoPath;
         this.clientImagePath = clientImagePath;
     }
-
 
     public ProfileModel getProfileModel() {
         return profileModel;
@@ -91,5 +106,14 @@ public class PersonalSpaceModel {
 
     public void setClientImagePath(String clientImagePath) {
         this.clientImagePath = clientImagePath;
+    }
+
+
+    public long getRecentCommentTime() {
+        return recentCommentTime;
+    }
+
+    public void setRecentCommentTime(long recentCommentTime) {
+        this.recentCommentTime = recentCommentTime;
     }
 }

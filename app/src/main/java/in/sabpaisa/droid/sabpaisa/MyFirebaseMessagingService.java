@@ -118,7 +118,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            createNotificationForOreoAndAbove(title, body, feedId, groupId, userName);
+            createNotificationForOreoAndAbove(title, body, feedId, groupId, userName,appCid,clientId);
 
             if (feedId != null){
 
@@ -342,7 +342,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         } else {
 
-            createNotification(title, body, feedId, groupId, userName);
+            createNotification(title, body, feedId, groupId, userName,appCid,clientId);
 
 
             if (feedId != null){
@@ -573,7 +573,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
-    private void createNotificationForOreoAndAbove(final String title, final String body, final String feedId, final String groupId, final String userName) {
+    private void createNotificationForOreoAndAbove(final String title, final String body, final String feedId, final String groupId, final String userName,final String appCid,final String clientId) {
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
         String response = sharedPreferences.getString("response", /*"123"*/null);
@@ -583,35 +583,65 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (feedId != null) {
 
-            Intent intentMain = new Intent(this, MainActivity.class);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-            stackBuilder.addParentStack(MainActivity.class);
-            stackBuilder.addNextIntent(intentMain);
+            if (clientId != null) {
 
-            Intent intent = new Intent(this, Proceed_Feed_FullScreen.class);
-            intent.putExtra("feedId", feedId);
-            intent.putExtra("userAccessTokenFromNotification", userAccessToken);
-            intent.putExtra("feedName", title); //Feed Name for toolbar
+                Intent intentMain = new Intent(this, MainActivity.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(intentMain);
 
-            stackBuilder.addNextIntent(intent);
+                Intent intent = new Intent(this, Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedId", feedId);
+                intent.putExtra("userAccessTokenFromNotification", userAccessToken);
+                intent.putExtra("feedName", title); //Feed Name for toolbar
 
-            pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                stackBuilder.addNextIntent(intent);
+
+                pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            }else {
+                Intent intentMain = new Intent(this, MainActivitySkip.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(intentMain);
+
+                Intent intent = new Intent(this, Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedId", feedId);
+                intent.putExtra("userAccessTokenFromNotification", userAccessToken);
+                intent.putExtra("feedName", title); //Feed Name for toolbar
+
+                stackBuilder.addNextIntent(intent);
+
+                pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            }
 
         } else if (groupId != null) {
 
+            if (clientId != null) {
 
-            Intent intentMain = new Intent(this, MainActivity.class);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-            stackBuilder.addParentStack(MainActivity.class);
-            stackBuilder.addNextIntent(intentMain);
+                Intent intentMain = new Intent(this, MainActivity.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(intentMain);
 
-            Intent intent = new Intent(this, Proceed_Group_FullScreen.class);
-            intent.putExtra("groupId", groupId);
-            intent.putExtra("userAccessTokenFromNotification", userAccessToken);
-            intent.putExtra("groupName", title);
-            stackBuilder.addNextIntent(intent);
-            pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                Intent intent = new Intent(this, Proceed_Group_FullScreen.class);
+                intent.putExtra("groupId", groupId);
+                intent.putExtra("userAccessTokenFromNotification", userAccessToken);
+                intent.putExtra("groupName", title);
+                stackBuilder.addNextIntent(intent);
+                pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            }else {
+                Intent intentMain = new Intent(this, MainActivitySkip.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(intentMain);
 
+                Intent intent = new Intent(this, Proceed_Group_FullScreen.class);
+                intent.putExtra("groupId", groupId);
+                intent.putExtra("userAccessTokenFromNotification", userAccessToken);
+                intent.putExtra("groupName", title);
+                stackBuilder.addNextIntent(intent);
+                pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            }
 
         } else {
             Log.d("createNtForOreoAndAbove", "In Else Part");
@@ -652,7 +682,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void createNotification(final String title, final String body, final String feedId, final String groupId, final String userName) {
+    private void createNotification(final String title, final String body, final String feedId, final String groupId, final String userName,final String appCid,final String clientId) {
 
         Log.d("In_createNotification", "Title: " + title + " & \n Body :" + body);
 
@@ -664,34 +694,70 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (feedId != null) {
 
-            Intent intentMain = new Intent(this, MainActivity.class);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-            stackBuilder.addParentStack(MainActivity.class);
-            stackBuilder.addNextIntent(intentMain);
+            if (clientId != null) {
 
-            Intent intent = new Intent(this, Proceed_Feed_FullScreen.class);
-            intent.putExtra("feedId", feedId);
-            intent.putExtra("userAccessTokenFromNotification", userAccessToken);
-            intent.putExtra("feedName", title); //Feed Name for toolbar
+                Intent intentMain = new Intent(this, MainActivity.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(intentMain);
 
-            stackBuilder.addNextIntent(intent);
+                Intent intent = new Intent(this, Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedId", feedId);
+                intent.putExtra("userAccessTokenFromNotification", userAccessToken);
+                intent.putExtra("feedName", title); //Feed Name for toolbar
 
-            pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                stackBuilder.addNextIntent(intent);
 
+                pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            }else {
+
+                Intent intentMain = new Intent(this, MainActivitySkip.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(intentMain);
+
+                Intent intent = new Intent(this, Proceed_Feed_FullScreen.class);
+                intent.putExtra("feedId", feedId);
+                intent.putExtra("userAccessTokenFromNotification", userAccessToken);
+                intent.putExtra("feedName", title); //Feed Name for toolbar
+
+                stackBuilder.addNextIntent(intent);
+
+                pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            }
 
         } else if (groupId != null) {
 
-            Intent intentMain = new Intent(this, MainActivity.class);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-            stackBuilder.addParentStack(MainActivity.class);
-            stackBuilder.addNextIntent(intentMain);
+            if (clientId != null) {
 
-            Intent intent = new Intent(this, Proceed_Group_FullScreen.class);
-            intent.putExtra("groupId", groupId);
-            intent.putExtra("userAccessTokenFromNotification", userAccessToken);
-            intent.putExtra("groupName", title);
-            stackBuilder.addNextIntent(intent);
-            pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                Intent intentMain = new Intent(this, MainActivity.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(intentMain);
+
+                Intent intent = new Intent(this, Proceed_Group_FullScreen.class);
+                intent.putExtra("groupId", groupId);
+                intent.putExtra("userAccessTokenFromNotification", userAccessToken);
+                intent.putExtra("groupName", title);
+                stackBuilder.addNextIntent(intent);
+                pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            }else {
+                Intent intentMain = new Intent(this, MainActivitySkip.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(intentMain);
+
+                Intent intent = new Intent(this, Proceed_Group_FullScreen.class);
+                intent.putExtra("groupId", groupId);
+                intent.putExtra("userAccessTokenFromNotification", userAccessToken);
+                intent.putExtra("groupName", title);
+                stackBuilder.addNextIntent(intent);
+                pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            }
 
         } else {
             Log.d("createNotification", "In Else Part");
