@@ -356,23 +356,37 @@ public class SkipGroupFragment extends Fragment {
                         listener.onFragmentSetGroups(groupArrayList);
                         /*END listener for sending data to activity*/
 
-                        Collections.sort(groupArrayList, new Comparator<GroupListData>() {
-                            @Override
-                            public int compare(GroupListData groupListData, GroupListData t1) {
+                        if (!(groupArrayList==null||groupArrayList.isEmpty())) {
 
-                                if (groupListData.getGroupRecentCommentTime() > t1.getGroupRecentCommentTime()){
-                                    return -1;
+                            Collections.sort(groupArrayList, new Comparator<GroupListData>() {
+                                @Override
+                                public int compare(GroupListData groupListData, GroupListData t1) {
+
+                                    if (groupListData.getGroupRecentCommentTime() > t1.getGroupRecentCommentTime()) {
+                                        return -1;
+                                    } else if (groupListData.getGroupRecentCommentTime() < t1.getGroupRecentCommentTime()) {
+                                        return 1;
+                                    } else return 0;
                                 }
-                                else if (groupListData.getGroupRecentCommentTime() < t1.getGroupRecentCommentTime()){
-                                    return 1;
-                                }
-                                else return 0;
-                            }
-                        });
+                            });
 
 
-                        skipGroupFragmentAdapter = new SkipGroupFragmentAdapter(groupArrayList, getContext());
-                        groupList.setAdapter(skipGroupFragmentAdapter);
+                            skipGroupFragmentAdapter = new SkipGroupFragmentAdapter(groupArrayList, getContext());
+                            groupList.setAdapter(skipGroupFragmentAdapter);
+
+                        }else if (roleValue.equals("1")) {
+
+                            linearLayoutAddGrpWhenNoData.setVisibility(View.VISIBLE);
+                            framelayoutAddGroup.setVisibility(View.GONE);
+                            groupList.setVisibility(View.GONE);
+                            linearLayoutnoDataFound.setVisibility(View.GONE);
+
+                        }else {
+                            linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                            framelayoutAddGroup.setVisibility(View.GONE);
+                            groupList.setVisibility(View.GONE);
+                            linearLayoutAddGrpWhenNoData.setVisibility(View.GONE);
+                        }
 
                     } else {
 
@@ -529,8 +543,37 @@ public class SkipGroupFragment extends Fragment {
                         });
 
 
-                        skipGroupFragmentAdapter = new SkipGroupFragmentAdapter(groupArrayList, context);
-                        groupList.setAdapter(skipGroupFragmentAdapter);
+                        if (!(groupArrayList==null||groupArrayList.isEmpty())) {
+
+                            Collections.sort(groupArrayList, new Comparator<GroupListData>() {
+                                @Override
+                                public int compare(GroupListData groupListData, GroupListData t1) {
+
+                                    if (groupListData.getGroupRecentCommentTime() > t1.getGroupRecentCommentTime()) {
+                                        return -1;
+                                    } else if (groupListData.getGroupRecentCommentTime() < t1.getGroupRecentCommentTime()) {
+                                        return 1;
+                                    } else return 0;
+                                }
+                            });
+
+
+                            skipGroupFragmentAdapter = new SkipGroupFragmentAdapter(groupArrayList, getContext());
+                            groupList.setAdapter(skipGroupFragmentAdapter);
+
+                        }else if (roleValue.equals("1")) {
+
+                            linearLayoutAddGrpWhenNoData.setVisibility(View.VISIBLE);
+                            framelayoutAddGroup.setVisibility(View.GONE);
+                            groupList.setVisibility(View.GONE);
+                            linearLayoutnoDataFound.setVisibility(View.GONE);
+
+                        }else {
+                            linearLayoutnoDataFound.setVisibility(View.VISIBLE);
+                            framelayoutAddGroup.setVisibility(View.GONE);
+                            groupList.setVisibility(View.GONE);
+                            linearLayoutAddGrpWhenNoData.setVisibility(View.GONE);
+                        }
 
                     } else {
 

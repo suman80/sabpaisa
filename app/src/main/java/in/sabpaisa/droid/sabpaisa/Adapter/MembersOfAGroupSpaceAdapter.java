@@ -108,7 +108,7 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
 
         roleValue = sharedPreferencesRole.getString("ROLE_VALUE", "abc");
 
-
+        Log.d("MOGSA","roleValue___"+roleValue);
 
         SharedPreferences sharedPreferences1 = mContext.getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
@@ -120,7 +120,7 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
         }
 
 
-        if (roleValue.equals("1")){
+        if (roleValue.equals("1") && userAccessToken.equals(member_getterSetter.getUserAccessToken())){
             myViewHolder.textViewAdmin.setVisibility(View.VISIBLE);
 
             myViewHolder.textViewAdmin.setText("Admin");
@@ -156,10 +156,11 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
 
                 if(member_getterSetter.getRoleId() ==null || member_getterSetter.getRoleId().equals("null") || !member_getterSetter.getRoleId().equals("2"))
                 {
-                    if (!roleValue.equals("1")){
+                    if (/*!roleValue.equals("1")||*/!(userAccessToken.equals(member_getterSetter.getUserAccessToken()))){
                         menu.getMenu().add("Make a group admin");
                     }
                 }
+
 
 
 
@@ -180,6 +181,13 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
                             }
 
                             }
+
+
+                            if (menuItem.getTitle().equals("Make a group admin")){
+
+                            }
+
+
 
                         return true;
                     }

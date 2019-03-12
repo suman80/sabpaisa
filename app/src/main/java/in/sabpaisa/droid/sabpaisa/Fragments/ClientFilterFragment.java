@@ -57,7 +57,7 @@ public class ClientFilterFragment extends Fragment {
 
     String state,clientId,clientLogo,clientImage,clientName,stateId;
     String m,n;
-
+    private boolean _hasLoadedOnce= false; // your boolean field
 
     public ClientFilterFragment() {
         // Required empty public constructor
@@ -75,29 +75,33 @@ public class ClientFilterFragment extends Fragment {
         clientAutoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.clientAutoCompleteTextView);
         btn_Proceed = (Button)view.findViewById(R.id.btn_Proceed);
 
-        if (isOnline()) {
+        /*if (!_hasLoadedOnce) {
 
-            getClientsList();
-        }else {
-            AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
+            if (isOnline()) {
 
-            // Setting Dialog Title
-            alertDialog.setTitle("No Internet Connection");
+                getClientsList();
+            } else {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
 
-            // Setting Dialog Message
-            alertDialog.setMessage("Please check internet connection and try again. Thank you.");
+                // Setting Dialog Title
+                alertDialog.setTitle("No Internet Connection");
+
+                // Setting Dialog Message
+                alertDialog.setMessage("Please check internet connection and try again. Thank you.");
 
 
-            alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
+                alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
 
-                }
-            });
+                    }
+                });
 
-            // Showing Alert Message
-            alertDialog.show();
+                // Showing Alert Message
+                alertDialog.show();
+            }
+
         }
-
+*/
         btn_Proceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,12 +164,32 @@ public class ClientFilterFragment extends Fragment {
 
 
 
+    @Override
+    public void setUserVisibleHint(boolean isFragmentVisible_) {
+        super.setUserVisibleHint(true);
+
+
+        if (this.isVisible()) {
+            // we check that the fragment is becoming visible
+            if (isFragmentVisible_ && !_hasLoadedOnce) {
+
+                getClientsList();
+
+                _hasLoadedOnce = true;
+            }
+        }
+    }
+
+
+
     private void getClientsList() {
 
 
         String tag_string_req = "req_register";
 
         String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.url_clientsall;
+
+        Log.d("CFF_URL","__"+url);
 
         StringRequest strReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
 
@@ -204,7 +228,7 @@ public class ClientFilterFragment extends Fragment {
                             filterClientModel.setOrgAddress(jsonObject2.getString("stateName"));
                             filterClientModel.setStateId(jsonObject2.getString("stateId"));
                             filterClientModel.setOrgWal(jsonObject1.getString("clientImagePath"));
-                            Log.d("institutionskip1","121");
+                            //Log.d("institutionskip1","121");
                             clientList.add(filterClientModel);
                         }
 

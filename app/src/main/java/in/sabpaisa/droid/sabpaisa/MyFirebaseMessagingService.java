@@ -337,6 +337,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
 
 
+            ////////////////Updating UI for Personal space/////////////////////////
+
+            Intent personalSpace = new Intent(ConstantsForUIUpdates.UPDATE_PERSONAL_SPACE);
+            personalSpace.putExtra("appCid", appCid);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(personalSpace);
 
 
 
@@ -564,8 +569,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
 
 
+            ////////////////Updating UI for Personal space/////////////////////////
 
-
+            Intent personalSpace = new Intent(ConstantsForUIUpdates.UPDATE_PERSONAL_SPACE);
+            personalSpace.putExtra("appCid", appCid);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(personalSpace);
 
 
         }

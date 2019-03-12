@@ -1,8 +1,10 @@
 package in.sabpaisa.droid.sabpaisa.Fragments;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,6 +50,7 @@ import in.sabpaisa.droid.sabpaisa.Adapter.SkipMainClientsAdapter;
 import in.sabpaisa.droid.sabpaisa.AddSpaceActivity;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
+import in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
@@ -54,6 +58,7 @@ import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.PersonalSpaceModel;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
+import in.sabpaisa.droid.sabpaisa.PrivateGroupFeeds;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
@@ -91,6 +96,9 @@ public class InstitutionSkipFragment extends Fragment {
 
     String appCid;
 
+    static boolean active = false;
+
+    BroadcastReceiver broadcastReceiver;
 
     public InstitutionSkipFragment() {
 
@@ -145,17 +153,21 @@ public class InstitutionSkipFragment extends Fragment {
 
         userAccessToken = sharedPreferences.getString("response", "123");
 
+
+        active = true;
+
         if (isOnline()) {
 
             getClientsList();
             getOtherSpce();
 
 
-
-
         }else {
             Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
+
         }
+
+
 
         linearLayoutAddFeedWhenNoData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,6 +179,46 @@ public class InstitutionSkipFragment extends Fragment {
 
 
         return rootView;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        active = true;
+
+        // Update UI
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String appCid = intent.getStringExtra("appCid");
+
+                Log.d("ISF___","broadcastVal__"+appCid);
+
+                //API
+
+                if (isOnline() && active == true) {
+
+                    getClientsList();
+                    getOtherSpce();
+
+
+                }else {
+                    Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+        };
+
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.UPDATE_PERSONAL_SPACE));
+
+
+
+
+
     }
 
     private void getClientsList() {
@@ -614,10 +666,6 @@ public class InstitutionSkipFragment extends Fragment {
 
 
 */
-
-
-
-
 
 
 
