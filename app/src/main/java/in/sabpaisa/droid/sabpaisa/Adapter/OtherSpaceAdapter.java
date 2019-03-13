@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -16,10 +17,24 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
 import com.balysv.materialripple.MaterialRippleLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -30,6 +45,7 @@ import java.util.Date;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
 import in.sabpaisa.droid.sabpaisa.EditSpace;
+import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.Model.MemberSpaceModel;
 import in.sabpaisa.droid.sabpaisa.Model.PersonalSpaceModel;
 import in.sabpaisa.droid.sabpaisa.R;
@@ -115,9 +131,9 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
             }
         });
 
-        holder.imgPopUpMenu.setVisibility(View.GONE);
+        holder.imgPopUpMenu.setVisibility(View.VISIBLE);
 
-        /*holder.imgPopUpMenu.setOnClickListener(new View.OnClickListener() {
+        holder.imgPopUpMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
 
@@ -126,22 +142,20 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
                     menu = new PopupMenu(view.getContext(),view, Gravity.CENTER);
                 }
 
-                menu.getMenu().add("Edit");
+                menu.getMenu().add("Left Space");
 
 
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
-                        if (menuItem.getTitle().equals("Edit")){
+                        if (menuItem.getTitle().equals("Left Space")){
 
-                            Intent intent = new Intent(view.getContext(), EditSpace.class);
-                            intent.putExtra("SPACE_NAME",mainFeedData.getAppCname());
-                            intent.putExtra("SPACE_LOGO",mainFeedData.getClientLogoPath());
-                            intent.putExtra("SPACE_IMAGE",mainFeedData.getClientImagePath());
-                            intent.putExtra("SPACE_APP_CID",mainFeedData.getAppCid());
-                            intent.putExtra("SPACE_DESCRIPTION",mainFeedData.getDescription());
-                            view.getContext().startActivity(intent);
+                            SharedPreferences sharedPreferences = context.getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+                            String userAccessToken = sharedPreferences.getString("response", "123");
+
+                            leftSpace(userAccessToken,mainFeedData.getAppCid(),holder.getAdapterPosition());
 
 
                         }
@@ -155,7 +169,6 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
 
             }
         });
-*/
 
 
 
@@ -277,6 +290,103 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_other_space_view, parent, false);
         return new MyViewHolder(v);
+    }
+
+
+
+    public void leftSpace(final String userAccessToken , final String appCid,final int pos){
+
+        String tag_string_req = "req_clients";
+
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_lefthespAppClient+ "?appcid=" + appCid +"&token="+userAccessToken;
+
+        Log.d("OtherSpaceAdapter", "URL-->" + url);
+
+        StringRequest request = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+
+                Log.d("OtherSpaceAdapter", "-->" + response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1);
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("OtherSpaceAdapter", "Response__" + response);
+                    Log.d("OtherSpaceAdapter", "Status__" + status);
+
+                    if (status.equals("success")){
+                        Log.d("OtherSpaceAdapter","InIfPart");
+
+                        institutions.remove(pos);
+                        notifyItemRemoved(pos);
+                        notifyItemRangeChanged(pos, getItemCount() - pos);
+
+                    }else {
+                        Log.d("OtherSpaceAdapter","InElsePart");
+                        Toast.makeText(context,response,Toast.LENGTH_SHORT).show();
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(context, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        });
+
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
+
+
     }
 
 

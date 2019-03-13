@@ -70,4 +70,6 @@ public class AppConfig {
     public static String URL_membersOfSPappclient = "membersOfSPappclient";
     public static String URL_removemembersToSpappClient = "removemembersToSpappClient";
     public static String URL_NoOFGroupMembersSpace = "fetchGroupUsers?appcid=";
+    public static String URL_lefttheGroup = "lefttheGroup";
+    public static String URL_lefthespAppClient = "lefthespAppClient";
 }

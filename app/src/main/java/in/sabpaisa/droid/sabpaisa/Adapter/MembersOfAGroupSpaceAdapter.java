@@ -184,7 +184,7 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
 
 
                             if (menuItem.getTitle().equals("Make a group admin")){
-
+                                makeGroupAdmin(userAccessToken, member_getterSetter.getUserId(), member_getterSetter.getGroupId());
                             }
 
 
