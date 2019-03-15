@@ -337,7 +337,9 @@ public class InstitutionSkipFragment extends Fragment {
 
                     if (status.equals("failure") && response1.equals("No Record Found")) {
 
-                        Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(),"No Result Found",Toast.LENGTH_SHORT).show();
+
+                        recyclerViewOtherSpace.setVisibility(View.GONE);
 
 
                     } else {

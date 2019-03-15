@@ -139,13 +139,32 @@ public class AddMember extends AppCompatActivity {
                 int count = 0;
                 JSONObject jsonObject = new JSONObject();
 
-                for (EditText id:editTextIDsList) {
+                for (EditText id : editTextIDsList) {
 
-                    Log.d(fieldvalueArrayList.get(count)," "+id.getText().toString());
+                    Log.d("Values&IDs______" + fieldvalueArrayList.get(count), " " + id.getText().toString());
 
                     try {
 
-                        jsonObject.put(fieldvalueArrayList.get(count),id.getText().toString());
+                        if (fieldvalueArrayList.get(count).equals("CONTACT_NUMBER")) {
+
+                            String number = id.getText().toString();
+
+                            Log.d("CONTACT_NUMBER_Val_","__"+number);
+
+                            if (number.startsWith("+91")){
+                                number = number.replace("+91","");
+                                Log.d("Num_AfterReplace91","__"+number);
+
+                            }else if (number.startsWith("0")){
+                                number=number.substring(1);
+                                Log.d("Num_AfterSubStrng0","__"+number);
+                            }
+
+                            jsonObject.put(fieldvalueArrayList.get(count), number);
+
+                        } else {
+                            jsonObject.put(fieldvalueArrayList.get(count), id.getText().toString());
+                        }
                         count++;
 
                     } catch (JSONException e) {
@@ -166,6 +185,8 @@ public class AddMember extends AppCompatActivity {
                         // Something went wrong!
                     }
                 }*/
+
+
 
                 //Api
                 saveUINtableData(clientId,userAccessToken,jsonObject);
@@ -236,6 +257,8 @@ public class AddMember extends AppCompatActivity {
             }
 
             phoneNo = stringBuilder.toString();
+
+
 
             name = cursor.getString(nameIndex);
             // Set the value to the textviews

@@ -335,11 +335,13 @@ public class RegisterActivity extends AppCompatActivity  {
 
                     et_password.setError("Please set your Password");
 
-                }else if (email.length()!=0 && isValidEmail(email)) {
+                }else if (email.length()==0 ) {
 
-                    et_Email.setError("Please enter the correct email-id");
+                    et_Email.setError("Email Field is Mandatory");
 
-                } else if (isOnline()) {
+                }else if (!isValidEmail(email)){
+                    et_Email.setError("Please enter the correct email id");
+                }else if (isOnline()) {
                     Log.e(TAG, "otp11 " +otp11);
                     if(!et_otp.getValue().toString().equals(otp11))
 
