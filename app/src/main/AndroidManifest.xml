@@ -41,10 +41,16 @@
         <activity android:name=".MembersOfAGroupSpace" />
         <activity android:name=".EditGroupSpace" />
         <activity android:name=".AddMemberTo_A_SpaceGroup" />
-        <activity android:name=".GroupSpaceCommentActivity" />
+        <activity android:name=".GroupSpaceCommentActivity"
+            android:parentActivityName=".MainActivitySkip"
+            />
         <activity android:name=".AddGroupSpace" />
         <activity android:name=".EditFeedSpace" />
-        <activity android:name=".FeedSpaceCommentsActivity" />
+
+        <activity android:name=".FeedSpaceCommentsActivity"
+            android:parentActivityName=".MainActivitySkip"
+            />
+
         <activity android:name=".AddSpaceFeed" />
         <activity android:name=".EditSpace" />
         <activity android:name=".AddSpaceActivity" />

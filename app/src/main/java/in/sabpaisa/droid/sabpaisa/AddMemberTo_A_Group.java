@@ -174,7 +174,7 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
 
 
                         }
-                        Log.d("ArrayListAfterParse", " " + member_getterSetterArrayList.get(0).getFullName());
+//                        Log.d("ArrayListAfterParse", " " + member_getterSetterArrayList.get(0).getFullName());
 
 
                         addMemberTo_a_groupAdapter = new AddMemberTo_A_GroupAdapter(member_getterSetterArrayList,AddMemberTo_A_Group.this/*getApplicationContext()*/);

@@ -591,8 +591,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (feedId != null) {
 
-            if (clientId != null) {
+            if (clientId != null && !clientId.trim().isEmpty()) {
 
+                Log.d("asbdsaih","here");
                 Intent intentMain = new Intent(this, MainActivity.class);
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
                 stackBuilder.addParentStack(MainActivity.class);
@@ -607,12 +608,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             }else {
+                Log.d("fweofhweoih","here");
                 Intent intentMain = new Intent(this, MainActivitySkip.class);
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addParentStack(MainActivitySkip.class);
                 stackBuilder.addNextIntent(intentMain);
 
-                Intent intent = new Intent(this, Proceed_Feed_FullScreen.class);
+                Intent intent = new Intent(this, FeedSpaceCommentsActivity.class);
                 intent.putExtra("feedId", feedId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("feedName", title); //Feed Name for toolbar
@@ -624,7 +626,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         } else if (groupId != null) {
 
-            if (clientId != null) {
+            if (clientId != null && !clientId.trim().isEmpty()) {
 
                 Intent intentMain = new Intent(this, MainActivity.class);
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -640,10 +642,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }else {
                 Intent intentMain = new Intent(this, MainActivitySkip.class);
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addParentStack(MainActivitySkip.class);
                 stackBuilder.addNextIntent(intentMain);
 
-                Intent intent = new Intent(this, Proceed_Group_FullScreen.class);
+                Intent intent = new Intent(this, GroupSpaceCommentActivity.class);
                 intent.putExtra("groupId", groupId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("groupName", title);
@@ -702,8 +704,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (feedId != null) {
 
-            if (clientId != null) {
-
+            if (clientId != null && !clientId.trim().isEmpty()) {
+                Log.d("efwmkfhnwe","here");
+                Log.d("clientId_Val","______"+clientId);
                 Intent intentMain = new Intent(this, MainActivity.class);
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
                 stackBuilder.addParentStack(MainActivity.class);
@@ -719,13 +722,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
             }else {
-
+                Log.d("asbdsaih","here");
                 Intent intentMain = new Intent(this, MainActivitySkip.class);
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addParentStack(MainActivitySkip.class);
                 stackBuilder.addNextIntent(intentMain);
 
-                Intent intent = new Intent(this, Proceed_Feed_FullScreen.class);
+                Intent intent = new Intent(this, FeedSpaceCommentsActivity.class);
                 intent.putExtra("feedId", feedId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("feedName", title); //Feed Name for toolbar
@@ -738,7 +741,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         } else if (groupId != null) {
 
-            if (clientId != null) {
+            if (clientId != null && !clientId.trim().isEmpty()) {
 
                 Intent intentMain = new Intent(this, MainActivity.class);
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -755,10 +758,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }else {
                 Intent intentMain = new Intent(this, MainActivitySkip.class);
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addParentStack(MainActivitySkip.class);
                 stackBuilder.addNextIntent(intentMain);
 
-                Intent intent = new Intent(this, Proceed_Group_FullScreen.class);
+                Intent intent = new Intent(this, GroupSpaceCommentActivity.class);
                 intent.putExtra("groupId", groupId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("groupName", title);

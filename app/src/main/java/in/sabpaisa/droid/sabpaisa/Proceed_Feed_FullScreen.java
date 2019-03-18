@@ -890,6 +890,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                             JSONObject obj = new JSONObject(new String(response.data));
                             Log.d("PFF", "IMG_Res" + obj);
                             final String status = obj.getString("status");
+                            final String returnResp = obj.getString("response");
 
                             if (status.equals("success")) {
 
@@ -924,7 +925,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
                                 spin_kit.setVisibility(View.GONE);
 
                                 Log.d("Comment", "Failed");
-                                //Toast.makeText(Proceed_Feed_FullScreen.this, "Image Upload Failed !", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Proceed_Feed_FullScreen.this,returnResp , Toast.LENGTH_SHORT).show();
                                 commentFile = null;
                                 fileDoc = null;
                             }

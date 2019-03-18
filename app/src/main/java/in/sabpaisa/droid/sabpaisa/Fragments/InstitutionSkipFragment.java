@@ -100,6 +100,8 @@ public class InstitutionSkipFragment extends Fragment {
 
     BroadcastReceiver broadcastReceiver;
 
+    Context context;
+
     public InstitutionSkipFragment() {
 
     }
@@ -480,10 +482,19 @@ public class InstitutionSkipFragment extends Fragment {
 
                         }
 
-                        //START listener for sending data to activity
-                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
-                        listener.onFragmentSetClients(institutions1);
-                        //END listener for sending data to activity
+                        if (getContext()!=null) {
+
+                            //START listener for sending data to activity
+                            OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                            listener.onFragmentSetClients(institutions1);
+                            //END listener for sending data to activity
+
+                        }else {
+                            //START listener for sending data to activity
+                            OnFragmentInteractionListener listener = (OnFragmentInteractionListener) context;
+                            listener.onFragmentSetClients(institutions1);
+                            //END listener for sending data to activity
+                        }
 
                         // Comparing timings with notification db
 
@@ -675,6 +686,8 @@ public class InstitutionSkipFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        this.context=context;
+
         try {
             sGetDataInterface = (GetDataInterface) getActivity();
         } catch (ClassCastException e) {
@@ -699,7 +712,8 @@ public class InstitutionSkipFragment extends Fragment {
 
 
     public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         // test for connection
         if (cm.getActiveNetworkInfo() != null
                 && cm.getActiveNetworkInfo().isAvailable()

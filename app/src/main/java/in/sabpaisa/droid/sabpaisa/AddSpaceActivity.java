@@ -205,7 +205,7 @@ public class AddSpaceActivity extends AppCompatActivity {
 
     private void uploadSpaceData(final Bitmap spaceImageBitmap, final Bitmap spaceLogoBitmap, final String spaceName, final String spaceDescription, final String userAccessToken) {
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_addSpappclient + "?cname="+spaceName+"&description="+spaceDescription+"&userToken="+userAccessToken;
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_addSpappclient + "?cname="+URLEncoder.encode(spaceName)+"&description="+URLEncoder.encode(spaceDescription)+"&userToken="+userAccessToken;
 
         Log.d("AddSpace","_URL "+url);
 

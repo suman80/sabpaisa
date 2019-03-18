@@ -31,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -253,7 +254,7 @@ public class EditSpace extends AppCompatActivity {
 
     private void uploadSpaceData(final Bitmap spaceImageBitmap, final Bitmap spaceLogoBitmap, final String spaceName, final String spaceDescription, final String userAccessToken,final String appCid) {
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_updateSpappclient+"?appcid="+appCid + "&cname="+spaceName+"&description="+spaceDescription+"&userToken="+userAccessToken;
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_updateSpappclient+"?appcid="+appCid + "&cname="+ URLEncoder.encode(spaceName) +"&description="+ URLEncoder.encode(spaceDescription)+"&userToken="+userAccessToken;
 
         Log.d("EditSpace","_URL "+url);
 
