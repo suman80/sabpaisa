@@ -41,6 +41,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.google.gson.JsonObject;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.json.JSONException;
@@ -590,7 +591,7 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
                     jsonObject = new JSONObject(String.valueOf(response1));
                     final String success = jsonObject.getString("success");
                     final String failure = jsonObject.getString("failure");
-                    String exception = jsonObject.getString("exception");
+                    JSONObject exception = jsonObject.getJSONObject("exception");
                     Log.d("successReturn", "" + success);
                     Log.d("failureReturn", "" + failure);
 
@@ -618,9 +619,15 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
 
                         // Setting Dialog Title
                         alertDialog.setTitle("Add Member");
+                        String result = "";
+                        Iterator<String> itr = exception.keys();
+                        while(itr.hasNext()){
+                            String key = itr.next();
+                            result +="\n"+ key+" : "+exception.getString(key);
+                        }
 
                         // Setting Dialog Message
-                        alertDialog.setMessage(exception);
+                        alertDialog.setMessage(/*exception*/result);
 
                         // Setting Icon to Dialog
                         //  alertDialog.setIcon(R.drawable.tick);

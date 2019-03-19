@@ -603,6 +603,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("feedId", feedId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("feedName", title); //Feed Name for toolbar
+                intent.putExtra("clientId", clientId); //Feed Name for toolbar
+                intent.putExtra("FIREBASE_NOTI_FLAG", true); //Feed Name for toolbar
 
                 stackBuilder.addNextIntent(intent);
 
@@ -618,7 +620,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("feedId", feedId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("feedName", title); //Feed Name for toolbar
-
+                intent.putExtra("appCid", appCid); //Feed Name for toolbar
+                intent.putExtra("FIREBASE_NOTI_FLAG", true);
                 stackBuilder.addNextIntent(intent);
 
                 pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -637,6 +640,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("groupId", groupId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("groupName", title);
+                intent.putExtra("clientId", clientId);
+                intent.putExtra("FIREBASE_NOTI_FLAG", true);
                 stackBuilder.addNextIntent(intent);
                 pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             }else {
@@ -649,6 +654,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("groupId", groupId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("groupName", title);
+                intent.putExtra("appCid", appCid);
+                intent.putExtra("FIREBASE_NOTI_FLAG", true);
                 stackBuilder.addNextIntent(intent);
                 pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             }
@@ -716,7 +723,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("feedId", feedId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("feedName", title); //Feed Name for toolbar
-
+                intent.putExtra("clientId", clientId); //Feed Name for toolbar
+                intent.putExtra("FIREBASE_NOTI_FLAG", true);
                 stackBuilder.addNextIntent(intent);
 
                 pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -732,7 +740,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("feedId", feedId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("feedName", title); //Feed Name for toolbar
-
+                intent.putExtra("appCid", appCid); //Feed Name for toolbar
+                intent.putExtra("FIREBASE_NOTI_FLAG", true);
                 stackBuilder.addNextIntent(intent);
 
                 pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -752,6 +761,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("groupId", groupId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("groupName", title);
+                intent.putExtra("clientId", clientId);
+                intent.putExtra("FIREBASE_NOTI_FLAG", true);
                 stackBuilder.addNextIntent(intent);
                 pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -765,6 +776,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("groupId", groupId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("groupName", title);
+                intent.putExtra("appCid", appCid);
+                intent.putExtra("FIREBASE_NOTI_FLAG", true);
                 stackBuilder.addNextIntent(intent);
                 pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 

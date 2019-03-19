@@ -11,6 +11,7 @@
     <item android:id="@+id/privateFeedMembers"
         android:title="Private Feed Members"
         app:showAsAction="withText"
+        android:visible="false"
         />
 
 </menu>

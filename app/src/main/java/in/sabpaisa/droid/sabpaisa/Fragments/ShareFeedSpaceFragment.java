@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import in.sabpaisa.droid.sabpaisa.Adapter.SharedFeedFragmentAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.FeedData;
+import in.sabpaisa.droid.sabpaisa.FeedSpaceCommentsActivity;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -67,9 +68,18 @@ public class ShareFeedSpaceFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_share_feed_space, container, false);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreenForAppCid, Context.MODE_PRIVATE);
-        appCid=sharedPreferences.getString("appCid","abc");
-        Log.d("clientId_MEMBERS",""+appCid);
+
+
+        Log.d("FROM NOTIFIVATION ", FeedSpaceCommentsActivity.appCid);
+        Log.d("FROM_NOTIFIVATION ", "notificationFlag__"+FeedSpaceCommentsActivity.notificationFlag);
+
+        if (FeedSpaceCommentsActivity.notificationFlag){
+            appCid = FeedSpaceCommentsActivity.appCid;
+        }else {
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreenForAppCid, Context.MODE_PRIVATE);
+            appCid=sharedPreferences.getString("appCid","abc");
+            Log.d("clientId_MEMBERS",""+appCid);
+        }
 
         recyclerView = (ShimmerRecyclerView) view.findViewById(R.id.recycler_view_feeds);
 

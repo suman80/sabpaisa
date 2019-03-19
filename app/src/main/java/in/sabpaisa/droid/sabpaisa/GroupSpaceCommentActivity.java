@@ -128,6 +128,10 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
     BroadcastReceiver broadcastReceiver;
     int notificationCount = 0;
 
+    public static String SHARED_PREF_GROUP_ID_VALUE = "sharedPrefGroupId";
+    public static String appCid ;
+    public static boolean notificationFlag ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +144,14 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
         GroupsImg = getIntent().getStringExtra("groupImage");
         groupLogo = getIntent().getStringExtra("groupLogo");
         memberGroupRole = getIntent().getStringExtra("memberGroupRole");
+
+        if (getIntent().getStringExtra("appCid")!=null) {
+
+            appCid = getIntent().getStringExtra("appCid");
+            notificationFlag = getIntent().getBooleanExtra("FIREBASE_NOTI_FLAG",false);
+            Log.d("FSCA123","appCid_Notification__"+appCid);
+            Log.d("FSCA123","notificationFlag"+notificationFlag);
+        }
 
         Log.d("NamemGSCA", "" + GroupsNm);
         Log.d("DiscriptionGSCA", "" + GroupsDiscription);
@@ -375,7 +387,13 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
         }
 
 
+        SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREF_GROUP_ID_VALUE, MODE_PRIVATE).edit();
+        editor.putString("groupId", GroupId);
+        editor.apply();
 
+        SharedPreferences.Editor editor1 = getSharedPreferences(FeedSpaceCommentsActivity.SHARED_PREF_FEED_ID_VALUE, MODE_PRIVATE).edit();
+        editor1.clear();
+        editor1.commit();
 
 
 

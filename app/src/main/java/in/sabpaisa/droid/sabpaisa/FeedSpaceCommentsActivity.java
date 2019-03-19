@@ -112,13 +112,20 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
     String memberGroupRole;
 
     //Getting Values from feedskipfrag
-    String feedId,feedName,feedText,feedLogo;
+    public static String feedId,feedName,feedText,feedLogo,feedImage;
 
     NotificationDB notificationDB;
 
     BroadcastReceiver broadcastReceiver;
 
     String roleValue;
+
+    public static String SHARED_PREF_FEED_ID_VALUE = "sharedPrefFeedID";
+    public static String appCid ;
+    public static boolean notificationFlag ;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,8 +138,18 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
         feedName = getIntent().getStringExtra("feedName");
         feedText = getIntent().getStringExtra("feedText");
         feedLogo = getIntent().getStringExtra("feedLogo");
+        feedImage = getIntent().getStringExtra("feedImage");
+
+        if (getIntent().getStringExtra("appCid")!=null) {
+
+            appCid = getIntent().getStringExtra("appCid");
+            notificationFlag = getIntent().getBooleanExtra("FIREBASE_NOTI_FLAG",false);
+            Log.d("FSCA123","appCid_Notification__"+appCid);
+            Log.d("FSCA123","notificationFlag"+notificationFlag);
+        }
 
         Log.d("FSCA","recieved_feedId__"+feedId);
+
 
         commentArrayList = new ArrayList<CommentData>();
 
@@ -352,6 +369,14 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
             Log.d("FSC_Notification","NotUpdated "+isUpdated);
         }
 
+
+        SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREF_FEED_ID_VALUE, MODE_PRIVATE).edit();
+        editor.putString("feedId", feedId);
+        editor.apply();
+
+        SharedPreferences.Editor editor1 = getSharedPreferences(GroupSpaceCommentActivity.SHARED_PREF_GROUP_ID_VALUE, MODE_PRIVATE).edit();
+        editor1.clear();
+        editor1.commit();
 
     }
 

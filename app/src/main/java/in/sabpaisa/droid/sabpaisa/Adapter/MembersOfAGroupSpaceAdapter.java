@@ -120,7 +120,7 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
         }
 
 
-        if (roleValue.equals("1") && userAccessToken.equals(member_getterSetter.getUserAccessToken())){
+        /*if (roleValue.equals("1") && userAccessToken.equals(member_getterSetter.getUserAccessToken())){
             myViewHolder.textViewAdmin.setVisibility(View.VISIBLE);
 
             myViewHolder.textViewAdmin.setText("Admin");
@@ -132,6 +132,37 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
         }else{
             myViewHolder.textViewAdmin.setVisibility(View.GONE);
 
+        }*/
+
+        /////////////////////////////////////////////19 Mar 19//////////////////////////////////////
+
+        if ((!(member_getterSetter.getUin_Role()==null || member_getterSetter.getUin_Role().equals("null"))
+                && (member_getterSetter.getUin_Role().equals("1")))
+        )
+        {
+
+            myViewHolder.textViewAdmin.setVisibility(View.VISIBLE);
+            countforAdmin++;
+            myViewHolder.textViewAdmin.setText("Admin");
+
+//            //Added on 25 Oct 2018
+//            myViewHolder.imgPopUpMenu.setVisibility(View.VISIBLE);
+
+        }else if ( !(member_getterSetter.getRoleId() == null || member_getterSetter.getRoleId().equals("null"))
+                && member_getterSetter.getRoleId().equals("2")){
+            myViewHolder.textViewAdmin.setVisibility(View.VISIBLE);
+
+//            //Added on 25 Oct 2018
+//            myViewHolder.imgPopUpMenu.setVisibility(View.VISIBLE);
+
+            //countforAdmin++;
+            myViewHolder.textViewAdmin.setText(member_getterSetter.getRoleName());
+
+        }
+        else{
+            myViewHolder.textViewAdmin.setVisibility(View.GONE);
+//            //Added on 25 Oct 2018
+//            myViewHolder.imgPopUpMenu.setVisibility(View.VISIBLE);
         }
 
 
@@ -139,6 +170,17 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
 
             myViewHolder.imgPopUpMenu.setVisibility(View.VISIBLE);
         }
+
+
+
+
+        /////////////////////////////////////////////////////19 Mar 19//////////////////////////////////////
+
+
+        /*if (( roleValue.equals("1")) || (MembersOfAGroupSpace.memberGroupRole !=null && MembersOfAGroupSpace.memberGroupRole.equals("2"))) {
+
+            myViewHolder.imgPopUpMenu.setVisibility(View.VISIBLE);
+        }*/
 
 
         myViewHolder.imgPopUpMenu.setOnClickListener(new View.OnClickListener() {

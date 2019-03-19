@@ -169,6 +169,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     public static String MY_PREFS_FOR_GROUP_ID = "mySharedPrefForGroupId";
 
     public static String memberGroupRole;
+    public static String clientId;
 
     String roleValue;
 
@@ -179,6 +180,8 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
     int notificationCount = 0;
 
     MenuItem menuItem4;
+
+    public static boolean notificationFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,6 +205,14 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
         Log.d("GroupImgPGFS", "" + GroupsImg);
         Log.d("GroupID_PGFS", "" + GroupId);
         Log.d("memberGroupRole_PGFS", "" + memberGroupRole);
+
+        if (getIntent().getStringExtra("clientId")!=null) {
+
+            clientId = getIntent().getStringExtra("appCid");
+            notificationFlag = getIntent().getBooleanExtra("FIREBASE_NOTI_FLAG",false);
+            Log.d("PFF123","appCid_Notification__"+clientId);
+            Log.d("PFF123","notificationFlag"+notificationFlag);
+        }
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbarPGF);

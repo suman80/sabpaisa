@@ -192,7 +192,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
     public static String MY_PREFS_FOR_FEED_ID = "mySharedPrefForFeedId";
 
-    public static String notificationFlag;
+    public static boolean notificationFlag;
+    public static String clientId;
 
     String roleValue;
 
@@ -226,6 +227,14 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         if (getIntent().getStringExtra("userAccessTokenFromNotification") != null) {
             userAccessToken = getIntent().getStringExtra("userAccessTokenFromNotification");
+        }
+
+        if (getIntent().getStringExtra("clientId")!=null) {
+
+            clientId = getIntent().getStringExtra("clientId");
+            notificationFlag = getIntent().getBooleanExtra("FIREBASE_NOTI_FLAG",false);
+            Log.d("PFF123","appCid_Notification__"+clientId);
+            Log.d("PFF123","notificationFlag"+notificationFlag);
         }
 
         if(userAccessToken == null || userAccessToken.equals("123")) {

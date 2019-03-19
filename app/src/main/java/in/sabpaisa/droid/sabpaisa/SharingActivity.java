@@ -124,12 +124,14 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
 
     private void setupViewPager(ViewPager viewPager) {
 
-
+        Log.d("setupViewPager","Method Started");
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         Log.d("AppDecideFlag","Value__"+AppDecideFlag);
+        Log.d("AppDecideFlagFeed","appCidValue__"+FeedSpaceCommentsActivity.appCid);
+        Log.d("AppDecideFlagGroup","appCidValue__"+GroupSpaceCommentActivity.appCid);
 
-        if (AppDecideFlag){
+        if (AppDecideFlag || FeedSpaceCommentsActivity.appCid != null || GroupSpaceCommentActivity.appCid != null){
 
             shareFeedSpaceFragment = new ShareFeedSpaceFragment();
             adapter.addFragment(shareFeedSpaceFragment,"");
@@ -140,7 +142,7 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
             viewPager.setAdapter(adapter);
 
         }else {
-
+            Log.d("AppDecideFlagInsideElse","Here");
             feedsFragments = new ShareFeedFragment();
             adapter.addFragment(feedsFragments, ""); //changing here creating different frags
 
@@ -247,6 +249,20 @@ public class SharingActivity extends AppCompatActivity implements FlagCallback {
                     MainGroupAdapter1.isClicked=false;
                     startActivity(intent);
                 }*/
+
+                if (!AppDecideFlag){
+                    if (groupDataForShare.size() + feedDataForShare.size() > 0) {
+                        Intent intent = new Intent(SharingActivity.this, FullViewOfClientsProceed.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        MainFeedAdapter.isClicked=false;
+                        MainGroupAdapter1.isClicked=false;
+                        startActivity(intent);
+                    }
+                }else {
+                    finish();
+                }
+
+
 
                 return true;
 

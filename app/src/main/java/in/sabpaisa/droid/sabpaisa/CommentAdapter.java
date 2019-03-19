@@ -1,5 +1,6 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -52,6 +53,8 @@ import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.AppDecideFlag;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHolder> {
 
@@ -140,13 +143,39 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
                 String userAccessToken = sharedPreferences1.getString("response", "123");
 
-                SharedPreferences sharedPreferences2 = mContext.getSharedPreferences(Proceed_Feed_FullScreen.MY_PREFS_FOR_FEED_ID, Context.MODE_PRIVATE);
+                String feed_id=null;
+                String groupId=null;
 
-                String feed_id = sharedPreferences2.getString("feedId", null);
+                if (!AppDecideFlag) {
 
-                SharedPreferences sharedPreferences3 = mContext.getSharedPreferences(Proceed_Group_FullScreen.MY_PREFS_FOR_GROUP_ID, Context.MODE_PRIVATE);
+                    SharedPreferences sharedPreferences2 = mContext.getSharedPreferences(Proceed_Feed_FullScreen.MY_PREFS_FOR_FEED_ID, Context.MODE_PRIVATE);
 
-                String groupId = sharedPreferences3.getString("groupId", null);
+                     feed_id = sharedPreferences2.getString("feedId", null);
+
+                    Log.d("CommentAdapterF", "feed_id " + feed_id);
+
+                    SharedPreferences sharedPreferences3 = mContext.getSharedPreferences(Proceed_Group_FullScreen.MY_PREFS_FOR_GROUP_ID, Context.MODE_PRIVATE);
+
+                     groupId = sharedPreferences3.getString("groupId", null);
+
+                    Log.d("CommentAdapterF", "groupId " + groupId);
+
+                }else {
+                    SharedPreferences sharedPreferences2 = mContext.getSharedPreferences(FeedSpaceCommentsActivity.SHARED_PREF_FEED_ID_VALUE, Context.MODE_PRIVATE);
+
+                     feed_id = sharedPreferences2.getString("feedId", null);
+
+                    Log.d("CommentAdapterF", "feed_id " + feed_id);
+
+
+                    SharedPreferences sharedPreferences3 = mContext.getSharedPreferences(GroupSpaceCommentActivity.SHARED_PREF_GROUP_ID_VALUE, Context.MODE_PRIVATE);
+
+                     groupId = sharedPreferences3.getString("groupId", null);
+
+                    Log.d("CommentAdapterF", "groupId " + groupId);
+
+
+                }
 
                 if (feed_id != null && !feed_id.equals("") && !feed_id.isEmpty()) {
 
@@ -814,33 +843,68 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);*/
 
-                        if (commentData.getCommentImage() == null || commentData.getCommentImage().equals("") || commentData.getCommentImage().equals("null")){
-                            Log.d("CommentImageCheck","Reload_activity_InIf__"+commentData.getCommentImage());
+                        if (!AppDecideFlag) {
 
-                            commentList.remove(commentData);
-                            selectedItems.clear();
-                            notifyDataSetChanged();
+                            if (commentData.getCommentImage() == null || commentData.getCommentImage().equals("") || commentData.getCommentImage().equals("null")) {
+                                Log.d("CommentImageCheck", "Reload_activity_InIf__" + commentData.getCommentImage());
+
+                                commentList.remove(commentData);
+                                selectedItems.clear();
+                                notifyDataSetChanged();
 
 
+                            } else {
+
+
+                                Log.d("CommentImageCheck", "Reload_activity_InElse__" + commentData.getCommentImage());
+
+                                String FeedsNm = Proceed_Feed_FullScreen.FeedsNm;
+                                String FeedDiscription = Proceed_Feed_FullScreen.feedsDiscription;
+                                String FeedImg = Proceed_Feed_FullScreen.feedImg;
+                                String FeedLogo = Proceed_Feed_FullScreen.feedLogo;
+
+                                Intent intent = new Intent(mContext, Proceed_Feed_FullScreen.class);
+                                intent.putExtra("feedId", feed_id);
+                                intent.putExtra("feedName", FeedsNm);
+                                intent.putExtra("feedText", FeedDiscription);
+                                intent.putExtra("feedImage", FeedImg);
+                                intent.putExtra("feedLogo", FeedLogo);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(intent);
+
+                            }
                         }else {
 
+                            if (commentData.getCommentImage() == null || commentData.getCommentImage().equals("") || commentData.getCommentImage().equals("null")) {
+                                Log.d("CommentImageCheck", "Reload_activity_InIf__" + commentData.getCommentImage());
 
-                            Log.d("CommentImageCheck","Reload_activity_InElse__"+commentData.getCommentImage());
+                                commentList.remove(commentData);
+                                selectedItems.clear();
+                                notifyDataSetChanged();
 
-                            String FeedsNm = Proceed_Feed_FullScreen.FeedsNm;
-                            String FeedDiscription = Proceed_Feed_FullScreen.feedsDiscription;
-                            String FeedImg = Proceed_Feed_FullScreen.feedImg;
-                            String FeedLogo = Proceed_Feed_FullScreen.feedLogo;
 
-                            Intent intent = new Intent(mContext,Proceed_Feed_FullScreen.class);
-                            intent.putExtra("feedId",feed_id);
-                            intent.putExtra("feedName",FeedsNm);
-                            intent.putExtra("feedText",FeedDiscription);
-                            intent.putExtra("feedImage",FeedImg);
-                            intent.putExtra("feedLogo",FeedLogo);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(intent);
+                            } else {
+
+
+                                Log.d("CommentImageCheck", "Reload_activity_InElse__" + commentData.getCommentImage());
+
+                                String FeedsNm = FeedSpaceCommentsActivity.feedName;
+                                String FeedDiscription = FeedSpaceCommentsActivity.feedText;
+                                String FeedImg = FeedSpaceCommentsActivity.feedImage;
+                                String FeedLogo = FeedSpaceCommentsActivity.feedLogo;
+
+                                Intent intent = new Intent(mContext, FeedSpaceCommentsActivity.class);
+                                intent.putExtra("feedId", feed_id);
+                                intent.putExtra("feedName", FeedsNm);
+                                intent.putExtra("feedText", FeedDiscription);
+                                intent.putExtra("feedImage", FeedImg);
+                                intent.putExtra("feedLogo", FeedLogo);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(intent);
+
+                            }
 
                         }
 
@@ -953,32 +1017,63 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);*/
 
-                        if (commentData.getCommentImage() == null || commentData.getCommentImage().equals("") || commentData.getCommentImage().equals("null")) {
-                            Log.d("CommentImageCheck", "Reload_activity_InIf__" + commentData.getCommentImage());
-                            commentList.remove(commentData);
-                            selectedItems.clear();
-                            notifyDataSetChanged();
+                        if (!AppDecideFlag) {
+
+                            if (commentData.getCommentImage() == null || commentData.getCommentImage().equals("") || commentData.getCommentImage().equals("null")) {
+                                Log.d("CommentImageCheck", "Reload_activity_InIf__" + commentData.getCommentImage());
+                                commentList.remove(commentData);
+                                selectedItems.clear();
+                                notifyDataSetChanged();
+                            } else {
+
+                                Log.d("CommentImageCheck", "Reload_activity_InElse__" + commentData.getCommentImage());
+
+                                String GroupsNm = Proceed_Group_FullScreen.GroupsNm;
+                                String GroupsDiscription = Proceed_Group_FullScreen.GroupsDiscription;
+                                String GroupsImg = Proceed_Group_FullScreen.GroupsImg;
+                                String GroupsLogo = Proceed_Group_FullScreen.groupLogo;
+
+                                Intent intent = new Intent(mContext, Proceed_Group_FullScreen.class);
+                                intent.putExtra("groupId", groupId);
+                                intent.putExtra("groupName", GroupsNm);
+                                intent.putExtra("memberGroupRole", Proceed_Group_FullScreen.memberGroupRole);
+                                intent.putExtra("groupText", GroupsDiscription);
+                                intent.putExtra("groupImage", GroupsImg);
+                                intent.putExtra("groupLogo", GroupsLogo);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(intent);
+                            }
                         }else {
 
-                            Log.d("CommentImageCheck","Reload_activity_InElse__"+commentData.getCommentImage());
+                            if (commentData.getCommentImage() == null || commentData.getCommentImage().equals("") || commentData.getCommentImage().equals("null")) {
+                                Log.d("CommentImageCheck", "Reload_activity_InIf__" + commentData.getCommentImage());
+                                commentList.remove(commentData);
+                                selectedItems.clear();
+                                notifyDataSetChanged();
+                            } else {
 
-                            String GroupsNm = Proceed_Group_FullScreen.GroupsNm;
-                            String GroupsDiscription = Proceed_Group_FullScreen.GroupsDiscription;
-                            String GroupsImg = Proceed_Group_FullScreen.GroupsImg;
-                            String GroupsLogo = Proceed_Group_FullScreen.groupLogo;
+                                Log.d("CommentImageCheck", "Reload_activity_InElse__" + commentData.getCommentImage());
 
-                            Intent intent = new Intent(mContext,Proceed_Group_FullScreen.class);
-                            intent.putExtra("groupId",groupId);
-                            intent.putExtra("groupName",GroupsNm);
-                            intent.putExtra("memberGroupRole",Proceed_Group_FullScreen.memberGroupRole);
-                            intent.putExtra("groupText",GroupsDiscription);
-                            intent.putExtra("groupImage",GroupsImg);
-                            intent.putExtra("groupLogo",GroupsLogo);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(intent);
+                                String GroupsNm = GroupSpaceCommentActivity.GroupsNm;
+                                String GroupsDiscription = GroupSpaceCommentActivity.GroupsDiscription;
+                                String GroupsImg = GroupSpaceCommentActivity.GroupsImg;
+                                String GroupsLogo = GroupSpaceCommentActivity.groupLogo;
+
+                                Intent intent = new Intent(mContext, GroupSpaceCommentActivity.class);
+                                intent.putExtra("groupId", groupId);
+                                intent.putExtra("groupName", GroupsNm);
+                                intent.putExtra("memberGroupRole", GroupSpaceCommentActivity.memberGroupRole);
+                                intent.putExtra("groupText", GroupsDiscription);
+                                intent.putExtra("groupImage", GroupsImg);
+                                intent.putExtra("groupLogo", GroupsLogo);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(intent);
+
+                            }
+
                         }
-
 
                     }else {
                         Log.d("CommentAdapterGRPData","InElsePart");
@@ -996,7 +1091,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(mContext, R.style.MyDialogTheme).create();
+                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(mContext.getApplicationContext(), R.style.MyDialogTheme).create();
 
                     // Setting Dialog Title
                     alertDialog.setTitle("Network/Connection Error");

@@ -30,7 +30,9 @@ import java.util.ArrayList;
 import in.sabpaisa.droid.sabpaisa.Adapter.SharedGroupFragmentAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.SkipGroupFragmentAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.FeedSpaceCommentsActivity;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
+import in.sabpaisa.droid.sabpaisa.GroupSpaceCommentActivity;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
@@ -70,9 +72,18 @@ public class ShareGroupSpaceFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_share_group_space, container, false);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreenForAppCid, Context.MODE_PRIVATE);
-        appCid=sharedPreferences.getString("appCid","abc");
-        Log.d("clientId_MEMBERS",""+appCid);
+
+
+        if (GroupSpaceCommentActivity.notificationFlag || FeedSpaceCommentsActivity.notificationFlag){
+            if(GroupSpaceCommentActivity.appCid != null){
+                appCid = GroupSpaceCommentActivity.appCid;
+            }
+            Log.d("clientId_MEMBERS","FromNotification"+appCid);
+        }else {
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SkipClientDetailsScreen.MySharedPrefOnSkipClientDetailsScreenForAppCid, Context.MODE_PRIVATE);
+            appCid=sharedPreferences.getString("appCid","abc");
+            Log.d("clientId_MEMBERS",""+appCid);
+        }
 
         SharedPreferences sharedPreferences1 = getActivity().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
