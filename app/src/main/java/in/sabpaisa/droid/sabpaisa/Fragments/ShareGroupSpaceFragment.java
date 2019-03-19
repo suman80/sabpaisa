@@ -77,6 +77,10 @@ public class ShareGroupSpaceFragment extends Fragment {
         if (GroupSpaceCommentActivity.notificationFlag || FeedSpaceCommentsActivity.notificationFlag){
             if(GroupSpaceCommentActivity.appCid != null){
                 appCid = GroupSpaceCommentActivity.appCid;
+                appCid = FeedSpaceCommentsActivity.appCid;
+            }
+            if(FeedSpaceCommentsActivity.appCid != null){
+                appCid = FeedSpaceCommentsActivity.appCid;
             }
             Log.d("clientId_MEMBERS","FromNotification"+appCid);
         }else {
