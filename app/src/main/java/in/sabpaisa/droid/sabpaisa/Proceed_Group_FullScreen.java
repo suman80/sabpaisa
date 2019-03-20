@@ -214,6 +214,12 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
             Log.d("PFF123","notificationFlag"+notificationFlag);
         }
 
+        if (Proceed_Feed_FullScreen.clientId!=null){
+            Proceed_Feed_FullScreen.clientId = null;
+        }
+
+        FeedSpaceCommentsActivity.appCid = null;
+        GroupSpaceCommentActivity.appCid = null;
 
         toolbar = (Toolbar) findViewById(R.id.toolbarPGF);
         setSupportActionBar(toolbar);

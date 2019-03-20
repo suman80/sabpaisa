@@ -346,8 +346,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         } else {
+            Log.d("MFMS_CID_Before:",clientId);
+            Log.d("MFMS_AppCID_Before:",appCid);
 
             createNotification(title, body, feedId, groupId, userName,appCid,clientId);
+
+            Log.d("MFMS_CID_AFTER:",clientId);
+
 
 
             if (feedId != null){

@@ -29,6 +29,8 @@ import in.sabpaisa.droid.sabpaisa.Adapter.SharedGroupFragmentAdapter;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
+import in.sabpaisa.droid.sabpaisa.Proceed_Feed_FullScreen;
+import in.sabpaisa.droid.sabpaisa.Proceed_Group_FullScreen;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -74,9 +76,23 @@ public class SharedGroupFragment extends Fragment {
         groupList.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         groupList.setLayoutManager(llm);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
-        clientId = sharedPreferences.getString("clientId", "abc");
-        Log.d("clientId_PGF", "" + clientId);
+        if (Proceed_Feed_FullScreen.notificationFlag || Proceed_Group_FullScreen.notificationFlag) {
+
+            if (Proceed_Feed_FullScreen.clientId != null) {
+                clientId = Proceed_Feed_FullScreen.clientId;
+            }
+
+            if (Proceed_Group_FullScreen.clientId != null){
+                clientId = Proceed_Group_FullScreen.clientId;
+            }
+
+        }else {
+
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
+            clientId = sharedPreferences.getString("clientId", "abc");
+            Log.d("clientId_PGF", "" + clientId);
+
+        }
 
         // Inflate the layout for this fragment
 

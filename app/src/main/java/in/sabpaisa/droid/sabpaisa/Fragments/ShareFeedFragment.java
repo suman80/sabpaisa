@@ -40,6 +40,8 @@ import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.MainFeedAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.FeedDataForOffLine;
+import in.sabpaisa.droid.sabpaisa.Proceed_Feed_FullScreen;
+import in.sabpaisa.droid.sabpaisa.Proceed_Group_FullScreen;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -90,9 +92,23 @@ public class ShareFeedFragment extends Fragment {
 
         linearLayoutnoDataFound = (LinearLayout) rootView.findViewById(R.id.noDataFound);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
-        clientId = sharedPreferences.getString("clientId", "abc");
-        Log.d("clientId_PFF", "" + clientId);
+        if (Proceed_Feed_FullScreen.notificationFlag || Proceed_Group_FullScreen.notificationFlag) {
+
+            if (Proceed_Feed_FullScreen.clientId != null) {
+                clientId = Proceed_Feed_FullScreen.clientId;
+            }
+
+            if (Proceed_Group_FullScreen.clientId != null){
+                clientId = Proceed_Group_FullScreen.clientId;
+            }
+
+        }else {
+
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(FullViewOfClientsProceed.MySharedPrefOnFullViewOfClientProceed, Context.MODE_PRIVATE);
+            clientId = sharedPreferences.getString("clientId", "abc");
+            Log.d("clientId_PFF", "" + clientId);
+
+        }
 
         callFeedDataList(clientId);
 

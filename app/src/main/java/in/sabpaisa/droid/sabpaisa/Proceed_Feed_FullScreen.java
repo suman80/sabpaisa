@@ -225,6 +225,8 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         userAccessToken = response;
 
+        Log.d("Activity:", " PFF ");
+        Log.d("Activity:", " PFF_cid"+getIntent().getStringExtra("clientId"));
         if (getIntent().getStringExtra("userAccessTokenFromNotification") != null) {
             userAccessToken = getIntent().getStringExtra("userAccessTokenFromNotification");
         }
@@ -236,6 +238,14 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
             Log.d("PFF123","appCid_Notification__"+clientId);
             Log.d("PFF123","notificationFlag"+notificationFlag);
         }
+
+        if (Proceed_Group_FullScreen.clientId!=null){
+            Proceed_Group_FullScreen.clientId = null;
+        }
+
+        FeedSpaceCommentsActivity.appCid = null;
+        GroupSpaceCommentActivity.appCid = null;
+
 
         if(userAccessToken == null || userAccessToken.equals("123")) {
             Intent intent = new Intent(Proceed_Feed_FullScreen.this, LogInActivity.class);

@@ -150,6 +150,10 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
 
         Log.d("FSCA","recieved_feedId__"+feedId);
 
+        if (GroupSpaceCommentActivity.appCid != null){
+            GroupSpaceCommentActivity.appCid = null;
+        }
+
 
         commentArrayList = new ArrayList<CommentData>();
 

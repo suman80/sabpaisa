@@ -71,13 +71,13 @@ public class ShareFeedSpaceFragment extends Fragment {
 
 
 
-        Log.d("FROM NOTIFIVATION ", FeedSpaceCommentsActivity.appCid);
-        Log.d("FROM_NOTIFIVATION ", "notificationFlag__"+FeedSpaceCommentsActivity.notificationFlag);
+//        Log.d("FROM NOTIFIVATION ", FeedSpaceCommentsActivity.appCid);
+//        Log.d("FROM_NOTIFIVATION ", "notificationFlag__"+FeedSpaceCommentsActivity.notificationFlag);
 
         if (GroupSpaceCommentActivity.notificationFlag || FeedSpaceCommentsActivity.notificationFlag){
             if(GroupSpaceCommentActivity.appCid != null){
                 appCid = GroupSpaceCommentActivity.appCid;
-                appCid = FeedSpaceCommentsActivity.appCid;
+                //appCid = FeedSpaceCommentsActivity.appCid;
             }
             if(FeedSpaceCommentsActivity.appCid != null){
                 appCid = FeedSpaceCommentsActivity.appCid;

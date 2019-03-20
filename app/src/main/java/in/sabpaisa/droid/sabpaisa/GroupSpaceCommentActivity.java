@@ -153,6 +153,11 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
             Log.d("FSCA123","notificationFlag"+notificationFlag);
         }
 
+        if (FeedSpaceCommentsActivity.appCid != null){
+            FeedSpaceCommentsActivity.appCid = null;
+        }
+
+
         Log.d("NamemGSCA", "" + GroupsNm);
         Log.d("DiscriptionGSCA", "" + GroupsDiscription);
         Log.d("GroupImgGSCA", "" + GroupsImg);
