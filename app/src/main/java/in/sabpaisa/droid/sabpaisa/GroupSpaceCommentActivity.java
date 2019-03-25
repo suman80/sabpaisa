@@ -149,13 +149,16 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
 
             appCid = getIntent().getStringExtra("appCid");
             notificationFlag = getIntent().getBooleanExtra("FIREBASE_NOTI_FLAG",false);
-            Log.d("FSCA123","appCid_Notification__"+appCid);
-            Log.d("FSCA123","notificationFlag"+notificationFlag);
+            Log.d("FSCA123_Ingrp","appCid_Notification__"+appCid);
+            Log.d("FSCA123_Ingrp","notificationFlag"+notificationFlag);
         }
 
-        if (FeedSpaceCommentsActivity.appCid != null){
+        /*if (FeedSpaceCommentsActivity.appCid != null){
             FeedSpaceCommentsActivity.appCid = null;
-        }
+        }*/
+
+        Proceed_Feed_FullScreen.clientId=null;
+        Proceed_Group_FullScreen.clientId=null;
 
 
         Log.d("NamemGSCA", "" + GroupsNm);
@@ -1011,18 +1014,25 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
         MenuItem menuItemEditGroupSpaceMenu = menu.findItem(R.id.editGroupSpaceMenu);
         MenuItem menuItemGroupSpaceMembers = menu.findItem(R.id.groupSpaceMembers);
 
-        if (roleValue.equals("1") || (memberGroupRole !=null && memberGroupRole.equals("2"))){
-            menuItemEditGroupSpaceMenu.setVisible(true);
+        if (!notificationFlag) {
+
+            if (roleValue.equals("1") || (memberGroupRole != null && memberGroupRole.equals("2"))) {
+                menuItemEditGroupSpaceMenu.setVisible(true);
+            } else {
+                menuItemEditGroupSpaceMenu.setVisible(false);
+            }
+
+            menuItemGroupSpaceMembers.setVisible(true);
+
+
+            if (menu instanceof MenuBuilder) {
+                MenuBuilder m = (MenuBuilder) menu;
+                m.setOptionalIconsVisible(true);
+            }
+
         }else {
             menuItemEditGroupSpaceMenu.setVisible(false);
-        }
-
-        menuItemGroupSpaceMembers.setVisible(true);
-
-
-        if(menu instanceof MenuBuilder){
-            MenuBuilder m = (MenuBuilder) menu;
-            m.setOptionalIconsVisible(true);
+            menuItemGroupSpaceMembers.setVisible(false);
         }
 
         return true;

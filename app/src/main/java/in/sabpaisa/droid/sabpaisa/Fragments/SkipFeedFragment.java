@@ -568,8 +568,12 @@ public class SkipFeedFragment extends Fragment {
     public void getDataFromActivity() {
         if (sGetDataInterface != null) {
             this.feedArrayList = sGetDataInterface.getFeedDataList();
-            skipFeedFragmentAdapter.setItems(this.feedArrayList);
-            skipFeedFragmentAdapter.notifyDataSetChanged();
+            if (!feedArrayList.isEmpty()||feedArrayList.size()>0) {
+                skipFeedFragmentAdapter.setItems(this.feedArrayList);
+                skipFeedFragmentAdapter.notifyDataSetChanged();
+            }else {
+                Log.d("No Data Found","");
+            }
         }
 
         Log.d("SkipFeedFrag_I&A", " " + sGetDataInterface + "&" + feedArrayList);

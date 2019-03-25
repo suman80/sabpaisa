@@ -608,6 +608,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("feedId", feedId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("feedName", title); //Feed Name for toolbar
+                Log.d("clientId_Val_Bfr","______"+clientId);
                 intent.putExtra("clientId", clientId); //Feed Name for toolbar
                 intent.putExtra("FIREBASE_NOTI_FLAG", true); //Feed Name for toolbar
 
@@ -645,6 +646,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("groupId", groupId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("groupName", title);
+                Log.d("clientId_Val_Bfr","______"+clientId);
                 intent.putExtra("clientId", clientId);
                 intent.putExtra("FIREBASE_NOTI_FLAG", true);
                 stackBuilder.addNextIntent(intent);
@@ -728,6 +730,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("feedId", feedId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("feedName", title); //Feed Name for toolbar
+                Log.d("clientId_Val_Bfr","______"+clientId);
                 intent.putExtra("clientId", clientId); //Feed Name for toolbar
                 intent.putExtra("FIREBASE_NOTI_FLAG", true);
                 stackBuilder.addNextIntent(intent);
@@ -766,6 +769,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("groupId", groupId);
                 intent.putExtra("userAccessTokenFromNotification", userAccessToken);
                 intent.putExtra("groupName", title);
+                Log.d("clientId_Val_Bfr","______"+clientId);
                 intent.putExtra("clientId", clientId);
                 intent.putExtra("FIREBASE_NOTI_FLAG", true);
                 stackBuilder.addNextIntent(intent);

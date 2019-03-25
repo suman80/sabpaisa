@@ -96,10 +96,12 @@ public class ShareFeedFragment extends Fragment {
 
             if (Proceed_Feed_FullScreen.clientId != null) {
                 clientId = Proceed_Feed_FullScreen.clientId;
+                Log.d("clientId_PFF_FrmNOti", "" + clientId);
             }
 
             if (Proceed_Group_FullScreen.clientId != null){
                 clientId = Proceed_Group_FullScreen.clientId;
+                Log.d("clientId_PFF_FrmNOti", "" + clientId);
             }
 
         }else {

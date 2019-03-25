@@ -150,9 +150,12 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
 
         Log.d("FSCA","recieved_feedId__"+feedId);
 
-        if (GroupSpaceCommentActivity.appCid != null){
+        /*if (GroupSpaceCommentActivity.appCid != null){
             GroupSpaceCommentActivity.appCid = null;
-        }
+        }*/
+
+        Proceed_Feed_FullScreen.clientId=null;
+        Proceed_Group_FullScreen.clientId=null;
 
 
         commentArrayList = new ArrayList<CommentData>();
@@ -1390,6 +1393,19 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.feed_space_menu, menu);
 
+        MenuItem menuItem4 = menu.findItem(R.id.editFeedSpaceMenu);
+
+        if (!notificationFlag) {
+
+            if (roleValue.equals("1") || (memberGroupRole != null && memberGroupRole.equals("2"))) {
+                menuItem4.setVisible(true);
+            } else {
+                menuItem4.setVisible(false);
+            }
+
+        }else {
+            menuItem4.setVisible(false);
+        }
 
         return true;
     }

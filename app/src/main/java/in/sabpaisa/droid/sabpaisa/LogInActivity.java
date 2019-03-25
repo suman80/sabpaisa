@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,6 +84,8 @@ public class LogInActivity extends AppCompatActivity {
 
     public static String APP_VERSION_SHARED_PREF = "AppVersionSharedPref";
     String currentVersion;
+
+    ProgressBar progressBar;
 
 
     @Override
@@ -192,7 +195,10 @@ public class LogInActivity extends AppCompatActivity {
 
                     //startActivity(intent21);
                     //launchAgeScreen();
-                    registerUser(mobileNo, password);
+                    progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                    progressBar.setVisibility(View.VISIBLE);
+                    login.setVisibility(View.GONE);
+                    logIn(mobileNo, password);
 
                    /* SharedPreferences.Editor editor = sharedpreferences.edit();
 
@@ -331,7 +337,7 @@ public class LogInActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.anim_left_in, R.anim.anim_left_out);
     }
 
-    private void registerUser(final String mobileNo, final String password) {
+    private void logIn(final String mobileNo, final String password) {
 
         //Added for SSL (17th Sep 2018)
         // HttpsTrustManager.allowAllSSL();
@@ -386,6 +392,8 @@ public class LogInActivity extends AppCompatActivity {
 
                     } else if ((status.equals("failed") && response.equals("UserName or Current password is WRONG"))) {
 
+                        progressBar.setVisibility(View.GONE);
+                        login.setVisibility(View.VISIBLE);
 
                         final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
                         // Setting Dialog Title
@@ -407,6 +415,8 @@ public class LogInActivity extends AppCompatActivity {
                         alertDialog.show();
                     } else if (response.equals("Deactivated User")) {
 
+                        progressBar.setVisibility(View.GONE);
+                        login.setVisibility(View.VISIBLE);
 
                         final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
                         // Setting Dialog Title
@@ -427,6 +437,9 @@ public class LogInActivity extends AppCompatActivity {
                         // Showing Alert Message
                         alertDialog.show();
                     } else {
+
+                        progressBar.setVisibility(View.GONE);
+                        login.setVisibility(View.VISIBLE);
 
                         final AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();
                         // Setting Dialog Title
@@ -462,6 +475,9 @@ public class LogInActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                progressBar.setVisibility(View.GONE);
+                login.setVisibility(View.VISIBLE);
 
                 if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
                     AlertDialog alertDialog = new AlertDialog.Builder(LogInActivity.this, R.style.MyDialogTheme).create();

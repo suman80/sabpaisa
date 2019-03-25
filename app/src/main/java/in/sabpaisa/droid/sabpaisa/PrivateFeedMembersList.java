@@ -1,6 +1,9 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,7 +40,7 @@ public class PrivateFeedMembersList extends AppCompatActivity {
     ArrayList<Member_GetterSetter> privateMemberArrayList;
     PrivateFeedMemberListAdapter privateFeedMemberListAdapter;
     public NoOfGroupmemberAdapter memberAdapter;
-
+    ProgressDialog progressDialog;
     public static String Flag;
 
 
@@ -51,6 +54,8 @@ public class PrivateFeedMembersList extends AppCompatActivity {
         Log.d("PrivateFeedMembersList","feedId__"+feedId);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        progressDialog = new ProgressDialog(PrivateFeedMembersList.this);
+        progressDialog.setMessage("Please wait...");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +75,15 @@ public class PrivateFeedMembersList extends AppCompatActivity {
         recycler_view_Member.addItemDecoration(new SimpleDividerItemDecoration(this));
         recycler_view_Member.setLayoutManager(llm);
 
-        privateFeedMembers(feedId);
 
+        if (isOnline()) {
+            progressDialog.show();
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+            privateFeedMembers(feedId);
+        }else {
+            Toast.makeText(PrivateFeedMembersList.this,"No Internet Connection",Toast.LENGTH_SHORT).show();
+        }
 
 
     }
@@ -103,12 +115,20 @@ public class PrivateFeedMembersList extends AppCompatActivity {
 
                     if (status.equals("failure")) {
 
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
                         Toast.makeText(PrivateFeedMembersList.this,response1,Toast.LENGTH_SHORT).show();
 
                         linearLayoutnoDataFound.setVisibility(View.VISIBLE);
                         recycler_view_Member.setVisibility(View.GONE);
 
                     } else {
+
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
 
                         JSONArray jsonArray = jsonObject.getJSONArray("response");
 
@@ -167,7 +187,9 @@ public class PrivateFeedMembersList extends AppCompatActivity {
                 catch (JSONException e) {
                     // If an error occurs, this prints the error to the log
                     e.printStackTrace();
-
+                    if (progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                    }
                 }
             }
         },
@@ -194,4 +216,22 @@ public class PrivateFeedMembersList extends AppCompatActivity {
         privateMemberArrayList.clear();
         Flag = null;
     }
+
+
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("PFF", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
+
 }

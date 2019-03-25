@@ -4,20 +4,25 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -26,6 +31,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -51,16 +57,32 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpStack;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.security.ProviderInstaller;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 //import com.squareup.picasso.Picasso;
 
@@ -70,6 +92,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -85,8 +109,10 @@ import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AllContacts;
 import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
 import in.sabpaisa.droid.sabpaisa.AppController;
+import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.CommentAdapter;
 import in.sabpaisa.droid.sabpaisa.CommentData;
+import in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FeedsFragments;
 import in.sabpaisa.droid.sabpaisa.FilterActivity;
@@ -97,6 +123,7 @@ import in.sabpaisa.droid.sabpaisa.Fragments.SkipMembersFragment;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
+import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MainActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Model.*;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
@@ -105,9 +132,11 @@ import in.sabpaisa.droid.sabpaisa.R;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.CommentAdapterDatabase;
 import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
+import in.sabpaisa.droid.sabpaisa.TLSSocketFactory;
 import in.sabpaisa.droid.sabpaisa.UIN;
 
 import static android.support.v4.widget.SwipeRefreshLayout.*;
+import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 //This Activity has rolled back
@@ -150,6 +179,16 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
     public static boolean isFragmentOpen;
 
+    ImageView niv;
+    TextView usernameniv, mailIdniv;
+    AppDB appDB;
+    String userAccessToken;
+    String x;
+    String name, mobNumber;
+    RequestQueue requestQueue;
+    String userImageUrl = null;
+    int MY_SOCKET_TIMEOUT_MS = 100000;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -175,6 +214,9 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         editor.putString("appCid", appCid);
         editor.commit();
 
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
+
+        userAccessToken = sharedPreferences.getString("response", "123");
 
         particular_client_name_proceed = (TextView) findViewById(R.id.particular_client_name_proceed);
         particular_client_name_proceed.setText(clientName);
@@ -224,6 +266,11 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         Menu nav_Menu = navigationView.getMenu();
         nav_Menu.findItem(R.id.nav_clean_data).setVisible(false);
 
+        niv = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+        usernameniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.username_nav);
+        mailIdniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_nav);
+
+
         ClientImagePRoceed = (ImageView) findViewById(R.id.ClientImagePRoceed);
 
         Glide.with(SkipClientDetailsScreen.this)/*//Added on 1st Feb*/
@@ -235,6 +282,50 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
         // Searching functionality
         searchViewBar();
+        appDB = new AppDB(getApplicationContext());
+
+
+        if (isOnline()) {
+
+            showProfileData();
+
+        } else {
+
+            Cursor res = appDB.getParticularData(userAccessToken);
+
+            if (res.getCount() > 0) {
+                StringBuffer stringBuffer = new StringBuffer();
+                while (res.moveToNext()) {
+                    stringBuffer.append(res.getString(0));
+                    stringBuffer.append(res.getString(1));
+                    stringBuffer.append(res.getString(2));
+                    stringBuffer.append(res.getString(3));
+                    stringBuffer.append(res.getString(4));
+                    stringBuffer.append(res.getString(5));
+                    usernameniv.setText(res.getString(1));
+                    mailIdniv.setText(res.getString(2));
+                }
+                Log.d("getParticularNum", "-->" + stringBuffer);
+
+            } else {
+                Log.d("MainActivitySkip", "In Else Part");
+            }
+
+        }
+
+
+
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(PROFILE_IMAGE)) {
+                    getUserImage(userAccessToken);
+                }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(SkipClientDetailsScreen.this).registerReceiver(receiver, new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
+
 
     }
 
@@ -683,6 +774,330 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     }
 
 
+
+
+
+
+    private void getUserImage(final String token) {
+
+        String tag_string_req = "req_clients";
+
+        StringRequest request = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_Show_UserProfileImage + "?token=" + token, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+
+                Log.d("Particularclientimage", "-->" + response1);
+                //parsing Json
+                JSONObject jsonObject = null;
+
+                try {
+
+                    jsonObject = new JSONObject(response1.toString());
+                    String response = jsonObject.getString("response");
+                    String status = jsonObject.getString("status");
+                    Log.d("responsefilter", "" + response);
+                    Log.d("statusfilter", "" + status);
+                    JSONObject jsonObject1 = new JSONObject(response);
+                    FetchUserImageGetterSetter fetchUserImageGetterSetter = new FetchUserImageGetterSetter();
+                    fetchUserImageGetterSetter.setUserImageUrl(jsonObject1.getString("userImageUrl"));
+                    userImageUrl = fetchUserImageGetterSetter.getUserImageUrl().toString();
+
+                    Log.d("userImageUrlfilter", "" + userImageUrl);
+                    Glide
+                            .with(getApplicationContext()) //
+                            .load(userImageUrl)
+                            .error(R.drawable.default_users)
+                            .into(niv);
+
+                    Log.d("Skip", "" + userImageUrl);
+                 /*   ClientData clientData=new ClientData();
+                    clientData.setClientLogoPath(jsonObject1.getString("clientLogoPath"));
+                    clientData.setClientImagePath(jsonObject1.getString("clientImagePath"));
+                    clientData.setClientName(jsonObject1.getString("clientName"));
+
+                    clientLogoPath=clientData.getClientLogoPath().toString();
+                    clientImagePath=clientData.getClientImagePath().toString();
+                    clientname11=clientData.getClientName().toString();
+                    // clientname=clientData.getClientName().toString();
+                    Log.d("clientlogooooo","-->"+clientLogoPath );
+                    Log.d("clientimageooo","-->"+clientImagePath );
+                    Log.d("clientiooo","-->"+clientname11 );*/
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getApplication(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    // alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+            }
+
+
+        });
+
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            try {
+                ProviderInstaller.installIfNeeded(getApplicationContext());
+            } catch (GooglePlayServicesRepairableException e) {
+                // Indicates that Google Play services is out of date, disabled, etc.
+                // Prompt the user to install/update/enable Google Play services.
+                GooglePlayServicesUtil.showErrorNotification(e.getConnectionStatusCode(), getApplicationContext());
+                // Notify the SyncManager that a soft error occurred.
+                //final SyncResult syncResult = null;
+                //syncResult.stats.numIOExceptions++;
+
+                // Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+                return;
+            } catch (GooglePlayServicesNotAvailableException e) {
+                // Indicates a non-recoverable error; the ProviderInstaller is not able
+                // to install an up-to-date Provider.
+                // Notify the SyncManager that a hard error occurred.
+                //syncResult.stats.numAuthExceptions++;
+                //Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            HttpStack stack = null;
+            try {
+                stack = new HurlStack(null, new TLSSocketFactory());
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            }
+
+            // AppController.getInstance().addToRequestQueue(getApplicationContext(),stack);
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext(), stack);
+        } else {
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+            //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+
+
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
+
+
+    }
+
+
+
+    private void showProfileData() {
+
+        String tag_string_req = "req_register";
+
+        StringRequest strReq = new StringRequest(Request.Method.GET, AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_Show_UserProfile + "?token=" + userAccessToken, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response1) {
+                Log.d("SKipusernamenav", "Register Response: " + response1.toString());
+
+                try {
+                    //progressBar.setVisibility(View.GONE);
+                    JSONObject object = new JSONObject(response1);
+                    String response = object.getString("response");
+                    String status = object.getString("status");
+                    x = object.getJSONObject("response").getString("emailId").toString();
+                    mobNumber = object.getJSONObject("response").getString("contactNumber").toString();
+
+
+                    if (x.equals("null")) {
+                        usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
+                        mailIdniv.setText("");
+                    } else if (status.equals("success")) {
+                        name = object.getJSONObject("response").getString("fullName").toString();
+                        Log.d("namemainSKIP", "" + name);
+                        Log.d("namemainSKIP", "" + mobNumber);
+
+                        usernameniv.setText(object.getJSONObject("response").getString("fullName").toString());
+                        //mNumber.setText(object.getJSONObject("response").getString("contactNumber").toString());
+
+
+                        mailIdniv.setText(x);
+                        /// et_address.setText(object.getJSONObject("response").getString("address").toString());
+                        //  et_UserName.setText(object.getJSONObject("response").getString("fullName").toString());
+                        Log.d("skipusername", "userName" + usernameniv);
+                        Log.d("skipusermailid", "Mail" + mailIdniv);
+
+                    } else {
+                        // Toast.makeText(getApplicationContext(),"Could  not able to load data",Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    // Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+               /* if (error.getMessage()==null ||error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(ProfileNavigationActivity.this, R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog closed
+                            // Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                    Log.e(TAG, "Update Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+                    //TODO
+                } else if (error instanceof ServerError) {
+                    //TODO
+                } else if (error instanceof NetworkError) {
+                    //TODO
+                } else if (error instanceof ParseError) {
+                    //TODO
+                }
+*/
+            }
+        }); /*{
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userAccessToken", userAccessToken);
+
+                return params;
+            }
+
+        };
+*/
+
+
+        strReq.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            try {
+                ProviderInstaller.installIfNeeded(getApplicationContext());
+            } catch (GooglePlayServicesRepairableException e) {
+                // Indicates that Google Play services is out of date, disabled, etc.
+                // Prompt the user to install/update/enable Google Play services.
+                GooglePlayServicesUtil.showErrorNotification(e.getConnectionStatusCode(), getApplicationContext());
+                // Notify the SyncManager that a soft error occurred.
+                //final SyncResult syncResult = null;
+                //syncResult.stats.numIOExceptions++;
+
+                // Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+                return;
+            } catch (GooglePlayServicesNotAvailableException e) {
+                // Indicates a non-recoverable error; the ProviderInstaller is not able
+                // to install an up-to-date Provider.
+                // Notify the SyncManager that a hard error occurred.
+                //syncResult.stats.numAuthExceptions++;
+                //Toast.makeText(getApplicationContext(), "Sync12", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            HttpStack stack = null;
+            try {
+                stack = new HurlStack(null, new TLSSocketFactory());
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                Log.d("Your Wrapper Class", "Could not create new stack for TLS v1.2");
+                stack = new HurlStack();
+            }
+
+            // AppController.getInstance().addToRequestQueue(getApplicationContext(),stack);
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext(), stack);
+        } else {
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+            //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        }
+
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
+
+
+
+
+
     @Override
     public void onFragmentSetFeeds(ArrayList<FeedData> feedData) {
         this.feedData = feedData;
@@ -838,4 +1253,26 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
             super.onBackPressed();
         }
     }
+
+
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("MainActivitySkip", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
+
+
+
+
+
 }

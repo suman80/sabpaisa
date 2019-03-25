@@ -235,13 +235,13 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
             clientId = getIntent().getStringExtra("clientId");
             notificationFlag = getIntent().getBooleanExtra("FIREBASE_NOTI_FLAG",false);
-            Log.d("PFF123","appCid_Notification__"+clientId);
-            Log.d("PFF123","notificationFlag"+notificationFlag);
+            Log.d("PFF123_Feed","clientId_Val_Notification__"+clientId);
+            Log.d("PFF123_Feed","notificationFlag"+notificationFlag);
         }
 
-        if (Proceed_Group_FullScreen.clientId!=null){
+        /*if (Proceed_Group_FullScreen.clientId!=null){
             Proceed_Group_FullScreen.clientId = null;
-        }
+        }*/
 
         FeedSpaceCommentsActivity.appCid = null;
         GroupSpaceCommentActivity.appCid = null;

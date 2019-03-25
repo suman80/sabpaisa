@@ -652,8 +652,12 @@ public class SkipGroupFragment extends Fragment {
     public void getDataFromActivity() {
         if (sGetDataInterface != null) {
             this.groupArrayList = sGetDataInterface.getGroupDataList();
-            skipGroupFragmentAdapter.setItems(this.groupArrayList);
-            skipGroupFragmentAdapter.notifyDataSetChanged();
+            if (!groupArrayList.isEmpty() || groupArrayList.size()>0) {
+                skipGroupFragmentAdapter.setItems(this.groupArrayList);
+                skipGroupFragmentAdapter.notifyDataSetChanged();
+            }else {
+                Log.d("No Data Found","");
+            }
         }
 
         Log.d("PGF_I&A", " " + sGetDataInterface + "&" + groupArrayList);

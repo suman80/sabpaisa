@@ -93,7 +93,7 @@
                 android:background="@drawable/background_button" />
 
             <EditText
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
@@ -107,18 +107,39 @@
                 />
         </FrameLayout>
 
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/background_button"
-            android:text="Login"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="20dp" />
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            >
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                />
+
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/background_button"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+
+
+        </FrameLayout>
+
 
         <TextView
             android:id="@+id/tv_forgot_password"
@@ -162,6 +183,8 @@
         </LinearLayout>
 
 
-
     </LinearLayout>
+
+
+
 </ScrollView>

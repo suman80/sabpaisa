@@ -77,7 +77,7 @@ public class ShareGroupSpaceFragment extends Fragment {
         if (GroupSpaceCommentActivity.notificationFlag || FeedSpaceCommentsActivity.notificationFlag){
             if(GroupSpaceCommentActivity.appCid != null){
                 appCid = GroupSpaceCommentActivity.appCid;
-                appCid = FeedSpaceCommentsActivity.appCid;
+                //appCid = FeedSpaceCommentsActivity.appCid;
             }
             if(FeedSpaceCommentsActivity.appCid != null){
                 appCid = FeedSpaceCommentsActivity.appCid;
@@ -176,7 +176,7 @@ public class ShareGroupSpaceFragment extends Fragment {
                             }
 
                         }
-                        Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
+                        //Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
 
 
                         sharedGroupFragmentAdapter = new SharedGroupFragmentAdapter(groupArrayList, getContext());
