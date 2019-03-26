@@ -568,7 +568,7 @@ public class SkipFeedFragment extends Fragment {
     public void getDataFromActivity() {
         if (sGetDataInterface != null) {
             this.feedArrayList = sGetDataInterface.getFeedDataList();
-            if (!feedArrayList.isEmpty()||feedArrayList.size()>0) {
+            if (!(feedArrayList == null || feedArrayList.isEmpty() )) {
                 skipFeedFragmentAdapter.setItems(this.feedArrayList);
                 skipFeedFragmentAdapter.notifyDataSetChanged();
             }else {

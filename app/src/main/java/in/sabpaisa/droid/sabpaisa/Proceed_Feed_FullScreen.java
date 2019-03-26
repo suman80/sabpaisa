@@ -245,7 +245,7 @@ public class Proceed_Feed_FullScreen extends AppCompatActivity implements SwipeR
 
         FeedSpaceCommentsActivity.appCid = null;
         GroupSpaceCommentActivity.appCid = null;
-
+        MainActivitySkip.AppDecideFlag = false;
 
         if(userAccessToken == null || userAccessToken.equals("123")) {
             Intent intent = new Intent(Proceed_Feed_FullScreen.this, LogInActivity.class);

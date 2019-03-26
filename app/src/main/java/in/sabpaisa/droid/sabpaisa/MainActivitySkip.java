@@ -224,7 +224,7 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
         paymentButton = (LinearLayout) findViewById(R.id.payment_button);
         //chatButton = (LinearLayout) findViewById(R.id.chat);
         memberButton = (LinearLayout) findViewById(R.id.members);
-
+        searchView = (MaterialSearchView) findViewById(R.id.search_viewSP);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("SPApp");
@@ -318,6 +318,8 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
 
         }
 
+        searchViewBar();
+
 
 //mailIdniv.setText(x);
         navigationView.setItemIconTintList(null);
@@ -410,7 +412,7 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
             }
         });*/
 
-        searchViewBar();
+
 
         usernameniv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -706,6 +708,7 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
                 appBarLayout.setExpanded(true, false);//Do some magic
 
                 filteredClientList = clientData;
+
                 institutionSkipFragment.getDataFromActivity();
                 //filteredGroupList = GroupData;
                 //groupsFragments.getDataFromActivity();

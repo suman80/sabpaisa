@@ -267,8 +267,12 @@ public class SkipMembersFragment extends Fragment {
     public void getDataFromActivity() {
         if(sGetDataInterface != null){
             this.memberSpaceModelArrayList = sGetDataInterface.getMemberDataList();
+            if (!(memberSpaceModelArrayList == null || memberSpaceModelArrayList.isEmpty())){
             skipMemberAdapter.setItems(this.memberSpaceModelArrayList);
             skipMemberAdapter.notifyDataSetChanged();
+            }else {
+                Log.d("No Data Found","");
+            }
             Log.d("SMF_I&A_InIf"," "+sGetDataInterface+"&"+memberSpaceModelArrayList);
         }else {
             Log.d("SMF_I&A_InElse"," "+sGetDataInterface+"&"+memberSpaceModelArrayList);

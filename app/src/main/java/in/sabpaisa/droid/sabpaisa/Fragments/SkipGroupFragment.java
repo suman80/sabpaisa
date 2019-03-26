@@ -652,7 +652,7 @@ public class SkipGroupFragment extends Fragment {
     public void getDataFromActivity() {
         if (sGetDataInterface != null) {
             this.groupArrayList = sGetDataInterface.getGroupDataList();
-            if (!groupArrayList.isEmpty() || groupArrayList.size()>0) {
+            if (!(groupArrayList == null || groupArrayList.isEmpty())) {
                 skipGroupFragmentAdapter.setItems(this.groupArrayList);
                 skipGroupFragmentAdapter.notifyDataSetChanged();
             }else {

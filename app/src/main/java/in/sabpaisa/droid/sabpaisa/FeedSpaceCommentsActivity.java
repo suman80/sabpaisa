@@ -301,13 +301,13 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
             public void onClick(View view) {
 
                 //todo camera integration
-                /*Intent intent = new Intent(Proceed_Feed_FullScreen.this, DisplayActivity.class);
-                intent.putExtra("CAMVALUE", 1);
-                intent.putExtra("feedId", feed_id);
-                intent.putExtra("feedName", FeedsNm);
-                intent.putExtra("feedText", feedsDiscription);
+                Intent intent = new Intent(FeedSpaceCommentsActivity.this, DisplayActivity.class);
+                intent.putExtra("CAMVALUE", 3);
+                intent.putExtra("feedId", feedId);
+                intent.putExtra("feedName", feedName);
+                intent.putExtra("feedText", feedText);
                 startActivity(intent);
-                finish();*/
+                finish();
 
             }
         });
@@ -980,7 +980,7 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
 
         String urlJsonObj = AppConfig.Base_Url + AppConfig.App_api + "/getPageFeedsComments?feed_id=" + feed_id + "&pageNo=" + count + "&rowLimit=25"+"&token="+userAccessToken;
 
-        Log.d("urlJsonObj  : ", urlJsonObj);
+        Log.d("urlComment__Feed__", urlJsonObj);
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 urlJsonObj, new Response.Listener<String>() {
 
@@ -1460,6 +1460,8 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
         }
 
         finish();
+
+            notificationFlag = false;
 
     }
 

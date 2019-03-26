@@ -77,6 +77,8 @@ public class SkipMemberAdapter extends RecyclerView.Adapter<SkipMemberAdapter.My
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final MemberSpaceModel memberSpaceModel = memberSpaceModelList.get(position);
 
+        Log.d("SMA","userImage___"+memberSpaceModel.getUserImageUrl());
+
         Glide.with(context)
                 .load(memberSpaceModel.getUserImageUrl())
                 .error(R.drawable.default_users)

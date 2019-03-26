@@ -318,14 +318,13 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
             @Override
             public void onClick(View view) {
 
-                /*Intent intent = new Intent(GroupSpaceCommentActivity.this, DisplayActivity.class);
-                intent.putExtra("CAMVALUE", 2);
+                Intent intent = new Intent(GroupSpaceCommentActivity.this, DisplayActivity.class);
+                intent.putExtra("CAMVALUE", 4);
                 intent.putExtra("groupId", GroupId);
                 intent.putExtra("groupName", GroupsNm);
                 intent.putExtra("groupText", GroupsDiscription);
                 startActivity(intent);
                 finish();
-*/
             }
         });
 
@@ -1287,6 +1286,7 @@ public class GroupSpaceCommentActivity extends AppCompatActivity implements Swip
 
 
             finish();
+            notificationFlag = false;
 
         }
     }

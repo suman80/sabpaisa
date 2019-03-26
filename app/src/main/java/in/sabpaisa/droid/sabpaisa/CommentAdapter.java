@@ -580,6 +580,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
                 Log.d("MemAdapterImgLocal", "stringBufferVal_ " + stringBuffer);
             }
+            // Added on 26th March 2019
+            else {
+
+                Glide.with(mContext)
+                        .load(commentData.getUserImageUrl())
+                        .error(R.drawable.default_users)
+                        .into(holder.main_feed_comment_image);
+            }
 
         }else {
             Glide.with(mContext)

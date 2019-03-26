@@ -198,7 +198,7 @@ public class MembersOfAGroupSpaceAdapter extends RecyclerView.Adapter<MembersOfA
 
                 if(member_getterSetter.getRoleId() ==null || member_getterSetter.getRoleId().equals("null") || !member_getterSetter.getRoleId().equals("2"))
                 {
-                    if (/*!roleValue.equals("1")||*/!(userAccessToken.equals(member_getterSetter.getUserAccessToken()))){
+                    if (!member_getterSetter.getUin_Role().equals("1")/*||!(userAccessToken.equals(member_getterSetter.getUserAccessToken()))*/){
                         menu.getMenu().add("Make a group admin");
                     }
                 }

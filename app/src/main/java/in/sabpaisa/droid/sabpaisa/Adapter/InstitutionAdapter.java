@@ -41,7 +41,7 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
     ArrayList<Institution> institutions;
     Context context;
 
-    ProgressDialog progressDialog;
+    public static ProgressDialog progressDialog;
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 

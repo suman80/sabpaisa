@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -72,6 +73,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
     String userAccessToken;
 
     MaterialSearchView searchView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,77 +153,84 @@ public class PrivateGroupFeeds extends AppCompatActivity {
         //Notification db
         notificationDB= new NotificationDB(PrivateGroupFeeds.this);
 
-
-
-        callFeedDataList(GroupId,userAccessToken);
-
         active = true;
 
 
-        searchView = (MaterialSearchView)findViewById(R.id.search_view);
+        if (isOnline()) {
 
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
 
-            }
+            callFeedDataList(GroupId, userAccessToken);
 
-            @Override
-            public void onSearchViewClosed() {
 
-                //if closed then listview will return default
+            searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
-                if (!(feedArrayList == null || feedArrayList.isEmpty())) {
-                    loadFeedListView(feedArrayList, (RecyclerView) findViewById(R.id.recycler_view_feeds));
-                }else {
+            searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+                @Override
+                public void onSearchViewShown() {
+
+                }
+
+                @Override
+                public void onSearchViewClosed() {
+
+                    //if closed then listview will return default
+
+                    if (!(feedArrayList == null || feedArrayList.isEmpty())) {
+                        loadFeedListView(feedArrayList, (RecyclerView) findViewById(R.id.recycler_view_feeds));
+                    } else {
 //                    Toast.makeText(ClientList.this,"No Data Found !",Toast.LENGTH_SHORT).show();
 
-                    Log.d("Search","No Data");
+                        Log.d("Search", "No Data");
+
+                    }
 
                 }
+            });
 
-            }
-        });
+            searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
 
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+                @Override
+                public boolean onQueryTextChange(String newText) {
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
+                    if (newText != null && !newText.isEmpty()) {
 
-                if (newText != null && !newText.isEmpty()){
+                        ArrayList<FeedData> newArraylist = new ArrayList<>();
 
-                    ArrayList<FeedData> newArraylist = new ArrayList<>();
+                        for (FeedData items : feedArrayList) {
 
-                    for (FeedData items: feedArrayList){
+                            if (items.feedName.contains(newText.toLowerCase())) {
+                                newArraylist.add(items);
+                            }
 
-                        if (items.feedName.contains(newText.toLowerCase())){
-                            newArraylist.add(items);
                         }
 
+                        if (mainFeedAdapter.getItemCount() < 1) {
+                            Log.d("Search", "No data found");
+
+
+                        } else {
+
+                            loadFeedListView(newArraylist, (RecyclerView) findViewById(R.id.recycler_view_feeds));
+                        }
+
+
+                    } else {
+                        // if search text is null then return default
+                        loadFeedListView(feedArrayList, (RecyclerView) findViewById(R.id.recycler_view_feeds));
                     }
 
-                    if (mainFeedAdapter.getItemCount() < 1){
-                        Log.d("Search","No data found");
-
-
-                    }else {
-
-                        loadFeedListView(newArraylist, (RecyclerView) findViewById(R.id.recycler_view_feeds));
-                    }
-
-
-                }else {
-                    // if search text is null then return default
-                    loadFeedListView(feedArrayList, (RecyclerView) findViewById(R.id.recycler_view_feeds));
+                    return true;
                 }
+            });
 
-                return true;
-            }
-        });
+        }else {
+
+            Toast.makeText(PrivateGroupFeeds.this,"No Internet Connection !",Toast.LENGTH_SHORT).show();
+        }
 
 
 
@@ -510,6 +519,24 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
         return true;
     }
+
+
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("PFF", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
+
 
 
 

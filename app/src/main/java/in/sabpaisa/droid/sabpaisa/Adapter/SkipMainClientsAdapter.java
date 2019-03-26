@@ -104,7 +104,7 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
 
             final PersonalSpaceModel mainFeedData = institutions.get(position);
             holder.instituteName.setText(mainFeedData.getAppCname());
-            holder.instituteLocation.setText(mainFeedData.getAddress());
+            holder.instituteLocation.setText(mainFeedData.getDescription());
             //holder.thumbnail.setImageIcon(Icon.createWithContentUri(mainFeedData.getOrgLogo()));
 
         if (mainFeedData.getClientImagePath()==null)

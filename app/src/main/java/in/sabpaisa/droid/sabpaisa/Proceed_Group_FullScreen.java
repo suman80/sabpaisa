@@ -220,6 +220,7 @@ public class Proceed_Group_FullScreen extends AppCompatActivity implements Swipe
 
         FeedSpaceCommentsActivity.appCid = null;
         GroupSpaceCommentActivity.appCid = null;
+        MainActivitySkip.AppDecideFlag = false;
 
         toolbar = (Toolbar) findViewById(R.id.toolbarPGF);
         setSupportActionBar(toolbar);

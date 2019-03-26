@@ -3,9 +3,10 @@ package in.sabpaisa.droid.sabpaisa.Util;
 public class AppConfig {
     // Server user login url
 
-    public static String Base_Url="https://portal.sabpaisa.in";
-    //public static String Base_Url = "https://spl.sabpaisa.in";
-    public static String App_api="/SabPaisaAppApi/";
+    //public static String Base_Url="https://portal.sabpaisa.in";
+    public static String Base_Url = "https://spl.sabpaisa.in";
+    //public static String App_api="/SabPaisaAppApi/";
+    public static String App_api="/SabPaisaAppApi_Q4/";
     //public static String App_api = "/SabPaisaAppApi_v16/";
     public static String URL_REGISTER = "register-user";
     public static String URL_Contacts = "SPuserInUsercontactList";

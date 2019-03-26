@@ -75,6 +75,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AllContacts;
 import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
@@ -450,6 +451,10 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
         callVerifyUINNumber(uinNumber,ClientId,useracesstoken);
 
+        if (InstitutionAdapter.progressDialog.isShowing()){
+            InstitutionAdapter.progressDialog.dismiss();
+        }
+
 
     }
 
@@ -795,11 +800,11 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
             super.onBackPressed();
 
             isFragmentOpen = false;
-
-            Intent intent = new Intent(FullViewOfClientsProceed.this, MainActivity.class);
+            //Changed on 26th march 2019
+           /* Intent intent = new Intent(FullViewOfClientsProceed.this, MainActivity.class);
             intent.putExtra("clientId", ClientId);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            startActivity(intent);*/
             finish();
 
         }

@@ -698,8 +698,12 @@ public class InstitutionSkipFragment extends Fragment {
     public void getDataFromActivity() {
         if (sGetDataInterface != null) {
             this.institutions1 = sGetDataInterface.getClientDataList();
-            OtherSpaceAdapter.setItems(this.institutions1);
-            OtherSpaceAdapter.notifyDataSetChanged();
+            if (!(institutions1 == null || institutions1.isEmpty()) /*|| institutions1.size()>0*/) {
+                OtherSpaceAdapter.setItems(this.institutions1);
+                OtherSpaceAdapter.notifyDataSetChanged();
+            }else {
+                Log.d("No Data Found","*************");
+            }
         }
 
         Log.d("Institution_I&A", " " + sGetDataInterface + "&" + institutions);

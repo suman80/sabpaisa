@@ -95,11 +95,15 @@ public class DisplayActivity extends AppCompatActivity {
 
                 final String userAccessToken = sharedPreferences.getString("response", "123");
 
-                if (camVal == 1) {
-
-                    SharedPreferences prefs = getSharedPreferences(Proceed_Feed_FullScreen.MY_PREFS_FOR_FEED_ID, MODE_PRIVATE);
-                    final String feedId = prefs.getString("feedId", null);
-
+                if (camVal == 1 || camVal == 3) {
+                    final String feedId;
+                    if (camVal == 1) {
+                        SharedPreferences prefs = getSharedPreferences(Proceed_Feed_FullScreen.MY_PREFS_FOR_FEED_ID, MODE_PRIVATE);
+                        feedId = prefs.getString("feedId", null);
+                    }else {
+                        SharedPreferences prefs = getSharedPreferences(FeedSpaceCommentsActivity.SHARED_PREF_FEED_ID_VALUE, MODE_PRIVATE);
+                        feedId = prefs.getString("feedId", null);
+                    }
                     //////////////////////////////////////////////////////////////////////////
                     StringEscapeUtils.escapeJava(commentEditText.getText().toString());
                     EditText etEmojiEditText = new EditText(DisplayActivity.this);
@@ -173,11 +177,15 @@ public class DisplayActivity extends AppCompatActivity {
 
                     //sendCommentFeed(feedId, userAccessToken, comment, photo);
                 }
-                if (camVal == 2) {
-
-                    SharedPreferences prefs = getSharedPreferences(Proceed_Group_FullScreen.MY_PREFS_FOR_GROUP_ID, MODE_PRIVATE);
-                    final String groupId = prefs.getString("groupId", null);
-
+                if (camVal == 2 || camVal == 4) {
+                    final String groupId;
+                    if (camVal == 2) {
+                        SharedPreferences prefs = getSharedPreferences(Proceed_Group_FullScreen.MY_PREFS_FOR_GROUP_ID, MODE_PRIVATE);
+                        groupId = prefs.getString("groupId", null);
+                    }else {
+                        SharedPreferences prefs = getSharedPreferences(GroupSpaceCommentActivity.SHARED_PREF_GROUP_ID_VALUE, MODE_PRIVATE);
+                        groupId = prefs.getString("groupId", null);
+                    }
 
                     StringEscapeUtils.escapeJava(commentEditText.getText().toString());
                     EditText etEmojiEditText = new EditText(DisplayActivity.this);
@@ -346,14 +354,24 @@ public class DisplayActivity extends AppCompatActivity {
 
                                 progress_bar.setVisibility(View.GONE);
 
-                                Intent intent = new Intent(DisplayActivity.this, Proceed_Feed_FullScreen.class);
-                                intent.putExtra("feedId", feed_id);
-                                intent.putExtra("feedName", feedName);
-                                intent.putExtra("feedText", feedsDiscription);
-                                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                finish();
+                                if (camVal == 3){
+                                    Intent intent = new Intent(DisplayActivity.this, FeedSpaceCommentsActivity.class);
+                                    intent.putExtra("feedId", feed_id);
+                                    intent.putExtra("feedName", feedName);
+                                    intent.putExtra("feedText", feedsDiscription);
+                                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }else {
 
+                                    Intent intent = new Intent(DisplayActivity.this, Proceed_Feed_FullScreen.class);
+                                    intent.putExtra("feedId", feed_id);
+                                    intent.putExtra("feedName", feedName);
+                                    intent.putExtra("feedText", feedsDiscription);
+                                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
                             } else {
 
                                 Log.d("CommentPVRA", "Failed");
@@ -442,14 +460,24 @@ public class DisplayActivity extends AppCompatActivity {
 
                                 progress_bar.setVisibility(View.GONE);
 
-                                Intent intent = new Intent(DisplayActivity.this, Proceed_Group_FullScreen.class);
-                                intent.putExtra("groupId", GroupId);
-                                intent.putExtra("memberGroupRole", Proceed_Group_FullScreen.memberGroupRole);
-                                intent.putExtra("groupName", Proceed_Group_FullScreen.GroupsNm);
-                                intent.putExtra("groupText", groupDiscription);
-                                startActivity(intent);
-                                finish();
+                                if (camVal == 4){
+                                    Intent intent = new Intent(DisplayActivity.this, GroupSpaceCommentActivity.class);
+                                    intent.putExtra("groupId", GroupId);
+                                    intent.putExtra("memberGroupRole", GroupSpaceCommentActivity.memberGroupRole);
+                                    intent.putExtra("groupName", GroupSpaceCommentActivity.GroupsNm);
+                                    intent.putExtra("groupText", groupDiscription);
+                                    startActivity(intent);
+                                    finish();
+                                }else {
 
+                                    Intent intent = new Intent(DisplayActivity.this, Proceed_Group_FullScreen.class);
+                                    intent.putExtra("groupId", GroupId);
+                                    intent.putExtra("memberGroupRole", Proceed_Group_FullScreen.memberGroupRole);
+                                    intent.putExtra("groupName", Proceed_Group_FullScreen.GroupsNm);
+                                    intent.putExtra("groupText", groupDiscription);
+                                    startActivity(intent);
+                                    finish();
+                                }
 
                             } else {
                                 Log.d("CommentPVRAG", "Failed");
@@ -583,7 +611,26 @@ public class DisplayActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
 
-            } else {
+            }else if (camVal == 3 && feedId != null) {
+
+                Intent intent = new Intent(DisplayActivity.this, FeedSpaceCommentsActivity.class);
+                intent.putExtra("feedId", feedId);
+                intent.putExtra("feedName", feedName);
+                intent.putExtra("feedText", feedsDiscription);
+                startActivity(intent);
+                finish();
+
+            } else if (camVal == 4 && groupId != null) {
+
+                Intent intent = new Intent(DisplayActivity.this, GroupSpaceCommentActivity.class);
+                intent.putExtra("groupId", groupId);
+                intent.putExtra("groupName", groupName);
+                intent.putExtra("groupText", groupDiscription);
+                intent.putExtra("memberGroupRole", GroupSpaceCommentActivity.memberGroupRole);
+                startActivity(intent);
+                finish();
+
+            }else {
 
                 Log.d("DisplayActivity", "InElsePart");
 
@@ -613,6 +660,27 @@ public class DisplayActivity extends AppCompatActivity {
             intent.putExtra("groupText", groupDiscription);
             intent.putExtra("groupText", groupDiscription);
             intent.putExtra("memberGroupRole", Proceed_Group_FullScreen.memberGroupRole);
+            startActivity(intent);
+            finish();
+
+        } else if (camVal == 3 && feedId != null) {
+
+            Intent intent = new Intent(DisplayActivity.this, FeedSpaceCommentsActivity.class);
+            intent.putExtra("feedId", feedId);
+            intent.putExtra("feedName", feedName);
+            intent.putExtra("feedText", feedsDiscription);
+            startActivity(intent);
+            finish();
+
+
+        }else if (camVal == 4 && groupId != null) {
+
+            Intent intent = new Intent(DisplayActivity.this, GroupSpaceCommentActivity.class);
+            intent.putExtra("groupId", groupId);
+            intent.putExtra("groupName", groupName);
+            intent.putExtra("groupText", groupDiscription);
+            intent.putExtra("groupText", groupDiscription);
+            intent.putExtra("memberGroupRole", GroupSpaceCommentActivity.memberGroupRole);
             startActivity(intent);
             finish();
 
