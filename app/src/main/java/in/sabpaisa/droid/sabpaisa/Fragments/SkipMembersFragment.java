@@ -167,6 +167,8 @@ public class SkipMembersFragment extends Fragment {
         String tag_string_req = "req_register";
         String url = AppConfig.Base_Url+AppConfig.App_api+AppConfig.URL_membersOfSPappclient+"?appcid="+appCid;
 
+        Log.d("SkipMemberFragment","url___"+url);
+
         StringRequest jsonObjReq = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>(){
 
@@ -214,12 +216,19 @@ public class SkipMembersFragment extends Fragment {
 
                         }
 
-                        Log.d("SMF","memberSpaceModelArrayList___"+memberSpaceModelArrayList.size());
+                        Log.d("SMF_size___","memberSpaceModelArrayList___"+memberSpaceModelArrayList.size());
 
-                        /*START listener for sending data to activity*/
-                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
-                        listener.onFragmentSetMembersSpace(memberSpaceModelArrayList);
-                        /*END listener for sending data to activity*/
+
+
+                            /*START listener for sending data to activity*/
+                        if (memberSpaceModelArrayList !=null && !memberSpaceModelArrayList.isEmpty()) {
+                            Log.d("SMF_1","memberSpaceModelArrayList___"+memberSpaceModelArrayList.size());
+
+                            OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                            listener.onFragmentSetMembersSpace(memberSpaceModelArrayList);
+                            /*END listener for sending data to activity*/
+                        }
+
 
                         skipMemberAdapter = new SkipMemberAdapter(memberSpaceModelArrayList,getContext());
                         recycler_view_Member.setAdapter(skipMemberAdapter);
@@ -267,15 +276,13 @@ public class SkipMembersFragment extends Fragment {
     public void getDataFromActivity() {
         if(sGetDataInterface != null){
             this.memberSpaceModelArrayList = sGetDataInterface.getMemberDataList();
-            if (!(memberSpaceModelArrayList == null || memberSpaceModelArrayList.isEmpty())){
-            skipMemberAdapter.setItems(this.memberSpaceModelArrayList);
-            skipMemberAdapter.notifyDataSetChanged();
-            }else {
-                Log.d("No Data Found","");
-            }
-            Log.d("SMF_I&A_InIf"," "+sGetDataInterface+"&"+memberSpaceModelArrayList);
+
+                skipMemberAdapter.setItems(this.memberSpaceModelArrayList);
+                skipMemberAdapter.notifyDataSetChanged();
+
+            Log.d("SMF_I&A_InIf"," "+sGetDataInterface+"&"+memberSpaceModelArrayList.size());
         }else {
-            Log.d("SMF_I&A_InElse"," "+sGetDataInterface+"&"+memberSpaceModelArrayList);
+            Log.d("SMF_I&A_InElse"," "+sGetDataInterface+"&"+memberSpaceModelArrayList.size());
         }
 
     }

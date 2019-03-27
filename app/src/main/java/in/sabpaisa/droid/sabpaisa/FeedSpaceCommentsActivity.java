@@ -716,7 +716,7 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
                             Log.d("FSCA", "Object_Res__" + obj);
 
                             final String status = obj.getString("status");
-
+                            final String returnResp = obj.getString("response");
                             if (status.equals("success")) {
 
                                 Log.d("FSCA_Comment", "Success");
@@ -755,6 +755,8 @@ public class FeedSpaceCommentsActivity extends AppCompatActivity implements Swip
                                 //Toast.makeText(Proceed_Feed_FullScreen.this, "Image Upload Failed !", Toast.LENGTH_SHORT).show();
                                 commentFile = null;
                                 fileDoc = null;
+                                Toast.makeText(FeedSpaceCommentsActivity.this,returnResp , Toast.LENGTH_SHORT).show();
+
                             }
 
                         } catch (JSONException e) {

@@ -63,7 +63,7 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
 
     Context context;
 
-    ProgressDialog progressDialog;
+    public static ProgressDialog progressDialog;
 
     NotificationDB db;
 
@@ -103,7 +103,7 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
             public void onClick(View v) {
 
                 //API to check member data
-                progressDialog = new ProgressDialog(context,R.style.DialogTheme);
+
                 progressDialog.setMessage("Please Wait");
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setCancelable(false);
@@ -283,7 +283,7 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
 
             relativeLayoutNotification = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutNotification);
             notificationText = (TextView) itemView.findViewById(R.id.notificationText);
-
+            progressDialog = new ProgressDialog(context,R.style.DialogTheme);
         }
     }
     @Override

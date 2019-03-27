@@ -335,9 +335,16 @@ public class SkipFeedFragment extends Fragment {
 
                         }
 
-                        //*START listener for sending data to activity*//*
-                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
-                        listener.onFragmentSetFeeds(feedArrayList);
+                        if (feedArrayList != null && !feedArrayList.isEmpty()) {
+                            Log.d("SFF_arrayListSize", "SIZE_________" + feedArrayList.size());
+
+
+
+                            //*START listener for sending data to activity*//*
+                            OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                            listener.onFragmentSetFeeds(feedArrayList);
+
+                        }
 
                         // Comparing timings with notification db
                         Collections.sort(feedArrayList, new Comparator<FeedData>() {
@@ -568,12 +575,14 @@ public class SkipFeedFragment extends Fragment {
     public void getDataFromActivity() {
         if (sGetDataInterface != null) {
             this.feedArrayList = sGetDataInterface.getFeedDataList();
-            if (!(feedArrayList == null || feedArrayList.isEmpty() )) {
+
+
+
                 skipFeedFragmentAdapter.setItems(this.feedArrayList);
                 skipFeedFragmentAdapter.notifyDataSetChanged();
-            }else {
-                Log.d("No Data Found","");
-            }
+
+
+
         }
 
         Log.d("SkipFeedFrag_I&A", " " + sGetDataInterface + "&" + feedArrayList);

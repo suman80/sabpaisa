@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Member Name"
                 android:textColorHint="@color/bg_orange"
+                android:imeOptions="actionNext"
                 />
 
         </android.support.design.widget.TextInputLayout>
@@ -53,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Number"
                 android:textColorHint="@color/bg_orange"
+                android:imeOptions="actionDone"
                 />
 
         </android.support.design.widget.TextInputLayout>

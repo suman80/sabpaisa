@@ -349,12 +349,16 @@ public class SkipGroupFragment extends Fragment {
 
                         }
 //                        Log.d("groupArrayList1212", " " + groupArrayList.get(0).getGroupName());
+                        Log.d("groupArrayList1212as", "Size____" + groupArrayList.size());
 
+                        if (groupArrayList != null && !groupArrayList.isEmpty()) {
 
-                        /*START listener for sending data to activity*/
-                        OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
-                        listener.onFragmentSetGroups(groupArrayList);
-                        /*END listener for sending data to activity*/
+                            /*START listener for sending data to activity*/
+                            OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                            listener.onFragmentSetGroups(groupArrayList);
+                            /*END listener for sending data to activity*/
+
+                        }
 
                         if (!(groupArrayList==null||groupArrayList.isEmpty())) {
 
@@ -652,12 +656,11 @@ public class SkipGroupFragment extends Fragment {
     public void getDataFromActivity() {
         if (sGetDataInterface != null) {
             this.groupArrayList = sGetDataInterface.getGroupDataList();
-            if (!(groupArrayList == null || groupArrayList.isEmpty())) {
+
+
                 skipGroupFragmentAdapter.setItems(this.groupArrayList);
                 skipGroupFragmentAdapter.notifyDataSetChanged();
-            }else {
-                Log.d("No Data Found","");
-            }
+
         }
 
         Log.d("PGF_I&A", " " + sGetDataInterface + "&" + groupArrayList);

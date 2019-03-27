@@ -105,6 +105,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import in.sabpaisa.droid.sabpaisa.Adapter.OtherSpaceAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AllContacts;
 import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
@@ -327,6 +328,14 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         LocalBroadcastManager.getInstance(SkipClientDetailsScreen.this).registerReceiver(receiver, new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
 
 
+
+       /* if (OtherSpaceAdapter.progressDialog.isShowing()){
+            OtherSpaceAdapter.progressDialog.dismiss();
+        }
+*/
+
+
+
     }
 
     @Override
@@ -409,6 +418,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
                     if (memberData != null) {
                         filteredmemberData = filterMember(memberData, query);
+                        Log.d("SCDS_421", filteredmemberData.size()+"");
                         skipMembersFragment.getDataFromActivity();
                     } else {
                     }
@@ -468,6 +478,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
                     if (memberData != null) {
                         filteredmemberData = filterMember(memberData, newText);
+                        Log.d("SCDS_480", filteredmemberData.size()+"");
                         skipMembersFragment.getDataFromActivity();
                     } else {
                     }
@@ -567,12 +578,18 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
     /*START method to search query in member List*/
     private ArrayList<MemberSpaceModel> filterMember(ArrayList<MemberSpaceModel> mList, String query) { //TODO searchView
         query = query.toLowerCase();
-
+        Log.d("check_filter_query:>> ", query);
         ArrayList<MemberSpaceModel> filteredList = new ArrayList<>();
         filteredList.clear();
+
+        Log.d("check_filter_SIze:>> ", filteredList.size()+"");
+
+
         for (MemberSpaceModel item : mList) {
             if (item.fullName.toLowerCase().contains(query)) {
                 filteredList.add(item);
+                Log.d("filteredList_size ", filteredList.size()+"");
+
             }
         }
 
@@ -1252,6 +1269,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
             super.onBackPressed();
         }
+
     }
 
 

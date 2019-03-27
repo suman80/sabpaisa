@@ -147,7 +147,7 @@ public class AddMemberToSpaceDialogFragment1 extends DialogFragment {
                         alertDialog.show();
                     }else {
 
-                        memberNumberArraylist.add(number);
+                        memberNumberArraylist.add(number.trim());
 
                         addMemberToSpace(appCid, userAccessToken, memberNumberArraylist);
                     }
@@ -206,7 +206,18 @@ public class AddMemberToSpaceDialogFragment1 extends DialogFragment {
 //            contactEditText.setText(name);
 //            contactNumberEditText.setText(phoneNo);
             cName.setText(name);
-            cNumber.setText(phoneNo);
+
+
+            if (phoneNo.startsWith("+91")){
+                String number = phoneNo.replace("+91","");
+                cNumber.setText(number);
+            }else if (phoneNo.startsWith("0")){
+                String number = phoneNo.substring(1);
+                cNumber.setText(number);
+            }
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
