@@ -214,6 +214,8 @@ public class AddMemberToSpaceDialogFragment1 extends DialogFragment {
             }else if (phoneNo.startsWith("0")){
                 String number = phoneNo.substring(1);
                 cNumber.setText(number);
+            }else {
+                cNumber.setText(phoneNo);
             }
 
 

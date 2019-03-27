@@ -306,6 +306,7 @@ public class AddMemberTo_A_SpaceGroup extends AppCompatActivity implements AddMe
                         intent.putExtra("appCid",appCid);
                         intent.putExtra("state",state);
                         intent.putExtra("FRAGMENT_ID","1");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
 
 

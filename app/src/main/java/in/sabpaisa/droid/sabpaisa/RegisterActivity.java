@@ -954,7 +954,7 @@ public class RegisterActivity extends AppCompatActivity  {
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(RegisterActivity.this,LoginActivityWithoutSharedPreference.class);
+                                Intent intent = new Intent(RegisterActivity.this,LogInActivity.class);
                                 startActivity(intent);
                             }
                         });
@@ -1183,7 +1183,7 @@ public class RegisterActivity extends AppCompatActivity  {
     }*//*
      */
     private void launchAgeScreen() {
-        startActivity(new Intent(RegisterActivity.this, LoginActivityWithoutSharedPreference.class));
+        startActivity(new Intent(RegisterActivity.this, LogInActivity.class));
 
     }
 
