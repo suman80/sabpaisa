@@ -102,6 +102,10 @@ public class InstitutionSkipFragment extends Fragment {
 
     Context context;
 
+
+
+
+
     public InstitutionSkipFragment() {
 
     }
@@ -345,6 +349,8 @@ public class InstitutionSkipFragment extends Fragment {
 
 
                     } else {
+
+
                         JSONArray jsonArray = jsonObject.getJSONArray("response");
 
                         JsonParser parser = new JsonParser();
@@ -484,16 +490,32 @@ public class InstitutionSkipFragment extends Fragment {
 
                         if (getContext()!=null) {
 
-                            //START listener for sending data to activity
-                            OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
-                            listener.onFragmentSetClients(institutions1);
-                            //END listener for sending data to activity
+                            if (institutions1 != null && !institutions1.isEmpty()) {
+                                Log.d("institutions1Size","_____"+institutions1.size());
+
+
+
+                                //START listener for sending data to activity
+                                OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
+                                listener.onFragmentSetClients(institutions1);
+                                //END listener for sending data to activity
+                            }
 
                         }else {
-                            //START listener for sending data to activity
-                            OnFragmentInteractionListener listener = (OnFragmentInteractionListener) context;
-                            listener.onFragmentSetClients(institutions1);
-                            //END listener for sending data to activity
+
+                            if (institutions1 != null && !institutions1.isEmpty()) {
+
+                                Log.d("institutions1Size","_____"+institutions1.size());
+
+
+
+                                //START listener for sending data to activity
+                                OnFragmentInteractionListener listener = (OnFragmentInteractionListener) context;
+                                listener.onFragmentSetClients(institutions1);
+                                //END listener for sending data to activity
+
+                            }
+
                         }
 
                         // Comparing timings with notification db
@@ -699,8 +721,15 @@ public class InstitutionSkipFragment extends Fragment {
         if (sGetDataInterface != null) {
             this.institutions1 = sGetDataInterface.getClientDataList();
 
+            if (institutions1 != null && !institutions1.isEmpty()) {
+
                 OtherSpaceAdapter.setItems(this.institutions1);
                 OtherSpaceAdapter.notifyDataSetChanged();
+
+           }else {
+                OtherSpaceAdapter = new OtherSpaceAdapter(institutions1,getContext());
+                recyclerViewOtherSpace.setAdapter(OtherSpaceAdapter);
+            }
 
         }
 

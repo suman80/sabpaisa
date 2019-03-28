@@ -165,6 +165,8 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
 
     public static String SUPER_ADMIN_SHAREDFREF = "SUPER_ADMIN_SHAREDFREF";
 
+    private BroadcastReceiver mMessageReceiver;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -739,16 +741,31 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.coa_menu, menu);
+        getMenuInflater().inflate(R.menu.search_menu, menu);
 
-        //Search
+        final MenuItem menuItem = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(menuItem);
+
+
+
+      /*  if (InstitutionSkipFragment.searchFlag){
+            menuItem.setVisible(true);
+        }else {
+            menuItem.setVisible(false);
+        }
+*/
+
+
+      /*  //Search
         Bitmap iconSearch = BitmapFactory.decodeResource(getResources(), R.drawable.search); //Converting drawable into bitmap
         Bitmap newIconSearch = resizeBitmapImageFn(iconSearch, (int) convertDpToPixel(20f, this)); //resizing the bitmap
         Drawable dSearch = new BitmapDrawable(getResources(), newIconSearch); //Converting bitmap into drawable
 //        menu.getItem(1).setIcon(dSearch);
-        searchView.setMenuItem(menu.getItem(0));  //TODO searchView
 
-        //menu.getItem(0).setVisible(false);
+
+        searchView.setMenuItem(menu.getItem(0));  //TODO searchView
+*/
+
 
 
         return true;
@@ -1413,6 +1430,8 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
 
         // register connection status listener
         AppController.getInstance().setConnectivityListener(this);
+
+
     }
 
     /**

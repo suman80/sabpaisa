@@ -55,6 +55,7 @@ import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
 import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.AppDecideFlag;
+import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHolder> {
 
@@ -81,12 +82,28 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
             multiSelect = true;
             menu.add("Share");
 
-            SharedPreferences sharedPreferencesRole = mContext.getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
+            String roleValue = null;
 
-            String roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
+            if (AppDecideFlag){
+                SharedPreferences sharedPreferencesRole = mContext.getSharedPreferences(SUPER_ADMIN_SHAREDFREF, Context.MODE_PRIVATE);
+
+                roleValue = sharedPreferencesRole.getString("ROLE_VALUE", "abc");
+
+                Log.d("CommentAdapter","roleValueFromPersonalSpace______"+roleValue);
+
+            }else {
+                SharedPreferences sharedPreferencesRole = mContext.getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
+
+                roleValue = sharedPreferencesRole.getString("USER_ROLE", "abc");
+
+                Log.d("CommentAdapter","roleValueFromClientSpace______"+roleValue);
+
+            }
+
+
 
             Log.d("CommentAdapter","ProceedGRPSCRN_MEM_GRP_ROLE "+Proceed_Group_FullScreen.memberGroupRole);
-            Log.d("CommentAdapter","roleValue "+roleValue);
+
 
             if (roleValue.equals("1") || (Proceed_Group_FullScreen.memberGroupRole != null && Proceed_Group_FullScreen.memberGroupRole.equals("2"))) {
                 menu.add("Delete");

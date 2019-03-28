@@ -451,7 +451,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
         callVerifyUINNumber(uinNumber,ClientId,useracesstoken);
 
-        if (InstitutionAdapter.progressDialog.isShowing()){
+        if (InstitutionAdapter.progressDialog != null && InstitutionAdapter.progressDialog.isShowing()){
             InstitutionAdapter.progressDialog.dismiss();
         }
 
