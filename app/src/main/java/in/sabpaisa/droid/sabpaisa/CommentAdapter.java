@@ -90,6 +90,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                 roleValue = sharedPreferencesRole.getString("ROLE_VALUE", "abc");
 
                 Log.d("CommentAdapter","roleValueFromPersonalSpace______"+roleValue);
+                if (roleValue.equals("1") || (GroupSpaceCommentActivity.memberGroupRole != null && GroupSpaceCommentActivity.memberGroupRole.equals("2"))) {
+                    menu.add("Delete");
+                }
 
             }else {
                 SharedPreferences sharedPreferencesRole = mContext.getSharedPreferences(UIN.SHARED_PREF_FOR_CHECK_USER, Context.MODE_PRIVATE);
@@ -98,16 +101,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
                 Log.d("CommentAdapter","roleValueFromClientSpace______"+roleValue);
 
+                Log.d("CommentAdapter","ProceedGRPSCRN_MEM_GRP_ROLE "+Proceed_Group_FullScreen.memberGroupRole);
+
+
+                if (roleValue.equals("1") || (Proceed_Group_FullScreen.memberGroupRole != null && Proceed_Group_FullScreen.memberGroupRole.equals("2"))) {
+                    menu.add("Delete");
+                }
+
             }
 
 
 
-            Log.d("CommentAdapter","ProceedGRPSCRN_MEM_GRP_ROLE "+Proceed_Group_FullScreen.memberGroupRole);
 
-
-            if (roleValue.equals("1") || (Proceed_Group_FullScreen.memberGroupRole != null && Proceed_Group_FullScreen.memberGroupRole.equals("2"))) {
-                menu.add("Delete");
-            }
 
             return true;
         }

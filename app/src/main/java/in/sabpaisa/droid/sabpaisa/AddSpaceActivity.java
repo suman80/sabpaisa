@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -24,6 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +44,7 @@ import static in.sabpaisa.droid.sabpaisa.Proceed_Group_FullScreen.memberGroupRol
 public class AddSpaceActivity extends AppCompatActivity {
 
     String imageUrl;
+    String imageUrl1;
 
     Bitmap spaceImageBitmap,spaceLogoBitmap;
 
@@ -118,7 +121,7 @@ public class AddSpaceActivity extends AppCompatActivity {
                 }else {
                     progressDialog.setMessage("Please wait !");
                     progressDialog.show();
-                    uploadSpaceData(spaceImageBitmap,spaceLogoBitmap,spaceName,spaceDescription,userAccessToken);
+                    uploadSpaceData(spaceImageBitmap,spaceLogoBitmap,spaceName.trim(),spaceDescription.trim(),userAccessToken);
                 }
 
             }
@@ -146,7 +149,7 @@ public class AddSpaceActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.putExtra("userImageUrl", imageUrl);
+        intent.putExtra("userImageUrl", imageUrl1);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), 300);
 
 
@@ -166,6 +169,12 @@ public class AddSpaceActivity extends AppCompatActivity {
 
                 //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                 spaceImg.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
+
+                /*final BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 8;
+
+                Bitmap bm = BitmapFactory.decodeFile(String.valueOf(MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg)),options);
+                spaceImg.setImageBitmap(bm);*/
 
                 spaceImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
 
@@ -188,7 +197,7 @@ public class AddSpaceActivity extends AppCompatActivity {
 
                 Log.d("spaceLogoBitmap"," "+spaceLogoBitmap);
 
-                if (spaceLogo == null){
+                if (spaceLogoBitmap == null){
                     Toast.makeText(AddSpaceActivity.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
                     spaceLogo.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
                 }

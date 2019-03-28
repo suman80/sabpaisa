@@ -264,6 +264,7 @@ public class SkipFeedFragmentAdapter extends RecyclerView.Adapter<SkipFeedFragme
                 intent.putExtra("feedImage",feedData.getImagePath());
                 intent.putExtra("feedLogo",feedData.getLogoPath());
                 intent.putExtra("clientId",feedData.getClientId());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 
             }

@@ -35,7 +35,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon,allowBackup">
+        tools:replace="android:icon,allowBackup"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
+        >
         <activity android:name=".AddMemberToSpaceActivity"></activity>
         <activity android:name=".PrivateGroupFeedSpace" />
         <activity android:name=".MembersOfAGroupSpace" />
@@ -284,6 +287,9 @@
                 <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
             </intent-filter>
         </receiver>
+
+
+
     </application>
 
 </manifest>
