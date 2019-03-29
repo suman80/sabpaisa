@@ -21,6 +21,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -89,8 +90,13 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -118,6 +124,7 @@ import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
+import static in.sabpaisa.droid.sabpaisa.LogInActivity.APP_VERSION_SHARED_PREF;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class MainActivitySkip extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener,/*AppBarLayout.OnOffsetChangedListener,*/ /*RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,*/NavigationView.OnNavigationItemSelectedListener, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, OnFragmentInteractionListener, InstitutionSkipFragment.GetDataInterface {
@@ -166,6 +173,8 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
     public static String SUPER_ADMIN_SHAREDFREF = "SUPER_ADMIN_SHAREDFREF";
 
     private BroadcastReceiver mMessageReceiver;
+
+    String currentVersion;
 
 
     @Override
@@ -471,6 +480,22 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
         AppDecideFlag = true;
 
 
+
+        // Checking app version
+        try {
+            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        new GetVersionCode().execute();
+
+
+
+
+
+
+
     }
 /*
     @Override
@@ -558,8 +583,8 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
 
         institutionSkipFragment = new InstitutionSkipFragment();
 
-        adapter.addFragment(institutionSkipFragment, "Space");
-        adapter.addFragment(new ClientFilterFragment(), "Search Org. Space");
+        adapter.addFragment(institutionSkipFragment, "My Spaces");
+        adapter.addFragment(new ClientFilterFragment(), "Org. Spaces");
         //adapter.addFragment(new FormFragment(),"Forms");
         //adapter.addFragment(new InstitutionFragment(),"Groups");
         viewPager.setAdapter(adapter);
@@ -1552,6 +1577,138 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
         finish();
         startActivity(getIntent());
     }
+
+
+
+
+
+
+    class GetVersionCode extends AsyncTask<Void, String, String> {
+
+        @Override
+
+        protected String doInBackground(Void... voids) {
+
+            String newVersion = null;
+
+            try {
+                Document document = Jsoup.connect("https://play.google.com/store/apps/details?id=" + MainActivitySkip.this.getPackageName()  + "&hl=en")
+                        .timeout(30000)
+                        .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                        .referrer("http://www.google.com")
+                        .get();
+                if (document != null) {
+                    Elements element = document.getElementsContainingOwnText("Current Version");
+                    for (Element ele : element) {
+                        if (ele.siblingElements() != null) {
+                            Elements sibElemets = ele.siblingElements();
+                            for (Element sibElemet : sibElemets) {
+                                newVersion = sibElemet.text();
+                            }
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return newVersion;
+
+        }
+
+
+        @Override
+
+        protected void onPostExecute(String onlineVersion) {
+
+            super.onPostExecute(onlineVersion);
+
+            if (onlineVersion != null && !onlineVersion.isEmpty()) {
+
+                /*if (Float.valueOf(currentVersion) < Float.valueOf(onlineVersion)) {
+                    //show anything
+                }*/
+
+                final String currentVersionLocal = currentVersion.trim().replace(".","");
+                final String currentVersionOnline = onlineVersion.trim().replace(".","");
+
+
+                SharedPreferences prefs = getSharedPreferences(APP_VERSION_SHARED_PREF, MODE_PRIVATE);
+                int appVersion = prefs.getInt("APP_VERSION", 1);
+
+
+                if (/*Integer.parseInt(currentVersionLocal)*/ appVersion < Integer.parseInt(currentVersionOnline)){
+                    Log.d("MainActivity","AppVersion_IsLessThanOnline__(currentVersionLocal)___"+appVersion+"__&currentVersionOnline__"+currentVersionOnline);
+                    // Logout Operation
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivitySkip.this); //Home is name of the activity
+                    builder.setMessage("New Updates are available at PlayStore. \nKindly update your app for better experience");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+
+
+                            SharedPreferences.Editor editor11 = getSharedPreferences(APP_VERSION_SHARED_PREF, MODE_PRIVATE).edit();
+                            editor11.putInt("APP_VERSION", Integer.parseInt(currentVersionOnline));
+                            editor11.apply();
+                            editor11.commit();
+
+
+
+                            Log.d("Mainctivity "," ***Logout******* ");
+                            SharedPreferences settings1 = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor1 = settings1.edit();
+                            editor1.remove("m");
+                            editor1.commit();
+
+                            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.remove("logged");
+
+                            editor.commit();
+                            clearApplicationData();
+                            finish();
+
+                            finishAffinity();
+                    /*Intent intent = new Intent(MainActivity.this, LogInActivity.class);
+
+
+                    startActivity(intent);*/
+
+                            System.exit(0);
+
+
+
+                        }
+                    });
+
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    alert.setCancelable(false);
+                    alert.setCanceledOnTouchOutside(false);
+
+
+
+
+                }else if (Integer.parseInt(currentVersionLocal) == Integer.parseInt(currentVersionOnline)){
+                    Log.d("MainActivity","AppVersion_IsEqualsToOnline__(currentVersionLocal)___"+currentVersionLocal+"__&currentVersionOnline__"+currentVersionOnline);
+                }else {
+                    Log.d("MainActivity_AppVersion","In Else Part");
+                }
+
+
+
+            }
+
+            //Log.d("AppVersionUpdate", "Current version " + currentVersion + "playstore version " + onlineVersion);
+
+        }
+    }
+
+
+
+
+
 
 
 }
