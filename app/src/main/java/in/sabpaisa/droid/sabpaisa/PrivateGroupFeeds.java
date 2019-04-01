@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -51,7 +52,7 @@ import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.REFRESH_GROUP_FRA
 public class PrivateGroupFeeds extends AppCompatActivity {
 
     public static String GroupId;
-    ArrayList<FeedData> feedArrayList = new ArrayList<FeedData>();
+    ArrayList<FeedData> feedArrayList /*= new ArrayList<FeedData>()*/;
     MainFeedAdapter mainFeedAdapter;/*Globally Declared Adapter*/
 
     Toolbar toolbar;
@@ -74,6 +75,8 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
     MaterialSearchView searchView;
 
+    TextView noResultTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        noResultTextView = (TextView)findViewById(R.id.noResultTextView);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -202,25 +206,36 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
                         for (FeedData items : feedArrayList) {
 
-                            if (items.feedName.contains(newText.toLowerCase())) {
+                            if (items.feedName.contains(newText.toLowerCase()) || items.feedText.contains(newText.toLowerCase())) {
                                 newArraylist.add(items);
                             }
 
                         }
 
-                        if (mainFeedAdapter.getItemCount() < 1) {
-                            Log.d("Search", "No data found");
-
-
-                        } else {
+                        if (newArraylist != null && !newArraylist.isEmpty()) {
 
                             loadFeedListView(newArraylist, (RecyclerView) findViewById(R.id.recycler_view_feeds));
+                            noResultTextView.setVisibility(View.GONE);
+                            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_feeds);
+                            recyclerView.setVisibility(View.VISIBLE);
+
+                        } else {
+                            Log.d("SearchInPGF_____", "No data found");
+                            loadFeedListView(newArraylist, (RecyclerView) findViewById(R.id.recycler_view_feeds));
+                            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_feeds);
+                            recyclerView.setVisibility(View.GONE);
+                            noResultTextView.setVisibility(View.VISIBLE);
+                            Log.d("SearchInPGFNewText_____", " "+newText);
+                            noResultTextView.setText("No Result For :"+newText);
                         }
 
 
                     } else {
                         // if search text is null then return default
-                        loadFeedListView(feedArrayList, (RecyclerView) findViewById(R.id.recycler_view_feeds));
+                        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_feeds);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        noResultTextView.setVisibility(View.GONE);
+                        loadFeedListView(feedArrayList, recyclerView);
                     }
 
                     return true;
@@ -241,34 +256,34 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
-        Log.d("onResume","onResumeCalled");
-        active = true;
+            super.onResume();
+            Log.d("onResume", "onResumeCalled");
+            active = true;
 
-        // Update UI
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String feedId = intent.getStringExtra("FEED_ID");
+            // Update UI
+            broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    String feedId = intent.getStringExtra("FEED_ID");
 
-                Log.d("PFF_FEED","broadcastVal__"+feedId);
+                    Log.d("PFF_FEED", "broadcastVal__" + feedId);
 
-                //API
+                    //API
 
-                if (active == true) {
+                    if (active == true) {
 
-                    callFeedDataList(GroupId,userAccessToken);
+                        callFeedDataList(GroupId, userAccessToken);
+                    }
+
                 }
+            };
 
-            }
-        };
+            LocalBroadcastManager.getInstance(PrivateGroupFeeds.this).registerReceiver(broadcastReceiver, new IntentFilter(ConstantsForUIUpdates.IS_FEED_FRAG_OPEN));
 
-        LocalBroadcastManager.getInstance(PrivateGroupFeeds.this).registerReceiver(broadcastReceiver,new IntentFilter(ConstantsForUIUpdates.IS_FEED_FRAG_OPEN));
+
+
 
     }
-
-
-
 
 
     public void callFeedDataList(final String groupId , final  String userAccessToken) {
@@ -287,7 +302,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
-
+                    //feedArrayList = new ArrayList<FeedData>();
                     Log.d( "Private_Feeds: " , response);
                     //swipeRefreshLayout.setRefreshing(false);
                     feedArrayList = new ArrayList<FeedData>();
@@ -501,11 +516,16 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        FLAG = null;
-        MainGroupAdapter1.isClicked=false;
-        active = false;
 
+        if (searchView.isSearchOpen()) {
+            searchView.closeSearch();
+        }else {
+
+            super.onBackPressed();
+            FLAG = null;
+            MainGroupAdapter1.isClicked = false;
+            active = false;
+        }
     }
 
 
