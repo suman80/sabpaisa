@@ -125,6 +125,7 @@ import in.sabpaisa.droid.sabpaisa.Adapter.NotificationAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
+import in.sabpaisa.droid.sabpaisa.AppDB.ClientsDB;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ParticularClient;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
@@ -1218,6 +1219,12 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
+
+
+                    ClientsDB clientsDB  = new ClientsDB(MainActivity.this);
+                    clientsDB.deleteAllClientData();
+
+
                     Log.d("Mainctivity "," ***Logout******* ");
                     SharedPreferences settings1 = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor1 = settings1.edit();
@@ -2080,6 +2087,8 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
 
+                            ClientsDB clientsDB  = new ClientsDB(MainActivity.this);
+                            clientsDB.deleteAllClientData();
 
                             SharedPreferences.Editor editor11 = getSharedPreferences(APP_VERSION_SHARED_PREF, MODE_PRIVATE).edit();
                             editor11.putInt("APP_VERSION", Integer.parseInt(currentVersionOnline));

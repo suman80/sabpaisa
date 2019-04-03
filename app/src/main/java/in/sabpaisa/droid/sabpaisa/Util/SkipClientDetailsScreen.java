@@ -111,6 +111,7 @@ import in.sabpaisa.droid.sabpaisa.AllContacts;
 import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
+import in.sabpaisa.droid.sabpaisa.AppDB.ClientsDB;
 import in.sabpaisa.droid.sabpaisa.CommentAdapter;
 import in.sabpaisa.droid.sabpaisa.CommentData;
 import in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates;
@@ -125,6 +126,7 @@ import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
+import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.MainActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Model.*;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
@@ -697,6 +699,9 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
+
+                    ClientsDB clientsDB  = new ClientsDB(SkipClientDetailsScreen.this);
+                    clientsDB.deleteAllClientData();
 
                     SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();

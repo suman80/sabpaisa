@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v4.widget.NestedScrollView android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,7 +19,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp"
-        tools:context=".FilterActivity1">
+        tools:context=".FilterActivity1"
+        android:id="@+id/relativeLayout1"
+        >
 
         <TextView
             android:id="@+id/text_SearchClients"
@@ -44,21 +53,61 @@
 
         <Button
             android:id="@+id/btn_Proceed"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/clientAutoCompleteTextView"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="21dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/background_button"
             android:text="Proceed"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:layout_below="@+id/clientAutoCompleteTextView"
-            android:layout_marginTop="100dp"
+            android:textColor="@color/white" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Or"
+            android:layout_below="@+id/btn_Proceed"
+            android:textSize="20sp"
+            android:textColor="@color/bg_orange"
+            android:layout_marginTop="10dp"
+            android:id="@+id/Or"
+            android:visibility="gone"
             />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Or"
+            >
 
+
+            <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/clientsRecyclerView"
+                android:visibility="gone"
+                >
+
+            </com.cooltechworks.views.shimmer.ShimmerRecyclerView>
+
+
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
 
 
+
+
+
+
+
 </FrameLayout>
+
+</android.support.v4.widget.NestedScrollView>

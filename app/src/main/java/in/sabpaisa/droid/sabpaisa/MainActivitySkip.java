@@ -107,6 +107,7 @@ import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
+import in.sabpaisa.droid.sabpaisa.AppDB.ClientsDB;
 import in.sabpaisa.droid.sabpaisa.Fragments.ClientFilterFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionSkipFragment;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
@@ -488,12 +489,12 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
             e.printStackTrace();
         }
 
-        new GetVersionCode().execute();
+        if (isOnline()) {
 
-
-
-
-
+            new GetVersionCode().execute();
+        }else {
+            Toast.makeText(MainActivitySkip.this,"No Internet Connection !",Toast.LENGTH_SHORT).show();
+        }
 
 
     }
@@ -913,7 +914,8 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
 
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
-
+            ClientsDB clientsDB  = new ClientsDB(MainActivitySkip.this);
+            clientsDB.deleteAllClientData();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivitySkip.this); //Home is name of the activity
             builder.setMessage("Do you want to Exit the app?");
@@ -1646,6 +1648,8 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
 
+                            ClientsDB clientsDB  = new ClientsDB(MainActivitySkip.this);
+                            clientsDB.deleteAllClientData();
 
                             SharedPreferences.Editor editor11 = getSharedPreferences(APP_VERSION_SHARED_PREF, MODE_PRIVATE).edit();
                             editor11.putInt("APP_VERSION", Integer.parseInt(currentVersionOnline));

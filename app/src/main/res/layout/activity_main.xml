@@ -64,7 +64,9 @@
                     android:id="@+id/collapsing_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_scrollFlags="scroll|enterAlways">
+                    app:layout_scrollFlags="scroll|enterAlways"
+
+                    >
 
 
                     <!--android:layout_height="350dp"-->
@@ -92,7 +94,9 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginBottom="10dp"
                                 app:selected_color="@color/bg_orange"
-                                app:unselected_color="@color/white" />
+                                app:unselected_color="@color/white"
+                                app:layout_scrollFlags="scroll|enterAlways"
+                                />
                         </com.daimajia.slider.library.SliderLayout>
 
 
@@ -116,7 +120,9 @@
                                 android:gravity="center_horizontal"
                                 android:text="Get social with money"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                app:layout_scrollFlags="scroll|enterAlways"
+                                />
 
                             <include
                                 layout="@layout/layout_dashboard"
@@ -147,7 +153,9 @@
                             android:background="@color/bg_screen"
                             app:layout_scrollFlags="scroll|enterAlways"
                             app:subtitleTextColor="@color/white"
-                            app:titleTextColor="@color/white" />
+                            app:titleTextColor="@color/white"
+
+                            />
 
                         <com.miguelcatalan.materialsearchview.MaterialSearchView
                             android:id="@+id/search_viewSP"

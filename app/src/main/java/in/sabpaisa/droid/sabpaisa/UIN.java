@@ -4,15 +4,18 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Contacts;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -41,15 +44,22 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
+import in.sabpaisa.droid.sabpaisa.AppDB.ClientsDB;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
+import in.sabpaisa.droid.sabpaisa.Model.ClientsDataModel;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
@@ -75,6 +85,8 @@ public class UIN extends AppCompatActivity {
 
     public static String SHARED_PREF_FOR_CHECK_USER = "checkUserForAdmin";
     public static String SHARED_PREF_UIN_STATUS = "sharedPrefUinStatus";
+
+    ClientsDB clientsDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,10 +154,11 @@ public class UIN extends AppCompatActivity {
         editor.putString("userAccessToken", userAccessToken);
         editor.commit();
 
-        checkUserForAdmin(userAccessToken,clientId);
+        checkUserForAdmin(userAccessToken, clientId);
+
+        clientsDB = new ClientsDB(UIN.this);
 
     }
-
 
 
     public void onVerifyBtn(View view) {
@@ -200,7 +213,7 @@ public class UIN extends AppCompatActivity {
         }
     }
 
-    public void callVerifyUINNumber(final String uinnnumber, String clientId, String userAccessToken) {
+    public void callVerifyUINNumber(final String uinnnumber, final String clientId, final String userAccessToken) {
         String tag_string_req = "req_register";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -224,7 +237,7 @@ public class UIN extends AppCompatActivity {
                     // Log.i("status_UIN", "status=" + status);
                     Log.i("response_UIN", "Repsomse_UIN=" + response1);
                     if (status.equals("success") && response1.equals("UIN verified")) {
-                        callMainScreen();
+
                         Log.d("InIfPArt", "UINVerifu");
 
 
@@ -233,6 +246,101 @@ public class UIN extends AppCompatActivity {
                         editor.putString("UIN_NUMBER", uinnnumber);
                         editor.commit();
 
+
+                        ///////////////////////Client Db//////////////////////////////////////
+
+                        Cursor res = clientsDB.getParticularClientData1(clientId,userAccessToken);
+                        if (res.getCount() > 0) {
+                            Log.d("Data","Already Exists");
+
+                            StringBuffer stringBuffer = new StringBuffer();
+
+
+                            while (res.moveToNext()){
+                                stringBuffer.append(res.getString(0) + " ");
+                                stringBuffer.append(res.getString(1) + " ");
+                                /*stringBuffer.append(res.getString(2) + " ");
+                                stringBuffer.append(res.getString(3) + " ");
+                                stringBuffer.append(res.getString(4) + " ");
+                                stringBuffer.append(res.getString(5) + " ");
+                                stringBuffer.append(res.getString(6) + " ");*/
+
+                            }
+
+                            Log.d("GETTING_ALL","StrBuffer__"+stringBuffer);
+                            callMainScreen();
+                        }else {
+
+                            final ClientsDataModel clientsDataModel = new ClientsDataModel();
+                            clientsDataModel.setClientId(clientId);
+                            Log.d("clientNameUIN", "____" + clientname);
+                            clientsDataModel.setClientName(clientname);
+                            clientsDataModel.setCobCustId(null);
+                            clientsDataModel.setUinNo(uinnnumber);
+                            clientsDataModel.setUserAccessToken(userAccessToken);
+
+                            Log.d("clientLogoPathUIN", "___" + clientLogoPath);
+
+                            Glide.with(getApplicationContext())
+                                    .load(clientLogoPath)
+                                    .asBitmap()
+                                    .into(new SimpleTarget<Bitmap>(100, 100) {
+                                        @Override
+                                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                            Log.d("LogoBitmap", " " + resource);
+                                            //saveLogoToInternalStorage(resource , feedData.getFeedId());
+
+
+                                            ContextWrapper cw = new ContextWrapper(UIN.this);
+                                            // path to /data/data/yourapp/app_data/imageDir
+                                            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                                            // Create imageDir
+                                            File mypath = new File(directory, clientsDataModel.getClientId() + "clientImg.jpg");
+
+                                            Log.d("mypathjzbjhzb", "mypath  " + mypath);
+
+                                            String logoPath = mypath.toString();
+
+
+                                            FileOutputStream fos = null;
+                                            try {
+                                                fos = new FileOutputStream(mypath);
+                                                // Use the compress method on the BitMap object to write image to the OutputStream
+                                                resource.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                try {
+                                                    fos.close();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                            Log.d("UIN_LogoPath", "__" + logoPath);
+                                            clientsDataModel.setClientImageUrl(logoPath);
+
+                                        }
+                                    });
+
+
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // Do something after 5s = 5000ms
+                                    boolean isInserted = clientsDB.insertClientData(clientsDataModel);
+
+                                    if (isInserted) {
+                                        Log.d("UIN", "LocalDBInIfPart____" + isInserted);
+                                        callMainScreen();
+                                    } else {
+                                        Log.d("UIN", "LocalDBInElsePart____" + isInserted);
+                                    }
+
+                                }
+                            }, 2000);
+
+                        }
 
 
                     } else if (status.equals("success") && response1.equals("Invalid UIN number")) {
@@ -275,7 +383,7 @@ public class UIN extends AppCompatActivity {
                         // Showing Alert Message
                         alertDialog.show();
 
-                    } else if (status.equals("failed") && response1.equals("User is Blocked")){
+                    } else if (status.equals("failed") && response1.equals("User is Blocked")) {
 
                         Log.d("InElsePart", "UINVerifu");
 
@@ -294,7 +402,7 @@ public class UIN extends AppCompatActivity {
                         // Showing Alert Message
                         alertDialog.show();
 
-                    }else {
+                    } else {
                         callErrorPopup();
                         Log.d("InelsePArt", "UINVerifu");
 
@@ -477,8 +585,8 @@ public class UIN extends AppCompatActivity {
 
                         alertDialog.show();
 
-                    }catch (WindowManager.BadTokenException e){
-                        Log.d("UIN","WindowManager "+e);
+                    } catch (WindowManager.BadTokenException e) {
+                        Log.d("UIN", "WindowManager " + e);
                     }
 
                 } else if (error instanceof AuthFailureError) {
@@ -530,7 +638,6 @@ public class UIN extends AppCompatActivity {
         editor1.commit();
 
 
-
         Intent intent = new Intent(UIN.this, FilterActivity1.class);
 
         startActivity(intent);
@@ -573,6 +680,7 @@ public class UIN extends AppCompatActivity {
                         clientLogoPath = clientData.getClientLogoPath().toString();
                         clientImageURLPath = clientData.getClientImagePath().toString();
                         clientNAmeTextview.setText(clientData.getClientName().toString());
+                        clientname = clientData.getClientName();
                         Glide
                                 .with(UIN.this)
                                 .load(clientLogoPath)
@@ -656,7 +764,7 @@ public class UIN extends AppCompatActivity {
 
         String tag_string_req = "req_clients";
 
-        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_UserRole + "?token=" + userAccessToken +"&clientId="+clientId;
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_UserRole + "?token=" + userAccessToken + "&clientId=" + clientId;
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
 
@@ -675,17 +783,17 @@ public class UIN extends AppCompatActivity {
                     Log.d("checkUserForAdminResp", "" + response);
                     Log.d("checkUserForAdminStatus", "" + status);
 
-                    if (status.equals("success")){
+                    if (status.equals("success")) {
 
 
-                        Log.d("UIN_CheckForAdmin","InIfPart");
+                        Log.d("UIN_CheckForAdmin", "InIfPart");
 
                         SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREF_FOR_CHECK_USER, MODE_PRIVATE).edit();
                         editor.putString("USER_ROLE", response);
                         editor.commit();
 
-                    }else {
-                        Log.d("UIN_CheckForAdmin","InElsePart");
+                    } else {
+                        Log.d("UIN_CheckForAdmin", "InElsePart");
                     }
 
 
@@ -744,8 +852,6 @@ public class UIN extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request, tag_string_req);
 
     }
-
-
 
 
 }

@@ -81,6 +81,7 @@ import in.sabpaisa.droid.sabpaisa.AllContacts;
 import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
+import in.sabpaisa.droid.sabpaisa.AppDB.ClientsDB;
 import in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates;
 import in.sabpaisa.droid.sabpaisa.FeedData;
 import in.sabpaisa.droid.sabpaisa.FilterActivity;
@@ -883,6 +884,10 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
+
+                    ClientsDB clientsDB  = new ClientsDB(FullViewOfClientsProceed.this);
+                    clientsDB.deleteAllClientData();
+
                     SharedPreferences settings1 = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor1 = settings1.edit();
                     editor1.remove("m");
