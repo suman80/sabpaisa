@@ -126,6 +126,7 @@ import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.AppDB.ClientsDB;
+import in.sabpaisa.droid.sabpaisa.Fragments.ClientFilterFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ParticularClient;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
@@ -245,6 +246,8 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         m = n;
         ClientId1 = sharedPreferences2.getString("clientId", "abc");
 
+        Log.d("MainActivityCid","ClientId_____"+ClientId1);
+
         if (ClientId1.equals("abc")){
 
             SharedPreferences settings = getSharedPreferences(UIN.MYSHAREDPREFUIN, Context.MODE_PRIVATE);
@@ -259,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
             //Added on 5th dec 2018
 
-            SharedPreferences settings1 = getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
+            SharedPreferences settings1 = getSharedPreferences(ClientFilterFragment.MySharedPreffilter, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor1 = settings1.edit();
             editor1.remove("clientId");
             editor1.remove("stateId");
@@ -269,9 +272,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
             finish();
 
-            Intent intent = new Intent(MainActivity.this, FilterActivity1.class);
+            /*Intent intent = new Intent(MainActivity.this, FilterActivity1.class);
 
-            startActivity(intent);
+            startActivity(intent);*/
         }
 
         ClientId = ClientId1;
@@ -297,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
             //Added on 5th dec 2018
 
-            SharedPreferences settings1 = getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
+            SharedPreferences settings1 = getSharedPreferences(ClientFilterFragment.MySharedPreffilter, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor1 = settings1.edit();
             editor1.remove("clientId");
             editor1.remove("stateId");
@@ -307,15 +310,15 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
             finish();
 
-            Intent intent = new Intent(MainActivity.this, FilterActivity1.class);
+            /*Intent intent = new Intent(MainActivity.this, FilterActivity1.class);
 
             startActivity(intent);
-
+*/
 
         }
 
 
-        SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(ClientFilterFragment.MySharedPreffilter, Context.MODE_PRIVATE);
         stateName1 = sharedPreferences1.getString("selectedstate", "abc");
         stateName = stateName1;
         serviceName1 = sharedPreferences1.getString("selectedservice", "123");
@@ -1316,17 +1319,17 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
                     //Added on 5th dec 2018
 
-                    SharedPreferences settings1 = getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
+                    SharedPreferences settings1 = getSharedPreferences(ClientFilterFragment.MySharedPreffilter, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor1 = settings1.edit();
                     editor1.remove("clientId");
                     editor1.remove("stateId");
                     editor1.clear();
                     editor1.commit();
 
-                    Intent intent = new Intent(MainActivity.this, FilterActivity1.class);
+                    /*Intent intent = new Intent(MainActivity.this, FilterActivity1.class);
 
                     startActivity(intent);
-
+*/
 
                 }
             });

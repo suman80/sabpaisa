@@ -126,13 +126,35 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
             public void onClick(View v) {
 
                 //API to check member data
-                progressDialog = new ProgressDialog(context,R.style.DialogTheme);
+               /* progressDialog = new ProgressDialog(context,R.style.DialogTheme);
                 progressDialog.setMessage("Please Wait");
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setCancelable(false);
                 progressDialog.show();
+*/
+                //checkMemberData(mainFeedData.getAppCid(),mainFeedData);
 
-                checkMemberData(mainFeedData.getAppCid(),mainFeedData);
+               /* if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+*/
+                Intent intent = new Intent(context, SkipClientDetailsScreen.class);
+                intent.putExtra("clientName", mainFeedData.getAppCname());
+                intent.putExtra("state", mainFeedData.getAddress());
+                intent.putExtra("clientLogoPath", mainFeedData.getClientLogoPath());
+                intent.putExtra("clientImagePath", mainFeedData.getClientImagePath());
+                intent.putExtra("appCid", mainFeedData.getAppCid());
+
+
+                //Storing value for user role and setting default to 1
+                SharedPreferences.Editor editor = context.getSharedPreferences(SUPER_ADMIN_SHAREDFREF, MODE_PRIVATE).edit();
+                editor.putString("ROLE_VALUE", "1");
+                editor.apply();
+
+
+
+                context.startActivity(intent);
+
 
 
             }

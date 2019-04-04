@@ -367,26 +367,31 @@ public class ParticularClient extends Fragment {
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
 
-                    // Setting Dialog Title
-                    alertDialog.setTitle("Network/Connection Error");
+                    if (getActivity()!=null) {
 
-                    // Setting Dialog Message
-                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme).create();
 
-                    // Setting Icon to Dialog
-                    //  alertDialog.setIcon(R.drawable.tick);
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Network/Connection Error");
 
-                    // Setting OK Button
-                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
 
-                        }
-                    });
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
 
-                    // Showing Alert Message
-                    alertDialog.show();
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+                    }
 
 
                     //Log.e(TAG, "Registration Error: " + error.getMessage());

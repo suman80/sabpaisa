@@ -58,6 +58,7 @@ import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.ClientsDB;
+import in.sabpaisa.droid.sabpaisa.Fragments.ClientFilterFragment;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Model.ClientsDataModel;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
@@ -111,7 +112,7 @@ public class UIN extends AppCompatActivity {
 
         clientNAmeTextview = (TextView) findViewById(R.id.InstitueNAme);
 
-        SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences1 = getApplication().getSharedPreferences(ClientFilterFragment.MySharedPreffilter, Context.MODE_PRIVATE);
         clientId = sharedPreferences1.getString("clientId", "abc");
         getClientsList(clientId);
 
@@ -200,7 +201,7 @@ public class UIN extends AppCompatActivity {
             });
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
-            Toast.makeText(UIN.this, "Enter Uin Number", Toast.LENGTH_LONG).show();
+            //Toast.makeText(UIN.this, "Enter Uin Number", Toast.LENGTH_LONG).show();
 
         } else if (!uinnnumber.getText().toString().equals("")) {
 
@@ -630,7 +631,7 @@ public class UIN extends AppCompatActivity {
 
         //Added on 5th dec 2018
 
-        SharedPreferences settings1 = getSharedPreferences(FilterActivity1.MySharedPreffilter, Context.MODE_PRIVATE);
+        SharedPreferences settings1 = getSharedPreferences(ClientFilterFragment.MySharedPreffilter, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor1 = settings1.edit();
         editor1.remove("clientId");
         editor1.remove("stateId");
@@ -638,9 +639,9 @@ public class UIN extends AppCompatActivity {
         editor1.commit();
 
 
-        Intent intent = new Intent(UIN.this, FilterActivity1.class);
+        /*Intent intent = new Intent(UIN.this, FilterActivity1.class);
 
-        startActivity(intent);
+        startActivity(intent);*/
 
         finish();
 

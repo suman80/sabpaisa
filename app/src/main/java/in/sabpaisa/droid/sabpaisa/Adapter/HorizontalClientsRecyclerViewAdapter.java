@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,9 @@ import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.UIN;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 
+import static android.content.Context.MODE_PRIVATE;
+import static in.sabpaisa.droid.sabpaisa.UIN.MYSHAREDPREFUIN;
+
 public class HorizontalClientsRecyclerViewAdapter extends RecyclerView.Adapter<HorizontalClientsRecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = "HorizontalClientsAdptr";
@@ -67,6 +71,7 @@ public class HorizontalClientsRecyclerViewAdapter extends RecyclerView.Adapter<H
 
         Glide.with(mContext)
                 .load(clientsDataModel.getClientImageUrl())
+                .error(R.drawable.image_not_found)
                 .into(holder.image);
 
         holder.name.setText(clientsDataModel.getClientName());
@@ -134,7 +139,16 @@ public class HorizontalClientsRecyclerViewAdapter extends RecyclerView.Adapter<H
                         editor.putString("UIN_NUMBER", uinnnumber);
                         editor.commit();*/
 
-                         Intent intent = new Intent(mContext, MainActivity.class);
+
+                        SharedPreferences.Editor editor = mContext.getSharedPreferences(MYSHAREDPREFUIN, MODE_PRIVATE).edit();
+                        Log.d("ClientIdHCRV",""+clientsDataModel.getClientId());
+                        editor.putString("clientId", clientsDataModel.getClientId());
+                        editor.putString("m", "abc");
+                        editor.putString("userAccessToken", clientsDataModel.getUserAccessToken());
+                        editor.commit();
+
+
+                        Intent intent = new Intent(mContext, MainActivity.class);
                          intent.putExtra("clientId", clientsDataModel.getClientId());
                          intent.putExtra("userImageUrl", clientsDataModel.getClientImageUrl());
                          mContext.startActivity(intent);

@@ -329,6 +329,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
         LocalBroadcastManager.getInstance(SkipClientDetailsScreen.this).registerReceiver(receiver, new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
 
+        getUserImage(userAccessToken);
 
 
        /* if (OtherSpaceAdapter.progressDialog.isShowing()){

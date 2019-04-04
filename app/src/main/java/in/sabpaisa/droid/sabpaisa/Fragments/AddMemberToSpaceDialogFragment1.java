@@ -34,12 +34,14 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -313,9 +315,29 @@ public class AddMemberToSpaceDialogFragment1 extends DialogFragment {
 
                         // Setting Dialog Title
                         alertDialog.setTitle("Add Member");
+                        Object value = null;
+
+                        try {
+                            JSONObject object = new JSONObject(exception);
+
+                            Iterator<String> iter = object.keys();
+                            while (iter.hasNext()) {
+                                String key = iter.next();
+                                try {
+                                    value = object.get(key);
+                                } catch (JSONException e) {
+                                    // Something went wrong!
+                                }
+                            }
+
+                        }catch (Exception e){
+
+                        }
+
+
 
                         // Setting Dialog Message
-                        alertDialog.setMessage(exception);
+                        alertDialog.setMessage(value.toString());
 
                         // Setting Icon to Dialog
                         //  alertDialog.setIcon(R.drawable.tick);

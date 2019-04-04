@@ -255,7 +255,10 @@ public class OtherSpaceAdapter extends RecyclerView.Adapter<OtherSpaceAdapter.My
 
     @Override
     public int getItemCount() {
-        return institutions .size();
+        if (institutions != null && !institutions.isEmpty()) {
+            return institutions.size();
+        }
+        else return 0;
     }
 
 
