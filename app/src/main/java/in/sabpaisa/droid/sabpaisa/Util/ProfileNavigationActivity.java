@@ -210,6 +210,17 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     //mailId.setText(" ");
                     mailId.requestFocus();
                     mailIdEdit.setText("Save");
+                    ///////////////////////////////////////////////////////////////////
+
+                    et_address.setEnabled(false);
+                    addressEdit.setText("Edit");
+
+                    et_UserName.setEnabled(false);
+                    Log.d("Usernameedit22", "-->");
+
+                    tv_NameEdit.setText("Edit");
+
+
                 } else if (mailIdEdit.getText().toString().equals("Save")) {
                     //Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
@@ -251,6 +262,16 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     et_address.requestFocus();
                     addressEdit.setText("Save");
 
+                    /////////////////////////////////////////////////////////////////////
+                    et_UserName.setEnabled(false);
+                    Log.d("Usernameedit22", "-->");
+
+                    tv_NameEdit.setText("Edit");
+
+                    mailId.setEnabled(false);
+                    mailIdEdit.setText("Edit");
+                    ////////////////////////////////////////////////////////////////////
+
                 } else if (addressEdit.getText().toString().equals("Save")) {
                     //Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();
 
@@ -277,6 +298,14 @@ public class ProfileNavigationActivity extends AppCompatActivity {
                     et_UserName.requestFocus();
                     Log.d("Usernameedit", "-->");
                     tv_NameEdit.setText("Save");
+
+                    ////////////////////////////////////////////////////////////////////////
+
+                    et_address.setEnabled(false);
+                    addressEdit.setText("Edit");
+
+                    mailId.setEnabled(false);
+                    mailIdEdit.setText("Edit");
 
                 } else if (tv_NameEdit.getText().toString().equals("Save")) {
                     //Toast.makeText(getApplication(), "Please wait for a popup.Once, It will notify that data is updated", Toast.LENGTH_LONG).show();

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
@@ -133,6 +134,8 @@ public class AddMember extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if (isOnline()){
+
                 progressDialog.setMessage("Please wait !");
                 progressDialog.show();
 
@@ -191,7 +194,13 @@ public class AddMember extends AppCompatActivity {
                 //Api
                 saveUINtableData(clientId,userAccessToken,jsonObject);
 
+            }else {
+                    Toast.makeText(AddMember.this,"No Internet Connection !",Toast.LENGTH_SHORT).show();
+                }
+
             }
+
+
         });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -200,6 +209,7 @@ public class AddMember extends AppCompatActivity {
                 finish();
             }
         });
+
 
 
     }
@@ -524,6 +534,22 @@ public class AddMember extends AppCompatActivity {
 
 
     }
+
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.v("PGF", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
 
 
 
