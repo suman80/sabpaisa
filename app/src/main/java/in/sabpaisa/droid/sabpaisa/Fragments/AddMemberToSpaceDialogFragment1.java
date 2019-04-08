@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -45,6 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import in.sabpaisa.droid.sabpaisa.AddMemberToSpaceActivity;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.Model.MemberSpaceModel;
@@ -69,6 +71,8 @@ public class AddMemberToSpaceDialogFragment1 extends DialogFragment {
 
     //Values get from Skip Members Fragment
     String clientName,clientLogoPath,clientImagePath,state;
+
+    TextView chooseMultipleContactTextView;
 
     public AddMemberToSpaceDialogFragment1() {
         // Required empty public constructor
@@ -100,6 +104,7 @@ public class AddMemberToSpaceDialogFragment1 extends DialogFragment {
         nameEditText = (EditText)view.findViewById(R.id.nameEditText);
         numberEditText = (EditText)view.findViewById(R.id.numberEditText);
         contactChooserImg = (ImageView)view.findViewById(R.id.contactChooserImg);
+        chooseMultipleContactTextView = (TextView)view.findViewById(R.id.chooseMultipleContactTextView);
         toolbar = (Toolbar)view.findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_previousback);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -168,6 +173,21 @@ public class AddMemberToSpaceDialogFragment1 extends DialogFragment {
                 startActivityForResult(contactPickerIntent, RESULT_PICK_CONTACT);
             }
         });
+
+
+        chooseMultipleContactTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AddMemberToSpaceActivity.class);
+                intent.putExtra("appCid",appCid);
+                intent.putExtra("clientName",clientName);
+                intent.putExtra("clientLogoPath",clientLogoPath);
+                intent.putExtra("clientImagePath",clientImagePath);
+                intent.putExtra("state",state);
+                startActivity(intent);
+            }
+        });
+
 
 
         return view;

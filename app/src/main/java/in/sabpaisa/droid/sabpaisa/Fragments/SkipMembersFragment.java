@@ -33,6 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.SkipMemberAdapter;
+import in.sabpaisa.droid.sabpaisa.AddMemberToSpaceActivity;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.Model.MemberSpaceModel;
@@ -137,6 +138,8 @@ public class SkipMembersFragment extends Fragment {
                 bundle.putString("clientImagePath",clientImagePath);
                 bundle.putString("state",state);
                 addMemberToSpaceDialogFragment.setArguments(bundle);
+
+
 
 
             }

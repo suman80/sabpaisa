@@ -83,6 +83,31 @@
             />
 
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/contactChooserImg"
+            android:layout_marginTop="10dp"
+            android:background="@color/bg_orange"
+            android:id="@+id/relativeLayoutLinebar"
+            >
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relativeLayoutLinebar"
+            android:text="Choose Multiple"
+            android:textColor="@color/bg_orange"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:id="@+id/chooseMultipleContactTextView"
+            />
+
+
     </RelativeLayout>
 
 
