@@ -18,6 +18,24 @@
 
     </android.support.v7.widget.Toolbar>
 
+
+    <EditText
+        android:id="@+id/editTextSearch"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="Search Contacts"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        android:textColorHint="@color/bg_orange"
+        android:background="@drawable/chat_edit_text_background"
+        android:padding="5dp"
+        android:drawableEnd="@drawable/autocomplete_search"
+        android:completionThreshold="1"
+        android:layout_marginTop="2dp"
+        />
+
     <!-- TODO: Update blank fragment layout -->
     <com.cooltechworks.views.shimmer.ShimmerRecyclerView
         android:id="@+id/rvContacts"

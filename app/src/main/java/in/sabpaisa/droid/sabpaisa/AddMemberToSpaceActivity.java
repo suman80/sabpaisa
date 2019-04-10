@@ -24,10 +24,13 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -92,6 +95,8 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
 
     String appCid,userAccessToken,state,clientLogoPath,clientImagePath,clientName;
 
+    EditText editTextSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +108,7 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
         clientImagePath=getIntent().getStringExtra("clientImagePath");
         clientName=getIntent().getStringExtra("clientName");
 
+        editTextSearch = (EditText) findViewById(R.id.editTextSearch);
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
@@ -197,6 +203,26 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
 
             memberNumberArraylist.clear();
         }
+
+
+
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //after the change calling the method and passing the search input
+                filter(editable.toString());
+            }
+        });
 
 
 
@@ -752,6 +778,22 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
     }
 
 
+    private void filter(String text) {
+        //new array list that will hold the filtered data
+        ArrayList<ContactVO> filterdNames = new ArrayList<>();
+
+        //looping through existing elements
+        for (ContactVO s : contactVOList) {
+            //if the existing elements contains the search input
+            if (s.ContactName.toLowerCase().contains(text.toLowerCase().trim()) || s.ContactNumber.toLowerCase().contains(text.toLowerCase().trim())) {
+                //adding the element to filtered list
+                filterdNames.add(s);
+            }
+        }
+
+        //calling a method of the adapter class and passing the filtered list
+        adapter.filterList(filterdNames);
+    }
 
 
 

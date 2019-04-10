@@ -58,6 +58,11 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
         return contactViewHolder;
     }
 
+    public void filterList(ArrayList<ContactVO> filterdNames) {
+        this.contactVOList = filterdNames;
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(MemberFragmentDialogAdapter.ContactViewHolder holder, int position) {
        final ContactVO contactVO = contactVOList.get(position);
