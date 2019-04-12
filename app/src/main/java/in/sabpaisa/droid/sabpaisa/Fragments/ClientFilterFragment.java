@@ -22,8 +22,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
@@ -247,7 +253,29 @@ public class ClientFilterFragment extends Fragment {
             // we check that the fragment is becoming visible
             if (isFragmentVisible_ && !_hasLoadedOnce) {
 
-                getClientsList();
+                if (isOnline()) {
+
+                    getClientsList();
+
+                }else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("No Internet Connection");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Please check internet connection and try again. Thank you.");
+
+
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+                }
 
                 _hasLoadedOnce = true;
             }
@@ -345,6 +373,8 @@ public class ClientFilterFragment extends Fragment {
                     // If an error occurs, this prints the error to the log
                     e.printStackTrace();
 
+                    //getClientsList();
+
                 }
 
             }
@@ -353,7 +383,50 @@ public class ClientFilterFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+
+
+                if (error.getMessage() == null || error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Network/Connection Error");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Internet Connection is poor OR The Server is taking too long to respond.Please try again later.Thank you.");
+
+                    // Setting Icon to Dialog
+                    //  alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getClientsList();
+                        }
+                    });
+
+                    // Showing Alert Message
+                    // alertDialog.show();
+                    //Log.e(TAG, "Registration Error: " + error.getMessage());
+
+                } else if (error instanceof AuthFailureError) {
+
+                    //TODO
+                } else if (error instanceof ServerError) {
+
+                    //TODO
+                } else if (error instanceof NetworkError) {
+
+                    //TODO
+                } else if (error instanceof ParseError) {
+
+                    //TODO
+                }
+
+
+
+
+
             }
         });
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);

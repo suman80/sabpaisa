@@ -19,6 +19,8 @@ import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +29,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -93,6 +96,8 @@ public class AllContacts extends AppCompatActivity {
     ArrayList<ContactVO> contactVOList;
     AllContactsAdapter allContactsAdapter;
 
+    EditText editTextSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +123,7 @@ public class AllContacts extends AppCompatActivity {
         pDialog.setCancelable(false);
         pDialog.show();
         mListView = (ShimmerRecyclerView) findViewById(R.id.rvContacts);
-
+        editTextSearch = (EditText) findViewById(R.id.editTextSearch);
         //Search Code
         //searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
@@ -183,6 +188,27 @@ public class AllContacts extends AppCompatActivity {
             }
         });
 */
+
+
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //after the change calling the method and passing the search input
+                filter(editable.toString());
+            }
+        });
+
+
 
 
     }
@@ -568,6 +594,24 @@ public class AllContacts extends AppCompatActivity {
         super.onBackPressed();
         finish();
         // }
+    }
+
+
+    private void filter(String text) {
+        //new array list that will hold the filtered data
+        ArrayList<ContactVO> filterdNames = new ArrayList<>();
+
+        //looping through existing elements
+        for (ContactVO s : contactVOList) {
+            //if the existing elements contains the search input
+            if (s.ContactName.toLowerCase().contains(text.toLowerCase().trim()) || s.ContactNumber.toLowerCase().contains(text.toLowerCase().trim())) {
+                //adding the element to filtered list
+                filterdNames.add(s);
+            }
+        }
+
+        //calling a method of the adapter class and passing the filtered list
+        allContactsAdapter.filterList(filterdNames);
     }
 
 

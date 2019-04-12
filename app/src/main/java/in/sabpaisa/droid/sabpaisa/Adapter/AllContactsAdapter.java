@@ -81,6 +81,12 @@ public class AllContactsAdapter  extends RecyclerView.Adapter<AllContactsAdapter
         this.mContext = mContext;
     }
 
+    public void filterList(ArrayList<ContactVO> filterdNames) {
+        this.contactVOList = filterdNames;
+        notifyDataSetChanged();
+    }
+
+
     @Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.contactsrecylcerview, null);

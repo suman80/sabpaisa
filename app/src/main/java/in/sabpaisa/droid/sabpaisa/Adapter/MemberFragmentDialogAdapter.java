@@ -2,9 +2,11 @@ package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +39,9 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
 
     ArrayList<ContactVO> memberGetterSetterArrayList1 = new ArrayList<>();
 
+    android.support.v7.widget.Toolbar toolbar;
+    int count = 0;
+
 
     /*public MemberFragmentDialogAdapter(ArrayList<ContactVO> contactVOList, Context mContext, Fragment fragment) {
         this.contactVOList = contactVOList;
@@ -45,10 +50,11 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
         this.addMemberCallBack = (AddMemberCallBack) fragment;
     }*/
 
-    public MemberFragmentDialogAdapter(ArrayList<ContactVO> contactVOList, Context mContext) {
+    public MemberFragmentDialogAdapter(ArrayList<ContactVO> contactVOList, Context mContext, Toolbar toolbar) {
         this.contactVOList = contactVOList;
         this.mContext = mContext;
         this.addMemberCallBack = (AddMemberCallBack) mContext;
+        this.toolbar=toolbar;
     }
 
     @Override
@@ -71,7 +77,7 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
 
 
 
-        if (contactVO.getInviteButtonVisibility()==1){
+      /*  if (contactVO.getInviteButtonVisibility()==1){
 
             holder.tvContactName.setText(contactVO.getContactName());
 
@@ -82,7 +88,11 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
 
         }else {
             holder.LinearLayoutContact.setVisibility(View.GONE);
-        }
+        }*/
+
+        holder.tvContactName.setText(contactVO.getContactName());
+
+        holder.tvPhoneNumber.setText(contactVO.getContactNumber());
 
 
         holder.addMemberCheckBox.setChecked(contactVO.isSelected());
@@ -92,20 +102,34 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
             public void onItemClick(View v, int pos) {
                 CheckBox myCheckBox= (CheckBox) v;
 
+
+
                 if(myCheckBox.isChecked()) {
+                    count++;
                     contactVO.setSelected(true);
                     //memberGetterSetterArrayList1.add(contactVO);
                     selectedData.add(contactVO.getContactNumber());
                     addMemberCallBack.setMemberData(selectedData);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                        toolbar.setTitle(""+count);
+                    }
                 }
                 else if(!myCheckBox.isChecked()) {
+                    count--;
                     contactVO.setSelected(false);
                     //memberGetterSetterArrayList1.remove(contactVO);
                     selectedData.remove(contactVO.getContactNumber());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        toolbar.setTitle(""+count);
+                    }
                 }
 
                 if (selectedData.isEmpty()){
                     addMemberCallBack.setMemberData(selectedData);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        toolbar.setTitle("Add Members");
+                    }
                 }
 
 
@@ -138,7 +162,7 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
         TextView tvContactName;
         TextView tvPhoneNumber;
         CheckBox addMemberCheckBox;
-        ItemClickListener itemClickListener;
+        public ItemClickListener itemClickListener;
         LinearLayout LinearLayoutContact;
 
         public ContactViewHolder(View itemView) {
@@ -163,7 +187,7 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
             this.itemClickListener.onItemClick(v,getLayoutPosition());
         }
 
-        interface ItemClickListener {
+        public interface ItemClickListener {
 
             void onItemClick(View v,int pos);
         }

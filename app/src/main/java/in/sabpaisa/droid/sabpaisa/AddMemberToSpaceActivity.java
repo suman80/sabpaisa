@@ -87,6 +87,7 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
     int counter;
     MaterialSearchView searchView;
     ArrayList<ContactVO> contactVOList;
+    ArrayList<ContactVO> contactVOList1;
     //AllContactsAdapter allContactsAdapter;
     MemberFragmentDialogAdapter adapter;
 
@@ -124,7 +125,7 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               finish();
+                finish();
             }
         });
 
@@ -173,12 +174,9 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
 
         toolbar.inflateMenu(R.menu.add_mem_personal_space);
 
-        pDialog = new ProgressDialog(AddMemberToSpaceActivity.this);
-        pDialog.setMessage("Reading contacts...");
 
 
-        pDialog.setCancelable(false);
-        pDialog.show();
+
         mListView = (ShimmerRecyclerView)findViewById(R.id.rvContacts);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -187,7 +185,7 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
         mListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
 
-        updateBarHandler = new Handler();
+        /*updateBarHandler = new Handler();
         // Since reading contacts takes more time, let's run it on a separate thread.
         new Thread(new Runnable() {
 
@@ -196,7 +194,11 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
                 getContacts();
 
             }
-        }).start();
+        }).start();*/
+
+
+        getContacts();
+
         Log.d("BeforeFunction", "" + contactList);
 
         if (memberNumberArraylist.size()>0) {
@@ -244,6 +246,8 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
         }
     }
 
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
@@ -257,8 +261,64 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
         }
     }
 
+    private void getContacts() {
 
-    public void getContacts() {
+        contactVOList1 = new ArrayList<>();
+        Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null, null, null);
+        counter = 0;
+        HashSet<String> hashSet = new HashSet<>();
+
+        while (cursor.moveToNext()) {
+
+            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            //Log.d("AMTSA","gettingNames______"+name);
+            String phonenumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            //Log.d("AMTSA","gettingPhoneNumber______"+phonenumber);
+            phonenumber = phonenumber.replaceAll(" ", "");
+            ContactVO contactVO = new ContactVO();
+            contactVO.setContactName(name);
+
+            String number = null;
+
+            if (phonenumber.startsWith("+91")){
+                number=phonenumber.replace("+91","");
+                contactVO.setContactNumber(number);
+            }else if (phonenumber.startsWith("0")){
+                number=phonenumber.substring(1);
+                contactVO.setContactNumber(number);
+            }
+
+
+
+            if (contactVO.getContactNumber() !=null && !contactVO.getContactNumber().isEmpty() && !hashSet.contains(contactVO.getContactNumber())) {
+
+
+                contactVOList1.add(contactVO);
+                hashSet.add(contactVO.getContactNumber());
+                Log.d("AMTSA__",contactVO.getContactNumber());
+
+            }
+        }
+
+
+        cursor.close();
+
+
+
+        for (int i = 0 ; i<contactVOList1.size();i++) {
+            Log.d("AMTSA","contactVOList1___"+contactVOList1.get(i).getContactName()+" , "+contactVOList1.get(i).getContactNumber());
+        }
+
+        adapter = new MemberFragmentDialogAdapter(contactVOList1, AddMemberToSpaceActivity.this,toolbar);
+        mListView.setAdapter(adapter);
+
+
+
+
+    }
+
+
+  /*  public void getContacts() {
 
         contactList = new ArrayList<String>();
         nameList = new ArrayList<String>();
@@ -407,7 +467,7 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
                 }
             }, 500);
         }
-    }
+    }*/
 
     static int removeDuplicates(List<String> arr, int n) {
         if (n == 0 || n == 1)
@@ -498,8 +558,8 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
                     });*/
 
                     //Fragment fragment = new AddMemberToSpaceDialogFragment();
-                    adapter = new MemberFragmentDialogAdapter(contactVOList, AddMemberToSpaceActivity.this);
-                    mListView.setAdapter(adapter);
+                    /*adapter = new MemberFragmentDialogAdapter(contactVOList, AddMemberToSpaceActivity.this);
+                    mListView.setAdapter(adapter);*/
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -783,7 +843,7 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
         ArrayList<ContactVO> filterdNames = new ArrayList<>();
 
         //looping through existing elements
-        for (ContactVO s : contactVOList) {
+        for (ContactVO s : contactVOList1) {
             //if the existing elements contains the search input
             if (s.ContactName.toLowerCase().contains(text.toLowerCase().trim()) || s.ContactNumber.toLowerCase().contains(text.toLowerCase().trim())) {
                 //adding the element to filtered list
