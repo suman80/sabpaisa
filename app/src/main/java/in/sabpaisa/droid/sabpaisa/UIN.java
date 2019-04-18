@@ -89,6 +89,8 @@ public class UIN extends AppCompatActivity {
 
     ClientsDB clientsDB;
 
+    String cobLoginId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -140,7 +142,8 @@ public class UIN extends AppCompatActivity {
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(LogInActivity.MySharedPrefLogin, Context.MODE_PRIVATE);
 
         response = sharedPreferences.getString("response", "123");
-
+         cobLoginId = sharedPreferences.getString("cobLoginId", null);
+        Log.d("cobLoginId", "______ " + cobLoginId);
         userAccessToken = response;
 
         Log.d("AccessToken111", " " + userAccessToken);
@@ -216,9 +219,12 @@ public class UIN extends AppCompatActivity {
 
     public void callVerifyUINNumber(final String uinnnumber, final String clientId, final String userAccessToken) {
         String tag_string_req = "req_register";
+        String url = AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_VerifyUin + uinnnumber + "&client_Id=" + clientId + "&aceesToken=" + userAccessToken;
 
+        if(cobLoginId != null && !cobLoginId.equals("null"))
+            url +="&cobLoginId="+cobLoginId;
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.Base_Url + AppConfig.App_api + AppConfig.URL_VerifyUin + uinnnumber + "&client_Id=" + clientId + "&aceesToken=" + userAccessToken, new Response.Listener<String>() {
+                url, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {

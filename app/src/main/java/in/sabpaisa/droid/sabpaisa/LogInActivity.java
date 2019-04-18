@@ -363,13 +363,15 @@ public class LogInActivity extends AppCompatActivity {
 
                     String response = jObj.getString("response");
                     Log.d(TAG, "Register Response1: " + response);
-
+                    String cobLoginId = jObj.getString("cobLoginId");
                     SharedPreferences.Editor editor = getSharedPreferences(MySharedPrefLogin, MODE_PRIVATE).edit();
                     editor.putString("response", response);
+                    editor.putString("cobLoginId", cobLoginId);
                     editor.commit();
 
 
                     String status = jObj.getString("status");
+
 
                     if (status != null && status.equals("success")) {
 
