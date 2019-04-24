@@ -99,12 +99,12 @@ public class EditSpace extends AppCompatActivity {
 
 
         Glide.with(getApplicationContext())
-                .load(spaceLogo)
+                .load(spaceImage)
                 .error(R.drawable.ic_file_upload)
                 .into(img_SpaceLogo);
 
         Glide.with(getApplicationContext())
-                .load(spaceImage)
+                .load(spaceLogo)
                 .error(R.drawable.ic_file_upload)
                 .into(img_SpaceImage);
 
@@ -112,14 +112,15 @@ public class EditSpace extends AppCompatActivity {
         img_SpaceImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pickImage();
+
+                pickLogo();
             }
         });
 
         img_SpaceLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pickLogo();
+                pickImage();
             }
         });
 
@@ -214,6 +215,23 @@ public class EditSpace extends AppCompatActivity {
                 Log.d("EditSpace", "selectedimg_ " + selectedimg);
 
                 //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                img_SpaceLogo.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
+
+                spaceLogoBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
+
+                Log.d("spaceLogoBitmap"," "+spaceImageBitmap);
+
+                if (spaceLogoBitmap == null){
+                    Toast.makeText(EditSpace.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
+                    img_SpaceLogo.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
+                }
+
+
+            }else if (requestCode == 300 && resultCode == RESULT_OK && data != null){
+
+                Uri selectedimg = data.getData();
+
+                //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                 img_SpaceImage.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
 
                 spaceImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
@@ -223,23 +241,6 @@ public class EditSpace extends AppCompatActivity {
                 if (spaceImageBitmap == null){
                     Toast.makeText(EditSpace.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
                     img_SpaceImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
-                }
-
-
-            }else if (requestCode == 300 && resultCode == RESULT_OK && data != null){
-
-                Uri selectedimg = data.getData();
-
-                //android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                img_SpaceLogo.setImageBitmap(android.provider.MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
-
-                spaceLogoBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg);
-
-                Log.d("spaceLogoBitmap"," "+spaceLogoBitmap);
-
-                if (spaceLogo == null){
-                    Toast.makeText(EditSpace.this, "Invalid File Format", Toast.LENGTH_SHORT).show();
-                    img_SpaceLogo.setImageDrawable(getResources().getDrawable(R.drawable.ic_file_upload));
                 }
 
 
