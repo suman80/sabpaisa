@@ -111,14 +111,14 @@ public class SkipMainClientsAdapter extends RecyclerView.Adapter<SkipMainClients
         {
             holder.thumbnail.setDefaultImageResId(R.drawable.image_not_found);
         }else {
-            holder.thumbnail.setImageUrl(mainFeedData.getClientImagePath(), imageLoader);
+            holder.thumbnail.setImageUrl(mainFeedData.getClientLogoPath(), imageLoader);
         }
 
         if (mainFeedData.getClientLogoPath()==null)
         {
             holder.clinetbanner.setDefaultImageResId(R.drawable.image_not_found);
         }else {
-            holder.clinetbanner.setImageUrl(mainFeedData.getClientLogoPath(),imageLoader);
+            holder.clinetbanner.setImageUrl(mainFeedData.getClientImagePath(),imageLoader);
         }
 
         holder.rippleClick.setOnClickListener(new View.OnClickListener() {
