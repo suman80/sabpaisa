@@ -276,6 +276,7 @@ public class AddMemberTo_A_Group extends AppCompatActivity implements AddMemberC
                     Intent intent = new Intent(AddMemberTo_A_Group.this,FullViewOfClientsProceed.class);
                     intent.putExtra("clientImagePath",clientImageURLPath);
                     intent.putExtra("FRAGMENT_ID","1");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
 

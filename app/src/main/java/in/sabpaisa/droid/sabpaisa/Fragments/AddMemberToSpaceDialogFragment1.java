@@ -314,17 +314,40 @@ public class AddMemberToSpaceDialogFragment1 extends DialogFragment {
 
                         Log.d("AddMemberToSpace1","InIfPart");
 
-                        Toast.makeText(getContext(),"Member Added Successfully",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(),"Member Added Successfully",Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(getContext(), SkipClientDetailsScreen.class);
-                            intent.putExtra("appCid",appCid);
-                            intent.putExtra("state",state);
-                            intent.putExtra("clientLogoPath",clientLogoPath);
-                            intent.putExtra("clientImagePath",clientImagePath);
-                            intent.putExtra("clientName",clientName);
-                            intent.putExtra("FRAGMENT_ID","2");
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
+                        AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme).create();
+
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Member Added");
+
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Registered members added successfully. Also an invitation has been sent to non-regestered members.");
+
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Intent intent = new Intent(getContext(), SkipClientDetailsScreen.class);
+                                intent.putExtra("appCid",appCid);
+                                intent.putExtra("state",state);
+                                intent.putExtra("clientLogoPath",clientLogoPath);
+                                intent.putExtra("clientImagePath",clientImagePath);
+                                intent.putExtra("clientName",clientName);
+                                intent.putExtra("FRAGMENT_ID","2");
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+
 
 
 
@@ -374,6 +397,7 @@ public class AddMemberToSpaceDialogFragment1 extends DialogFragment {
                                     intent.putExtra("clientImagePath",clientImagePath);
                                     intent.putExtra("clientName",clientName);
                                     intent.putExtra("FRAGMENT_ID","2");
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
                                 }
 

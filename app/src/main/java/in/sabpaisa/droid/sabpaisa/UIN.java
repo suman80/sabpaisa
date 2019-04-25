@@ -90,6 +90,7 @@ public class UIN extends AppCompatActivity {
     ClientsDB clientsDB;
 
     String cobLoginId;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,8 +159,12 @@ public class UIN extends AppCompatActivity {
         editor.putString("userAccessToken", userAccessToken);
         editor.commit();
 
-        checkUserForAdmin(userAccessToken, clientId);
+        if (isOnline()) {
 
+            checkUserForAdmin(userAccessToken, clientId);
+        }else {
+            Toast.makeText(UIN.this,"No Internet Conection",Toast.LENGTH_SHORT).show();
+        }
         clientsDB = new ClientsDB(UIN.this);
 
     }
@@ -208,7 +213,15 @@ public class UIN extends AppCompatActivity {
 
         } else if (!uinnnumber.getText().toString().equals("")) {
 
-            showpDialog(view);
+
+
+            //showpDialog(view);
+
+            progressDialog = new ProgressDialog(UIN.this);
+            progressDialog.setMessage("Please Wait !");
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+
             callVerifyUINNumber(uinnnumber.getText().toString(), clientId, userAccessToken);
 
 
@@ -244,6 +257,10 @@ public class UIN extends AppCompatActivity {
                     // Log.i("status_UIN", "status=" + status);
                     Log.i("response_UIN", "Repsomse_UIN=" + response1);
                     if (status.equals("success") && response1.equals("UIN verified")) {
+
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
 
                         Log.d("InIfPArt", "UINVerifu");
 
@@ -354,6 +371,12 @@ public class UIN extends AppCompatActivity {
 
                         Log.d("InelseIf1PArt", "UINVerifu");
 
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
+
+
                         AlertDialog alertDialog = new AlertDialog.Builder(UIN.this, R.style.MyDialogTheme).create();
 
                         // Setting Dialog Title
@@ -391,6 +414,11 @@ public class UIN extends AppCompatActivity {
                         alertDialog.show();
 
                     } else if (status.equals("failed") && response1.equals("User is Blocked")) {
+
+                        if (progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+
 
                         Log.d("InElsePart", "UINVerifu");
 

@@ -381,18 +381,46 @@ public class AddMemberToSpaceActivity extends AppCompatActivity implements AddMe
 
                         Log.d("AddMemberToSpace","InIfPart");
 
-                        Toast.makeText(AddMemberToSpaceActivity.this,"Member Added Successfully",Toast.LENGTH_SHORT).show();
+                        AlertDialog alertDialog = new AlertDialog.Builder(AddMemberToSpaceActivity.this, R.style.MyDialogTheme).create();
 
-                        Intent intent = new Intent(AddMemberToSpaceActivity.this, SkipClientDetailsScreen.class);
-                        intent.putExtra("appCid",appCid);
-                        intent.putExtra("state",state);
-                        intent.putExtra("clientLogoPath",clientLogoPath);
-                        intent.putExtra("clientImagePath",clientImagePath);
-                        intent.putExtra("clientName",clientName);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        // Setting Dialog Title
+                        alertDialog.setTitle("Member Added");
 
-                        finish();
+                        // Setting Dialog Message
+                        alertDialog.setMessage("Registered members added successfully. Also an invitation has been sent to non-regestered members.");
+
+                        // Setting Icon to Dialog
+                        //  alertDialog.setIcon(R.drawable.tick);
+
+                        // Setting OK Button
+                        alertDialog.setButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                //Toast.makeText(AddMemberToSpaceActivity.this,"Member Added Successfully",Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(AddMemberToSpaceActivity.this, SkipClientDetailsScreen.class);
+                                intent.putExtra("appCid",appCid);
+                                intent.putExtra("state",state);
+                                intent.putExtra("clientLogoPath",clientLogoPath);
+                                intent.putExtra("clientImagePath",clientImagePath);
+                                intent.putExtra("clientName",clientName);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+
+                                finish();
+
+
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+
+
+
+
+
+
 
                     }else {
                         Log.d("AddMemberToSpace","InElsePart");

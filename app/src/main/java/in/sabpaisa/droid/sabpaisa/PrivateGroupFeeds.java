@@ -110,6 +110,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
         Log.d("After : ",FLAG);
         framelayoutAddPrivateFeed = (FrameLayout)findViewById(R.id.framelayoutAddPrivateFeed);
         rippleClickAdd = (MaterialRippleLayout) findViewById(R.id.rippleClickAdd);
+        searchView = (MaterialSearchView) findViewById(R.id.search_view);
         Log.d("framePrivateFeed", framelayoutAddPrivateFeed+"");
 
 
@@ -166,7 +167,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
             callFeedDataList(GroupId, userAccessToken);
 
 
-            searchView = (MaterialSearchView) findViewById(R.id.search_view);
+
 
             searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
                 @Override

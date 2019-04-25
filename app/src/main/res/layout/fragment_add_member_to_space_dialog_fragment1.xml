@@ -38,6 +38,7 @@
                 android:hint="Member Name"
                 android:textColorHint="@color/bg_orange"
                 android:imeOptions="actionNext"
+                android:singleLine="true"
                 />
 
         </android.support.design.widget.TextInputLayout>
@@ -55,6 +56,7 @@
                 android:hint="Number"
                 android:textColorHint="@color/bg_orange"
                 android:imeOptions="actionDone"
+                android:singleLine="true"
                 />
 
         </android.support.design.widget.TextInputLayout>

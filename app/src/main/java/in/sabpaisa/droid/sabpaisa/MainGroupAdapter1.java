@@ -312,6 +312,7 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
                         if (menuItem.getTitle().equals("Add Member")){
                             Intent intent = new Intent(mContext,AddMemberTo_A_Group.class);
                             intent.putExtra("groupId",groupId);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             mContext.startActivity(intent);
                         }
 

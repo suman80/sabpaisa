@@ -262,6 +262,7 @@ public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFrag
                             //TODO Add member
                             Intent intent = new Intent(mContext, AddMemberTo_A_SpaceGroup.class);
                             intent.putExtra("groupId",groupId);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             mContext.startActivity(intent);
                         }
 
