@@ -77,6 +77,7 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
     TextView noResultTextView;
 
+    RecyclerView recycler_view_feeds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,11 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         noResultTextView = (TextView)findViewById(R.id.noResultTextView);
+        recycler_view_feeds = (RecyclerView)findViewById(R.id.recycler_view_feeds);
+        LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recycler_view_feeds.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
+        recycler_view_feeds.setLayoutManager(llm);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -181,7 +187,14 @@ public class PrivateGroupFeeds extends AppCompatActivity {
                     //if closed then listview will return default
 
                     if (!(feedArrayList == null || feedArrayList.isEmpty())) {
-                        loadFeedListView(feedArrayList, (RecyclerView) findViewById(R.id.recycler_view_feeds));
+
+                        //Default
+
+                        mainFeedAdapter = new MainFeedAdapter(feedArrayList,PrivateGroupFeeds.this);
+                        recycler_view_feeds.setAdapter(mainFeedAdapter);
+
+
+                        //loadFeedListView(feedArrayList, (RecyclerView) findViewById(R.id.recycler_view_feeds));
                     } else {
 //                    Toast.makeText(ClientList.this,"No Data Found !",Toast.LENGTH_SHORT).show();
 
@@ -201,30 +214,41 @@ public class PrivateGroupFeeds extends AppCompatActivity {
                 @Override
                 public boolean onQueryTextChange(String newText) {
 
+                    ArrayList<FeedData> newArraylist = new ArrayList<>();
+
+                    Log.d("PGF_NewnewTextt","newText________"+newText);
+
                     if (newText != null && !newText.isEmpty()) {
 
-                        ArrayList<FeedData> newArraylist = new ArrayList<>();
+                        Log.d("PGF_feedArrayList","SIZE_____"+feedArrayList.size());
 
                         for (FeedData items : feedArrayList) {
 
-                            if (items.feedName.contains(newText.toLowerCase()) || items.feedText.contains(newText.toLowerCase())) {
+                            if (items.feedName.toLowerCase().contains(newText.toLowerCase().trim()) || items.feedText.toLowerCase().contains(newText.toLowerCase().trim())) {
                                 newArraylist.add(items);
                             }
 
                         }
 
-                        if (newArraylist != null && !newArraylist.isEmpty()) {
+                        Log.d("PGF_NewArraylist","SIZE_____"+newArraylist.size());
 
-                            loadFeedListView(newArraylist, (RecyclerView) findViewById(R.id.recycler_view_feeds));
+                        if (newArraylist != null && !newArraylist.isEmpty()) {
+                            Log.d("SearchInPGF_____", "fwdfgwedfgwfwfwfwefwfwefwefwef");
+
+                            mainFeedAdapter = new MainFeedAdapter(newArraylist,PrivateGroupFeeds.this);
+                            recycler_view_feeds.setAdapter(mainFeedAdapter);
+
                             noResultTextView.setVisibility(View.GONE);
-                            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_feeds);
-                            recyclerView.setVisibility(View.VISIBLE);
+
+                            recycler_view_feeds.setVisibility(View.VISIBLE);
 
                         } else {
                             Log.d("SearchInPGF_____", "No data found");
-                            loadFeedListView(newArraylist, (RecyclerView) findViewById(R.id.recycler_view_feeds));
-                            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_feeds);
-                            recyclerView.setVisibility(View.GONE);
+
+                            mainFeedAdapter = new MainFeedAdapter(newArraylist,PrivateGroupFeeds.this);
+                            recycler_view_feeds.setAdapter(mainFeedAdapter);
+
+                            recycler_view_feeds.setVisibility(View.GONE);
                             noResultTextView.setVisibility(View.VISIBLE);
                             Log.d("SearchInPGFNewText_____", " "+newText);
                             noResultTextView.setText("No Result For :"+newText);
@@ -233,10 +257,13 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
                     } else {
                         // if search text is null then return default
-                        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_feeds);
-                        recyclerView.setVisibility(View.VISIBLE);
+                        mainFeedAdapter = new MainFeedAdapter(feedArrayList,PrivateGroupFeeds.this);
+                        recycler_view_feeds.setAdapter(mainFeedAdapter);
+
+
+                        recycler_view_feeds.setVisibility(View.VISIBLE);
                         noResultTextView.setVisibility(View.GONE);
-                        loadFeedListView(feedArrayList, recyclerView);
+
                     }
 
                     return true;
@@ -448,9 +475,10 @@ public class PrivateGroupFeeds extends AppCompatActivity {
 
 
 
+                        mainFeedAdapter = new MainFeedAdapter(feedArrayList,PrivateGroupFeeds.this);
+                        recycler_view_feeds.setAdapter(mainFeedAdapter);
 
 
-                        loadFeedListView(feedArrayList, (RecyclerView) findViewById(R.id.recycler_view_feeds));
                     }
 
                 }
@@ -476,42 +504,6 @@ public class PrivateGroupFeeds extends AppCompatActivity {
         );
         // Adds the JSON array request "arrayreq" to the request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
-    }
-
-
-
-    private void loadFeedListView(ArrayList<FeedData> arrayList, final RecyclerView recyclerView) {
-
-        mainFeedAdapter = new MainFeedAdapter(arrayList,PrivateGroupFeeds.this);
-        recyclerView.setAdapter(mainFeedAdapter);
-        /*recyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                recyclerView.setAdapter(mainFeedAdapter);
-
-            }
-        },1000);
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getApplication(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(( getApplicationContext()), FeedDetails.class);
-                       *//* intent.putExtra("FeedId", feedArrayList.get(position).getFeedId());
-                        intent.putExtra("FeedName", feedArrayList.get(position).getFeedName());
-                        intent.putExtra("FeedDeatils", feedArrayList.get(position).getFeedText());
-                        startActivity(intent);*//*
-                    }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        // do whatever
-                    }
-                })
-        );*/
-        LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
-        recyclerView.setLayoutManager(llm);
     }
 
 

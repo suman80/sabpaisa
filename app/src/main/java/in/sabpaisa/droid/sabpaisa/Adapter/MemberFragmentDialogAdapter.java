@@ -112,7 +112,7 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
                     addMemberCallBack.setMemberData(selectedData);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-                        toolbar.setTitle(""+count+"Contact Selected");
+                        toolbar.setTitle(""+count+" Contact Selected");
                     }
                 }
                 else if(!myCheckBox.isChecked()) {
@@ -121,7 +121,7 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
                     //memberGetterSetterArrayList1.remove(contactVO);
                     selectedData.remove(contactVO.getContactNumber());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        toolbar.setTitle(""+count+"Contact Selected");
+                        toolbar.setTitle(""+count+" Contact Selected");
                     }
                 }
 
