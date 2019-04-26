@@ -217,11 +217,11 @@ public class UIN extends AppCompatActivity {
 
             //showpDialog(view);
 
-            progressDialog = new ProgressDialog(UIN.this);
+            progressDialog = new ProgressDialog(UIN.this,R.style.DialogTheme);
             progressDialog.setMessage("Please Wait !");
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
-
+            progressDialog.show();
             callVerifyUINNumber(uinnnumber.getText().toString(), clientId, userAccessToken);
 
 
@@ -258,9 +258,6 @@ public class UIN extends AppCompatActivity {
                     Log.i("response_UIN", "Repsomse_UIN=" + response1);
                     if (status.equals("success") && response1.equals("UIN verified")) {
 
-                        if (progressDialog.isShowing()){
-                            progressDialog.dismiss();
-                        }
 
                         Log.d("InIfPArt", "UINVerifu");
 
@@ -356,6 +353,10 @@ public class UIN extends AppCompatActivity {
 
                                     if (isInserted) {
                                         Log.d("UIN", "LocalDBInIfPart____" + isInserted);
+                                        if (progressDialog.isShowing()){
+                                            progressDialog.dismiss();
+                                        }
+
                                         callMainScreen();
                                     } else {
                                         Log.d("UIN", "LocalDBInElsePart____" + isInserted);
@@ -450,7 +451,7 @@ public class UIN extends AppCompatActivity {
                             "Error: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
-                hidepDialog();
+
             }
         }, new Response.ErrorListener() {
 
@@ -493,8 +494,7 @@ public class UIN extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_SHORT).show();*/
 
-                // hide the progress dialog
-                hidepDialog();
+
             }
         });
         // Adds the JSON array request "arrayreq" to the request queue
@@ -527,21 +527,6 @@ public class UIN extends AppCompatActivity {
     }
 
 
-    ProgressDialog loading = null;
-
-    private void hidepDialog() {
-        if (loading != null) {
-            loading.dismiss();
-        }
-    }
-
-    private void showpDialog(View v) {
-        loading = new ProgressDialog(v.getContext());
-        loading.setCancelable(true);
-        loading.setMessage("UIN Verifying....");
-        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        loading.show();
-    }
 
 
     private void getUserImage(final String token) {

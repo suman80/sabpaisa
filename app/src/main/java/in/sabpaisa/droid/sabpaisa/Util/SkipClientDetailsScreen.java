@@ -277,7 +277,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         ClientImagePRoceed = (ImageView) findViewById(R.id.ClientImagePRoceed);
 
         Glide.with(SkipClientDetailsScreen.this)/*//Added on 1st Feb*/
-                .load(clientLogoURLPath)
+                .load(clientImageURLPath)
                 .error(R.drawable.image_not_found)
                 .into(ClientImagePRoceed);
 
