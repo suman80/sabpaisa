@@ -295,9 +295,18 @@ public class Members extends Fragment {
                                     Log.d("MemBers_UserIMG", "stringBufferVal_ " + stringBuffer);
 
                                     ContextWrapper contextWrapper = new ContextWrapper(getContext());
-                                    File path = contextWrapper.getDir("imageDir", Context.MODE_PRIVATE);
 
-                                    Log.d("Mem_LocalPath", "path__" + path);
+                                    //change done on 8th may 2019
+
+                                    File path = null;
+                                    if (contextWrapper != null) {
+                                        path = contextWrapper.getDir("imageDir", Context.MODE_PRIVATE);
+
+                                        Log.d("Mem_LocalPath", "path__" + path);
+                                    }
+
+                                    ///////////////////////////////////////
+
 
                                     //Spliting Api Url
 

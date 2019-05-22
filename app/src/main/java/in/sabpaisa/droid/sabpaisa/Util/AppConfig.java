@@ -3,11 +3,16 @@ package in.sabpaisa.droid.sabpaisa.Util;
 public class AppConfig {
     // Server user login url
 
-    //public static String Base_Url="https://portal.sabpaisa.in";
-    public static String Base_Url = "https://spl.sabpaisa.in";
-    //public static String App_api="/SabPaisaAppApi/";
-    public static String App_api="/SabPaisaAppApi_Q5_1/";
+    public static String Base_Url="https://portal.sabpaisa.in";
+    //public static String Base_Url = "https://spl.sabpaisa.in";
+    //public static String Base_Url = "http://192.168.1.62:6262"; // local server
+    public static String App_api="/SabPaisaAppApi/";
+
     //public static String App_api = "/SabPaisaAppApi_v16/";
+
+
+
+
     public static String URL_REGISTER = "register-user";
     public static String URL_Contacts = "SPuserInUsercontactList";
     public static String URL_AllTransaction = "/SabPaisaResponseHandler/saveSPtranscationId?token=";
@@ -73,4 +78,5 @@ public class AppConfig {
     public static String URL_NoOFGroupMembersSpace = "fetchGroupUsers?appcid=";
     public static String URL_lefttheGroup = "lefttheGroup";
     public static String URL_lefthespAppClient = "lefthespAppClient";
+    public static String URL_spappclientgroupandfeeds = "spappclientgroupandfeeds";
 }

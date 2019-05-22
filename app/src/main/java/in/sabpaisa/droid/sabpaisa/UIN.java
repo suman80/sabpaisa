@@ -236,6 +236,9 @@ public class UIN extends AppCompatActivity {
 
         if(cobLoginId != null && !cobLoginId.equals("null"))
             url +="&cobLoginId="+cobLoginId;
+
+        Log.d("UIN","URL____"+url);
+
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 url, new Response.Listener<String>() {
 

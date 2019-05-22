@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,6 +50,8 @@ public class HorizontalClientsRecyclerViewAdapter extends RecyclerView.Adapter<H
     private ArrayList<ClientsDataModel> mNames = new ArrayList<>();
 
     private Context mContext;
+
+    public static ProgressDialog progressDialog;
 
     public HorizontalClientsRecyclerViewAdapter(Context context, ArrayList<ClientsDataModel> names) {
         mNames = names;
@@ -139,6 +142,11 @@ public class HorizontalClientsRecyclerViewAdapter extends RecyclerView.Adapter<H
                         editor.putString("UIN_NUMBER", uinnnumber);
                         editor.commit();*/
 
+                        progressDialog = new ProgressDialog(mContext);
+                        progressDialog.setMessage("Please wait...");
+                        progressDialog.setCanceledOnTouchOutside(false);
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
 
                         SharedPreferences.Editor editor = mContext.getSharedPreferences(MYSHAREDPREFUIN, MODE_PRIVATE).edit();
                         Log.d("ClientIdHCRV",""+clientsDataModel.getClientId());

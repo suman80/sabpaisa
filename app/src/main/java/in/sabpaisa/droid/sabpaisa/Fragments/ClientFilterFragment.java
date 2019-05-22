@@ -373,7 +373,7 @@ public class ClientFilterFragment extends Fragment {
                     // If an error occurs, this prints the error to the log
                     e.printStackTrace();
 
-                    //getClientsList();
+                    getClientsList();
 
                 }
 

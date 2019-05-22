@@ -61,6 +61,10 @@ import com.android.volley.toolbox.StringRequest;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.slider.library.Indicators.PagerIndicator;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.json.JSONException;
@@ -73,6 +77,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.InstitutionAdapter;
@@ -93,6 +98,7 @@ import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MainActivity;
+import in.sabpaisa.droid.sabpaisa.MainActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Members;
 import in.sabpaisa.droid.sabpaisa.Model.*;
 import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
@@ -104,7 +110,7 @@ import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 import static in.sabpaisa.droid.sabpaisa.UIN.SHARED_PREF_UIN_STATUS;
 
-public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, ProceedFeedsFragment.GetDataInterface, ProceedGroupsFragments.GetDataInterface, Members.GetDataInterface {
+public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, ProceedFeedsFragment.GetDataInterface, ProceedGroupsFragments.GetDataInterface, Members.GetDataInterface,BaseSliderView.OnSliderClickListener {
     ImageView clientImagePath;
     String clientName, state, landingPage;
     public static String ClientId;
@@ -151,6 +157,13 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
     String uinNumber;
 
+    // slider 9th may 2019
+    private SliderLayout mHeaderSlider;
+
+    HashMap<String, String> Hash_file_maps;
+
+    ArrayList<Integer> headerList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,6 +193,8 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         toolbar.setNavigationIcon(R.drawable.ic_navigation);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitleEnabled(false);
+
+        mHeaderSlider = (SliderLayout) findViewById(R.id.slider);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         // appBarLayout.addOnOffsetChangedListener(this);
@@ -395,18 +410,18 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
 
         clientImagePath = (ImageView) findViewById(R.id.ClientImagePRoceed);
-        clientNameTextView.setText(clientName);
-        stateTextView.setText(state);
+//        clientNameTextView.setText(clientName);
+  //      stateTextView.setText(state);
         //new DownloadImageTask(clientImagePath).execute(clientImageURLPath);
-        Glide.with(FullViewOfClientsProceed.this)
+       /* Glide.with(FullViewOfClientsProceed.this)
                 .load(clientImageURLPath)
                 .error(R.drawable.default_users)
                 .into(clientImagePath);
-
-        Glide.with(FullViewOfClientsProceed.this)/*//Added on 1st Feb*/
-                .load(clientImageURLPath)
-                .error(R.drawable.image_not_found)
-                .into(clientImagePath);
+*/
+//        Glide.with(FullViewOfClientsProceed.this)/*//Added on 1st Feb*/
+//                .load(clientImageURLPath)
+//                .error(R.drawable.image_not_found)
+//                .into(clientImagePath);
         searchViewBar();
 
 
@@ -456,6 +471,10 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
             InstitutionAdapter.progressDialog.dismiss();
         }
 
+        LoadHeaderImageList();
+
+        setHeaderImageList();
+
 
     }
 
@@ -493,7 +512,58 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     }
 
 
+    private void setHeaderImageList() {
+        for (int i = 0; i < headerList.size(); i++) {
+            CustomSliderView customSliderView = new CustomSliderView(this);
+            // initialize a SliderLayout
+            customSliderView
+                    .image(headerList.get(i))
+                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                        @Override
+                        public void onSliderClick(BaseSliderView slider) {
+                            //TODO URL
+                        }
+                    });
+            mHeaderSlider.addSlider(customSliderView);
+        }
+        mHeaderSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+        mHeaderSlider.setBackgroundColor(getResources().getColor(R.color.main_screen_bottom_color));
+        mHeaderSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        mHeaderSlider.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
+//        mHeaderSlider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
+    }
 
+    private void LoadHeaderImageList() {
+
+
+        Hash_file_maps = new HashMap<String, String>();
+
+
+        Hash_file_maps.put("SPApp Digitizing Cash", AppConfig.Base_Url + "/Docs/Images/HomeImage/sabpaisa.png");
+        Hash_file_maps.put("Payment & Transfer", AppConfig.Base_Url + "/Docs/Images/HomeImage/UPI_2.png");
+        Hash_file_maps.put("The Future Of Payments", AppConfig.Base_Url + "/Docs/Images/HomeImage/UPI_image.jpg");
+        Hash_file_maps.put("UPI", AppConfig.Base_Url + "/Docs/Images/HomeImage/UPI_1.svg.png");
+        for (String name : Hash_file_maps.keySet()) {
+            TextSliderView textSliderView = new TextSliderView(this);
+            // initialize a SliderLayout
+            textSliderView
+                    .description(name)
+                    .image(Hash_file_maps.get(name))
+                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .setOnSliderClickListener(this);
+
+            //add your extra information
+            textSliderView.bundle(new Bundle());
+            textSliderView.getBundle()
+                    .putString("extra", name);
+
+            mHeaderSlider.addSlider(textSliderView);
+
+
+        }
+
+    }
 
 
  /*   @Override
@@ -801,11 +871,10 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
             super.onBackPressed();
 
             isFragmentOpen = false;
-            //Changed on 26th march 2019
-           /* Intent intent = new Intent(FullViewOfClientsProceed.this, MainActivity.class);
-            intent.putExtra("clientId", ClientId);
+            //Changed on 8th may 2019
+            Intent intent = new Intent(FullViewOfClientsProceed.this, MainActivitySkip.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);*/
+            startActivity(intent);
             finish();
 
         }
@@ -1028,6 +1097,11 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onSliderClick(BaseSliderView baseSliderView) {
+
     }
 
 

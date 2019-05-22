@@ -12,10 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!--change height 350 to 300-->
+
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbarlayout"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="300dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
 
@@ -25,8 +27,9 @@
                 android:layout_height="match_parent"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+                <!--9th may 2019-->
 
-                <RelativeLayout
+                <!--<RelativeLayout
                     android:id="@+id/coverLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -41,9 +44,9 @@
 
                         />
 
-                </RelativeLayout>
+                </RelativeLayout>-->
 
-                <RelativeLayout
+                <!--<RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_alignParentBottom="true"
@@ -78,7 +81,45 @@
                         />
 
 
+                </RelativeLayout>-->
+
+                <!--9th may 2019-->
+
+
+                <RelativeLayout
+                    android:id="@+id/coverLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="?attr/actionBarSize"
+                    android:background="@color/white"
+                    app:layout_scrollFlags="scroll|enterAlways">
+
+
+                    <com.daimajia.slider.library.SliderLayout
+                        android:id="@+id/slider"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        app:layout_scrollFlags="scroll|enterAlways">
+
+                        <com.daimajia.slider.library.Indicators.PagerIndicator
+                            android:id="@+id/custom_indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_below="@id/slider"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="10dp"
+                            app:selected_color="@color/bg_orange"
+                            app:unselected_color="@color/white"
+                            app:layout_scrollFlags="scroll|enterAlways" />
+                    </com.daimajia.slider.library.SliderLayout>
+
+
                 </RelativeLayout>
+
+
+                <!--////////////////////////////-->
+
 
                 <FrameLayout
                     android:id="@+id/toolbar_container"

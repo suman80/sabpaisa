@@ -121,6 +121,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import in.sabpaisa.droid.sabpaisa.Adapter.HorizontalClientsRecyclerViewAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.NotificationAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
@@ -472,14 +473,18 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         //appBarLayout.addOnOffsetChangedListener(this);
 
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        // comment on 8th may 2019
+        //setupViewPager(viewPager);
         viewPager.disableScroll(true);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         tabLayout.setSmoothScrollingEnabled(true);
 
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.clients);
+
+        //change on 8th may 2019
+        //tabLayout.getTabAt(0).setIcon(R.drawable.clients);
+
 //////////////////Code for adding image and text on tab bar ////////////////////////////////////////////////
        /* TextView newTab = (TextView) LayoutInflater.from(MainActivity.this).inflate(R.layout.custom_tab_layout, null);
         newTab.setText("Clients");
@@ -497,12 +502,12 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         //editor.putString("userImageUrl",userImageUrl);
         editor.commit();
 
-
-        LoadHeaderImageList();
+// comment on 8th may 2019
+        //LoadHeaderImageList();
 
         //getDynamicScreenImages();
-
-        setHeaderImageList();
+// comment on 8th may 2019
+        //setHeaderImageList();
 
         sendMoney.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -570,7 +575,8 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         ////////API CAlls////////////////////////////
 
         if (isOnline()) {
-            getUserImage(userAccessToken);
+            // comment on 8th may 2019
+            //getUserImage(userAccessToken);
         } else {
 
             Cursor res = appDB.getParticularImageData(userAccessToken);
@@ -601,7 +607,8 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         }
 
         if (isOnline()) {
-            showProfileData();
+            // comment on 8th may 2019
+            //showProfileData();
         } else {
 
             Cursor res = appDB.getParticularData(userAccessToken);
@@ -625,7 +632,8 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
             }
 
         }
-        getClientsList(ClientId1);
+        // comment on 8th may 2019
+        //getClientsList(ClientId1);
         String y = x;
 
         usernameniv.setOnClickListener(new View.OnClickListener() {
@@ -679,16 +687,18 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         //Updating UI
 
-        BroadcastReceiver receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(PROFILE_IMAGE)){
-                    getUserImage(userAccessToken);
-                }
-            }
-        };
+        //commenting on 8th may 2019
 
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(receiver,new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
+//        BroadcastReceiver receiver = new BroadcastReceiver() {
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//                if (intent.getAction().equals(PROFILE_IMAGE)){
+//                    getUserImage(userAccessToken);
+//                }
+//            }
+//        };
+//
+//        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(receiver,new IntentFilter(ConstantsForUIUpdates.PROFILE_IMAGE));
 
 
 
@@ -707,6 +717,16 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
         AppDecideFlag = false;
 
+        if (HorizontalClientsRecyclerViewAdapter.progressDialog !=null && HorizontalClientsRecyclerViewAdapter.progressDialog.isShowing()){
+            HorizontalClientsRecyclerViewAdapter.progressDialog.dismiss();
+            HorizontalClientsRecyclerViewAdapter.progressDialog.cancel();
+        }
+
+        //Added on 8th may 2019 skiping activity
+
+        Intent intent = new Intent(MainActivity.this,FullViewOfClientsProceed.class);
+        intent.putExtra("clientId",ClientId);
+        startActivity(intent);
 
 
     }

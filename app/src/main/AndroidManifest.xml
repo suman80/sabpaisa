@@ -31,29 +31,51 @@
         android:name=".AppController"
         android:allowBackup="false"
         android:fullBackupContent="false"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/appicon"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon,allowBackup"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true"
-        >
-        <activity android:name=".AddMemberToSpaceActivity"></activity>
+        tools:replace="android:icon,allowBackup">
+        <activity android:name=".ShareOnFeedsAndGroups"></activity>
+        <!-- Added on 7th may 2019 -->
+        <activity android:name=".ShareFromOtherApp">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity> <!-- ////////////////////////////////////////// -->
+        <activity android:name=".AddMemberToSpaceActivity" />
         <activity android:name=".PrivateGroupFeedSpace" />
         <activity android:name=".MembersOfAGroupSpace" />
         <activity android:name=".EditGroupSpace" />
         <activity android:name=".AddMemberTo_A_SpaceGroup" />
-        <activity android:name=".GroupSpaceCommentActivity"
-            android:parentActivityName=".MainActivitySkip"
-            />
+        <activity
+            android:name=".GroupSpaceCommentActivity"
+            android:parentActivityName=".MainActivitySkip" />
         <activity android:name=".AddGroupSpace" />
         <activity android:name=".EditFeedSpace" />
-
-        <activity android:name=".FeedSpaceCommentsActivity"
-            android:parentActivityName=".MainActivitySkip"
-            />
-
+        <activity
+            android:name=".FeedSpaceCommentsActivity"
+            android:parentActivityName=".MainActivitySkip" />
         <activity android:name=".AddSpaceFeed" />
         <activity android:name=".EditSpace" />
         <activity android:name=".AddSpaceActivity" />
@@ -193,16 +215,12 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".Util.FullViewOfClientsProceed"></activity>
         -->
-
         <activity
             android:name=".Proceed_Feed_FullScreen"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Proceed_Group_FullScreen"
             android:parentActivityName=".MainActivity" />
-
-
-
         <activity android:name=".TransactionReportNav" />
         <activity android:name=".Report" /> <!-- <activity android:name=".UPIActivationActivity" /> -->
         <!-- Firebase Notifications -->
@@ -287,9 +305,6 @@
                 <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
             </intent-filter>
         </receiver>
-
-
-
     </application>
 
 </manifest>
