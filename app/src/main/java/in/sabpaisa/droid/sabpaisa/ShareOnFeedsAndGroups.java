@@ -3,6 +3,7 @@ package in.sabpaisa.droid.sabpaisa;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -39,6 +40,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.FeedAdapter;
@@ -352,6 +354,10 @@ public class ShareOnFeedsAndGroups extends AppCompatActivity implements FlagCall
                         public void run() {
                             // Do something after 5s = 5000ms
                             finishAffinity();
+
+                            Intent intent = new Intent("finish_activity");
+                            sendBroadcast(intent);
+
                         }
                     }, 3000);
 

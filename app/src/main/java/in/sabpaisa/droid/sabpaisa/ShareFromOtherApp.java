@@ -1,7 +1,9 @@
 package in.sabpaisa.droid.sabpaisa;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -80,6 +82,8 @@ public class ShareFromOtherApp extends AppCompatActivity {
     public static String recievedText;
     public static Uri recievedImageUri;
 
+    BroadcastReceiver broadcastReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,11 +154,32 @@ public class ShareFromOtherApp extends AppCompatActivity {
         }
 
 
+        broadcastReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context arg0, Intent intent) {
+                String action = intent.getAction();
+                if (action.equals("finish_activity")) {
+                    finish();
+                    // DO WHATEVER YOU WANT.
+                }
+            }
+        };
+        registerReceiver(broadcastReceiver, new IntentFilter("finish_activity"));
+
+
+
+
 
 
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
 
     void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -381,6 +406,7 @@ public class ShareFromOtherApp extends AppCompatActivity {
             return false;
         }
     }
+
 
 
 
