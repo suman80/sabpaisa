@@ -74,9 +74,10 @@ public class SkipMainClientsAdapterForShare extends RecyclerView.Adapter<SkipMai
 
                 Intent intent = new Intent(context, ShareOnFeedsAndGroups.class);
                 intent.putExtra("recievedText", ShareFromOtherApp.recievedText);
+                if (ShareFromOtherApp.recievedImageUri != null)
                 intent.putExtra("imageUri", ShareFromOtherApp.recievedImageUri.toString());
                 intent.putExtra("appCid", mainFeedData.getAppCid());
-
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 //Storing value for user role and setting default to 1
                /* SharedPreferences.Editor editor = context.getSharedPreferences(SUPER_ADMIN_SHAREDFREF, MODE_PRIVATE).edit();

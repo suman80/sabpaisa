@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -82,7 +83,14 @@ public class ShareOnFeedsAndGroups extends AppCompatActivity implements FlagCall
 
         recievedText = getIntent().getStringExtra("recievedText");
         appCid = getIntent().getStringExtra("appCid");
-        recievedUri = Uri.parse(getIntent().getStringExtra("imageUri"));
+
+        //recievedUri = Uri.parse(getIntent().getStringExtra("imageUri"));
+        String image = getIntent().getStringExtra("imageUri");
+
+        if (image != null){
+            recievedUri = Uri.parse(image);
+        }
+
 
         if (recievedUri != null) {
 
@@ -337,6 +345,19 @@ public class ShareOnFeedsAndGroups extends AppCompatActivity implements FlagCall
 
 
                     }
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Do something after 5s = 5000ms
+                            finishAffinity();
+                        }
+                    }, 3000);
+
+
+
+
                 }else {
                     Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
                 }
@@ -366,7 +387,7 @@ public class ShareOnFeedsAndGroups extends AppCompatActivity implements FlagCall
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        Log.d("PFF", "IMG_Res" + response);
+                        Log.d("SOFAG", "Res____" + response);
                         try {
 
                             JSONObject obj = new JSONObject(new String(response.data));
@@ -443,7 +464,7 @@ public class ShareOnFeedsAndGroups extends AppCompatActivity implements FlagCall
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        Log.d("PGF", "IMG_Res" + response);
+                        Log.d("SOFAG", "Res____" + response);
 
 
                         try {

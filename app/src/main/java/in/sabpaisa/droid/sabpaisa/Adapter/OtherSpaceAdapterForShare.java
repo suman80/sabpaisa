@@ -111,10 +111,11 @@ public class OtherSpaceAdapterForShare extends RecyclerView.Adapter<OtherSpaceAd
 
                 Intent intent = new Intent(context, ShareOnFeedsAndGroups.class);
                 intent.putExtra("recievedText", ShareFromOtherApp.recievedText);
-                intent.putExtra("imageUri", ShareFromOtherApp.recievedImageUri.toString());
+                if (ShareFromOtherApp.recievedImageUri!=null) {
+                    intent.putExtra("imageUri", ShareFromOtherApp.recievedImageUri.toString());
+                }
                 intent.putExtra("appCid", mainFeedData.getAppCid());
-
-
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 //Storing value for user role and setting default to 1 with token
                 /*SharedPreferences.Editor editor = context.getSharedPreferences(SUPER_ADMIN_SHAREDFREF, MODE_PRIVATE).edit();
                 editor.putString("ROLE_VALUE", "3");
