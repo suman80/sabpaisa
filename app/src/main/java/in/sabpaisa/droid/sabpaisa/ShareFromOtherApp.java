@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -84,6 +85,8 @@ public class ShareFromOtherApp extends AppCompatActivity {
 
     BroadcastReceiver broadcastReceiver;
 
+    Toolbar toolbarSFOA;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +115,17 @@ public class ShareFromOtherApp extends AppCompatActivity {
         }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        toolbarSFOA = (Toolbar) findViewById(R.id.toolbarSFOA);
+        toolbarSFOA.setTitle("Choose space to share");
+        toolbarSFOA.setNavigationIcon(R.drawable.previousmoresmall);
+        setSupportActionBar(toolbarSFOA);
+        toolbarSFOA.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         linearLayoutnoDataFound = (LinearLayout) findViewById(R.id.noDataFound);
         linearLayoutAddFeedWhenNoData = (LinearLayout) findViewById(R.id.linearLayoutAddFeedWhenNoData);
