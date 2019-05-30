@@ -5,7 +5,8 @@ public class AppConfig {
 
     public static String Base_Url="https://portal.sabpaisa.in";
     //public static String Base_Url = "https://spl.sabpaisa.in";
-    //public static String Base_Url = "http://192.168.1.62:6262"; // local server
+    //public static String Base_Url = "http://192.168.1.179:6262"; // local server
+    //public static String Base_Url = "http://192.168.1.71:25080"; // local server
     public static String App_api="/SabPaisaAppApi/";
 
     //public static String App_api = "/SabPaisaAppApi_v16/";

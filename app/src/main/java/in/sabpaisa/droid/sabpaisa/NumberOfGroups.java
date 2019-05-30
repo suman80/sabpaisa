@@ -196,6 +196,11 @@ public class NumberOfGroups extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        member_getterSetterArrayList.clear();
+
+        if (member_getterSetterArrayList != null && !member_getterSetterArrayList.isEmpty()) {
+
+            member_getterSetterArrayList.clear();
+
+        }
     }
 }
