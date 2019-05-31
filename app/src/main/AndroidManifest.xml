@@ -38,7 +38,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,allowBackup">
-        <activity android:name=".ShareOnFeedsAndGroups" /> <!-- Added on 7th may 2019 -->
+        <activity android:name=".ShareOnFeedsAndGroups" />
+        <!-- Added on 7th may 2019 -->
         <activity android:name=".ShareFromOtherApp">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -61,7 +62,8 @@
 
                 <data android:mimeType="image/*" />
             </intent-filter>
-        </activity> <!-- ////////////////////////////////////////// -->
+        </activity>
+        <!-- ////////////////////////////////////////// -->
         <activity android:name=".AddMemberToSpaceActivity" />
         <activity android:name=".PrivateGroupFeedSpace" />
         <activity android:name=".MembersOfAGroupSpace" />
