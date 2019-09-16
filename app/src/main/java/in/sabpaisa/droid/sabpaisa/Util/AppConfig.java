@@ -3,14 +3,15 @@ package in.sabpaisa.droid.sabpaisa.Util;
 public class AppConfig {
     // Server user login url
 
-    //public static String Base_Url="https://portal.sabpaisa.in";
+   // public static String Base_Url="https://portal.sabpaisa.in";
     public static String Base_Url = "https://spl.sabpaisa.in";
+    //public static String Base_Url = "http://101.53.142.165:8088";
     //public static String Base_Url = "http://192.168.1.179:6262"; // local server
     //public static String Base_Url = "http://192.168.1.71:25080"; // local server
     //public static String App_api="/SabPaisaAppApi/";
 
-    public static String App_api = "/SabPaisaAppApi_v16/";
-    //public static String App_api = "/SabPaisaAppApi_May30/";
+    // public static String App_api = "/SabPaisaAppApi/";
+    public static String App_api = "/SabPaisaAppApi_Sept16/";
 
 
 
