@@ -1,6 +1,5 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,14 +15,13 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.support.v4.content.IntentCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.content.IntentCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.text.InputType;
+import androidx.appcompat.widget.Toolbar;
+
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -46,7 +44,6 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
@@ -54,7 +51,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 //import com.google.firebase.crash.FirebaseCrash;
 
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -72,17 +68,12 @@ import java.util.Map;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
-import in.sabpaisa.droid.sabpaisa.MainActivity;
-import in.sabpaisa.droid.sabpaisa.MainActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Model.ProfileModel;
 import in.sabpaisa.droid.sabpaisa.R;
-import in.sabpaisa.droid.sabpaisa.RegisterActivity;
 import in.sabpaisa.droid.sabpaisa.UIN;
 
 import static in.sabpaisa.droid.sabpaisa.AppDB.AppDB.TABLE_USER_IMG;
-import static in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments.TABLE_NAME_MEMBERS;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
-import static in.sabpaisa.droid.sabpaisa.R.color.black;
 
 public class ProfileNavigationActivity extends AppCompatActivity {
     private static final String TAG = ProfileNavigationActivity.class.getSimpleName();

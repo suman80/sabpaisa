@@ -2,15 +2,12 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class RegisterPasscode extends AppCompatActivity implements View.OnClickListener {
 

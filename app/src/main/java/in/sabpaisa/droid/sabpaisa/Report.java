@@ -2,11 +2,8 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -19,7 +16,6 @@ import org.json.JSONObject;
 
 import in.sabpaisa.droid.sabpaisa.Model.TransactionreportModelClass;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 /**
  * Created by archana on 12/3/18.

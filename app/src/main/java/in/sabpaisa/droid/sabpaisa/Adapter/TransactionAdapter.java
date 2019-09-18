@@ -1,7 +1,7 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +11,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.Model.TransactionDetail;
 import in.sabpaisa.droid.sabpaisa.R;
-import me.grantland.widget.AutofitHelper;
 
 /**
  * Created by abc on 17-06-2017.

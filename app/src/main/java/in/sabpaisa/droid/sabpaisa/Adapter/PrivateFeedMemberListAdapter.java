@@ -2,7 +2,7 @@ package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,6 @@ import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.Model.PrivateMemberListModel;
-import in.sabpaisa.droid.sabpaisa.NumberOfGroups;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.UIN;
 

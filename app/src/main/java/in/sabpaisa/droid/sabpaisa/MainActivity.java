@@ -3,10 +3,6 @@ package in.sabpaisa.droid.sabpaisa;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,50 +10,47 @@ import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import com.google.android.material.navigation.NavigationView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.GravityCompat;
+import androidx.viewpager.widget.ViewPager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.text.Html;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +67,6 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -86,14 +78,13 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.example.rajdeeps.sabpaisatimecaptureapp.LoginActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.firebase.analytics.FirebaseAnalytics;
 //import com.google.firebase.crash.FirebaseCrash;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessaging;
 //import com.wangjie.androidbucket.utils.ABTextUtil;
 //import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -102,7 +93,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 //import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
 //import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -118,11 +108,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.HorizontalClientsRecyclerViewAdapter;
-import in.sabpaisa.droid.sabpaisa.Adapter.NotificationAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
@@ -131,10 +119,8 @@ import in.sabpaisa.droid.sabpaisa.Fragments.ClientFilterFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.InstitutionFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.ParticularClient;
 import in.sabpaisa.droid.sabpaisa.Model.ClientData;
-import in.sabpaisa.droid.sabpaisa.Model.DynamicImagesModel;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
-import in.sabpaisa.droid.sabpaisa.Model.NotificationModelClass;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
@@ -146,7 +132,6 @@ import io.fabric.sdk.android.Fabric;
 import me.grantland.widget.AutofitTextView;
 
 import static com.mikepenz.materialize.util.UIUtils.convertDpToPixel;
-import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.APP_VERSION_SHARED_PREF;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.AppDecideFlag;
@@ -221,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
     ////Testing
     @SuppressLint("MissingPermission")
-    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
+    @androidx.annotation.RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //checking
@@ -1032,7 +1017,6 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
                     //TODO
                 } else if (error instanceof ParseError) {
-
                     //TODO
                 }
 
@@ -1172,6 +1156,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
     }
 
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -1232,10 +1217,18 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
             intent.putExtra("FLAG","MainActivity");
             startActivity(intent);
         } else if (id == R.id.nav_Privacy_Policy) {
-            Intent intent = new Intent(MainActivity.this, PrivacyPolicyActivity.class);
 
+            Intent intent = new Intent(MainActivity.this, PrivacyPolicyActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_logout) {
+
+        }
+
+        else if(id==R.id.salesApp)
+        {
+            Intent intent=new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_logout) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
             builder.setMessage("Do you want to Exit the app?");

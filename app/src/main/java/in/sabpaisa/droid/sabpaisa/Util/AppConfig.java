@@ -10,10 +10,8 @@ public class AppConfig {
     //public static String Base_Url = "http://192.168.1.71:25080"; // local server
     //public static String App_api="/SabPaisaAppApi/";
 
-    // public static String App_api = "/SabPaisaAppApi/";
-    public static String App_api = "/SabPaisaAppApi_Sept16/";
-
-
+    //public static String App_api = "/SabPaisaAppApi/";
+    public static String App_api = "/SabPaisaAppApi_v16/";
 
 
     public static String URL_REGISTER = "register-user";

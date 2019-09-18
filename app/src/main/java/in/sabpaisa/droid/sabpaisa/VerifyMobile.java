@@ -3,20 +3,17 @@ package in.sabpaisa.droid.sabpaisa;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.CountDownTimer;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
-
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class VerifyMobile extends AppCompatActivity {
 

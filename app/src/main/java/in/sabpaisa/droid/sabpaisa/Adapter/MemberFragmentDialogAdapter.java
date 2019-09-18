@@ -1,28 +1,23 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Build;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import in.sabpaisa.droid.sabpaisa.Interfaces.AddMemberCallBack;
 import in.sabpaisa.droid.sabpaisa.Model.ContactVO;
-import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.R;
 
 public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFragmentDialogAdapter.ContactViewHolder> {
@@ -39,7 +34,7 @@ public class MemberFragmentDialogAdapter extends RecyclerView.Adapter<MemberFrag
 
     ArrayList<ContactVO> memberGetterSetterArrayList1 = new ArrayList<>();
 
-    android.support.v7.widget.Toolbar toolbar;
+    androidx.appcompat.widget.Toolbar toolbar;
     int count = 0;
 
 

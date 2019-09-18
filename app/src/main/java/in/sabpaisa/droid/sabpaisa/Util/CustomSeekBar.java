@@ -3,13 +3,12 @@ package in.sabpaisa.droid.sabpaisa.Util;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.SeekBar;
 
 /**
  * Created by abc on 15-06-2017.
  */
 
-public class CustomSeekBar extends android.support.v7.widget.AppCompatSeekBar {
+public class CustomSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     private Drawable thumb;
     public CustomSeekBar(Context context) {
         super(context);

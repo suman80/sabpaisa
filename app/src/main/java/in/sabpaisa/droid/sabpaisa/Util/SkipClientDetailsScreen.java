@@ -3,7 +3,6 @@ package in.sabpaisa.droid.sabpaisa.Util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -21,27 +20,26 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+
+import com.example.rajdeeps.sabpaisatimecaptureapp.LoginActivity;
+import com.google.android.material.appbar.AppBarLayout;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.core.view.GravityCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.core.widget.NestedScrollView;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -49,11 +47,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,17 +62,12 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -86,59 +75,36 @@ import com.google.android.gms.security.ProviderInstaller;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 //import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
 
-import in.sabpaisa.droid.sabpaisa.Adapter.OtherSpaceAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
 import in.sabpaisa.droid.sabpaisa.AllContacts;
 import in.sabpaisa.droid.sabpaisa.AllTransactionSummary;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.AppDB.ClientsDB;
-import in.sabpaisa.droid.sabpaisa.CommentAdapter;
-import in.sabpaisa.droid.sabpaisa.CommentData;
 import in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates;
 import in.sabpaisa.droid.sabpaisa.FeedData;
-import in.sabpaisa.droid.sabpaisa.FeedsFragments;
-import in.sabpaisa.droid.sabpaisa.FilterActivity;
-import in.sabpaisa.droid.sabpaisa.FilterActivity1;
 import in.sabpaisa.droid.sabpaisa.Fragments.SkipFeedFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.SkipGroupFragment;
 import in.sabpaisa.droid.sabpaisa.Fragments.SkipMembersFragment;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
-import in.sabpaisa.droid.sabpaisa.GroupsFragments;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
-import in.sabpaisa.droid.sabpaisa.MainActivity;
-import in.sabpaisa.droid.sabpaisa.MainActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Model.*;
-import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
-import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.R;
 
-import in.sabpaisa.droid.sabpaisa.Adapter.CommentAdapterDatabase;
-import in.sabpaisa.droid.sabpaisa.SimpleDividerItemDecoration;
 import in.sabpaisa.droid.sabpaisa.TLSSocketFactory;
-import in.sabpaisa.droid.sabpaisa.UIN;
 
-import static android.support.v4.widget.SwipeRefreshLayout.*;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
@@ -146,7 +112,7 @@ import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 /*implements SwipeRefreshLayout.OnRefreshListener*/
 
-public class SkipClientDetailsScreen extends AppCompatActivity implements OnFragmentInteractionListener, OnRefreshListener, NavigationView.OnNavigationItemSelectedListener, SkipFeedFragment.GetDataInterface, SkipGroupFragment.GetDataInterface, SkipMembersFragment.GetDataInterface {
+public class SkipClientDetailsScreen extends AppCompatActivity implements OnFragmentInteractionListener, SwipeRefreshLayout.OnRefreshListener, NavigationView.OnNavigationItemSelectedListener, SkipFeedFragment.GetDataInterface, SkipGroupFragment.GetDataInterface, SkipMembersFragment.GetDataInterface {
 
     public static String clientName, state, position;
     public static String clientImageURLPath = null;
@@ -692,7 +658,16 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
             Intent intent = new Intent(SkipClientDetailsScreen.this, PrivacyPolicyActivity.class);
 
             startActivity(intent);
-        } else if (id == R.id.nav_logout) {
+        }
+
+        else  if (id==R.id.salesApp)
+        {
+            Intent intent=new Intent(SkipClientDetailsScreen.this, LoginActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_logout) {
+
+
 
 
             AlertDialog.Builder builder = new AlertDialog.Builder(SkipClientDetailsScreen.this); //Home is name of the activity

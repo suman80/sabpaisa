@@ -1,23 +1,18 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.content.pm.ActivityInfo;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.ColorInt;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hsalf.smilerating.BaseRating;
 import com.hsalf.smilerating.SmileRating;
 
 import in.sabpaisa.droid.sabpaisa.R;
-
-import static in.sabpaisa.droid.sabpaisa.R.id.background;
 
 public class RateActivity extends AppCompatActivity {
     RatingBar ratingbar1;

@@ -4,19 +4,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.media.Image;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.v4.content.IntentCompat;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.core.content.IntentCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -34,7 +29,6 @@ import java.util.Locale;
 
 import in.sabpaisa.droid.sabpaisa.Model.TransactionreportModelClass;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 /**
  * Created by archana on 12/3/18.

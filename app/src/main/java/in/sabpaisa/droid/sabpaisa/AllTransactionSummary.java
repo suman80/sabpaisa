@@ -6,32 +6,28 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
-import android.media.Image;
 import android.net.ConnectivityManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -39,10 +35,7 @@ import java.util.Locale;
 import in.sabpaisa.droid.sabpaisa.Adapter.AllTransactionAdapter;
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.Model.AllTransactiongettersetter;
-import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
-import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 
 public class AllTransactionSummary extends AppCompatActivity {
     String token;
@@ -53,7 +46,7 @@ public class AllTransactionSummary extends AppCompatActivity {
     ArrayList<AllTransactiongettersetter> allTransactiongettersetters;
     ArrayList<AllTransactiongettersetter> allTransactiongettersettersForLocalDb;
     LinearLayout linearLayoutnoDataFound;
-    android.support.v7.widget.Toolbar toolbar;
+    androidx.appcompat.widget.Toolbar toolbar;
     ImageView back;
 
     /////////////DB///////////////////////
@@ -68,7 +61,7 @@ public class AllTransactionSummary extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Transaction Report");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setNavigationIcon(R.drawable.ic_action_previousback);

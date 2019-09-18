@@ -2,12 +2,11 @@ package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.content.pm.ActivityInfo;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.uncopt.android.widget.text.justify.JustifiedEditText;
 import com.uncopt.android.widget.text.justify.JustifiedTextView;
 
 import in.sabpaisa.droid.sabpaisa.R;

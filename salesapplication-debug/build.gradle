@@ -1,0 +1,6 @@
+configurations.maybeCreate("default")
+
+dependencies {
+
+}
+artifacts.add("default", file('salesapplication-debug.aar'))

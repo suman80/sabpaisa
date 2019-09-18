@@ -1,7 +1,7 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.content.pm.ActivityInfo;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import in.sabpaisa.droid.sabpaisa.R;

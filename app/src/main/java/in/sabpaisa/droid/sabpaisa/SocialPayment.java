@@ -1,20 +1,16 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.content.pm.ActivityInfo;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.SocialPaymentChatAdapter;
-import in.sabpaisa.droid.sabpaisa.Adapter.ViewPagerAdapter;
-import in.sabpaisa.droid.sabpaisa.Fragments.TransactionAllFragment;
-import in.sabpaisa.droid.sabpaisa.Fragments.TransactionPendingFragment;
 import in.sabpaisa.droid.sabpaisa.Model.ChatHistory;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 

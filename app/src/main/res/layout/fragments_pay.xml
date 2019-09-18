@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_expandable_scroll_view"
     android:layout_width="match_parent"
@@ -59,14 +59,146 @@
 
     <!--////////////21st March,2018/////////////-->
 
-    <ExpandableListView
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+        <TextView
+            android:id="@+id/salesAppNew"
+            android:padding="10dp"
+            android:visibility="gone"
+            android:layout_marginTop="1dp"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:background="#efefef"
+            android:text="Use our sales application"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17dp"
+            android:textColor="@color/bg_orange" />
+
+
+
+        <TextView
+            android:id="@+id/sdk_integration"
+            android:padding="10dp"
+            android:layout_marginTop="2dp"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:background="#efefef"
+            android:text="Open Camera to check sdk"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17dp"
+            android:textColor="@color/bg_orange" />
+
+
+        <ExpandableListView
         android:id="@+id/lvExp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
         android:transcriptMode="alwaysScroll"
-
+        android:clipToPadding="false"
+        android:paddingBottom="40dp"
         >
 
     </ExpandableListView>
 
-</android.support.v4.widget.NestedScrollView>
+
+        <FrameLayout
+            android:id="@+id/framelayoutScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:layout_behavior="in.sabpaisa.droid.sabpaisa.Util.BottomNavigationBehavior"
+            android:visibility="visible"
+            >
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ripplelayoutScan"
+                app:mrl_rippleOverlay="true"
+                app:mrl_rippleHover="true"
+                >
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/coa_main_screen_buttom"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/main_screen_bottom_color"
+                    android:orientation="horizontal"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/payment_button"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:background="@drawable/pay" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Pay"
+
+                            android:textAllCaps="false"
+                            android:textColor="@color/bg_screen"
+                            android:textSize="@dimen/text_size_heading" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="@dimen/pipe_line"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/bg_screen" />
+
+                    <LinearLayout
+                        android:id="@+id/bottom_addBtn"
+                        android:layout_width="0dp"
+                        android:visibility="gone"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center">
+
+                      <!--  <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:background="@drawable/ic_add" />
+-->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Scan"
+                            android:textAllCaps="false"
+                            android:textColor="@color/bg_screen"
+                            android:textSize="@dimen/text_size_heading" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+        </FrameLayout>
+
+
+    </FrameLayout>
+
+
+</androidx.core.widget.NestedScrollView>

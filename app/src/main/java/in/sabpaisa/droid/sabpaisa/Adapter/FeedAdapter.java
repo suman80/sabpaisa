@@ -1,9 +1,9 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.content.Context;
-import android.media.Image;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

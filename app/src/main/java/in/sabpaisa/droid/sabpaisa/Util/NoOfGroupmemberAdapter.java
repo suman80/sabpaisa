@@ -1,14 +1,12 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,8 +38,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import in.sabpaisa.droid.sabpaisa.Adapter.MemberAdapter;
-import in.sabpaisa.droid.sabpaisa.AddMemberTo_A_Group;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
 import in.sabpaisa.droid.sabpaisa.MembersProfile;
@@ -49,7 +45,6 @@ import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.NumberOfGroups;
 import in.sabpaisa.droid.sabpaisa.PrivateFeedMembersList;
 import in.sabpaisa.droid.sabpaisa.R;
-import in.sabpaisa.droid.sabpaisa.RegisterActivity;
 import in.sabpaisa.droid.sabpaisa.UIN;
 
 /**

@@ -6,10 +6,6 @@
     android:versionCode="15"
     android:versionName="1.4.1">
 
-    <uses-sdk
-        android:minSdkVersion="17"
-        android:targetSdkVersion="27" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.Manifest.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -37,7 +33,9 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon,allowBackup">
+        tools:replace="android:icon,allowBackup,android:name">
+
+
         <activity android:name=".ShareOnFeedsAndGroups" />
         <!-- Added on 7th may 2019 -->
         <activity android:name=".ShareFromOtherApp">
@@ -298,6 +296,8 @@
         <activity android:name=".FilterActivity1" />
         <activity android:name=".AddMemberTo_A_PrivateFeed" />
         <activity android:name=".PrivateFeedMembersList" />
+        <activity android:name=".Util.SentMessageActivity"/>
+        <activity android:name="CropImageActivity1"/>
 
         <receiver
             android:name=".MySMSBroadcastReceiver"

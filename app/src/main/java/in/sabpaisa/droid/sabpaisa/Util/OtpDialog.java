@@ -2,11 +2,10 @@ package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.support.design.widget.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

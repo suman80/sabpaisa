@@ -1,6 +1,5 @@
 package in.sabpaisa.droid.sabpaisa;
 
-import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -12,11 +11,11 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.core.content.FileProvider;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,6 +52,7 @@ import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.AppDB.AppDbComments;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
+import in.sabpaisa.droid.sabpaisa.Util.SentMessageActivity;
 
 import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.AppDecideFlag;
 import static in.sabpaisa.droid.sabpaisa.MainActivitySkip.SUPER_ADMIN_SHAREDFREF;
@@ -76,11 +76,21 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     /*ColorGenerator generator = ColorGenerator.MATERIAL;
     String letter;*/
 
-    private android.support.v7.view.ActionMode.Callback actionModeCallbacks = new android.support.v7.view.ActionMode.Callback() {
+    private androidx.appcompat.view.ActionMode.Callback actionModeCallbacks = new androidx.appcompat.view.ActionMode.Callback() {
         @Override
-        public boolean onCreateActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
+        public boolean onCreateActionMode(androidx.appcompat.view.ActionMode mode, Menu menu) {
             multiSelect = true;
             menu.add("Share");
+            SharedPreferences s = mContext.getSharedPreferences(Proceed_Group_FullScreen.MY_PREFS_FOR_GROUP_ID, Context.MODE_PRIVATE);
+
+            String  groupId = s.getString("groupId", null);
+
+            Log.d("SUMAN TEST1 >> ","");
+
+            if(groupId != null )
+            {
+                menu.add("Info");
+            }
 
             String roleValue = null;
 
@@ -92,6 +102,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                 Log.d("CommentAdapter","roleValueFromPersonalSpace______"+roleValue);
                 if (roleValue.equals("1") || (GroupSpaceCommentActivity.memberGroupRole != null && GroupSpaceCommentActivity.memberGroupRole.equals("2"))) {
                     menu.add("Delete");
+                }
+
+                if(GroupSpaceCommentActivity.memberGroupRole!=null)
+                {
+                    menu.add("Info");
+                    Log.d("for_the_feed1","hello");
                 }
 
             }else {
@@ -118,12 +134,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         }
 
         @Override
-        public boolean onPrepareActionMode(android.support.v7.view.ActionMode mode, Menu menu) {
+        public boolean onPrepareActionMode(androidx.appcompat.view.ActionMode mode, Menu menu) {
             return false;
         }
 
         @Override
-        public boolean onActionItemClicked(android.support.v7.view.ActionMode mode, MenuItem item) {
+        public boolean onActionItemClicked(androidx.appcompat.view.ActionMode mode, MenuItem item) {
 
             /*for (CommentData Item : selectedItems) {
                 commentList.remove(Item);
@@ -134,6 +150,21 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
             CharSequence title = item.getTitle();
 
             Log.d("CommentAdapter","onActionItemClicked "+title);
+
+
+            if(title.equals("Info"))
+            {
+                Intent intent = new Intent(mContext, SentMessageActivity.class);
+
+                for (CommentData commentData : selectedItems) {
+                    intent.putExtra("commentId", commentData.getCommentId());
+                    Log.d("comment_id_new",""+commentData.getCommentId());
+                }
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
+
 
 
             if (title.equals("Share")) {
@@ -227,7 +258,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         }
 
         @Override
-        public void onDestroyActionMode(android.support.v7.view.ActionMode mode) {
+        public void onDestroyActionMode(androidx.appcompat.view.ActionMode mode) {
             multiSelect = false;
             selectedItems.clear();
             toolbar.setVisibility(View.VISIBLE);

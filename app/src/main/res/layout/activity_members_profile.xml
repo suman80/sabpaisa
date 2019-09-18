@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 
         
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -70,7 +70,7 @@
 
                             android:orientation="vertical">
 
-                            <android.support.v7.widget.CardView
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="160dp"
                                 android:layout_height="160dp"
                                 app:cardCornerRadius="80dp"
@@ -89,7 +89,7 @@
 
                                 />
 
-                            </android.support.v7.widget.CardView>
+                            </androidx.cardview.widget.CardView>
 
                         </LinearLayout>
                         <!--<com.jackandphantom.circularprogressbar.CircleProgressbar

@@ -2,10 +2,9 @@ package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.v7.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatEditText;
 import android.util.AttributeSet;
 
 import in.sabpaisa.droid.sabpaisa.R;

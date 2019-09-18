@@ -3,18 +3,23 @@ package in.sabpaisa.droid.sabpaisa;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.Nullable;
+
+import com.example.rajdeeps.sabpaisatimecaptureapp.LoginActivity;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -27,6 +32,8 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.balysv.materialripple.MaterialRippleLayout;
+import com.example.ocr_lib.OCR_SRC_1;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,6 +72,12 @@ public class PayFragments extends Fragment {
     HashMap<String, List<String>> listDataChild;//22nd March,2018
     ExpandableListAdapter listAdapter;//22nd March,2018
 
+    FrameLayout framelayoutScan;
+
+    MaterialRippleLayout ripplelayoutScan;
+    private TextView sdk_integration,salesAppNew;
+
+
 
     private static final String TAG = PayFragments.class.getSimpleName();
 
@@ -82,6 +95,11 @@ public class PayFragments extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragments_pay, container, false);
+        framelayoutScan = (FrameLayout)rootView.findViewById(R.id.framelayoutScan);
+        ripplelayoutScan = (MaterialRippleLayout) rootView.findViewById(R.id.ripplelayoutScan);
+        sdk_integration=(TextView)rootView.findViewById(R.id.sdk_integration);
+        salesAppNew=(TextView)rootView.findViewById(R.id.salesAppNew);
+
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(ParticularClient.MYSHAREDPREFProceed, MODE_PRIVATE);
         landing_page = sharedPreferences.getString("landing_page", "123");
@@ -98,6 +116,45 @@ public class PayFragments extends Fragment {
         /*viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
         setupViewPager(viewPager);*/
         //Button btn_pay = (Button) rootView.findViewById(R.id.btn_pay);
+
+        framelayoutScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getContext(),"Hi",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+       /* ripplelayoutScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getContext(),"Hi",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(),CropImageActivity1.class);
+                getContext().startActivity(intent);
+
+                *//*Intent intent = new Intent(getContext(), CameraWebView.class);
+                getContext().startActivity(intent);*//*
+
+            }
+        });*/
+        sdk_integration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), OCR_SRC_1.class);
+                intent.putExtra("CLIENT_ID","12");
+                intent.putExtra("CLIENT_CODE","MNMFN");
+                startActivity(intent);
+
+            }
+        });
+
+        salesAppNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
 
         tabs = (TabLayout) rootView.findViewById(R.id.tabs);
@@ -414,5 +471,8 @@ public class PayFragments extends Fragment {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
     }
+
+
+
 
 }

@@ -1,18 +1,15 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 
@@ -21,10 +18,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.AppController;
-import in.sabpaisa.droid.sabpaisa.MembersProfile;
 import in.sabpaisa.droid.sabpaisa.Model.MemberOfflineDataModel;
-import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
-import in.sabpaisa.droid.sabpaisa.Proceed_Feed_FullScreen;
 import in.sabpaisa.droid.sabpaisa.R;
 
 

@@ -6,10 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,12 +36,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.AddMemberToSpaceGroupAdapter;
-import in.sabpaisa.droid.sabpaisa.Adapter.AddMemberTo_A_GroupAdapter;
 import in.sabpaisa.droid.sabpaisa.Interfaces.AddMemberCallBack;
 import in.sabpaisa.droid.sabpaisa.Model.MemberSpaceModel;
-import in.sabpaisa.droid.sabpaisa.Model.Member_GetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
 import in.sabpaisa.droid.sabpaisa.Util.SkipClientDetailsScreen;
 
 public class AddMemberTo_A_SpaceGroup extends AppCompatActivity implements AddMemberCallBack {

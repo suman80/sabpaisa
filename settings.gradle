@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':ocr_lib-debug', ':salesapplication-debug', ':ocr_lib-debug1'

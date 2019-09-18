@@ -1,15 +1,14 @@
 package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,12 +18,8 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.FeedData;
-import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.FlagCallback;
-import in.sabpaisa.droid.sabpaisa.MainFeedAdapter;
-import in.sabpaisa.droid.sabpaisa.Proceed_Feed_FullScreen;
 import in.sabpaisa.droid.sabpaisa.R;
-import in.sabpaisa.droid.sabpaisa.SharingActivity;
 
 public class SharedFeedFragmentAdapter extends RecyclerView.Adapter<SharedFeedFragmentAdapter.MyViewHolder> {
 

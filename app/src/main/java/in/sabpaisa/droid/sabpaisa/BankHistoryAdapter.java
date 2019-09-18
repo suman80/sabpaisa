@@ -1,15 +1,13 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
-import in.sabpaisa.droid.sabpaisa.Model.Bank;
 
 /**
  * Created by SabPaisa on 27-07-2017.

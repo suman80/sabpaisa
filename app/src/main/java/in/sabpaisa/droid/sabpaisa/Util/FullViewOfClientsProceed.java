@@ -23,19 +23,21 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Parcelable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+
+import com.example.rajdeeps.sabpaisatimecaptureapp.LoginActivity;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.core.view.GravityCompat;
+import androidx.viewpager.widget.ViewPager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -89,7 +91,6 @@ import in.sabpaisa.droid.sabpaisa.AppDB.AppDB;
 import in.sabpaisa.droid.sabpaisa.AppDB.ClientsDB;
 import in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates;
 import in.sabpaisa.droid.sabpaisa.FeedData;
-import in.sabpaisa.droid.sabpaisa.FilterActivity;
 //import in.sabpaisa.droid.sabpaisa.Fragments.FeedFragments1;
 import in.sabpaisa.droid.sabpaisa.FilterActivity1;
 import in.sabpaisa.droid.sabpaisa.Fragments.ProceedFeedsFragment;
@@ -97,18 +98,15 @@ import in.sabpaisa.droid.sabpaisa.Fragments.ProceedGroupsFragments;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
-import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.MainActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Members;
 import in.sabpaisa.droid.sabpaisa.Model.*;
-import in.sabpaisa.droid.sabpaisa.Model.SkipClientData;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.UIN;
 
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
-import static in.sabpaisa.droid.sabpaisa.UIN.SHARED_PREF_UIN_STATUS;
 
 public class FullViewOfClientsProceed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, ProceedFeedsFragment.GetDataInterface, ProceedGroupsFragments.GetDataInterface, Members.GetDataInterface,BaseSliderView.OnSliderClickListener {
     ImageView clientImagePath;
@@ -934,6 +932,12 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
             startActivity(intent);
         } else if (id == R.id.nav_Privacy_Policy) {
             Intent intent = new Intent(FullViewOfClientsProceed.this, PrivacyPolicyActivity.class);
+
+            startActivity(intent);
+        }
+        else if(id==R.id.salesApp)
+        {
+            Intent intent = new Intent(FullViewOfClientsProceed.this, LoginActivity.class);
 
             startActivity(intent);
         }

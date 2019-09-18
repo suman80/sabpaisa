@@ -9,6 +9,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/ocr_lib-debug" />
+            <option value="$PROJECT_DIR$/ocr_lib-debug1" />
+            <option value="$PROJECT_DIR$/salesapplication-debug" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

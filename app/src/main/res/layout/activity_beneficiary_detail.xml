@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context="in.sabpaisa.droid.sabpaisa.BeneficiaryDetail">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.AppCompatCheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/cb_save"
                         style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
                         android:layout_width="wrap_content"

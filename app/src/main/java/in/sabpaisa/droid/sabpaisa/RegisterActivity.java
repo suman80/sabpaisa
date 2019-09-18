@@ -17,12 +17,12 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.InputType;
@@ -80,13 +80,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference;
 
-import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.FEED_ARRAYLIST;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.OTP_NOT_RECIEVED;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.SEND_OTP;
 
@@ -270,7 +268,6 @@ public class RegisterActivity extends AppCompatActivity  {
 
             }
         });
-
 
         if (CheckPermission(this, Manifest.permission.READ_PHONE_STATE)) {
             deviceId();
@@ -1285,8 +1282,6 @@ public class RegisterActivity extends AppCompatActivity  {
 
     }
 
-
-
     // Obtain the phone number from the result
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1306,6 +1301,8 @@ public class RegisterActivity extends AppCompatActivity  {
                     et_phone_number.setText(credential.getId().length());
                     send_Otp.setVisibility(View.VISIBLE);
                 }
+
+
 
             }
         }

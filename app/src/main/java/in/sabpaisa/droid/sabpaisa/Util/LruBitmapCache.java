@@ -1,7 +1,7 @@
 package in.sabpaisa.droid.sabpaisa.Util;
 
 import android.graphics.Bitmap;
-import android.support.v4.util.LruCache;
+import androidx.collection.LruCache;
 
 import com.android.volley.toolbox.ImageLoader.ImageCache;
 

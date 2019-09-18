@@ -3,10 +3,9 @@ package in.sabpaisa.droid.sabpaisa.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +17,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import in.sabpaisa.droid.sabpaisa.Model.Bank;
-import in.sabpaisa.droid.sabpaisa.Model.ContactList;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.SendAccountIFSC;
-import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by abc on 16-06-2017.

@@ -7,13 +7,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
-import android.provider.Contacts;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.text.InputType;
+import androidx.appcompat.widget.AppCompatCheckBox;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -51,10 +49,7 @@ import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Model.Institution;
 import in.sabpaisa.droid.sabpaisa.Model.StateGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import io.fabric.sdk.android.Fabric;
-
-import static in.sabpaisa.droid.sabpaisa.LogInActivity.PREFS_NAME;
 
 public class FilterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener ,ConnectivityReceiver.ConnectivityReceiverListener {
 
@@ -945,7 +940,7 @@ finish();
                 .make(findViewById(R.id.fab), message, Snackbar.LENGTH_LONG);
 
         View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        TextView textView = (TextView) sbView.findViewById(com.google.android.material.R.id.snackbar_text);
         textView.setTextColor(color);
         snackbar.show();
     }

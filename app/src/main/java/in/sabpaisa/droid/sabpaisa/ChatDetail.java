@@ -2,13 +2,11 @@ package in.sabpaisa.droid.sabpaisa;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.widget.Adapter;
-import android.widget.Toast;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 
 //import com.wangjie.androidbucket.utils.ABTextUtil;
 //import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -18,11 +16,9 @@ import android.widget.Toast;
 //import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.ChatAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.ChatModel;
-import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 
 public class ChatDetail extends AppCompatActivity /*implements RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener*/ {
 
