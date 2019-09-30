@@ -283,7 +283,7 @@ public class SkipMembersFragment extends Fragment {
 
             Log.d("SMF_I&A_InIf"," "+sGetDataInterface+"&"+memberSpaceModelArrayList.size());
         }else {
-            Log.d("SMF_I&A_InElse"," "+sGetDataInterface+"&"+memberSpaceModelArrayList.size());
+           // Log.d("SMF_I&A_InElse"," "+sGetDataInterface+"&"+memberSpaceModelArrayList.size());
         }
 
     }

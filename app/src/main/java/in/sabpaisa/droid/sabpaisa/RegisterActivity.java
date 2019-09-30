@@ -446,7 +446,7 @@ public class RegisterActivity extends AppCompatActivity  {
 
                String otp = intent.getStringExtra("OTP");
 
-               Log.d("Register","otpRecieved___"+otp);
+               Log.d("Register_new","otpRecieved___"+otp);
 
                 optEditText.setValue(otp);
 

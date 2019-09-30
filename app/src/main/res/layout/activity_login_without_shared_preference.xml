@@ -1,43 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="@drawable/login_page_gradient"
+    android:orientation="vertical"
+    tools:context="in.sabpaisa.droid.sabpaisa.LogInActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="in.sabpaisa.droid.sabpaisa.LogInActivity">
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginRight="10sp"
+
+        android:orientation="vertical">
 
         <!--TODO SabPaisa logo will be placed here-->
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="35dp"
-            android:text="SPApp"
-            android:textSize="25sp" />
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="20sp"
+            android:text="SabPaisa"
+            android:textColor="@color/white_color"
+            android:textSize="30sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:text="Welcome to SPApp!"
+            android:text="Welcome To SPApp!"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:visibility="gone" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="25dp"
-            android:text="Login with SPApp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10sp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/login_color"
+            android:elevation="15dp"
+            android:orientation="vertical">
 
-        <!-- <in.sabpaisa.droid.sabpaisa.Util.PrefixEditText
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="regular"
+                android:text="Login"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="22sp" />
+
+            <!-- <in.sabpaisa.droid.sabpaisa.Util.PrefixEditText
              android:imeOptions="actionNext"
              android:id="@+id/et_phone_number"
              android:layout_width="match_parent"
@@ -52,113 +76,149 @@
              android:hint="@string/hint_phone"
              android:inputType="phone" />   -->
 
-        <!--testing on master-->
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionNext"
-            android:id="@+id/et_phone_number"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="25dp"
-            android:maxLength="10"
-            android:background="@drawable/background_edittext"
-            android:drawableLeft="@drawable/ic_phone_black_24dp"
-            android:drawablePadding="10dp"
-            android:hint="@string/hint_phone"
-            android:inputType="number"
-            />
-
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="25dp">
-
-            <TextView
-                android:elevation="15dp"
-                android:id="@+id/tv_password_show"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:text="Show"
-
-                android:visibility="gone"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+            <!--testing on master-->
 
             <EditText
-                android:imeOptions="actionDone"
-                android:id="@+id/et_password"
+                android:id="@+id/et_phone_number"
                 android:layout_width="match_parent"
-                android:inputType="textPassword"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:textSize="12sp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/background_edittext"
-                android:drawableLeft="@drawable/ic_lock_black_24dp"
+                android:drawableLeft="@drawable/ic_phone_black_24dp"
                 android:drawablePadding="10dp"
-                android:hint="@string/hint_password"
-                />
-        </FrameLayout>
+                android:hint="@string/hint_phone"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="10"
+                android:paddingBottom="5dp" />
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="20dp">
 
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/background_button"
-            android:text="Login"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="20dp" />
-        <TextView
-            android:id="@+id/tv_forgot_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="25dp"
-            android:text="Forgot Password"
-            android:textColor="@color/bg_orange"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                <Button
+                    android:id="@+id/tv_password_show"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_button"
+                    android:elevation="15dp"
+                    android:text="Show"
+                    android:textAllCaps="false"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_edittext"
+                    android:drawableLeft="@drawable/ic_lock_black_24dp"
+                    android:drawablePadding="10dp"
+                    android:hint="@string/hint_password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:maxLength="15"
+                    android:singleLine="true" />
+            </LinearLayout>
 
-            <TextView
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="25dp"
-                android:text="Don't have a SabPaisa Account ?"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tv_register"
+            <RelativeLayout
+                android:id="@+id/login_layout"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_forgot_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20sp"
+                    android:text="Forgot Password"
+                    android:textColor="@color/bg_orange"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="80sp"
+                    android:layout_marginRight="40dp"
+                    android:background="@drawable/background_button"
+                    android:text="Login"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="35dp"
+                android:layout_marginBottom="20dp"
+                android:layout_alignParentBottom="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="25dp"
-                android:text="Register"
-                android:textColor="@color/bg_orange"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="25dp"
+                    android:text="Don't have SPApp Account ?"
+                    android:textColor="@color/black_50"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_register"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="1sp"
+                    android:layout_marginTop="25dp"
+                    android:text="Register"
+                    android:textColor="@color/primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+
         </LinearLayout>
+
     </LinearLayout>
-</ScrollView>
+
+</LinearLayout>
+

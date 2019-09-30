@@ -169,7 +169,7 @@ dependencies {
     implementation project(path: ':ocr_lib-debug1')
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.4.7'
     implementation 'com.github.sd6352051:NiftyNotification:1.2'
-
+    implementation project(path: ':ocr_lib-debug')
 
 
 }
