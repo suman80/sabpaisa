@@ -7,6 +7,7 @@
     tools:context="in.sabpaisa.droid.sabpaisa.NumberOfGroups">
 
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -18,38 +19,40 @@
         app:subtitleTextColor="@color/white"
         app:titleTextAppearance="@style/toolBarStyle"
         app:titleTextColor="@color/white" />
-<!--<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="SabPaisa"
-    android:layout_marginTop="20dp"
-    android:textSize="17sp"
-    android:textStyle="bold"
-    android:textColor="#fff"
-    android:layout_marginStart="40dp"/>-->
+    <!--<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SabPaisa"
+        android:layout_marginTop="20dp"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:layout_marginStart="40dp"/>-->
 
-  <!--  <ImageView
-        android:layout_width="29dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/bbck"
-        android:src="@drawable/ic_action_previousback"/>-->
+    <!--  <ImageView
+          android:layout_width="29dp"
+          android:layout_height="50dp"
+          android:layout_marginTop="10dp"
+          android:id="@+id/bbck"
+          android:src="@drawable/ic_action_previousback"/>-->
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
         tools:context="in.sabpaisa.droid.sabpaisa.NumberOfGroups">
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="30dp"
-    android:layout_marginTop="65dp"
-    android:text="Transaction Report"
-    android:textStyle="bold"
-    android:textSize="22sp"
-    android:gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="65dp"
+            android:text="List of transactions"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:gravity="center_horizontal"/>
+
+
         <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-            android:id="@+id/txbnh"
+            android:id="@+id/today_transaction_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
@@ -63,11 +66,6 @@
             android:layout_marginTop="100dp"
             android:visibility="invisible"
             >
-            <include
-                layout="@layout/no_data_found">
-
-            </include>
-
 
         </LinearLayout>
 

@@ -69,6 +69,13 @@
             android:icon="@drawable/salesapp"
             android:title="SalesApp"/>
         <item
+            android:id="@+id/myBusiness"
+            android:visible="true"
+            android:icon="@drawable/salesapp"
+            android:title="My Business"/>
+
+
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_action_logouttt"
             android:title="Logout" />

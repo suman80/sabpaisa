@@ -916,6 +916,13 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
             startActivity(intent);
         }
 
+        else if(id==R.id.myBusiness)
+        {
+            Intent intent=new Intent(MainActivitySkip.this, MyBusinessActivity.class);
+            startActivity(intent);
+
+        }
+
        else if (id == R.id.nav_Privacy_Policy) {
             Intent intent = new Intent(MainActivitySkip.this, PrivacyPolicyActivity.class);
 

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CustomTransactionReportActivity">
+
+   <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="visible"
+    android:id="@+id/linearLayoutChooseDate"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="70dp"
+        android:layout_marginTop="10dp"
+        >
+
+            <EditText
+                android:id="@+id/fromDateEditText1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_font"
+                android:backgroundTint="@color/bg_orange"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:hint="From :"
+                android:textSize="15sp"
+                android:inputType="date"
+                />
+
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_calender"
+            android:layout_gravity="end"
+            android:id="@+id/img_FromDate1"
+            android:clickable="true"
+            android:layout_marginTop="10dp"
+            />
+
+
+
+    </FrameLayout>
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:id="@+id/datenew"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="70dp"
+        android:layout_marginTop="10dp"
+        >
+
+
+
+            <EditText
+                android:id="@+id/toDateEditText1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/grey_font"
+                android:backgroundTint="@color/bg_orange"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:hint="To :"
+                android:inputType="date"
+                />
+
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_calender"
+            android:layout_gravity="end"
+            android:id="@+id/img_ToDate1"
+            android:clickable="true"
+            android:layout_marginTop="10dp"
+            />
+
+
+
+    </FrameLayout>
+
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="From:"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content" />
+
+         <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_marginLeft="20dp"
+             android:orientation="horizontal"
+             android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/fromDateTextview"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:text="10/5/2019"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/fromDataimageview"
+            android:layout_width="25dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/calender_image"
+            android:layout_height="25dp" />
+
+         </LinearLayout>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="60dp"
+        android:id="@+id/todate"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="To:"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="40dp"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/toDateTextview"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:text="10/5/2019"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/toDateimageview"
+            android:layout_width="25dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/calender_image"
+            android:layout_height="25dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/todate"
+        android:layout_width="match_parent"
+        android:layout_marginTop="100dp"
+        android:id="@+id/viewreport"
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content">
+
+    <Button
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+
+        android:text="View Report"
+        android:textColor="@color/white_color"
+        android:background="@drawable/background_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+        android:id="@+id/custom_transaction"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/viewreport"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/noDataFound"
+        android:layout_marginTop="100dp"
+        android:visibility="invisible"
+        >
+
+    </LinearLayout>
+
+
+</RelativeLayout>
