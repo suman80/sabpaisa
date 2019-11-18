@@ -84,7 +84,6 @@
             />
 
 
-
     </FrameLayout>
 
 </LinearLayout>
@@ -186,20 +185,22 @@
         android:layout_height="wrap_content">
 
     <Button
+        android:id="@+id/viewCustomReport"
         android:gravity="center"
+        android:padding="5dp"
         android:layout_marginTop="10dp"
-
         android:text="View Report"
+        android:background="@drawable/circular_button"
         android:textColor="@color/white_color"
-        android:background="@drawable/background_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="36dp" />
 
     </LinearLayout>
 
     <com.cooltechworks.views.shimmer.ShimmerRecyclerView
         android:id="@+id/custom_transaction"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_below="@+id/viewreport"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"

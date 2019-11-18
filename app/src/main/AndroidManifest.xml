@@ -34,10 +34,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,allowBackup,android:name">
-
-
-        <activity android:name=".ShareOnFeedsAndGroups" />
-        <!-- Added on 7th may 2019 -->
+        <activity android:name=".CustomTransactionDetailActivity"></activity>
+        <activity android:name=".TodayTransactionDetailsActivity" />
+        <activity android:name=".CustomTransactionReportActivity" />
+        <activity android:name=".TodayTransactionActivity" />
+        <activity android:name=".MyBusinessActivity" />
+        <activity android:name=".ShareOnFeedsAndGroups" /> <!-- Added on 7th may 2019 -->
         <activity android:name=".ShareFromOtherApp">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -60,8 +62,7 @@
 
                 <data android:mimeType="image/*" />
             </intent-filter>
-        </activity>
-        <!-- ////////////////////////////////////////// -->
+        </activity> <!-- ////////////////////////////////////////// -->
         <activity android:name=".AddMemberToSpaceActivity" />
         <activity android:name=".PrivateGroupFeedSpace" />
         <activity android:name=".MembersOfAGroupSpace" />
@@ -296,8 +297,8 @@
         <activity android:name=".FilterActivity1" />
         <activity android:name=".AddMemberTo_A_PrivateFeed" />
         <activity android:name=".PrivateFeedMembersList" />
-        <activity android:name=".Util.SentMessageActivity"/>
-        <activity android:name="CropImageActivity1"/>
+        <activity android:name=".Util.SentMessageActivity" />
+        <activity android:name=".CropImageActivity1" />
 
         <receiver
             android:name=".MySMSBroadcastReceiver"
