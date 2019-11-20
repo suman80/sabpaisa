@@ -100,7 +100,9 @@ import in.sabpaisa.droid.sabpaisa.Fragments.SkipMembersFragment;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
+import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.Model.*;
+import in.sabpaisa.droid.sabpaisa.MyBusinessActivity;
 import in.sabpaisa.droid.sabpaisa.R;
 
 import in.sabpaisa.droid.sabpaisa.TLSSocketFactory;
@@ -664,6 +666,13 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
         {
             Intent intent=new Intent(SkipClientDetailsScreen.this, LoginActivity.class);
             startActivity(intent);
+        }
+
+        else if(id==R.id.myBusiness)
+        {
+            Intent intent=new Intent(SkipClientDetailsScreen.this, MyBusinessActivity.class);
+            startActivity(intent);
+
         }
         else if (id == R.id.nav_logout) {
 

@@ -1228,6 +1228,12 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
             Intent intent=new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         }
+        else if(id==R.id.myBusiness)
+        {
+            Intent intent=new Intent(MainActivity.this, MyBusinessActivity.class);
+            startActivity(intent);
+
+        }
         else if (id == R.id.nav_logout) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this); //Home is name of the activity
@@ -1262,8 +1268,6 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
                     startActivity(intent);*/
 
                     System.exit(0);
-
-
 
                 }
             });

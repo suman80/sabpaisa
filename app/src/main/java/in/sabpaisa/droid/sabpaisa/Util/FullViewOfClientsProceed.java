@@ -98,9 +98,11 @@ import in.sabpaisa.droid.sabpaisa.Fragments.ProceedGroupsFragments;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.Interfaces.OnFragmentInteractionListener;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
+import in.sabpaisa.droid.sabpaisa.MainActivity;
 import in.sabpaisa.droid.sabpaisa.MainActivitySkip;
 import in.sabpaisa.droid.sabpaisa.Members;
 import in.sabpaisa.droid.sabpaisa.Model.*;
+import in.sabpaisa.droid.sabpaisa.MyBusinessActivity;
 import in.sabpaisa.droid.sabpaisa.PayFragments;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.UIN;
@@ -940,6 +942,13 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
             Intent intent = new Intent(FullViewOfClientsProceed.this, LoginActivity.class);
 
             startActivity(intent);
+        }
+
+        else if(id==R.id.myBusiness)
+        {
+            Intent intent=new Intent(FullViewOfClientsProceed.this, MyBusinessActivity.class);
+            startActivity(intent);
+
         }
        /* else if (id == R.id.nav_Settings) {
             Intent intent=new Intent(FullViewOfClientsProceed.this, SettingsNavigationActivity.class);

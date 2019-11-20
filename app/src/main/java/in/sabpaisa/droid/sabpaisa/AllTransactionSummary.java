@@ -85,6 +85,7 @@ public class AllTransactionSummary extends AppCompatActivity {
         // Inflate the layout for this fragment
         linearLayoutnoDataFound = (LinearLayout) findViewById(R.id.noDataFound);
         recycler_view_Txn = (ShimmerRecyclerView) findViewById(R.id.txbnh);
+
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recycler_view_Txn.addItemDecoration(new SimpleDividerItemDecoration(this));

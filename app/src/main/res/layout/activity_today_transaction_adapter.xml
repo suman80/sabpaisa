@@ -4,110 +4,72 @@
     android:orientation="vertical"
     android:layout_height="wrap_content">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/otp_edittext_border"
+        android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/otp_edittext_border"
         >
         <TextView
             android:layout_width="wrap_content"
+            android:textColor="@color/black_50"
             android:layout_height="match_parent"
             android:singleLine="true"
-            android:textSize="18sp"
-            android:text="Txn ID :"/>
+            android:textSize="15sp"
+            android:text="Client Name"/>
+
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:text="ABC"
             android:textSize="17sp"
-            android:id="@+id/today_transaction_id"/>
+            android:id="@+id/client_name_today"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="vertical"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/edittext_border"
-        >
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="20dp"
+            android:padding="5dp"
             >
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" Txn Date : "
-                android:textSize="17sp"
+                android:textColor="@color/black_50"
+                android:layout_height="match_parent"
                 android:singleLine="true"
-                android:layout_weight="0.5"
-                />
+                android:textSize="15sp"
+                android:text="Number of transactions"/>
 
             <TextView
+                android:id="@+id/numberoftransaction_today"
                 android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:layout_gravity="center_horizontal"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:text="8"
                 android:textSize="17sp"
-                android:singleLine="true"
-                android:id="@+id/today_transaction_date"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" Txn Amount : "
-                android:textSize="17sp"
-                android:singleLine="true"
-                android:layout_weight="0.5"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:textSize="17sp"
-                android:singleLine="true"
-                android:id="@+id/today_transaction_amount"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:orientation="horizontal"
-
-            >
-
-            <TextView
-                android:layout_width="81dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:singleLine="true"
-                android:text=" Txn Status :"
-                android:textSize="17sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:textSize="17sp"
-                android:singleLine="true"
-                android:id="@+id/today_transaction_status"
-                />
         </LinearLayout>
 
-    </LinearLayout>
+
+    </RelativeLayout>
+
+
 
 </LinearLayout>
 

@@ -72,7 +72,7 @@
             android:id="@+id/myBusiness"
             android:visible="true"
             android:icon="@drawable/salesapp"
-            android:title="My Business"/>
+            android:title="Monitor paisa"/>
 
 
         <item

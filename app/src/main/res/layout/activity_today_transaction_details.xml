@@ -39,20 +39,20 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         tools:context="in.sabpaisa.droid.sabpaisa.NumberOfGroups">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="65dp"
-            android:text="List of transactions"
+            android:text="Today transactions"
             android:textStyle="bold"
             android:textSize="22sp"
             android:gravity="center_horizontal"/>
 
 
         <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-            android:id="@+id/today_transaction_detail"
+            android:id="@+id/today_transaction_detail_recycleview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
@@ -68,6 +68,29 @@
             >
 
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_below="@+id/todate"
+            android:layout_width="match_parent"
+            android:id="@+id/viewreport"
+            android:paddingBottom="20dp"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/today_view_all_transactions"
+                android:gravity="center"
+                android:padding="5dp"
+                android:visibility="gone"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="10dp"
+                android:text="View all transactions"
+                android:background="@drawable/circular_button"
+                android:textColor="@color/white_color"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp" />
+
+        </RelativeLayout>
 
     </FrameLayout>
 

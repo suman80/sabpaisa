@@ -35,12 +35,94 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content" />
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            app:cardCornerRadius="10dp"
+            android:layout_marginTop="20dp"
+            app:contentPadding="10dp"
+            app:cardElevation="10dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            app:cardBackgroundColor="@color/bg_orange"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/payment_transaction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textColor="@color/white_color"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Payment transaction"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/down_arrow"
+                    android:layout_width="20dp"
+                    android:visibility="visible"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/downarrow"
+                    android:layout_height="20dp" />
+
+                <ImageView
+                    android:id="@+id/up_arrow"
+                    android:layout_width="20dp"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/up_arrow"
+                    android:layout_height="20dp" />
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/todayClient_layout"
+                android:layout_width="match_parent"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:background="@color/white_color"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/today_transaction_layout"
+                    android:layout_width="match_parent"
+                    android:paddingTop="1dp"
+                    android:text="Today Transactions"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content" />
+
+            <View
+                android:layout_marginTop="7dp"
+                android:layout_width="match_parent"
+                android:background="@color/bg_orange"
+                android:layout_height="0.5dp"/>
+
+
+
+                <TextView
+                    android:id="@+id/datewise_transaction_layout"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:text="Datewise Transactions"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
         <Button
             android:id="@+id/today_report"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginLeft="40dp"
-            android:layout_marginTop="100sp"
+            android:layout_marginTop="120sp"
             android:layout_marginRight="40dp"
             android:background="@drawable/background_button"
             android:text="View Today Reports"
@@ -53,6 +135,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
+            android:visibility="gone"
             android:layout_marginTop="80sp"
             android:layout_marginRight="40dp"
             android:background="@drawable/background_button"

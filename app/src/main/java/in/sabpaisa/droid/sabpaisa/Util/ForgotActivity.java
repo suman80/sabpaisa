@@ -225,6 +225,7 @@ public class ForgotActivity extends AppCompatActivity {
 
             }
         });
+
         if (CheckPermission(this, Manifest.permission.READ_PHONE_STATE)) {
             deviceId();
         } else {
@@ -393,6 +394,10 @@ public class ForgotActivity extends AppCompatActivity {
             return false;
         }
     }
+
+
+
+
     private void registerUser(final String contactNumber,final String newPassword ) {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
@@ -914,6 +919,7 @@ public class ForgotActivity extends AppCompatActivity {
         // Adding request to request queue
 //        AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
+
     private void deviceId() {
         final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
 

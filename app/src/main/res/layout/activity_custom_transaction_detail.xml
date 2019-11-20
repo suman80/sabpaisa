@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context="in.sabpaisa.droid.sabpaisa.NumberOfGroups">
 
-
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -39,33 +37,166 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         tools:context="in.sabpaisa.droid.sabpaisa.NumberOfGroups">
         <TextView
             android:layout_width="match_parent"
+            android:visibility="gone"
+            android:id="@+id/datewise_transaction"
             android:layout_height="30dp"
             android:layout_marginTop="65dp"
-            android:text="List of transactions"
+            android:text="Datewise transactions"
             android:textStyle="bold"
             android:textSize="22sp"
             android:gravity="center_horizontal"/>
 
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/stratDate"
+            android:layout_marginHorizontal="70dp"
+            android:layout_marginTop="70dp"
+            >
+
+            <EditText
+                android:id="@+id/fromDateEditText1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_font"
+                android:backgroundTint="@color/bg_orange"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:hint="From :"
+                android:textSize="15sp"
+                android:inputType="date"
+                />
+
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_marginRight="3dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_calender"
+                android:layout_gravity="end"
+                android:id="@+id/img_FromDate1"
+                android:clickable="true"
+                android:layout_marginTop="5dp"
+                />
+        </RelativeLayout>
+
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:id="@+id/endDate"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="70dp"
+            android:layout_marginTop="120dp"
+            >
+
+
+
+            <EditText
+                android:id="@+id/toDateEditText1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/grey_font"
+                android:backgroundTint="@color/bg_orange"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:hint="To :"
+                android:inputType="date"
+                />
+
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_calender"
+                android:layout_gravity="end"
+                android:id="@+id/img_ToDate1"
+                android:clickable="true"
+                android:layout_marginTop="5dp"
+                />
+
+
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_below="@+id/todate"
+            android:layout_width="match_parent"
+            android:layout_marginTop="170dp"
+            android:id="@+id/viewreport"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/viewCustomReport"
+                android:gravity="center"
+                android:padding="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Proceed"
+                android:background="@drawable/circular_button"
+                android:textColor="@color/white_color"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp" />
+
+        </LinearLayout>
+
+
+
+
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_marginTop="240dp"
+     android:id="@+id/linear_layout"
+     android:visibility="visible"
+     android:layout_height="wrap_content">
+
         <com.cooltechworks.views.shimmer.ShimmerRecyclerView
             android:id="@+id/custom_transaction_detail"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
             android:scrollbars="vertical" />
+
+ </LinearLayout>
+
+        <RelativeLayout
+            android:layout_below="@+id/listview"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="50dp"
+            android:layout_height="wrap_content">
+            <Button
+                android:gravity="center"
+                android:visibility="gone"
+                android:id="@+id/show_all_transactions"
+                android:layout_alignParentBottom="true"
+                android:padding="5dp"
+                android:layout_marginTop="10dp"
+                android:text="View all transactions"
+                android:background="@drawable/circular_button"
+                android:textColor="@color/white_color"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp" />
+
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/noDataFound"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="240dp"
             android:visibility="invisible"
             >
+            <include
+                layout="@layout/no_data_found">
+
+            </include>
 
         </LinearLayout>
 

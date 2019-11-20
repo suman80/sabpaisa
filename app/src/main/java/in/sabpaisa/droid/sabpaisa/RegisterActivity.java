@@ -128,13 +128,10 @@ public class RegisterActivity extends AppCompatActivity  {
     public static ProgressDialog progressDialog;
 
 
-
-
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -677,12 +674,11 @@ public class RegisterActivity extends AppCompatActivity  {
     }
 
 
-
     private void sendOTP(View v, final String number) {
 
 
         String urlJsonObj = AppConfig.Base_Url+AppConfig.App_api+"SendOTP/" +"?mobile_no="+ number;
-//        String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/SendOTP/" +"?mobile_no="+ number;
+//      String urlJsonObj = "http://205.147.103.27:6060/SabPaisaAppApi/SendOTP/" +"?mobile_no="+ number;
 
         //showpDialog(v);
 
@@ -902,14 +898,9 @@ public class RegisterActivity extends AppCompatActivity  {
         }
 
 
-
-
-
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
-
-
 
 
     private void registerUser(final String contactNumber,final String fullName,final String password, final String deviceId ,final String email) {
