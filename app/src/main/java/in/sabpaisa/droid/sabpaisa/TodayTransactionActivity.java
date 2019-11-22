@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +34,7 @@ import in.sabpaisa.droid.sabpaisa.Adapter.TodayTransactionAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.CustomTransactionReportgettersetter;
 import in.sabpaisa.droid.sabpaisa.Model.TodayTransactiongettersetter;
 
-public class TodayTransactionActivity extends AppCompatActivity {
+public class TodayTransactionActivity extends AppCompatActivity   {
 
     private RecyclerView custom_transaction_recycleView;
     private Button viewCustomReport;
@@ -47,6 +48,7 @@ public class TodayTransactionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_transaction_report);
+
 
         custom_transaction_recycleView=findViewById(R.id.custom_transaction);
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -106,14 +108,15 @@ public class TodayTransactionActivity extends AppCompatActivity {
 
                                 try {
                                     JSONObject jsonObject=jsonArray.getJSONObject(i);
-                                    TodayTransactiongettersetter s = new TodayTransactiongettersetter();
+
+                                   /* TodayTransactiongettersetter s = new TodayTransactiongettersetter();
                                     s.setTxnId(jsonObject.getString("txnId"));
                                     s.setAmount(jsonObject.getString("amount"));
                                     s.setTxnDate(jsonObject.getString("txnDate"));
                                     s.setTxnStatus(jsonObject.getString("status"));
-                                    s.setPayerName(jsonObject.getString("payerName"));
+                                    s.setPayerName(jsonObject.getString("payerName"));*/
 
-                                    customTransactiongettersetters.add(s);
+                                  //  customTransactiongettersetters.add(s);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();

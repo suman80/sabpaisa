@@ -1,6 +1,7 @@
 package in.sabpaisa.droid.sabpaisa;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ public class MyBusinessActivity extends AppCompatActivity {
     private ImageView down_arrow,up_arrow;
     private LinearLayout todayClient_layout;
     private TextView today_transaction,datewisetransactio;
+    private CardView paymenttransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,16 @@ public class MyBusinessActivity extends AppCompatActivity {
         todayReport=findViewById(R.id.today_report);
         customReport=findViewById(R.id.custom_report);
         down_arrow=findViewById(R.id.down_arrow);
+        paymenttransaction=findViewById(R.id.paymenttransaction);
+
+      /*  paymenttransaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                todayClient_layout.setVisibility(View.VISIBLE);
+
+            }
+        });
+        */
         up_arrow=findViewById(R.id.up_arrow);
         todayClient_layout=findViewById(R.id.todayClient_layout);
         today_transaction=findViewById(R.id.today_transaction_layout);

@@ -2,12 +2,17 @@ package in.sabpaisa.droid.sabpaisa.Adapter;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import in.sabpaisa.droid.sabpaisa.Model.AllTransactiongettersetter;
 import in.sabpaisa.droid.sabpaisa.R;
@@ -37,7 +42,17 @@ public class AllTransactionAdapter  extends RecyclerView.Adapter<AllTransactionA
         holder.paidAmount.setText(allTransactiongettersetter.getPaidAmount());
         holder.status.setText(allTransactiongettersetter.getPaymentStatus());
         holder.spTranscationId.setText(allTransactiongettersetter.getSpTranscationId());
-        holder.transcationDate.setText(allTransactiongettersetter.getTranscationDate());
+
+
+
+
+        DateFormat simple = new SimpleDateFormat("dd MMM yyyy HH:mm:ss:SSS Z");
+
+        Date result = new Date(allTransactiongettersetter.getTranscationDate());
+
+        holder.transcationDate.setText(simple.format(result));
+
+        Log.d("date_login",""+allTransactiongettersetter.getTranscationDate());
         //holder.memberTimeStamp.setText(member_getterSetter.getTimestampOfJoining());
         //holder.memberImg.setImageUrl(member_getterSetter.getUserImageUrl(), imageLoader);
 

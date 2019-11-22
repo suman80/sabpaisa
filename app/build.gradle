@@ -109,7 +109,7 @@ dependencies {
     //    compile 'com.github.wangjiegulu:RapidFloatingActionButton:1.0.3'
 
     //    compile 'com.github.wangjiegulu:AndroidBucket:1.0.4'
-    compile 'com.layer-net:step-indicator:1.1.0'
+    implementation 'com.layer-net:step-indicator:1.1.0'
     testImplementation 'junit:junit:4.12'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
 
@@ -124,10 +124,10 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:1.2.1'
 
     //compile 'com.farbod.labelledspinner:labelledspinner:1.1.5'
-    compile 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.2'
 
     //compile 'com.jackandphantom.android:circularprogressbar:1.2.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
 
     //compile 'com.airbnb.android:lottie:2.1.2'
 
@@ -160,7 +160,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth-api-phone:11.4.0'
     implementation 'com.synnapps:carouselview:0.1.5'
 
-    implementation( 'com.github.thekhaeng:pushdown-anim-click:1.1.1' ){
+    implementation('com.github.thekhaeng:pushdown-anim-click:1.1.1') {
         exclude group: 'com.android.support'
     }
     implementation 'com.google.android.gms:play-services-location:11.4.0'

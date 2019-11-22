@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,9 +16,11 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,20 +36,23 @@ import in.sabpaisa.droid.sabpaisa.Adapter.TodayTransactionsDetailsAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.TodayTransactiongettersetter;
 import in.sabpaisa.droid.sabpaisa.Model.TodayTransactionlistgettersetter;
 
-public class TodayTransactionDetailsActivity extends AppCompatActivity {
+public class TodayTransactionDetailsActivity extends AppCompatActivity  {
     private ShimmerRecyclerView recycler_view_Txn;
     private androidx.appcompat.widget.Toolbar toolbar;
     private ArrayList<TodayTransactionlistgettersetter> todayTransactiongettersetters;
     private TodayTransactionsDetailsAdapter todayTransactionAdapter;
     private LinearLayout noDataFound;
     private Button today_view_all_transactions;
+    private Parcelable parcelable;
+    private ArrayList<TodayTransactiongettersetter> todayTransactiongettersetters1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_transaction_details);
-        recycler_view_Txn=findViewById(R.id.today_transaction_detail_recycleview);
 
+        recycler_view_Txn=findViewById(R.id.today_transaction_detail_recycleview);
         noDataFound=findViewById(R.id.noDataFound);
         today_view_all_transactions=findViewById(R.id.today_view_all_transactions);
 
@@ -69,12 +76,11 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity {
         });
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recycler_view_Txn.addItemDecoration(new SimpleDividerItemDecoration(this));
+        //recycler_view_Txn.addItemDecoration(new SimpleDividerItemDecoration(this));
         recycler_view_Txn.setLayoutManager(llm);
         getTodayTransactionReport();
 
     }
-
 
     private void getTodayTransactionReport()
     {
@@ -84,33 +90,66 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity {
 
         String url="https://sp2.sabpaisa.in/SabPaisaAdmin/REST/transaction/filterTransaction";
 
-        String url_localhost="https://sp2.sabpaisa.in/SabPaisaRepository/trans/report/mobile"+"?"+"fromDate="+"2019-10-15   00:00:00"+"&"+"endDate="+"2019-10-15 23:55:45"+"&"+"clientCode="+"ABN";
+        String url_localhost="https://sp2.sabpaisa.in/SabPaisaRepository/trans/report/mobile";
 
-        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, url_localhost,null,new Response.Listener<JSONObject>() {
+        JsonArrayRequest stringRequest = new JsonArrayRequest(Request.Method.POST, url_localhost,null,new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 todayTransactiongettersetters=new ArrayList<>();
+                todayTransactiongettersetters1=new ArrayList<>();
 
 
                 if(response.length()>0 &&response!=null) {
                   //  today_view_all_transactions.setVisibility(View.VISIBLE);
 
-                    try {
+                    for(int i=0;i<response.length();i++)
+                    {
+                        try {
+                            JSONObject jsonObject=response.getJSONObject(i);
+                            TodayTransactionlistgettersetter todayTransactionlistgettersetter=new TodayTransactionlistgettersetter();
+                            todayTransactionlistgettersetter.setClientName(jsonObject.getString("clientName"));
+                            todayTransactionlistgettersetter.setNumberoftransactions(jsonObject.getString("noOfTransaction"));
+                            String clientName=jsonObject.getString("clientName");
+                            todayTransactiongettersetters.add(todayTransactionlistgettersetter);
 
-                        TodayTransactionlistgettersetter todayTransactionlistgettersetter=new TodayTransactionlistgettersetter();
-                        todayTransactionlistgettersetter.setClientName(response.getString("clientName"));
-                        todayTransactionlistgettersetter.setNumberoftransactions(response.getString("noOfTransaction"));
-                        String clientName=response.getString("clientName");
-                        todayTransactiongettersetters.add(todayTransactionlistgettersetter);
 
-                        Log.d("clientName",""+clientName);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+
+                            if(jsonObject.getString("transList").length()>0&&jsonObject.getString("transList")!=null)
+                            {
+                                JSONArray jsonArray=jsonObject.getJSONArray("transList");
+
+                                Log.d("translIst",""+jsonArray);
+
+                                for(int j=0;j<jsonArray.length();j++)
+                                {
+                                    JSONObject jsonObject1=jsonArray.getJSONObject(i);
+                                    TodayTransactiongettersetter s = new TodayTransactiongettersetter();
+                                    s.setTxnId(jsonObject1.getString("txnId"));
+                                    s.setAmount(jsonObject1.getString("amount"));
+                                    s.setTxnDate(jsonObject1.getString("txnDate"));
+                                    s.setTxnStatus(jsonObject1.getString("status"));
+                                    s.setPayerName(jsonObject1.getString("payerName"));
+                                    todayTransactiongettersetters1.add(s);
+
+                                    Log.d("jsonObject1",""+todayTransactiongettersetters);
+
+                                    todayTransactionlistgettersetter.setTodayTransactiongettersetters(todayTransactiongettersetters1);
+                                }
+
+
+                            }
+
+                            Log.d("clientName",""+clientName);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
+
+
                     todayTransactionAdapter = new TodayTransactionsDetailsAdapter(todayTransactiongettersetters, getApplicationContext());
                     recycler_view_Txn.setAdapter(todayTransactionAdapter);
                     todayTransactionAdapter.notifyDataSetChanged();
-
                 }
                 else
                 {
@@ -123,8 +162,6 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity {
 
             }
         }
-
-
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -146,31 +183,24 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity {
             }
         }
 */
-        /*{
+        {
             @Override
             public byte[] getBody() {
                 String body="{\n" +
-                        "  \"paymentStatus\": \"\",\n" +
-                        "  \"statusFlag\": false,\n" +
-                        "  \"paymentMode\": \"\",\n" +
-                        "  \"clientCode\": \"\",\n" +
-                        "  \"clientCodeFlag\": false,\n" +
-                        "  \"paymentModeFlag\": false,\n" +
-                        "  \"fromDate\": \"2019-10-10   10:55:45\",\n" +
-                        "  \"fromDateFlag\": true,\n" +
-                        "  \"endDate\": \"2019-10-16   10:55:45\",\n" +
-                        "  \"endDateFlag\": true\n" +
-                        " \n" +
+                        " \"clientCodeList\":[\"ABN\",\"SSNC2\"],\n" +
+                        " \"fromDate\": \"2019-10-10 00:00:00\",\n" +
+                        " \"endDate\":\"2019-10-10 16:01:52\"\n" +
                         "}";
 
                 Log.d("body_log",""+body);
                 return body.getBytes();
 
             }
-        }*/;
+        };
 
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }
+
 
 }

@@ -86,11 +86,11 @@ public class CustomTransactionReportActivity extends AppCompatActivity {
         final String currentDateandTime = sdf.format(new Date());
 
         String url="https://sp2.sabpaisa.in/SabPaisaAdmin/REST/transaction/filterTransaction";
-        String url_localhost="https://sp2.sabpaisa.in/SabPaisaRepository/trans/report/mobile"+"?"+"fromDate="+"2019-10-15   00:00:00"+"&"+"endDate="+"2019-10-15 23:55:45"+"&"+"clientCode="+"ABN";
+        String url_localhost="https://sp2.sabpaisa.in/SabPaisaRepository/trans/report/mobile";
 
-        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, url_localhost,null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest stringRequest = new JsonArrayRequest(Request.Method.POST, url_localhost,null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 progressDialog.dismiss();
 
                 Log.d("transaction_list", "" + response);
@@ -99,18 +99,17 @@ public class CustomTransactionReportActivity extends AppCompatActivity {
                     customTransactiongettersetters = new ArrayList<>();
 
                     try {
-                        JSONArray jsonArray=response.getJSONArray("transList");
 
-                        if(jsonArray.length()>0&&jsonArray!=null)
+                        if(response.length()>0&&response!=null)
                         {
-                            Log.d("jsonArray",""+jsonArray);
-                            for (int i = 0; i <jsonArray.length(); i++) {
+                            Log.d("jsonArray",""+response);
+                            for (int i = 0; i <response.length(); i++) {
 
                                 Log.d("jsonArray_txn","fdjifjdkdjkjkd");
 
 
                                 try {
-                                    JSONObject jsonObject=jsonArray.getJSONObject(i);
+                                    JSONObject jsonObject=response.getJSONObject(i);
                                     CustomTransactionReportgettersetter s = new CustomTransactionReportgettersetter();
                                     s.setCustomTxnId(jsonObject.getString("txnId"));
                                     s.setCustomTxnAmount(jsonObject.getString("amount"));
@@ -135,7 +134,7 @@ public class CustomTransactionReportActivity extends AppCompatActivity {
 
                         }
 
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -156,27 +155,23 @@ public class CustomTransactionReportActivity extends AppCompatActivity {
 
             }
         })
-       /* {
+
+        {
             @Override
             public byte[] getBody() {
                 String body="{\n" +
-                        "  \"paymentStatus\": \"\",\n" +
-                        "  \"statusFlag\": false,\n" +
-                        "  \"paymentMode\": \"\",\n" +
-                        "  \"clientCode\": \"\",\n" +
-                        "  \"clientCodeFlag\": false,\n" +
-                        "  \"paymentModeFlag\": false,\n" +
-                        "  \"fromDate\": \"2019-10-10   10:55:45\",\n" +
-                        "  \"fromDateFlag\": true,\n" +
-                        "  \"endDate\": \"2019-10-16   10:55:45\",\n" +
-                        "  \"endDateFlag\": true\n" +
-                        " \n" +
+                        " \"clientCodeList\":[\"ABN\",\"SSNC2\"],\n" +
+                        " \"fromDate\": \"2019-10-10 00:00:00\",\n" +
+                        " \"endDate\":\"2019-10-10 16:01:52\"\n" +
                         "}";
 
                 Log.d("body_log",""+body);
                 return body.getBytes();
 
-            }}*/;
+            }
+        }
+
+        ;
 
         AppController.getInstance().addToRequestQueue(stringRequest);
 

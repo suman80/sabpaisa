@@ -1,7 +1,9 @@
 package in.sabpaisa.droid.sabpaisa.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 public class TodayTransactiongettersetter {
-    private String clientName;
     private  String amount;
     private String txnId;
     private  String txnDate;
@@ -46,14 +48,6 @@ public class TodayTransactiongettersetter {
 
     public void setTxnId(String txnId) {
         this.txnId = txnId;
-    }
-
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
     }
 
     public String getTransactions() {

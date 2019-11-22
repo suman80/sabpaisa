@@ -48,7 +48,6 @@
             android:textSize="22sp"
             android:gravity="center_horizontal"/>
 
-
         <com.cooltechworks.views.shimmer.ShimmerRecyclerView
             android:id="@+id/custom_transaction"
             android:layout_width="match_parent"

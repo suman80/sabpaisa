@@ -38,6 +38,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             app:cardCornerRadius="10dp"
+            android:id="@+id/paymenttransaction"
             android:layout_marginTop="20dp"
             app:contentPadding="10dp"
             app:cardElevation="10dp"
@@ -60,7 +61,8 @@
 
                 <ImageView
                     android:id="@+id/down_arrow"
-                    android:layout_width="20dp"
+                    android:paddingLeft="230dp"
+                    android:layout_width="match_parent"
                     android:visibility="visible"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/downarrow"
@@ -68,7 +70,8 @@
 
                 <ImageView
                     android:id="@+id/up_arrow"
-                    android:layout_width="20dp"
+                    android:paddingLeft="230dp"
+                    android:layout_width="match_parent"
                     android:visibility="gone"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/up_arrow"

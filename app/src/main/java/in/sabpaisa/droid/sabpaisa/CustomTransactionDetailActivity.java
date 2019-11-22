@@ -25,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -285,11 +286,11 @@ public class CustomTransactionDetailActivity extends AppCompatActivity  {
 
         String url="https://sp2.sabpaisa.in/SabPaisaAdmin/REST/transaction/filterTransaction";
 
-        String url_localhost="https://sp2.sabpaisa.in/SabPaisaRepository/trans/report/mobile"+"?"+"fromDate="+"2019-10-15   00:00:00"+"&"+"endDate="+"2019-10-15 23:55:45"+"&"+"clientCode="+"ABN";
+        String url_localhost="https://sp2.sabpaisa.in/SabPaisaRepository/trans/report/mobile";
 
-        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, url_localhost,null,new Response.Listener<JSONObject>() {
+        JSONArray stringRequest = new JSONArray(Request.Method.POST, url_localhost,new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 progressDialog.dismiss();
                 todayTransactiongettersetters=new ArrayList<>();
                 recycler_view_Txn.setVisibility(View.VISIBLE);
@@ -298,16 +299,25 @@ public class CustomTransactionDetailActivity extends AppCompatActivity  {
 
                 if(response.length()>0 &&response!=null) {
 
+                    for(int i=0;i<response.length();i++)
+                    {
+                        JSONObject jsonObject= null;
+                        try {
+                            jsonObject = response.getJSONObject(i);
+                            CustomTransactionlistgettersetter todayTransactionlistgettersetter=new CustomTransactionlistgettersetter();
+                            todayTransactionlistgettersetter.setClientName(jsonObject.getString("clientName"));
+                            todayTransactionlistgettersetter.setNooftransactions(jsonObject.getString("noOfTransaction"));
+                            String clientName=jsonObject.getString("clientName");
+                            todayTransactiongettersetters.add(todayTransactionlistgettersetter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
                     try {
 
-                        CustomTransactionlistgettersetter todayTransactionlistgettersetter=new CustomTransactionlistgettersetter();
-                        todayTransactionlistgettersetter.setClientName(response.getString("clientName"));
-                        todayTransactionlistgettersetter.setNooftransactions(response.getString("noOfTransaction"));
-                        String clientName=response.getString("clientName");
-                        todayTransactiongettersetters.add(todayTransactionlistgettersetter);
-
-                        Log.d("clientName",""+clientName);
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     todayTransactionAdapter = new CustomTransactionDetailAdapter(todayTransactiongettersetters, getApplicationContext());
@@ -338,42 +348,23 @@ public class CustomTransactionDetailActivity extends AppCompatActivity  {
 
             }
         })
+
         {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> obj=new HashMap<>();
-                obj.put("fromDate",currentDateandTime);
-                obj.put("endDate",currentDateandTime);
-                obj.put("clientCode","ABN");
-
-                Log.d("fromdate_new",""+obj);
-
-                return super.getParams();
-            }
-        }
-
-        /*{
             @Override
             public byte[] getBody() {
                 String body="{\n" +
-                        "  \"paymentStatus\": \"\",\n" +
-                        "  \"statusFlag\": false,\n" +
-                        "  \"paymentMode\": \"\",\n" +
-                        "  \"clientCode\": \"\",\n" +
-                        "  \"clientCodeFlag\": false,\n" +
-                        "  \"paymentModeFlag\": false,\n" +
-                        "  \"fromDate\": \"2019-10-10   10:55:45\",\n" +
-                        "  \"fromDateFlag\": true,\n" +
-                        "  \"endDate\": \"2019-10-16   10:55:45\",\n" +
-                        "  \"endDateFlag\": true\n" +
-                        " \n" +
+                        " \"clientCodeList\":[\"ABN\",\"SSNC2\"],\n" +
+                        " \"fromDate\": \"2019-10-10 00:00:00\",\n" +
+                        " \"endDate\":\"2019-10-10 16:01:52\"\n" +
                         "}";
 
                 Log.d("body_log",""+body);
                 return body.getBytes();
 
             }
-        }*/;
+        }
+
+        ;
 
         AppController.getInstance().addToRequestQueue(stringRequest);
 
