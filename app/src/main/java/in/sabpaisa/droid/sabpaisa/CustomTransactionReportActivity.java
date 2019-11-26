@@ -47,6 +47,7 @@ public class CustomTransactionReportActivity extends AppCompatActivity {
     private CustomTransactioReportAdapter customTransactioReportAdapter;
     ProgressDialog progressDialog;
     private LinearLayout noDataFound;
+    private List<CustomTransactionReportgettersetter> challenge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,10 @@ public class CustomTransactionReportActivity extends AppCompatActivity {
         custom_transaction_recycleView.addItemDecoration(new SimpleDividerItemDecoration(this));
         custom_transaction_recycleView.setLayoutManager(llm);
         custom_transaction_recycleView.setNestedScrollingEnabled(false);
+
+        challenge  = this.getIntent().getExtras().getParcelableArrayList("Birds");
+
+        Log.d("birdsData",""+challenge);
 
 
         progressDialog=new ProgressDialog(CustomTransactionReportActivity.this);
@@ -75,107 +80,13 @@ public class CustomTransactionReportActivity extends AppCompatActivity {
         });
 
         viewCustomReport=findViewById(R.id.viewCustomReport);
+        customTransactioReportAdapter = new CustomTransactioReportAdapter(challenge, getApplicationContext());
+        custom_transaction_recycleView.setAdapter(customTransactioReportAdapter);
+        customTransactioReportAdapter.notifyDataSetChanged();
 
-        setCustomTransactionReport();
 
     }
 
-    private void setCustomTransactionReport()
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        final String currentDateandTime = sdf.format(new Date());
-
-        String url="https://sp2.sabpaisa.in/SabPaisaAdmin/REST/transaction/filterTransaction";
-        String url_localhost="https://sp2.sabpaisa.in/SabPaisaRepository/trans/report/mobile";
-
-        JsonArrayRequest stringRequest = new JsonArrayRequest(Request.Method.POST, url_localhost,null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                progressDialog.dismiss();
-
-                Log.d("transaction_list", "" + response);
-                if(response.length()>0&&response!=null)
-                {
-                    customTransactiongettersetters = new ArrayList<>();
-
-                    try {
-
-                        if(response.length()>0&&response!=null)
-                        {
-                            Log.d("jsonArray",""+response);
-                            for (int i = 0; i <response.length(); i++) {
-
-                                Log.d("jsonArray_txn","fdjifjdkdjkjkd");
-
-
-                                try {
-                                    JSONObject jsonObject=response.getJSONObject(i);
-                                    CustomTransactionReportgettersetter s = new CustomTransactionReportgettersetter();
-                                    s.setCustomTxnId(jsonObject.getString("txnId"));
-                                    s.setCustomTxnAmount(jsonObject.getString("amount"));
-                                    s.setCustomTxnDate(jsonObject.getString("txnDate"));
-                                    s.setCustomTxnStatus(jsonObject.getString("status"));
-                                    s.setPayer_name(jsonObject.getString("payerName"));
-
-                                    customTransactiongettersetters.add(s);
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                customTransactioReportAdapter = new CustomTransactioReportAdapter(customTransactiongettersetters, getApplicationContext());
-                                custom_transaction_recycleView.setAdapter(customTransactioReportAdapter);
-                                customTransactioReportAdapter.notifyDataSetChanged();
-
-                            }
-
-                        }
-                        else
-                        {
-
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                else
-
-                {
-                    noDataFound.setVisibility(View.VISIBLE);
-
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Log.d("volleyError",""+error);
-
-            }
-        })
-
-        {
-            @Override
-            public byte[] getBody() {
-                String body="{\n" +
-                        " \"clientCodeList\":[\"ABN\",\"SSNC2\"],\n" +
-                        " \"fromDate\": \"2019-10-10 00:00:00\",\n" +
-                        " \"endDate\":\"2019-10-10 16:01:52\"\n" +
-                        "}";
-
-                Log.d("body_log",""+body);
-                return body.getBytes();
-
-            }
-        }
-
-        ;
-
-        AppController.getInstance().addToRequestQueue(stringRequest);
-
-    }
 
 
 }
