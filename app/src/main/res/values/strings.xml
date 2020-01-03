@@ -1,21 +1,15 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">SPApp</string>
     <string name="hint_phone">Enter Your 10 digit mobile no</string>
     <string name="hint_fullname">Full Name</string>
-    <string name="hint_OTP">Enter OTP</string>
-    <string name="xyz">Please enable the permission to continue </string>
 
     <string name="hint_password">Enter Password</string>
     <string name="verify_desc">We need to send an SMS from your phone to verify if your phone number is registered with your bank account</string>
     <string name="Rs.">\u20B9</string>
     <string name="Rs">\u20B9</string>
-    <string name="open">Open Navigation Drawer</string>
-    <string name="close">Close navigation Drawer</string>
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
     <string name="message">The Council of Architecture (COA) has been constituted by the Government of India under the provisions of the Architects Act, 1972, enacted by the Parliament of India, which came into force on 1st September, 1972.</string>
     <string name="privacy"><b>Privacy Policy - SRS Live Technologies Pvt. Ltd.</b>
-    \n Your privacy holds an utmost importance to us.We recognize the need to protect the personally identifiable information (any information by which you can be identified, such as name, address, and telephone number) you share with us. We have accordingly developed this Privacy Policy to protect your personal information and keep it confidential. We endeavor to comply with laws of other countries but cannot and do not warrant that we do. We would like to assure you that we follow appropriate  standards  when it comes to protecting your privacy on our websites. The Privacy Policy is applicable to the websites of SRS Live Technologies Pvt. Ltd. SRS Live Technologies Pvt. Ltd. (SRS) consists of http://sabpaisa.in, SabPaisa Mobile Application, and SRS Live Technologies Pvt. Ltd. This privacy statement also does not apply to the websites of our business partners, corporate affiliates or to any other third parties, even if their websites are linked to our Websites. We recommend you review the privacy statements of the other parties with whom you interact.\n
+    \n Your privacy holds an utmost importance to us.We recognize the need to protect the personally identifiable information (any information by which you can be identified, such as name, address, and telephone number) you share with us. We have accordingly developed this Privacy Policy to protect your personal information and keep it confidential. We endeavor to comply with laws of other countries but cannot and do not warrant that we do. We would like to assure you that we follow appropriate  standards  when it comes to protecting your privacy on our websites. The Privacy Policy is applicable to the websites of SRS Live Technologies Pvt. Ltd. SRS Live Technologies Pvt. Ltd. (SRS) consists of <b>http://sabpaisa.in</b>, SabPaisa Mobile Application, and SRS Live Technologies Pvt. Ltd. This privacy statement also does not apply to the websites of our business partners, corporate affiliates or to any other third parties, even if their websites are linked to our Websites. We recommend you review the privacy statements of the other parties with whom you interact.\n
 
     \n<b>For the purposes of this privacy policy</b>,
     \n<b>"Corporate affiliates"</b> means any entity or joint venture that is wholly or partially owned or controlled by SRS Live Technologies Pvt. Ltd.\n
@@ -23,29 +17,6 @@
     \nOur privacy policy is subject to change at any time without notice. To make sure you are aware of any changes,please review this policy periodically.
     \nThe following terms governs the collection, use and protection of your Personal Information by the Website. This Privacy Policy shall be applicable to users or customers who purchases any services from the Website or visits the Website. By visiting and/ or using the Website you have agreed to our Privacy Policy.
     </string>
-
-
-    <string-array name="left_side_menu">
-        <item>Profile</item>
-        <item>Payment</item>
-        <item>Chats</item>
-        <item>Feeds</item>
-        <item>Groups</item>
-        <item>Forms</item>
-        <item>Friend List</item>
-        <item>Settings</item>
-        <item>Logout</item>
-        <item>Privacy Policy</item>
-    </string-array>
-
-
-    <string-array name="india_client">
-        <item>Select Client</item>
-        <item>BSEB</item>
-        <item>CCS</item>
-        <item>IES</item>
-        <item>COA</item>
-    </string-array>
 
 
     <string-array name="india_states">
@@ -88,39 +59,16 @@
         <item>West Bengal</item>
     </string-array>
     <string name="title_activity_forgot">ForgotActivity</string>
-    <string name="title_activity_main2">Main2Activity</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="title_activity_upi_sdk_handshake">UpiSdkHandshake</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="title_activity_main_navigation">MAinActivityNavigation</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_nagationfullview">Nagationfullview</string>
 
-
-    <string name="action_deep_link">
-        com.google.android.gms.samples.appinvite.DEEP_LINK_ACTION
-    </string>
-
-    <string name="invite">Send invitations!</string>
-    <string name="welcome">Invites</string>
-    <string name="referrer_hint">Deep link not provided</string>
     <string name="deep_link_default">Deep link not set</string>
-    <string name="invitation_id_default">Invitation ID not set</string>
     <string name="invite_friends">Invite Friends</string>
-    <string name="nice_html">
-<div class="col-lg-12 col-md-12 col-sm-12 txt-cnt-wait-n">Thank You For Visiting SabPaisa...
-<span style="color: red; font-size: large; font-weight: bold; text-align: center;">Your Transaction was Cancelled.</span>
-
-</div>
-</string>
 
     <string name="invitation_title">SabPaisa Payment and Social App</string>
     <string name="invitation_message">SabPaisa App</string>
@@ -135,6 +83,112 @@
 
     <string name="google_play_services_error">Google Play Services Error</string>
 
-    <string name="title_activity_image_fullscreen">ImageFullscreenActivity</string>
+    <string name="privacy_policy">We at SRS Live Technologies Private Limited (“the Company/SRS Live/We/Us/ SabPaisaApp”) are committed to protecting the privacy and security of your personal information. Your privacy is important to us and maintaining your trust is paramount.
 
+Your privacy holds an utmost importance to us.We recognize the need to protect the personally identifiable information (any information by which you can be identified, such as name, address, and telephone number) you share with us. We have accordingly developed this Privacy Policy to protect your personal information and keep it confidential. We endeavor to comply with laws of other countries but cannot and do not warrant that we do. We would like to assure you that we follow appropriate  standards  when it comes to protecting your privacy on our websites.
+
+
+The Privacy Policy is applicable to the websites of SRS Live Technologies Pvt. Ltd. SRS Live Technologies Pvt. Ltd. (SRS) consists of <b>http://sabpaisa.in</b> and SabPaisa Mobile Application. This privacy statement also does not apply to the websites of our business partners, corporate affiliates or to any other third parties, even if their websites are linked to our Websites. We recommend you review the privacy statements of the other parties with whom you interact.
+
+This Privacy Policy explains how we collect, use, process and disclose information about you. By using our website/app and affiliated services, you consent to the terms of our privacy policy (“Privacy Policy”) in addition to our Terms of Use. We encourage you to read this Privacy Policy regarding the collection, use, and disclosure of your information from time to time to keep yourself updated with the changes &amp; updated that we make to this Policy.
+
+1. Information we collect
+The following information is collected by our APP
+
+1.1 Information You provide us
+When you start using the App Services, we ask you to provide certain information a part of the registration process, and in the course of your interface with the App. We will collect this information through various means and in various places throughout the App Services, including account registration forms or when you otherwise interact with including at customer support. At the time of registration, we ask for the following personal information.
+
+Full Name;
+Mobile Number;
+Email ID;
+
+
+1.2 Information created when You use our App Services
+
+We collect information relating to your use of our website/app through the use of various technologies. From time to time, during your use of the App Services, we may require access to certain additional information such as contact list. Prior to accessing any such information, explicit consent shall be sought from the User. We also maintain some records of Users who contact us for support, for the purpose of responding to such queries and other related activities. However, we do not provide this information to any third party without your permission, or utilize the same for any purposes not set out hereunder.
+
+2. How We Use the Information we collect
+
+We may use, store and process personal information to (1) provide, understand, improve and develop the App Services, (2) create and maintain a trusted and safe environment on our app (such as complying with our legal obligations and compliance with our policies) and (3) provide, personalise, measure and improve our products &amp; services.
+
+All the information collected through different channels, allows us to collect statistics about our website/app usage and effectiveness, personalise your experience whilst you are on our website/app, as well as customize our interactions with you and also assist in business development to enhance and expand the scope of the App Services. The following paragraphs describe in more detail how we use your personal information.
+
+2.1 Providing, understanding &amp; improving App Services
+
+Any information provided by a User will be used solely for creating and updating your Account or the purposes for which you have granted access to such information to us, based on your interaction with the SPApp. All personal information provided by you in our website/app which has been duly received and accepted by us will be used solely for the purpose of processing your inapp activities. We may use the information collected to perform internal operations necessary to provide our services, including to troubleshoot software bugs and operational problems, to conduct data analysis, testing and research and to monitor and analyse usage and activity trends. We process this personal information for these purposes given our legitimate interest in improving the App Services.
+
+2.2 Safety, security and resolution of issues
+We may use the personal information to create and maintain a safe environment and use the same to detect and prevent fraud, span, abuse, security incidents and other harmful activity. We use the information we collect (including recordings of customer support calls) to assist you when you contact our customer support services to investigate &amp; resolve your queries, monitor and improve our customer support responses. We intend to protect your personal information and to maintain its accuracy as confirmed by you. We at SRS Live Technologies Pvt Ltd have implemented all possible physical, administrative, and technical safeguards to help us protect your personal information from unauthorised access, use, and disclosure.
+
+
+3. Changes to Privacy Policy
+SRS Live Technologies Pvt Ltd, reserves the right to change this policy from time to time. Any changes shall be effective immediately upon the posting of the revised Privacy Policy. We encourage you to periodically review this page for latest information on our privacy practices.
+
+4. Privacy related Queries
+If you have questions, concerns, or suggestions regarding our Privacy Policy, we can be reached using the contact information on our “Contact Us” page or at support@sabpaisa.in.
+</string>
+    <string name="privacypolicy"><u>Privacy policy</u></string>
+    <string name="agree_privacy">By continuing,you agree to our <u>Privacy Policy</u></string>
+
+    <string name="privacy_one">SRS Live Technologies Private Limited is committed to protecting the privacy and security of your personal information.
+        Your privacy holds an utmost importance to us. We recognize the need to protect the personally identifiable information (any information by which you can be identified, such as name, email id, contact no and any other data that is associated to such information) you share with us. The terms <b>"WE"</b>, <b>"OUR"</b> and <b>"US"</b> refer to SRS Live Technologies Pvt Ltd and the terms <b>"YOU"</b>, <b>"YOUR"</b> and <b>"USER"</b> refer to you, as a user of SRS Live Technologies Pvt Ltd. We have accordingly developed this Privacy Policy to protect your personal information and keep it confidential. We endeavour to comply with laws of other countries but cannot and do not warrant that we do. We would like to assure you that we follow appropriate standards when it comes to protecting your privacy on our websites.</string>
+
+
+    <string name="privacy_two">The Privacy Policy is applicable to the websites of SRS Live Technologies Pvt. Ltd. SRS Live Technologies Pvt. Ltd. (SRS) consists of <b>http://sabpaisa.in</b>, SabPaisa Mobile Application, and SRS Live Technologies Pvt. Ltd. This privacy statement also does not apply to the websites of our business partners, corporate affiliates or to any other third parties, even if their websites are linked to our Websites. We recommend you review the privacy statements of the other parties with whom you interact.</string>
+
+    <string name="privacy_three">For the purposes of this privacy policy,"Corporate affiliates" means any entity or joint venture that is wholly or partially owned or controlled by SRS Live Technologies Pvt. Ltd. "Business partners" means any subcontractor, vendor or other entity with whom we have an ongoing business relationship to provide products, services, or information. Our privacy policy is subject to change at any time without notice. To make sure you are aware of any changes, please review this policy periodically. The following terms governs the collection, use and protection of your Personal Information by the Website. This Privacy Policy shall be applicable to users or customers who purchases any services from the Website or visits the Website. By visiting and/ or using the Website you have agreed to our Privacy Policy.</string>
+
+    <string name="privacy_four">This Privacy Policy explains how we collect, use, process and disclose information about you. By using our website/app and affiliated services, you consent to the terms of our privacy policy ("Privacy Policy") in addition to our Terms of Use. We encourage you to read this Privacy Policy regarding the collection, use, and disclosure of your information from time to time to keep yourself updated with the changes &amp; updated that we make to this Policy.</string>
+
+
+    <string name="privacy_five">Information we collect &amp; use</string>
+
+
+    <string name="privacy_six">\u25CF When you start using the App Services, we ask you to provide certain information in the course of the registration process. Also, We collect certain information through various means and in various places through the App Services, including account registration forms, contact us forms, or when you otherwise interact with including at customer support.\n
+\n\u25CF At the time of registration, we ask for the following personal information.\n\n
+<b>1.Name\n
+2.Contact Number\n
+3.Email ID\n
+</b>\n
+\u25CF In the order of the services availed, we may seek additional information, You may choose to provide such information if you choose to use these services provided by the App.</string>
+
+    <string name="privacy_seven">We collect information relating to your use of our website/app through the use of various technologies. This includes user details, transaction details related to your use of our services including the type of services you requested, the payment method and amount and other related transactional and financial information. Further, depending on the rewards claimed by you we also collect the transaction details, etc. Further, when you visit our website/app, we may log certain information such as your IP address, browser type, mobile operating system, manufacturer and model of your mobile device, geolocation, preferred language, access time, and time spent. We will also collect information about the pages you view within our sites and other actions you take while visiting our website/app. During your use of the App Services, we may require access to certain additional information such as contact details. Prior to accessing any such information, explicit consent shall be sought from the User.
+For support purpose and the purpose of responding to such queries and other related activities, we also maintain some records of Users who contact us. However, we do not provide this information to any third party without your permission, or utilize the same for any purposes not set out hereunder.</string>
+
+<string name="privacy_e">We may use, store and process personal information in order to provide, improve and understand your requirements better.
+
+All the information collected through different channels, allows us to collect statistics about our website/app usage and effectiveness, personalise your experience whilst you are on our website/app, as well as customize our interactions with you and also assist in business development to enhance and expand the scope of the App Services. The following paragraphs describe in more detail how we use your personal information.</string>
+
+<string name="privacy_n">Any information provided by a User will be used solely for creating and updating your Account and processing your transaction(s) or for any other purposes for which you have granted access to such information to us, based on your interaction with the SP App.
+All personal information provided by you in our website/app which has been duly received and accepted by us will be used solely for the purpose of processing a transaction on the App. To enable such process, we may share information with authorised third-parties, for instance, our business partners, financial teams/institutions, or postal/government authorities involved in fulfilment of said transactions, if any. In connection with a transaction, we may also contact you as part of our customer satisfaction surveys or for market research purposes.
+We may use the information collected to perform internal operations necessary to provide our services, including to troubleshoot software bugs and operational problems, to conduct data analysis, testing and research and to monitor and analyse usage and activity trends.
+We process this personal information for these purposes given our legitimate interest in improving the App Services.
+The SRS Live Technologies Pvt Ltd website/app will securely store account details for each of your accounts, including your sign-in user name and authorisation for tracked accounts. This information will be used to enable the SRS Live Technologies Pvt Ltd website/app to automatically access and store information securely from such accounts for use in the SRS Live Technologies Pvt Ltd website/app.
+We may use the personal information as part of Payment services such as to enable you to access and use the payment services in compliance with our legal obligations (such as anti-money laundering regulations) and share such information with our third party service partners and providers for a seamless experience for Users.</string>
+
+
+    <string name="privacy_t">We may use the personal information to create and maintain a safe environment and use the same to detect and prevent fraud, span, abuse, security incidents and other harmful activity.
+We use the information we collect (including recordings of customer support calls) to assist you when you contact our customer support services to investigate &amp; resolve your queries, monitor and improve our customer support responses. Certain online transactions may involve us calling you. They may also involve online chats. Please be aware that it is our general practice to monitor and in some cases record such interactions for staff training or quality assurance purposes or to retain evidence of a particular transaction or interaction.
+We intend to protect your personal information and to maintain its accuracy in all possible ways. For achieving the privacy and accuracy, we have implemented reasonable physical, administrative, and technical measures to help us protect your personal information from unauthorised access, use, and disclosure.We also require that our suppliers protect such information from unauthorised access, use, and disclosure.
+We blend security at multiple steps within our products with state of the art technology to ensure our systems maintain strong security measures. The overall data and privacy security design allows us defend our systems ranging from low hanging issue up to sophisticated attacks.</string>
+
+<string name="privacy_1">As required by law, at times we might be required to disclose your personal information including transactional and financial information to relevant authorities. In some cases, when we believe that such disclosure is necessary to protect our rights, or the rights of others, or to comply with a judicial proceeding, court order, or legal process served on our website/app we would share such information pursuant to a lawful request from law enforcement agencies.
+We may disclose information that identifies you at an individual level and which we have collected on our website/app, to other affiliate entities and partners that are not acting as our suppliers or business partners. Except as described in this Privacy Policy, we will only do so with your prior consent. For the sake of clarity, SRS Live Technologies Pvt Ltd does not sell or lease such information.
+We at SRS Live Technologies Pvt Ltd does not deliver third party online advertisements on the website/app but we may advertise our activities and organizational goals on other websites/apps. We may collaborate with other website/app operators as well as network advertisers to do so. We request you to read and understand such concerned third party privacy policies to understand their practices relating to advertising, including what type of information they may collect about your internet usage. We do not provide any information relating to your usage to such website operators or network advertisers.</string>
+
+
+<string name="privacy_2">We provide all our Users an option to request the deletion of his/her account or the complete account through the support section on our website. With such request, we delete all such information related to the specific account including but not limited to profile information, transaction details etc. that we are not required to retain.
+
+In certain circumstances, we may be unable to delete your account, such as if there is any outstanding dispute or unresolved claims pending on your card/account. However, upon resolution of the issue preventing deletion, the information is immediately deleted and can’t be recovered thereafter. Please note that we may retain certain information if necessary for our own legitimate business interests such as fraud prevention and enhancing users’ safety and security OR to fulfil our legal obligations and compliance.</string>
+
+
+    <string name="privacy_3">We use data collection devices such as “cookies”, etc from time to time, we may place "cookies" on your personal computer. "Cookies" are small identifiers sent from a web server and stored on your computer\'s hard drive, that help us to recognize you if you visit our website again. Also, our site uses cookies to track how you found our site. To protect your privacy we do not use cookies to store or transmit any personal information about you on the Internet. You have the ability to accept or decline cookies. Most web browsers automatically accept cookies, but you can usually modify your browser setting to decline cookies if you prefer. If you choose to decline cookies certain features of the site may not function property or at all as a result.</string>
+
+
+<string name="privacy_4" tools:ignore="StringEscaping">We automatically log generic information about your computer connection to the Internet, which we call "session data", that is anonymous and not linked to any Personal Information. Session data consists of things such as IP address, operating system and type of browser software being used and the activities conducted by the user while on the Website. An IP address is a number that lets computers attached to the internet, such as our web servers, know where to send data back to the user, such as the pages of the Website the user wishes to view. We collect session data because it helps us analyze such things as what items visitors are likely to click on most, the way visitors are clicking through the Website, how many visitors are surfing to various pages on the Website, how long visitors to the Website are staying and how often they are visiting. It also helps us diagnose problems with our servers and lets us better administer our systems. Although such information does not identify any visitor personally, it is possible to determine from an IP address a visitors Internet Service Provider (ISP), and the approximate geographic location of his or her point of connectivity.</string>
+
+    <string name="privacy_6">If you have query, concerns, or suggestions regarding our Privacy Policy, You can reach us any time at email <b>support@sabpaisa.in </b>Additionally, You can also write us at:<b> SRS Live Technologies Pvt Ltd. 51, Sant Nagar, East of Kailash, New Delhi– 110065.</b> We may ask you to verify your identity and to provide other details to help us to respond to your request. We will contact you within 10 days of your request.</string>
+
+
+    <string name="privacy_5">SRS Live Technologies Pvt Ltd, reserves the right to change this policy from time to time. Any changes shall be effective immediately upon the posting of the revised Privacy Policy. We encourage you to periodically review this page for latest information on our privacy practices.</string>
 </resources>
