@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/coa_main_screen_buttom"
     android:layout_width="match_parent"
     android:layout_height="45dp"
     android:layout_alignParentBottom="true"
@@ -39,7 +38,6 @@
         android:background="@color/bg_screen" />
 
     <LinearLayout
-        android:id="@+id/bottom_addBtn"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"

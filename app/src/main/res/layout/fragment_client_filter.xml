@@ -19,9 +19,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp"
-        tools:context=".FilterActivity1"
-        android:id="@+id/relativeLayout1"
-        >
+        tools:context=".FilterActivity1">
 
         <TextView
             android:id="@+id/text_SearchClients"

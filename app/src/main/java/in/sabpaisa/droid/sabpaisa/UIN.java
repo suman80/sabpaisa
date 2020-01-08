@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +53,7 @@ import in.sabpaisa.droid.sabpaisa.Model.ClientData;
 import in.sabpaisa.droid.sabpaisa.Model.ClientsDataModel;
 import in.sabpaisa.droid.sabpaisa.Model.FetchUserImageGetterSetter;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
-
+import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicy;
 
 public class UIN extends AppCompatActivity {
     String userAccessToken, response;
@@ -77,6 +78,7 @@ public class UIN extends AppCompatActivity {
 
     String cobLoginId;
     ProgressDialog progressDialog;
+    private RelativeLayout privacy_policy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,15 @@ public class UIN extends AppCompatActivity {
         uinnnumber = (EditText) findViewById(R.id.uiinnum);
         clientImagePath = (ImageView) findViewById(R.id.institutepic);
         clientlogopath = (ImageView) findViewById(R.id.institutelogo);
+        privacy_policy=findViewById(R.id.privacy_policy);
+        privacy_policy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(), PrivacyPolicy.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
 
 
         //clientId=getIntent().getStringExtra("clientId");

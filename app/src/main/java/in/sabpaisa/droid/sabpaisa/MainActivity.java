@@ -126,7 +126,8 @@ import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
 import in.sabpaisa.droid.sabpaisa.Util.FullViewOfClientsProceed;
-import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
+import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicy;
+
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
 import io.fabric.sdk.android.Fabric;
 import me.grantland.widget.AutofitTextView;
@@ -418,6 +419,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
             }
         };
         displayFirebaseRegId();
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
@@ -426,6 +428,15 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         usernameniv = (AutofitTextView) navigationView.getHeaderView(0).findViewById(R.id.username_nav);
         usernameniv.setText("");
         mailIdniv = (AutofitTextView) navigationView.getHeaderView(0).findViewById(R.id.email_nav);
+
+        try {
+            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        AutofitTextView  versionName= navigationView.getHeaderView(0).findViewById(R.id.versionName);
+        versionName.setText("Version:"+currentVersion);
 
         sendMoney = (ImageView) findViewById(R.id.ll_send);
         requestMoney = (ImageView) findViewById(R.id.ll_request);
@@ -436,7 +447,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         //UpibankList = (ImageView)findViewById(R.id.ll_Upibank);
         paymentButton = (LinearLayout) findViewById(R.id.payment_button);
         //chatButton = (LinearLayout) findViewById(R.id.chat);
-        memberButton = (LinearLayout) findViewById(R.id.members);
+        //memberButton = (LinearLayout) findViewById(R.id.members);
         /*rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.activity_main_rfal);
         rfaBtn = (RapidFloatingActionButton) findViewById(R.id.activity_main_rfab);*/
         //FabButtonCreate();
@@ -694,6 +705,8 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
+        Log.d("currentversion",""+currentVersion);
 
         new GetVersionCode().execute();
 
@@ -1218,7 +1231,7 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
             startActivity(intent);
         } else if (id == R.id.nav_Privacy_Policy) {
 
-            Intent intent = new Intent(MainActivity.this, PrivacyPolicyActivity.class);
+            Intent intent = new Intent(MainActivity.this, PrivacyPolicy.class);
             startActivity(intent);
 
         }

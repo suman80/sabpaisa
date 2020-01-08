@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_expandable_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -128,7 +127,6 @@
                 >
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/coa_main_screen_buttom"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_alignParentBottom="true"
@@ -168,7 +166,6 @@
                         android:background="@color/bg_screen" />
 
                     <LinearLayout
-                        android:id="@+id/bottom_addBtn"
                         android:layout_width="0dp"
                         android:visibility="gone"
                         android:layout_height="match_parent"

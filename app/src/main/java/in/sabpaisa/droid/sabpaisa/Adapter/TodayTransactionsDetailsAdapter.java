@@ -4,6 +4,8 @@ import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import in.sabpaisa.droid.sabpaisa.Model.TodayTransactiongettersetter;
 import in.sabpaisa.droid.sabpaisa.Model.TodayTransactionlistgettersetter;
 import in.sabpaisa.droid.sabpaisa.R;
 import in.sabpaisa.droid.sabpaisa.TodayTransactionActivity;
@@ -21,9 +25,10 @@ import in.sabpaisa.droid.sabpaisa.TodayTransactionActivity;
 
 public  class TodayTransactionsDetailsAdapter extends RecyclerView.Adapter<TodayTransactionsDetailsAdapter.MyViewHolder> {
     int count;
-    ArrayList<TodayTransactionlistgettersetter> todayTransactiongettersetters;
-    Context mContext;
+    List<TodayTransactionlistgettersetter> todayTransactiongettersetters;
+    List<TodayTransactiongettersetter> list;
 
+    Context mContext;
 
 
     @Override
@@ -38,25 +43,32 @@ public  class TodayTransactionsDetailsAdapter extends RecyclerView.Adapter<Today
         final TodayTransactionlistgettersetter allTransactiongettersetter = todayTransactiongettersetters.get(position);
 
         //holder.memberImg.setImageUrl(member_getterSetter.getUserImageUrl(), imageLoader);
+          Log.d("alltransaction",""+allTransactiongettersetter.getTodayTransactiongettersetters());
+        final List<TodayTransactiongettersetter> secondTransList=allTransactiongettersetter.getTodayTransactiongettersetters();
 
+        Log.d("secondTransList",""+secondTransList);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext.getApplicationContext(), TodayTransactionActivity.class);
-                intent.putExtra("todayTList",1);
-                intent.putExtra("transactionList_new",""+allTransactiongettersetter.getTodayTransactiongettersetters());
-                mContext.startActivity(intent);
+               /* Intent intent = new Intent(mContext.getApplicationContext(), TodayTransactionActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("Birds", (ArrayList<? extends Parcelable>) secondTransList);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);*/
 
+                /*Intent intent=new Intent(mContext.getApplicationContext(), TodayTransactionActivity.class);
+                intent.putExtra("ArrayList",""+secondTransList);
+                mContext.startActivity(intent);*/
             }
         });
 
 
-
         String clientName=allTransactiongettersetter.getClientName();
 
-        Log.d("client_name",""+clientName);
+
+        Log.d("client_name second",""+allTransactiongettersetter.getTodayTransactiongettersetters());
         String  numberOftransactions=allTransactiongettersetter.getNumberoftransactions();
         if(!"null".equalsIgnoreCase(clientName)&&clientName!=null)
         {
@@ -83,14 +95,13 @@ public  class TodayTransactionsDetailsAdapter extends RecyclerView.Adapter<Today
     }
 
 
-    public TodayTransactionsDetailsAdapter(ArrayList<TodayTransactionlistgettersetter> GetterSetterArrayList , Context context) {
+    public TodayTransactionsDetailsAdapter(List<TodayTransactionlistgettersetter> GetterSetterArrayList , Context context) {
         this.todayTransactiongettersetters= GetterSetterArrayList;
         this.mContext = context;
     }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
 
         TextView client_name,numberoftransactions;
         public MyViewHolder(View itemView) {

@@ -4,16 +4,23 @@ import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.CustomTransactionReportActivity;
+import in.sabpaisa.droid.sabpaisa.Model.CustomTransactionReportgettersetter;
 import in.sabpaisa.droid.sabpaisa.Model.CustomTransactionlistgettersetter;
+import in.sabpaisa.droid.sabpaisa.Model.TodayTransactiongettersetter;
 import in.sabpaisa.droid.sabpaisa.R;
+import in.sabpaisa.droid.sabpaisa.TodayTransactionActivity;
 
 /**
  * Created by archana on 21/3/18.
@@ -38,14 +45,27 @@ public  class CustomTransactionDetailAdapter extends RecyclerView.Adapter<Custom
 
         //holder.memberImg.setImageUrl(member_getterSetter.getUserImageUrl(), imageLoader);
 
+        final List<CustomTransactionReportgettersetter> transList=allTransactiongettersetter.getCustomTransactionReportgettersetter();
+
         String clientName=allTransactiongettersetter.getClientName();
         String numberofTransaction=allTransactiongettersetter.getNooftransactions();
+
+
+        Log.d("CustomtransactionList",""+transList);
+        Log.d("CustomtransactionList1",""+clientName);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext.getApplicationContext(), CustomTransactionReportActivity.class);
+
+                Intent intent = new Intent(mContext.getApplicationContext(), CustomTransactionReportActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("Birds", (ArrayList<? extends Parcelable>) transList);
+                intent.putExtras(bundle);
                 mContext.startActivity(intent);
+
+                /*Intent intent=new Intent(mContext.getApplicationContext(), CustomTransactionReportActivity.class);
+                mContext.startActivity(intent);*/
 
             }
         });

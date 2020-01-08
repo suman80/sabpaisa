@@ -8,7 +8,6 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/collapsingLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -27,7 +26,6 @@
 
 
                 <RelativeLayout
-                    android:id="@+id/coverLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="?attr/actionBarSize"
@@ -167,7 +165,6 @@
 
  -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/myCoordinatorLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"

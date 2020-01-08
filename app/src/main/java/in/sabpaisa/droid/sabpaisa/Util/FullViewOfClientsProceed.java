@@ -125,7 +125,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     public static String userImageUrl = null;
     AppBarLayout appBarLayout;
-    TextView usernameniv, mailIdniv;
+    TextView usernameniv, mailIdniv,versionName;
     LinearLayout paymentButton, chatButton, memberButton;
     MaterialSearchView searchView;
     ArrayList<FeedData> feedData;
@@ -174,7 +174,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         setSupportActionBar(toolbar);
         paymentButton = (LinearLayout) findViewById(R.id.payment_button);
         //chatButton = (LinearLayout)findViewById(R.id.chat);
-        memberButton = (LinearLayout) findViewById(R.id.members);
+       // memberButton = (LinearLayout) findViewById(R.id.members);
 
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -266,7 +266,14 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
         niv = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_image);
         usernameniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.username_nav);
         mailIdniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_nav);
-
+        versionName=navigationView.getHeaderView(0).findViewById(R.id.versionName);
+        String currentVersion = null;
+        try {
+            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        versionName.setText("Version:"+currentVersion);
 
         mailIdniv.setText(x);
         usernameniv.setOnClickListener(new View.OnClickListener() {
@@ -933,7 +940,7 @@ public class FullViewOfClientsProceed extends AppCompatActivity implements Navig
 
             startActivity(intent);
         } else if (id == R.id.nav_Privacy_Policy) {
-            Intent intent = new Intent(FullViewOfClientsProceed.this, PrivacyPolicyActivity.class);
+            Intent intent = new Intent(FullViewOfClientsProceed.this, PrivacyPolicy.class);
 
             startActivity(intent);
         }

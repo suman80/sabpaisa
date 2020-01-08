@@ -16,7 +16,6 @@
             android:layout_marginLeft="@dimen/margin_side"
             android:layout_marginTop="@dimen/margin_side"
             android:layout_width="35dp"
-            android:id="@+id/ivContactImage"
             android:layout_height="35dp"
             android:src="@drawable/contacts"/>
         <LinearLayout
@@ -26,7 +25,6 @@
             android:orientation="horizontal"
             android:gravity="center">
             <TextView
-                android:id="@+id/tvContactName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_heading"/>
@@ -37,7 +35,6 @@
 
 
         <Button
-            android:id="@+id/abc1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/bg_orange"

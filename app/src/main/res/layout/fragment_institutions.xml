@@ -7,7 +7,6 @@
 <com.google.android.material.appbar.CollapsingToolbarLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/collaps"
     android:fitsSystemWindows="true"
     app:contentScrim="?attr/colorPrimary"
 
@@ -17,7 +16,6 @@
     >
 
     <FrameLayout
-        android:id="@+id/institutions_tab_fragments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -48,9 +46,7 @@
 </com.google.android.material.appbar.CollapsingToolbarLayout>
     <androidx.core.widget.NestedScrollView
 
-    android:id="@+id/scroll"
-
-    android:layout_width="match_parent"
+        android:layout_width="match_parent"
 
     android:layout_height="match_parent"
 

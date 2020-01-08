@@ -118,8 +118,9 @@ import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CustomSliderView;
 import in.sabpaisa.droid.sabpaisa.Util.CustomViewPager;
 import in.sabpaisa.droid.sabpaisa.Util.ForgotActivity;
-import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity;
+import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicy;
 import in.sabpaisa.droid.sabpaisa.Util.ProfileNavigationActivity;
+import me.grantland.widget.AutofitTextView;
 
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.PROFILE_IMAGE;
 import static in.sabpaisa.droid.sabpaisa.LogInActivity.APP_VERSION_SHARED_PREF;
@@ -223,6 +224,16 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
         usernameniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.username_nav);
         mailIdniv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_nav);
 
+        try {
+            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        AutofitTextView versionName= navigationView.getHeaderView(0).findViewById(R.id.versionName);
+        versionName.setText("Version:"+currentVersion);
+
+
 
         sendMoney = (ImageView) findViewById(R.id.ll_send);
         requestMoney = (ImageView) findViewById(R.id.ll_request);
@@ -232,7 +243,7 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
         bank = (ImageView) findViewById(R.id.ll_bank);
         paymentButton = (LinearLayout) findViewById(R.id.payment_button);
         //chatButton = (LinearLayout) findViewById(R.id.chat);
-        memberButton = (LinearLayout) findViewById(R.id.members);
+      //  memberButton = (LinearLayout) findViewById(R.id.members);
         searchView = (MaterialSearchView) findViewById(R.id.search_viewSP);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -485,6 +496,9 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
+        Log.d("currentVesion",""+currentVersion);
+
 
         if (isOnline()) {
 
@@ -924,7 +938,7 @@ public class MainActivitySkip extends AppCompatActivity implements ConnectivityR
         }
 
        else if (id == R.id.nav_Privacy_Policy) {
-            Intent intent = new Intent(MainActivitySkip.this, PrivacyPolicyActivity.class);
+            Intent intent = new Intent(MainActivitySkip.this, PrivacyPolicy.class);
 
             startActivity(intent);
         } else if (id == R.id.nav_logout) {

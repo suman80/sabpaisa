@@ -14,7 +14,6 @@
         android:textColor="@color/bg_orange"
         android:gravity="center_horizontal"/>
     <ProgressBar
-        android:id="@+id/pb_getting_sim_info"
         android:layout_marginTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

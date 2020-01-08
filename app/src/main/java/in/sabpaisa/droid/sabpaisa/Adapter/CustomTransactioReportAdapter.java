@@ -22,7 +22,7 @@ import in.sabpaisa.droid.sabpaisa.R;
 
 public  class CustomTransactioReportAdapter extends RecyclerView.Adapter<CustomTransactioReportAdapter.MyViewHolder> {
     int count;
-    ArrayList<CustomTransactionReportgettersetter> customTransactiongettersetters;
+    List<CustomTransactionReportgettersetter> customTransactiongettersetters;
     Context mContext;
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -64,7 +64,7 @@ public  class CustomTransactioReportAdapter extends RecyclerView.Adapter<CustomT
     }
 
 
-    public CustomTransactioReportAdapter(ArrayList<CustomTransactionReportgettersetter> GetterSetterArrayList , Context context) {
+    public CustomTransactioReportAdapter(List<CustomTransactionReportgettersetter> GetterSetterArrayList , Context context) {
         this.customTransactiongettersetters= GetterSetterArrayList;
         this.mContext = context;
     }

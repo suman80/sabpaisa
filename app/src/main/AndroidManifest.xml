@@ -34,7 +34,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,allowBackup,android:name">
-        <activity android:name=".CustomTransactionDetailActivity"></activity>
+        <activity android:name=".Util.PrivacyPolicy"></activity>
+        <activity android:name=".CustomTransactionDetailActivity" />
         <activity android:name=".TodayTransactionDetailsActivity" />
         <activity android:name=".CustomTransactionReportActivity" />
         <activity android:name=".TodayTransactionActivity" />

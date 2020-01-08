@@ -80,7 +80,6 @@
                     android:src="@drawable/ic_ring" />
 
                 <ImageView
-                    android:id="@+id/notificationBadge"
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:src="@drawable/badge_bg_with_shadow"

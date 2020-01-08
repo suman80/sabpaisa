@@ -10,7 +10,6 @@
     tools:context="in.sabpaisa.droid.sabpaisa.LogInActivity">
 
     <ProgressBar
-        android:id="@+id/progressbar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:max="100"
         android:progress="0"
@@ -34,7 +33,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/login_color"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
@@ -233,6 +232,18 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="20dp" />
+
+
+        <TextView
+            android:id="@+id/termscondition"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="@string/agree_privacy"
+            android:layout_height="wrap_content">
+
+        </TextView>
     </LinearLayout>
 
 

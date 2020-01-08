@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
@@ -44,6 +46,7 @@ import java.util.List;
 import in.sabpaisa.droid.sabpaisa.AddMemberTo_A_SpaceGroup;
 import in.sabpaisa.droid.sabpaisa.AppController;
 import in.sabpaisa.droid.sabpaisa.AppDB.NotificationDB;
+import in.sabpaisa.droid.sabpaisa.Fragments.SkipGroupFragment;
 import in.sabpaisa.droid.sabpaisa.GroupListData;
 import in.sabpaisa.droid.sabpaisa.GroupSpaceCommentActivity;
 import in.sabpaisa.droid.sabpaisa.LogInActivity;
@@ -229,6 +232,8 @@ public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFrag
 
                 Log.d("MainFeedAdapter1","groupIdIs: "+groupId);
 
+
+
                 PopupMenu menu = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
                     menu = new PopupMenu(mContext,view, Gravity.CENTER);
@@ -249,7 +254,11 @@ public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFrag
 
                             if (isNetworkAvailable()) {
 
-                                deleteGroupData(groupId, userAccessToken, holder.getAdapterPosition());
+                              //  Log.d("postion=",""+holder.getAdapterPosition());
+
+                                deleteGroupDialog(groupId,holder.getAdapterPosition());
+
+
                             }else {
                                 Toast.makeText(mContext,"Please check internet connection and try again. Thank you.",Toast.LENGTH_SHORT).show();
                             }
@@ -460,6 +469,30 @@ public class SkipGroupFragmentAdapter extends RecyclerView.Adapter<SkipGroupFrag
                 = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public void deleteGroupDialog(final String groupId,final int position){
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+        alertDialogBuilder.setMessage("Do you want to delete this group ?");
+                alertDialogBuilder.setPositiveButton("yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                               deleteGroupData(groupId, userAccessToken, position);
+
+
+                            }
+                        });
+
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
 

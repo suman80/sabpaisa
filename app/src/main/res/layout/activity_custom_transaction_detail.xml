@@ -41,7 +41,6 @@
         <TextView
             android:layout_width="match_parent"
             android:visibility="gone"
-            android:id="@+id/datewise_transaction"
             android:layout_height="30dp"
             android:layout_marginTop="65dp"
             android:text="Datewise transactions"
@@ -53,7 +52,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/stratDate"
             android:layout_marginHorizontal="70dp"
             android:layout_marginTop="70dp"
             >
@@ -88,13 +86,10 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:id="@+id/endDate"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="70dp"
             android:layout_marginTop="120dp"
             >
-
-
 
             <EditText
                 android:id="@+id/toDateEditText1"
@@ -127,7 +122,6 @@
             android:layout_below="@+id/todate"
             android:layout_width="match_parent"
             android:layout_marginTop="170dp"
-            android:id="@+id/viewreport"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content">
 
@@ -144,24 +138,46 @@
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/total_trans_layout"
+            android:layout_marginTop="230dp"
+            android:layout_marginLeft="40dp"
+            android:visibility="gone"
+            android:layout_marginRight="40dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Total transactions:"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <TextView
+                android:id="@+id/totaltransactions1"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+        </RelativeLayout>
 
 
 
- <LinearLayout
-     android:layout_width="match_parent"
-     android:layout_marginTop="240dp"
-     android:id="@+id/linear_layout"
-     android:visibility="visible"
-     android:layout_height="wrap_content">
 
         <com.cooltechworks.views.shimmer.ShimmerRecyclerView
             android:id="@+id/custom_transaction_detail"
             android:layout_width="match_parent"
+            android:layout_marginTop="260dp"
+            android:background="@color/white_color"
             android:visibility="gone"
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />
 
- </LinearLayout>
 
         <RelativeLayout
             android:layout_below="@+id/listview"

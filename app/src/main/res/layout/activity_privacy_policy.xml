@@ -7,7 +7,6 @@
     tools:context="in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicyActivity">
 
     <com.uncopt.android.widget.text.justify.JustifiedTextView
-
         android:id="@+id/privacy_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +16,6 @@
         android:layout_marginBottom="20dp"
         android:layout_margin="16dp"
         android:textSize="18sp"
-
         android:lineSpacingMultiplier="1.1"
 
         />

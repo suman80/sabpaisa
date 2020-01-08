@@ -77,6 +77,9 @@
       app:hint="0"
       app:inputType="number"
       app:password="false"/>
+
+
+
     </FrameLayout>
 
   <!--<EditText

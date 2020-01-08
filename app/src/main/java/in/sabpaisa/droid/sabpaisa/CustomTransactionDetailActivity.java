@@ -2,6 +2,7 @@ package in.sabpaisa.droid.sabpaisa;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.DatePickerDialog;
@@ -16,12 +17,15 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
@@ -34,11 +38,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.CustomTransactionDetailAdapter;
+import in.sabpaisa.droid.sabpaisa.Adapter.TodayTransactionsDetailsAdapter;
+import in.sabpaisa.droid.sabpaisa.Model.CustomTransactionReportgettersetter;
 import in.sabpaisa.droid.sabpaisa.Model.CustomTransactionlistgettersetter;
+import in.sabpaisa.droid.sabpaisa.Model.TodayTransactiongettersetter;
+import in.sabpaisa.droid.sabpaisa.Model.TodayTransactionlistgettersetter;
 
 public class CustomTransactionDetailActivity extends AppCompatActivity  {
     private ShimmerRecyclerView recycler_view_Txn;
@@ -54,14 +63,18 @@ public class CustomTransactionDetailActivity extends AppCompatActivity  {
     private Button show_all_transactions;
     private LinearLayout linear_layout;
     private FrameLayout startDate,endDate;
+    int k;
+    private RelativeLayout total_trans_layout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_transaction_detail);
         progressDialog=new ProgressDialog(CustomTransactionDetailActivity.this);
-        linear_layout=findViewById(R.id.linear_layout);
+        //linear_layout=findViewById(R.id.linear_layout);
         show_all_transactions=findViewById(R.id.show_all_transactions);
+        total_trans_layout=findViewById(R.id.total_trans_layout);
 
         show_all_transactions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +110,8 @@ public class CustomTransactionDetailActivity extends AppCompatActivity  {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recycler_view_Txn.addItemDecoration(new SimpleDividerItemDecoration(this));
         recycler_view_Txn.setLayoutManager(llm);
+        recycler_view_Txn.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 0));
+
 
         viewCustomReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +132,7 @@ public class CustomTransactionDetailActivity extends AppCompatActivity  {
                 {
                     progressDialog.setMessage("please wait......");
                     progressDialog.show();
-                    getTodayTransactionReport(fromDateEditText.getText().toString(),toDateEditText.getText().toString(),"123");
+                    getTodayTransactionReport();
 
                 }
 
@@ -278,7 +293,8 @@ public class CustomTransactionDetailActivity extends AppCompatActivity  {
         });
     }
 
-    private void getTodayTransactionReport(final String fromDate,final String toDate,final  String clientCode)
+
+    private void getTodayTransactionReport()
     {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -286,45 +302,75 @@ public class CustomTransactionDetailActivity extends AppCompatActivity  {
 
         String url="https://sp2.sabpaisa.in/SabPaisaAdmin/REST/transaction/filterTransaction";
 
-        String url_localhost="https://sp2.sabpaisa.in/SabPaisaRepository/trans/report/mobile";
+        String url_localhost="https://securepay.sabpaisa.in/SabPaisaRepository/trans/report/mobile";
 
-        JSONArray stringRequest = new JSONArray(Request.Method.POST, url_localhost,new Response.Listener<JSONArray>() {
+        JsonArrayRequest stringRequest = new JsonArrayRequest(Request.Method.POST, url_localhost,null,new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                progressDialog.dismiss();
                 todayTransactiongettersetters=new ArrayList<>();
-                recycler_view_Txn.setVisibility(View.VISIBLE);
-                linear_layout.setVisibility(View.VISIBLE);
-                // show_all_transactions.setVisibility(View.VISIBLE);
+                progressDialog.dismiss();
+
 
                 if(response.length()>0 &&response!=null) {
+                    //  today_view_all_transactions.setVisibility(View.VISIBLE);
+                    recycler_view_Txn.setVisibility(View.VISIBLE);
+                    total_trans_layout.setVisibility(View.VISIBLE);
+
 
                     for(int i=0;i<response.length();i++)
                     {
-                        JSONObject jsonObject= null;
                         try {
-                            jsonObject = response.getJSONObject(i);
+                            JSONObject jsonObject=response.getJSONObject(i);
                             CustomTransactionlistgettersetter todayTransactionlistgettersetter=new CustomTransactionlistgettersetter();
                             todayTransactionlistgettersetter.setClientName(jsonObject.getString("clientName"));
                             todayTransactionlistgettersetter.setNooftransactions(jsonObject.getString("noOfTransaction"));
                             String clientName=jsonObject.getString("clientName");
+                            //todayTransactiongettersetters.add(todayTransactionlistgettersetter);
+
+                            String transaction1=jsonObject.getString("noOfTransaction");
+                            int sum=0;
+                            k= Integer.parseInt(transaction1);
+
+
+                            ArrayList<CustomTransactionReportgettersetter> clientTransList=new ArrayList<>();
+
+                            JSONArray jsonArray=jsonObject.getJSONArray("transList");
+                            Log.d("translIst",""+jsonArray);
+
+
+                            if(jsonObject.getString("transList").length()>0&&jsonObject.getString("transList")!=null)
+                            {
+                                for(int k=0;k<jsonArray.length();k++)
+                                {
+                                    JSONObject jsonObject1=jsonArray.getJSONObject(i);
+                                    CustomTransactionReportgettersetter s = new CustomTransactionReportgettersetter(jsonObject1.getString("amount"),jsonObject1.getString("txnId"),jsonObject1.getString("txnDate"),jsonObject1.getString("status"),jsonObject1.getString("payerName"));
+                                    clientTransList.add(s);
+
+                                }
+
+                            }
+
+                            todayTransactionlistgettersetter.setCustomTransactionReportgettersetter(clientTransList);
                             todayTransactiongettersetters.add(todayTransactionlistgettersetter);
+
+                            for(int p=0;p<response.length();p++) {
+                                sum = sum +k;
+                            }
+
+                            TextView totaltransactions=findViewById(R.id.totaltransactions1);
+                            totaltransactions.setText(String.valueOf(sum));
+
+                            Log.d("clientName",""+clientName);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
                     }
 
-                    try {
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                     todayTransactionAdapter = new CustomTransactionDetailAdapter(todayTransactiongettersetters, getApplicationContext());
                     recycler_view_Txn.setAdapter(todayTransactionAdapter);
                     todayTransactionAdapter.notifyDataSetChanged();
-
-
                 }
                 else
                 {
@@ -333,22 +379,32 @@ public class CustomTransactionDetailActivity extends AppCompatActivity  {
                 }
 
 
-                Log.d("custom_report", "" + response);
+                Log.d("json_objectllllllllll1", "" + response);
 
             }
         }
-
-
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-
                 Log.d("volleyError",""+error);
 
             }
         })
+        /*{
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> obj=new HashMap<>();
+                obj.put("fromDate",currentDateandTime);
+                obj.put("endDate",currentDateandTime);
+                obj.put("clientCode","ABN");
 
+                Log.d("fromdate_new",""+obj);
+
+                return super.getParams();
+            }
+        }
+*/
         {
             @Override
             public byte[] getBody() {
@@ -362,13 +418,13 @@ public class CustomTransactionDetailActivity extends AppCompatActivity  {
                 return body.getBytes();
 
             }
-        }
-
-        ;
+        }     ;
 
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }
+
+
 
    /* @Override
     public void onClick(View view, int position) {

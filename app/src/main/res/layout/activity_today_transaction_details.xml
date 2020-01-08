@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/white_color"
     tools:context="in.sabpaisa.droid.sabpaisa.NumberOfGroups">
 
@@ -45,11 +46,108 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="65dp"
-            android:text="Today transactions"
+            android:visibility="gone"
+            android:id="@+id/today_transaction"
+            android:layout_marginTop="30dp"
+            android:text="Please wait..."
             android:textStyle="bold"
             android:textSize="22sp"
             android:gravity="center_horizontal"/>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_marginLeft="30dp"
+
+            android:layout_marginRight="30dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+        </Spinner>
+
+        <View
+            android:layout_marginTop="45dp"
+            android:layout_marginLeft="10dp"
+            android:background="@color/bg_orange"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp">
+
+        </View>
+
+
+
+        <RelativeLayout
+            android:id="@+id/total_transaction"
+            android:layout_width="match_parent"
+            android:layout_marginTop="70dp"
+            android:visibility="visible"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Total Transactions:"
+                android:textColor="@color/bg_orange"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <TextView
+                android:id="@+id/totaltransactions"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_marginTop="110dp"
+            android:layout_marginLeft="10dp"
+            android:background="@color/bg_orange"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp">
+
+        </View>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="120dp"
+            android:id="@+id/client_list"
+            android:layout_marginLeft="20dp"
+            android:visibility="visible"
+            android:layout_marginRight="25dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Client's Name"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:text="Transactions"
+                android:textColor="@color/black"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+        </RelativeLayout>
 
 
         <com.cooltechworks.views.shimmer.ShimmerRecyclerView
@@ -57,8 +155,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="150dp"
             android:scrollbars="vertical" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,7 +173,6 @@
         <RelativeLayout
             android:layout_below="@+id/todate"
             android:layout_width="match_parent"
-            android:id="@+id/viewreport"
             android:paddingBottom="20dp"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content">
@@ -96,4 +194,4 @@
 
     </FrameLayout>
 
-</RelativeLayout>
+</LinearLayout>

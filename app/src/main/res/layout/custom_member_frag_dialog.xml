@@ -13,8 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:src="@drawable/contacts"
-        android:id="@+id/con"/>
+        android:src="@drawable/contacts" />
 
     <LinearLayout
         android:layout_width="200dp"

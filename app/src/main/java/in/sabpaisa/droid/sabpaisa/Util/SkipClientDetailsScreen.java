@@ -657,7 +657,7 @@ public class SkipClientDetailsScreen extends AppCompatActivity implements OnFrag
 
             startActivity(intent);
         } else if (id == R.id.nav_Privacy_Policy) {
-            Intent intent = new Intent(SkipClientDetailsScreen.this, PrivacyPolicyActivity.class);
+            Intent intent = new Intent(SkipClientDetailsScreen.this, PrivacyPolicy.class);
 
             startActivity(intent);
         }

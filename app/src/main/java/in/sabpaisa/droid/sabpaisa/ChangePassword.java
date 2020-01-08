@@ -95,7 +95,7 @@ public class ChangePassword extends AppCompatActivity {
         setContentView(R.layout.activity_forgot);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         et_phone_number = (EditText) findViewById(R.id.et_phone_number);
-        final EditText password = (EditText) findViewById(R.id.et_currentpass);
+        final EditText password = (EditText) findViewById(R.id.et_password);
         final EditText curentpwd = (EditText) findViewById(R.id.et_mailId);
         Button btn_save = (Button) findViewById(R.id.btn_save);
         send_Otp = (Button) findViewById(R.id.send_Otp);

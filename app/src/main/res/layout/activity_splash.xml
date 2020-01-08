@@ -13,11 +13,9 @@
         android:background="#FFFFFF">
 
         <LinearLayout
-            android:id="@+id/coa_top_icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_below="@id/coa_campush_img"
             android:layout_margin="10dp"
             android:gravity="center"
             android:orientation="vertical">

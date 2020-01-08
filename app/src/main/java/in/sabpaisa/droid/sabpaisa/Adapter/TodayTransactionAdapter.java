@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Model.TodayTransactiongettersetter;
 import in.sabpaisa.droid.sabpaisa.R;
@@ -19,7 +20,7 @@ import in.sabpaisa.droid.sabpaisa.R;
 
 public  class TodayTransactionAdapter extends RecyclerView.Adapter<TodayTransactionAdapter.MyViewHolder> {
    private int count;
-   private ArrayList<TodayTransactiongettersetter> todayTransactiongettersetters;
+   private List<TodayTransactiongettersetter> todayTransactiongettersetters;
    private Context mContext;
 
     @Override
@@ -59,7 +60,7 @@ public  class TodayTransactionAdapter extends RecyclerView.Adapter<TodayTransact
 */
     }
 
-    public TodayTransactionAdapter(ArrayList<TodayTransactiongettersetter> GetterSetterArrayList , Context context) {
+    public TodayTransactionAdapter(List<TodayTransactiongettersetter> GetterSetterArrayList , Context context) {
         this.todayTransactiongettersetters= GetterSetterArrayList;
         this.mContext = context;
     }

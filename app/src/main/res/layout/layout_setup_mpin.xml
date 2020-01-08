@@ -24,7 +24,6 @@
 
         <!--TODO sendOTP-->
         <LinearLayout
-            android:id="@+id/tv_sendOTP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -54,7 +53,6 @@
         android:textStyle="bold" />
     <!--TODO ll_card_last_six_num-->
     <LinearLayout
-        android:id="@+id/ll_card_last_six_num"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginLeft="20dp"
@@ -100,7 +98,6 @@
 
         <!--TODO detecting-->
         <FrameLayout
-            android:id="@+id/ll_detecting"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
@@ -130,7 +127,6 @@
         android:textStyle="bold" />
     <!--TODO card_cvv_no-->
     <LinearLayout
-        android:id="@+id/ll_card_cvv_no"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginLeft="20dp"

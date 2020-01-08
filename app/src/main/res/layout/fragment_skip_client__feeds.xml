@@ -6,7 +6,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/feeds_tab_fragments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">

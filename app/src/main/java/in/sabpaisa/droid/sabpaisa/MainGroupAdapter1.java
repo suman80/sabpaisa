@@ -298,7 +298,9 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
                             if (isNetworkAvailable()) {
 
-                                deleteGroupData(groupId, userAccessToken, holder.getAdapterPosition());
+                                deleteGroupDialog(groupId,holder.getAdapterPosition());
+
+                               // deleteGroupData(groupId, userAccessToken, holder.getAdapterPosition());
                             }else {
                                 Toast.makeText(mContext,"Please check internet connection and try again. Thank you.",Toast.LENGTH_SHORT).show();
                             }
@@ -1149,6 +1151,32 @@ public class MainGroupAdapter1 extends RecyclerView.Adapter<MainGroupAdapter1.My
 
     }
 */
+
+
+    public void deleteGroupDialog(final String groupId,final int position){
+
+        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(mContext);
+        alertDialogBuilder.setMessage("Do you want to delete this group ?");
+        alertDialogBuilder.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        deleteGroupData(groupId, userAccessToken,position);
+
+
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        androidx.appcompat.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

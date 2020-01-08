@@ -84,6 +84,7 @@ import java.util.UUID;
 import in.sabpaisa.droid.sabpaisa.Util.AppConfig;
 import in.sabpaisa.droid.sabpaisa.Util.CommonUtils;
 import in.sabpaisa.droid.sabpaisa.Util.LoginActivityWithoutSharedPreference;
+import in.sabpaisa.droid.sabpaisa.Util.PrivacyPolicy;
 
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.OTP_NOT_RECIEVED;
 import static in.sabpaisa.droid.sabpaisa.ConstantsForUIUpdates.SEND_OTP;
@@ -127,6 +128,8 @@ public class RegisterActivity extends AppCompatActivity  {
 
     public static ProgressDialog progressDialog;
 
+    private TextView termscondition;
+
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -169,7 +172,14 @@ public class RegisterActivity extends AppCompatActivity  {
         timerTextView = (TextView) sheetView.findViewById(R.id.timer_text_view);
 
         progressDialog = new ProgressDialog(RegisterActivity.this,R.style.DialogTheme);
-
+        termscondition=findViewById(R.id.termscondition);
+        termscondition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(), PrivacyPolicy.class);
+                startActivity(intent);
+            }
+        });
 
 
 

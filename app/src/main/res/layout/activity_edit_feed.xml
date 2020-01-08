@@ -90,7 +90,6 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Feed Logo"
@@ -153,7 +152,6 @@
 
 
         <TextView
-            android:id="@+id/textView9"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:text="Feed Description :"

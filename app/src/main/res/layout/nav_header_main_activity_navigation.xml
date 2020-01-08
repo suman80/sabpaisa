@@ -12,7 +12,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-<LinearLayout
+  <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -52,9 +52,19 @@
         android:textSize="14sp"
         android:id="@+id/email_nav"/>-->
 
+      <me.grantland.widget.AutofitTextView
+          android:layout_marginTop="10dp"
+          android:id="@+id/versionName"
+          android:textColor="@color/black"
+          android:layout_width="wrap_content"
+          android:layout_alignParentRight="true"
+          android:layout_height="wrap_content">
+
+      </me.grantland.widget.AutofitTextView>
 
 
-</LinearLayout>
+
+</RelativeLayout>
 
     <me.grantland.widget.AutofitTextView
         android:layout_width="match_parent"

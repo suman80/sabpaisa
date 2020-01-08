@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.util.Property;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -27,12 +29,15 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.CustomTransactioReportAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.TodayTransactionAdapter;
 import in.sabpaisa.droid.sabpaisa.Model.CustomTransactionReportgettersetter;
 import in.sabpaisa.droid.sabpaisa.Model.TodayTransactiongettersetter;
+
+import static in.sabpaisa.droid.sabpaisa.Model.TodayTransactiongettersetter.*;
 
 public class TodayTransactionActivity extends AppCompatActivity   {
 
@@ -43,12 +48,16 @@ public class TodayTransactionActivity extends AppCompatActivity   {
     private TodayTransactionAdapter customTransactioReportAdapter;
     ProgressDialog progressDialog;
     private LinearLayout noDataFound;
+    private  List<TodayTransactiongettersetter> challenge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_transaction_report);
 
+        challenge  = this.getIntent().getExtras().getParcelableArrayList("Birds");
+        //String secondTransList=getIntent().getStringExtra("ArrayList");
+        Log.d("transalistdmkmkd",""+challenge);
 
         custom_transaction_recycleView=findViewById(R.id.custom_transaction);
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -56,6 +65,7 @@ public class TodayTransactionActivity extends AppCompatActivity   {
         custom_transaction_recycleView.addItemDecoration(new SimpleDividerItemDecoration(this));
         custom_transaction_recycleView.setLayoutManager(llm);
         custom_transaction_recycleView.setNestedScrollingEnabled(false);
+        customTransactiongettersetters = new ArrayList<>();
 
 
         progressDialog=new ProgressDialog(TodayTransactionActivity.this);
@@ -72,112 +82,12 @@ public class TodayTransactionActivity extends AppCompatActivity   {
         });
 
         viewCustomReport=findViewById(R.id.viewCustomReport);
-
-        setCustomTransactionReport();
-
+        customTransactioReportAdapter = new TodayTransactionAdapter(challenge, getApplicationContext());
+        custom_transaction_recycleView.setAdapter(customTransactioReportAdapter);
+        customTransactioReportAdapter.notifyDataSetChanged();
     }
 
-    private void setCustomTransactionReport()
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        final String currentDateandTime = sdf.format(new Date());
 
-        String url="https://sp2.sabpaisa.in/SabPaisaAdmin/REST/transaction/filterTransaction";
-        String url_localhost="https://sp2.sabpaisa.in/SabPaisaRepository/trans/report/mobile"+"?"+"fromDate="+"2019-10-15   00:00:00"+"&"+"endDate="+"2019-10-15 23:55:45"+"&"+"clientCode="+"ABN";
-
-        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, url_localhost,null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                progressDialog.dismiss();
-
-                Log.d("transaction_list", "" + response);
-                if(response.length()>0&&response!=null)
-                {
-                    customTransactiongettersetters = new ArrayList<>();
-
-                    try {
-                        JSONArray jsonArray=response.getJSONArray("transList");
-
-                        if(jsonArray.length()>0&&jsonArray!=null)
-                        {
-                            Log.d("jsonArray",""+jsonArray);
-                            for (int i = 0; i <jsonArray.length(); i++) {
-
-                                Log.d("jsonArray_txn","fdjifjdkdjkjkd");
-
-
-                                try {
-                                    JSONObject jsonObject=jsonArray.getJSONObject(i);
-
-                                   /* TodayTransactiongettersetter s = new TodayTransactiongettersetter();
-                                    s.setTxnId(jsonObject.getString("txnId"));
-                                    s.setAmount(jsonObject.getString("amount"));
-                                    s.setTxnDate(jsonObject.getString("txnDate"));
-                                    s.setTxnStatus(jsonObject.getString("status"));
-                                    s.setPayerName(jsonObject.getString("payerName"));*/
-
-                                  //  customTransactiongettersetters.add(s);
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                customTransactioReportAdapter = new TodayTransactionAdapter(customTransactiongettersetters, getApplicationContext());
-                                custom_transaction_recycleView.setAdapter(customTransactioReportAdapter);
-                                customTransactioReportAdapter.notifyDataSetChanged();
-
-                            }
-                        }
-                        else
-                        {
-
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else
-
-                {
-                    noDataFound.setVisibility(View.VISIBLE);
-
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Log.d("volleyError",""+error);
-
-            }
-        })
-       /* {
-            @Override
-            public byte[] getBody() {
-                String body="{\n" +
-                        "  \"paymentStatus\": \"\",\n" +
-                        "  \"statusFlag\": false,\n" +
-                        "  \"paymentMode\": \"\",\n" +
-                        "  \"clientCode\": \"\",\n" +
-                        "  \"clientCodeFlag\": false,\n" +
-                        "  \"paymentModeFlag\": false,\n" +
-                        "  \"fromDate\": \"2019-10-10   10:55:45\",\n" +
-                        "  \"fromDateFlag\": true,\n" +
-                        "  \"endDate\": \"2019-10-16   10:55:45\",\n" +
-                        "  \"endDateFlag\": true\n" +
-                        " \n" +
-                        "}";
-
-                Log.d("body_log",""+body);
-                return body.getBytes();
-
-            }}*/;
-
-        AppController.getInstance().addToRequestQueue(stringRequest);
-
-    }
 
 
 }

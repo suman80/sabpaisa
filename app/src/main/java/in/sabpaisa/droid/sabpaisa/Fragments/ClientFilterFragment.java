@@ -38,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import in.sabpaisa.droid.sabpaisa.Adapter.AutoCompleteClientAdapter;
 import in.sabpaisa.droid.sabpaisa.Adapter.HorizontalClientsRecyclerViewAdapter;
@@ -285,6 +286,7 @@ public class ClientFilterFragment extends Fragment {
 
     private void getClientsList() {
 
+        final List<String> obj=new ArrayList<String>();
 
         String tag_string_req = "req_register";
 
@@ -330,8 +332,19 @@ public class ClientFilterFragment extends Fragment {
                             filterClientModel.setStateId(jsonObject2.getString("stateId"));
                             filterClientModel.setOrgWal(jsonObject1.getString("clientImagePath"));
                             //Log.d("institutionskip1","121");
+
                             clientList.add(filterClientModel);
+                            obj.add(jsonObject1.getString("clientCode"));
+                            Log.d("clientCodeArra",""+obj.toString());
+
+                            List<String> list=new ArrayList<String>();//Creating arraylist
+                            list.add(jsonObject1.getString("clientCode"));//Adding object in arraylist
+                            //Invoking arraylist object
+                            Log.d("clientCodeArra1",""+list);
+
                         }
+
+
 
 
                         autoCompleteClientAdapter = new AutoCompleteClientAdapter(getContext(),clientList);

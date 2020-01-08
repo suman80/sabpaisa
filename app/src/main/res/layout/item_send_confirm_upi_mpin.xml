@@ -104,7 +104,6 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/ll_card_cvv_no"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginLeft="20dp"

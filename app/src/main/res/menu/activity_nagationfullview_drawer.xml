@@ -39,9 +39,6 @@
             android:icon="@drawable/ic_action_changepassworddd"/>
 
 
-
-
-
         <item
             android:id="@+id/nav_Contacts"
             android:title="Invite"
@@ -71,8 +68,8 @@
         <item
             android:id="@+id/myBusiness"
             android:visible="true"
-            android:icon="@drawable/salesapp"
-            android:title="Monitor paisa"/>
+            android:icon="@drawable/rupee_icon"
+            android:title="Monitor Paisa"/>
 
 
         <item

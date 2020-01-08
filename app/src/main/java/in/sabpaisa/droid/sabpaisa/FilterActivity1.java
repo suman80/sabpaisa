@@ -192,6 +192,7 @@ public class FilterActivity1 extends AppCompatActivity {
                             filterClientModel.setStateId(jsonObject2.getString("stateId"));
                             filterClientModel.setOrgWal(jsonObject1.getString("clientImagePath"));
                             Log.d("institutionskip1","121");
+                            Log.d("clientaCode",jsonObject1.getString("clientId"));
                             clientList.add(filterClientModel);
                         }
 

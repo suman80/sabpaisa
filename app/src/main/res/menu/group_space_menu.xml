@@ -14,7 +14,7 @@
         />
 
 
-    <item android:id="@+id/privateFeedSpace"
+    <item
         android:title="Group Feeds"
         app:showAsAction="always"
         android:icon="@drawable/ic_rss_feed_black_24dp"
