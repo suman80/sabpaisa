@@ -48,12 +48,10 @@ public  class TodayTransactionAdapter extends RecyclerView.Adapter<TodayTransact
         else
         {
             holder.today_transactionAmount.setText("0");
-
         }
 
        /* String x = allTransactiongettersetter.getTxnDate();
         long foo = Long.parseLong(x);
-
         Date date = new Date(foo);
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         holder.txnDate.setText(formatter.format(date));

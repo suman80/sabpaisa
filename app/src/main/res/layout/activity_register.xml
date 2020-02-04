@@ -36,7 +36,7 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/login_color"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:elevation="100dp"
         android:orientation="vertical"
         android:layout_height="match_parent">
@@ -233,17 +233,33 @@
             android:textColor="@color/white"
             android:textSize="20dp" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/privacy_policy_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </CheckBox>
 
         <TextView
             android:id="@+id/termscondition"
-            android:layout_width="match_parent"
             android:layout_gravity="center"
+            android:layout_marginTop="4dp"
             android:gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
             android:text="@string/agree_privacy"
             android:layout_height="wrap_content">
 
         </TextView>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 

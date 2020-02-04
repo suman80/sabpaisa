@@ -33,6 +33,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -112,7 +113,6 @@ public class RegisterActivity extends AppCompatActivity  {
     Pinview optEditText = null;
     RequestQueue requestQueue;
 
-
     Button resentButton = null; /*Type is changed from TextView to Button, also name is refracted*/
     TextView waitTextView = null;
 
@@ -129,6 +129,7 @@ public class RegisterActivity extends AppCompatActivity  {
     public static ProgressDialog progressDialog;
 
     private TextView termscondition;
+    private CheckBox privacy_policy_checkbox;
 
 
     /**
@@ -150,6 +151,8 @@ public class RegisterActivity extends AppCompatActivity  {
         /*btn_name_next1 = (Button) findViewById(R.id.btn_name_next1);
         btn_name_next2 = (Button) findViewById(R.id.btn_name_next2);*/
         //emailid = (EditText) findViewById(R.id.emailid);
+
+        privacy_policy_checkbox=findViewById(R.id.privacy_policy_checkbox);
 
 
         et_phone_number = (EditText) findViewById(R.id.et_phone_number);
@@ -331,6 +334,7 @@ public class RegisterActivity extends AppCompatActivity  {
                     //et_otp.setError("Please click on the send otp");
                     Toast.makeText(RegisterActivity.this,"Please click on the send otp",Toast.LENGTH_SHORT).show();
                 }
+
                 else if (fullName.length() == 0) {
 
                     et_FullName.setError("Please Enter your Name");
@@ -345,8 +349,17 @@ public class RegisterActivity extends AppCompatActivity  {
 
                 }else if (!isValidEmail(email)){
                     et_Email.setError("Please enter the correct email id");
-                }else if (isOnline()) {
+                }
+                else if(!privacy_policy_checkbox.isChecked())
+                {
+                    Toast.makeText(RegisterActivity.this,"Please agree our privacy policy",Toast.LENGTH_SHORT).show();
+
+                }
+
+                else if (isOnline()) {
+
                     Log.e(TAG, "otp11 " +otp11);
+
                     if(!et_otp.getValue().toString().equals(otp11))
 
                     {

@@ -64,9 +64,7 @@ public  class TodayTransactionsDetailsAdapter extends RecyclerView.Adapter<Today
             }
         });
 
-
         String clientName=allTransactiongettersetter.getClientName();
-
 
         Log.d("client_name second",""+allTransactiongettersetter.getTodayTransactiongettersetters());
         String  numberOftransactions=allTransactiongettersetter.getNumberoftransactions();

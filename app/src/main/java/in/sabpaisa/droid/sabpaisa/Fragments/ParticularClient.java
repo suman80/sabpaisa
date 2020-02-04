@@ -162,7 +162,7 @@ public class ParticularClient extends Fragment {
     private void getClientsList(final String clientId) {
 
 //Added for SSL (17th Sep 2018)
-        HttpsTrustManager.allowAllSSL();
+        //HttpsTrustManager.allowAllSSL();
 
         boolean checkDb = db.isTableExists(TABLE_Particular_Client);
 

@@ -150,8 +150,8 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
     private TabLayout tabLayout;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
-    ImageView niv, bell, bell1;
-    TextView notificationNumber, notificationNumberFeed;
+    private  ImageView niv, bell, bell1;
+    private  TextView notificationNumber, notificationNumberFeed;
 
     String time;
     View menu_bell, menu_bell_feed;
@@ -199,11 +199,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
 
     String uinStatus;
 
-
-//    public static String APP_VERSION_SHARED_PREF = "AppVersionSharedPref";
+    //public static String APP_VERSION_SHARED_PREF = "AppVersionSharedPref";
 
     String currentVersion;
-
 
     ////Testing
     @SuppressLint("MissingPermission")
@@ -216,9 +214,9 @@ public class MainActivity extends AppCompatActivity implements /*AppBarLayout.On
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 //nav=(NetworkImageView)findViewById(R.id.profile_image);
 
-//        request
+//request
 // indowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+// getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_navigation);
         this.mHandler = new Handler();

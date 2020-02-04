@@ -53,16 +53,16 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity  implemen
     private Button today_view_all_transactions;
     private Parcelable parcelable;
     private RelativeLayout total_transaction,client_list;
-    private List<TodayTransactiongettersetter> transList=new ArrayList<>();
-    int sum=0;
+    private List<TodayTransactiongettersetter> transList;
+    private  int sum=0;
     private TextView today_transaction;
     private Spinner spinner;
     private Calendar cal;
     private Calendar cal1;
-    private  ProgressDialog progressDialog;
-    String getNumberoftransactions;
+    private ProgressDialog progressDialog;
+    private String getNumberoftransactions;
     private String strFromDate=null,strEndDate=null;
-    private  LocalDate today;
+    private LocalDate today;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -70,7 +70,6 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity  implemen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_transaction_details);
         spinner = findViewById(R.id.spinner);
-
 
         List<String> categories = new ArrayList<String>();
         categories.add("Today");
@@ -85,7 +84,6 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity  implemen
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spinner.setAdapter(aa);
-
 
         recycler_view_Txn = findViewById(R.id.today_transaction_detail_recycleview);
         noDataFound = findViewById(R.id.noDataFound);
@@ -115,7 +113,7 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity  implemen
         });
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        //recycler_view_Txn.addItemDecoration(new SimpleDividerItemDecoration(this));
+       // recycler_view_Txn.addItemDecoration(new SimpleDividerItemDecoration(this));
         recycler_view_Txn.setLayoutManager(llm);
         spinner.setOnItemSelectedListener(this);
         cal = Calendar.getInstance();
@@ -137,7 +135,6 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity  implemen
         Log.d("lastDateOfPreviousMonth",""+date1);
 
     }
-
 
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
@@ -188,6 +185,7 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity  implemen
             getTodayTransactionReport(yestr2,yestr);
 
         }
+
         else if(position==3)
         {
 
@@ -280,7 +278,6 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity  implemen
     }
 
 
-
     private void getTodayTransactionReport(final String currentDateandTime,final String yesterdayDate)
     {
 
@@ -288,8 +285,6 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity  implemen
         progressDialog.setMessage("please wait...");
         progressDialog.show();
         String url="https://securepay.sabpaisa.in/SabPaisaRepository/trans/report/mobile";
-
-        String url_localhost="https://sp2.sabpaisa.in/SabPaisaRepository/trans/report/mobile";
 
         JsonArrayRequest stringRequest = new JsonArrayRequest(Request.Method.POST, url,null,new Response.Listener<JSONArray>() {
             @Override
@@ -453,7 +448,6 @@ public class TodayTransactionDetailsActivity extends AppCompatActivity  implemen
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }
-
 
 
 
